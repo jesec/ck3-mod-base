@@ -1456,11 +1456,21 @@ fp3_misc_decisions.0029 = { # Actor response
 	left_portrait = {
 		character = scope:actor
 		animation = war_over_loss
-
+		triggered_animation = {
+			trigger = {
+				OR = {
+					exists = scope:negotiate_regent
+					exists = scope:negotiate_gold
+					exists = scope:negotiate_hook
+				}
+			}
+			animation = war_over_tie
+		}
 		triggered_animation = {
 			trigger = { exists = scope:negotiate_accept }
 			animation = war_over_win
 		}
+		animation = war_over_loss
 	}
 	right_portrait = {
 		character = scope:recipient
@@ -1617,13 +1627,42 @@ fp3_misc_decisions.0030 = { # Actor response
 		}
 	}
 
+	immediate = {
+		switch = {
+			trigger = exists
+			scope:negotiate_regent = {
+				scope:actor = {
+					set_diarch = scope:recipient
+					start_diarchy = vizierate
+				}
+			}
+			scope:negotiate_gold = {
+				scope:actor = {
+					pay_short_term_gold = {
+						gold = scope:recipient.medium_gold_value
+						target = scope:recipient
+					}
+				}
+			}
+			scope:negotiate_hook = {
+				scope:recipient = {
+					add_hook_no_toast = {
+						target = scope:actor
+						type = predecessor_loyalty_hook
+					}
+				}
+			}
+		}
+		house = { set_house_head = scope:actor }
+	}
+
 	# Accepted
 	option = {
 		name = fp3_misc_decisions.0030.a
 		trigger = { exists = scope:negotiate_bargain_accept }
 	}
 
-	# Accept bargain
+	# Rejected
 	option = {
 		name = fp3_misc_decisions.0030.b
 		trigger = { exists = scope:negotiate_bargain_reject }

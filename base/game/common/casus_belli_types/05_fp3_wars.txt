@@ -328,9 +328,6 @@
 			}
 		}
 		else = {
-			show_as_tooltip = {
-				custom_tooltip = fp3_install_loyalist_cb_no_valid_puppet # todo_cd_hci_polish split this off into multiple tooltips. Add some red text.
-			}
 			scope:attacker = {
 				create_alliance = {
 					target = scope:defender
@@ -715,11 +712,15 @@ fp3_seljuk_invasion_cb = {
 	valid_to_start = { always = no }
 	cost = {}
 
+	#to be able to target not created titles
+	target_de_jure_regions_above = yes
+
 	attacker_wargoal_percentage = 0.6
 	full_occupation_by_attacker_gives_victory = yes
-	landless_attacker_needs_armies = no
+	landless_attacker_needs_armies = yes
 	attacker_capital_gives_war_score = no
 	full_occupation_by_defender_gives_victory = no
+	allow_hostages = no
 
 	on_declaration = {
 		hidden_effect = {
@@ -783,7 +784,7 @@ fp3_seljuk_invasion_cb = {
 
 		scope:attacker = {
 			create_title_and_vassal_change = {
-				type = granted
+				type = conquest
 				save_scope_as = change
 			}
 			every_in_list = {
@@ -792,51 +793,20 @@ fp3_seljuk_invasion_cb = {
 					holder = scope:attacker
 					change = scope:change
 				}
-				every_in_de_facto_hierarchy = {
+				every_in_de_jure_hierarchy = {
 					limit = {
-						tier >= tier_county
+						tier = tier_county
+						holder ?= {
+							OR = {
+								this = scope:defender
+								target_is_liege_or_above = scope:defender
+							}
+						}
 						target_is_de_jure_liege_or_above = scope:target_title
 					}
 					change_title_holder = {
 						holder = scope:attacker
 						change = scope:change
-					}
-				}
-				hidden_effect = {
-					every_in_de_facto_hierarchy = {
-						limit = {
-							tier = tier_barony
-							is_capital_barony = no
-						}
-						create_character = {
-							age = { 20 50 }
-							employer = scope:attacker
-							random_traits = yes
-							culture = scope:attacker.culture
-							faith = scope:attacker.faith
-							gender_female_chance = {
-								if = {
-									limit = {
-										scope:attacker.faith = { has_doctrine = doctrine_gender_male_dominated }
-									}
-									add = 0
-								}
-								else_if = {
-									limit = {
-										scope:attacker.faith = { has_doctrine = doctrine_gender_female_dominated }
-									}
-									add = 100
-								}
-								else = {
-									add = 50
-								}
-							}
-							save_scope_as = new_barony_holder
-						}
-						change_title_holder = {
-							holder = scope:new_barony_holder
-							change = scope:change
-						}
 					}
 				}
 			}
@@ -854,7 +824,7 @@ fp3_seljuk_invasion_cb = {
 	on_defeat = {
 		add_truce_attacker_defeat_effect = yes
 		scope:attacker = { add_prestige = major_prestige_loss }
-		scope:defender = { add_prestige = medium_prestige_gain }
+		scope:defender = { add_prestige = major_prestige_gain }
 	}
 
 	on_white_peace = {
@@ -873,6 +843,7 @@ fp3_seljuk_invasion_cb = {
 					save_scope_as = fp3_seljuk_settle_target
 				}
 			}
+			scope:defender = { save_scope_as = seljuk_victim }
 			fp3_story_cycle_seljuks_invasion_events_grant_seljuks_land_effect = yes
 			hidden_effect = {
 				if = { # Spice: If the character was hurt during the war, they will (secretly) become resentful

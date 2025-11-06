@@ -89,7 +89,8 @@
 							size = { 700 500 }
 							portrait_texture = "[Character.GetAnimatedPortrait( ActivityWindowBackgroundData.GetEnvironment, ActivityWindowCharacter.GetCamera, ActivityWindowCharacter.GetAnimation, PdxGetWidgetScreenSize(PdxGuiWidget.Self))]"
 
-							tooltip_offset = { -450 50 }
+							using = tooltip_below
+							tooltip_widgetanchor = center
 						}
 
 						blockoverride "mask"
@@ -334,7 +335,7 @@
 								size = { 760 55 }
 							}
 						}
-						
+
 						hbox = {
 							name = "many_phases"
 							visible = "[GreaterThan_int32(Activity.GetPlannedPhasesCount, '(int32)8')]"
@@ -929,7 +930,6 @@ types ActivityWindowTypes
 			}
 			blockoverride "event_picture_properties"
 			{
-				#using = Mask_Rough_Edges
 				modify_texture = {
 					texture = "gfx/interface/component_masks/mask_rough_edges.dds"
 					spriteType = corneredstretched
@@ -987,7 +987,8 @@ types ActivityWindowTypes
 						alwaystransparent = "[Not(EventWindowData.ShouldShowPortraitInfo('center_portrait'))]"
 
 						tooltip_enabled = "[EventWindowData.ShouldShowPortraitInfo('center_portrait')]"
-						tooltip_offset = { -450 0 }
+						using = tooltip_below
+						tooltip_widgetanchor = center
 					}
 
 					blockoverride "highlight_visible"
@@ -1044,7 +1045,9 @@ types ActivityWindowTypes
 						alwaystransparent = "[Not(EventWindowData.ShouldShowPortraitInfo('right_portrait'))]"
 
 						tooltip_enabled = "[EventWindowData.ShouldShowPortraitInfo('right_portrait')]"
-						tooltip_offset = { -260 0 }
+						using = tooltip_below
+						tooltip_widgetanchor = center
+						tooltip_offset = { 180 0 }
 					}
 
 					blockoverride "highlight_visible"
@@ -1102,7 +1105,9 @@ types ActivityWindowTypes
 						alwaystransparent = "[Not(EventWindowData.ShouldShowPortraitInfo('left_portrait'))]"
 
 						tooltip_enabled = "[EventWindowData.ShouldShowPortraitInfo('left_portrait')]"
-						tooltip_offset = { -500 0 }
+						using = tooltip_below
+						tooltip_widgetanchor = center
+						tooltip_offset = { -70 0 }
 					}
 
 					blockoverride "highlight_visible"
@@ -1226,7 +1231,7 @@ types ActivityWindowTypes
 					datacontext = "[EventWindowData.GetPortraitCharacter('lower_left_portrait')]"
 					parentanchor = hcenter
 					alwaystransparent = yes
-					
+
 					text = "[Character.GetShortUINameNoTooltip]"
 					max_width = 115
 					align = center
@@ -1397,7 +1402,7 @@ types ActivityWindowTypes
 				}
 
 				@text_width = 750
-				
+
 				scrollarea = {
 					name = "description_scrollarea"
 					size = { @text_width 250 }

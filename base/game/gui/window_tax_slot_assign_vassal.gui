@@ -55,6 +55,7 @@ window = {
 					
 					text_multi = {
 						layoutpolicy_horizontal = expanding
+						max_width = 500
 						text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_DESC"
 						default_format = "#instruction"
 					}
@@ -88,10 +89,12 @@ window = {
 
 						text_single = {
 							layoutpolicy_horizontal = expanding
+							max_width = 480
 							text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_CURRENT_TAX_SLOT"
 						}
 
 						hbox = {
+							visible = "[TaxSlotItem.HasTaxCollector]"
 							layoutpolicy_horizontal = expanding
 							spacing = 10
 
@@ -162,7 +165,6 @@ window = {
 					}
 
 					button_standard_clean = {
-						# TODO_FP3_ART just used the button_standard_clean for a border, should be updated
 						size = { 75 75 }
 						datacontext = "[TaxSlot.GetObligation]"
 
@@ -232,8 +234,12 @@ window = {
 
 			vbox = {
 				visible = "[Not( TaxSlotAssignVassalWindow.HasSelectedTaxSlot )]"
-				text_single = {
+				layoutpolicy_horizontal = expanding
+				
+				text_multi = {
+					layoutpolicy_horizontal = expanding
 					text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_NO_SELECTION_DESC"
+					max_width = 580
 					default_format = "#instruction"
 				}
 			}
@@ -249,6 +255,7 @@ window = {
 				}
 
 				text_single = {
+					max_width = 580
 					layoutpolicy_horizontal = expanding
 					text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_EFFECT_DESC"
 					align = center
@@ -557,23 +564,14 @@ types TaxSlotAssignVassalWindowTypes
 			vbox = {
 				layoutpolicy_vertical = expanding
 				layoutpolicy_horizontal = expanding
-				margin = { 10 5 }
+				margin = { 15 10 }
 				spacing = 5
 
 				hbox = {
 					layoutpolicy_horizontal = expanding
 
 					text_single = {
-						text = "TAX_COLLECTOR_SLOT_NAME"
-					}
-
-					expand = {}
-				}
-
-				hbox = {
-					layoutpolicy_horizontal = expanding
-
-					text_single = {
+						max_width = 240
 						text = "[TaxSlot.GetName]"
 					}
 
@@ -582,6 +580,8 @@ types TaxSlotAssignVassalWindowTypes
 					tax_collector_aptitude_text = {}
 				}
 
+				expand = {}
+				
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					spacing = 30
@@ -631,8 +631,6 @@ types TaxSlotAssignVassalWindowTypes
 						expand = {}
 					}
 				}
-
-				expand = {}
 			}
 		}
 	}

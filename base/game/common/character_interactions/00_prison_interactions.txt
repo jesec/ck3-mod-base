@@ -4258,10 +4258,15 @@ release_from_prison_interaction = {
 				}
 			}
 			scope:recipient = {
-				OR = {
-					is_courtier_of = scope:actor
-					scope:recruit = yes
+				custom_description = {
+					text = "release_take_vows_invalid_recruit"
+					object = scope:recipient
+					OR = {
+						is_courtier_of = scope:actor
+						scope:recruit = yes
+					}
 				}
+
 			}
 			custom_description = {
 				text = "release_vows_invalid_not_your_faith"
@@ -5249,6 +5254,142 @@ execute_prisoner_interaction = {
 				}
 				scope:actor = { trigger_event = bp1_yearly.9044 }
 			}
+
+			# FP3
+			# Struggle Catalysts
+			scope:actor = {
+				if = { # Execute important
+					limit = {
+						scope:recipient = { is_important_or_vip_struggle_character = yes }
+						any_character_struggle = {
+							involvement = involved
+							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+								CATALYST = catalyst_execute_important
+								CHAR = scope:recipient
+							}
+						}
+					}
+					every_character_struggle = {
+						involvement = involved
+						limit = {
+							activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+								CATALYST = catalyst_execute_important
+								CHAR = scope:recipient
+							}
+						}
+						activate_struggle_catalyst = {
+							catalyst = catalyst_execute_important
+							character = scope:actor
+						}
+					}
+				}
+				if = { # Execute Supporter/Detractor
+					limit = {
+						fp3_struggle_involves_one_supporter_and_one_detractor = {
+							FIRST = scope:actor
+							SECOND = scope:recipient
+						}
+					}
+					if = {
+						limit = {
+							scope:recipient = { has_trait = fp3_struggle_detractor }
+							any_character_struggle = {
+								involvement = involved
+								activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+									CATALYST = catalyst_execute_detractor
+									CHAR = scope:recipient
+								}
+							}
+						}
+						every_character_struggle = {
+							involvement = involved
+							limit = {
+								activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+									CATALYST = catalyst_execute_detractor
+									CHAR = scope:recipient
+								}
+							}
+							activate_struggle_catalyst = {
+								catalyst = catalyst_execute_detractor
+								character = scope:actor
+							}
+							log_debug_variable_for_persian_struggle_effect = { VAR = stabil_catalyst_execute_detractor }
+						}
+					}
+					else_if = {
+						limit = {
+							scope:recipient = { has_trait = fp3_struggle_supporter }
+							any_character_struggle = {
+								involvement = involved
+								activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+									CATALYST = catalyst_execute_supporter
+									CHAR = scope:recipient
+								}
+							}
+						}
+						every_character_struggle = {
+							involvement = involved
+							limit = {
+								activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
+									CATALYST = catalyst_execute_supporter
+									CHAR = scope:recipient
+								}
+							}
+							activate_struggle_catalyst = {
+								catalyst = catalyst_execute_supporter
+								character = scope:actor
+							}
+							log_debug_variable_for_persian_struggle_effect = { VAR = unrest_catalyst_execute_supporter }
+						}
+					}
+				}
+				# Free House Member CB target executed during war
+				if = {
+					limit = {
+						exists = scope:recipient.house
+						any_character_war = {
+							using_cb = fp3_free_house_member_cb
+							is_defender = scope:actor
+							primary_attacker.house = scope:recipient.house
+						}
+					}
+					random_character_war = {
+						limit = {
+							using_cb = fp3_free_house_member_cb
+							is_defender = scope:actor
+							primary_attacker.house = scope:recipient.house
+						}
+						primary_attacker = {
+							add_opinion = {
+								target = scope:actor
+								modifier = executed_close_relation_opinion
+							}
+						}
+					}
+					add_prestige = {
+						value = medium_piety_loss
+						multiply = {
+							value = ai_honor
+							add = 1
+						}
+					}
+					every_vassal = {
+						limit = {
+							OR = {
+								has_vassal_stance = courtly
+								has_vassal_stance = glory_hound
+								ai_honor > 0.48
+							}
+						}
+						add_opinion = {
+							target = scope:actor
+							modifier = executed_valuable_prisoner_modifier
+						}
+					}
+				}
+			}
+
+			# Kill the target
 			if = {
 				limit = {
 					scope:recipient = { is_ai = no }
@@ -5313,144 +5454,11 @@ execute_prisoner_interaction = {
 
 			scope:actor = {
 				hidden_effect = {
-					# Struggle Catalysts
-					if = {
-						limit = {
-							scope:recipient = { is_important_or_vip_struggle_character = yes }
-							any_character_struggle = {
-								involvement = involved
-								activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-									CATALYST = catalyst_execute_important
-									CHAR = scope:recipient
-								}
-							}
-						}
-						every_character_struggle = {
-							involvement = involved
-							limit = {
-								activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-									CATALYST = catalyst_execute_important
-									CHAR = scope:recipient
-								}
-							}
-							activate_struggle_catalyst = {
-								catalyst = catalyst_execute_important
-								character = scope:actor
-							}
-						}
-					}
-					if = {
-						limit = {
-							fp3_struggle_involves_one_supporter_and_one_detractor = {
-								FIRST = scope:actor
-								SECOND = scope:recipient
-							}
-						}
-						if = {
-							limit = {
-								has_trait = fp3_struggle_supporter
-								any_character_struggle = {
-									involvement = involved
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_execute_detractor
-										CHAR = scope:recipient
-									}
-								}
-							}
-							every_character_struggle = {
-								involvement = involved
-								limit = {
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_execute_detractor
-										CHAR = scope:recipient
-									}
-								}
-								activate_struggle_catalyst = {
-									catalyst = catalyst_execute_detractor
-									character = scope:actor
-								}
-								log_debug_variable_for_persian_struggle_effect = { VAR = stabil_catalyst_execute_detractor }
-							}
-						}
-						else_if = {
-							limit = {
-								has_trait = fp3_struggle_detractor
-								any_character_struggle = {
-									involvement = involved
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_execute_supporter
-										CHAR = scope:recipient
-									}
-								}
-							}
-							every_character_struggle = {
-								involvement = involved
-								limit = {
-									activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {
-										CATALYST = catalyst_execute_supporter
-										CHAR = scope:recipient
-									}
-								}
-								activate_struggle_catalyst = {
-									catalyst = catalyst_execute_supporter
-									character = scope:actor
-								}
-								log_debug_variable_for_persian_struggle_effect = { VAR = unrest_catalyst_execute_supporter }
-							}
-						}
-					}
-
 					send_interface_message = {
 						type = event_generic_neutral
 						title = msg_execute_prisoner
 						right_icon = scope:recipient
 						custom_tooltip = msg_execute_prisoner_desc
-					}
-				}
-			}
-
-			scope:actor = { # FP3
-				if = {
-					limit = {
-						exists = scope:recipient.house
-						any_character_war = {
-							using_cb = fp3_free_house_member_cb
-							is_defender = scope:actor
-							primary_attacker.house = scope:recipient.house
-						}
-					}
-					random_character_war = {
-						limit = {
-							using_cb = fp3_free_house_member_cb
-							is_defender = scope:actor
-							primary_attacker.house = scope:recipient.house
-						}
-						primary_attacker = {
-							add_opinion = {
-								target = scope:actor
-								modifier = executed_close_relation_opinion
-							}
-						}
-					}
-					add_prestige = {
-						value = medium_piety_loss
-						multiply = {
-							value = ai_honor
-							add = 1
-						}
-					}
-					every_vassal = {
-						limit = {
-							OR = {
-								has_vassal_stance = courtly
-								has_vassal_stance = glory_hound
-								ai_honor > 0.48
-							}
-						}
-						add_opinion = {
-							target = scope:actor
-							modifier = executed_valuable_prisoner_modifier
-						}
 					}
 				}
 			}

@@ -761,6 +761,21 @@ middle_east_decisions.0009 = {
 	immediate = {
 		play_music_cue = "mx_cue_faith_conversion"
 		save_scope_as = scoped_ruler
+		if = { #remove the HoF blocker for all Zoroastrian faiths
+			limit = {
+				religion = {
+					any_faith = { has_doctrine = special_doctrine_not_allowed_to_hof }
+				}
+			}
+			religion = {
+				every_faith = {
+					limit = {
+						has_doctrine = special_doctrine_not_allowed_to_hof
+					}
+					remove_doctrine = special_doctrine_not_allowed_to_hof
+				}
+			}
+		}
 		if = { # Check if Temporal first.
 			limit = {
 				faith = { has_doctrine = doctrine_temporal_head }
