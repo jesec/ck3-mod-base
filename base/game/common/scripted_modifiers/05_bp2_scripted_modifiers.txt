@@ -156,6 +156,37 @@ bp2_hostage_vassals_lieges_modifier = {
 	}
 }
 
+bp2_hostage_recall_vassals_lieges_modifier = {
+	modifier = { # Vassals are already protected
+		add = 50
+		$RECALLER$ = { is_independent_ruler = no }
+		NOR = {
+			$WARDEN$.liege ?= $RECALLER$
+			$RECALLER$.liege ?= $WARDEN$.liege
+		}
+		desc = HOSTAGE_PROTECTED_BY_LIEGE_REASON
+	}
+	modifier = { # Reluctance to make truces with other realm's vassals
+		$RECALLER$ = { is_independent_ruler = no } # Sender is a vassal
+		$WARDEN$ = {
+			trigger_if = {
+				limit = { is_independent_ruler = no }
+				NOT = { $RECALLER$.liege = $WARDEN$.liege }
+			}
+		}
+		add = {
+			value = 25
+			if = {
+				limit = {
+					NOT = { $WARDEN$.liege = $RECALLER$.top_liege }
+				}
+				add = 15
+			}
+		}
+		desc = HOSTAGE_VASSAL_REASON
+	}
+}
+
 bp2_hostage_tier_neighbor_modifier = {
 	modifier = { # Flattered by higher tier
 		$RECEIVER$.highest_held_title_tier < $SENDER$.highest_held_title_tier
@@ -181,10 +212,11 @@ bp2_hostage_tier_neighbor_modifier = {
 		}
 		desc = HOSTAGE_RANK_DIFFERENCE_REASON
 	}
-	modifier = { # Direct neighbors
+	modifier = { # Not direct neighbors
 		NOT = { $SENDER$.top_liege = $RECEIVER$.top_liege }
-		NOT = {
+		NOR = {
 			$SENDER$ = { character_is_land_realm_neighbor = $RECEIVER$ }
+			$RECEIVER$ = { character_is_land_realm_neighbor = $SENDER$ }
 		}
 		add = -20
 		desc = HOSTAGE_NOT_NEIGHBORING_REALM_REASON
@@ -196,10 +228,69 @@ bp2_hostage_tier_neighbor_modifier = {
 				top_liege = $RECEIVER$.top_liege
 			}
 		}
-		$RECEIVER$.capital_province ?= {
-			squared_distance = { target = $SENDER$.capital_province value < 200000 }
+		$RECEIVER$ = {
+			NOR = {
+				character_is_land_realm_neighbor = $SENDER$
+				capital_province ?= {
+					squared_distance = { target = $SENDER$.capital_province value < 200000 }
+				}
+			}
 		}
 		add = -20
+		desc = HOSTAGE_DISTANT_REALM_REASON
+	}
+}
+
+bp2_hostage_recall_tier_neighbor_modifier = {
+	modifier = { # Flattered by higher tier
+		$WARDEN$.highest_held_title_tier < $RECALLER$.highest_held_title_tier
+		add = {
+			value = -20
+			multiply = {
+				value = $WARDEN$.highest_held_title_tier
+				subtract = $RECALLER$.highest_held_title_tier
+				min = 1
+			}
+		}
+		desc = HOSTAGE_RANK_DIFFERENCE_REASON
+	}
+	modifier = { # Dismissive of lower tier
+		$WARDEN$.highest_held_title_tier > $RECALLER$.highest_held_title_tier
+		add = {
+			value = 20
+			multiply = {
+				value = $RECALLER$.highest_held_title_tier
+				subtract = $WARDEN$.highest_held_title_tier
+				min = 1
+			}
+		}
+		desc = HOSTAGE_RANK_DIFFERENCE_REASON
+	}
+	modifier = { # Not direct neighbors
+		NOT = { $RECALLER$.top_liege = $WARDEN$.top_liege }
+		NOR = {
+			$RECALLER$ = { character_is_land_realm_neighbor = $WARDEN$ }
+			$WARDEN$ = { character_is_land_realm_neighbor = $RECALLER$ }
+		}
+		add = 20
+		desc = HOSTAGE_NOT_NEIGHBORING_REALM_REASON
+	}
+	modifier = { # Distant neighbors
+		$RECALLER$ = {
+			NOR = {
+				character_is_realm_neighbor = $WARDEN$
+				top_liege = $WARDEN$.top_liege
+			}
+		}
+		$WARDEN$ = {
+			NOR = {
+				character_is_land_realm_neighbor = $RECALLER$
+				capital_province ?= {
+					squared_distance = { target = $RECALLER$.capital_province value < 200000 }
+				}
+			}
+		}
+		add = 20
 		desc = HOSTAGE_DISTANT_REALM_REASON
 	}
 }
