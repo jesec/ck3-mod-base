@@ -1,0 +1,113 @@
+compound_node={
+	id="Spawn Delay & Duration"
+	graph={
+		Nodes={
+			pdxns:particle:GetSystemAge={
+				Id=4
+				Node={
+				}
+				Inputs={
+				}
+			}
+			pdxns:logic:SelectF={
+				Id=5
+				Node={
+				}
+				Inputs={
+					Link = { PinId = "select" LinkedNode = 7 LinkedPin = "value" }
+					Link = { PinId = "true_value" LinkedNode = 18 LinkedPin = "Spawnrate" }
+					Link = { PinId = "false_value" LinkedNode = 8 LinkedPin = "value" }
+				}
+			}
+			pdxns:math:GreaterThanEqualF={
+				Id=15
+				Node={
+				}
+				Inputs={
+					Link = { PinId = "op1" LinkedNode = 3 LinkedPin = "sum" }
+					Link = { PinId = "op2" LinkedNode = 4 LinkedPin = "age" }
+				}
+			}
+			pdxns:common:GraphInterface={
+				Id=1
+				Node={
+					pins={
+						pin={
+							id=Value
+							label="Value"
+							input=yes
+							flags=optional
+							type=Float
+						}
+					}
+				}
+				Inputs={
+					Link = { PinId = "Value" LinkedNode = 5 LinkedPin = "selected_value" }
+				}
+			}
+			pdxns:math:GreaterThanEqualF={
+				Id=17
+				Node={
+				}
+				Inputs={
+					Link = { PinId = "op1" LinkedNode = 4 LinkedPin = "age" }
+					Link = { PinId = "op2" LinkedNode = 18 LinkedPin = "Delay" }
+				}
+			}
+			pdxns:values:Float={
+				Id=8
+				Node={
+					value=0.000000
+				}
+				Inputs={
+				}
+			}
+			pdxns:common:GraphInterface={
+				Id=18
+				Node={
+					pins={
+						pin={
+							id=Delay
+							label="Delay"
+							input=no
+							type=Float
+						}
+						pin={
+							id=Spawnduration
+							label="Spawnduration"
+							input=no
+							type=Float
+						}
+						pin={
+							id=Spawnrate
+							label="Spawnrate"
+							input=no
+							type=Float
+						}
+					}
+				}
+				Inputs={
+				}
+			}
+			pdxns:math:AddF={
+				Id=3
+				Node={
+				}
+				Inputs={
+					Link = { PinId = "term1" LinkedNode = 18 LinkedPin = "Delay" }
+					Link = { PinId = "term2" LinkedNode = 18 LinkedPin = "Spawnduration" }
+				}
+			}
+			pdxns:math:And={
+				Id=7
+				Node={
+				}
+				Inputs={
+					Link = { PinId = "op1" LinkedNode = 17 LinkedPin = "value" }
+					Link = { PinId = "op2" LinkedNode = 15 LinkedPin = "value" }
+				}
+			}
+		}
+	}
+
+}

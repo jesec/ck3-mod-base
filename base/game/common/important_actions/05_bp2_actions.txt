@@ -1,0 +1,356 @@
+﻿action_can_hire_wet_nurse = {
+	priority = 350
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				has_bp2_dlc_trigger = yes
+				NOR = {
+					employs_court_position = wet_nurse_court_position
+					NOT = { can_employ_court_position_type = wet_nurse_court_position }
+					any_court_position_holder = {
+						type = wet_nurse_court_position
+					}
+				}
+				monthly_character_income > monthly_character_expenses
+			}
+			try_create_important_action = {
+				important_action_type = action_can_hire_wet_nurse
+				actor = root
+			}
+		}
+	}
+	unimportant = {
+		NOT = { can_execute_decision = decision:find_wet_nurse_decision }
+	}
+	effect = {
+		if = {
+			limit = {
+				any_courtier = {
+					can_be_employed_as = wet_nurse_court_position
+					NOT = {
+						has_opinion_modifier = {
+							modifier = revoked_court_position_opinion
+							target =  liege
+						}
+					}
+				}
+			}
+			open_appoint_court_position_window = wet_nurse_court_position
+		}
+		else = {
+			decision:find_wet_nurse_decision = { open_view_data = decision_detail }
+		}
+	}
+}
+
+action_can_offer_hostage = {
+	combine_into_one = yes
+	priority = 400
+	check_create_action = {
+		if = {
+			limit = { # Must have a valid hostage to send
+				any_close_family_member = {
+					bp2_valid_to_offer_as_hostage_trigger = { SENDER = root }
+				}
+			}
+			if = { # Neighboring realms
+				limit = { is_independent_ruler = yes }
+				every_neighboring_top_liege_realm_owner = { add_to_list = potential_offer_target_list }
+			}
+			else = { # Fellow vassals
+				liege = {
+					every_vassal = {
+						limit = { character_is_realm_neighbor = root }
+						add_to_list = potential_offer_target_list
+					}
+				}
+			}
+			# Powerful vassals
+			every_powerful_vassal = {
+				limit = {
+					save_temporary_scope_as = potential_powerful_vassal
+					OR = {
+						# Claimants
+						any_claim = { this = root.primary_title }
+						# Faction members
+						root = {
+							any_targeting_faction = {
+								any_faction_member = { this = scope:potential_powerful_vassal }
+							}
+						}
+					}
+				}
+				add_to_list = potential_exchange_target_list
+			}
+			# Check validity
+			if = {
+				limit = {
+					any_in_list = {
+						list = potential_offer_target_list
+						count >= 1
+						trigger_if = {
+							limit = {
+								root = { is_at_war = no }
+							}
+							current_strength_with_allies_value >= root.current_strength_ninety_percent_value
+						}
+					}
+				}
+				every_in_list = {
+					list = potential_offer_target_list
+					limit = { bp2_valid_hostage_offer_action_trigger = yes }
+					save_scope_as = warden
+					try_create_important_action = {
+						important_action_type = action_can_offer_hostage
+						actor = root
+						recipient = scope:warden
+					}
+				}
+			}
+		}
+	}
+
+	unimportant = {
+		scope:recipient = {
+			OR = {
+				is_allied_to = scope:actor
+				has_truce = scope:actor
+				NOT = { has_any_cb_on = scope:actor }
+			}
+		}
+	}
+
+	effect = {
+		ordered_close_family_member = {
+			limit = {
+				bp2_valid_to_offer_as_hostage_trigger = { SENDER = root }
+				save_temporary_scope_as = my_hostage
+				root = {
+					is_character_interaction_potentially_accepted = {
+						interaction = demand_hostage_interaction
+						recipient = scope:recipient
+						secondary_actor = scope:my_hostage
+					}
+				}
+			}
+			order_by = {
+				value = 0
+				subtract = age
+			}
+			save_scope_as = secondary_actor
+		}
+		open_interaction_window = {
+			interaction = offer_hostage_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_can_demand_hostage = {
+	combine_into_one = yes
+	priority = 400
+	check_create_action = {
+		if = { # Neighboring realms
+			limit = { is_independent_ruler = yes }
+			every_neighboring_top_liege_realm_owner = { add_to_list = potential_demand_target_list }
+		}
+		else = { # Fellow vassals
+			liege = {
+				every_vassal = {
+					limit = { character_is_realm_neighbor = root }
+					add_to_list = potential_demand_target_list
+				}
+			}
+		}
+		# Powerful vassals
+		every_powerful_vassal = {
+			limit = {
+				save_temporary_scope_as = potential_powerful_vassal
+				OR = {
+					# Claimants
+					any_claim = { this = root.primary_title }
+					# Faction members
+					root = {
+						any_targeting_faction = {
+							any_faction_member = { this = scope:potential_powerful_vassal }
+						}
+					}
+				}
+			}
+			add_to_list = potential_exchange_target_list
+		}
+		# Check validity
+		if = {
+			limit = {
+				any_in_list = { list = potential_demand_target_list count >= 1 }
+			}
+			every_in_list = {
+				list = potential_demand_target_list
+				limit = { bp2_valid_hostage_demand_action_trigger = yes }
+				save_scope_as = home_court
+				try_create_important_action = {
+					important_action_type = action_can_demand_hostage
+					actor = root
+					recipient = scope:home_court
+				}
+			}
+		}
+	}
+
+	unimportant = {
+		scope:actor = {
+			OR = {
+				has_any_cb_on = scope:recipient
+				has_truce = scope:recipient
+				is_allied_to = scope:recipient
+			}
+		}
+	}
+
+	effect = {
+		scope:recipient = {
+			ordered_close_family_member = {
+				limit = {
+					bp2_valid_to_offer_as_hostage_trigger = { SENDER = scope:recipient }
+					save_temporary_scope_as = their_hostage
+					root = {
+						is_character_interaction_potentially_accepted = {
+							interaction = demand_hostage_interaction
+							recipient = scope:recipient
+							secondary_recipient = scope:their_hostage
+						}
+					}
+				}
+				order_by = {
+					value = 0
+					subtract = age
+				}
+				save_scope_as = secondary_recipient
+			}
+		}
+		open_interaction_window = {
+			interaction = demand_hostage_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+			secondary_recipient = scope:secondary_recipient
+		}
+	}
+}
+
+action_can_exchange_hostage = {
+	combine_into_one = yes
+	priority = 400
+	check_create_action = {
+		if = {
+			limit = { # Must have a valid hostage to send
+				any_close_family_member = {
+					bp2_valid_to_offer_as_hostage_trigger = { SENDER = root }
+				}
+			}
+			if = { # Neighboring realms
+				limit = { is_independent_ruler = yes }
+				every_neighboring_top_liege_realm_owner = { add_to_list = potential_exchange_target_list }
+			}
+			else = { # Fellow vassals
+				liege = {
+					every_vassal = {
+						limit = { character_is_realm_neighbor = root }
+						add_to_list = potential_exchange_target_list
+					}
+				}
+			}
+			# Powerful vassals
+			every_powerful_vassal = {
+				limit = {
+					save_temporary_scope_as = potential_powerful_vassal
+					OR = {
+						# Claimants
+						any_claim = { this = root.primary_title }
+						# Faction members
+						root = {
+							any_targeting_faction = {
+								any_faction_member = { this = scope:potential_powerful_vassal }
+							}
+						}
+					}
+				}
+				add_to_list = potential_exchange_target_list
+			}
+			# Check validity
+			if = {
+				limit = {
+					any_in_list = { list = potential_exchange_target_list count >= 1 }
+				}
+				every_in_list = {
+					list = potential_exchange_target_list
+					limit = { bp2_valid_hostage_exchange_action_trigger = yes }
+					save_scope_as = home_court
+					try_create_important_action = {
+						important_action_type = action_can_exchange_hostage
+						actor = root
+						recipient = scope:home_court
+					}
+				}
+			}
+		}
+	}
+
+	unimportant = {
+		scope:recipient = {
+			OR = {
+				is_allied_to = scope:actor
+				has_truce = scope:actor
+				NOT = { has_any_cb_on = scope:actor }
+			}
+		}
+	}
+
+	effect = {
+		open_interaction_window = {
+			interaction = exchange_hostage_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_can_recall_hostage = {
+	combine_into_one = yes
+	priority = 400
+	check_create_action = {
+		if = {
+			limit = { # Must have a valid hostage to recall
+				any_home_court_hostage = {
+					warden = {
+						NOT = { is_at_war_with = root }
+					}
+					hostage_duration = { years >= 1 }
+				}
+			}
+			every_home_court_hostage = {
+				limit = {
+					warden = {
+						NOT = { is_at_war_with = root }
+					}
+					hostage_duration = { years >= 1 }
+				}
+				warden = { save_scope_as = warden }
+				try_create_important_action = {
+					important_action_type = action_can_recall_hostage
+					actor = root
+					recipient = scope:warden
+				}
+			}
+		}
+	}
+
+	effect = {
+		open_interaction_window = {
+			interaction = recall_hostage_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}

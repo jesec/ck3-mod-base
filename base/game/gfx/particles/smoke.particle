@@ -1,0 +1,96 @@
+particle = {
+	name = "smoke_paricle_effect"
+	
+	# Y AXIS
+	subsystem = {
+		# fixed values, cannot be curves, cannot add variation
+		max_amount = 200
+		
+		sort = "depth" 
+		texture = {
+			shader = "ParticleAlphaBlend"
+			file = "gfx/particles/flame.dds"  
+			x = 2	
+			y = 2	
+		}
+		
+		position 		= { x = 0.0 y = 0.0 z = 0.0	}
+		emitter_yaw 	= { 0 0 }  
+		emitter_pitch 	= { 0 0 }
+		
+		start = { 0 }						
+		duration = 0.5
+		emission = { 1 }
+
+		velocity = { 0.3 }		
+		velocity_pitch = { 90 0 }
+		velocity_yaw =  { 90 0 }
+		
+		life = { 10 2 }
+		size = { 0.25,size_scale 0.05  }
+		rotation = { 180 180 }
+	
+		# values that can be curves or values, with or without variation
+		# 'spawn'/'system'/'particle' time is valid
+		color = { 
+			r = { 255 }
+			g = { 255 }
+			b = { 255 }
+			alpha = { 40,fire_fade }
+		}
+		
+		# Forces
+		force = wind, chaos
+	}	
+
+
+
+	animation = {
+		time = "life"
+		name = "fire_fade"
+		start = 0
+		duration = 1
+		#repeat = yes
+		op = "MUL" # "MUL"/"ADD"/"ABS"
+		minValue = 0
+		maxValue = 1
+		curve = { 
+			0 0
+			0.1	1
+			0.4 1
+			1 0 
+		}
+	}
+	
+	animation = {
+		time = "life"
+		name = "size_scale"
+		start = 0
+		duration = 1
+		#repeat = yes
+		op = "MUL" # "MUL"/"ADD"/"ABS"
+		minValue = 1
+		maxValue = 8
+		curve = { 
+			0 0
+			0.5 0.25
+			0.75 0.5
+			1 1 
+		}
+	}	
+	
+	
+
+	force = {
+		type = "planar"
+		name = "wind"
+		direction = { 1.0 0.0 0.0 }
+		amount = 0.05
+	}
+	
+	force = {
+		type = "turbulence"
+		name = "chaos"
+		amount = 0.05
+	}
+}
