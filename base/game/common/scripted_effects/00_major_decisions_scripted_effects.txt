@@ -1,5 +1,17 @@
 ﻿create_roman_empire_scripted_effect = {
 	add_trait = augustus
+	if = {
+		limit = { has_dlc_feature = legends }
+		create_legend_seed = {
+			type = legitimizing
+			quality = illustrious
+			chronicle = new_title
+			properties = {
+				title = title:e_roman_empire
+				founder = root
+			}
+		}
+	}
 	#Create Roman Empire, shift dejure/history/laws, destroy e_byzantium.
 	hidden_effect = {
 		every_held_title = { #Should shift all dejure of all Empires owned at the time.
@@ -1139,6 +1151,17 @@ create_rum_scripted_effect = {
 
 declare_bloodline_holy_decision_effect = {
 	save_scope_as = progenitor_holy_blood
+	if = {
+		limit = {
+			NOT = {
+				has_character_flag = con_blood_leg
+			}
+		}
+		add_character_flag = con_blood_leg
+		hidden_effect = {
+			legend_seed_great_deed_dynasty_effect = yes
+		}
+	}
 
 	faith = {
 		set_variable = {

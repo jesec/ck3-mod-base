@@ -484,6 +484,46 @@ types ActivityPlannerTypes
 			}
 
 			widget = {
+				visible = "[Not( PlannedActivityPhase.HasPhase )]"
+				parentanchor = center
+				position = { 0 30 }
+				size = { 230 250 }
+
+				vbox = {
+					layoutpolicy_vertical = expanding
+					spacing = 4
+
+					button_round = {
+						size = { 50 50 }
+
+						button_plus = {
+							name = "select_contest"
+							parentanchor = center
+							onclick = "[ActivityPlanner.StartEditingPhase( PlannedActivityPhase.AccessSelf, 'phase' )]"
+							size = { 40 40 }
+
+							tooltip = contest_planner_add_contest_tooltip
+						}
+					}
+
+					text_single = {
+						text = contest_planner_empty_slot
+						using = Font_Size_Big
+						max_width = 190
+					}
+
+					text_multi = {
+						text = contest_planner_empty_slot_picking_desc
+						autoresize = yes
+						max_width = 190
+						align = center
+					}
+
+					expand = {}
+				}
+			}
+
+			widget = {
 				name = "active_contest"
 				visible = "[PlannedActivityPhase.HasPhase]"
 				datacontext = "[PlannedActivityPhase.GetPhase]"
@@ -579,7 +619,7 @@ types ActivityPlannerTypes
 
 							visible_at_creation = no # required to make sure we trigger the '_show' state
 
-							state = { 
+							state = {
 								name = _show
 								on_start = "[ActivityPlanner.RemoveGuestFromPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'spectator')]"
 								on_start = "[ActivityPlanner.AddGuestToPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'contestant')]"
@@ -592,7 +632,7 @@ types ActivityPlannerTypes
 
 							visible_at_creation = no # required to make sure we trigger the '_show' state
 
-							state = { 
+							state = {
 								name = _show
 								on_start = "[ActivityPlanner.RemoveGuestFromPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'contestant')]"
 								on_start = "[ActivityPlanner.AddGuestToPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'spectator')]"
@@ -614,7 +654,7 @@ types ActivityPlannerTypes
 								onclick = "[ActivityPlanner.AddGuestToPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'spectator')]"
 								onclick = "[ActivityPlanner.RemoveGuestFromPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'contestant')]"
 
-								tooltip_enabled = "[Or( And( Not( IsMartialContest ), IsPlayerAvailableToCompeteNonMartial ), And( IsMartialContest, And( CanPlayerCompeteInMartialContest( GetPlayer ), IsPlayerAvailableToCompeteMartial ) ) )]"
+								tooltip_visible = "[Or( And( Not( IsMartialContest ), IsPlayerAvailableToCompeteNonMartial ), And( IsMartialContest, And( CanPlayerCompeteInMartialContest( GetPlayer ), IsPlayerAvailableToCompeteMartial ) ) )]"
 							}
 
 							button_contest_participate = {
@@ -625,7 +665,7 @@ types ActivityPlannerTypes
 								onclick = "[ActivityPlanner.RemoveGuestFromPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'spectator')]"
 								onclick = "[ActivityPlanner.AddGuestToPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'contestant')]"
 
-								tooltip_enabled = "[Or( And( Not( IsMartialContest ), IsPlayerAvailableToCompeteNonMartial ), And( IsMartialContest, And( CanPlayerCompeteInMartialContest( GetPlayer ), IsPlayerAvailableToCompeteMartial ) ) )]"
+								tooltip_visible = "[Or( And( Not( IsMartialContest ), IsPlayerAvailableToCompeteNonMartial ), And( IsMartialContest, And( CanPlayerCompeteInMartialContest( GetPlayer ), IsPlayerAvailableToCompeteMartial ) ) )]"
 							}
 						}
 					}
@@ -689,45 +729,6 @@ types ActivityPlannerTypes
 					duration = 1
 
 					using = Animation_Curve_Default
-				}
-			}
-
-			widget = {
-				parentanchor = center
-				position = { 0 30 }
-				size = { 230 250 }
-
-				vbox = {
-					layoutpolicy_vertical = expanding
-					spacing = 4
-
-					button_round = {
-						size = { 50 50 }
-
-						button_plus = {
-							name = "select_contest"
-							parentanchor = center
-							onclick = "[ActivityPlanner.StartEditingPhase( PlannedActivityPhase.AccessSelf, 'phase' )]"
-							size = { 40 40 }
-
-							tooltip = contest_planner_add_contest_tooltip
-						}
-					}
-
-					text_single = {
-						text = contest_planner_empty_slot
-						using = Font_Size_Big
-						max_width = 190
-					}
-
-					text_multi = {
-						text = contest_planner_empty_slot_picking_desc
-						autoresize = yes
-						max_width = 190
-						align = center
-					}
-
-					expand = {}
 				}
 			}
 		}

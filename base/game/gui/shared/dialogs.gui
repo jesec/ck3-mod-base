@@ -69,7 +69,48 @@ types Dialogs
 						}
 					}
 
+					block "extra_contents"
+					{
+					}
+
 					block "bd_buttons" {}
+				}
+			}
+		}
+	}
+
+	type confirmation_popup = base_dialog
+	{
+		blockoverride "bd_buttons"
+		{
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 10 0 }
+				margin_bottom = 10
+
+				button_standard= {
+					name = "decline_button"
+					layoutpolicy_horizontal = growing
+
+					text = "CANCEL_BUTTON"
+					onclick = [GameDialog.Decline]
+					shortcut = "close_window"
+				}
+
+				spacer = {
+					size = { 15 0 }
+				}
+
+				button_primary = {
+					layoutpolicy_horizontal = growing
+					name = "accept_button"
+
+					text = "[GameDialog.GetAcceptText]"
+					shortcut = "confirm"
+					onclick = "[GameDialog.Accept]"
+					enabled = "[GameDialog.CanAccept]"
+					tooltip = "[GameDialog.GetCanAcceptBlocker]"
+					clicksound = "[GameDialog.GetClickSound]"
 				}
 			}
 		}
@@ -89,39 +130,8 @@ base_dialog = {
 	}
 }
 
-base_dialog = {
+confirmation_popup = {
 	name = "basic_confirmation_popup"
-
-	blockoverride "bd_buttons" {
-		hbox = {
-			layoutpolicy_horizontal = expanding
-			margin = { 10 0 }
-			margin_bottom = 10
-
-			button_standard= {
-				name = "decline_button"
-				layoutpolicy_horizontal = growing
-
-				text = "CANCEL_BUTTON"
-				onclick = [GameDialog.Decline]
-				shortcut = "close_window"
-			}
-
-			spacer = {
-				size = { 15 0 }
-			}
-
-			button_primary = {
-				layoutpolicy_horizontal = growing
-				name = "accept_button"
-
-				text = "[GameDialog.GetAcceptText]"
-				shortcut = "confirm"
-				onclick = "[GameDialog.Accept]"
-				clicksound = "[GameDialog.GetClickSound]"
-			}
-		}
-	}
 }
 
 base_dialog = {

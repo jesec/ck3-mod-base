@@ -5,15 +5,15 @@
 	desc = revoke_leased_title_interaction_desc
 
 	target_type = title
-	target_filter = actor_domain_titles_including_leases
+	target_filter = recipient_lessee_titles
 	
 	auto_accept = yes
 
 	is_shown = {
 		scope:actor = {
-			any_held_title = {
-				has_revokable_lease = yes
-				lessee = scope:recipient
+			any_sub_realm_barony = {
+				barony_is_valid_for_holy_order_lease_cancellation_trigger = yes
+				lessee ?= scope:recipient
 			}
 		}
 	}
@@ -37,6 +37,10 @@
 		scope:target = {
 			has_revokable_lease = yes
 			lessee = scope:recipient
+			OR = {
+				county.holder = { is_ai = yes }
+				county.holder = scope:actor
+			}
 		}
 		scope:recipient = { NOT = { has_strong_hook = scope:actor } }
 	}

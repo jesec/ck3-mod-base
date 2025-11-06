@@ -43,6 +43,12 @@
 				modifier = peasant_revolt_opinion
 				target = scope:attacker
 			}
+			
+			# Legitimacy loss because why would you have peasants revolting
+			if = {
+				limit = { is_valid_for_legitimacy_change = yes }
+				add_legitimacy = medium_legitimacy_loss
+			}
 
 			# Struggle Stuffs
 			if = {
@@ -81,6 +87,8 @@
 		}
 
 		scope:defender = {
+			# Legitimacy effect
+			faction_war_end_defeat_legitimacy_effect = yes
 			# Struggle Catalysts
 			hidden_effect = {
 				if = {

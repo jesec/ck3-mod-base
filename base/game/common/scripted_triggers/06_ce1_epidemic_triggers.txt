@@ -1,0 +1,25 @@
+﻿#would_follow_social_distancing_trigger
+#realm_has_any_epidemic
+#notified_of_plague_trigger
+
+would_follow_social_distancing_trigger = {
+	would_follow_social_distancing_value >= 0
+}
+
+realm_has_any_epidemic = {
+	any_sub_realm_county = {
+		count >= $SIZE$
+		any_county_province = {
+			any_province_epidemic = {
+				outbreak_intensity >= $INTENSITY$
+			}
+		}
+	}
+}
+
+notified_of_plague_trigger = {
+	is_target_in_variable_list = {
+		name = plagues_notified
+		target = scope:epidemic
+	}
+}

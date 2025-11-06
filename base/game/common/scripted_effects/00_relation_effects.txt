@@ -1144,3 +1144,40 @@ progress_towards_rival_ai_effect = {
 		}
 	}
 }
+
+progress_towards_intent_effect = {
+	if = {
+		limit = {
+			intent_target ?= $CHARACTER$
+			has_activity_intent = woo_attendee_intent
+		}
+		progress_towards_lover_effect = {
+			REASON = $REASON$
+			CHARACTER = $CHARACTER$
+			OPINION = default_lover_opinion
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				AND = {
+					intent_target ?= $CHARACTER$
+					has_activity_intent = befriend_attendee_intent
+				}
+				$FRIEND_FALLBACK$ = yes
+			}
+		}
+		progress_towards_friend_effect = {
+			REASON = $REASON$
+			CHARACTER = $CHARACTER$
+			OPINION = default_friend_opinion
+		}
+	}
+	else = {
+		reverse_add_opinion = {
+			modifier = kindness_opinion
+			target = $CHARACTER$
+			opinion = default_friend_opinion
+		}
+	}
+}

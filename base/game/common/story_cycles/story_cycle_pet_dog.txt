@@ -1,9 +1,24 @@
 ﻿story_cycle_pet_dog = {
 
 	on_setup = {
-		assign_dog_gender_effect = { GENDER = random }
-		assign_dog_fur_color_effect = { COLOR = random }
-		assign_dog_eye_color_effect = { COLOR = random }
+		if = {
+			limit = {
+				NOT = { exists = story_owner.var:dog_gender }
+			}
+			assign_dog_gender_effect = { GENDER = random }
+		}
+		if = {
+			limit = {
+				NOT = { exists = story_owner.var:dog_fur_color }
+			}
+			assign_dog_fur_color_effect = { COLOR = random }
+		}
+		if = {
+			limit = {
+				NOT = { exists = story_owner.var:dog_eye_color }
+			}
+			assign_dog_eye_color_effect = { COLOR = random }
+		}
 		set_variable = {
 			name = dog_age_variable
 			value = 0
@@ -26,6 +41,44 @@
 	}
 
 	on_owner_death = {
+		# Save info about the dog on primary heir for funeral events
+		if = {
+			limit = {
+				exists = story_owner.player_heir
+			}
+			story_owner.player_heir = {
+				set_variable = {
+					name = dead_dog_owner
+					years = 5
+					value = root.story_owner
+				}
+				set_variable = {
+					name = parent_dog_name
+					years = 5
+					value = root.var:story_cycle_dog_name
+				}
+				set_variable = {
+					name = parent_dog_age
+					years = 5
+					value = root.var:dog_age_variable
+				}
+				set_variable = {
+					name = parent_dog_fur_color
+					years = 5
+					value = root.var:dog_fur_color
+				}
+				set_variable = {
+					name = parent_dog_eye_color
+					years = 5
+					value = root.var:dog_eye_color
+				}
+				set_variable = {
+					name = parent_dog_gender
+					years = 5
+					value = root.var:dog_gender
+				}
+			}
+		}
 		scope:story = { end_story = yes }
 	}
 

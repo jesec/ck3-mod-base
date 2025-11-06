@@ -1137,6 +1137,39 @@ roman_restoration.0100 = {
 		save_scope_as = scoped_emperor
 		faith = { save_scope_as = mending_faith }
 		mend_great_schism_scripted_effect = yes
+		if = {
+			limit = {
+				scope:mending_faith = faith:orthodox
+			}
+			faith:catholic = {
+				save_scope_as = loser_faith
+			}
+		}
+		else_if = {
+			limit = {
+				scope:mending_faith = faith:catholic
+			}
+			faith:orthodox = {
+				save_scope_as = loser_faith
+			}
+		}
+		else = {
+			religion = {
+				random_faith = {
+					limit = {
+						exists = religious_head
+						NOT = {
+							this = scope:mending_faith
+						}
+					}
+					save_scope_as = loser_faith
+				}
+			}
+		}
+		legend_seed_great_deed_faith_effect = {
+			ANTAGONIST = scope:loser_faith.religious_head
+			OLD_FAITH = scope:loser_faith
+		}
 	}
 
 	option = {
@@ -2432,6 +2465,9 @@ roman_restoration.0140 = {
 					}
 				}
 			}
+		}
+		legend_seed_great_deed_region_effect = {
+			REGION = geographical_region:world_europe_south_italy
 		}
 	}
 }

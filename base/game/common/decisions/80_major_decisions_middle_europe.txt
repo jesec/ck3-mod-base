@@ -56,6 +56,7 @@ form_switzerland_kingdom_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		show_as_tooltip = {
 			form_switzerland_scripted_effect = yes
 		}
@@ -149,6 +150,7 @@ form_austria_kingdom_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		show_as_tooltip = {
 			form_austria_scripted_effect = yes
 		}
@@ -241,6 +243,7 @@ reform_carolingian_empire_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		custom_tooltip = reform_carolingian_empire_decision_effect_tooltip
 		show_as_tooltip = {
 			form_carolingian_empire_scripted_effect = yes
@@ -319,6 +322,7 @@ unify_burgundy_kingdom_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		if = {
 			limit = {
 				NOT = { has_culture = culture:occitan }
@@ -564,9 +568,15 @@ restore_holy_roman_empire_decision = {
 	is_shown = {
 		is_landed = yes
 		exists = dynasty # Everyone should have a dynasty, but in case they don't...
+		NOT = { has_global_variable = flag_restored_roman_empire } # Not if Rome already exists (prevent Rome from restoring HRE)
 		NOR = {	#Title existence cnditions.
 			exists = title:e_hre.holder	#Well, that'd be redundant.
 			#highest_held_title_tier = tier_empire	#Existing emperors likewise should not be giving up their empire.
+		}
+		NOR = { #It doesn't make sense for these competing empires.
+			has_title = title:e_byzantium
+			has_title = title:e_roman_empire
+			has_title = title:e_mongol_empire
 		}
 		AND = {	#Faith conditions.
 			NOT = { this = faith.religious_head }	#Nice try, Mr. Pope.
@@ -656,6 +666,7 @@ restore_holy_roman_empire_decision = {
 		show_as_tooltip = {
 			restore_holy_roman_empire_decision_scripted_effect = yes
 		}
+		gain_heroic_legend_seed_tooltip_effect = yes
 		save_scope_as = founder
 		faith.religious_head = { save_scope_as = founder_hof }
 		if = {

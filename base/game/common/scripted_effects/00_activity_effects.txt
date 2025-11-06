@@ -624,6 +624,8 @@ disburse_tour_activity_rewards = {
 	# Glory management.
 	## We want to toss out a little glory to knights who go socialize and make themselves known
 	accolades_activity_complete_tour_glory_effect = yes
+	# LEGITIMACY GAIN FOR GRAND ACTIVITY PARTICIPATION - TOUR
+	grand_activity_participation_legitimacy_effect = yes
 }
 
 disburse_witch_ritual_host_rewards_effect = {
@@ -712,6 +714,7 @@ disburse_murder_wedding_host_rewards = {
 				
 				scope:host = {
 					add_dread = monumental_dread_gain
+					add_legitimacy = major_legitimacy_loss
 					add_character_modifier = {
 						modifier = gwedding_hosted_murder_wedding_modifier
 						years = 15
@@ -724,6 +727,7 @@ disburse_murder_wedding_host_rewards = {
 	else = { #Rewards for a "normal" feast
 		if = { #if you failed your attempt it doesn't look great
 			limit = { has_variable = bloody_murder_fail }
+			add_legitimacy = minor_legitimacy_loss
 			add_prestige = minor_prestige_loss
 			if = {
 				limit = {
@@ -744,7 +748,9 @@ disburse_murder_wedding_host_rewards = {
 						show_in_conclusion = yes
 						character = scope:host
 
-						scope:host = { add_prestige = minor_prestige_gain }
+						scope:host = {
+							add_prestige = minor_prestige_gain
+						}
 						every_attending_character = {
 							limit = {
 								NOR = {
@@ -965,6 +971,7 @@ disburse_murder_wedding_host_rewards = {
 					
 					scope:host = {
 						add_dread = massive_dread_gain
+						add_legitimacy = medium_legitimacy_loss
 						add_character_modifier = {
 							modifier = gwedding_hosted_murder_wedding_modifier
 							years = 10
@@ -2171,6 +2178,9 @@ disburse_wedding_spouse_activity_rewards = {
 
 	# If character had the reduce stress intent, give them stress loss
 	disburse_activity_stress_loss = yes
+
+	# LEGITIMACY GAIN FOR GRAND ACTIVITY PARTICIPATION - WEDDING
+	grand_activity_participation_legitimacy_effect = yes
 }
 
 tooltip_disburse_wedding_host_activity_rewards = {
@@ -2420,6 +2430,9 @@ tooltip_disburse_wedding_host_activity_rewards = {
 
 	# Accolade glory gain
 	accolades_activity_complete_wedding_glory_effect = yes
+
+	# LEGITIMACY GAIN FOR GRAND ACTIVITY PARTICIPATION - WEDDING
+	grand_activity_participation_legitimacy_effect = yes
 }
 
 tooltip_disburse_wedding_guest_activity_rewards = {
@@ -2595,6 +2608,9 @@ tooltip_disburse_wedding_guest_activity_rewards = {
 
 	# Accolade glory gain
 	accolades_activity_complete_wedding_glory_effect = yes
+
+	# LEGITIMACY GAIN FOR GRAND ACTIVITY PARTICIPATION - WEDDING
+	grand_activity_participation_legitimacy_effect = yes
 }
 
 disburse_wedding_spouse_host_activity_rewards = {
@@ -2689,6 +2705,9 @@ disburse_wedding_spouse_host_activity_rewards = {
 			}
 		}
 	}
+
+	# LEGITIMACY GAIN FOR GRAND ACTIVITY PARTICIPATION - WEDDING
+	grand_activity_participation_legitimacy_effect = yes
 }
 
 disburse_hunt_activity_rewards = {
@@ -3456,6 +3475,7 @@ disburse_murder_feast_activity_rewards = {
 				
 				root = {
 					add_dread = 35
+					add_legitimacy = major_legitimacy_loss
 					add_character_modifier = {
 						modifier = murder_feast_great_murderer_modifier
 						years = 15
@@ -3492,7 +3512,10 @@ disburse_murder_feast_activity_rewards = {
 					show_in_conclusion = yes
 					score = 50
 					
-					root = { add_prestige = minor_prestige_loss }
+					root = {
+						add_prestige = minor_prestige_loss
+						add_legitimacy = minor_legitimacy_loss
+					}
 				}
 			}
 		}
@@ -3508,6 +3531,7 @@ disburse_murder_feast_activity_rewards = {
 					
 					root = {
 						add_dread = 25
+						add_legitimacy = medium_legitimacy_loss
 						add_character_modifier = {
 							modifier = murder_feast_murderer_modifier
 							years = 10
@@ -3776,6 +3800,8 @@ disburse_feast_reveler_rewards = {
 			}
 		}
 	}
+	# LEGITIMACY GAIN FOR STANDARD ACTIVITY PARTICIPATION - FEAST
+	standard_activity_participation_legitimacy_effect = yes
 }
 
 

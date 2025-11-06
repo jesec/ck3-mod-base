@@ -625,7 +625,7 @@ action_reactive_advice_tours_picking_vassals = {
 		if = {
 			limit = {
 				should_show_tutorial_alert = { LESSON = reactive_advice_tours_picking_vassals }	
-				is_widget_open = "multi_destination_selection"
+				is_widgetid_open = "multi_destination_selection"
 			}
 			try_create_important_action = {
 				important_action_type = action_reactive_advice_tours_picking_vassals
@@ -717,8 +717,8 @@ action_reactive_advice_travel_planning = {
 				should_show_tutorial_alert = { LESSON = reactive_advice_travel_planning }	
 				is_travelling = no
 				OR = {
-					is_widget_open = travel_planning_tutorial_uses_this_1
-					is_widget_open = travel_planning_tutorial_uses_this_2
+					is_widgetid_open = "travel_planning_tutorial_uses_this_1"
+					is_widgetid_open = "travel_planning_tutorial_uses_this_2"
 				}
 			}
 			try_create_important_action = {
@@ -777,5 +777,85 @@ action_reactive_advice_tax_collector = {
 
 	effect = {
 		start_tutorial_lesson = reactive_advice_tax_collector
+	}
+}
+
+action_reactive_advice_legitimacy = {
+	type = tutorial
+	icon = generic_reactive_advice
+	soundeffect = "event:/SFX/UI/Notifications/TopBar/sfx_ui_notifications_topbar_reactive_advice"
+	check_create_action = {
+		if = {
+			limit = {
+				should_show_tutorial_alert = { LESSON = reactive_advice_legitimacy }
+			}
+			try_create_important_action = {
+				important_action_type = action_reactive_advice_legitimacy
+				actor = root
+			}
+		}
+	}
+
+	effect = {
+		start_tutorial_lesson = reactive_advice_legitimacy
+	}
+}
+
+action_reactive_advice_epidemics = {
+	type = tutorial
+	icon = generic_reactive_advice
+	soundeffect = "event:/SFX/UI/Notifications/TopBar/sfx_ui_notifications_topbar_reactive_advice"
+	check_create_action = {
+		if = {
+			limit = {
+				should_show_tutorial_alert = { LESSON = reactive_advice_epidemics }
+
+				any_sub_realm_county = {
+					any_county_province = {
+						any_province_epidemic = {
+							count >= 1
+						}
+					}
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_reactive_advice_epidemics
+				actor = root
+			}
+		}
+	}
+
+	effect = {
+		start_tutorial_lesson = reactive_advice_epidemics
+	}
+}
+
+action_reactive_advice_plague_resistance = {
+	type = tutorial
+	icon = generic_reactive_advice
+
+	check_create_action = {
+		if = {
+			limit = {
+				should_show_tutorial_alert = { LESSON = reactive_advice_plague_resistance }
+
+				any_sub_realm_county = {
+					any_county_province = {
+						any_province_epidemic = {
+							count >= 1
+						}
+					}
+				}
+			}
+
+			try_create_important_action = {
+				important_action_type = action_reactive_advice_plague_resistance
+				recipient = this
+			}
+		}
+	}
+
+	effect = {
+		start_tutorial_lesson = reactive_advice_plague_resistance
 	}
 }

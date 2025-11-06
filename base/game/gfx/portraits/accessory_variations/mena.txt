@@ -68,6 +68,22 @@ pattern_textures = {
 	properties	= "gfx/portraits/accessory_variations/textures/patterns/all/lamellar_metal_01_properties.dds"
 }
 
+##CE1##
+
+pattern_textures = {
+	name = "fp4_mena_silk_01"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/fp4/fp4_mena_01_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/fp4/fp4_mena_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/fp4/fp4_mena_01_properties.dds"
+}
+
+pattern_textures = {
+	name = "fp4_mena_silk_03"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/fp4/fp4_mena_03_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/fp4/fp4_mena_03_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/fp4/fp4_mena_03_properties.dds"
+}
+
 ##################
 #	Layouts		#
 ##################
@@ -75,6 +91,12 @@ pattern_textures = {
 pattern_layout = {
 	name = "plain_fabric_layout"	
 	scale 		= { min = 0.25	max = 0.25 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0	max = 0 } } 
+}
+pattern_layout = {
+	name = "fp4_plain_fabric_layout"	
+	scale 		= { min = 0.08	max = 0.08 }
 	rotation 	= { min = 0	max = 0 }	
 	offset 		= { x = { min = 0	max = 0 }    y = { min = 0	max = 0 } } 
 }
@@ -102,42 +124,13 @@ pattern_layout = {
 	rotation 	= { min = 0	max = 0 }	
 	offset 		= { x = { min = 0	max = 0 }    y = { min = 0.5	max = 0.5 } } 
 }
-# pattern_layout = {
-# 	name = "western_linen_trim_02_layout"	
-# 	scale 		= { min = 0.12	max = 0.12 }
-# 	rotation 	= { min = 0	max = 0 }	
-# 	offset 		= { x = { min = 0	max = 0 }    y = { min = 0.17	max = 0.17 } } 
-# }
-# pattern_layout = {
-# 	name = "western_linen_trim_03_layout"	
-# 	scale 		= { min = 0.18	max = 0.18 }
-# 	rotation 	= { min = 0	max = 0 }	
-# 	offset 		= { x = { min = 0	max = 0 }    y = { min = -0.02	max = -0.02 } } 
-# }
+
 pattern_layout = {
 	name = "western_silk_brocade_01_layout"	
 	scale 		= { min = 0.2	max = 0.2 }
 	rotation 	= { min = 0	max = 0 }	
 	offset 		= { x = { min = -0.1	max = -0.1 }    y = { min = 0	max = 0 } } 
 }
-# pattern_layout = {
-# 	name = "western_silk_brocade_03_layout"	
-# 	scale 		= { min = 0.3	max = 0.3 }
-# 	rotation 	= { min = 0	max = 0 }	
-# 	offset 		= { x = { min = 0.09	max = 0.09 }    y = { min = 0	max = 0 } } 
-# }
-# pattern_layout = {
-# 	name = "western_silk_trim_01_layout"	
-# 	scale 		= { min = 0.125	max = 0.125 }
-# 	rotation 	= { min = 0	max = 0 }	
-# 	offset 		= { x = { min = 0	max = 0 }    y = { min = 0.06	max = 0.06 } } 
-# }
-# pattern_layout = {
-# 	name = "western_silk_trim_03_layout"	
-# 	scale 		= { min = 0.18	max = 0.18 }
-# 	rotation 	= { min = 0	max = 0 }	
-# 	offset 		= { x = { min = 0	max = 0 }    y = { min = -0.02	max = -0.02 } } 
-# }
 
 
 ###################
@@ -248,6 +241,15 @@ variation = {
 		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
 		b = { textures = "mena_silk_trim_01" layout = "small_trim_layout" }
 		a = { textures = "mena_tiraz_01"	layout = "small_trim_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "fp4_mena_silk_03" 		layout = "fp4_plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "mena_silk_trim_01" 		layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"			layout = "small_trim_layout" }
 	}			
 
 
@@ -290,7 +292,16 @@ variation = {
 		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
 		b = { textures = "mena_silk_trim_01" layout = "small_trim_layout" }
 		a = { textures = "mena_silk_trim_01"	layout = "small_trim_layout" }
-	}			
+	}
+
+	pattern = { 
+		weight = 10
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "fp4_mena_silk_01" layout = "fp4_plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "mena_silk_trim_01" layout = "small_trim_layout" }
+		a = { textures = "mena_silk_trim_01"	layout = "small_trim_layout" }
+	}				
 
 
 		
@@ -312,34 +323,26 @@ variation = {
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "mena_silk_brocade_01" layout = "plain_fabric_layout" }
-		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
-		b = { textures = "western_silk_plain_01" layout = "small_trim_layout" }
-		a = { textures = "mena_tiraz_01"	layout = "small_trim_layout" }
+		r = { textures = "mena_silk_brocade_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"			layout = "small_trim_layout" }
 	}	
-
-		# patterns are sampled using UV-set 2
-	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
-	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "mena_silk_brocade_02" layout = "plain_fabric_layout" }
-		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
-		b = { textures = "western_silk_plain_01" layout = "small_trim_layout" }
-		a = { textures = "mena_tiraz_01"	layout = "small_trim_layout" }
+		r = { textures = "mena_silk_brocade_02" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"			layout = "small_trim_layout" }
 	}
-
-		# patterns are sampled using UV-set 2
-	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
-	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "mena_silk_brocade_03" layout = "plain_fabric_layout" }
-		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
-		b = { textures = "western_silk_plain_01" layout = "small_trim_layout" }
-		a = { textures = "mena_tiraz_01"	layout = "small_trim_layout" }
+		r = { textures = "mena_silk_brocade_03" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"			layout = "small_trim_layout" }
 	}			
 		
 	# Color palette textures are 16-wide and N-high.
@@ -359,54 +362,35 @@ variation = {
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "mena_silk_brocade_01" layout = "plain_fabric_layout" }
-		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
-		b = { textures = "mena_silk_brocade_03" layout = "small_trim_layout" }
-		a = { textures = "mena_tiraz_01"	layout = "small_trim_layout" }
+		r = { textures = "mena_silk_brocade_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "mena_silk_brocade_03" 	layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"			layout = "small_trim_layout" }
 	}	
-
-		# patterns are sampled using UV-set 2
-	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
-	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "mena_silk_brocade_02" layout = "plain_fabric_layout" }
-		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
-		b = { textures = "fp2_iberian_muslim_pattern_01" layout = "small_trim_layout" }
-		a = { textures = "mena_tiraz_01"	layout = "small_trim_layout" }
+		r = { textures = "mena_silk_brocade_02" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "mena_silk_trim_01" 		layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"			layout = "small_trim_layout" }
 	}
-
-		# patterns are sampled using UV-set 2
-	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
-	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "mena_silk_brocade_03" layout = "plain_fabric_layout" }
-		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
-		b = { textures = "mena_silk_brocade_02" layout = "small_trim_layout" }
-		a = { textures = "mena_tiraz_01"	layout = "small_trim_layout" }
+		r = { textures = "mena_silk_brocade_02" 			layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_plain_01" 			layout = "plain_fabric_layout" }
+		b = { textures = "fp2_iberian_muslim_pattern_01"	layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"					layout = "small_trim_layout" }
 	}		
-
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "fp2_iberian_muslim_pattern_01" layout = "plain_fabric_layout" }
-		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
-		b = { textures = "mena_silk_brocade_02" layout = "small_trim_layout" }
-		a = { textures = "mena_tiraz_01"	layout = "small_trim_layout" }
-	}		
-
-	pattern = { 
-		weight = 1
-		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "fp2_iberian_muslim_pattern_08" layout = "plain_fabric_layout" }
-		g = { textures = "western_silk_plain_01" 		layout = "plain_fabric_layout" }
-		b = { textures = "fp2_iberian_muslim_pattern_04" 		layout = "small_trim_layout" }
-		a = { textures = "mena_tiraz_01"				layout = "small_trim_layout" }
+		r = { textures = "fp2_iberian_muslim_pattern_08" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_plain_01" 			layout = "plain_fabric_layout" }
+		b = { textures = "fp2_iberian_muslim_pattern_04" 	layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"					layout = "small_trim_layout" }
 	}
-
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
@@ -415,6 +399,14 @@ variation = {
 		b = { textures = "mena_silk_brocade_03" 		layout = "small_trim_layout" }
 		a = { textures = "mena_tiraz_01"				layout = "small_trim_layout" }
 	}		
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "fp2_iberian_muslim_pattern_01"layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_plain_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "mena_silk_trim_01" 			layout = "small_trim_layout" }
+		a = { textures = "mena_tiraz_01"				layout = "small_trim_layout" }
+	}	
 	# Color palette textures are 16-wide and N-high.
 	# Shaders will chose a row in the texture at random, and each column will be sampled once.
 	# First column will be masked by the red channel in the masks, second by the green, etc.
@@ -512,10 +504,10 @@ variation = {
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "mena_silk_brocade_01" layout = "plain_fabric_layout" }
-		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
-		b = { textures = "mena_silk_trim_01" layout = "small_trim_layout" }
-		a = { textures = "mena_royalty_01"	layout = "small_trim_layout" }
+		r = { textures = "mena_silk_brocade_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "mena_silk_trim_01" 		layout = "small_trim_layout" }
+		a = { textures = "mena_royalty_01"			layout = "small_trim_layout" }
 	}	
 
 		# Color palette textures are 16-wide and N-high.
@@ -557,9 +549,9 @@ variation = {
 	pattern = { 
 		weight = 1
 		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
-		r = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
-		g = { textures = "western_linen_trim_01" layout = "plain_fabric_layout" }
-		b = { textures = "western_linen_plain_01" layout = "small_trim_layout" }
+		r = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_linen_plain_01" 	layout = "small_trim_layout" }
 		a = { textures = "western_linen_plain_01"	layout = "small_trim_layout" }
 	}			
 		

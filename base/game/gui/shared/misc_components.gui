@@ -211,6 +211,93 @@ types Miscelaneous
 		using = tooltip_se
 	}
 
+	type button_expand_fold_out = button_expand
+	{
+		block "button_expand"
+		{
+			frame = "[BoolTo1And2( PdxGuiFoldOut.IsUnfolded )]"
+		}
+		block "onclick"
+		{
+			onclick = "[PdxGuiFoldOut.Toggle]"
+		}
+	}
+
+	### Brief: hbox_expandable_toggle_field
+	# Creates a field that governs the state of a collapsible widget.
+	#
+	# Use in a widget that a PdxGuiFoldOut set, by BindFoldOutContext or the Create_Resetting_Fold_Out template
+	#
+	# Has the following blocks:
+	#
+	#	"onclick"
+	#		All onclick events associated with the toggle field. Usage: 
+	#		Defaults to toggling the PdxGuiFoldOut context
+	#			
+	#	"button_expand"	
+	#		Additional attributes to give the expand button for frame selection.
+	#		Defaults to setting the frame based on the PdxGuiFoldOut context
+	#	
+	#	"text"
+	#		The text header for the field. Usage: 
+	#			text = SOME_LOC_KEY
+	#
+	type hbox_expandable_toggle_field = hbox {
+		layoutpolicy_horizontal = expanding
+		margin = { 10 5 }
+
+		background = {
+			using = Background_Area_Dark
+			alpha = 0.5
+		}
+
+		button_normal = {
+			layoutpolicy_horizontal = expanding
+			size = { 0 25 }
+
+			block "onclick" 
+			{
+				onclick = "[PdxGuiFoldOut.Toggle]"
+			}
+
+			hbox = {
+				ignoreinvisible = yes
+				spacing = 5
+
+				button_expand_fold_out = {}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					align = nobaseline
+					alwaystransparent = yes
+
+					block "text" {}
+				}
+			}
+		}
+	}
+
+	type hbox_tab_buttons = hbox
+	{
+		layoutpolicy_horizontal = expanding
+
+		datamodel = "[PdxGuiTabs.GetTabItems]"
+
+		item = {
+			button_tab = {
+				layoutpolicy_horizontal = expanding
+				
+				block "tab_name"
+				{
+					raw_text = "#D [PdxGuiTabItem.GetKey]#!"
+				}
+
+				onclick = "[PdxGuiTabs.SetTab( PdxGuiTabItem.Self )]"
+				down = "[PdxGuiTabs.IsTabItemSet( PdxGuiTabItem.Self )]"
+			}
+		}
+	}
+
 	### DEBUG
 	type error_horse = container {
 		name = "debug_info_horse"
@@ -359,4 +446,10 @@ template debug_square
 		spriteborder = { 1 1 }
 		alpha = 0.5
 	}
+}
+
+template Create_Resetting_Fold_Out
+{
+	oncreate = "[BindFoldOutContext]"
+	oncreate = "[PdxGuiFoldOut.SetShownBehavior( 'unfolded' )]"
 }

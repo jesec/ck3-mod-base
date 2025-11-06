@@ -875,3 +875,66 @@ action_station_men_at_arms = {
 		start_tutorial_lesson = reactive_advice_station_maa
 	}
 }
+
+action_title_lost_from_realm_by_vassal_war = {
+	is_dangerous = yes
+	combine_into_one = yes
+	
+	check_create_action = {
+		every_vassal_or_below = {
+			limit = {
+				is_at_war = yes
+				save_temporary_scope_as = vassal_temp
+				any_character_war = {
+					primary_attacker = scope:vassal_temp
+					casus_belli = {
+						any_target_title = { tier >= root.highest_held_title_tier }
+					}
+				}
+			}
+			save_scope_as = vassal
+			random_character_war = {
+				limit = {
+					primary_attacker = scope:vassal
+					casus_belli = {
+						any_target_title = { tier >= root.highest_held_title_tier }
+					}
+				}
+				save_scope_as = war
+				casus_belli = {
+					ordered_target_title = {
+						limit = { tier >= root.highest_held_title_tier }
+						order_by = tier
+						save_scope_as = target
+					}
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_title_lost_from_realm_by_vassal_war
+				actor = root
+				recipient = scope:vassal
+				war = scope:war
+				title = scope:target
+			}
+		}
+	}
+
+	effect = {
+		scope:vassal = {
+			open_view_data = { view = character }
+		}
+		if = {
+			limit = {
+				is_character_interaction_valid = {
+					interaction = stop_attacker_vassal_war_interaction
+					recipient = scope:vassal
+				}
+			}
+			open_interaction_window = {
+				interaction = stop_attacker_vassal_war_interaction
+				actor = root
+				recipient = scope:vassal
+			}
+		}
+	}
+}

@@ -1,0 +1,92 @@
+﻿story_cycle_black_death = {
+	# by Nick Meredith
+	
+	on_setup = {
+	}
+
+	on_end = {
+		debug_log = "Black Death story ended on:"
+		debug_log_date = yes
+	}
+
+	on_owner_death = {
+		# Should be inherited, so transfer to heir
+		if = {
+			limit = {
+				exists = story_owner.player_heir
+			}
+			make_story_owner = story_owner.player_heir
+		}
+		# Or destroy
+		else = {
+			end_story = yes
+		}
+	}
+
+	# The plague is present specifically in your lands
+	# Separated from the other effect group to counterbalance performance
+	effect_group = {
+		days = { 14 30 }
+
+		trigger = {
+			has_global_variable = black_death
+			story_owner = {
+				has_character_flag = black_death_splash
+				any_sub_realm_county = {
+					any_county_province = {
+						any_province_epidemic = {
+							this = global_var:black_death
+						}
+					}
+				}
+			}
+		}
+
+		first_valid = {
+			triggered_effect = {
+				trigger = { always = yes }
+				effect = {
+					save_scope_as = story_scope
+					story_owner = {
+						trigger_event = {
+							on_action = ongoing_black_death_events
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# The plague is not present anywhere
+	# Put on a longer day timer to save on performance
+	effect_group = {
+		days = { 30 60 }
+
+		trigger = {
+			NOR = {
+				has_global_variable = black_death
+				story_owner = {
+					any_sub_realm_county = {
+						any_county_province = {
+							any_province_epidemic = {
+								this = global_var:black_death
+							}
+						}
+					}
+				}
+			}
+		}
+
+		first_valid = {
+			triggered_effect = {
+				trigger = { always = yes }
+				effect = {
+					story_owner = {
+						remove_character_flag = black_death_splash
+					}
+					end_story = yes
+				}
+			}
+		}
+	}
+}

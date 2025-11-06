@@ -128,6 +128,9 @@ heresy.0001 = {
 			# Compile a list of possible heresies to convert to.
 			religion = {
 				every_faith = {
+					limit = {
+						NOT = { invalid_for_heresy_events = yes }
+					}
 					add_to_list = potential_heresies
 				}
 				if = {
@@ -148,10 +151,6 @@ heresy.0001 = {
 						faith:cainitism = {
 							add_to_list = potential_heresies
 						}
-						# Already extant Christians can't retroactively become jewish converts to Christianity.
-						faith:conversos = {
-							remove_from_list = potential_heresies
-						}
 
 					}
 					else_if = {
@@ -171,6 +170,9 @@ heresy.0001 = {
 					else_if = {
 						limit = {
 							this = religion:judaism_religion
+						}
+						faith:conversos = {
+							add_to_list = potential_heresies
 						}
 						faith:sethianism = {
 							add_to_list = potential_heresies
@@ -266,15 +268,6 @@ heresy.0001 = {
 							this = faith:sethianism
 							this = faith:priscillianism
 							this = faith:cainitism
-						}
-					}
-					# Disabled Faiths
-					modifier = {				
-						factor = 0
-						OR = {
-							this = faith:insular_celtic
-							this = faith:adamites
-							this = faith:bosnian_church
 						}
 					}
 
@@ -413,20 +406,6 @@ heresy.0001 = {
 						scope:heretic_capital = {
 							title_province = {						
 								geographical_region = world_middle_east_persia
-							}
-						}
-					}
-					# Block Mozoarabic church outside of Iberia and North Africa if regional heresy game rule is set to strict
-					modifier = {
-						factor = 0
-						has_game_rule = strict_regional_heresy
-						this = faith:mozarabic_church
-						scope:heretic_capital = {
-							title_province = {
-								NAND = {
-									geographical_region = world_africa_north_east
-									geographical_region = world_europe_west_iberia
-								}
 							}
 						}
 					}

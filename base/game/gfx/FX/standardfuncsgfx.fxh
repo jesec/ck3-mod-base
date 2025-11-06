@@ -9,4 +9,6 @@ ConstantBuffer( GameSharedConstants )
 	float		FlatMapLerp;
 	float		MapHighlightIntensity;
 	float		SnowHighlightIntensity;
+
+	int 		HasFlatMapLightingEnabled;
 };

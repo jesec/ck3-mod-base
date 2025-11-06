@@ -45,6 +45,7 @@ create_outremer_empire_decision = {
 
 	effect = {
 		custom_tooltip = create_outremer_empire_decision_effect_tooltip
+		gain_heroic_legend_seed_tooltip_effect = yes
 		show_as_tooltip = {
 			form_outremer_scripted_effect = yes
 		}
@@ -287,6 +288,7 @@ create_israel_kingdom_decision = {
 	}
 
 	effect = {
+		gain_heroic_legend_seed_tooltip_effect = yes
 		custom_tooltip = create_israel_kingdom_decision_effect_tooltip
 		show_as_tooltip = {
 			create_israel_scripted_effect = yes
@@ -330,13 +332,11 @@ jewish_restore_high_priesthood_decision = {
 		NOT = {  #Can be redone if somehow the High Priest title is destroyed
 			exists = faith.religious_head
 		}
-		OR = {
-			faith = faith:rabbinism
-			faith = faith:karaism
-			faith = faith:haymanot
-			faith = faith:malabarism
-			faith = faith:samaritan
-			faith = faith:kabarism
+		religion = religion:judaism_religion
+		faith = {
+			NOT = {
+				has_doctrine_parameter = no_head_of_faith
+			}
 		}
 	}
 

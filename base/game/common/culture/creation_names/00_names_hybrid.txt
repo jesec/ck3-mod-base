@@ -1,5 +1,41 @@
 ﻿# Used in definition order
 
+azeri_hybrid = {
+	trigger = {
+		OR = {
+			capital_county = {
+				title:d_shirvan = {
+					is_de_jure_liege_or_above_target = prev
+				}
+			}
+			capital_county = {
+				title:d_azerbaijan = {
+					is_de_jure_liege_or_above_target = prev
+				}
+			}
+			has_primary_title = title:d_shirvan
+			has_primary_title = title:d_azerbaijan
+		}
+		OR = {
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_turkic }
+				scope:other_culture = { has_cultural_pillar = heritage_iranian }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_iranian }
+				scope:other_culture = { has_cultural_pillar = heritage_turkic }
+			}
+		}
+		any_sub_realm_county = {
+			OR = {
+				culture = scope:culture
+				culture = scope:other_culture
+			}
+		}
+	}
+	hybrid = yes
+}
+
 anatolian_turkish = {
 	trigger = {
 		capital_county = {
@@ -1214,4 +1250,55 @@ gallo = {
 		}
 	}
 	hybrid = yes
+}
+
+scota = {
+	trigger = {
+		OR = {
+			AND = {
+				scope:culture = culture:scottish
+				scope:other_culture = culture:egyptian
+			}
+			AND = {
+				scope:culture = culture:egyptian
+				scope:other_culture = culture:scottish
+			}
+		}
+		any_sub_realm_county = {
+			OR = {
+				culture = scope:culture
+				culture = scope:other_culture
+			}
+		}
+	}
+	hybrid = yes
+}
+
+parsi_hybrid = {
+	trigger = {
+		capital_county = {
+			title_province = { geographical_region = world_india }
+		}
+		faith = { religion_tag = zoroastrianism_religion }
+		OR = {
+			AND = {
+				OR = {
+					scope:culture = { has_cultural_pillar = heritage_dravidian }
+					scope:culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+				scope:other_culture = { has_cultural_pillar = heritage_iranian }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_iranian }
+				OR = {
+					scope:other_culture = { has_cultural_pillar = heritage_dravidian }
+					scope:other_culture = { has_cultural_pillar = heritage_indo_aryan }
+				}
+			}
+		}
+		any_sub_realm_county = {
+			faith = { religion_tag = zoroastrianism_religion }
+			title_province = { geographical_region = world_india }
+		}
+	}
 }

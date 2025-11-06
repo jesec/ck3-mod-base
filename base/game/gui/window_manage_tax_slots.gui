@@ -1,5 +1,6 @@
 window = {
 	name = "window_manage_tax_slots"
+	widgetid = "window_manage_tax_slots"
 
 	using = Window_Size_MainTab
 	minimumsize = { 0 100 }
@@ -153,6 +154,7 @@ window = {
 								text_single = {
 									datacontext = "[ManageTaxSlotsWindow.GetTotalTaxBreakdown]"
 									text = "[ValueBreakdown.GetValue]"
+									align = nobaseline
 
 									tooltipwidget = {
 										tax_contribution_tooltip = {
@@ -191,6 +193,7 @@ window = {
 								text_single = {
 									datacontext = "[ManageTaxSlotsWindow.GetTotalLevyBreakdown]"
 									text = "[ValueBreakdown.GetValue]"
+									align = nobaseline
 
 									tooltipwidget = {
 										tax_contribution_tooltip = {
@@ -225,12 +228,12 @@ window = {
 							visible = "[GreaterThan_int32( Character.GetUnassignedVassalsCount, '(int32)0' )]"
 							layoutpolicy_horizontal = expanding
 							margin = { 15 0 }
-							margin_top = -5
 
 							background = {
 								using = Background_Area_Dark
 								alpha = 0.6
-								margin = { 20 10}
+								margin = { 20 10 }
+								margin_right = 0
 							}
 
 							hbox = {
@@ -252,14 +255,16 @@ window = {
 										layoutpolicy_horizontal = expanding
 										text = "TAX_SLOT_OVERVIEW_WINDOW_TAX_SLOTS_WARNING"
 										default_format = "#N"
-										max_width = 470
+										align = nobaseline
+										max_width = 480
 									}
 
 									text_single = {
 										layoutpolicy_horizontal = expanding
 										text = "TAX_SLOT_OVERVIEW_WINDOW_UNASSIGNED_VASSALS_WARNING"
 										default_format = "#N"
-										max_width = 470
+										align = nobaseline
+										max_width = 480
 									}
 								}
 							}

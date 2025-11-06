@@ -1,0 +1,23 @@
+﻿macro = {
+	description = "Toggles the Deceased to honor widget"
+	definition = "ToggleFuneralDeceasedSelection"
+	replace_with = "VariableSystem.Toggle( 'activity_funeral_deceased_selection' )"
+}
+
+macro = {
+	description = "Should the Deceased to honor widget display?"
+	definition = "IsShowingFuneralDeceasedSelection"
+	replace_with = "VariableSystem.Exists( 'activity_funeral_deceased_selection' )"
+}
+
+macro = {
+	description = "The Deceased to honor character data context"
+	definition = "GetFuneralDeceasedToHonorPlannerContext"
+	replace_with = "ActivityPlanner.GetOnCreationObject( 'body_to_bury' ).Char"
+}
+
+macro = {
+	description = "Is the scoped deceased valid for burial?"
+	definition = "FuneralIsBodyAvailable"
+	replace_with = "GetScriptedGui( 'funeral_is_body_available_gui' ).IsValid( GuiScope.SetRoot( Character.MakeScope ).End )"
+}

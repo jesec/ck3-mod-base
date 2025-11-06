@@ -1264,6 +1264,21 @@ char_interaction.0231 = {
 		animation = sadness
 	}
 	theme = prison
+	
+	immediate = {
+		# If you have no imprisonment reason and they're your rightful vassal you lose some legitimacy
+		if = {
+			limit = {
+				NOT = { has_imprisonment_reason = scope:recipient }
+			}
+			if = {
+				limit = {
+					scope:actor = { is_rightful_liege_of = scope:recipient }
+				}
+				scope:actor = { add_legitimacy = miniscule_legitimacy_loss }
+			}
+		}
+	}
 
 	option = {
 		name = char_interaction.0231.a

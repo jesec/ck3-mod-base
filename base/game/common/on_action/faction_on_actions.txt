@@ -5,6 +5,56 @@
 ## Scope:faction_leader is the leader of the attacking faction.
 on_faction_demand_accepted = {
 	effect = {
+		if = {
+			limit = {
+				scope:faction = {
+					faction_is_type = nation_fracturing_faction
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_global_variable = dissolution_faction_accepted_var
+					}
+				}
+				set_global_variable = {
+					name = dissolution_faction_accepted_var
+					value = 1
+				}
+			}
+			else = {
+				change_global_variable = {
+					name = dissolution_faction_accepted_var
+					add = 1
+				}
+			}
+		}
+		
+		if = {
+			limit = {
+				scope:faction = {
+					faction_is_type = claimant_faction
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_global_variable = claimant_faction_accepted_var
+					}
+				}
+				set_global_variable = {
+					name = claimant_faction_accepted_var
+					value = 1
+				}
+			}
+			else = {
+				change_global_variable = {
+					name = claimant_faction_accepted_var
+					add = 1
+				}
+			}
+		}
+				
 		# Struggle Catalysts.
 		## Caliph accepts a revolt.
 		if = {

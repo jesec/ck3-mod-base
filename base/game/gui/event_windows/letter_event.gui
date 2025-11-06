@@ -140,14 +140,14 @@ window = {
 			duration = 0.08
 		}
 
-		button = {
-			name = "debug_icon"
-			size = { 40 40 }
-			position = { 20 400 }
-			texture = "gfx/interface/icons/traits/_default.dds"
-			tooltip = "[EventWindowData.GetDebugInfo]"
-			onclick = "[EventWindowData.CopyToClipboard]"
+		flowcontainer = {
+			name = "debug_stuff"
 			visible = "[InDebugMode]"
+			parentanchor = top|hcenter
+			position = { 25 20 }
+			ignoreinvisible = yes
+
+			using = Event_Window_Debug_Info
 		}
 
 		widget = {
@@ -226,7 +226,7 @@ window = {
 
 							blockoverride "portrait_button" {
 								alwaystransparent = "[Not(EventWindowData.ShouldShowPortraitInfo('sender'))]"
-								tooltip_enabled = "[EventWindowData.ShouldShowPortraitInfo('sender')]"
+								tooltip_visible = "[EventWindowData.ShouldShowPortraitInfo('sender')]"
 							}
 
 							blockoverride "mask" {
@@ -446,7 +446,7 @@ window = {
 						size = { 592 42 }
 
 						tooltip = "[EventOption.GetTooltip]"
-						tooltip_enabled = "[Not( StringIsEmpty( EventOption.GetTooltip ) )]"
+						tooltip_visible = "[Not( StringIsEmpty( EventOption.GetTooltip ) )]"
 
 						onclick = "[EventOption.Select]"
 						onmousehierarchyenter = "[EventOption.OnEnter]"
@@ -528,6 +528,30 @@ window = {
 												size = { 34 34 }
 												texture = "[GetPlayer.GetInvolvedActivity.GetType.GetIcon]"
 												tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_ACTIVITY_INTENT"
+											}
+
+											icon = {
+												name = "prestige_icon"
+												visible = "[ReasonItem.IsFlag( 'prestige_level' )]"
+												size = { 34 34 }
+												texture = "[GetPlayer.GetPrestigeLevelTexture]"
+												tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_PRESTIGE_LEVEL"
+											}
+
+											icon = {
+												name = "piety_icon"
+												visible = "[ReasonItem.IsFlag( 'piety_level' )]"
+												size = { 34 34 }
+												texture = "[GetPlayer.GetPietyLevelTexture]"
+												tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_PIETY_LEVEL"
+											}
+
+											icon = {
+												name = "faith_icon"
+												visible = "[ReasonItem.IsFlag( 'faith' )]"
+												size = { 34 34 }
+												texture = "[GetPlayer.GetFaith.GetIcon]"
+												tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_FAITH"
 											}
 										}
 									}

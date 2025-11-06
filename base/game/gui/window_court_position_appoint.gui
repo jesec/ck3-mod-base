@@ -29,6 +29,7 @@ window = {
 	vbox = {
 		using = Window_Margins
 		layoutpolicy_vertical = expanding
+		datacontext = "[AppointCourtPositionView.GetCourtOwner]"
 
 		#Header for appointing
 		header_pattern = {
@@ -91,7 +92,7 @@ window = {
 					text_single = {
 						align = right
 						text = "APPOINT_COURT_POSITION_VIEW_salary"
-						tooltip = "[CourtPositionType.GetSalaryBreakdownFor(AppointCourtPositionView.GetCourtOwner)]"
+						tooltip = "[CourtPositionType.GetSalaryBreakdownFor( Character.Self )]"
 					}
 				}
 
@@ -373,33 +374,52 @@ types AppointCourtPositionTypes
 
 		vbox = {
 			visible = "[Not(AppointCourtPositionView.HasSelectedCharacter)]"
-			layoutpolicy_horizontal = expanding
 			spacing = 5
 
 			text_single = {
 				text = APPOINT_COURT_POSITION_VIEW_NO_SELECTED_COURTIER
 				using = Font_Size_Medium
 				default_format = "#I"
+				margin = { 5 5 }
 			}
 
-			divider_light = {
-				layoutpolicy_horizontal = expanding
-			}
-
-			hbox = {
+			vbox = {
 				layoutpolicy_horizontal = expanding
 
-				text_multi = {
-					layoutpolicy_horizontal = expanding
-					layoutpolicy_vertical = expanding
-					align = left
-					autoresize = yes
-					max_width = 460
-					min_width = 460
-					text = "[CourtPositionType.GetLiegeModifierDescription]"
+				margin = { 10 10 }
+				margin_top = 5
+
+				background = {
+					using = Background_Area_Light
+					margin_top = 2
+					alpha = 0.6
 				}
 
-				expand = {}
+				background = {
+					using = Background_Frame
+					margin_top = 2
+					margin_bottom = 2
+					margin_right = -3
+				}
+
+				text_multi = {
+					layoutpolicy_vertical = expanding
+					autoresize = yes
+					margin = { 8 4 }
+					min_width = 440
+					max_width = 440
+					text = "[CourtPositionType.GetEmployerModifierDescription]"
+				}
+
+				text_multi = {
+					visible = "[CourtPositionType.HasLiegeCourtModifiers]"
+					layoutpolicy_vertical = expanding
+					autoresize = yes
+					margin = { 8 4 }
+					min_width = 440
+					max_width = 440
+					text = "COURT_POSITION_TYPE_EMPLOYER_COURT_EFFECTS"
+				}
 			}
 		}
 
@@ -410,47 +430,98 @@ types AppointCourtPositionTypes
 			spacing = 10
 			margin_top = 10
 
-
-			text_single = {
-				layoutpolicy_vertical = expanding
-				text = "APPOINT_COURT_POSITION_VIEW_APTITUDE"
-				using = Font_Size_Medium
-				max_width = 150
-				min_width = 150
-				align = center
-			}
-
 			vbox = {
-				spacing = 1
+				margin = { 10 10 }
+				margin_top = 5
+
+				background = {
+					using = Background_Area_Light
+					margin_top = 2
+					alpha = 0.6
+				}
+
+				background = {
+					using = Background_Frame
+					margin_top = 2
+					margin_bottom = 2
+					margin_right = -3
+				}
 
 				text_single = {
-					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-					max_width = 400
+					min_width = 440
+					max_width = 440
+					margin = { 8 4 }
+					align = right
 					visible = "[Not(EqualTo_int32(AppointCourtPositionView.GetOpinionBonusForSelectedEmployee, '(int32)0'))]"
 					text = APPOINT_COURT_POSITION_VIEW_OPINION_BONUS
 				}
 
 				text_single = {
+					name = "aptitude"
+					align = left|nobaseline
+					min_width = 440
+					max_width = 440
+
+					background = {
+						using = Background_Area
+
+						modify_texture = {
+							texture = "gfx/interface/component_masks/mask_fade_horizontal_extended.dds"
+							blend_mode = alphamultiply
+						}
+					}
+					margin = {8 8}
+
+					text = "APPOINT_COURT_POSITION_VIEW_APTITUDE"
+
+					tooltipwidget = {
+						court_position_aptitude_breakdown_tooltip = {
+							datacontext = "[AppointCourtPositionView.GetAptitudeTooltip(Character.Self)]"
+
+							blockoverride "header_text" {
+								text = APPOINT_COURT_POSITION_VIEW_APTITUDE
+							}
+
+							blockoverride "modifier_list" {
+
+							}
+						}
+					}
+				}
+
+				text_single = {
 					datacontext = "[AppointCourtPositionView.GetSelectedCharacter]"
 					visible = "[CourtPositionType.IsTravelRelated]"
-					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-					max_width = 400
+					autoresize = yes
+					margin = { 8 4 }
+					min_width = 440
+					max_width = 440
 					text = "APPOINT_COURT_POSITION_VIEW_salary_per_travel"
 					tooltip = "[Character.GetTravelLeaderCostBreakdown]"
 				}
 
 				text_multi = {
-					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 					autoresize = yes
-					max_width = 400
-					min_width = 400
+					margin = { 8 4 }
+					min_width = 440
+					max_width = 440
 					text = "[AppointCourtPositionView.GetLiegeModifierForSelectedEmployee]"
 				}
-			}
 
+				text_multi = {
+					layoutpolicy_vertical = expanding
+					visible = "[CourtPositionType.HasLiegeCourtModifiers]"
+					align = left
+					autoresize = yes
+					margin = { 8 4 }
+					min_width = 440
+					max_width = 440
+					text = COURT_POSITION_APPOINT_EMPLOYER_COURT_EFFECTS
+				}
+			}
 		}
 	}
 

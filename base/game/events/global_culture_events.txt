@@ -77,19 +77,19 @@ global_culture.0001 = {
 			save_scope_as = andalusian
 		}
 
-
-		every_county = {
-			limit = {
-				# All visigothic countie in Iberia will convert to the appropraite culture.
-				culture = culture:visigothic
-				title_province = {	
-					OR = {					
-						geographical_region = world_europe_west_iberia
-						geographical_region = custom_occitan
-					}		
+		# All visigothic countie in Iberia will convert to the appropraite culture.
+		culture:visigothic = {
+			every_culture_county = {
+				limit = {
+					title_province = {
+						OR = {					
+							geographical_region = world_europe_west_iberia
+							geographical_region = custom_occitan
+						}		
+					}
 				}
+				add_to_list = visigothic_counties
 			}
-			add_to_list = visigothic_counties
 		}
 
 		# Convert the visigothic counties to the new culture.
@@ -426,15 +426,13 @@ global_culture.0011 = {
 		}
 
 		# Compile a list of all norse counties in Scandanavia to convert to the appropriate culture.
-		every_county = {
-			limit = {
-				# All norse counties in Scandanavia will convert to the appropriate culture.
-				culture = culture:norse
-				title_province = {
-					geographical_region = custom_fennoscandia
+		culture:norse = {
+			every_culture_county = {
+				limit = {
+					title_province = { geographical_region = custom_fennoscandia }
 				}
+				add_to_list = norse_counties
 			}
-			add_to_list = norse_counties
 		}
 
 		# Convert the norse counties to the new culture.

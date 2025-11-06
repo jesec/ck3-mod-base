@@ -21,6 +21,7 @@ window = {
 		name = _show
 
 		using = Animation_FadeIn_Standard
+		using = Sound_Panel_Popup_Snapshot
 	}
 
 	state = {
@@ -210,10 +211,10 @@ window = {
 	}
 }
 
-base_dialog = {
+confirmation_popup = {
 	name = "dynasty_perk_confirmation_popup"
 
-	blockoverride "bd_buttons" {
+	blockoverride "extra_contents" {
 		fixedgridbox = {
 			name = "traits_grid"
 			addcolumn = 55
@@ -232,50 +233,38 @@ base_dialog = {
 						datacontext = "[GetPlayer]"
 
 						icon_trait = {
-
 							blockoverride "tooltip_placement"
 							{
 								using = tooltip_se
 							}
-
-							blockoverride "glow_radius"
+							blockoverride "trait_glow"
 							{
 							}
 						}
-
 					}
 
 					button_group = {
+						datacontext = "[GetPlayer]"
+						
 						visible = "[EqualTo_string( Trait.GetKey, DynastyPerkConfirmation.GetSelectedTrait.GetKey ) ]"
 						onclick = "[DynastyPerkConfirmation.SelectTrait( Trait.Self )]"
 
-						datacontext = "[GetPlayer]"
 						icon_trait = {
-
 							blockoverride "tooltip_placement"
 							{
 								using = tooltip_se
+							}
+							blockoverride "trait_glow"
+							{
+								glow = {
+									using = Color_Blue
+									using = Glow_Standard
+									glow_radius = 5
+								}
 							}
 						}
 					}
 				}
-			}
-		}
-
-		hbox = {
-			layoutpolicy_horizontal = expanding
-			spacing = 10
-			margin = { 0 15 }
-
-			button_standard = {
-				text = "CANCEL_BUTTON"
-				onclick = [GameDialog.Decline]
-			}
-
-			button_primary = {
-				text = "[GameDialog.GetAcceptText]"
-				shortcut = "confirm"
-				onclick = [GameDialog.Accept]
 			}
 		}
 	}
@@ -458,7 +447,7 @@ types DynastyLegacies {
 									}
 								}
 
-								tooltip_enabled = "[DynastyView.CanSelectPerk( DynastyPerk.Self )]"
+								tooltip_visible = "[DynastyView.CanSelectPerk( DynastyPerk.Self )]"
 								tooltip = "UNLOCK_DYNASTY_PERK_TOOLTIP"
 								using = tooltip_se
 							}
