@@ -999,7 +999,7 @@ factions_and_war_values = {
 	}
 	if = {
 		limit = {
-			is_independent_ruler = yes
+			top_liege = this
 			any_neighboring_top_liege_realm_owner = {
 				has_any_cb_on = root
 				current_military_strength >= root.one_and_a_half_times_current_military_strength
@@ -1085,7 +1085,7 @@ factions_and_war_values = {
 circumstantial_difficulty_values = {
 	if = {
 		limit = {
-			num_of_relation_rival >= 1
+			any_relation = { type = rival }
 		}
 		add = {
 			value = {
@@ -1097,15 +1097,14 @@ circumstantial_difficulty_values = {
 	}
 	if = {
 		limit = {
-			exists = primary_heir
-			primary_heir = {
+			primary_heir ?= {
 				OR = {
 					is_child_of = root
 					is_grandchild_of = root
 					is_great_grandchild_of = root
 				}
 			}
-			NOT = { primary_heir.dynasty = root.dynasty }
+			primary_heir.dynasty != root.dynasty
 		}
 		add = {
 			value = 500
@@ -1114,12 +1113,10 @@ circumstantial_difficulty_values = {
 	}
 	if = {
 		limit = {
-			any_child = {
-				count >= 1
-			}
+			any_child = { }
 			any_child = {
 				count = all
-				NOT = { dynasty = root.dynasty }
+				dynasty != root.dynasty
 			}
 		}
 		add = {
@@ -1280,7 +1277,7 @@ circumstantial_difficulty_values = {
 	}
 	if = {
 		limit = {
-			is_independent_ruler = no
+			top_liege != this
 		}
 		add = {
 			value = 25

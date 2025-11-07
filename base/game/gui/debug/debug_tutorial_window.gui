@@ -52,6 +52,13 @@ window = {
 
 			expand = {}
 
+			icon = {
+				datacontext = "[GetPlayer]"
+				size = { 30 30 }
+				texture = "gfx/interface/icons/icon_group_of_characters.dds"
+				tooltip = "CHARACTER_AI_VALUES_DEBUG_TOOLTIP"
+			}
+
 			textbox = {
 				raw_text = "Delays"
 				autoresize = yes
@@ -91,28 +98,13 @@ types DebugTutorialWindow
 
 		hbox = {
 			layoutpolicy_horizontal = expanding
-			hbox = {
-				spacing = 3
-				textbox = {
-					raw_text = "-->"
-					autoresize = yes
-					visible = "[DebugTutorialChainItem.IsCurrent]"
-				}
-				textbox = {
-					raw_text = "prev"
-					autoresize = yes
-					visible = "[And(Not(DebugTutorialChainItem.IsCurrent), DebugTutorialChainItem.IsLast)]"
-				}
-				textbox = {
-					raw_text = "ok"
-					autoresize = yes
-					visible = "[And(Not(DebugTutorialChainItem.IsCompleted), And(Not(DebugTutorialChainItem.IsCurrent), DebugTutorialChainItem.IsValidToTrigger))]"
-				}
-				textbox = {
-					raw_text = "done"
-					autoresize = yes
-					visible = "[DebugTutorialChainItem.IsCompleted]"
-				}
+
+			alpha = "[Select_float( DebugTutorialChainItem.IsCompleted,'(float)0.6','(float)1.0')]"
+
+			background = {
+				visible = "[DebugTutorialChainItem.IsCurrent]"
+				texture = "gfx/interface/colors/white.dds"
+				alpha = 0.05
 			}
 
 			text_single = {
@@ -122,6 +114,25 @@ types DebugTutorialWindow
 				text = "[DebugTutorialChainItem.GetTitle]"
 				tooltip = "[DebugTutorialChainItem.GetTitle]"
 				using = tooltip_ne
+			}
+
+			hbox = {
+				spacing = 3
+				textbox = {
+					raw_text = "(Is Last)"
+					autoresize = yes
+					visible = "[And(Not(DebugTutorialChainItem.IsCurrent), DebugTutorialChainItem.IsLast)]"
+				}
+				textbox = {
+					raw_text = "(Valid to Trigger)"
+					autoresize = yes
+					visible = "[And(Not(DebugTutorialChainItem.IsCompleted), And(Not(DebugTutorialChainItem.IsCurrent), DebugTutorialChainItem.IsValidToTrigger))]"
+				}
+				textbox = {
+					raw_text = "(Finished)"
+					autoresize = yes
+					visible = "[DebugTutorialChainItem.IsCompleted]"
+				}
 			}
 
 			hbox = {
@@ -173,36 +184,16 @@ types DebugTutorialWindow
 	{
 		margin_top = 5
 
+		alpha = "[Select_float( DebugTutorialLessonItem.IsCompleted,'(float)0.6','(float)1.0')]"
+
 		hbox = {
 			layoutpolicy_horizontal = expanding
-			hbox = {
-				spacing = 3
-				textbox = {
-					raw_text = "-->"
-					autoresize = yes
-					visible = "[DebugTutorialLessonItem.IsCurrent]"
-				}
-				textbox = {
-					raw_text = "ok"
-					autoresize = yes
-					visible = "[And(Not(DebugTutorialLessonItem.IsCompleted), And(Not(DebugTutorialLessonItem.IsCurrent), DebugTutorialLessonItem.IsValidToTrigger))]"
-				}
-				textbox = {
-					raw_text = "manual"
-					autoresize = yes
-					visible = "[And(Not(DebugTutorialLessonItem.IsCompleted), And(Not(DebugTutorialLessonItem.IsCurrent), Not(DebugTutorialLessonItem.ShouldStartAutomatically)))]"
-				}
-				textbox = {
-					raw_text = "wait"
-					autoresize = yes
-					visible = "[DebugTutorialLessonItem.IsDelayed]"
-				}
-				textbox = {
-					raw_text = "done"
-					autoresize = yes
-					visible = "[DebugTutorialLessonItem.IsCompleted]"
-				}
-			}
+
+			background = {
+				visible = "[DebugTutorialLessonItem.IsCurrent]"
+				texture = "gfx/interface/colors/white.dds"
+				alpha = 0.1
+			}			
 
 			text_single = {
 				margin = { 5 0 }
@@ -211,6 +202,35 @@ types DebugTutorialWindow
 				text = "[DebugTutorialLessonItem.GetTitle]"
 				tooltip = "[DebugTutorialLessonItem.GetTitle]"
 				using = tooltip_ne
+			}
+
+			hbox = {
+				spacing = 3
+				textbox = {
+					raw_text = "(Current)"
+					visible = "[DebugTutorialLessonItem.IsCurrent]"
+					autoresize = yes
+				}
+				textbox = {
+					raw_text = "(Valid to Trigger)"
+					autoresize = yes
+					visible = "[And(Not(DebugTutorialLessonItem.IsCompleted), And(Not(DebugTutorialLessonItem.IsCurrent), DebugTutorialLessonItem.IsValidToTrigger))]"
+				}
+				textbox = {
+					raw_text = "(Manual)"
+					autoresize = yes
+					visible = "[And(Not(DebugTutorialLessonItem.IsCompleted), And(Not(DebugTutorialLessonItem.IsCurrent), Not(DebugTutorialLessonItem.ShouldStartAutomatically)))]"
+				}
+				textbox = {
+					raw_text = "(Delayed)"
+					autoresize = yes
+					visible = "[DebugTutorialLessonItem.IsDelayed]"
+				}
+				textbox = {
+					raw_text = "(Finished)"
+					autoresize = yes
+					visible = "[DebugTutorialLessonItem.IsCompleted]"
+				}
 			}
 
 			hbox = {
@@ -263,22 +283,29 @@ types DebugTutorialWindow
 		margin_top = 3
 
 		hbox = {
+			tooltip = "[DebugTutorialStepItem.GetTooltip]"
+			using = tooltip_ne
 			layoutpolicy_horizontal = expanding
-			hbox = {
-				margin_right = 5
-				spacing = 3
-				textbox = {
-					raw_text = "-->"
-					autoresize = yes
-					visible = "[DebugTutorialStepItem.IsCurrent]"
-				}
+
+
+			background = {
+				visible = "[DebugTutorialStepItem.IsCurrent]"
+				texture = "gfx/interface/colors/white.dds"
+				alpha = 0.2
 			}
+
 			text_single = {
 				text = "[DebugTutorialStepItem.GetTitle]"
-				tooltip = "[DebugTutorialStepItem.GetTooltip]"
-				using = tooltip_ne
 			}
+
 			expand = {}
+
+			text_single = {
+				text = "[DebugTutorialStepItem.GetKey]"
+				default_format = "#weak"
+				max_width = 120
+				elide = left
+			}			
 		}
 	}
 

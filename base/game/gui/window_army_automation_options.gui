@@ -7,7 +7,7 @@ window = {
 	name = "army_automation_options_view"
 	parentanchor = top|right
 	position = { -632 170 }
-	size = { 540 440 }
+	size = { 540 540 }
 	movable = no
 	layer = middle
 
@@ -112,6 +112,37 @@ window = {
 						onclick = "[ArmyAutomationOptionsView.UnsetSettingFlag('raiding')]"
 						down = "[Not(ArmyAutomationOptionsView.GetSettingFlag('raiding'))]"
 						alwaystransparent = "[Not(ArmyAutomationOptionsView.GetSettingFlag('raiding'))]"
+
+					}
+				}
+			}
+
+			vbox_army_automation_options = {
+				visible = "[GetPlayer.HasBarterGoods]"
+
+				blockoverride "option_label"
+				{
+					text = "AOV_OPT_BARTERING"
+				}
+
+				blockoverride "option_buttons"
+				{
+					button_army_automation_option = {
+						text = "AOV_AUTOMATED"
+						tooltip = "AOV_OPT_BARTERING_AUTOMATED_TT"
+
+						onclick = "[ArmyAutomationOptionsView.SetSettingFlag('bartering')]"
+						down = "[ArmyAutomationOptionsView.GetSettingFlag('bartering')]"
+						alwaystransparent = "[ArmyAutomationOptionsView.GetSettingFlag('bartering')]"
+					}
+
+					button_army_automation_option = {
+						text = "AOV_MANUAL"
+						tooltip = "AOV_OPT_BARTERING_MANUAL_TT"
+
+						onclick = "[ArmyAutomationOptionsView.UnsetSettingFlag('bartering')]"
+						down = "[Not(ArmyAutomationOptionsView.GetSettingFlag('bartering'))]"
+						alwaystransparent = "[Not(ArmyAutomationOptionsView.GetSettingFlag('bartering'))]"
 
 					}
 				}

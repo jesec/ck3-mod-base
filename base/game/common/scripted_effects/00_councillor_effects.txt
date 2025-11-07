@@ -112,7 +112,7 @@ councillor_spouse_learning_2601_tutoring_effect = {
 
 				hidden_effect = {
 					if = {
-						limit = { NOT = { scope:councillor = scope:tutoring_student } } #Since the effect can be used on yourself.
+						limit = { scope:councillor != scope:tutoring_student } #Since the effect can be used on yourself.
 						scope:tutoring_student = {
 							add_opinion = {
 								target = scope:councillor
@@ -219,9 +219,7 @@ councillor_spouse_learning_2601_tutoring_effect = {
 				hidden_effect = {
 					if = {
 						limit = {
-							NOT = {
-								scope:tutoring_student = scope:councillor
-							} #Since the effect can be used on yourself.
+							scope:tutoring_student != scope:councillor #Since the effect can be used on yourself.
 						}
 						scope:tutoring_student = {
 							add_opinion = {
@@ -510,10 +508,7 @@ add_patronage_spouse_education_points_effect = {
 					}
 					else_if = {
 						limit = {
-							AND = {
-								exists = player_heir
-								player_heir = { this = scope:patronage_student }
-							}
+							player_heir ?= { this = scope:patronage_student }
 						}
 						send_interface_message = {
 							type = msg_spouse_patronage
@@ -662,7 +657,7 @@ results_of_patronage_spouse_education_points_effect = {
 				}
 			}
 			else_if = { #+2 or more
-				limit = { NOT = { scope:education_rank_after_patronage = scope:education_rank_before_patronage } }
+				limit = { scope:education_rank_after_patronage != scope:education_rank_before_patronage }
 				save_scope_value_as = {
 					name = education_rank_patronage_bonus
 					value = flag:2_or_more
@@ -790,6 +785,21 @@ councillor_increase_relevant_skill_five_points_effect = {
 		councillor_kurultai_2 = { add_martial_skill = 5 }
 		councillor_kurultai_3 = { add_martial_skill = 5 }
 		councillor_kurultai_4 = { add_martial_skill = 5 }
+	}
+}
+
+councillor_increase_relevant_skill_two_points_effect = {
+	switch = {
+		trigger = has_council_position
+		councillor_chancellor = { add_diplomacy_skill = 2 }
+		councillor_court_chaplain = { add_learning_skill = 2 }
+		councillor_marshal = { add_martial_skill = 2 }
+		councillor_steward = { add_stewardship_skill = 2 }
+		councillor_spymaster = { add_intrigue_skill = 2 }
+		councillor_kurultai_1 = { add_martial_skill = 2 }
+		councillor_kurultai_2 = { add_martial_skill = 2 }
+		councillor_kurultai_3 = { add_martial_skill = 2 }
+		councillor_kurultai_4 = { add_martial_skill = 2 }
 	}
 }
 

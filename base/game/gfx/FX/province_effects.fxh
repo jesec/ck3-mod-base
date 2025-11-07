@@ -49,7 +49,7 @@ PixelShader =
 			#endif
 
 			#if defined( DEBUG_PROVINCE_EFFECT_MASK_FLOOD )
-				Diffuse.rgb = lerp( Diffuse.rgb, float3( 0.0f, 0.0f, 1.0f ), ConditionData._Flood );
+				Diffuse.rgb = lerp( Diffuse.rgb, float3( 0.0f, 1.0f, 0.0f ), ConditionData._Flood );
 			#endif
 
 			#if defined( DEBUG_PROVINCE_EFFECT_MASK_SUMMER )
@@ -98,9 +98,9 @@ PixelShader =
 			float x2 = lerp( C12.g, C22.g, FracCoord.x );
 
 			// Opacity
-			float Impact = lerp( x1, x2, FracCoord.y );
-			Impact = RemapClamped( lerp( x1, x2, FracCoord.y ), 0.0, OpacityLowImpactValue, 0.0, 0.5 );
-			Impact += RemapClamped( lerp( x1, x2, FracCoord.y ), OpacityLowImpactValue, OpacityHighImpactValue, 0.0, 0.5 );
+			float ImpactTemp = lerp( x1, x2, FracCoord.y );
+			float Impact = RemapClamped( ImpactTemp, 0.0f, OpacityLowImpactValue, 0.0f, 0.5f );
+			Impact += RemapClamped( ImpactTemp, OpacityLowImpactValue, OpacityHighImpactValue, 0.0f, 0.5f );
 
 			// ProvinceEffects condition filtering
 			float Dro1 = lerp( C11.r == DROUGHT_INDEX, C21.r == DROUGHT_INDEX, FracCoord.x );
@@ -126,12 +126,6 @@ PixelShader =
 			{
 				return;
 			}
-			float2 MapCoords = WorldSpacePosXz * WorldSpaceToTerrain0To1;
-			float2 DetailUV = CalcDetailUV( WorldSpacePosXz );
-
-			float4 DroughtDiffuse = Diffuse;
-			float3 DroughtNormal = Normal;
-			float4 DroughtProperties = Properties;
 
 			float SlopeMultiplier = dot( CalculateNormal( WorldSpacePosXz ), UP_VECTOR );
 			SlopeMultiplier = RemapClamped( SlopeMultiplier, DroughtSlopeMin, 1.0f, 0.0f, 1.0f );
@@ -141,6 +135,13 @@ PixelShader =
 			{
 				return;
 			}
+			
+			float2 MapCoords = WorldSpacePosXz * WorldSpaceToTerrain0To1;
+			float2 DetailUV = CalcDetailUV( WorldSpacePosXz );
+
+			float4 DroughtDiffuse = Diffuse;
+			float3 DroughtNormal = Normal;
+			float4 DroughtProperties = Properties;
 
 			float ColorPositionValue = lerp( DroughtColorMaskPositionFrom, DroughtColorMaskPositionTo, ConditionValue );
 			float ColorContrastValue = lerp( DroughtColorMaskContrastFrom, DroughtColorMaskContrastTo, ConditionValue );
@@ -160,7 +161,7 @@ PixelShader =
 			float DryNoiseMask = PdxTex2D( ProvinceEffectsNoise, DryMaskUV ).r;
 
 			float DryMask = LevelsScan( DryNoiseMask, DryPositionValue, DryContrastValue ) * DroughtDryTextureBlendWeight * DroughtBlendWeight;
-			float2 DryBlendFactors = CalcHeightBlendFactors( float2( Diffuse.a, DryTexDiffuse.a ), float2( 1.0f - DryMask, DryMask ), DetailBlendRange );
+			float2 DryBlendFactors = CalcHeightBlendFactors( float2( Diffuse.a, DryTexDiffuse.a ), float2( 1.0f - DryMask, DryMask ), DetailBlendRange * DroughtDryTextureBlendContrast);
 
 			// Base terrain color change
 			float ColorNoise = LevelsScan( DryNoiseMask, ColorPositionValue, ColorContrastValue );
@@ -171,6 +172,14 @@ PixelShader =
 			DroughtDiffuse.rgb = lerp( DroughtDiffuse.rgb, DryTexDiffuse.rgb, DryBlendFactors.y );
 			DroughtNormal = lerp( DroughtNormal, DryTexNormal, DryBlendFactors.y );
 			DroughtProperties = lerp( DroughtProperties, DryTexProperties, DryBlendFactors.y );
+
+			float DroughtWaterMask = smoothstep( 0.0f, 0.104f, ( 1.0f - DroughtProperties.a ) * DryMask );
+			if ( DroughtWaterMask > 0.0001f )
+			{
+				DroughtDiffuse.rgb = lerp( DroughtDiffuse.rgb, DryTexDiffuse.rgb, DroughtWaterMask * 0.1f );
+				DroughtProperties.a = lerp( DroughtProperties.a , DryTexProperties.a , DroughtWaterMask );
+				DroughtNormal = lerp( DroughtNormal , DryTexNormal , DroughtWaterMask * 0.5f );
+			}
 
 			// Cracks Area Mask
 			float2 CrackedMaskUV = float2( MapCoords.x * 2.0f, MapCoords.y ) * DroughtCracksAreaMaskTiling;
@@ -192,7 +201,6 @@ PixelShader =
 
 			// Color adjustment
 			DroughtDiffuse.rgb = AdjustHsv( DroughtDiffuse.rgb, 0.0f, DroughtFinalSaturation, 1.0f );
-
 			Diffuse.rgb = lerp( Diffuse.rgb, DroughtDiffuse.rgb, ConditionValue );
 			Normal = lerp( Normal, DroughtNormal, ConditionValue );
 			Properties = lerp( Properties, DroughtProperties, ConditionValue );
@@ -204,6 +212,7 @@ PixelShader =
 			{
 				return;
 			}
+			ConditionValue *= 0.95f;
 
 			float2 MapCoords = WorldSpacePosXz * WorldSpaceToTerrain0To1;
 			float2 TextureUV = MapCoords * float2( 2.0f, 1.0f );
@@ -296,6 +305,13 @@ PixelShader =
 
 		void ApplyProvinceEffectsTerrain( in EffectIntensities ConditionData, inout float4 Diffuse, inout float3 Normal, inout float4 Properties, float3 WorldSpacePos, inout float WaterNormalLerp )
 		{
+			// Do not apply any effects to the snow.
+			float3 SnowColor = float3( 0.698f, 0.737f, 0.765f );
+			if ( !any( abs( Diffuse.rgb - SnowColor ) >= 0.45f ) )
+			{
+				return;
+			}
+
 			ApplyDroughtDiffuseTerrain( Diffuse, Normal, Properties, WorldSpacePos.xz, ConditionData._Drought );
 			ApplyFloodingDiffuseTerrain( Diffuse, Normal, Properties, WorldSpacePos.xz, ConditionData._Flood, WaterNormalLerp );
 			ApplySummerDiffuseTerrain( Diffuse, Normal, Properties, WorldSpacePos.xz, ConditionData._Summer );
@@ -323,7 +339,7 @@ PixelShader =
 			float3 DroughtDiffuse = AdjustHsv( Diffuse.rgb, 0.0f, DroughtPreSaturation, DroughtPreValue );
 			DroughtDiffuse = Overlay( DroughtDiffuse, DroughtOverlayTree );
 			Diffuse.rgb = lerp( Diffuse.rgb, DroughtDiffuse, ConditionValue );
-			Diffuse.a = lerp( Diffuse.a, smoothstep( 0.0f, 2.0f, Diffuse.a ), ConditionValue );
+			Diffuse.a = lerp( Diffuse.a, smoothstep( 0.8f, 0.85f, Diffuse.a ), ConditionValue );
 		}
 
 		void ApplySummerDiffuseTree( inout float4 Diffuse, float2 WorldSpacePosXz, float ConditionValue )
@@ -354,14 +370,13 @@ PixelShader =
 				return;
 			}
 
-			Diffuse.a = lerp( Diffuse.a, smoothstep( 0.0f, 1.5f, Diffuse.a ), ConditionValue );
+			Diffuse.a = lerp( Diffuse.a, smoothstep( 0.8f, 0.85f, Diffuse.a ), ConditionValue );
 		}
 
 		void ApplyProvinceEffectsTree( in EffectIntensities ConditionData, inout float4 Diffuse, float2 MapCoords, float2 WorldSpacePosXz )
 		{
 			ApplyDroughtDiffuseTree( Diffuse, WorldSpacePosXz, ConditionData._Drought );
 			ApplySummerDiffuseTree( Diffuse, WorldSpacePosXz, ConditionData._Summer );
-			ApplySnowDiffuseTree( Diffuse, ConditionData._Snow );
 			DebugCondition( Diffuse.rgb, ConditionData );
 		}
 

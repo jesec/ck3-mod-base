@@ -84,8 +84,17 @@ window = {
 						name = "current_court_type"
 						size = { 300 40 }
 
+						blockoverride "button_standard_current" 
+						{
+							visible = yes
+						}
+
 						onclick = "[CourtTypeWindow.SelectCourtType(CourtTypeSettingItem.Self)]"
 						down = "[ObjectsEqual(CourtTypeWindow.GetCurrentlySelectedCourtTypeItem, CourtTypeSettingItem.Self)]"
+
+						selection_glow = {
+							visible = "[ObjectsEqual(CourtTypeWindow.GetCurrentlySelectedCourtTypeItem, CourtTypeSettingItem.Self)]"
+						}
 
 						text_single = {
 							parentanchor = center
@@ -128,6 +137,15 @@ window = {
 									text = "[CourtTypeSettingItem.GetNameNoTooltip]"
 									align = nobaseline
 									default_format = "#clickable"
+								}
+
+								blockoverride "button_standard_current" 
+								{
+									visible = "[ObjectsEqual(CourtTypeWindow.GetActiveCourtTypeItem, CourtTypeSettingItem.Self)]"
+								}
+
+								selection_glow = {
+									visible = "[ObjectsEqual(CourtTypeWindow.GetCurrentlySelectedCourtTypeItem, CourtTypeSettingItem.Self)]"
 								}
 
 								warning_icon = {

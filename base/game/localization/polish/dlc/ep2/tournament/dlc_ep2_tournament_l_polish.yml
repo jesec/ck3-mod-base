@@ -8,7 +8,7 @@
  train_for_tournament_decision_confirm: "Rozpocznij trening"
  grand_tournament_active: "Musi istnieć określona aktywność ([GetActivityType('activity_tournament').GetName|l]), do której możesz dołączyć"
  ep2_decision_events.0001.t: "Trening przed turniejem"
- ep2_decision_events.0001.desc: "– A potem obrót w prawo! – krzyczy [marshal.GetTitledFirstName], uderzając w mój miecz z mocą tak ogromną, że aż odpycha mnie o kilka kroków. – Musi [ROOT.Char.GetLadyLord] pamiętać, że na turnieju nie będzie lekko – oznajmia, ocierając czoło z potu.\n\n– Jeśli chce [ROOT.Char.GetLadyLord] wygrać, nie może sobie pozwolić na ani jedną porażkę. Nawet ze mną."
+ ep2_decision_events.0001.desc: "– A potem obrót w prawo! – krzyczy [marshal.GetTitledFirstName], uderzając w mój miecz z mocą tak ogromną, że aż odpycha mnie o kilka kroków. – Musi [ROOT.Char.Custom('FormOfAddressForLiege')] pamiętać, że na turnieju nie będzie lekko – oznajmia, ocierając czoło z potu.\n\n– Jeśli chce [ROOT.Char.Custom('FormOfAddressForLiege')] wygrać, nie może sobie pozwolić na ani jedną porażkę. Nawet ze mną."
  ep2_decision_events.0001.a: "– #EMP Arghh!#!"
  ep2_decision_events.0001.a.crit_success: "#EMP Doskonały#! trening"
  ep2_decision_events.0001.a.success: "Imponujący trening"
@@ -22,8 +22,9 @@
  tradition_tournament_discount_desc: "$tradition_chivalry_name$ – zmiana na tę [Concept('culture_tradition', 'tradycję')|E] będzie wymagać o 2000 punktów [Concept('prestige', 'prestiżu')|E] mniej"
  ### ACTIVITY
  activity_tournament: "Wielki turniej"
+ activity_tournament_plural: "Wielkie turnieje"
  activity_tournament_desc: "Zorganizuj wspaniałą serię [Concept( 'contests', 'zawodów' )|E] kulturalnych lub walk, przyciągając zawodników z całego świata, aby rywalizowali w turnieju o [prizes|El] i [prestige|El]."
- activity_tournament_host_desc: "$BULLET_WITH_TAB$Zysk [prestige_i] [Concept( 'prestige', 'prestiżu')|E]\n$BULLET_WITH_TAB$Zysk [legitimacy_i] [Concept( 'legitimacy', 'legitymacji' )|E]\n$BULLET_WITH_TAB$Redukcja [stress_loss_i] [Concept( 'stress', 'stresu')|E]\n$BULLET_WITH_TAB$[trait_level_track_xp|E] [GetTrait('tourney_participant').GetName( GetNullCharacter )|l]\n$BULLET_WITH_TAB$[acclaimed_knights|E] zyskują [Concept( 'glory', 'chwałę' )|E]"
+ activity_tournament_host_desc: "$BULLET_WITH_TAB$[prestige_i|E] [prestige|E]\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E]\n$BULLET_WITH_TAB$[stress_loss_i] [stress_loss|E]\n$BULLET_WITH_TAB$[trait_level_track_xp|E] [GetTrait('tourney_participant').GetName( GetNullCharacter )|l]\n$BULLET_WITH_TAB$[acclaimed_knights|E] zyskują [Concept('glory', 'chwałę')|E]"
  activity_tournament_selection_tooltip: "Zaproś swoich $knight_culture_player_plural_possessive_no_tooltip_lowercase$, poddanych oraz sąsiadujących władców na wielki pokaz zmagań w zawodach\n\nPrzewidywane korzyści:\n$BULLET_WITH_TAB$Zysk [prestige_i] [Concept( 'prestige', 'prestiżu')|E]\n$BULLET_WITH_TAB$Zysk [legitimacy_i] [Concept( 'legitimacy', 'legitymacji' )|E]\n$BULLET_WITH_TAB$Redukcja [stress_loss_i] [Concept( 'stress', 'stresu')|E]"
  tournament_contest: "Zawody"
  progress_to_victory: "$game_concept_progress_to_victory$"
@@ -43,13 +44,11 @@
  ### PHASES
  #TEAM
  tournament_phase_melee: "Walka wręcz"
- #TODO_CD_EP2: [GetPlayer.Custom('GetMeleeVariant')]
  tournament_phase_melee_desc: "Pozorowana bitwa dwóch drużyn na koniach lub bez. Zespoły próbują utrzymać kontrolę nad spornym polem oraz schwytać przeciwników dla okupu.\n\n$tournament_contest_format_team$"
  #TURN
  tournament_phase_archery: "Łucznictwo"
  tournament_phase_archery_desc: "Zawody łucznicze, w których każdy zawodnik wypuszcza do celu określoną liczbę strzał, starając się zdobyć jak najwięcej punktów.\n\n$tournament_contest_formaty_turn$"
  tournament_phase_recital: "Recytacja"
- #TODO_CD_EP2: [GetPlayer.Custom('GetRecitalVariant')]
  tournament_phase_recital_desc: "Zawody poetyckie, w których każdy uczestnik publicznie recytuje napisany na tę okazję wiersz, a następnie poddaje się ocenie na tle innych uczestników.\n\n$tournament_contest_formaty_turn$"
  #VERSUS
  tournament_phase_joust: "Walka na kopie"
@@ -57,7 +56,6 @@
  tournament_phase_duel: "Pojedynek"
  tournament_phase_duel_desc: "Seria walk pieszych z użyciem broni, w których zawodnicy próbują rozbroić przeciwnika lub zdobyć więcej punktów od niego oraz utrzymać się na nogach.\n\n$tournament_contest_format_versus$\nLiczba [Concept( 'contest_rounds', 'rund' )|E]: 3"
  tournament_phase_wrestling: "Zapasy"
- #TODO_CD_EP2: [GetPlayer.Custom('GetWrestlingVariant')]
  tournament_phase_wrestling_desc: "Zawody siły i sprytu, w których zawodnicy starają się powalić przeciwnika na ziemię lub wyrzucić go z ringu oraz utrzymać się na nogach.\n\n$tournament_contest_format_versus$\nLiczba [Concept( 'contest_rounds', 'rund' )|E]: 3"
  tournament_phase_board_game: "Gra planszowa"
  tournament_phase_board_game_desc: "Uczestnicy rozgrywają kilka partii gry planszowej, a zwycięzcą zostaje ten, kto wyeliminuje wszystkich pozostałych.\n\n$tournament_contest_format_versus$\nLiczba [Concept( 'contest_rounds', 'rund' )|E]: 3"

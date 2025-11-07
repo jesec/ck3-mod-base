@@ -57,7 +57,10 @@ faith_qualifies_for_west_african_pagan_feudalisation_trigger = {
 should_use_temple_character_background_trigger = {
 	trigger_if = {
 		limit = { is_landed = yes }
-		government_has_flag = government_is_theocracy
+		OR = {
+			government_has_flag = government_is_theocracy
+			has_government = mandala_government
+		}
 	}
 	trigger_else = {
 		OR = {
@@ -67,4 +70,27 @@ should_use_temple_character_background_trigger = {
 			is_clergy = yes
 		}
 	}
+}
+
+has_mandala_culture_trigger = {
+	culture = {
+		OR = {
+			has_cultural_pillar = heritage_austronesian
+			has_cultural_pillar = heritage_tai
+			has_cultural_pillar = heritage_mon_khmer
+			has_cultural_pillar = heritage_viet
+			has_cultural_pillar = heritage_indo_aryan
+			has_cultural_pillar = heritage_burman
+		}
+	}
+}
+
+has_mandala_faith_trigger = {
+	custom_description = {
+		text = "hof_interaction_unreformed_faith"
+		NOT = {
+			faith = { has_doctrine_parameter = unreformed }
+		}
+	}
+	faith = { has_doctrine = doctrine_polytheist }
 }

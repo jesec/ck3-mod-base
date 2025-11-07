@@ -71,7 +71,7 @@ send_child_to_holy_order_effect = {
 		}
 		if = {
 			limit = {
-				NOT = { faith = scope:$GRANDMASTER$.faith }
+				faith != scope:$GRANDMASTER$.faith
 			}
 			set_character_faith = scope:$GRANDMASTER$.faith
 		}
@@ -127,47 +127,49 @@ send_child_to_clergy_effect = {
 }
 
 simplified_clergy_effect = {
-	add_trait = devoted
-	add_piety_level = 1
-	if = {
-		limit = { is_ruler = yes }
-		depose = yes
-	}
-	if = {
-		limit = {
-			is_married = yes
+	$RECIPIENT$ = {
+		add_trait = devoted
+		add_piety_level = 1
+		if = {
+			limit = { is_ruler = yes }
+			depose = yes
 		}
-		every_spouse = {
-			divorce = $RECIPIENT$
-		}
-	}
-	if = {
-		limit = {
-			exists = betrothed
-		}
-		break_betrothal = betrothed
 		if = {
 			limit = {
-				has_been_promised_grand_wedding = yes
+				is_married = yes
 			}
-			break_grand_wedding_betrothal_effect = yes
+			every_spouse = {
+				divorce = $RECIPIENT$
+			}
 		}
-	}
-	if = {
-		limit = {
-			is_concubine = yes
+		if = {
+			limit = {
+				exists = betrothed
+			}
+			break_betrothal = betrothed
+			if = {
+				limit = {
+					has_been_promised_grand_wedding = yes
+				}
+				break_grand_wedding_betrothal_effect = yes
+			}
 		}
-		this.concubinist = {
-			remove_concubine = $RECIPIENT$
+		if = {
+			limit = {
+				is_concubine = yes
+			}
+			this.concubinist = {
+				remove_concubine = $RECIPIENT$
+			}
 		}
-	}
-	if = {
-		limit = {
-			number_of_concubines > 0
-		}
-		every_concubine = {
-			$RECIPIENT$ = {
-				remove_concubine = prev
+		if = {
+			limit = {
+				number_of_concubines > 0
+			}
+			every_concubine = {
+				$RECIPIENT$ = {
+					remove_concubine = prev
+				}
 			}
 		}
 	}

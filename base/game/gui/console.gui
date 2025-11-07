@@ -182,15 +182,6 @@ flowcontainer = {
 				layoutpolicy_horizontal = expanding
 				spacing = 5
 				margin = { 0 5 }
-				margin_left = 5
-
-				editor_textbox = {
-					raw_text = "Debug Menus"
-					autoresize = yes
-					fontcolor = { 1 1 1 0.5 }
-					max_width = 40
-					multiline = yes
-				}
 
 				expand = {}
 
@@ -205,6 +196,23 @@ flowcontainer = {
 						position = { 1 1 }
 						size = { 30 30 }
 						texture = "gfx/interface/icons/character_interactions/send_poem_interaction.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "save_button"
+					onclick = "[ExecuteConsoleCommand('save_every 5')]"
+					onrightclick = "[ExecuteConsoleCommand('save_every 15')]"
+					button_ignore = none
+
+					raw_tooltip = "Left-click: Create a Save every 5 years, Right-click: Create a Save every 15 years"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 25 25 }
+						texture = "gfx/interface/icons/court_position_types/chronicler_court_position.dds"
 					}
 				}
 
@@ -269,7 +277,7 @@ flowcontainer = {
 					icon = {
 						parentanchor = center
 						size = { 30 30 }
-						texture = "gfx/interface/icons/currencies/icon_dynasty_prestige_03.dds"
+						texture = "gfx/interface/icons/modifiers/icon_dynasty_prestige_03.dds"
 					}
 				}
 
@@ -302,7 +310,7 @@ flowcontainer = {
 						parentanchor = center
 						position = { 0 1 }
 						size = { 30 30 }
-						texture = "gfx/interface/icons/currencies/icon_prestige_04.dds"
+						texture = "gfx/interface/icons/modifiers/icon_prestige_04.dds"
 					}
 				}
 
@@ -317,7 +325,7 @@ flowcontainer = {
 					icon = {
 						parentanchor = center
 						size = { 30 30 }
-						texture = "gfx/interface/icons/currencies/icon_piety_christian_04.dds"
+						texture = "gfx/interface/icons/modifiers/icon_piety_christian_04.dds"
 					}
 				}
 
@@ -336,13 +344,14 @@ flowcontainer = {
 						texture = "gfx/interface/icons/icon_gold.dds"
 					}
 				}
+
+				expand = {}
 			}
 
 			hbox = {
 				layoutpolicy_horizontal = expanding
 				spacing = 5
 				margin = { 0 5 }
-				margin_left = 5
 
 				expand = {}
 
@@ -404,20 +413,6 @@ flowcontainer = {
 				}
 
 				dockable_button = {
-					name = "legacies_button"
-					onclick = "[ExecuteConsoleCommand('gain_all_dynasty_perks')]"
-					button_ignore = none
-					raw_tooltip = "Gain all Dynasty Legacies"
-					using = tooltip_ne
-
-					icon = {
-						parentanchor = center
-						size = { 25 25 }
-						texture = "gfx/interface/icons/currencies/icon_dynasty_prestige_05.dds"
-					}
-				}
-
-				dockable_button = {
 					name = "birth_button"
 					onclick = "[ExecuteConsoleCommand('instant_birth')]"
 					button_ignore = none
@@ -433,19 +428,17 @@ flowcontainer = {
 				}
 
 				dockable_button = {
-					name = "save_button"
-					onclick = "[ExecuteConsoleCommand('save_every 5')]"
-					onrightclick = "[ExecuteConsoleCommand('save_every 15')]"
+					name = "legacies_button"
+					onclick = "[ExecuteConsoleCommand('gain_all_dynasty_perks')]"
 					button_ignore = none
-
-					raw_tooltip = "Left-click: Create a Save every 5 years, Right-click: Create a Save every 15 years"
+					raw_tooltip = "Gain all Dynasty Legacies"
 					using = tooltip_ne
 
 					icon = {
 						parentanchor = center
 						position = { 0 1 }
 						size = { 25 25 }
-						texture = "gfx/interface/icons/court_position_types/chronicler_court_position.dds"
+						texture = "gfx/interface/icons/modifiers/icon_dynasty_prestige_05.dds"
 					}
 				}
 
@@ -477,7 +470,7 @@ flowcontainer = {
 						parentanchor = center
 						position = { 0 1 }
 						size = { 30 30 }
-						texture = "gfx/interface/icons/currencies/icon_influence_04.dds"
+						texture = "gfx/interface/icons/modifiers/icon_influence_04.dds"
 					}
 				}
 
@@ -497,6 +490,25 @@ flowcontainer = {
 						texture = "gfx/interface/icons/icon_herd.dds"
 					}
 				}
+
+				dockable_button = {
+					name = "barter_goods_console_button"
+					onclick = "[ExecuteConsoleCommand('change_barter_goods 1000')]"
+					onrightclick = "[ExecuteConsoleCommand('change_barter_goods -1000')]"
+					button_ignore = none
+
+					raw_tooltip = "Left-click: Gain 1000 Barter Goods, Right-click: Lose 1000 Barter Goods"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 30 30 }
+						texture = "gfx/interface/icons/icon_barter.dds"
+					}
+				}
+
+				expand = {}
 			}
 
 			hbox = {

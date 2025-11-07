@@ -430,9 +430,7 @@ herhis_subject_of_interest = {
 				always = no #not used yet: var:subject_of_interest = flag:herhis_friends
 			}
 			trigger_else = {
-				OR = {
-					num_of_relation_friend >= 1
-				}
+				any_relation = { type = friend }
 			}
 		}
 		localization_key = herhis_friends
@@ -828,9 +826,7 @@ my_subject_of_interest = {
 				always = no #not used yet: var:subject_of_interest = flag:herhis_friends
 			}
 			trigger_else = {
-				OR = {
-					num_of_relation_friend >= 1
-				}
+				any_relation = { type = friend }
 			}
 		}
 		localization_key = my_friends
@@ -1004,8 +1000,8 @@ subject_of_interest = {
 	text = {
 		trigger = {
 			OR = {
-				num_of_relation_friend > 0
-				num_of_relation_best_friend > 0
+				any_relation = { type = friend }
+				any_relation = { type = best_friend }
 				has_trait = diplomat
 			}
 		}

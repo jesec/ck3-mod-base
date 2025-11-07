@@ -21,8 +21,8 @@ lover_breakup_rivalry_chance_effect = {
 			add = 25
 			scope:breaker = {
 				any_secret = {
-					secret_type = secret_lover
-					NOT = { secret_target = scope:lover }
+					type = secret_lover
+					secret_target != scope:lover
 					is_known_by = scope:lover
 				}
 			}
@@ -39,7 +39,7 @@ lover_breakup_rivalry_chance_effect = {
 		scope:breaker = {
 			every_consort = {
 				limit = {
-					NOT = { this = scope:lover }
+					this != scope:lover
 					NOR = {
 						has_relation_rival = scope:lover
 						has_relation_friend = scope:lover
@@ -50,7 +50,7 @@ lover_breakup_rivalry_chance_effect = {
 			every_relation = {
 				type = lover
 				limit = {
-					NOT = { this = scope:lover }
+					this != scope:lover
 					NOR = {
 						has_relation_rival = scope:lover
 						has_relation_friend = scope:lover
@@ -72,13 +72,13 @@ lover_breakup_rivalry_chance_effect = {
 						OR = {
 							NOT = {
 								any_secret = {
-									secret_type = secret_lover
+									type = secret_lover
 									secret_target = scope:lover_check
 									NOT = { is_known_by = scope:lover }
 								}
 							}
 							any_secret = {
-								secret_type = secret_lover
+								type = secret_lover
 								secret_target = scope:lover_check
 								is_known_by = scope:lover
 							}

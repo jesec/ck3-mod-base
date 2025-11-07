@@ -1,4 +1,4 @@
-﻿types ProgressBars
+types ProgressBars
 {
 	type progressbar_royal_court = progressbar {
 		min = 0
@@ -13,7 +13,8 @@
 
 		# modify_texture = {
 		#	 name = "pattern"
-		#	 texture = "gfx/interface/component_masks/patterns/mask_pattern_02.dds"
+		#	 texture = "gfx/interface/skinned/mask_pattern.dds"
+		#	texture_density = 3
 		#	 spriteType = corneredtiled
 		#	 blend_mode = alphamultiply
 		#	 alpha = 0.15
@@ -201,7 +202,7 @@
 			layoutpolicy_vertical = expanding
 			layoutstretchfactor_horizontal = "[ComplexBar.GetLeftEmptyWidth]"
 			allow_outside = yes
-			
+
 
 			block "empty" {
 				background = {
@@ -535,7 +536,7 @@
 			max_width = 450
 		}
 
-		block "background" 
+		block "background"
 		{
 			Background = {
 				using = Background_Area
@@ -586,25 +587,15 @@
 			}
 
 			tooltipwidget = {
-				my_realm_window_contribution_tooltip = {
+				container_my_realm_window_contribution_tooltip = {
 					block "tax_breakdown"
 					{
 						datacontext = "[MyRealmWindowVassalItem.GetTaxBreakdown]"
 
 					}
-					blockoverride "levy_info_visible" { visible = no }
 					blockoverride "contribution_tooltip_header"
 					{
 						text = "MRW_TT_TAXES_TO_ME"
-					}
-
-					blockoverride "levy_info"
-					{
-						text_single = {
-							multiline = yes
-							maximumsize = { 250 -1 }
-							text = "[MyRealmWindowVassalItem.GetTaxTooltip]"
-						}
 					}
 				}
 			}
@@ -657,23 +648,14 @@
 			}
 
 			tooltipwidget = {
-				my_realm_window_contribution_tooltip = {
+				container_my_realm_window_contribution_tooltip = {
 					block "levy_breakdown"
 					{
 						datacontext = "[MyRealmWindowVassalItem.GetLeviesBreakdown]"
 					}
-					blockoverride "tax_info_visible" { visible = no }
 					blockoverride "contribution_tooltip_header"
 					{
 						text = "MRW_TT_LEVIES_TO_ME"
-					}
-					blockoverride "tax_info"
-					{
-						text_single = {
-							multiline = yes
-							maximumsize = { 250 -1 }
-							text = "[MyRealmWindowVassalItem.GetLevyTooltip]"
-						}
 					}
 				}
 			}
@@ -725,40 +707,29 @@
 			}
 
 			tooltipwidget = {
-				my_realm_window_contribution_tooltip = {
+				container_my_realm_window_contribution_tooltip = {
 					block "tax_breakdown"
 					{
 						datacontext = "[MyRealmWindowVassalItem.GetHerdBreakdown]"
 
 					}
-					blockoverride "herd_info_visible" { visible = no }
 					blockoverride "contribution_tooltip_header"
 					{
 						text = "MRW_TT_HERD_TO_ME"
-					}
-
-					blockoverride "herd_info"
-					{
-						text_single = {
-							multiline = yes
-							maximumsize = { 250 -1 }
-							text = "[MyRealmWindowVassalItem.GetHerdTooltip]"
-						}
 					}
 				}
 			}
 			using = tooltip_ws
 		}
 	}
-	
-	type widget_level_marker = widget {
-		parentanchor = center
+
+	type widget_level_marker_no_anchor = widget {
 		size = { 0 40 }
 		allow_outside = yes
 
 		### Glow on current level animation
 		block "marker_addon" {}
-		
+
 		icon = {
 			name = "highlight_current_level"
 
@@ -832,7 +803,12 @@
 
 		icon = {
 			parentanchor = center
-			size = { 45 45 }
+			block "marker_size"
+			{
+				size = { 45 45 }
+			}
+			
+
 			texture = "gfx/interface/window_regency/regency_level_bg.dds"
 
 			block "visible_active" {}
@@ -842,10 +818,16 @@
 
 		icon = {
 			parentanchor = center
-			size = { 35 35 }
+			
+			block "marker_size_inactive"
+			{
+				size = { 35 35 }
+			}
 			texture = "gfx/interface/window_regency/regency_level_bg_inactive.dds"
 
 			block "visible_inactive" {}
+
+			block "level_inactive_style" {}
 
 			block "marker_tooltip" {}
 		}
@@ -868,6 +850,10 @@
 
 			block "marker_text" {}
 		}
+	}
+
+	type widget_level_marker = widget_level_marker_no_anchor {
+		parentanchor = center
 	}
 
 	type arrow_progressbar_icon = icon
@@ -950,7 +936,7 @@ template Progressbar_Changed_Animation
 template Progressbar_Changed_Animation_Curve
 {
 	progress_change_to_duration_curve = { 0.17 0.67 0.83 0.67 }
-	
+
 	state = {
 		name = progress_changed
 		using = Animation_Curve_Default

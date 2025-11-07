@@ -120,20 +120,20 @@ window = {
 
 				dockable_button = {
 					size = { 180 30 }
-					raw_text = "Neutral"
-					onclick = "[ExecuteConsoleCommand('Environment.Debug.LoadEnvironment gfx/map/environment/environment_neutral.txt')]"
+					raw_text = "Top Left Sun"
+					onclick = "[ExecuteConsoleCommand('Environment.Debug.LoadEnvironment gfx/map/environment/environment_top_left.txt')]"
 				}
 
 				dockable_button = {
 					size = { 180 30 }
-					raw_text = "Debug"
-					onclick = "[ExecuteConsoleCommand('Environment.Debug.LoadEnvironment gfx/map/environment/environment_debug.txt')]"
+					raw_text = "Bottom Left Sun"
+					onclick = "[ExecuteConsoleCommand('Environment.Debug.LoadEnvironment gfx/map/environment/environment_bottom_left.txt')]"
 				}
 
 				dockable_button = {
 					size = { 180 30 }
-					raw_text = "Greyscale"
-					onclick = "[ExecuteConsoleCommand('Environment.Debug.LoadEnvironment gfx/map/environment/environment_greyscale.txt')]"
+					raw_text = "CE2"
+					onclick = "[ExecuteConsoleCommand('Environment.Debug.LoadEnvironment gfx/map/environment/environment_ce2.txt')]"
 				}
 			}
 
@@ -187,8 +187,8 @@ window = {
 
 window = {
 	name = "map_debug_menu"
-	size = { 470 380 }
-	parentanchor = top|right
+	size = { 630 390 }
+	#parentanchor = top|right
 	layer = debug
 
 	background = {
@@ -199,18 +199,96 @@ window = {
 		margin = { 5 5 }
 	}
 
-	hbox = {
-	layoutpolicy_horizontal = expanding
-	margin = { 1 1 }
-	spacing = 3
-#	using = dockable_background
+	flowcontainer = {
+		parentanchor = center
+		spacing = 3
 
-		vbox = {
-			restrictparent_min = yes
+		flowcontainer = {
+			direction = vertical
+
+		flowcontainer = {
+				margin = { 10 5 }
+				margin_bottom = 10
 	
-			hbox = {
-				layoutpolicy_horizontal = expanding
-				size = { 150 50 }
+					editor_textbox = {
+						raw_text = "Camera"
+						autoresize = yes
+						fontcolor = { 0.1 .7 0.75 1 }
+					}
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "England"
+				onclick = "[ExecuteConsoleCommand('camera.settransform 813 0 3337 300 72 0')]"
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Spain"
+				onclick = "[ExecuteConsoleCommand('camera.settransform 769 0 2326 300 72 0')]"
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Norway"
+				onclick = "[ExecuteConsoleCommand('camera.settransform 1573 0 3896 300 72 0')]"
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Africa"
+				onclick = "[ExecuteConsoleCommand('camera.settransform 2875 0 1313 300 72 0')]"
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "HRE"
+				onclick = "[ExecuteConsoleCommand('camera.settransform 1297 0 3113 300 72 0')]"
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Steppe"
+				onclick = "[ExecuteConsoleCommand('camera.settransform 5014 0 3028 300 72 0')]"
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "India North"
+				onclick = "[ExecuteConsoleCommand('camera.settransform 5106 0 1523 300 72 0')]"
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "India South"
+				onclick = "[ExecuteConsoleCommand('camera.settransform 5156 0 1102 300 72 0')]"
+			}
+
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Free Camera"
+				raw_tooltip = "Unlock the camera constraints while holding the right mouse button"
+				onclick = "[ExecuteConsoleCommand('Camera.Restrictions')]"
+				
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/modifiers/compass_positive.dds"
+				}
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Debug info"
+				raw_tooltip = "Show Camera debug values in the top right"
+				onclick = "[ExecuteConsoleCommand('Camera.Debug')]"
+				
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/modifiers/compass_positive.dds"
+				}
+			}
+		}
+
+		flowcontainer = {
+			direction = vertical
+	
+			flowcontainer = {
 				margin = { 10 5 }
 				margin_bottom = 10
 	
@@ -219,7 +297,7 @@ window = {
 						autoresize = yes
 						fontcolor = { 0.1 .7 0.75 1 }
 					}
-		}
+			}
 			dockable_button = {
 				size = { 150 28 }
 				raw_text = "3D Stats"
@@ -232,19 +310,6 @@ window = {
 					position = { 0 -1 }
 					size = { 30 30 }
 					texture = "gfx/interface/icons/modifiers/travel_speed_positive.dds"
-				}
-			}
-			dockable_button = {
-				size = { 150 28 }
-				raw_text = "Free Camera"
-				raw_tooltip = "Unlock the camera constraints while holding the right mouse button"
-				onclick = "[ExecuteConsoleCommand('Camera.Restrictions')]"
-				
-				icon = {
-					parentanchor = left
-					position = { 0 -1 }
-					size = { 30 30 }
-					texture = "gfx/interface/icons/modifiers/compass_positive.dds"
 				}
 			}
 			
@@ -324,9 +389,7 @@ window = {
 				}
 			}
 			
-			hbox = {
-				layoutpolicy_horizontal = expanding
-				size = { 150 50 }
+			flowcontainer = {
 				margin = { 10 5 }
 				margin_bottom = 10
 	
@@ -391,12 +454,10 @@ window = {
 		}
 	
 	
-		vbox = {
-			restrictparent_min = yes
+		flowcontainer = {
+			direction = vertical
 	
-			hbox = {
-				layoutpolicy_horizontal = expanding
-				size = { 150 50 }
+			flowcontainer = {
 				margin = { 10 5 }
 				margin_bottom = 10
 	
@@ -407,163 +468,161 @@ window = {
 				}
 			}
 			
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Fog of War"
-					raw_tooltip = "Toggle Fog of War"
-					onclick = "[ExecuteConsoleCommand('FogOfWar.Enable')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/traits/calm.dds"
-					}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Fog of War"
+				raw_tooltip = "Toggle Fog of War"
+				onclick = "[ExecuteConsoleCommand('FogOfWar.Enable')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/traits/calm.dds"
 				}
-	
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Borders"
-					raw_tooltip = "Borders"
-					onclick = "[ExecuteConsoleCommand('Border.Draw')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/message_feed/alliance.dds"
-					}
-				}
-	
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Gradient Borders"
-					raw_tooltip = "Toggle gradient borders and fills"
-					onclick = "[ExecuteConsoleCommand('GradientBorders.Enable')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/message_feed/generic_good_effect.dds"
-					}
-				}
-	
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Rivers"
-					raw_tooltip = "Toggle rivers"
-					onclick = "[ExecuteConsoleCommand('Draw.Rivers')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/combat_effects/defender_river.dds"
-					}
-				}
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Ocean"
-					raw_tooltip = "Toggle Ocean"
-					onclick = "[ExecuteConsoleCommand('Draw.Water')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/terrain_types/sea.dds"
-					}
-				}
-	
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Bloom"
-					raw_tooltip = "Toggle Bloom"
-					onclick = "[ExecuteConsoleCommand('Draw.Bloom')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/war_status/war_won_icon.dds"
-					}
-				}
-	
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Map names"
-					raw_tooltip = "Toggle map names"
-					onclick = "[ExecuteConsoleCommand('Draw.MapNames')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/traits/stuttering.dds"
-					}
-				}
-	
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Map Objects"
-					raw_tooltip = "Toggle map objects"
-					onclick = "[ExecuteConsoleCommand('Draw.MapObjects')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/vassal_stances/barons_and_minor_landholders.dds"
-					}
-				}
+			}
 
-				#No roads in CK3
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Roads"
-					raw_tooltip = "No roads in CK3"
-					onclick = "[ExecuteConsoleCommand('Draw.Roads')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/travel/icon_travel_hud_placeholder.dds"
-					}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Borders"
+				raw_tooltip = "Borders"
+				onclick = "[ExecuteConsoleCommand('Border.Draw')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/message_feed/alliance.dds"
 				}
-	
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Shadows"
-					raw_tooltip = "Toggle Shadows"
-					onclick = "[ExecuteConsoleCommand('Mesh.DrawShadows')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/message_feed/spy_master.dds"
-					}
+			}
+
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Gradient Borders"
+				raw_tooltip = "Toggle gradient borders and fills"
+				onclick = "[ExecuteConsoleCommand('GradientBorders.Enable')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/message_feed/generic_good_effect.dds"
 				}
-	
-				dockable_button = {
-					size = { 150 28 }
-					raw_text = "Surround Mask"
-					raw_tooltip = "Toggle surrounding edge fog"
-					onclick = "[ExecuteConsoleCommand('Draw.Surround')]"
-					icon = {
-						parentanchor = left
-						position = { 0 -1 }
-						size = { 30 30 }
-						texture = "gfx/interface/icons/traits/curious.dds"
-					}
+			}
+
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Rivers"
+				raw_tooltip = "Toggle rivers"
+				onclick = "[ExecuteConsoleCommand('Draw.Rivers')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/combat_effects/defender_river.dds"
 				}
+			}
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Ocean"
+				raw_tooltip = "Toggle Ocean"
+				onclick = "[ExecuteConsoleCommand('Draw.Water')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/terrain_types/sea.dds"
+				}
+			}
+
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Bloom"
+				raw_tooltip = "Toggle Bloom"
+				onclick = "[ExecuteConsoleCommand('Draw.Bloom')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/war_status/war_won_icon.dds"
+				}
+			}
+
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Map names"
+				raw_tooltip = "Toggle map names"
+				onclick = "[ExecuteConsoleCommand('Draw.MapNames')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/traits/stuttering.dds"
+				}
+			}
+
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Map Objects"
+				raw_tooltip = "Toggle map objects"
+				onclick = "[ExecuteConsoleCommand('Draw.MapObjects')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/vassal_stances/barons_and_minor_landholders.dds"
+				}
+			}
+
+			#No roads in CK3
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Roads"
+				raw_tooltip = "No roads in CK3"
+				onclick = "[ExecuteConsoleCommand('Draw.Roads')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/travel/icon_travel_hud_placeholder.dds"
+				}
+			}
+
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Shadows"
+				raw_tooltip = "Toggle Shadows"
+				onclick = "[ExecuteConsoleCommand('Mesh.DrawShadows')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/message_feed/spy_master.dds"
+				}
+			}
+
+			dockable_button = {
+				size = { 150 28 }
+				raw_text = "Surround Mask"
+				raw_tooltip = "Toggle surrounding edge fog"
+				onclick = "[ExecuteConsoleCommand('Draw.Surround')]"
+				icon = {
+					parentanchor = left
+					position = { 0 -1 }
+					size = { 30 30 }
+					texture = "gfx/interface/icons/traits/curious.dds"
+				}
+			}
 		}
 
-		vbox = {
-			restrictparent_min = yes
+		flowcontainer = {
+			direction = vertical
 			
-			hbox = {
-				layoutpolicy_horizontal = expanding
-				size = { 150 50 }
+			flowcontainer = {
 				margin = { 10 5 }
 				margin_bottom = 10
 				
 				editor_textbox = {
-				autoresize = yes
-				raw_text = "Tweak"
-				fontcolor = { 0.75 .35 .65 1 }
+					autoresize = yes
+					raw_text = "Tweak"
+					fontcolor = { 0.75 .35 .65 1 }
 				}
 			}
 			
@@ -582,16 +641,14 @@ window = {
 			}
             
             
-			hbox = {
-				layoutpolicy_horizontal = expanding
-				size = { 150 50 }
+			flowcontainer = {
 				margin = { 10 5 }
 				margin_bottom = 10
 				
 				editor_textbox = {
-				autoresize = yes
-				raw_text = "Debug"
-				fontcolor = { 0.75 .35 .65 1 }
+					autoresize = yes
+					raw_text = "Debug"
+					fontcolor = { 0.75 .35 .65 1 }
 				}
 			}
 			
@@ -662,12 +719,12 @@ window = {
 }
 
 
-
 window = {
 	name = "flag_preview_window"
-	size = { 500 230 }
-	position = { 850 300 }
+	size = { 1000 800 }
 	layer = debug
+
+	datacontext = "[GetVariableSystem]"
 
 	background = {
 		texture = "gfx/editor_gui/editor_toolbar_background.dds"
@@ -677,17 +734,44 @@ window = {
 		margin = { 5 5 }
 	}
 
+    state = {
+        name = _show
+
+        on_start = "[GetVariableSystem.Set( 'flag_preview_mode', 'realm' )]"
+        on_start = "[GetVariableSystem.Set( 'flag_mask_type', 'huge' )]"
+    }
+
 	vbox = {
 		hbox = {
-			layoutpolicy_horizontal = expanding
 			margin = { 10 5 }
 			margin_bottom = 10
+			layoutpolicy_horizontal = expanding
 
-			editor_textbox = {
-				layoutpolicy_horizontal = expanding
-				autoresize = yes
-				raw_text = "Flag Preview"
+			editor_button = {
+				min_width = 150
+				min_height = 30
+
+				raw_text = "Realm Sizes"
+				onclick = "[VariableSystem.Set( 'flag_preview_mode', 'realm' )]"
 			}
+
+			editor_button = {
+				min_width = 190
+				min_height = 30
+
+				raw_text = "Realm Government Flags"
+				onclick = "[VariableSystem.Set( 'flag_preview_mode', 'government_masks' )]"
+			}
+
+			editor_button = {
+				min_width = 150
+				min_height = 30
+
+				raw_text = "Culture Frames"
+				onclick = "[VariableSystem.Set( 'flag_preview_mode', 'culture_masks' )]"
+			}
+
+			expand = {}
 		}
 
 		vbox = {
@@ -696,49 +780,327 @@ window = {
 
 			using = dockable_background
 
-			visible = "[IsInGame]"
+			vbox = {
+				visible = "[And( IsInGame, VariableSystem.HasValue( 'flag_preview_mode', 'realm' ) )]"
 
-			hbox = {
+				hbox = {
 
-				coa_realm_huge = {
-					datacontext = "[GetPlayer]"
+					coa_realm_huge = {
+						datacontext = "[GetPlayer]"
+					}
+
+					coa_realm_big = {
+						datacontext = "[GetPlayer]"
+					}
+
+					coa_realm_medium = {
+						datacontext = "[GetPlayer]"
+					}
+
+					coa_realm_small = {
+						datacontext = "[GetPlayer]"
+					}
 				}
 
-				coa_realm_big = {
-					datacontext = "[GetPlayer]"
-				}
+				hbox = {
+					spacing = 5
 
-				coa_realm_medium = {
-					datacontext = "[GetPlayer]"
-				}
+					icon = {
+						name = "hourglass"
+						texture = "gfx/interface/icons/temp_icon_search.dds"
+						color = { 0.788235 0.643137 0.419608 1 }
+						size = { 35 35 }
+					}
 
-				coa_realm_small = {
-					datacontext = "[GetPlayer]"
+					editor_textinput = {
+						name = "console_edit"
+						size = { 400 35 }
+						margin = { 5 0 }
+						alwaystransparent = no
+						focuspolicy = all
+						fontsize = 15
+
+						#	onreturnpressed = "[FindTitleView.OnDone]"
+						#	ontextedited = "[FindTitleView.OnEdit]"
+					}
 				}
 			}
 
-			hbox = {
-				spacing = 5
+			vbox = {
+				visible = "[And( IsInGame, VariableSystem.HasValue( 'flag_preview_mode', 'government_masks' ) )]"
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = expanding
 
-				icon = {
-					name = "hourglass"
-					texture = "gfx/interface/icons/temp_icon_search.dds"
-					color = { 0.788235 0.643137 0.419608 1 }
-					size = { 35 35 }
+				hbox = {
+					margin_bottom = 20
+					layoutpolicy_horizontal = expanding
+
+					hbox = {
+						margin_left = 20
+						margin_right = 20
+
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Tiny"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'tiny' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Small"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'small' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Medium"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'medium' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Big"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'big' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Huge"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'huge' )]"
+						}
+					}
+
+					coat_of_arms_icon = {
+						size = { 124 124 }
+
+						block "coa_icon_additions" {}
+
+						block "coat_of_arms"
+						{
+							coat_of_arms = "[GetPlayer.GetPrimaryTitle.GetTitleCoA.GetTexture('(int32)230','(int32)230')]"
+							coat_of_arms_slot = "[GetPlayer.GetPrimaryTitle.GetTitleCoA.GetSlot('(int32)230','(int32)230')]"
+						}
+						coat_of_arms_mask = "gfx/interface/colors/white.dds"
+					}
+
+					expand = {}
+					expand = {}
 				}
 
-				editor_textinput = {
-					name = "console_edit"
-					size = { 400 35 }
-					margin = { 5 0 }
-					alwaystransparent = no
-					focuspolicy = all
-					fontsize = 15
+				editor_scrollarea = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
 
-					#	onreturnpressed = "[FindTitleView.OnDone]"
-					#	ontextedited = "[FindTitleView.OnEdit]"
+					blockoverride "content"
+					{
+						fixedgridbox = {
+							datamodel = "[GetAllGovernmentTypes]"
+							addcolumn = 140
+							addrow = 200
+							datamodel_wrap = 6
+							flipdirection = yes
+
+							item = {
+								widget = {
+									min_width = 140
+									min_height = 160
+									editor_textbox = {
+										position = { 0 5 }
+										min_width = 140
+										text = "[GovernmentType.GetName]"
+										align = center
+									}
+									coa_realm_tiny = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'tiny' )]"
+										parentanchor = center
+										position = { 0 30 }
+										datacontext = "[GetPlayer]"
+										blockoverride "government_datacontext" {}
+									}
+									coa_realm_small = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'small' )]"
+										parentanchor = center
+										position = { 0 30 }
+										datacontext = "[GetPlayer]"
+										blockoverride "government_datacontext" {}
+									}
+									coa_realm_medium = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'medium' )]"
+										parentanchor = center
+										position = { 0 30 }
+										datacontext = "[GetPlayer]"
+										blockoverride "government_datacontext" {}
+									}
+									coa_realm_big = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'big' )]"
+										parentanchor = center
+										position = { 0 30 }
+										datacontext = "[GetPlayer]"
+										blockoverride "government_datacontext" {}
+									}
+									coa_realm_huge = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'huge' )]"
+										parentanchor = center
+										position = { 0 30 }
+										datacontext = "[GetPlayer]"
+										blockoverride "government_datacontext" {}
+									}
+								}
+							}
+						}
+					}
 				}
+
+				expand = {}
 			}
+			vbox = {
+				visible = "[And( IsInGame, VariableSystem.HasValue( 'flag_preview_mode', 'culture_masks' ) )]"
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = expanding
+
+				hbox = {
+					margin_bottom = 20
+					layoutpolicy_horizontal = expanding
+
+					hbox = {
+						margin_left = 20
+						margin_right = 20
+
+						editor_button = {
+							min_width = 120
+							min_height = 30
+							raw_text = "Microscopic"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'microscopic' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Tiny"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'tiny' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Small"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'small' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Medium"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'medium' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Big"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'big' )]"
+						}
+						editor_button = {
+							min_width = 80
+							min_height = 30
+							raw_text = "Huge"
+							onclick = "[VariableSystem.Set( 'flag_mask_type', 'huge' )]"
+						}
+						expand = {}
+					}
+
+					coat_of_arms_icon = {
+						size = { 124 124 }
+
+						block "coa_icon_additions" {}
+
+						block "coat_of_arms"
+						{
+							coat_of_arms = "[GetPlayer.GetHouse.GetHouseCoA.GetTexture('(int32)230','(int32)230')]"
+							coat_of_arms_slot = "[GetPlayer.GetHouse.GetHouseCoA.GetSlot('(int32)230','(int32)230')]"
+						}
+						coat_of_arms_mask = "gfx/interface/colors/white.dds"
+					}
+
+					expand = {}
+				}
+
+				editor_scrollarea = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					datacontext = "[GetPlayer.GetDynasty]"
+					datacontext = "[GetPlayer.GetHouse]"
+
+					blockoverride "content"
+					{
+						fixedgridbox = {
+							datamodel = "[GetAllCultureTemplates]"
+							addcolumn = 160
+							addrow = 200
+							datamodel_wrap = 6
+							flipdirection = yes
+
+							item = {
+								widget = {
+									datacontext = "[CultureTemplate.GetTemplateData]"
+
+									min_width = 140
+									min_height = 160
+									editor_textbox = {
+										position = { 0 5 }
+										min_width = 140
+										raw_text = "[CultureTemplate.GetName]"
+										align = center
+									}
+									editor_textbox = {
+										position = { 0 25 }
+										min_width = 140
+										raw_text = "([CultureTemplateData.GetCultureHouseCoAFrameName])"
+										align = center
+									}
+									coa_house_microscopic = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'microscopic' )]"
+										parentanchor = center
+										position = { 0 30 }
+										blockoverride "culture_template_data_datacontext" {}
+									}
+									coa_house_tiny = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'tiny' )]"
+										parentanchor = center
+										position = { 0 30 }
+										blockoverride "culture_template_data_datacontext" {}
+									}
+									coa_house_small = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'small' )]"
+										parentanchor = center
+										position = { 0 30 }
+										blockoverride "culture_template_data_datacontext" {}
+									}
+									coa_house_medium = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'medium' )]"
+										parentanchor = center
+										position = { 0 30 }
+										blockoverride "culture_template_data_datacontext" {}
+									}
+									coa_house_big = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'big' )]"
+										parentanchor = center
+										position = { 0 30 }
+										blockoverride "culture_template_data_datacontext" {}
+									}
+									coa_house_huge = {
+										visible = "[VariableSystem.HasValue( 'flag_mask_type', 'huge' )]"
+										parentanchor = center
+										position = { 0 30 }
+										blockoverride "culture_template_data_datacontext" {}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				expand = {}
+			}
+
 		}
 	}
 }

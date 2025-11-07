@@ -10,7 +10,7 @@
 				is_grandchild_of = scope:host
 			}
 			NOT = { has_character_flag = skill_increase_flag }
-			NOT = { this = scope:host }
+			this != scope:host
 		}
 		scope:activity = {
 			OR = {
@@ -38,7 +38,7 @@
 					is_child_of = scope:host
 					is_grandchild_of = scope:host
 				}
-				NOT = { this = scope:host }
+				this != scope:host
 			}
 			save_scope_as = first
 			add_character_flag = {
@@ -99,7 +99,7 @@ apa_scribe_makes_notes = {
 		any_attending_character = {
 			is_incapable = no
 			has_character_flag = generated_scribe
-			NOT = { this = scope:host }
+			this != scope:host
 		}
 	}
 
@@ -115,7 +115,7 @@ apa_scribe_makes_notes = {
 			limit = {
 				is_incapable = no
 				has_character_flag = generated_scribe
-				NOT = { this = scope:host }
+				this != scope:host
 			}
 			save_scope_as = first
 		}
@@ -193,7 +193,7 @@ apa_spouse_learns_something = {
 			is_incapable = no
 			is_consort_of = scope:host
 			NOT = { has_character_flag = skill_increase_flag }
-			NOT = { this = scope:host }
+			this != scope:host
 		}
 		scope:activity = {
 			OR = {
@@ -218,7 +218,7 @@ apa_spouse_learns_something = {
 			limit = {
 				is_incapable = no
 				is_consort_of = scope:host
-				NOT = { this = scope:host }
+				this != scope:host
 			}
 			save_scope_as = first
 			add_character_flag = {
@@ -336,7 +336,7 @@ apa_entourage_stops_pickpocket = {
 			is_incapable = no
 			age >= 14
 			prowess >= 8
-			NOT = { this = scope:host }
+			this != scope:host
 		}
 	}
 
@@ -353,7 +353,7 @@ apa_entourage_stops_pickpocket = {
 				is_incapable = no
 				age >= 14
 				prowess >= 8
-				NOT = { this = scope:host }
+				this != scope:host
 			}
 			save_scope_as = first
 		}
@@ -376,7 +376,7 @@ apa_cultural_mingling = {
 
 	is_valid = {
 		is_current_phase_active = yes
-		NOT = { scope:host.location.culture = scope:host.culture }
+		scope:host.location.culture != scope:host.culture
 		scope:host = { has_activity_intent = journey_curiosity_intent }
 	}
 
@@ -440,7 +440,7 @@ apa_regional_story = {
 
 	is_valid = {
 		is_current_phase_active = yes
-		NOT = { scope:host.location.culture = scope:host.culture }
+		scope:host.location.culture != scope:host.culture
 	}
 
 	weight = {

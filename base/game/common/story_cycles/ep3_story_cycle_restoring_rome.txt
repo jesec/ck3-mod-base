@@ -17,10 +17,17 @@ ep3_story_cycle_restoring_rome = {
 	on_owner_death = {
 		if = {
 			limit = {
-				story_owner = { has_title = title:e_roman_empire }
-				title:e_roman_empire.current_heir = { is_ai = no }
+				story_owner = { has_title = title:h_roman_empire }
+				title:h_roman_empire.current_heir = { is_ai = no }
 			}
-			make_story_owner = title:e_roman_empire.current_heir
+			make_story_owner = title:h_roman_empire.current_heir
+		}
+		else_if = {
+			limit = {
+				story_owner = { has_title = title:h_eastern_roman_empire }
+				title:h_eastern_roman_empire.current_heir = { is_ai = no }
+			}
+			make_story_owner = title:h_eastern_roman_empire.current_heir
 		}
 		else_if = {
 			limit = {
@@ -39,7 +46,7 @@ ep3_story_cycle_restoring_rome = {
 		trigger = {
 			story_owner = {
 				is_ai = no
-				has_title = title:e_roman_empire
+				is_roman_emperor_excluding_byzantium_trigger = yes
 			}
 			has_variable = roman_empire_hard_mode
 		}

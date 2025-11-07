@@ -60,7 +60,10 @@ overdue_taxes = {
 					
 					current_travel_plan ?= {
 						if = {
-							limit = { next_destination_province = root.task_contract_location }
+							limit = { 
+								next_destination_province = root.task_contract_location 
+								can_cancel = yes
+							}
 							cancel_travel_plan = yes
 						}
 					}
@@ -76,7 +79,7 @@ overdue_taxes = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -274,7 +277,7 @@ hoarding_mayor = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -313,7 +316,21 @@ hoarding_mayor = {
 		mayor_claim_gold = {
 			visible = no
 			effect = {
-				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					if = {
+						limit = {
+							secret_siphoned_treasury_is_valid_trigger = {
+								OWNER = root
+								TARGET = top_liege
+							}
+						}
+						add_secret = {
+							type = secret_siphoned_treasury
+							target = top_liege
+						}
+					}
+				}
 				save_scope_as = task_contract
 				task_contract_employer ?= {
 					pay_short_term_gold = {
@@ -422,6 +439,7 @@ bountiful_harvest = {
 
 	valid_to_create = {
 		valid_governor_contract_trigger = yes
+		sub_realm_size > 1
 	}
 
 	valid_to_keep = {
@@ -499,6 +517,9 @@ bountiful_harvest = {
 						limit = { has_trait = governor }
 						increase_governance_effect = { VALUE = 6 }
 					}
+					add_merit_if_relevant_effect = {
+						MERIT = minor_merit_value
+					}
 				}
 			}
 		}
@@ -515,6 +536,9 @@ bountiful_harvest = {
 						limit = { has_trait = governor }
 						increase_governance_effect = { VALUE = 6 }
 					}
+					add_merit_if_relevant_effect = {
+						MERIT = minor_merit_value
+					}
 				}
 			}
 		}
@@ -527,6 +551,9 @@ bountiful_harvest = {
 					add_prestige = {
 						value = minor_prestige_gain
 						multiply = governance_task_contract_tier_value
+					}
+					add_merit_if_relevant_effect = {
+						MERIT = minor_merit_value
 					}
 				}
 				task_contract_location.county = {
@@ -565,6 +592,9 @@ bountiful_harvest = {
 						min = 2
 					}
 					increase_governance_effect = { VALUE = 2 }
+					add_merit_if_relevant_effect = {
+						MERIT = minor_merit_value
+					}
 				}
 				task_contract_location.county = {
 					change_development_progress_with_overflow = 5
@@ -601,6 +631,21 @@ bountiful_harvest = {
 						custom_tooltip = harvest_claim_it_yourself_estate_tt
 					}
 					increase_governance_effect = { VALUE = -2 }
+					add_merit_if_relevant_effect = {
+						MERIT = minor_merit_loss
+					}
+					if = {
+						limit = {
+							secret_siphoned_treasury_is_valid_trigger = {
+								OWNER = root
+								TARGET = top_liege
+							}
+						}
+						add_secret = {
+							type = secret_siphoned_treasury
+							target = top_liege
+						}
+					}
 				}
 			}
 		}
@@ -665,7 +710,7 @@ rampant_bandits = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -681,6 +726,9 @@ rampant_bandits = {
 					change_influence = {
 						value = medium_influence_gain
 						multiply = governance_task_contract_tier_value
+					}
+					add_merit_if_relevant_effect = {
+						MERIT = minor_merit_value
 					}
 				}
 				task_contract_location.county = {
@@ -727,6 +775,9 @@ rampant_bandits = {
 						value = minor_gold_value
 						multiply = governance_task_contract_tier_value
 					}
+					add_merit_if_relevant_effect = {
+						MERIT = miniscule_merit_value
+					}
 					add_stewardship_lifestyle_xp = {
 						value = medium_lifestyle_experience
 						multiply = governance_task_contract_tier_value
@@ -743,6 +794,9 @@ rampant_bandits = {
 					add_dread = {
 						value = medium_dread_gain
 						multiply = governance_task_contract_tier_value
+					}
+					add_merit_if_relevant_effect = {
+						MERIT = miniscule_merit_value
 					}
 				}
 				task_contract_location.county = {
@@ -991,7 +1045,7 @@ inept_mayor = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -1123,7 +1177,7 @@ prov_investment = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -1312,7 +1366,7 @@ raiding_peasants = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -1454,7 +1508,7 @@ wild_predators = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -1654,7 +1708,7 @@ evil_presence = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -1814,7 +1868,7 @@ miraculous_healing = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -1967,7 +2021,7 @@ buried_treasure = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -2119,7 +2173,7 @@ public_land = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -2267,7 +2321,7 @@ mad_prophet = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -2451,7 +2505,7 @@ titles_sale = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -2596,7 +2650,7 @@ hungry_times = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
@@ -2760,7 +2814,7 @@ wartime_measures = {
 				custom_tooltip = admin_contract_success_tt_rewards
 			}
 		}
-		success_failure = {
+		failure_standard = {
 			positive = no
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }

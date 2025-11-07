@@ -40,7 +40,15 @@ bookmaker_cook_the_books = {
 		}
 		if = {
 			limit = {
+				has_treasury = no
 				monthly_character_income < monthly_court_position_task_cost_double
+			}
+			add = -500 #to force the switch to default task, the ai_will_do must be negative
+		}
+		else_if = {
+			limit = {
+				has_treasury = yes
+				monthly_character_treasury_income < monthly_court_position_task_cost_double
 			}
 			add = -500 #to force the switch to default task, the ai_will_do must be negative
 		}
@@ -54,10 +62,33 @@ bookmaker_distribute_bribes = {
 	cost = {
 		round = no
 		gold = {
-			add = {
-				value = monthly_court_position_task_cost_double
-				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
-				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost_double
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost_double
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
 			}
 		}
 	}
@@ -83,7 +114,15 @@ bookmaker_distribute_bribes = {
 		}
 		if = {
 			limit = {
+				has_treasury = no
 				monthly_character_income < monthly_court_position_task_cost_double
+			}
+			add = -500 #to force the switch to default task, the ai_will_do must be negative
+		}
+		else_if = {
+			limit = {
+				has_treasury = yes
+				monthly_character_treasury_income < monthly_court_position_task_cost_double
 			}
 			add = -500 #to force the switch to default task, the ai_will_do must be negative
 		}

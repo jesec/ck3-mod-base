@@ -23,7 +23,7 @@ child_witch_conversion_success_effect = {
 	every_in_list = {
 		list = witch_message
 		limit = {
-			NOT = { this = scope:child }
+			this != scope:child
 		}
 		save_scope_as = witch_knower
 		send_interface_message = {
@@ -46,9 +46,9 @@ child_witch_conversion_success_effect = {
 				}
 			}
 			random_secret = {
+				type = secret_witch
 				limit = {
 					NOT = { is_known_by = scope:child }
-					secret_type = secret_witch
 				}
 				reveal_to = scope:child
 			}
@@ -108,9 +108,7 @@ child_witch_conversion_critical_failure_effect = {
 		scope:child = {
 			scope:guardian = {
 				random_secret = {
-					limit = {
-						secret_type = secret_witch
-					}
+					type = secret_witch
 					save_scope_as = guardian_witch_secret
 					if = {
 						limit = { NOT = { is_known_by = scope:child } }

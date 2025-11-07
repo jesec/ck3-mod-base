@@ -27,7 +27,7 @@ basic_gained_camp_officer_effect = {
 		# Plus, some ripple consequences.
 		every_courtier = {
 			limit = {
-				NOT = { this = scope:employee }
+				this != scope:employee
 			}
 			# Friends'n'lovers.
 			if = {
@@ -42,9 +42,7 @@ basic_gained_camp_officer_effect = {
 			# Foes...
 			if = {
 				limit = {
-					OR = {
-						has_any_moderate_bad_relationship_with_character_trigger = { CHARACTER = scope:employee }
-					}
+					has_any_moderate_bad_relationship_with_character_trigger = { CHARACTER = scope:employee }
 				}
 				add_opinion = {
 					target = scope:liege
@@ -95,7 +93,7 @@ basic_revoked_camp_officer_effect = {
 		# Plus, some ripple consequences.
 		every_courtier = {
 			limit = {
-				NOT = { this = scope:employee }
+				this != scope:employee
 			}
 			# Friends'n'lovers.
 			if = {
@@ -110,9 +108,7 @@ basic_revoked_camp_officer_effect = {
 			# Foes...
 			if = {
 				limit = {
-					OR = {
-						has_any_moderate_bad_relationship_with_character_trigger = { CHARACTER = scope:employee }
-					}
+					has_any_moderate_bad_relationship_with_character_trigger = { CHARACTER = scope:employee }
 				}
 				remove_opinion = {
 					target = scope:liege

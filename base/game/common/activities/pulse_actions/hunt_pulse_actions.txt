@@ -1098,20 +1098,20 @@ hunt_poetic_inspiration = {
 
 	is_valid = {
 		is_current_phase_active = yes
-		any_attending_character = { has_trait = poet }
+		any_attending_character = { has_trait = lifestyle_poet }
 	}
 
 	weight = {
 		value = 1
 		every_attending_character = {
-			limit = { has_trait = poet }
+			limit = { has_trait = lifestyle_poet }
 			add = 0.5
 		}
 	}
 
 	effect = {
 		random_attending_character = {
-			limit = { has_trait = poet }
+			limit = { has_trait = lifestyle_poet }
 			weight = {
 				base = 1
 				modifier = {
@@ -1305,7 +1305,7 @@ hunt_distinguished_ability = {
 			}
 			every_attending_character = {
 				limit = {
-					NOT = { this = scope:hunter }
+					this != scope:hunter
 					has_trait = lifestyle_hunter
 				}
 				custom = hunt_every_hunter_attendee_tt
@@ -1317,7 +1317,7 @@ hunt_distinguished_ability = {
 			}
 			every_attending_character = {
 				limit = {
-					NOT = { this = scope:hunter }
+					this != scope:hunter
 					NOT = { has_trait = lifestyle_hunter }
 				}
 				custom = every_other_attendee_tt
@@ -1417,7 +1417,7 @@ hunt_impressive_grounds = {
 		exists = activity_location.province_owner
 		save_temporary_scope_as = hunt_temp
 		any_attending_character = {
-			NOT = { this = scope:hunt_temp.activity_location.province_owner }
+			this != scope:hunt_temp.activity_location.province_owner
 		}
 	}
 
@@ -1476,7 +1476,7 @@ hunt_impressive_grounds = {
 		activity_location.province_owner = { save_scope_as = first }
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:first }
+				this != scope:first
 			}
 			weight = {
 				base = 1

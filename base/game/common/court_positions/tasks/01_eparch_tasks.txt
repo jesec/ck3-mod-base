@@ -13,10 +13,33 @@ eparch_appease_populace = {
 	cost = {
 		round = no
 		gold = {
-			add = {
-				value = monthly_court_position_task_cost
-				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
-				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
 			}
 		}
 	}
@@ -91,17 +114,18 @@ eparch_appease_populace = {
 			
 			# Gold reasons
 			if = {
-				limit = { # Don't spend the extra gold if we can't afford it, assuming we are not greedy
-					NOT = { has_trait = greedy }
-					monthly_character_income_minus_expenses < { value = monthly_court_position_task_cost multiply = 2 }
+				limit = {
+					has_treasury = no
+					monthly_character_income < monthly_court_position_task_cost_double
 				}
-				multiply = 0
+				add = -1000
 			}
 			else_if = {
-				limit = { # Greedy character need to have a higher income
-					monthly_character_income_minus_expenses < { value = monthly_court_position_task_cost multiply = 4 }
+				limit = {
+					has_treasury = yes
+					monthly_character_treasury_income < monthly_court_position_task_cost_double
 				}
-				multiply = 0
+				add = -1000
 			}
 		}
 	}
@@ -118,10 +142,33 @@ eparch_support_troops = {
 	cost = {
 		round = no
 		gold = {
-			add = {
-				value = monthly_court_position_task_cost_double
-				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
-				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost_double
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost_double
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
 			}
 		}
 	}
@@ -184,7 +231,7 @@ eparch_support_troops = {
 			limit = { # Warlike AI should be more likely
 				OR = {
 					ai_has_warlike_personality = yes
-					ai_has_conqueror_personality = yes
+					has_variable = conqueror
 				}
 			}
 			add = 20
@@ -206,17 +253,18 @@ eparch_support_troops = {
 		
 		# Gold reasons
 		if = {
-			limit = { # Don't spend the extra gold if we can't afford it, assuming we are not greedy
-				NOT = { has_trait = greedy }
-				monthly_character_income_minus_expenses < { value = monthly_court_position_task_cost_double multiply = 2 }
+			limit = {
+				has_treasury = no
+				monthly_character_income < monthly_court_position_task_cost_double
 			}
-			multiply = 0
+			add = -1000
 		}
 		else_if = {
-			limit = { # Greedy character need to have a higher income
-				monthly_character_income_minus_expenses < { value = monthly_court_position_task_cost_double multiply = 4 }
+			limit = {
+				has_treasury = yes
+				monthly_character_treasury_income < monthly_court_position_task_cost_double
 			}
-			multiply = 0
+			add = -1000
 		}
 	}
 }
@@ -232,10 +280,33 @@ eparch_enforce_public_order = {
 	cost = {
 		round = no
 		gold = {
-			add = {
-				value = monthly_court_position_task_cost_double
-				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
-				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost_double
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost_double
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
 			}
 		}
 	}
@@ -336,17 +407,18 @@ eparch_enforce_public_order = {
 			
 			# Gold reasons
 			if = {
-				limit = { # Don't spend the extra gold if we can't afford it, assuming we are not greedy
-					NOT = { has_trait = greedy }
-					monthly_character_income_minus_expenses < { value = monthly_court_position_task_cost_double multiply = 2 }
+				limit = {
+					has_treasury = no
+					monthly_character_income < monthly_court_position_task_cost_double
 				}
-				multiply = 0
+				add = -1000
 			}
 			else_if = {
-				limit = { # Greedy character need to have a higher income
-					monthly_character_income_minus_expenses < { value = monthly_court_position_task_cost_double multiply = 4 }
+				limit = {
+					has_treasury = yes
+					monthly_character_treasury_income < monthly_court_position_task_cost_double
 				}
-				multiply = 0
+				add = -1000
 			}
 		}
 	}
@@ -363,11 +435,35 @@ eparch_development = {
 	cost = {
 		round = no
 		gold = {
-			add = {
-				value = monthly_court_position_task_cost
-				multiply = 4 # Quadruple the base cost
-				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
-				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost
+					multiply = 4 # Quadruple the base cost
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost
+					multiply = 4 # Quadruple the base cost
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
 			}
 		}
 	}
@@ -455,17 +551,18 @@ eparch_development = {
 		
 		# Gold reasons
 		if = {
-			limit = { # Don't spend the extra gold if we can't afford it, assuming we are not greedy
-				NOT = { has_trait = greedy }
-				monthly_character_income_minus_expenses < { value = monthly_court_position_task_cost_double multiply = 4 multiply = 2 }
+			limit = {
+				has_treasury = no
+				monthly_character_income < monthly_court_position_task_cost_double
 			}
-			multiply = 0
+			add = -1000
 		}
 		else_if = {
-			limit = { # Greedy character need to have a higher income
-				monthly_character_income_minus_expenses < { value = monthly_court_position_task_cost_double multiply = 4 multiply = 4 }
+			limit = {
+				has_treasury = yes
+				monthly_character_treasury_income < monthly_court_position_task_cost_double
 			}
-			multiply = 0
+			add = -1000
 		}
 	}
 }

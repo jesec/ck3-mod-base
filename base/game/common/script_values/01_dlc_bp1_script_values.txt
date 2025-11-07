@@ -1,16 +1,22 @@
-﻿house_feud_death_counter_value = {
-	value = var:house_feud_death_counter
-}
-
-house_feud_kill_counter_value = {
-	value = var:house_feud_kill_counter
-}
-
+﻿
 house_feud_balance_value = {
-	value = house_feud_kill_counter_value
-	subtract = house_feud_death_counter_value
+	value = 0
+	if = {
+		limit = {
+			any_relation_house = { var:house_feud_house_1 ?= root.house }
+		}
+		add = var:house_feud_house_1_score
+		subtract = var:house_feud_house_2_score
+	}
+	else_if = {
+		limit = {
+			any_relation_house = { var:house_feud_house_2 ?= root.house }
+		}
+		add = var:house_feud_house_2_score
+		subtract = var:house_feud_house_1_score
+	}
 }
 
-house_feud_small_counter_value = 0.5
+house_feud_minor_counter_value = 0.5
 house_feud_medium_counter_value = 1
-house_feud_big_counter_value = 2
+house_feud_major_counter_value = 2

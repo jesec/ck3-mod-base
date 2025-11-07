@@ -23,6 +23,16 @@ murder_attendee_intent = {
 		has_dlc_feature = advanced_activities
 		is_alive = yes
 		is_adult = yes
+		trigger_if = {
+			limit = {
+				OR = {
+					scope:special_option ?= flag:hunt_type_standard
+					scope:special_option ?= flag:hunt_type_falconry
+					scope:special_option ?= flag:hunt_type_nerge
+				}
+			}
+			can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = root }
+		}
 		NOT = { scope:special_option ?= flag:hunt_type_legendary }
 	}
 
@@ -85,7 +95,7 @@ murder_attendee_intent = {
 		if = {
 			limit = {
 				any_scheme = {
-					scheme_type = murder
+					type = murder
 					scheme_target_character = scope:target
 				}
 			}
@@ -132,30 +142,19 @@ woo_attendee_intent = {
 
 	# Handle target character invalidation
 	is_target_valid = {
+		is_adult = yes
 		scope:target = {
 			is_adult = yes
 			is_ai = yes
 		}
-		NOT = {
+		NOR = {
+			this = scope:target
 			has_relation_lover = scope:target
-		}
-		NOT = {
-			has_any_only_moderate_bad_relationship_with_character_trigger = { CHARACTER = scope:target }
+			has_relation_rival = scope:target
 		}
 		OR = {
 			has_perk = unshackled_lust_perk
 			is_attracted_to_gender_of = scope:target
-		}
-		OR = {
-			can_seduce_scheme_trigger = {
-				OWNER = root
-				TARGET = scope:target
-			}
-			is_scheming_against = {
-				type = seduce
-				target = scope:target
-			}
-			can_set_relation_lover_trigger = { CHARACTER = scope:target }
 		}
 		# Just opt out anyone who has a partner they'd never cheat on.
 		## It's possible for someone to still reach this state _after_ they become a woo target, but at least we're cutting it down to edge cases.
@@ -226,7 +225,7 @@ woo_attendee_intent = {
 		if = {
 			limit = {
 				any_scheme = {
-					scheme_type = seduce
+					type = seduce
 					scheme_target_character = scope:target
 				}
 			}
@@ -235,7 +234,7 @@ woo_attendee_intent = {
 		if = {
 			limit = {
 				any_scheme = {
-					scheme_type = courting
+					type = courting
 					scheme_target_character = scope:target
 				}
 			}
@@ -292,23 +291,11 @@ befriend_attendee_intent = {
 			is_ai = yes
 			is_adult = yes
 		}
-		NOT = {
+		NOR = {
 			has_relation_friend = scope:target
+			has_relation_rival = scope:target
 		}
-		NOT = {
-			has_any_only_moderate_bad_relationship_with_character_trigger = { CHARACTER = scope:target }
-		}
-		OR = {			
-			can_start_scheme = {
-				type = befriend
-				target_character = scope:target
-			}
-			is_scheming_against = {
-				type = befriend
-				target = scope:target
-			}
-			can_set_relation_friend_trigger = { CHARACTER = scope:target }
-		}
+		can_set_relation_friend_trigger = { CHARACTER = scope:target }
 	}
 
 	on_target_invalidated = {
@@ -330,7 +317,7 @@ befriend_attendee_intent = {
 		if = {
 			limit = {
 				any_scheme = {
-					scheme_type = befriend
+					type = befriend
 					scheme_target_character = scope:target
 				}
 			}

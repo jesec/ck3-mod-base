@@ -19,7 +19,7 @@
 # Watermills - Late Game Building - Massive Tax, Supply Limit, Building and Holding construction cost reduction, Holding Taxes, Dev Growth % and flat value
 # Qanats - Cultural Building - Dev Growth % and flat value, Supply Limit, Travel bonus
 # Murex Farms - Mediterranean Building - Influence, Dev Growth % and flat value, Tax
-
+# Waterworks - is in India, Southeast Asia, or China, prov is county captain and terrain is NOT mountains or desert mountains
 
 ### caravanserai
 
@@ -147,23 +147,24 @@ caravanserai_01 = {
 		development_growth = normal_building_development_growth_tier_1
 		travel_danger = -1
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = caravanserai_02
 
 	type_icon = "icon_building_caravanserai.dds"
 	
 	ai_value = {
-		base = 20
+		base = 10
 		ai_tier_1_building_modifier = yes
 		ai_tier_1_economical_building_preference_modifier = yes
 		ai_general_building_modifier = yes
 		directive_to_build_economy_modifier = yes
 		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-		modifier = {
-			factor = 2
+			add = 2
 			AND = {
 				building_watermills_requirement_terrain = yes
 				building_windmills_requirement_terrain = yes
@@ -221,6 +222,11 @@ caravanserai_02 = {
 		men_at_arms_maintenance = normal_building_maa_maintenance_tier_2
 		mercenary_hire_cost_mult = normal_building_maa_maintenance_tier_2
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = caravanserai_03
 	ai_value = {
@@ -270,6 +276,11 @@ caravanserai_03 = {
 		men_at_arms_maintenance = normal_building_maa_maintenance_tier_3
 		mercenary_hire_cost_mult = normal_building_maa_maintenance_tier_3
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = caravanserai_04
 	ai_value = {
@@ -316,6 +327,11 @@ caravanserai_04 = {
 		men_at_arms_maintenance = normal_building_maa_maintenance_tier_4
 		mercenary_hire_cost_mult = normal_building_maa_maintenance_tier_4
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = caravanserai_05
 	ai_value = {
@@ -361,6 +377,11 @@ caravanserai_05 = {
 	character_modifier = {
 		men_at_arms_maintenance = normal_building_maa_maintenance_tier_5
 		mercenary_hire_cost_mult = normal_building_maa_maintenance_tier_5
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = caravanserai_06
@@ -409,6 +430,11 @@ caravanserai_06 = {
 		mercenary_hire_cost_mult = normal_building_maa_maintenance_tier_6
 		#small artifact quality bonus if TIT-40761 gets implemented
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = caravanserai_07
 	ai_value = {
@@ -455,6 +481,11 @@ caravanserai_07 = {
 	character_modifier = {
 		men_at_arms_maintenance = normal_building_maa_maintenance_tier_7
 		mercenary_hire_cost_mult = normal_building_maa_maintenance_tier_7
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = caravanserai_08
@@ -503,6 +534,11 @@ caravanserai_08 = {
 		men_at_arms_maintenance = normal_building_maa_maintenance_tier_8
 		mercenary_hire_cost_mult = normal_building_maa_maintenance_tier_8
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -530,7 +566,7 @@ watermills_01 = {
 		building_requirement_castle_city_church = { LEVEL = 01 }
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOR = {
 					scope:holder.culture = {
 						has_cultural_parameter = next_level_w_mills
 					}
@@ -545,6 +581,9 @@ watermills_01 = {
 		}
 		trigger_else = {
 			OR = {
+				scope:holder.culture = {
+					has_innovation = innovation_windmills
+				}
 				scope:holder.culture = {
 					has_cultural_parameter = next_level_w_mills
 					has_innovation = innovation_manorialism
@@ -607,6 +646,11 @@ watermills_01 = {
 	
 	county_modifier = {
 		development_growth = good_building_development_growth_tier_1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = watermills_02
@@ -698,6 +742,11 @@ watermills_02 = {
 	county_modifier = {
 		development_growth = good_building_development_growth_tier_2
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = watermills_03
 	ai_value = {
@@ -745,12 +794,10 @@ watermills_03 = {
 		}
 		trigger_else = {
 			OR = {
-				AND = {
-					scope:holder.culture = {
+				scope:holder.culture = {
 						has_cultural_parameter = next_level_w_mills
 						has_innovation = innovation_windmills
 					}
-				}
 				AND = {
 					has_building_or_higher = logging_camps_04
 					culture = {
@@ -779,6 +826,11 @@ watermills_03 = {
 		development_growth = good_building_development_growth_tier_3
 		development_growth_factor = normal_building_development_growth_factor_tier_1
 		tax_mult = normal_building_tax_mult_tier_1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = watermills_04
@@ -823,12 +875,10 @@ watermills_04 = {
 		}
 		trigger_else = {
 			OR = {
-				AND = {
-					scope:holder.culture = {
+				scope:holder.culture = {
 						has_cultural_parameter = next_level_w_mills
 						has_innovation = innovation_windmills
 					}
-				}
 				AND = {
 					has_building_or_higher = logging_camps_04
 					culture = {
@@ -857,6 +907,11 @@ watermills_04 = {
 		development_growth_factor = normal_building_development_growth_factor_tier_2
 		development_growth = good_building_development_growth_tier_4
 		tax_mult = normal_building_tax_mult_tier_2
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = watermills_05
@@ -913,6 +968,11 @@ watermills_05 = {
 		development_growth_factor = normal_building_development_growth_factor_tier_3
 		development_growth = good_building_development_growth_tier_5
 		tax_mult = normal_building_tax_mult_tier_3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = watermills_06
@@ -973,6 +1033,11 @@ watermills_06 = {
 		development_growth = good_building_development_growth_tier_6
 		tax_mult = normal_building_tax_mult_tier_4
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = watermills_07
 	ai_value = {
@@ -1031,6 +1096,11 @@ watermills_07 = {
 		development_growth_factor = normal_building_development_growth_factor_tier_5
 		development_growth = good_building_development_growth_tier_7
 		tax_mult = normal_building_tax_mult_tier_5
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = watermills_08
@@ -1091,6 +1161,11 @@ watermills_08 = {
 		development_growth = good_building_development_growth_tier_8
 		tax_mult = normal_building_tax_mult_tier_6
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -1118,7 +1193,7 @@ windmills_01 = {
 		building_requirement_castle_city_church = { LEVEL = 01 }
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOR = {
 					scope:holder.culture = {
 						has_cultural_parameter = next_level_w_mills
 					}
@@ -1133,6 +1208,9 @@ windmills_01 = {
 		}
 		trigger_else = {
 			OR = {
+				scope:holder.culture = {
+					has_innovation = innovation_windmills
+				}
 				scope:holder.culture = {
 					has_cultural_parameter = next_level_w_mills
 					has_innovation = innovation_manorialism
@@ -1195,6 +1273,11 @@ windmills_01 = {
 	county_modifier = {
 		development_growth_factor = good_building_development_growth_factor_tier_1
 		development_growth = good_building_development_growth_tier_1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = windmills_02
@@ -1290,6 +1373,11 @@ windmills_02 = {
 		development_growth_factor = good_building_development_growth_factor_tier_2
 		development_growth = good_building_development_growth_tier_2
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = windmills_03
 	ai_value = {
@@ -1366,6 +1454,11 @@ windmills_03 = {
 		development_growth_factor = good_building_development_growth_factor_tier_3
 		development_growth = good_building_development_growth_tier_3
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = windmills_04
 	ai_value = {
@@ -1436,6 +1529,11 @@ windmills_04 = {
 		development_growth_factor = good_building_development_growth_factor_tier_4
 		development_growth = good_building_development_growth_tier_4
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = windmills_05
 	ai_value = {
@@ -1489,6 +1587,11 @@ windmills_05 = {
 	county_modifier = {
 		development_growth_factor = good_building_development_growth_factor_tier_5
 		development_growth = good_building_development_growth_tier_5
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = windmills_06
@@ -1547,6 +1650,11 @@ windmills_06 = {
 		development_growth_factor = good_building_development_growth_factor_tier_6
 		development_growth = good_building_development_growth_tier_6
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = windmills_07
 	ai_value = {
@@ -1603,6 +1711,11 @@ windmills_07 = {
 	county_modifier = {
 		development_growth_factor = good_building_development_growth_factor_tier_7
 		development_growth = good_building_development_growth_tier_7
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = windmills_08
@@ -1661,12 +1774,2482 @@ windmills_08 = {
 		development_growth_factor = good_building_development_growth_factor_tier_8
 		development_growth = good_building_development_growth_tier_8
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
 		ai_general_building_modifier = yes
 		directive_to_build_economy_modifier = yes
 		ai_economical_building_preference_modifier = yes
+	}
+}
+
+
+
+
+# Qanats
+
+qanats_01 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_qanats_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+
+	is_enabled = {
+		is_county_capital = yes
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_1_cost
+
+	province_modifier = {
+		monthly_income = poor_building_tax_tier_1
+		supply_limit = normal_building_supply_limit_tier_1
+	}
+
+	county_modifier = {
+		development_growth_factor = good_building_development_growth_factor_tier_1
+		development_growth = good_building_development_growth_tier_1
+		travel_danger = -1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = qanats_02
+
+	type_icon = "icon_building_qanats.dds"
+
+	ai_value = {
+		base = 20
+		ai_tier_1_building_modifier = yes
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+	}
+}
+
+qanats_02 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_qanats_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_2_cost
+
+	province_modifier = {
+		monthly_income = poor_building_tax_tier_2
+		supply_limit = normal_building_supply_limit_tier_2
+	}
+
+	county_modifier = {
+		development_growth_factor = good_building_development_growth_factor_tier_2
+		development_growth = good_building_development_growth_tier_2
+		travel_danger = -2
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = qanats_03
+
+	type_icon = "icon_building_qanats.dds"
+
+	ai_value = {
+		base = 9
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+	}
+}
+
+qanats_03 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_qanats_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 02 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_3_cost
+
+	province_modifier = {
+		monthly_income = poor_building_tax_tier_3
+		supply_limit = normal_building_supply_limit_tier_3
+		build_speed = normal_building_build_speed_tier_3
+	}
+
+	county_modifier = {
+		development_growth_factor = good_building_development_growth_factor_tier_3
+		development_growth = good_building_development_growth_tier_3
+		travel_danger = -3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = qanats_04
+
+	type_icon = "icon_building_qanats.dds"
+
+	ai_value = {
+		base = 8
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+	}
+}
+
+qanats_04 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_qanats_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 02 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_4_cost
+
+	province_modifier = {
+		monthly_income = poor_building_tax_tier_4
+		supply_limit = normal_building_supply_limit_tier_4
+		build_speed = normal_building_build_speed_tier_4
+	}
+
+	county_modifier = {
+		development_growth_factor = good_building_development_growth_factor_tier_4
+		development_growth = good_building_development_growth_tier_4
+		travel_danger = -4
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = qanats_05
+
+	type_icon = "icon_building_qanats.dds"
+
+	ai_value = {
+		base = 7
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+	}
+}
+
+qanats_05 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_qanats_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 03 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_5_cost
+
+	province_modifier = {
+		monthly_income = poor_building_tax_tier_5
+		supply_limit = normal_building_supply_limit_tier_5
+		build_speed = normal_building_build_speed_tier_5
+	}
+
+	county_modifier = {
+		development_growth_factor = good_building_development_growth_factor_tier_5
+		development_growth = good_building_development_growth_tier_5
+		travel_danger = -5
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	effect_desc =  unlocks_cereal_fields_and_orchards
+
+	next_building = qanats_06
+
+	type_icon = "icon_building_qanats.dds"
+
+	ai_value = {
+		base = 6
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+	}
+}
+
+qanats_06 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_qanats_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 03 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_6_cost
+
+	province_modifier = {
+		monthly_income = poor_building_tax_tier_6
+		supply_limit = normal_building_supply_limit_tier_6
+		build_speed = normal_building_build_speed_tier_6
+	}
+
+	county_modifier = {
+		development_growth_factor = good_building_development_growth_factor_tier_6
+		development_growth = good_building_development_growth_tier_6
+		travel_danger = -6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	effect_desc =  unlocks_cereal_fields_and_orchards
+
+	next_building = qanats_07
+
+	type_icon = "icon_building_qanats.dds"
+
+	ai_value = {
+		base = 5
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+	}
+}
+
+qanats_07 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_qanats_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 04 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_7_cost
+
+	province_modifier = {
+		monthly_income = poor_building_tax_tier_7
+		supply_limit = normal_building_supply_limit_tier_7
+		build_speed = normal_building_build_speed_tier_7
+	}
+
+	character_modifier = {
+		negate_health_penalty_add = 0.1
+	}
+
+	county_modifier = {
+		development_growth_factor = good_building_development_growth_factor_tier_7
+		development_growth = good_building_development_growth_tier_7
+		travel_danger = -7
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	effect_desc =  unlocks_cereal_fields_and_orchards
+
+	next_building = qanats_08
+
+	type_icon = "icon_building_qanats.dds"
+
+	ai_value = {
+		base = 4
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+	}
+}
+
+qanats_08 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_qanats_requirement_terrain = yes
+		building_requirement_castle_city_church = { LEVEL = 04 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_8_cost
+
+	province_modifier = {
+		monthly_income = poor_building_tax_tier_8
+		supply_limit = normal_building_supply_limit_tier_8
+		build_speed = normal_building_build_speed_tier_8
+	}
+
+	character_modifier = {
+		negate_health_penalty_add = 0.2
+	}
+
+	county_modifier = {
+		development_growth_factor = good_building_development_growth_factor_tier_8
+		development_growth = good_building_development_growth_tier_8
+		travel_danger = -8
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	effect_desc =  unlocks_cereal_fields_and_orchards
+
+
+	type_icon = "icon_building_qanats.dds"
+
+	ai_value = {
+		base = 3
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+	}
+}
+
+# Murex Farms
+
+murex_farm_01 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_murex_farm_requirement_terrain = yes
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_1_cost
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_1
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_1
+		development_growth = normal_building_development_growth_tier_1
+	}
+
+	character_modifier = {
+		monthly_influence = 0.1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = murex_farm_02
+
+	type_icon = "icon_building_murex_farms.dds"
+
+	ai_value = {
+		base = 14
+		ai_tier_1_building_modifier = yes
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+		modifier = {
+			factor = 2
+			scope:holder = {
+				government_has_flag = government_is_administrative
+			}
+		}
+	}
+}
+
+murex_farm_02 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_murex_farm_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_2_cost
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_2
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_2
+		development_growth = normal_building_development_growth_tier_2
+	}
+
+	character_modifier = {
+		monthly_influence = 0.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = murex_farm_03
+
+	type_icon = "icon_building_murex_farms.dds"
+
+	ai_value = {
+		base = 9
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+murex_farm_03 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_murex_farm_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 02 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_3_cost
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_3
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_3
+		development_growth = normal_building_development_growth_tier_3
+	}
+
+	character_modifier = {
+		monthly_influence = 0.6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = murex_farm_04
+
+	type_icon = "icon_building_murex_farms.dds"
+
+	ai_value = {
+		base = 8
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+murex_farm_04 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_murex_farm_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 02 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_4_cost
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_4
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_4
+		development_growth = normal_building_development_growth_tier_4
+	}
+
+	character_modifier = {
+		monthly_influence = 1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = murex_farm_05
+
+	type_icon = "icon_building_murex_farms.dds"
+
+	ai_value = {
+		base = 7
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+murex_farm_05 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_murex_farm_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 03 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_5_cost
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_5
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_5
+		development_growth = normal_building_development_growth_tier_5
+	}
+
+	character_modifier = {
+		monthly_influence = 1.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = murex_farm_06
+
+	type_icon = "icon_building_murex_farms.dds"
+
+	ai_value = {
+		base = 6
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+murex_farm_06 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_murex_farm_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 03 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_6_cost
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_6
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_6
+		development_growth = normal_building_development_growth_tier_6
+	}
+
+	character_modifier = {
+		monthly_influence = 1.8
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = murex_farm_07
+
+	type_icon = "icon_building_murex_farms.dds"
+
+	ai_value = {
+		base = 5
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+murex_farm_07 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_murex_farm_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 04 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_7_cost
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_7
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_7
+		development_growth = normal_building_development_growth_tier_7
+	}
+
+	character_modifier = {
+		monthly_influence = 2.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = murex_farm_08
+
+	type_icon = "icon_building_murex_farms.dds"
+
+	ai_value = {
+		base = 4
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+murex_farm_08 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_murex_farm_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 04 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_8_cost
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_8
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_8
+		development_growth = normal_building_development_growth_tier_8
+	}
+
+	character_modifier = {
+		monthly_influence = 3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	type_icon = "icon_building_murex_farms.dds"
+
+	ai_value = {
+		base = 3
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+### paddy_fields
+
+paddy_fields_01 = {
+	construction_time = standard_construction_time
+	effect_desc = paddy_fields_effect_desc
+
+	can_construct_potential = {
+		building_paddy_fields_requirement_terrain = yes
+	}
+
+	can_construct = {
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+	
+	cost_gold = normal_building_tier_1_cost
+	
+	province_modifier = {
+		monthly_income = good_building_tax_tier_1
+	}
+	province_terrain_modifier = {
+		terrain = terraced_hills
+		development_growth_factor = 0.02
+	}
+	province_terrain_modifier = {
+		terrain = floodplains
+		development_growth_factor = 0.02
+	}
+	
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = terraced_hills
+		tax_mult = innovation_champa_rice_tax_mult_value_1
+		levy_size = innovation_champa_rice_levy_size_value_1
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = wetlands
+		tax_mult = innovation_champa_rice_tax_mult_value_1
+		levy_size = innovation_champa_rice_levy_size_value_1
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = floodplains
+		tax_mult = innovation_champa_rice_tax_mult_value_1
+		levy_size = innovation_champa_rice_levy_size_value_1
+	}
+
+	province_culture_modifier = {
+		parameter = collective_lands_farms_bonuses
+		stationed_maa_damage_mult = normal_maa_damage_tier_1
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_1
+	}
+	province_culture_modifier = {
+		parameter = brewery_farming_bonus
+		county_opinion_add = 2
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+	
+	next_building = paddy_fields_02
+	
+	type_icon = "building_rice.dds"
+	
+	ai_value = {
+		base = 15 # paddy fields should take priority when possible
+		ai_tier_1_building_modifier = yes
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_paddy_fields_improvement_from_culture_modifier = yes # Only on the level 1 to secure having pasture when the AI is from an appropriate culture
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+		modifier = {
+			factor = 2
+			scope:holder.culture = { has_innovation = innovation_champa_rice }
+		}
+		modifier = {
+			factor = 0
+			scope:holder.culture = { has_innovation = innovation_champa_rice } # this also allows farm estates to be built in rice fields
+			NOT = {
+				has_building_or_higher = farm_estates_01
+			}
+		}
+		modifier = {
+			factor = 0
+			building_orchards_requirement_terrain = yes
+			NOT = {
+				has_building_or_higher = orchards_01
+			}
+		}
+	}
+}
+
+paddy_fields_02 = {
+	construction_time = standard_construction_time
+	effect_desc = paddy_fields_effect_desc
+
+	can_construct_potential = {
+		building_paddy_fields_requirement_terrain = yes
+	}
+
+	can_construct = {
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+	
+	cost_gold = normal_building_tier_2_cost
+	
+	province_modifier = {
+		monthly_income = good_building_tax_tier_2
+	}
+	province_terrain_modifier = {
+		terrain = terraced_hills
+		development_growth_factor = 0.04
+	}
+
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = terraced_hills
+		tax_mult = innovation_champa_rice_tax_mult_value_1
+		levy_size = innovation_champa_rice_levy_size_value_1
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = wetlands
+		tax_mult = innovation_champa_rice_tax_mult_value_1
+		levy_size = innovation_champa_rice_levy_size_value_1
+	}
+
+	province_culture_modifier = {
+		parameter = collective_lands_farms_bonuses
+		stationed_maa_damage_mult = normal_maa_damage_tier_2
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_2
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+	
+	next_building = paddy_fields_03
+	
+	ai_value = {
+		base = 9
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+		modifier = { # Fill all building slots before going for upgrades
+			factor = 0
+			free_building_slots > 0
+		}
+	}
+}
+
+paddy_fields_03 = {
+	construction_time = standard_construction_time
+	effect_desc = paddy_fields_effect_desc
+
+	can_construct_potential = {
+		building_paddy_fields_requirement_terrain = yes
+	}
+
+	can_construct = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					scope:holder.culture = {
+						has_cultural_parameter = rice_cultivators_next_level_paddy_fields
+					}
+				}
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+			scope:holder.culture = {
+				has_innovation = innovation_manorialism
+			}
+		}
+		trigger_else = {
+			scope:holder.culture = {
+				has_cultural_parameter = rice_cultivators_next_level_paddy_fields
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+	
+	cost_gold = normal_building_tier_3_cost
+	
+	province_modifier = {
+		monthly_income = good_building_tax_tier_3
+	}
+	province_terrain_modifier = {
+		terrain = terraced_hills
+		development_growth_factor = 0.06
+	}
+	
+	county_modifier = {
+		supply_limit = 400
+	}
+
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = terraced_hills
+		tax_mult = innovation_champa_rice_tax_mult_value_2
+		levy_size = innovation_champa_rice_levy_size_value_2
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_2
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = wetlands
+		tax_mult = innovation_champa_rice_tax_mult_value_2
+		levy_size = innovation_champa_rice_levy_size_value_2
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_2
+	}
+
+	province_culture_modifier = {
+		parameter = collective_lands_farms_bonuses
+		stationed_maa_damage_mult = normal_maa_damage_tier_3
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+	
+	next_building = paddy_fields_04
+	
+	ai_value = {
+		base = 8
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+	}
+}
+
+paddy_fields_04 = {
+	construction_time = standard_construction_time
+	effect_desc = paddy_fields_effect_desc
+
+	can_construct_potential = {
+		building_cereal_fields_requirement_terrain = yes
+	}
+
+	can_construct = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					scope:holder.culture = {
+						has_cultural_parameter = rice_cultivators_next_level_paddy_fields
+					}
+				}
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+			scope:holder.culture = {
+				has_innovation = innovation_manorialism
+			}
+		}
+		trigger_else = {
+			scope:holder.culture = {
+				has_cultural_parameter = rice_cultivators_next_level_paddy_fields
+			}
+			building_requirement_castle_city_church = { LEVEL = 01 }
+		}
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+	
+	cost_gold = normal_building_tier_4_cost
+	
+	province_modifier = {
+		monthly_income = good_building_tax_tier_4
+	}
+	province_terrain_modifier = {
+		terrain = terraced_hills
+		development_growth_factor = 0.08
+	}
+	
+	county_modifier = {
+		supply_limit = 400
+		development_growth_factor = 0.05
+	}
+
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = terraced_hills
+		tax_mult = innovation_champa_rice_tax_mult_value_2
+		levy_size = innovation_champa_rice_levy_size_value_2
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_2
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = wetlands
+		tax_mult = innovation_champa_rice_tax_mult_value_2
+		levy_size = innovation_champa_rice_levy_size_value_2
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_2
+	}
+
+	province_culture_modifier = {
+		parameter = collective_lands_farms_bonuses
+		stationed_maa_damage_mult = normal_maa_damage_tier_4
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_4
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+	
+	next_building = paddy_fields_05
+	
+	ai_value = {
+		base = 7
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+	}
+}
+
+paddy_fields_05 = {
+	construction_time = standard_construction_time
+	effect_desc = paddy_fields_effect_desc
+
+	can_construct_potential = {
+		building_paddy_fields_requirement_terrain = yes
+	}
+
+	can_construct = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					scope:holder.culture = {
+						has_cultural_parameter = rice_cultivators_next_level_paddy_fields
+					}
+				}
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+			scope:holder.culture = {
+				has_innovation = innovation_guilds
+			}
+		}
+		trigger_else = {
+			scope:holder.culture = {
+				has_cultural_parameter = vegetarian_next_level_cereal_fields
+			}
+			scope:holder.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+	
+	cost_gold = normal_building_tier_5_cost
+	
+	province_modifier = {
+		monthly_income = good_building_tax_tier_5
+	}
+	province_terrain_modifier = {
+		terrain = terraced_hills
+		development_growth_factor = 0.12
+	}
+	
+	county_modifier = {
+		supply_limit = 400
+		development_growth_factor = 0.05
+		supply_limit_mult = 0.05
+	}
+
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = terraced_hills
+		tax_mult = innovation_champa_rice_tax_mult_value_3
+		levy_size = innovation_champa_rice_levy_size_value_3
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_3
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = wetlands
+		tax_mult = innovation_champa_rice_tax_mult_value_3
+		levy_size = innovation_champa_rice_levy_size_value_3
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_3
+	}
+
+	province_culture_modifier = {
+		parameter = collective_lands_farms_bonuses
+		stationed_maa_damage_mult = normal_maa_damage_tier_5
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_5
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+	
+	next_building = paddy_fields_06
+	
+	ai_value = {
+		base = 6
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+	}
+}
+
+paddy_fields_06 = {
+	construction_time = standard_construction_time
+	effect_desc = paddy_fields_effect_desc
+
+	can_construct_potential = {
+		building_paddy_fields_requirement_terrain = yes
+	}
+
+	can_construct = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					scope:holder.culture = {
+						has_cultural_parameter = rice_cultivators_next_level_paddy_fields
+					}
+				}
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+			scope:holder.culture = {
+				has_innovation = innovation_guilds
+			}
+		}
+		trigger_else = {
+			scope:holder.culture = {
+				has_cultural_parameter = vegetarian_next_level_cereal_fields
+			}
+			scope:holder.culture = {
+				has_innovation = innovation_manorialism
+			}
+			building_requirement_castle_city_church = { LEVEL = 02 }
+		}
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+	
+	cost_gold = normal_building_tier_6_cost
+	
+	province_modifier = {
+		monthly_income = good_building_tax_tier_6
+	}
+	province_terrain_modifier = {
+		terrain = terraced_hills
+		development_growth_factor = 0.16
+	}
+	
+	county_modifier = {
+		supply_limit = 400
+		development_growth_factor = 0.05
+		supply_limit_mult = 0.05
+		church_holding_build_gold_cost = -0.05
+	}
+
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = terraced_hills
+		tax_mult = innovation_champa_rice_tax_mult_value_3
+		levy_size = innovation_champa_rice_levy_size_value_3
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_3
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = wetlands
+		tax_mult = innovation_champa_rice_tax_mult_value_3
+		levy_size = innovation_champa_rice_levy_size_value_3
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_3
+	}
+
+	province_culture_modifier = {
+		parameter = collective_lands_farms_bonuses
+		stationed_maa_damage_mult = normal_maa_damage_tier_6
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+	
+	next_building = paddy_fields_07
+	
+	ai_value = {
+		base = 5
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+	}
+}
+
+paddy_fields_07 = {
+	construction_time = standard_construction_time
+	effect_desc = paddy_fields_effect_desc
+
+	can_construct_potential = {
+		building_paddy_fields_requirement_terrain = yes
+	}
+
+	can_construct = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					scope:holder.culture = {
+						has_cultural_parameter = rice_cultivators_next_level_paddy_fields
+					}
+				}
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+			scope:holder.culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+		trigger_else = {
+			scope:holder.culture = {
+				has_cultural_parameter = vegetarian_next_level_cereal_fields
+			}
+			scope:holder.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+	}
+	
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	cost_gold = normal_building_tier_7_cost
+	
+	province_modifier = {
+		monthly_income = good_building_tax_tier_7
+	}
+	province_terrain_modifier = {
+		terrain = terraced_hills
+		development_growth_factor = 0.18
+	}
+	
+	county_modifier = {
+		levy_reinforcement_rate = 0.05
+		supply_limit = 400
+		development_growth_factor = 0.05
+		supply_limit_mult = 0.05
+		city_holding_build_gold_cost = -0.05
+	}
+
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = terraced_hills
+		tax_mult = innovation_champa_rice_tax_mult_value_4
+		levy_size = innovation_champa_rice_levy_size_value_4
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_4
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = wetlands
+		tax_mult = innovation_champa_rice_tax_mult_value_4
+		levy_size = innovation_champa_rice_levy_size_value_4
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_4
+	}
+
+	province_culture_modifier = {
+		parameter = collective_lands_farms_bonuses
+		stationed_maa_damage_mult = normal_maa_damage_tier_7
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_7
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+	
+	next_building = paddy_fields_08
+	
+	ai_value = {
+		base = 4
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+	}
+}
+
+paddy_fields_08 = {
+	construction_time = standard_construction_time
+	effect_desc = paddy_fields_effect_desc
+
+	can_construct_potential = {
+		building_paddy_fields_requirement_terrain = yes
+	}
+
+	can_construct = {
+		trigger_if = {
+			limit = {
+				NOT = {
+					scope:holder.culture = {
+						has_cultural_parameter = rice_cultivators_next_level_paddy_fields
+					}
+				}
+			}
+			building_requirement_castle_city_church = { LEVEL = 04 }
+			scope:holder.culture = {
+				has_innovation = innovation_cranes
+			}
+		}
+		trigger_else = {
+			scope:holder.culture = {
+				has_cultural_parameter = vegetarian_next_level_cereal_fields
+			}
+			scope:holder.culture = {
+				has_innovation = innovation_guilds
+			}
+			building_requirement_castle_city_church = { LEVEL = 03 }
+		}
+	}
+	
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+	}
+
+	cost_gold = normal_building_tier_8_cost
+	
+	province_modifier = {
+		monthly_income = good_building_tax_tier_8
+	}
+	province_terrain_modifier = {
+		terrain = terraced_hills
+		development_growth_factor = 0.20
+	}
+	
+	county_modifier = {
+		levy_reinforcement_rate = 0.05
+		supply_limit = 1600
+		development_growth_factor = 0.05
+		supply_limit_mult = 0.05
+		city_holding_build_gold_cost = -0.05
+	}
+
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = terraced_hills
+		tax_mult = innovation_champa_rice_tax_mult_value_4
+		levy_size = innovation_champa_rice_levy_size_value_4
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_4
+	}
+	province_terrain_modifier = {
+		parameter = champa_rice_building_bonuses
+		terrain = wetlands
+		tax_mult = innovation_champa_rice_tax_mult_value_4
+		levy_size = innovation_champa_rice_levy_size_value_4
+		development_growth_factor = innovation_champa_rice_development_growth_factor_value_4
+	}
+
+	province_culture_modifier = {
+		parameter = collective_lands_farms_bonuses
+		stationed_maa_damage_mult = normal_maa_damage_tier_8
+		stationed_maa_toughness_mult = normal_maa_toughness_tier_8
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+	
+	ai_value = {
+		base = 3
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		ai_economical_building_preference_modifier = yes
+	}
+}
+
+# Spice plantations
+
+spice_plantation_01 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_spice_plantation_requirement_terrain = yes
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_1_cost
+
+	character_modifier = {
+		monthly_prestige = 0.03
+	}
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_1
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 0.1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = spice_plantation_02
+
+	type_icon = "icon_building_spice_plantation.dds"
+
+	ai_value = {
+		base = 12
+		ai_tier_1_building_modifier = yes
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+		modifier = {
+			factor = 2
+			scope:holder = {
+				government_has_flag = government_is_administrative
+			}
+		}
+	}
+}
+
+spice_plantation_02 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_spice_plantation_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_2_cost
+
+	character_modifier = {
+		monthly_prestige = 0.06
+	}
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_2
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 0.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = spice_plantation_03
+
+	type_icon = "icon_building_spice_plantation.dds"
+
+	ai_value = {
+		base = 9
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+spice_plantation_03 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_spice_plantation_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 02 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_3_cost
+
+	character_modifier = {
+		monthly_prestige = 0.09
+	}
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_3
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 0.6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = spice_plantation_04
+
+	type_icon = "icon_building_spice_plantation.dds"
+
+	ai_value = {
+		base = 8
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+spice_plantation_04 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_spice_plantation_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 02 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_4_cost
+
+	character_modifier = {
+		monthly_prestige = 0.12
+		legitimacy_gain_mult = 0.01
+	}
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_4
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = spice_plantation_05
+
+	type_icon = "icon_building_spice_plantation.dds"
+
+	ai_value = {
+		base = 7
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+spice_plantation_05 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_spice_plantation_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 03 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_5_cost
+
+	character_modifier = {
+		monthly_prestige = 0.15
+		legitimacy_gain_mult = 0.02
+	}
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_5
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 1.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = spice_plantation_06
+
+	type_icon = "icon_building_spice_plantation.dds"
+
+	ai_value = {
+		base = 6
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+spice_plantation_06 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_spice_plantation_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 03 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_6_cost
+
+	character_modifier = {
+		monthly_prestige = 0.18
+		legitimacy_gain_mult = 0.03
+	}
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_6
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 1.8
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = spice_plantation_07
+
+	type_icon = "icon_building_spice_plantation.dds"
+
+	ai_value = {
+		base = 5
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+spice_plantation_07 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_spice_plantation_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 04 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_7_cost
+
+	character_modifier = {
+		monthly_prestige = 0.21
+		legitimacy_gain_mult = 0.04
+	}
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_7
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 2.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = spice_plantation_08
+
+	type_icon = "icon_building_spice_plantation.dds"
+
+	ai_value = {
+		base = 4
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+spice_plantation_08 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_spice_plantation_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 04 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_8_cost
+
+	character_modifier = {
+		monthly_prestige = 0.24
+		legitimacy_gain_mult = 0.05
+	}
+
+	province_modifier = {
+		monthly_income = normal_building_tax_tier_8
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	type_icon = "icon_building_spice_plantation.dds"
+
+	ai_value = {
+		base = 3
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+# Waterworks
+# building_waterworks_requirement_terrain = is in India, Southeast Asia, or China, prov is county captain and terrain is NOT mountains or desert mountains
+
+waterworks_01 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_waterworks_requirement_terrain = yes
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_1_cost
+
+	province_modifier = {
+		supply_limit_mult = 0.1
+		tax_mult = low_building_tax_mult_tier_1
+		levy_size = 0.02
+		epidemic_resistance = 2
+	}
+
+	county_culture_modifier = {
+		parameter = waterworks_additional_bonuses
+		build_gold_cost = -0.01
+		development_growth_factor = normal_building_development_growth_factor_tier_1
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_1
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 0.1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = waterworks_02
+
+	type_icon = "icon_building_waterworks.dds"
+
+	ai_value = {
+		base = 10
+		ai_tier_1_building_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+		modifier = {
+			factor = 2
+			scope:holder.capital_province = this
+		}
+		modifier = {
+			add = 2
+			scope:holder = {
+				government_has_flag = government_is_administrative # infrastucture, babeyyy
+			}
+		}
+		modifier = {
+			factor = 0
+			num_buildings < 5
+		}
+		modifier = {
+			factor = 0
+			NOR = {
+				has_building_or_higher = farm_estates_01
+				has_building_or_higher = orchards_01
+				has_building_or_higher = cereal_fields_01
+				has_building_or_higher = paddy_fields_01
+				num_buildings >= 8
+			}
+		}
+	}
+}
+
+waterworks_02 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_waterworks_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 01 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_2_cost
+
+	province_modifier = {
+		supply_limit_mult = 0.2
+		tax_mult = low_building_tax_mult_tier_2
+		levy_size = 0.04
+		epidemic_resistance = 4
+	}
+
+	county_culture_modifier = {
+		parameter = waterworks_additional_bonuses
+		build_gold_cost = -0.02
+		development_growth_factor = normal_building_development_growth_factor_tier_2
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_2
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 0.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = waterworks_03
+
+	type_icon = "icon_building_waterworks.dds"
+
+	ai_value = {
+		base = 9
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+waterworks_03 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_waterworks_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 02 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_3_cost
+
+	province_modifier = {
+		supply_limit_mult = 0.3
+		tax_mult = low_building_tax_mult_tier_3
+		levy_size = 0.06
+		epidemic_resistance = 6
+	}
+
+	county_culture_modifier = {
+		parameter = waterworks_additional_bonuses
+		build_gold_cost = -0.03
+		development_growth_factor = normal_building_development_growth_factor_tier_3
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_3
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 0.6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = waterworks_04
+
+	type_icon = "icon_building_waterworks.dds"
+
+	ai_value = {
+		base = 8
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+waterworks_04 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_waterworks_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 02 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_4_cost
+
+	province_modifier = {
+		supply_limit_mult = 0.4
+		tax_mult = low_building_tax_mult_tier_4
+		levy_size = 0.08
+		epidemic_resistance = 8
+	}
+
+	county_culture_modifier = {
+		parameter = waterworks_additional_bonuses
+		build_gold_cost = -0.04
+		development_growth_factor = normal_building_development_growth_factor_tier_4
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_4
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = waterworks_05
+
+	type_icon = "icon_building_waterworks.dds"
+
+	ai_value = {
+		base = 7
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+waterworks_05 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_waterworks_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 03 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_5_cost
+
+	province_modifier = {
+		supply_limit_mult = 0.5
+		tax_mult = low_building_tax_mult_tier_5
+		levy_size = 0.1
+		epidemic_resistance = 10
+	}
+
+	county_culture_modifier = {
+		parameter = waterworks_additional_bonuses
+		build_gold_cost = -0.05
+		development_growth_factor = normal_building_development_growth_factor_tier_5
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_5
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 1.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = waterworks_06
+
+	type_icon = "icon_building_waterworks.dds"
+
+	ai_value = {
+		base = 6
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+waterworks_06 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_waterworks_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 03 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_6_cost
+
+	province_modifier = {
+		supply_limit_mult = 0.6
+		tax_mult = low_building_tax_mult_tier_6
+		levy_size = 0.12
+		epidemic_resistance = 12
+	}
+
+	county_culture_modifier = {
+		parameter = waterworks_additional_bonuses
+		build_gold_cost = -0.06
+		development_growth_factor = normal_building_development_growth_factor_tier_6
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_6
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 1.8
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = waterworks_07
+
+	type_icon = "icon_building_waterworks.dds"
+
+	ai_value = {
+		base = 5
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+waterworks_07 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_waterworks_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 04 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_7_cost
+
+	province_modifier = {
+		supply_limit_mult = 0.7
+		tax_mult = low_building_tax_mult_tier_7
+		levy_size = 0.14
+		epidemic_resistance = 14
+	}
+
+	county_culture_modifier = {
+		parameter = waterworks_additional_bonuses
+		build_gold_cost = -0.07
+		development_growth_factor = normal_building_development_growth_factor_tier_7
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_7
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 2.3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	next_building = waterworks_08
+
+	type_icon = "icon_building_waterworks.dds"
+
+	ai_value = {
+		base = 4
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
+	}
+}
+
+waterworks_08 = {
+	construction_time = standard_construction_time
+
+	can_construct_potential = {
+		building_waterworks_requirement_terrain  = yes
+		building_requirement_castle_city_church = { LEVEL = 04 }
+	}
+	
+	is_enabled = {
+	}
+
+	can_construct_showing_failures_only = {
+		building_requirement_tribal = no
+		county = { NOT = { has_county_modifier = backwater_county_modifier } }
+	}
+
+	can_construct = {
+	}
+
+	cost_gold = normal_building_tier_8_cost
+
+	province_modifier = {
+		supply_limit_mult = 1
+		tax_mult = low_building_tax_mult_tier_8
+		levy_size = 0.16
+		epidemic_resistance = 16
+	}
+
+	county_culture_modifier = {
+		parameter = waterworks_additional_bonuses
+		build_gold_cost = -0.08
+		development_growth_factor = normal_building_development_growth_factor_tier_8
+	}
+
+	county_modifier = {
+		development_growth_factor = normal_building_development_growth_factor_tier_8
+	}
+
+	character_government_modifier = {
+		parameter = government_has_influence
+		monthly_influence = 3
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
+
+	type_icon = "icon_building_waterworks.dds"
+
+	ai_value = {
+		base = 3
+		ai_tier_1_economical_building_preference_modifier = yes
+		ai_general_building_modifier = yes
+		directive_to_build_economy_modifier = yes
 	}
 }
 
@@ -1701,10 +4284,8 @@ common_tradeport_01 = {
 
 	}
 
-	
 	cost_gold = normal_building_tier_1_cost
 
-	
 	province_modifier = {
 		monthly_income = normal_building_tax_tier_1
 	}
@@ -1723,6 +4304,11 @@ common_tradeport_01 = {
 	province_culture_modifier = {
 		parameter = trade_ports_stationed_maa_bonus
 		stationed_maa_toughness_mult = normal_maa_toughness_tier_1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 
 	next_building = common_tradeport_02
@@ -1808,16 +4394,14 @@ common_tradeport_02 = {
 			}
 			culture = {
 				has_innovation = innovation_crop_rotation
-				}
+			}
 		}
 		trigger_else = {
-				culture = {
-					has_cultural_parameter = next_level_trade_ports
+			culture = {
+				has_cultural_parameter = next_level_trade_ports
 
-				}
-				
+			}
 		}
-
 	}
 
 	can_construct_showing_failures_only = {
@@ -1844,6 +4428,11 @@ common_tradeport_02 = {
 	province_culture_modifier = {
 		parameter = trade_ports_stationed_maa_bonus
 		stationed_maa_toughness_mult = normal_maa_toughness_tier_2
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = common_tradeport_03
@@ -1919,6 +4508,11 @@ common_tradeport_03 = {
 		parameter = trade_ports_stationed_maa_bonus
 		stationed_maa_toughness_mult = normal_maa_toughness_tier_3
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = common_tradeport_04
 	ai_value = {
@@ -1988,6 +4582,11 @@ common_tradeport_04 = {
 	province_culture_modifier = {
 		parameter = trade_ports_stationed_maa_bonus
 		stationed_maa_toughness_mult = normal_maa_toughness_tier_4
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = common_tradeport_05
@@ -2059,6 +4658,11 @@ common_tradeport_05 = {
 		parameter = trade_ports_stationed_maa_bonus
 		stationed_maa_toughness_mult = normal_maa_toughness_tier_5
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = common_tradeport_06
 	ai_value = {
@@ -2128,6 +4732,11 @@ common_tradeport_06 = {
 	province_culture_modifier = {
 		parameter = trade_ports_stationed_maa_bonus
 		stationed_maa_toughness_mult = normal_maa_toughness_tier_6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = common_tradeport_07
@@ -2199,6 +4808,11 @@ common_tradeport_07 = {
 		parameter = trade_ports_stationed_maa_bonus
 		stationed_maa_toughness_mult = normal_maa_toughness_tier_7
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = common_tradeport_08
 	ai_value = {
@@ -2269,6 +4883,11 @@ common_tradeport_08 = {
 		parameter = trade_ports_stationed_maa_bonus
 		stationed_maa_toughness_mult = normal_maa_toughness_tier_8
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -2316,6 +4935,11 @@ pastures_01 = {
 		is_coastal = yes
 		tax_mult = 0.01
 		levy_size = 0.01
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = pastures_02
@@ -2390,6 +5014,11 @@ pastures_02 = {
 		tax_mult = 0.01
 		levy_size = 0.01
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = pastures_03
 	
@@ -2447,6 +5076,11 @@ pastures_03 = {
 		tax_mult = 0.02
 		levy_size = 0.02
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = pastures_04
 	
@@ -2502,6 +5136,11 @@ pastures_04 = {
 		is_coastal = yes
 		tax_mult = 0.02
 		levy_size = 0.02
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = pastures_05
@@ -2559,6 +5198,11 @@ pastures_05 = {
 	}
 	county_modifier = {
 		development_growth_factor = 0.02
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = pastures_06
@@ -2618,6 +5262,11 @@ pastures_06 = {
 		tax_mult = 0.03
 		levy_size = 0.03
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = pastures_07
 	
@@ -2676,6 +5325,11 @@ pastures_07 = {
 		tax_mult = 0.04
 		levy_size = 0.04
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = pastures_08
 	
@@ -2733,6 +5387,11 @@ pastures_08 = {
 		is_coastal = yes
 		tax_mult = 0.04
 		levy_size = 0.04
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	ai_value = {
@@ -2797,6 +5456,11 @@ hunting_grounds_01 = {
 		parameter = hunting_archery_building_bonuses
 		stationed_archers_damage_mult = low_maa_damage_tier_1
 		stationed_archers_toughness_mult = low_maa_toughness_tier_1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = hunting_grounds_02
@@ -2885,6 +5549,11 @@ hunting_grounds_02 = {
 		stationed_archers_damage_mult = low_maa_damage_tier_2
 		stationed_archers_toughness_mult = low_maa_toughness_tier_2
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = hunting_grounds_03
 	
@@ -2959,6 +5628,11 @@ hunting_grounds_03 = {
 		stationed_archers_damage_mult = low_maa_damage_tier_3
 		stationed_archers_toughness_mult = low_maa_toughness_tier_3
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = hunting_grounds_04
 	
@@ -3028,6 +5702,11 @@ hunting_grounds_04 = {
 		parameter = hunting_archery_building_bonuses
 		stationed_archers_damage_mult = low_maa_damage_tier_4
 		stationed_archers_toughness_mult = low_maa_toughness_tier_4
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = hunting_grounds_05
@@ -3104,6 +5783,10 @@ hunting_grounds_05 = {
 		stationed_archers_toughness_mult = low_maa_toughness_tier_5
 	}
 	
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = hunting_grounds_06
 	
@@ -3179,6 +5862,10 @@ hunting_grounds_06 = {
 		stationed_archers_toughness_mult = low_maa_toughness_tier_6
 	}
 	
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = hunting_grounds_07
 	
@@ -3254,9 +5941,13 @@ hunting_grounds_07 = {
 		stationed_archers_toughness_mult = low_maa_toughness_tier_7
 	}
 	
-	
 	county_modifier = {
 		development_growth_factor = 0.02
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = hunting_grounds_08
@@ -3333,9 +6024,13 @@ hunting_grounds_08 = {
 		stationed_archers_toughness_mult = low_maa_toughness_tier_8
 	}
 	
-	
 	county_modifier = {
 		development_growth_factor = 0.02
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	ai_value = {
@@ -3374,6 +6069,11 @@ orchards_01 = {
 		parameter = coastal_agriculture_building_bonuses
 		is_coastal = yes
 		tax_mult = 0.01
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = orchards_02
@@ -3434,6 +6134,11 @@ orchards_02 = {
 		is_coastal = yes
 		tax_mult = 0.02
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = orchards_03
 	
@@ -3485,6 +6190,11 @@ orchards_03 = {
 		tax_mult = 0.03
 		supply_limit_mult = 0.1
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = orchards_04
 	
@@ -3531,6 +6241,11 @@ orchards_04 = {
 		is_coastal = yes
 		tax_mult = 0.04
 		supply_limit_mult = 0.1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = orchards_05
@@ -3580,6 +6295,11 @@ orchards_05 = {
 		tax_mult = 0.05
 		supply_limit_mult = 0.1
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = orchards_06
 	
@@ -3628,6 +6348,11 @@ orchards_06 = {
 		is_coastal = yes
 		tax_mult = 0.06
 		supply_limit_mult = 0.1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = orchards_07
@@ -3681,6 +6406,11 @@ orchards_07 = {
 	character_modifier = {
 		monthly_prestige = 0.1
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = orchards_08
 	
@@ -3733,6 +6463,11 @@ orchards_08 = {
 	character_modifier = {
 		monthly_prestige = 0.1
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -3760,6 +6495,11 @@ farm_estates_01 = {
 					has_cultural_parameter = farm_estates_pastures_unlock
 				}
 			}
+			AND = {
+				building_paddy_fields_requirement_terrain = yes
+				scope:holder.culture = { has_innovation = innovation_champa_rice }
+				building_requirement_castle_city_church = { LEVEL = 01 }
+			}
 		}	
 	}
 
@@ -3780,6 +6520,11 @@ farm_estates_01 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 2
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = farm_estates_02
@@ -3822,6 +6567,11 @@ farm_estates_02 = {
 					has_cultural_parameter = farm_estates_pastures_unlock
 				}
 			}
+			AND = {
+				building_paddy_fields_requirement_terrain = yes
+				scope:holder.culture = { has_innovation = innovation_champa_rice }
+				building_requirement_castle_city_church = { LEVEL = 01 }
+			}
 		}
 		
 	}
@@ -3846,6 +6596,11 @@ farm_estates_02 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 4
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = farm_estates_03
@@ -3882,6 +6637,14 @@ farm_estates_03 = {
 					has_cultural_parameter = farm_estates_pastures_unlock
 				}
 			}
+			AND = {
+				building_paddy_fields_requirement_terrain = yes
+				scope:holder.culture = { 
+					has_innovation = innovation_champa_rice 
+					has_innovation = innovation_manorialism
+				}
+				building_requirement_castle_city_church = { LEVEL = 02 }
+			}
 		}
 	}
 
@@ -3909,6 +6672,11 @@ farm_estates_03 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = farm_estates_04
@@ -3941,6 +6709,14 @@ farm_estates_04 = {
 					has_cultural_parameter = farm_estates_pastures_unlock
 				}
 			}
+			AND = {
+				building_paddy_fields_requirement_terrain = yes
+				scope:holder.culture = { 
+					has_innovation = innovation_champa_rice 
+					has_innovation = innovation_manorialism
+				}
+				building_requirement_castle_city_church = { LEVEL = 02 }
+			}
 		}
 	}
 
@@ -3969,6 +6745,11 @@ farm_estates_04 = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 8
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = farm_estates_05
 	
@@ -3985,7 +6766,15 @@ farm_estates_05 = {
 	effect_desc = farm_estates_effect_desc
 	
 	can_construct_potential = {
-		building_farm_estates_requirement_terrain = yes
+		OR = {
+			building_farm_estates_requirement_terrain = yes
+			AND = {
+				building_paddy_fields_requirement_terrain = yes
+				scope:holder.culture = { 
+					has_innovation = innovation_champa_rice 
+				}
+			}
+		}
 	}
 
 	can_construct = {
@@ -4026,6 +6815,11 @@ farm_estates_05 = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 10
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = farm_estates_06
 	
@@ -4042,7 +6836,15 @@ farm_estates_06 = {
 	effect_desc = farm_estates_effect_desc
 	
 	can_construct_potential = {
-		building_farm_estates_requirement_terrain = yes
+		OR = {
+			building_farm_estates_requirement_terrain = yes
+			AND = {
+				building_paddy_fields_requirement_terrain = yes
+				scope:holder.culture = { 
+					has_innovation = innovation_champa_rice 
+				}
+			}
+		}
 	}
 
 	can_construct = {
@@ -4080,6 +6882,11 @@ farm_estates_06 = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 12
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = farm_estates_07
 	
@@ -4096,7 +6903,15 @@ farm_estates_07 = {
 	effect_desc = farm_estates_effect_desc
 	
 	can_construct_potential = {
-		building_farm_estates_requirement_terrain = yes
+		OR = {
+			building_farm_estates_requirement_terrain = yes
+			AND = {
+				building_paddy_fields_requirement_terrain = yes
+				scope:holder.culture = { 
+					has_innovation = innovation_champa_rice 
+				}
+			}
+		}
 	}
 
 	can_construct = {
@@ -4135,6 +6950,11 @@ farm_estates_07 = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 14
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = farm_estates_08
 	
@@ -4151,7 +6971,15 @@ farm_estates_08 = {
 	effect_desc = farm_estates_effect_desc
 	
 	can_construct_potential = {
-		building_farm_estates_requirement_terrain = yes
+		OR = {
+			building_farm_estates_requirement_terrain = yes
+			AND = {
+				building_paddy_fields_requirement_terrain = yes
+				scope:holder.culture = { 
+					has_innovation = innovation_champa_rice 
+				}
+			}
+		}
 	}
 
 	can_construct = {
@@ -4188,6 +7016,11 @@ farm_estates_08 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 16
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	ai_value = {
@@ -4232,6 +7065,11 @@ cereal_fields_01 = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 2
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = cereal_fields_02
 	
@@ -4241,6 +7079,7 @@ cereal_fields_01 = {
 		base = 12 # A little bit higher than normal, they're just that good
 		ai_tier_1_building_modifier = yes
 		ai_tier_1_economical_building_preference_modifier = yes
+		ai_cereal_fields_improvement_from_culture_modifier = yes # Only on the level 1 to secure having pasture when the AI is from an appropriate culture
 		ai_general_building_modifier = yes
 		directive_to_build_economy_modifier = yes
 		modifier = {
@@ -4282,7 +7121,7 @@ cereal_fields_02 = {
 		building_requirement_castle_city_church = { LEVEL = 01 }
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOT = { 
 					scope:holder.culture = {
 						has_cultural_parameter = vegetarian_next_level_cereal_fields
 					}
@@ -4297,7 +7136,6 @@ cereal_fields_02 = {
 				has_cultural_parameter = vegetarian_next_level_cereal_fields
 			}
 		}
-		
 	}
 
 	can_construct_showing_failures_only = {
@@ -4314,7 +7152,7 @@ cereal_fields_02 = {
 		is_coastal = yes
 		tax_mult = 0.03
 	}
-	
+
 	county_modifier = {
 		tax_mult = 0.01
 	}
@@ -4328,6 +7166,11 @@ cereal_fields_02 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 4
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = cereal_fields_03
@@ -4355,22 +7198,20 @@ cereal_fields_03 = {
 	can_construct = {
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOT = { 
 					scope:holder.culture = {
 						has_cultural_parameter = vegetarian_next_level_cereal_fields
 					}
 				}
 			}
 			building_requirement_castle_city_church = { LEVEL = 02 }
-			scope:holder.culture = {
-				has_innovation = innovation_manorialism
+			scope:holder.culture = { 
+				has_innovation = innovation_manorialism 
 			}
 		}
 		trigger_else = {
 			scope:holder.culture = {
 				has_cultural_parameter = vegetarian_next_level_cereal_fields
-			}
-			scope:holder.culture = {
 				has_innovation = innovation_crop_rotation
 			}
 			building_requirement_castle_city_church = { LEVEL = 01 }
@@ -4391,7 +7232,7 @@ cereal_fields_03 = {
 		is_coastal = yes
 		tax_mult = 0.04
 	}
-	
+
 	county_modifier = {
 		tax_mult = 0.01
 		supply_limit = 400
@@ -4406,6 +7247,11 @@ cereal_fields_03 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = cereal_fields_04
@@ -4429,22 +7275,20 @@ cereal_fields_04 = {
 	can_construct = {
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOT = { 
 					scope:holder.culture = {
 						has_cultural_parameter = vegetarian_next_level_cereal_fields
 					}
 				}
 			}
 			building_requirement_castle_city_church = { LEVEL = 02 }
-			scope:holder.culture = {
+			scope:holder.culture = { 
 				has_innovation = innovation_manorialism
 			}
 		}
 		trigger_else = {
 			scope:holder.culture = {
 				has_cultural_parameter = vegetarian_next_level_cereal_fields
-			}
-			scope:holder.culture = {
 				has_innovation = innovation_crop_rotation
 			}
 			building_requirement_castle_city_church = { LEVEL = 01 }
@@ -4460,12 +7304,13 @@ cereal_fields_04 = {
 	province_modifier = {
 		monthly_income = good_building_tax_tier_4
 	}
+
 	province_terrain_modifier = {
 		parameter = coastal_agriculture_building_bonuses
 		is_coastal = yes
 		tax_mult = 0.05
 	}
-	
+
 	county_modifier = {
 		tax_mult = 0.01
 		supply_limit = 400
@@ -4481,6 +7326,11 @@ cereal_fields_04 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 8
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = cereal_fields_05
@@ -4504,7 +7354,7 @@ cereal_fields_05 = {
 	can_construct = {
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOT = { 
 					scope:holder.culture = {
 						has_cultural_parameter = vegetarian_next_level_cereal_fields
 					}
@@ -4518,8 +7368,6 @@ cereal_fields_05 = {
 		trigger_else = {
 			scope:holder.culture = {
 				has_cultural_parameter = vegetarian_next_level_cereal_fields
-			}
-			scope:holder.culture = {
 				has_innovation = innovation_manorialism
 			}
 			building_requirement_castle_city_church = { LEVEL = 02 }
@@ -4540,7 +7388,7 @@ cereal_fields_05 = {
 		is_coastal = yes
 		tax_mult = 0.06
 	}
-	
+
 	county_modifier = {
 		tax_mult = 0.01
 		supply_limit = 400
@@ -4557,6 +7405,11 @@ cereal_fields_05 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 10
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = cereal_fields_06
@@ -4580,7 +7433,7 @@ cereal_fields_06 = {
 	can_construct = {
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOT = { 
 					scope:holder.culture = {
 						has_cultural_parameter = vegetarian_next_level_cereal_fields
 					}
@@ -4594,8 +7447,6 @@ cereal_fields_06 = {
 		trigger_else = {
 			scope:holder.culture = {
 				has_cultural_parameter = vegetarian_next_level_cereal_fields
-			}
-			scope:holder.culture = {
 				has_innovation = innovation_manorialism
 			}
 			building_requirement_castle_city_church = { LEVEL = 02 }
@@ -4616,7 +7467,7 @@ cereal_fields_06 = {
 		is_coastal = yes
 		tax_mult = 0.07
 	}
-	
+
 	county_modifier = {
 		tax_mult = 0.01
 		supply_limit = 400
@@ -4634,6 +7485,11 @@ cereal_fields_06 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 12
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = cereal_fields_07
@@ -4657,7 +7513,7 @@ cereal_fields_07 = {
 	can_construct = {
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOT = { 
 					scope:holder.culture = {
 						has_cultural_parameter = vegetarian_next_level_cereal_fields
 					}
@@ -4671,8 +7527,6 @@ cereal_fields_07 = {
 		trigger_else = {
 			scope:holder.culture = {
 				has_cultural_parameter = vegetarian_next_level_cereal_fields
-			}
-			scope:holder.culture = {
 				has_innovation = innovation_guilds
 			}
 			building_requirement_castle_city_church = { LEVEL = 03 }
@@ -4693,7 +7547,7 @@ cereal_fields_07 = {
 		is_coastal = yes
 		tax_mult = 0.08
 	}
-	
+
 	county_modifier = {
 		levy_reinforcement_rate = 0.05
 		tax_mult = 0.01
@@ -4712,6 +7566,11 @@ cereal_fields_07 = {
 	province_culture_modifier = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 14
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = cereal_fields_08
@@ -4735,7 +7594,7 @@ cereal_fields_08 = {
 	can_construct = {
 		trigger_if = {
 			limit = {
-				NOT = {
+				NOT = { 
 					scope:holder.culture = {
 						has_cultural_parameter = vegetarian_next_level_cereal_fields
 					}
@@ -4749,8 +7608,6 @@ cereal_fields_08 = {
 		trigger_else = {
 			scope:holder.culture = {
 				has_cultural_parameter = vegetarian_next_level_cereal_fields
-			}
-			scope:holder.culture = {
 				has_innovation = innovation_guilds
 			}
 			building_requirement_castle_city_church = { LEVEL = 03 }
@@ -4791,6 +7648,11 @@ cereal_fields_08 = {
 		parameter = brewery_farming_bonus
 		county_opinion_add = 16
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -4830,6 +7692,11 @@ logging_camps_01 = {
 		parameter = logging_camps_building_bonuses
 		build_speed = -0.02
 		build_gold_cost = -0.01
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = logging_camps_02
@@ -4896,6 +7763,11 @@ logging_camps_02 = {
 		build_speed = -0.04
 		build_gold_cost = -0.02
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = logging_camps_03
 	
@@ -4960,6 +7832,11 @@ logging_camps_03 = {
 		build_speed = -0.06
 		build_gold_cost = -0.03
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = logging_camps_04
 	
@@ -5014,6 +7891,11 @@ logging_camps_04 = {
 		parameter = logging_camps_building_bonuses
 		build_speed = -0.08
 		build_gold_cost = -0.04
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = logging_camps_05
@@ -5071,6 +7953,11 @@ logging_camps_05 = {
 		build_speed = -0.1
 		build_gold_cost = -0.05
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = logging_camps_06
 	
@@ -5127,6 +8014,11 @@ logging_camps_06 = {
 		build_speed = -0.12
 		build_gold_cost = -0.06
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = logging_camps_07
 	
@@ -5182,6 +8074,11 @@ logging_camps_07 = {
 		parameter = logging_camps_building_bonuses
 		build_speed = -0.14
 		build_gold_cost = -0.07
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = logging_camps_08
@@ -5240,6 +8137,11 @@ logging_camps_08 = {
 		build_speed = -0.16
 		build_gold_cost = -0.08
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -5278,6 +8180,11 @@ peat_quarries_01 = {
 		parameter = peat_quarries_building_bonuses
 		build_speed = -0.02
 		build_gold_cost = -0.01
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = peat_quarries_02
@@ -5328,6 +8235,11 @@ peat_quarries_02 = {
 		parameter = peat_quarries_building_bonuses
 		build_speed = -0.04
 		build_gold_cost = -0.02
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = peat_quarries_03
@@ -5383,6 +8295,11 @@ peat_quarries_03 = {
 		build_speed = -0.06
 		build_gold_cost = -0.03
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = peat_quarries_04
 	
@@ -5433,6 +8350,11 @@ peat_quarries_04 = {
 		parameter = peat_quarries_building_bonuses
 		build_speed = -0.08
 		build_gold_cost = -0.04
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = peat_quarries_05
@@ -5485,6 +8407,11 @@ peat_quarries_05 = {
 		parameter = peat_quarries_building_bonuses
 		build_speed = -0.10
 		build_gold_cost = -0.05
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = peat_quarries_06
@@ -5539,6 +8466,11 @@ peat_quarries_06 = {
 		build_speed = -0.12
 		build_gold_cost = -0.06
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = peat_quarries_07
 	
@@ -5591,6 +8523,11 @@ peat_quarries_07 = {
 		parameter = peat_quarries_building_bonuses
 		build_speed = -0.14
 		build_gold_cost = -0.07
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = peat_quarries_08
@@ -5645,6 +8582,11 @@ peat_quarries_08 = {
 		build_speed = -0.16
 		build_gold_cost = -0.08
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -5685,6 +8627,11 @@ hill_farms_01 = {
 	county_culture_modifier = {
 		parameter = hill_farms_building_bonuses
 		levy_size = 0.01
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = hill_farms_02
@@ -5751,6 +8698,11 @@ hill_farms_02 = {
 		parameter = hill_farms_building_bonuses
 		levy_size = 0.01
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = hill_farms_03
 	
@@ -5808,6 +8760,11 @@ hill_farms_03 = {
 		parameter = hill_farms_building_bonuses
 		levy_size = 0.02
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = hill_farms_04
 	
@@ -5860,6 +8817,11 @@ hill_farms_04 = {
 	county_culture_modifier = {
 		parameter = hill_farms_building_bonuses
 		levy_size = 0.02
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = hill_farms_05
@@ -5914,6 +8876,11 @@ hill_farms_05 = {
 	county_culture_modifier = {
 		parameter = hill_farms_building_bonuses
 		levy_size = 0.03
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = hill_farms_06
@@ -5970,6 +8937,11 @@ hill_farms_06 = {
 		parameter = hill_farms_building_bonuses
 		levy_size = 0.03
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = hill_farms_07
 	
@@ -6024,6 +8996,11 @@ hill_farms_07 = {
 	county_culture_modifier = {
 		parameter = hill_farms_building_bonuses
 		levy_size = 0.04
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = hill_farms_08
@@ -6080,6 +9057,11 @@ hill_farms_08 = {
 		parameter = hill_farms_building_bonuses
 		levy_size = 0.04
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -6121,6 +9103,11 @@ elephant_pens_01 = {
 	county_culture_modifier = {
 		parameter = elephant_pens_building_bonuses
 		development_growth_factor = 0.05
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = elephant_pens_02
@@ -6169,6 +9156,11 @@ elephant_pens_02 = {
 	county_culture_modifier = {
 		parameter = elephant_pens_building_bonuses
 		development_growth_factor = 0.1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = elephant_pens_03
@@ -6225,6 +9217,11 @@ elephant_pens_03 = {
 		parameter = elephant_pens_building_bonuses
 		development_growth_factor = 0.15
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = elephant_pens_04
 	
@@ -6275,6 +9272,11 @@ elephant_pens_04 = {
 	county_culture_modifier = {
 		parameter = elephant_pens_building_bonuses
 		development_growth_factor = 0.20
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = elephant_pens_05
@@ -6327,6 +9329,11 @@ elephant_pens_05 = {
 		parameter = elephant_pens_building_bonuses
 		development_growth_factor = 0.25
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = elephant_pens_06
 	
@@ -6377,6 +9384,11 @@ elephant_pens_06 = {
 	county_culture_modifier = {
 		parameter = elephant_pens_building_bonuses
 		development_growth_factor = 0.30
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = elephant_pens_07
@@ -6430,6 +9442,11 @@ elephant_pens_07 = {
 		parameter = elephant_pens_building_bonuses
 		development_growth_factor = 0.35
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = elephant_pens_08
 	
@@ -6482,6 +9499,11 @@ elephant_pens_08 = {
 		parameter = elephant_pens_building_bonuses
 		development_growth_factor = 0.40
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -6521,6 +9543,11 @@ plantations_01 = {
 	province_culture_modifier = {
 		parameter = plantations_building_bonuses
 		monthly_income = poor_building_extra_tax_tier_1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = plantations_02
@@ -6598,6 +9625,11 @@ plantations_02 = {
 		parameter = plantations_building_bonuses
 		monthly_income = poor_building_extra_tax_tier_2
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = plantations_03
 	
@@ -6650,6 +9682,11 @@ plantations_03 = {
 		parameter = plantations_building_bonuses
 		monthly_income = poor_building_extra_tax_tier_3
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = plantations_04
 	
@@ -6697,6 +9734,11 @@ plantations_04 = {
 	province_culture_modifier = {
 		parameter = plantations_building_bonuses
 		monthly_income = poor_building_extra_tax_tier_4
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = plantations_05
@@ -6750,6 +9792,11 @@ plantations_05 = {
 		parameter = plantations_building_bonuses
 		monthly_income = poor_building_extra_tax_tier_5
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = plantations_06
 	
@@ -6801,6 +9848,11 @@ plantations_06 = {
 	province_culture_modifier = {
 		parameter = plantations_building_bonuses
 		monthly_income = poor_building_extra_tax_tier_6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = plantations_07
@@ -6854,6 +9906,11 @@ plantations_07 = {
 		parameter = plantations_building_bonuses
 		monthly_income = poor_building_extra_tax_tier_7
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = plantations_08
 	
@@ -6906,6 +9963,11 @@ plantations_08 = {
 		parameter = plantations_building_bonuses
 		monthly_income = poor_building_extra_tax_tier_8
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -6949,6 +10011,11 @@ quarries_01 = {
 	province_culture_modifier = {
 		parameter = ancient_miners_quarries_building_bonuses
 		monthly_income = poor_building_tax_tier_1
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = quarries_02
@@ -7013,6 +10080,11 @@ quarries_02 = {
 		parameter = ancient_miners_quarries_building_bonuses
 		monthly_income = poor_building_tax_tier_2
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = quarries_03
 	
@@ -7073,6 +10145,11 @@ quarries_03 = {
 		parameter = ancient_miners_quarries_building_bonuses
 		monthly_income = poor_building_tax_tier_3
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = quarries_04
 	
@@ -7129,6 +10206,11 @@ quarries_04 = {
 	province_culture_modifier = {
 		parameter = ancient_miners_quarries_building_bonuses
 		monthly_income = poor_building_tax_tier_4
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = quarries_05
@@ -7187,6 +10269,11 @@ quarries_05 = {
 		parameter = ancient_miners_quarries_building_bonuses
 		monthly_income = poor_building_tax_tier_5
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	next_building = quarries_06
 	
@@ -7244,6 +10331,11 @@ quarries_06 = {
 	province_culture_modifier = {
 		parameter = ancient_miners_quarries_building_bonuses
 		monthly_income = poor_building_tax_tier_6
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = quarries_07
@@ -7304,6 +10396,11 @@ quarries_07 = {
 	province_culture_modifier = {
 		parameter = ancient_miners_quarries_building_bonuses
 		monthly_income = poor_building_tax_tier_7
+	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
 	}
 	
 	next_building = quarries_08
@@ -7366,6 +10463,11 @@ quarries_08 = {
 		parameter = ancient_miners_quarries_building_bonuses
 		monthly_income = poor_building_tax_tier_8
 	}
+
+	on_complete = {
+		#Mandala Creator Aspect
+		creator_mandala_built_regular_building_piety_effect = yes
+	}
 	
 	ai_value = {
 		base = 3
@@ -7374,770 +10476,3 @@ quarries_08 = {
 		ai_economical_building_preference_modifier = yes
 	}
 }
-
-
-# Qanats
-
-qanats_01 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_qanats_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 01 }
-	}
-
-	is_enabled = {
-		is_county_capital = yes
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_1_cost
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_1
-		supply_limit = normal_building_supply_limit_tier_1
-	}
-
-	county_modifier = {
-		development_growth_factor = good_building_development_growth_factor_tier_1
-		development_growth = good_building_development_growth_tier_1
-		travel_danger = -1
-	}
-
-	next_building = qanats_02
-
-	type_icon = "icon_building_qanats.dds"
-
-	ai_value = {
-		base = 20
-		ai_tier_1_building_modifier = yes
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-	}
-}
-
-qanats_02 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_qanats_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 01 }
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_2_cost
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_2
-		supply_limit = normal_building_supply_limit_tier_2
-	}
-
-
-	county_modifier = {
-		development_growth_factor = good_building_development_growth_factor_tier_2
-		development_growth = good_building_development_growth_tier_2
-		travel_danger = -2
-	}
-
-	next_building = qanats_03
-
-	type_icon = "icon_building_qanats.dds"
-
-	ai_value = {
-		base = 9
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		ai_economical_building_preference_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-	}
-}
-
-qanats_03 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_qanats_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 02 }
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_3_cost
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_3
-		supply_limit = normal_building_supply_limit_tier_3
-		build_speed = normal_building_build_speed_tier_3
-	}
-
-
-	county_modifier = {
-		development_growth_factor = good_building_development_growth_factor_tier_3
-		development_growth = good_building_development_growth_tier_3
-		travel_danger = -3
-	}
-
-	next_building = qanats_04
-
-	type_icon = "icon_building_qanats.dds"
-
-	ai_value = {
-		base = 8
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		ai_economical_building_preference_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-	}
-}
-
-qanats_04 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_qanats_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 02 }
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_4_cost
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_4
-		supply_limit = normal_building_supply_limit_tier_4
-		build_speed = normal_building_build_speed_tier_4
-	}
-
-
-	county_modifier = {
-		development_growth_factor = good_building_development_growth_factor_tier_4
-		development_growth = good_building_development_growth_tier_4
-		travel_danger = -4
-	}
-
-	next_building = qanats_05
-
-	type_icon = "icon_building_qanats.dds"
-
-	ai_value = {
-		base = 7
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		ai_economical_building_preference_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-	}
-}
-
-qanats_05 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_qanats_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 03 }
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_5_cost
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_5
-		supply_limit = normal_building_supply_limit_tier_5
-		build_speed = normal_building_build_speed_tier_5
-	}
-
-
-	county_modifier = {
-		development_growth_factor = good_building_development_growth_factor_tier_5
-		development_growth = good_building_development_growth_tier_5
-		travel_danger = -5
-	}
-
-	effect_desc =  unlocks_cereal_fields_and_orchards
-
-	next_building = qanats_06
-
-	type_icon = "icon_building_qanats.dds"
-
-	ai_value = {
-		base = 6
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		ai_economical_building_preference_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-	}
-}
-
-qanats_06 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_qanats_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 03 }
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_6_cost
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_6
-		supply_limit = normal_building_supply_limit_tier_6
-		build_speed = normal_building_build_speed_tier_6
-	}
-
-
-	county_modifier = {
-		development_growth_factor = good_building_development_growth_factor_tier_6
-		development_growth = good_building_development_growth_tier_6
-		travel_danger = -6
-	}
-
-	effect_desc =  unlocks_cereal_fields_and_orchards
-
-	next_building = qanats_07
-
-	type_icon = "icon_building_qanats.dds"
-
-	ai_value = {
-		base = 5
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		ai_economical_building_preference_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-	}
-}
-
-qanats_07 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_qanats_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 04 }
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_7_cost
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_7
-		supply_limit = normal_building_supply_limit_tier_7
-		build_speed = normal_building_build_speed_tier_7
-	}
-
-	character_modifier = {
-		negate_health_penalty_add = 0.1
-	}
-
-	county_modifier = {
-		development_growth_factor = good_building_development_growth_factor_tier_7
-		development_growth = good_building_development_growth_tier_7
-		travel_danger = -7
-	}
-
-	effect_desc =  unlocks_cereal_fields_and_orchards
-
-	next_building = qanats_08
-
-	type_icon = "icon_building_qanats.dds"
-
-	ai_value = {
-		base = 4
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		ai_economical_building_preference_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-	}
-}
-
-qanats_08 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_qanats_requirement_terrain = yes
-		building_requirement_castle_city_church = { LEVEL = 04 }
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_8_cost
-
-	province_modifier = {
-		monthly_income = poor_building_tax_tier_8
-		supply_limit = normal_building_supply_limit_tier_8
-		build_speed = normal_building_build_speed_tier_8
-	}
-
-	character_modifier = {
-		negate_health_penalty_add = 0.2
-	}
-
-	county_modifier = {
-		development_growth_factor = good_building_development_growth_factor_tier_8
-		development_growth = good_building_development_growth_tier_8
-		travel_danger = -8
-	}
-
-	effect_desc =  unlocks_cereal_fields_and_orchards
-
-
-	type_icon = "icon_building_qanats.dds"
-
-	ai_value = {
-		base = 3
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		ai_economical_building_preference_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-	}
-}
-
-# Murex Farms
-
-murex_farm_01 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_murex_farm_requirement_terrain = yes
-		building_requirement_castle_city_church = { LEVEL = 01 }
-	}
-	
-	is_enabled = {
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-		county = { NOT = { has_county_modifier = backwater_county_modifier } }
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_1_cost
-
-	province_modifier = {
-		monthly_income = normal_building_tax_tier_1
-	}
-
-	county_modifier = {
-		development_growth_factor = normal_building_development_growth_factor_tier_1
-		development_growth = normal_building_development_growth_tier_1
-	}
-
-	character_modifier = {
-		monthly_influence = 0.1
-	}
-
-	next_building = murex_farm_02
-
-	type_icon = "icon_building_murex_farms.dds"
-
-	ai_value = {
-		base = 14
-		ai_tier_1_building_modifier = yes
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-		modifier = {
-			factor = 2
-			scope:holder.capital_province = this
-		}
-		modifier = {
-			factor = 2
-			scope:holder = {
-				government_has_flag = government_is_administrative
-			}
-		}
-	}
-}
-
-murex_farm_02 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_murex_farm_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 01 }
-	}
-	
-	is_enabled = {
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-		county = { NOT = { has_county_modifier = backwater_county_modifier } }
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_2_cost
-
-	province_modifier = {
-		monthly_income = normal_building_tax_tier_2
-	}
-
-	county_modifier = {
-		development_growth_factor = normal_building_development_growth_factor_tier_2
-		development_growth = normal_building_development_growth_tier_2
-	}
-
-	character_modifier = {
-		monthly_influence = 0.3
-	}
-
-	next_building = murex_farm_03
-
-	type_icon = "icon_building_murex_farms.dds"
-
-	ai_value = {
-		base = 9
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-	}
-}
-
-murex_farm_03 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_murex_farm_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 02 }
-	}
-	
-	is_enabled = {
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-		county = { NOT = { has_county_modifier = backwater_county_modifier } }
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_3_cost
-
-	province_modifier = {
-		monthly_income = normal_building_tax_tier_3
-	}
-
-	county_modifier = {
-		development_growth_factor = normal_building_development_growth_factor_tier_3
-		development_growth = normal_building_development_growth_tier_3
-	}
-
-	character_modifier = {
-		monthly_influence = 0.6
-	}
-
-	next_building = murex_farm_04
-
-	type_icon = "icon_building_murex_farms.dds"
-
-	ai_value = {
-		base = 8
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-	}
-}
-
-murex_farm_04 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_murex_farm_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 02 }
-	}
-	
-	is_enabled = {
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-		county = { NOT = { has_county_modifier = backwater_county_modifier } }
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_4_cost
-
-	province_modifier = {
-		monthly_income = normal_building_tax_tier_4
-	}
-
-	county_modifier = {
-		development_growth_factor = normal_building_development_growth_factor_tier_4
-		development_growth = normal_building_development_growth_tier_4
-	}
-
-	character_modifier = {
-		monthly_influence = 1
-	}
-
-	next_building = murex_farm_05
-
-	type_icon = "icon_building_murex_farms.dds"
-
-	ai_value = {
-		base = 7
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-	}
-}
-
-murex_farm_05 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_murex_farm_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 03 }
-	}
-	
-	is_enabled = {
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-		county = { NOT = { has_county_modifier = backwater_county_modifier } }
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_5_cost
-
-	province_modifier = {
-		monthly_income = normal_building_tax_tier_5
-	}
-
-	county_modifier = {
-		development_growth_factor = normal_building_development_growth_factor_tier_5
-		development_growth = normal_building_development_growth_tier_5
-	}
-
-	character_modifier = {
-		monthly_influence = 1.3
-	}
-
-	next_building = murex_farm_06
-
-	type_icon = "icon_building_murex_farms.dds"
-
-	ai_value = {
-		base = 6
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-	}
-}
-
-murex_farm_06 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_murex_farm_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 03 }
-	}
-	
-	is_enabled = {
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-		county = { NOT = { has_county_modifier = backwater_county_modifier } }
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_6_cost
-
-	province_modifier = {
-		monthly_income = normal_building_tax_tier_6
-	}
-
-	county_modifier = {
-		development_growth_factor = normal_building_development_growth_factor_tier_6
-		development_growth = normal_building_development_growth_tier_6
-	}
-
-	character_modifier = {
-		monthly_influence = 1.8
-	}
-
-	next_building = murex_farm_07
-
-	type_icon = "icon_building_murex_farms.dds"
-
-	ai_value = {
-		base = 5
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-	}
-}
-
-murex_farm_07 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_murex_farm_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 04 }
-	}
-	
-	is_enabled = {
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-		county = { NOT = { has_county_modifier = backwater_county_modifier } }
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_7_cost
-
-	province_modifier = {
-		monthly_income = normal_building_tax_tier_7
-	}
-
-	county_modifier = {
-		development_growth_factor = normal_building_development_growth_factor_tier_7
-		development_growth = normal_building_development_growth_tier_7
-	}
-
-	character_modifier = {
-		monthly_influence = 2.3
-	}
-
-	next_building = murex_farm_08
-
-	type_icon = "icon_building_murex_farms.dds"
-
-	ai_value = {
-		base = 4
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-	}
-}
-
-murex_farm_08 = {
-	construction_time = standard_construction_time
-
-	can_construct_potential = {
-		building_murex_farm_requirement_terrain  = yes
-		building_requirement_castle_city_church = { LEVEL = 04 }
-	}
-	
-	is_enabled = {
-	}
-
-	can_construct_showing_failures_only = {
-		building_requirement_tribal = no
-		county = { NOT = { has_county_modifier = backwater_county_modifier } }
-	}
-
-	can_construct = {
-	}
-
-	cost_gold = normal_building_tier_8_cost
-
-	province_modifier = {
-		monthly_income = normal_building_tax_tier_8
-	}
-
-	county_modifier = {
-		development_growth_factor = normal_building_development_growth_factor_tier_8
-		development_growth = normal_building_development_growth_tier_8
-	}
-
-	character_modifier = {
-		monthly_influence = 3
-	}
-
-	type_icon = "icon_building_murex_farms.dds"
-
-	ai_value = {
-		base = 3
-		ai_tier_1_economical_building_preference_modifier = yes
-		ai_general_building_modifier = yes
-		directive_to_build_economy_modifier = yes
-	}
-}
-
-

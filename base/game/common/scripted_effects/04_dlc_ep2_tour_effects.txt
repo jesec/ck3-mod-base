@@ -82,6 +82,41 @@ select_root_vegetable_effect = {
 						value = flag:taro
 					}
 				}
+				20 = {
+					trigger = { province_has_vegetable_daikon_radish_trigger = yes }
+					set_variable = {
+						name = root_vegetable
+						value = flag:daikon_radish
+					}
+				}
+				20 = {
+					trigger = { province_has_vegetable_yam_bean_trigger = yes }
+					set_variable = {
+						name = root_vegetable
+						value = flag:yam_bean
+					}
+				}
+				20 = {
+					trigger = { province_has_vegetable_lotus_root_trigger = yes }
+					set_variable = {
+						name = root_vegetable
+						value = flag:lotus_root
+					}
+				}
+				20 = {
+					trigger = { province_has_vegetable_burdock_root_trigger = yes }
+					set_variable = {
+						name = root_vegetable
+						value = flag:burdock_root
+					}
+				}
+				20 = {
+					trigger = { province_has_vegetable_arrowroot_trigger = yes }
+					set_variable = {
+						name = root_vegetable
+						value = flag:arrowroot
+					}
+				}
 			}
 		}
 	}
@@ -623,9 +658,7 @@ tour_distribute_control = {
 						every_sub_realm_county = {
 							custom = every_title_held_by_vassal_and_vassals
 							limit = {
-								NOT = {
-									this = root.location.county
-								}
+								this != root.location.county
 							}
 							change_county_control = $HELD_AND_VASSAL_COUNTIES$
 						}
@@ -643,9 +676,7 @@ tour_distribute_control = {
 					root.location.county.holder = {
 						every_held_title = {
 							custom = every_title_held_by_vassal
-							limit = {
-								tier = tier_county
-							}
+							title_tier = county
 							change_county_control = $HELD_COUNTIES$
 						}
 					}
@@ -655,9 +686,7 @@ tour_distribute_control = {
 						every_held_title = {
 							custom = every_title_held_by_vassal
 							limit = {
-								NOT = {
-									this = root.location.county
-								}
+								this != root.location.county
 							}
 							change_county_control = $HELD_COUNTIES$
 						}

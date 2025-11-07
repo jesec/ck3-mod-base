@@ -63,7 +63,26 @@ raise_stele_decision = {
 		is_at_war = no
 	}
 
-	cost = { gold = raise_stele_gold_cost }
+	cost = { 
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = no
+				}
+				add = raise_stele_gold_cost
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = yes
+				}
+				add = raise_stele_gold_cost
+			}
+		}
+	}
 
 	effect = {
 		# Save the gold value for refund purposes.
@@ -85,7 +104,14 @@ raise_stele_decision = {
 		trigger_event = fp1_other_decisions.0101
 	}
 
-	ai_check_interval = 36
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 120
+		duchy = 36
+		kingdom = 36
+		empire = 36
+		hegemony = 36
+	}
 	
 	ai_potential = {
 		# Only take it if you can afford it.

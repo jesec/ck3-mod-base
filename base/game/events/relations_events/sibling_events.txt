@@ -15,261 +15,261 @@ namespace = sibling
 
 
 #A Friendly unlanded sibling asks to be rewarded
-scripted_trigger sibling_0001_sibling_trigger = {
-	is_ruler = no
-	is_adult = yes
-	is_ai = yes
-	OR = {
-		root = { is_ai = yes }
-		reverse_opinion = {
-			target = root
-			value > 60
-		}
-		AND = {
-			has_variable = helped_landed_sibling
-			var:helped_landed_sibling >= 1
-		}
-	}
-}
-
-sibling.0001 = {
-	type = character_event
-	title = sibling.0001.t
-	desc = sibling.0001.desc
-	theme = family
-	left_portrait = {
-		character = root
-		animation = war_over_tie
-	}
-	right_portrait = {
-		character = scope:sibling
-		animation = admiration
-	}
-	override_background = { reference = throne_room }
-
-	trigger = {
-		NOT = { has_character_flag = had_sibling_request_event }
-		is_ai = no
-		any_sibling = {
-			sibling_0001_sibling_trigger = yes
-		}
-	}
-
-	weight_multiplier = {
-		base = 0.5
-		modifier = {
-			add = 1
-			any_sibling = {
-				sibling_0001_sibling_trigger = yes
-				var:helped_landed_sibling >= 2
-			}
-		}
-	}
-
-	immediate = {
-		random_sibling = {
-			limit = {
-				sibling_0001_sibling_trigger = yes
-			}
-			save_scope_as = sibling
-		}
-		add_character_flag = {
-			flag = had_sibling_request_event
-			years = 20
-		}
-	}
-
-	option = { #Promise some land!
-		name = sibling.0001.a
-		trigger = {
-			is_landed = yes
-			NOT = { has_variable = sibling_waiting_for_land }
-		}
-		custom_tooltip = sibling_promised_land_tt
-		set_variable = {
-			name = sibling_waiting_for_land
-			value = scope:sibling
-			years = 4
-		}
-		trigger_event = {
-			id = sibling.0002
-			years = 2
-		}
-	}
-
-	option = { #Promise anything they ask for
-		trigger = {
-			scope:sibling = {
-				can_add_hook = {
-					type = favor_hook
-					target = root
-				}
-			}
-		}
-		name = sibling.0001.b
-		scope:sibling = {
-			add_hook = {
-				type = favor_hook
-				target = root
-			}
-		}
-	}
-
-	option = {
-		name = sibling.0001.e
-		scope:sibling = {
-			add_opinion = {
-				target = root
-				modifier = sibling_let_me_down_opinion
-				years = 15
-			}
-		}
-	}
-
-	after = {
-		hidden_effect = {
-			scope:sibling = {
-				remove_variable = helped_landed_sibling
-			}
-		}
-	}
-}
+#scripted_trigger sibling_0001_sibling_trigger = {
+#	is_ruler = no
+#	is_adult = yes
+#	is_ai = yes
+#	OR = {
+#		root = { is_ai = yes }
+#		reverse_opinion = {
+#			target = root
+#			value > 60
+#		}
+#		AND = {
+#			has_variable = helped_landed_sibling
+#			var:helped_landed_sibling >= 1
+#		}
+#	}
+#}
+#
+#sibling.0001 = {
+#	type = character_event
+#	title = sibling.0001.t
+#	desc = sibling.0001.desc
+#	theme = family
+#	left_portrait = {
+#		character = root
+#		animation = war_over_tie
+#	}
+#	right_portrait = {
+#		character = scope:sibling
+#		animation = admiration
+#	}
+#	override_background = { reference = throne_room }
+#
+#	trigger = {
+#		NOT = { has_character_flag = had_sibling_request_event }
+#		is_ai = no
+#		any_sibling = {
+#			sibling_0001_sibling_trigger = yes
+#		}
+#	}
+#
+#	weight_multiplier = {
+#		base = 0.5
+#		modifier = {
+#			add = 1
+#			any_sibling = {
+#				sibling_0001_sibling_trigger = yes
+#				var:helped_landed_sibling >= 2
+#			}
+#		}
+#	}
+#
+#	immediate = {
+#		random_sibling = {
+#			limit = {
+#				sibling_0001_sibling_trigger = yes
+#			}
+#			save_scope_as = sibling
+#		}
+#		add_character_flag = {
+#			flag = had_sibling_request_event
+#			years = 20
+#		}
+#	}
+#
+#	option = { #Promise some land!
+#		name = sibling.0001.a
+#		trigger = {
+#			is_landed = yes
+#			NOT = { has_variable = sibling_waiting_for_land }
+#		}
+#		custom_tooltip = sibling_promised_land_tt
+#		set_variable = {
+#			name = sibling_waiting_for_land
+#			value = scope:sibling
+#			years = 4
+#		}
+#		trigger_event = {
+#			id = sibling.0002
+#			years = 2
+#		}
+#	}
+#
+#	option = { #Promise anything they ask for
+#		trigger = {
+#			scope:sibling = {
+#				can_add_hook = {
+#					type = favor_hook
+#					target = root
+#				}
+#			}
+#		}
+#		name = sibling.0001.b
+#		scope:sibling = {
+#			add_hook = {
+#				type = favor_hook
+#				target = root
+#			}
+#		}
+#	}
+#
+#	option = {
+#		name = sibling.0001.e
+#		scope:sibling = {
+#			add_opinion = {
+#				target = root
+#				modifier = sibling_let_me_down_opinion
+#				years = 15
+#			}
+#		}
+#	}
+#
+#	after = {
+#		hidden_effect = {
+#			scope:sibling = {
+#				remove_variable = helped_landed_sibling
+#			}
+#		}
+#	}
+#}
 
 
 
 #Sibling was promised land, but didn't get any
-sibling.0002 = {
-	type = character_event
-	title = sibling.0001.t
-	desc = sibling.0002.desc
-	theme = family
-	left_portrait = {
-		character = root
-		animation = war_over_win
-	}
-	right_portrait = {
-		character = scope:sibling
-		animation = disapproval
-	}
-	override_background = { reference = throne_room }
-
-	trigger = {
-		exists = var:sibling_waiting_for_land
-		is_landed = yes
-		any_sibling = {
-			is_landed = no
-			this = root.var:sibling_waiting_for_land
-		}
-	}
-
-	on_trigger_fail = {
-		if = {
-			limit = {
-				exists = var:sibling_waiting_for_land
-				any_sibling = {
-					is_landed = yes
-					this = root.var:sibling_waiting_for_land
-					has_character_flag = got_title_from_sibling
-				}
-			}
-			trigger_event = sibling.0003
-		}
-	}
-
-	immediate = {
-		random_sibling = {
-			limit = {
-				this = root.var:sibling_waiting_for_land
-			}
-			save_scope_as = sibling
-		}
-		remove_variable = sibling_waiting_for_land
-	}
-
-	option = { #Give them some gold
-		name = sibling.0002.a
-		trigger = {
-			short_term_gold >= medium_gold_value
-		}
-		show_as_unavailable = {
-			short_term_gold < medium_gold_value
-		}
-		remove_short_term_gold = medium_gold_value
-		stress_impact = {
-			greedy = minor_stress_impact_gain
-		}
-	}
-
-	option = { #No!
-		name = sibling.0002.b
-		stress_impact = {
-			generous = minor_stress_impact_gain
-		}
-		scope:sibling = {
-			add_opinion = {
-				target = root
-				modifier = sibling_goes_back_on_promise_opinion
-			}
-		}
-	}
-}
-
-
-#Sibling is very happy about receiving land as promised
-sibling.0003 = {
-	type = character_event
-	title = sibling.0001.t
-	desc = sibling.0003.desc
-	theme = family
-	left_portrait = {
-		character = root
-		animation = war_over_tie
-	}
-	right_portrait = {
-		character = scope:sibling
-		animation = happiness
-	}
-	override_background = { reference = throne_room }
-
-	trigger = {
-		exists = var:sibling_waiting_for_land
-		is_landed = yes
-		any_sibling = {
-			is_landed = yes
-			this = root.var:sibling_waiting_for_land
-			has_character_flag = got_title_from_sibling
-		}
-	}
-
-	immediate = {
-		random_sibling = {
-			limit = {
-				is_landed = yes
-				this = root.var:sibling_waiting_for_land
-				has_character_flag = got_title_from_sibling
-			}
-			save_scope_as = sibling
-			remove_character_flag = got_title_from_sibling
-		}
-		remove_variable = sibling_waiting_for_land
-	}
-
-	option = {
-		name = sibling.0003.a
-		add_gold = minor_gold_value
-		scope:sibling = {
-			add_opinion = {
-				target = root
-				modifier = received_land_from_sibling_opinion
-			}
-		}
-		progress_towards_friend_effect = {
-			CHARACTER = scope:sibling
-			OPINION = 0
-			REASON = friend_grateful_landed_sibling
-		}
-	}
-}
+#sibling.0002 = {
+#	type = character_event
+#	title = sibling.0001.t
+#	desc = sibling.0002.desc
+#	theme = family
+#	left_portrait = {
+#		character = root
+#		animation = war_over_win
+#	}
+#	right_portrait = {
+#		character = scope:sibling
+#		animation = disapproval
+#	}
+#	override_background = { reference = throne_room }
+#
+#	trigger = {
+#		exists = var:sibling_waiting_for_land
+#		is_landed = yes
+#		any_sibling = {
+#			is_landed = no
+#			this = root.var:sibling_waiting_for_land
+#		}
+#	}
+#
+#	on_trigger_fail = {
+#		if = {
+#			limit = {
+#				exists = var:sibling_waiting_for_land
+#				any_sibling = {
+#					is_landed = yes
+#					this = root.var:sibling_waiting_for_land
+#					has_character_flag = got_title_from_sibling
+#				}
+#			}
+#			trigger_event = sibling.0003
+#		}
+#	}
+#
+#	immediate = {
+#		random_sibling = {
+#			limit = {
+#				this = root.var:sibling_waiting_for_land
+#			}
+#			save_scope_as = sibling
+#		}
+#		remove_variable = sibling_waiting_for_land
+#	}
+#
+#	option = { #Give them some gold
+#		name = sibling.0002.a
+#		trigger = {
+#			short_term_gold >= medium_gold_value
+#		}
+#		show_as_unavailable = {
+#			short_term_gold < medium_gold_value
+#		}
+#		remove_short_term_gold = medium_gold_value
+#		stress_impact = {
+#			greedy = minor_stress_impact_gain
+#		}
+#	}
+#
+#	option = { #No!
+#		name = sibling.0002.b
+#		stress_impact = {
+#			generous = minor_stress_impact_gain
+#		}
+#		scope:sibling = {
+#			add_opinion = {
+#				target = root
+#				modifier = sibling_goes_back_on_promise_opinion
+#			}
+#		}
+#	}
+#}
+#
+#
+##Sibling is very happy about receiving land as promised
+#sibling.0003 = {
+#	type = character_event
+#	title = sibling.0001.t
+#	desc = sibling.0003.desc
+#	theme = family
+#	left_portrait = {
+#		character = root
+#		animation = war_over_tie
+#	}
+#	right_portrait = {
+#		character = scope:sibling
+#		animation = happiness
+#	}
+#	override_background = { reference = throne_room }
+#
+#	trigger = {
+#		exists = var:sibling_waiting_for_land
+#		is_landed = yes
+#		any_sibling = {
+#			is_landed = yes
+#			this = root.var:sibling_waiting_for_land
+#			has_character_flag = got_title_from_sibling
+#		}
+#	}
+#
+#	immediate = {
+#		random_sibling = {
+#			limit = {
+#				is_landed = yes
+#				this = root.var:sibling_waiting_for_land
+#				has_character_flag = got_title_from_sibling
+#			}
+#			save_scope_as = sibling
+#			remove_character_flag = got_title_from_sibling
+#		}
+#		remove_variable = sibling_waiting_for_land
+#	}
+#
+#	option = {
+#		name = sibling.0003.a
+#		add_gold = minor_gold_value
+#		scope:sibling = {
+#			add_opinion = {
+#				target = root
+#				modifier = received_land_from_sibling_opinion
+#			}
+#		}
+#		progress_towards_friend_effect = {
+#			CHARACTER = scope:sibling
+#			OPINION = 0
+#			REASON = friend_grateful_landed_sibling
+#		}
+#	}
+#}
 
 
 
@@ -1242,9 +1242,7 @@ sibling.8002 = {
 			callous = minor_stress_impact_gain
 		}
 		every_held_title = {
-			limit = {
-				tier = tier_county
-			}
+			title_tier = county
 			add_county_modifier = {
 				modifier = popular_sibling_modifier
 				years = 5

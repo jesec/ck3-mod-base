@@ -14,15 +14,15 @@ mongol_demand_subjugation_interaction = {
 	is_shown = {
 		scope:actor = {
 			any_owned_story = {
-				story_type = story_mongol_invasion
+				type = story_mongol_invasion
 			}
 			highest_held_title_tier = tier_empire
-			is_independent_ruler = yes
+			top_liege = this
 		}
 		scope:recipient = {
-			NOT = { this = scope:actor }
+			this != scope:actor
 			is_landless_adventurer = no
-			is_independent_ruler = yes
+			top_liege = this
 			any_neighboring_top_liege_realm_owner = {
 				this = scope:actor
 			}

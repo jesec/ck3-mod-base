@@ -10,7 +10,7 @@
 scripted_trigger jason_first_race_event_1_opponent_trigger = {
 	is_ai = yes
 	exists = var:contest_aptitude
-	NOT = { this = root }
+	this != root
 	OR = {
 		is_lowborn = no
 		is_landed = no
@@ -78,7 +78,7 @@ jason_first_race_event.1 = {
 			NOT = { 
 				any_attending_character = {
 					is_ai = no
-					NOT = { this = root }
+					this != root
 				}
 			}
 			# Only one event removing competitors should occur
@@ -367,15 +367,11 @@ jason_first_race_event.1 = {
 			}
 			modifier = {
 				add = -50
-				OR = {				
-					has_trait = arrogant
-				}
+				has_trait = arrogant
 			}
 			modifier = {
 				add = 100
-				OR = {				
-					has_trait = forgiving
-				}
+				has_trait = forgiving
 			}
 		}
 	}
@@ -496,9 +492,7 @@ jason_first_race_event.1 = {
 			}
 			modifier = {
 				add = -50
-				OR = {				
-					has_trait = vengeful
-				}
+				has_trait = vengeful
 			}
 			modifier = {
 				add = -50
@@ -599,11 +593,9 @@ jason_first_race_event.1 = {
 			modifier = {
 				add = 50
 				OR = {
-					OR = {
 						has_trait = calm
 						has_trait = shy
 					}
-				}
 			}
 		}
 	}

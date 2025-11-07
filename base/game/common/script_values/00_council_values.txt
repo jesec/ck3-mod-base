@@ -22,12 +22,24 @@ council_scaled_monthly_income = {
 	add = liege.highest_held_title_tier
 	subtract = 2
 	min = 0.5
+	if = { # Minister building for the estate improves the gain
+		limit = {
+			domicile ?= { has_domicile_parameter = estate_minister_effect_increase }
+		}
+		multiply = 2
+	}
 }
 
 council_scaled_by_liege_tier = {
 	add = liege.highest_held_title_tier
 	subtract = 1
 	min = 1
+	if = { # Minister building for the estate improves the gain
+		limit = {
+			domicile ?= { has_domicile_parameter = estate_minister_effect_increase }
+		}
+		multiply = 2
+	}
 }
 
 council_scaled_skill_value = {
@@ -88,4 +100,33 @@ council_scaled_admin_value = {
 			multiply = 2
 		}
 	}
+	if = { # Minister building for the estate improves the gain
+		limit = {
+			domicile ?= { has_domicile_parameter = estate_minister_effect_increase }
+		}
+		multiply = 2
+	}
 }
+
+convert_faith_development_value = {
+	value = development_level
+	divide = 10
+	floor = yes
+	add = 1
+	min = 1
+}
+
+convert_faith_development_loss = {
+	value = convert_faith_development_value
+	multiply = -1
+}
+
+# Determination House Aspiration
+## Find Secrets
+spymaster_determination_house_aspiration_find_secrets_total = 5
+
+## Support Schemes
+spymaster_determination_house_aspiration_support_schemes = 10
+
+## Disrupt Schemes
+spymaster_determination_house_aspiration_disrupt_schemes = 10

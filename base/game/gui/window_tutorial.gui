@@ -60,12 +60,14 @@ types TutorialWindow {
 			duration = 0.3
 			position = "[GetGuiPositionFromPercentCoordinates( PdxGuiWidget.Self, '(float)0', '(float)0' )]"
 		}
+
 		state = {
 			name = top_center
 			using = Animation_Curve_Default
 			duration = 0.3
 			position = "[GetGuiPositionFromPercentCoordinates( PdxGuiWidget.Self, '(float)0', '(float)-20' )]"
 		}
+
 		state = {
 			name = bottom_center
 			using = Animation_Curve_Default
@@ -73,12 +75,11 @@ types TutorialWindow {
 			position = "[GetGuiPositionFromPercentCoordinates( PdxGuiWidget.Self, '(float)0', '(float)20' )]"
 		}
 
-
 		state = {
 			name = bottom_left
 			using = Animation_Curve_Default
 			duration = 0.3
-			position = "[GetGuiPositionFromPercentCoordinates( PdxGuiWidget.Self, '(float)-30', '(float)25' )]"
+			position = "[GetGuiPositionFromPercentCoordinates( PdxGuiWidget.Self, '(float)-30', '(float)20' )]"
 		}
 
 		state = {
@@ -174,6 +175,14 @@ types TutorialWindow {
 						using = Font_Size_Big
 					}
 
+					button_standard = {
+						visible = "[InDebugMode]"
+						raw_text = "Debug"
+						default_format = "#D"
+						onclick = "[ExecuteConsoleCommand('tutorial.debugwindow')]"
+						max_width = 80
+					}
+
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						layoutstretchfactor_horizontal = 1
@@ -222,6 +231,7 @@ types TutorialWindow {
 				{
 					# this might break with really, really long localizations
 					set_parent_size_to_minimum = yes
+					
 					text_multi = {
 						max_width = 490
 						min_width = 490
@@ -233,6 +243,7 @@ types TutorialWindow {
 					vbox = {
 						visible = "[Tutorial.HasStepInstructions]"
 						layoutpolicy_vertical = preferred
+						
 						text_single = {
 							layoutpolicy_horizontal = expanding
 							margin_top = 20
@@ -259,6 +270,7 @@ types TutorialWindow {
 				blockoverride "scrollbox_expand"
 				{
 					expand = {}
+					
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						visible = "[Tutorial.HasTransition('full_tutorial_explanation')]"
@@ -270,7 +282,9 @@ types TutorialWindow {
 							text = "[Tutorial.GetTransitionText('full_tutorial_explanation')]"
 							margin_left = 5
 						}
+						
 						expand = {}
+						
 						text_single = {
 							align = right
 							text = "[Tutorial.GetTransitionText('quick_tutorial_explanation')]"
@@ -282,14 +296,14 @@ types TutorialWindow {
 				}
 				
 			}
+
 			hbox = {
 				layoutpolicy_horizontal = expanding
 				margin = { 10 10 }
 				spacing = 5
-				ignoreinvisible = no
 
 				button_tertiary = {
-					size = { 120 33 }
+					size = { 150 33 }
 					visible = "[Tutorial.HasTransition('back')]"
 					enabled = "[Tutorial.IsTransitionEnabled('back')]"
 					text = "[Tutorial.GetTransitionText('back')]"
@@ -297,15 +311,17 @@ types TutorialWindow {
 				}
 
 				button_standard = {
-					size = { 120 33 }
+					size = { 150 33 }
 					visible = "[Tutorial.HasTransition('repeat')]"
 					enabled = "[Tutorial.IsTransitionEnabled('repeat')]"
 					text = "[Tutorial.GetTransitionText('repeat')]"
 					onclick = "[Tutorial.OnClickTransition('repeat')]"
 				}
+				
+				expand = {}
 
 				button_tertiary = {
-					size = { 120 33 }
+					size = { 150 33 }
 					visible = "[Tutorial.HasTransition('skip')]"
 					enabled = "[Tutorial.IsTransitionEnabled('skip')]"
 					text = "[Tutorial.GetTransitionText('skip')]"
@@ -314,13 +330,12 @@ types TutorialWindow {
 
 				button_primary = {
 					name = "tutorial_highlight_next_button"
-					size = { 120 33 }
+					size = { 150 33 }
 					visible = "[Tutorial.HasTransition('next')]"
 					enabled = "[Tutorial.IsTransitionEnabled('next')]"
 					text = "[Tutorial.GetTransitionText('next')]"
 					onclick = "[Tutorial.OnClickTransition('next')]"
 				}
-
 			}
 		}
 	}

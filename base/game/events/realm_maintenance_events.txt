@@ -102,7 +102,7 @@ realm_maintenance.1000 = {
 						NOT = {
 							scope:old_liege = {
 								is_alive = no
-								is_independent_ruler = no
+								top_liege != this
 								liege = scope:new_liege
 							}
 						}
@@ -117,7 +117,12 @@ realm_maintenance.1000 = {
 					NOT = { var:petition_liege_scope = scope:new_liege }
 				}
 				trigger_event = { on_action = petition_liege_travel_planner_exit }
-				current_travel_plan = { cancel_travel_plan = yes }
+				current_travel_plan = { 
+					if = {
+						limit = { can_cancel = yes }
+						cancel_travel_plan = yes
+					}
+				}
 			}
 			# Pay homage invalidation
 			if = {
@@ -126,7 +131,26 @@ realm_maintenance.1000 = {
 					NOT = { var:homage_liege_scope = scope:new_liege }
 				}
 				trigger_event = { on_action = pay_homage_travel_planner_exit }
-				current_travel_plan ?= { cancel_travel_plan = yes }
+				current_travel_plan ?= { 
+					if = {
+						limit = { can_cancel = yes }
+						cancel_travel_plan = yes
+					}
+				}
+			}
+			# Bow Before Liege invalidation
+			if = {
+				limit = {
+					exists = var:pledge_loyalty_to_liege_scope
+					NOT = { var:pledge_loyalty_to_liege_scope = scope:new_liege }
+				}
+				trigger_event = { on_action = pledge_loyalty_to_liege_travel_planner_exit }
+				current_travel_plan = { 
+					if = {
+						limit = { can_cancel = yes }
+						cancel_travel_plan = yes
+					}
+				}
 			}
 		}
 	}
@@ -134,12 +158,26 @@ realm_maintenance.1000 = {
 
 # I have a new liege toast!
 scripted_effect send_new_liege_toast_effect = {
-	send_interface_toast = {
-		type = msg_liege_changed
-		title = realm_maintenance.1001.t
-		left_icon = scope:new_liege
-		right_icon = scope:old_liege
-		custom_tooltip = realm_maintenance.1001.$TRANSFER_TYPE$
+	if = {
+		limit = {
+			scope:new_liege = { tgp_is_ceremonial_regent_trigger = yes } # Not 'actual' ruler
+		}
+		send_interface_toast = {
+			type = msg_liege_changed
+			title = realm_maintenance.1001.t.ceremonial_regent
+			left_icon = scope:new_liege
+			right_icon = scope:old_liege
+			custom_tooltip = realm_maintenance.1001.$TRANSFER_TYPE$
+		}
+	}
+	else = {
+		send_interface_toast = {
+			type = msg_liege_changed
+			title = realm_maintenance.1001.t
+			left_icon = scope:new_liege
+			right_icon = scope:old_liege
+			custom_tooltip = realm_maintenance.1001.$TRANSFER_TYPE$
+		}
 	}
 }
 
@@ -242,7 +280,15 @@ realm_maintenance.1001 = {
 # by Linnéa Thimrén
 realm_maintenance.2001 = {
     type = character_event
-    title = realm_maintenance.2001.t
+    title = {
+    	first_valid = {
+    		triggered_desc = {
+    		    trigger = { tgp_is_ceremonial_regent_trigger = yes }
+    		    desc = realm_maintenance.2001.t_ceremonial_regent
+    		}
+    		desc = realm_maintenance.2001.t
+    	}
+    }
     desc = {
     	first_valid = {
     		triggered_desc = {
@@ -259,7 +305,13 @@ realm_maintenance.2001 = {
     		}
     		desc = realm_maintenance.2001.desc_alive
     	}
-    	desc = realm_maintenance.2001.desc
+    	first_valid = {
+    		triggered_desc = {
+    			trigger = { tgp_is_ceremonial_regent_trigger = yes }
+    			desc = realm_maintenance.2001.desc_ceremonial_regent
+    		}
+    		desc = realm_maintenance.2001.desc
+    	}
     }
     theme = crown
     left_portrait = {
@@ -275,7 +327,15 @@ realm_maintenance.2001 = {
 			animation = personality_bold
 		}
     }
+    right_portrait = {
+    	character = primary_title.var:administrative_ui_special_title.holder
+    	animation = holding_hu
+    	trigger = {
+    		NOT = { this = root }
+    	}
+    }
     lower_right_portrait = scope:previous_holder
+    cooldown = { days = 1 }
     
     trigger = {
     	scope:title.tier = tier_empire
@@ -283,9 +343,14 @@ realm_maintenance.2001 = {
     	exists = scope:previous_holder
     	NOT = { #You don't already have an empire tier title
     		any_held_title = {
-    			tier = tier_empire
-    			NOT = { this = scope:title }
+    			title_tier = empire
+    			this != scope:title
     		}
+    	}
+    	NAND = {
+    		scope:title = title:e_japan
+    		exists = top_liege.primary_title.var:administrative_ui_special_title
+			has_title = top_liege.primary_title.var:administrative_ui_special_title
     	}
     }
 
@@ -297,18 +362,17 @@ realm_maintenance.2001 = {
 			coronation_reset_realm_law_effect = yes #we need to reset the crown laws immediately, not wait for the next tick
 		}
 		add_character_flag = had_coronation_prompt
-    	assign_quirk_effect = yes
-    	if = {
+		assign_quirk_effect = yes
+		if = {
     		limit = {
     			OR = {
     				any_secret = {
-    					secret_type = secret_murder
+    					type = secret_murder
     					secret_target = scope:previous_holder
     				}
     				scope:previous_holder = {
 						is_alive = no
-						exists = killer
-						killer = root
+						killer ?= root
 					}
     			}
     		}
@@ -323,9 +387,22 @@ realm_maintenance.2001 = {
     }
 
     option = {
-        name = realm_maintenance.2001.a
+        name = {
+        	text = realm_maintenance.2001.a
+        	trigger = { tgp_is_ceremonial_regent_trigger = no }
+        }
+        name = {
+        	text = realm_maintenance.2001.a.ceremonial_regent
+        	trigger = { tgp_is_ceremonial_regent_trigger = yes }
+        }
+        
 		if = {
-			limit = { has_ach_dlc_trigger = yes has_realm_law = uncrowned NOT = { has_character_flag = had_coronation_prompt } }
+			limit = {
+				has_ach_dlc_trigger = yes
+				has_realm_law = uncrowned
+				tgp_is_ceremonial_regent_trigger = no
+				NOT = { has_character_flag = had_coronation_prompt }
+			}
 			if = {
 				limit = {
 					coronation_has_proper_artifact_trigger = yes

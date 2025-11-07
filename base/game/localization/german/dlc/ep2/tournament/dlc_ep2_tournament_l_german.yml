@@ -8,7 +8,7 @@
  train_for_tournament_decision_confirm: "Mit den Übungen beginnen"
  grand_tournament_active: "Es muss eine Aktivität „[GetActivityType('activity_tournament').GetName]“ geben, der Ihr beitreten könnt"
  ep2_decision_events.0001.t: "Turnierübungen"
- ep2_decision_events.0001.desc: "„Und dann dreht Ihr Euch nach rechts!“, schreit [marshal.GetTitledFirstName], während [marshal.Custom('DE_PRO_PER_S_3P_N')] mir einen kräftigen Schlag mit dem Schwert versetzt, der mich ein paar Schritte zurückweichen lässt. „Beim Turnier wird niemand zimperlich mit Euch umgehen, Herr[ROOT.Char.Custom('DE_END_NOU_S_GS_N')]“, erklärt [marshal.Custom('DE_PRO_PER_S_3P_N')] und trocknet sich den Schweiß von der Stirn.\n\n„Wenn Ihr gewinnen wollt, könnt Ihr Euch keine Niederlage leisten. Nicht einmal gegen mich. Kein einziges Mal.“"
+ ep2_decision_events.0001.desc: "„Und dann dreht Ihr Euch nach rechts!“, schreit [marshal.GetTitledFirstName], während [marshal.Custom('DE_PRO_PER_S_3P_N')] mir einen kräftigen Schlag mit dem Schwert versetzt, der mich ein paar Schritte zurückweichen lässt. „Beim Turnier wird niemand zimperlich mit Euch umgehen, [ROOT.Char.Custom('FormOfAddressForLiege')]“, erklärt [marshal.Custom('DE_PRO_PER_S_3P_N')] und trocknet sich den Schweiß von der Stirn.\n\n„Wenn Ihr gewinnen wollt, könnt Ihr Euch keine Niederlage leisten. Nicht einmal gegen mich. Kein einziges Mal.“"
  ep2_decision_events.0001.a: "„#EMP Arghhhh!#!“"
  ep2_decision_events.0001.a.crit_success: "Die Übungen verlaufen #EMP ausgezeichnet#!"
  ep2_decision_events.0001.a.success: "Die Übungen verlaufen beeindruckend"
@@ -22,8 +22,9 @@
  tradition_tournament_discount_desc: "Der Wechsel zur [culture_tradition|E] „$tradition_chivalry_name$“ bringt einen [prestige|E]-Rabatt von 2.000 mit sich."
  ### ACTIVITY
  activity_tournament: "Prachtturnier"
+ activity_tournament_plural: "Prachtturniere"
  activity_tournament_desc: "Veranstaltet prächtige kämpferische oder kulturelle [contests|E], die Teilnehmer aus nah und fern anziehen, um in ritterlichen Lanzenturnieren, den Hastiludia, um [prizes|E] und [prestige|E] zu kämpfen."
- activity_tournament_host_desc: "$BULLET_WITH_TAB$[prestige_i|E][prestige|E]\n$BULLET_WITH_TAB$[legitimacy_i] [Concept('legitimacy', 'Legitimitätszuwachs')|E]\n$BULLET_WITH_TAB$[stress_loss_i][Concept('stress', 'Anspannungsabbau')|E]\n$BULLET_WITH_TAB$[GetTrait('tourney_participant').GetName(GetNullCharacter)]-[trait_level_track_xp|E]\n$BULLET_WITH_TAB$[acclaimed_knights|EU] erhalten [glory|E]"
+ activity_tournament_host_desc: "$BULLET_WITH_TAB$[prestige_i|E] [prestige|E]\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E]\n$BULLET_WITH_TAB$[stress_loss_i] [stress_loss|E]\n$BULLET_WITH_TAB$[GetTrait('tourney_participant').GetName(GetNullCharacter)]-[trait_level_track_xp|E]\n$BULLET_WITH_TAB$[acclaimed_knights|E] erhalten [glory|E]"
  activity_tournament_selection_tooltip: "Ladet Eure $knight_culture_player_plural$, Untertanen und Nachbarn zu einem großen Spektakel von Wettkämpfen ein\n\nErwartete Belohnungen:\n$BULLET_WITH_TAB$[prestige_i] [prestige|E]\n$BULLET_WITH_TAB$[legitimacy_i] [Concept('legitimacy', 'Legitimitätszuwachs')|E]\n$BULLET_WITH_TAB$[stress_loss_i] [Concept('stress', 'Anspannungsabbau')|E]"
  tournament_contest: "Wettbewerb"
  progress_to_victory: "$game_concept_progress_to_victory$"
@@ -43,13 +44,11 @@
  ### PHASES
  #TEAM
  tournament_phase_melee: "Turnei"
- #TODO_CD_EP2: [GetPlayer.Custom('GetMeleeVariant')]
  tournament_phase_melee_desc: "Ein Scheingefecht zu Pferd und zu Fuß zwischen zwei Mannschaften, die darum wetteifern, ein umkämpftes Feld zu kontrollieren und gegnerische Kämpfer für Lösegeld gefangen zu nehmen.\n\n$tournament_contest_format_team$"
  #TURN
  tournament_phase_archery: "Bogenschießen"
  tournament_phase_archery_desc: "Ein Bogenwettbewerb, bei dem jeder Teilnehmer mit einer bestimmten Anzahl von Pfeilen auf eine Zielscheibe schießt und versucht, so viele Punkte wie möglich zu erzielen.\n\n$tournament_contest_formaty_turn$"
  tournament_phase_recital: "Vortrag"
- #TODO_CD_EP2: [GetPlayer.Custom('GetRecitalVariant')]
  tournament_phase_recital_desc: "Ein Gedichtwettbewerb, bei dem jeder Teilnehmer öffentlich ein für diesen Anlass geschriebenes Werk vorträgt, das mit denen der anderen Teilnehmer verglichen und bewertet wird.\n\n$tournament_contest_formaty_turn$"
  #VERSUS
  tournament_phase_joust: "Tjost"
@@ -57,7 +56,6 @@
  tournament_phase_duel: "Duell"
  tournament_phase_duel_desc: "Eine Reihe bewaffneter Zweikämpfe, die zu Fuß ausgetragen werden und bei denen die Teilnehmer versuchen, ihre Gegner zu entwaffnen oder mehr Punkte als diese zu erzielen, bis nur noch ein Teilnehmer übrig bleibt.\n\n$tournament_contest_format_versus$\nAnzahl der [contest_rounds|E]: 3"
  tournament_phase_wrestling: "Ringkampf"
- #TODO_CD_EP2: [GetPlayer.Custom('GetWrestlingVariant')]
  tournament_phase_wrestling_desc: "Ein Wettbewerb der Stärke und Gerissenheit, bei dem die Teilnehmer versuchen, ihre Gegner niederzuschlagen oder aus dem Ring zu werfen, bis nur noch ein Teilnehmer übrig bleibt.\n\n$tournament_contest_format_versus$\nAnzahl der [contest_rounds|E]: 3"
  tournament_phase_board_game: "Brettspiel"
  tournament_phase_board_game_desc: "Ein geistiger Wettstreit, bei dem die Teilnehmer eine Reihe von Brettspiel-Partien spielen, wobei der letzte verbleibende Spieler gewinnt.\n\n$tournament_contest_format_versus$\nAnzahl der [contest_rounds|E]: 3"

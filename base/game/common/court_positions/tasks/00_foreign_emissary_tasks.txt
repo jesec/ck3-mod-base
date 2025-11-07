@@ -1,17 +1,41 @@
 ﻿### Foreign Emissary Tasks ###
 
 foreign_emissary_culture_acceptance = {
-	court_position_types = { foreign_emissary_court_position }
+	court_position_types = { foreign_emissary_court_position court_brahmin_court_position cultural_emissary_court_position }
 
 	# Monthly cost for the task
 	cost = {
 		round = no
 		gold = {
-			add = {
-				value = monthly_court_position_task_cost
-				multiply = 2
-				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
-				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = no
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost
+					multiply = 2
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					scope:liege = {
+						has_treasury = yes
+					}
+				}
+				add = {
+					value = monthly_court_position_task_cost
+					multiply = 2
+					desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+					format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				}
 			}
 		}
 	}
@@ -110,7 +134,15 @@ foreign_emissary_culture_acceptance = {
 		add = ai_sociability
 		if = {
 			limit = {
+				has_treasury = no
 				monthly_character_income < monthly_court_position_task_cost_double
+			}
+			add = -1000
+		}
+		else_if = {
+			limit = {
+				has_treasury = yes
+				monthly_character_treasury_income < monthly_court_position_task_cost_double
 			}
 			add = -1000
 		}

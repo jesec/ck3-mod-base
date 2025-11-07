@@ -1,14 +1,14 @@
 ﻿l_russian:
  #Decision Menu Localization
  petition_liege_decision: "[ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip] получит прошение"
- petition_liege_decision_desc: "Я могу попросить сюзерена помочь мне справиться с трудностями; искренние просьбы, от результата которых выигрывает вся держава, часто выполняются."
+ petition_liege_decision_desc: "Я могу попросить [Concept('liege', 'сюзерена')|E] помочь мне преодолеть трудности; искренние просьбы, от результата которых выигрывает вся держава, часто выполняются."
  petition_liege_decision_tooltip: "[Concept( 'petition_liege', 'Попросить' )|E] [Concept( 'liege', 'сюзерена' )|E] о подарке или услуге"
- petition_liege_decision_effects: "Вы отправляетесь ко двору сюзерена. [THIS.Char.GetLiege.GetTitledFirstName] получит ваше обращение"
+ petition_liege_decision_effects: "Вы [Concept('travel', 'отправляетесь')|E] ко двору сюзерена. [THIS.Char.GetLiege.GetShortUIName|U] получит ваше [Concept('petition_liege', 'обращение')|E]"
  petition_liege_decision_confirm: "Обращение к сюзерену"
  petition_liege_decision_second_tooltip: "$DESC$\n$petition_liege_grace_tt$"
  petition_liege_grace_tt: "#weak Обратиться к сюзерену будет невозможно в течение 5 лет#!"
  CHOOSE_PETITION_DECISION_NEXT_STEP_BUTTON: "Выбрать тип обращения"
- petition_liege_warning_effect: "#weak На согласие [Concept( 'liege', 'сюзерена' )|E] влияют его характер, [opinion|El] и [Concept( 'petition_liege', 'тип обращения' )|E]#!"
+ petition_liege_warning_effect: "#weak На согласие влияют характер, [opinion|El] и [Concept( 'petition_liege', 'тип обращения' )|E]#!"
  #Council
  petition_liege_decision_option_council_seat: "Назначение в совет\n#low Дать место в [Concept( 'council', 'совете' )|E]#!"
  petition_liege_council_seat_desc: "Попросить, чтобы [ROOT.Char.GetLiege.GetTitledFirstName] [Select_CString(ROOT.Char.GetLiege.IsFemale, 'даровала', 'даровал' )] вам место в [ROOT.Char.GetLiege.GetHerHis] [Concept( 'council', 'совете' )|E]"
@@ -109,9 +109,55 @@
  petition_liege_development_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_development_tt: "#X [development|E] вашей [Concept( 'capital', 'столицы' )|E] уже превысило 66% развития столицы вашего [Concept( 'liege', 'сюзерена' )|E]#!"
  petition_liege_decision_effects_development: "[THIS.Char.GetLiege.GetSheHe|U] может передать часть [Concept( 'development', 'развития' )|E] своей [Concept( 'capital', 'столицы' )|E] вашей"
+ #House Fief
+ petition_liege_decision_option_house_fief: "Разрешение на феод дома\n#low Позволяет перейти к форме правления [Concept('soryo', 'сорё')|E]#!"
+ petition_liege_house_fief_desc: "Попросить, чтобы [ROOT.Char.GetLiege.GetTitledFirstName] не [Select_CString(ROOT.Char.GetLiege.IsFemale, 'рассматривала', 'рассматривал' )] ваш переход к [Concept('soryo', 'сорё')|E] как [Concept('crime', 'преступление')|E]"
+ petition_liege_house_fief_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_liege_house_fief_tt: "Вам уже даровали эту привилегию"
+ petition_liege_decision_effects_house_fief: "[Select_CString(THIS.Char.GetLiege.IsFemale, 'Она', 'Он')] может узаконить [Concept('decision', 'решение')|E] #TUT_KW Создать феод дома#!"
+ petition_liege_house_fief_allowed: "[Concept('decision', 'Решение')|E] «[GetDecisionWithKey('tgp_japan_establish_house_fief_decision').GetName|V]» больше не считается [crime_i][Concept('crime', 'преступлением')|E] в течение #V 10 лет#!\n[petition_liege.GetTitledFirstName] не сможет отнять ваш новый лен в течение #V 10 лет#!, если вы не станете [Concept('criminal', 'преступником')|E]"
+ #Wedding
+ petition_liege_decision_option_wedding: "Монарший брак\n#low Вступить в брак с [Concept('ceremonial_house', 'церемониальной династией')|E]"
+ petition_liege_wedding_desc: "Попросить, чтобы [ROOT.Char.GetLiege.GetTitledFirstName] [Select_CString(ROOT.Char.GetLiege.IsLocaFemale, 'согласилась', 'согласился' )] на [Concept('marriage', 'брак')|E] с представителем имперской династии"
+ petition_liege_wedding_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_liege_wedding_tt: "В вашем [Concept('house', 'доме')|E] нет подходящих кандидатов"
+ petition_liege_decision_effects_wedding: "[Select_CString(THIS.Char.GetLiege.IsFemale, 'Она', 'Он')] может одобрить [Concept('marriage', 'брак')|E] с [Concept('ceremonial_house', 'церемониальной династией')|E]"
+ petition_liege_wedding_permission: "Согласие дома [THIS.Char.GetHouse.GetName] на [Concept('marriage', 'брак')|E] с [Concept('ceremonial_house', 'церемониальной династией')|E]: +#P 50#!"
  #Shared
  petition_liege_faith_tt: "#X Вы с [Concept( 'liege', 'сюзереном' )|E] принадлежите к разным [Concept( 'faiths', 'конфессиям' )|E]#!"
  petition_liege_holding_tt: "#X [liege|E] не в состоянии оплатить строительство [Concept( 'holding', 'владений' )|E]#!"
  petition_liege_debt_tt: "#X Ваш [liege|El] [Concept( 'debt', 'в долгах' )|E]#!"
  petition_liege_council_no_petition_valid_tt: "#X Вам не о чем просить своего сюзерена#!"
  petition_liege_city_planning_innovation_tt: "#X И вы, и ваш [liege|E] должны принадлежать к [Concept( 'cultures', 'культурам' )|E] с [Concept( 'innovation', 'инновацией' )|E] «Городское планирование»#!"
+ #Non Royal Liege
+ ## Decision Menu Localization
+ petition_liege_decision_desc_non_royal: "Я могу попросить, чтобы [ROOT.Char.GetLiege.GetTitleAsNameNoTooltip|l] [Select_CString(ROOT.Char.GetLiege.IsFemale, 'помогла', 'помог' )] мне справиться с трудностями; искренние просьбы, от результата которых выигрывает вся держава, часто выполняются."
+ petition_liege_decision_tooltip_non_royal: "[Concept('petition_liege', 'Попросить')|E] [Concept('ceremonial_regent', 'регента')|E] о подарке или услуге"
+ petition_ceremonial_liege_decision_title: "[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetTitleAsNameNoTooltip] получит прошение"
+ petition_ceremonial_liege_decision: "Обращение к церемониальному сюзерену"
+ petition_ceremonial_liege_decision_desc: "Я могу попросить [Concept('ceremonial_liege', 'церемониального сюзерена')|E] помочь мне преодолеть трудности; искренние просьбы, от результата которых выигрывает вся держава, часто выполняются."
+ petition_ceremonial_liege_decision_effects: "Вы отправляетесь ко двору сюзерена. [ceremonial_liege.GetShortUIName] получит ваше [Concept('petition_liege', 'обращение')|E]"
+ tgp_is_ceremonial_petition_shown_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] [Select_CString(THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.IsFemale, 'должна', 'должен' )] быть [Select_CString(THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.IsFemale, 'доступна', 'доступен' )]"
+ petition_ceremonial_liege_decision_confirm: "$petition_ceremonial_liege_decision_title$"
+ #Kampaku
+ petition_ceremonial_liege_regent_desc: "Попросить, чтобы [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] [Select_CString(ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.IsFemale, 'поддержала', 'поддержал' )] ваше [Concept('appointment', 'назначение')|E] на роль [Concept('ceremonial_regent', 'церемониального регента')|E]"
+ petition_ceremonial_liege_decision_option_regent: "[ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip] одобряет\n#low Увеличивает ваш [Concept('candidate_score', 'приоритет претензий')|E]#!"
+ petition_ceremonial_liege_regent_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_ceremonial_liege_regent_already_given_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] уже поддерживает вас"
+ #Appointment
+ petition_ceremonial_liege_appointment_desc: "Попросить, чтобы [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] [Select_CString(ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.IsFemale, 'поддержала', 'поддержал' )] [Concept('candidate_score', 'приоритет претензий')|E] членов [Concept('house', 'дома')|E] [ROOT.Char.GetHouse.GetName] на [Concept('governorship', 'губернаторские')|E] должности"
+ petition_ceremonial_liege_decision_option_appointment: "Продвижение дома\n#low Увеличивает ваш [Concept('candidate_score', 'приоритет претензий')|E]#!"
+ petition_ceremonial_liege_appointment_tooltip: "$petition_liege_decision_second_tooltip$"
+ #Wedding
+ petition_ceremonial_liege_wedding_desc: "Попросить, чтобы [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] [Select_CString(ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.IsFemale, 'поддержала', 'поддержал' )] [Concept('marriage', 'брак')|E] между вашим [Concept('house', 'домом')|E] и [Concept('ceremonial_house', 'церемониальной династией')|E]"
+ petition_ceremonial_liege_decision_option_wedding: "Монарший брак\n#low [Concept('marry', 'Вступить в брак')|E] с [Concept('ceremonial_house', 'церемониальной династией')|E]"
+ petition_ceremonial_liege_wedding_tooltip: "$petition_liege_decision_second_tooltip$"
+ #Privilege
+ petition_ceremonial_liege_privilege_desc: "Попросить, чтобы [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] [Select_CString(ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.IsFemale, 'признала', 'признал' )] достоинство [Concept('house', 'дома')|E] [ROOT.Char.GetHouse.GetName]"
+ petition_ceremonial_liege_decision_option_privilege: "Признать достоинство\n#low Накопление [Concept('prestige', 'престижа')|E]#!"
+ petition_ceremonial_liege_privilege_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_ceremonial_liege_warning_effect: "#weak На согласие влияют характер [Concept('ceremonial_liege', 'церемониального сюзерена')|E], [opinion|El] и [Concept('petition_liege', 'тип обращения')|E]#!"
+ petition_liege_regent_support: "Ваш [Concept('candidate_score', 'приоритет претензий')|E] на титул [petition_vassal.GetTopLiege.GetPrimaryTitle.GetDefinitiveName]: #P +10%#!"
+ petition_liege_appointment_support: "[Concept('candidate_score', 'Приоритет претензий')|E] на [Concept('governorship', 'губернаторство')|E] всех членов [Concept('house', 'дома')|E] [THIS.Char.GetHouse.GetBaseName]: #P +15#!"
+ petition_liege_regent_support_desc: "Обращение"
+ petition_liege_appointment_support_desc: "Обращение"

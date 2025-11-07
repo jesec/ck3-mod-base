@@ -1,9 +1,13 @@
 ﻿pay_homage_start = {
 	effect = {
-		switch = {
-			trigger = has_trait
-			shy = { add_stress = minor_stress_impact_gain }
-			arrogant = { add_stress = minor_stress_impact_gain }
+		if = {
+			limit = {
+				OR = {
+					has_trait = shy
+					has_trait = arrogant
+				}
+			}
+			add_stress = minor_stress_impact_gain
 		}
 		if = {
 			limit = { has_variable = pay_homage_grace }

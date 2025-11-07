@@ -13,7 +13,7 @@ pdi_primary_heir_of_wrong_dynasty = {
 	is_shown = {
 		exists = player_heir
 		exists = primary_heir
-		NOT = { primary_heir.dynasty = root.dynasty }
+		primary_heir.dynasty != root.dynasty
 	}
 }
 
@@ -44,8 +44,7 @@ pdi_male_under_female_dominated_doctrine = {
 
 pdi_liege_of_hostile_faith = {
 	is_shown = {
-		exists = liege
-		liege = {
+		liege ?= {
 			faith = {
 				faith_hostility_level = {
 					target = root.faith

@@ -45,15 +45,13 @@ story_cycle_infidelty_confronter = {
 				every_in_list = {
 					variable = confronting_partners
 					limit = {
-						OR = {
-							NOR = {
-								has_relation_soulmate = scope:lover_1
-								has_relation_soulmate = scope:lover_2
-								is_consort_of = scope:lover_1
-								is_consort_of = scope:lover_2
-								has_relation_lover = scope:lover_1
-								has_relation_lover = scope:lover_2
-							}
+						NOR = {
+							has_relation_soulmate = scope:lover_1
+							has_relation_soulmate = scope:lover_2
+							is_consort_of = scope:lover_1
+							is_consort_of = scope:lover_2
+							has_relation_lover = scope:lover_1
+							has_relation_lover = scope:lover_2
 						}
 					}
 					save_temporary_scope_as = remove_from_list
@@ -107,7 +105,7 @@ story_cycle_infidelty_confronter = {
 					random_in_list = {
 						variable = infidelity_lovers
 						limit = {
-							NOT = { this = scope:infidelity_partner }
+							this != scope:infidelity_partner
 						}
 						save_scope_as = infidelity_partners_lover
 					}
@@ -145,8 +143,8 @@ story_cycle_infidelty_confronter = {
 					#Save the secret (if discovery)
 					scope:infidelity_partner = {
 						random_secret = {
+							type = secret_lover
 							limit = {
-								secret_type = secret_lover
 								secret_target = scope:infidelity_partners_lover
 							}
 							save_scope_as = secret

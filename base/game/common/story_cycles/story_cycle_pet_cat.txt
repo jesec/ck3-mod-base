@@ -68,6 +68,23 @@
 				}
 			}
 		}
+		
+		# Give the cat a name!
+		if = {
+			limit = {
+				story_owner = {
+					NOT = { has_character_flag = is_naming_cat }
+				}
+				NOT = { exists = story_owner.var:story_cycle_cat_name }
+			}
+			story_owner = {
+				add_character_flag = is_naming_cat
+				trigger_event = {
+					id = pet_animal.0001
+					days = 2
+				}
+			}
+		}
 
 	}
 
@@ -80,45 +97,6 @@
 
 	on_owner_death = {
 		scope:story = { end_story = yes }
-	}
-
-	# Give the cat a name!
-	effect_group = {
-		days = { 2 4 }
-		chance = 100
-	
-		triggered_effect = {
-			trigger = {
-				story_owner = {
-					NOT = { has_character_flag = is_naming_cat }
-				}
-				NOT = { exists = story_owner.var:story_cycle_cat_name }
-			}
-			effect = {
-				story_owner = {
-					add_character_flag = is_naming_cat
-					trigger_event = pet_animal.0001
-				}
-			}
-		}
-	}
-
-	#To save the name in the story's scope (can for some reason not be done in the naming event itself)
-	effect_group = {
-		days = 5
-		chance = 100
-	
-		triggered_effect = {
-			trigger = {
-				exists = story_owner.var:story_cycle_cat_name
-			}
-			effect = {
-				set_variable = {
-					name = story_cycle_cat_name
-					value = scope:story.story_owner.var:story_cycle_cat_name
-				}
-			}
-		}
 	}
 
 	#Age the cat

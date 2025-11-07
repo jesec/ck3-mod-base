@@ -437,7 +437,7 @@ councillor_spouse_martial.0006 = {
 #Wounded character gains Health boost
 # by Petter Vilberg
 scripted_trigger councillor_spouse_martial_0007_wounded_character_trigger = {
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	is_available_ai_adult = yes
 	has_trait_rank = {
 		trait = wounded
@@ -1199,7 +1199,7 @@ councillor_spouse_martial.1003 = {
 
 	option = {
 		name = councillor_spouse_martial.1003.a
-		remove_short_term_gold = medium_gold_value
+		remove_treasury_or_gold = medium_treasury_or_gold_value
 		scope:war = {
 			end_war = white_peace
 		}
@@ -1243,6 +1243,10 @@ councillor_spouse_martial.1003 = {
 		}
 		ai_chance = {
 			base = 100
+			modifier = {
+				factor = 0
+				short_term_treasury_or_gold <= medium_treasury_or_gold_value
+			}
 		}
 	}
 

@@ -543,8 +543,7 @@ travel_danger_events.5010 = { # Pariah Event - Not allowed in any inns in your r
 				travel_plan = root.current_travel_plan
 				type = owner_opinion
 			}
-			exists = province_owner
-			province_owner = {
+			province_owner ?= {
 				OR = {
 					has_any_bad_relationship_with_root_trigger = yes 
 					liege ?= {
@@ -614,7 +613,7 @@ travel_danger_events.5010 = { # Pariah Event - Not allowed in any inns in your r
 		if = {
 			limit = {
 				has_character_flag = had_travel_danger_event_5010_twice_recently
-				house_head_can_start_feud_against_trigger = { TARGET = scope:angry_char }
+				valid_for_feud_events_with_target_trigger = { TARGET = scope:angry_char }
 			}
 			house_feud_start_effect = {
 				# Feuding House Head

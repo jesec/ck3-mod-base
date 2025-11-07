@@ -683,7 +683,7 @@ board_games.0001 = {
 			triggered_desc = {
 				trigger = {
 					exists = scope:bg_counterer
-					NOT = { this = scope:bg_counterer }
+					this != scope:bg_counterer
 				}
 				desc = board_games.0001.desc.i_am_countered
 			}
@@ -2575,7 +2575,7 @@ board_games.0021 = {
 		# If they're not the same person, inform scope:bg_initiator that the game scope:bg_attacker is playing has invalidated.
 		if = {
 			limit = {
-				NOT = { scope:bg_attacker = scope:bg_initiator }
+				scope:bg_attacker != scope:bg_initiator
 			}
 			scope:bg_initiator = {
 				send_interface_toast = {

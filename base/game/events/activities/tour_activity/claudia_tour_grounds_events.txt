@@ -59,10 +59,7 @@ scripted_trigger tour_grounds_has_falcons_trigger = {
 scripted_trigger tour_grounds_has_dogs_trigger = {
 	OR = {
 		has_trait = lifestyle_hunter
-		AND = {
-			exists = house
-			house = { has_house_modifier = hold_court_8140_house_modifier }
-		}
+		house ?= { has_house_modifier = hold_court_8140_house_modifier }
 	}
 }
 
@@ -77,7 +74,7 @@ scripted_trigger tour_grounds_has_horses_trigger = {
 			}
 		}
 		any_owned_story = {
-			story_type = story_cycle_martial_lifestyle_warhorse
+			type = story_cycle_martial_lifestyle_warhorse
 		}
 		has_character_modifier = warfare_tamer_of_horses_modifier
 		has_character_modifier = horse_story_modifier
@@ -351,8 +348,7 @@ tour_grounds_events.7000 = {
 			else_if = {
 				limit = {
 					scope:stop_host_scope = {
-						exists = house
-						house = { has_house_modifier = hold_court_8140_house_modifier }
+						house ?= { has_house_modifier = hold_court_8140_house_modifier }
 					}
 				}
 				house = { add_house_modifier = { modifier = hold_court_8140_house_modifier years = 30 } }
@@ -450,7 +446,7 @@ tour_grounds_events.7000 = {
 				}
 				OR = {
 					tour_grounds_has_dogs_trigger = yes
-					any_owned_story = { story_type = story_cycle_pet_dog }
+					any_owned_story = { type = story_cycle_pet_dog }
 				}
 			}
 			trigger_else_if = {

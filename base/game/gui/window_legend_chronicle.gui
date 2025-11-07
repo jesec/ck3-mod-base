@@ -1,12 +1,11 @@
-window = {
+﻿window = {
 	name = "legend_chronicle"
 	parentanchor = center
 	position = { 0 20 }
-	size = { 780 940 }
+	size = { 650 940 }
 	layer = windows_layer
 
-	using = Window_Background
-	using = Window_Decoration
+	allow_outside = yes
 
 	state = {
 		name = _show
@@ -18,19 +17,42 @@ window = {
 		using = Animation_FadeOut_Quick
 	}
 
-	vbox = {
-		using = Window_Margins
+	hbox = {
+		using = Window_Background
 
-		datacontext = "[LegendChronicleWindow.GetLegend]"
-		datacontext = "[Legend.GetType]"
+		blockoverride "bg_margins" {
+			margin = { 35 0 }
+			margin_top = -2
+			margin_bottom = -5
+		}
 
 		background = {
-			using = Background_Header
+			margin = { 32 0 }
+			margin_top = -2
+			margin_bottom = -5
 
-			margin = { -38 0 }
-			margin_bottom = -870
-			margin_top = -20
+			using = Background_Window_Header
 		}
+
+		background = {
+			margin = { 36 0 }
+			margin_top = -2
+			margin_bottom = -5
+
+			using = Background_Window_Header_Pattern
+		}
+	}
+
+	vbox = {
+		datacontext = "[LegendChronicleWindow.GetLegend]"
+		datacontext = "[Legend.GetType]"
+		margin = { -38 0 }
+		margin_bottom = -870
+		margin_top = -20
+
+		using = Window_Margins
+
+		allow_outside = yes
 
 		vbox = {
 			name = "parchment_background"
@@ -104,10 +126,12 @@ window = {
 				buttons_window_control = {
 					parentanchor = top|right
 					position = { -2 2 }
+
 					blockoverride "button_close"
 					{
 						onclick = "[LegendChronicleWindow.Close]"
 					}
+					margin_right = 18
 				}
 
 				text_single = {
@@ -326,38 +350,38 @@ window = {
 
 					hbox = {
 						name = "library_buttons"
-                    	visible = "[Legend.IsCompleted]"
+						visible = "[Legend.IsCompleted]"
 
 						button_primary = {
-                            text = "LEGEND_CHRONICLE_ADD_TO_LIBRARY"
+							text = "LEGEND_CHRONICLE_ADD_TO_LIBRARY"
 
-                            visible = "[Not( Legend.IsInPlayerLibrary( GetPlayer ) )]"
+							visible = "[Not( Legend.IsInPlayerLibrary( GetPlayer ) )]"
 
-                            onclick = "[PostCommand( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
-                            enabled = "[IsValidCommand( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
-                            tooltip = "[GetCommandDesc( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
+							onclick = "[PostCommand( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
+							enabled = "[IsValidCommand( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
+							tooltip = "[GetCommandDesc( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
 
-                            background = {
-                                using = Background_Area_Light
-                                alpha = 0.7
-                            }
-                        }
+							background = {
+								using = Background_Area_Light
+								alpha = 0.7
+							}
+						}
 
-                        button_primary = {
-                            text = "LEGEND_CHRONICLE_REMOVE_FROM_LIBRARY"
+						button_primary = {
+							text = "LEGEND_CHRONICLE_REMOVE_FROM_LIBRARY"
 
-                            visible = "[Legend.IsInPlayerLibrary( GetPlayer )]"
+							visible = "[Legend.IsInPlayerLibrary( GetPlayer )]"
 
-                            onclick = "[PostCommand( GetPlayer.RemoveFromLegendLibrary( Legend.Self ) )]"
+							onclick = "[PostCommand( GetPlayer.RemoveFromLegendLibrary( Legend.Self ) )]"
 							onclick = "[LegendChronicleWindow.Close]"
 							enabled = "[IsValidCommand( GetPlayer.RemoveFromLegendLibrary( Legend.Self ) )]"
 							tooltip = "[GetCommandDesc( GetPlayer.RemoveFromLegendLibrary( Legend.Self ) )]"
 
-                            background = {
-                                using = Background_Area_Light
-                                alpha = 0.7
-                            }
-                        }
+							background = {
+								using = Background_Area_Light
+								alpha = 0.7
+							}
+						}
 					}
 
 					hbox = {
@@ -448,13 +472,13 @@ types LegendChronicleWindow
 
 			size = { 160 36 }
 			position = { 20 -20 }
-			
+
 			using = Background_Letter_No_Frame
 
-            alpha = 0.8
+			alpha = 0.8
 
-            datacontext = "[Legend.GetProtagonist]"
-            onclick = "[DefaultOnCharacterClick( Character.GetID )]"
+			datacontext = "[Legend.GetProtagonist]"
+			onclick = "[DefaultOnCharacterClick( Character.GetID )]"
 
 			tooltipwidget = {
 				container_character_tooltip = {}
@@ -462,85 +486,85 @@ types LegendChronicleWindow
 
 			text_multi = {
 				min_width = 144
-	            max_width = 144
-	            min_height = 34
-                max_height = 34
+				max_width = 144
+				min_height = 34
+				max_height = 34
 
-                position = { 8 1 }
+				position = { 8 1 }
 
-	            text = "[Legend.GetProtagonist.GetShortUINameNotMeNoTooltip]"
-	            default_format = "#light_background"
-	            align = vcenter|nobaseline|center
-	            using = Font_Size_Big
-	            using = Font_Type_Flavor
-	            using = Text_Light_Background_Overrides
-	        }
-        }
+				text = "[Legend.GetProtagonist.GetShortUINameNotMeNoTooltip]"
+				default_format = "#light_background"
+				align = vcenter|nobaseline|center
+				using = Font_Size_Big
+				using = Font_Type_Flavor
+				using = Text_Light_Background_Overrides
+			}
+		}
 	}
 }
 
 template Chronicle_Scrollbar_Vertical {
 	scrollbar = {
-	    name = "vertical_scrollbar"
-	    size = { 12 12 }
-	    wheelstep = 60
-	    direction = vertical
+		name = "vertical_scrollbar"
+		size = { 12 12 }
+		wheelstep = 60
+		direction = vertical
 
-	    track = {
-	        button = {
-	            size = { 12 12 }
-	            gfxtype = buttongfx
+		track = {
+			button = {
+				size = { 12 12 }
+				gfxtype = buttongfx
 
-			    alpha = 0.4 # This is the only difference with template 'Scrollbar_Vertical' - to provide contrast
+				alpha = 0.4 # This is the only difference with template 'Scrollbar_Vertical' - to provide contrast
 
-	            texture = "gfx/interface/scrollbars/scrollbar_track_vertical.dds"
-	            spriteType = Corneredtiled
-	            spriteborder = { 0 3 }
-	            effectname = "NoHighlight"
-	        }
-	    }
+				texture = "gfx/interface/scrollbars/scrollbar_track_vertical.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 0 3 }
+				effectname = "NoHighlight"
+			}
+		}
 
-	    slider = {
-	        button = {
-	            gfxtype = framedbuttongfx
-	            effectname = "NoHighlight"
+		slider = {
+			button = {
+				gfxtype = framedbuttongfx
+				effectname = "NoHighlight"
 
-	            texture = "gfx/interface/scrollbars/scrollbar_slider.dds"
-	            spriteType = Corneredtiled
-	            spriteborder = { 0 3 }
-	            framesize = { 12 40 }
-	            minimumsize = { -1 40 }
+				texture = "gfx/interface/scrollbars/scrollbar_slider.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 0 3 }
+				framesize = { 12 40 }
+				minimumsize = { -1 40 }
 
-	            upframe = 1
-	            overframe = 2
-	            downframe = 2
+				upframe = 1
+				overframe = 2
+				downframe = 2
 
-	            oversound = "event:/SFX/UI/Generic/sfx_ui_generic_icon_pointer_over"
+				oversound = "event:/SFX/UI/Generic/sfx_ui_generic_icon_pointer_over"
 
-	            state = {
-	                name = _mouse_press
-	                start_sound = {
-	                    soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_select"
-	                }
-	            }
+				state = {
+					name = _mouse_press
+					start_sound = {
+						soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_select"
+					}
+				}
 
-	            state = {
-	                name = _mouse_release
-	                start_sound = {
-	                    soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_select"
-	                }
-	            }
-	        }
-	    }
+				state = {
+					name = _mouse_release
+					start_sound = {
+						soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_select"
+					}
+				}
+			}
+		}
 
-	    dec_button = {
-	        button = {
-	        }
-	    }
+		dec_button = {
+			button = {
+			}
+		}
 
-	    inc_button = {
-	        button = {
-	        }
-	    }
+		inc_button = {
+			button = {
+			}
+		}
 	}
 }

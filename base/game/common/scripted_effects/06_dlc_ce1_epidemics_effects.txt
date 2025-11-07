@@ -39,11 +39,9 @@ notify_holders_and_above = {
 			# Just so we don't fire multiple alerts for the Black Death
 			scope:infected_county = {
 				NOT = {
-					any_county_province = {
-						any_province_epidemic = {
-							epidemic_type = epidemic_type:bubonic_plague
-							outbreak_intensity = apocalyptic
-						}
+					any_county_province_epidemic = {
+						intensity = apocalyptic
+						epidemic_type = epidemic_type:bubonic_plague
 					}
 				}
 			}
@@ -51,11 +49,9 @@ notify_holders_and_above = {
 		if = {
 			limit = {
 				scope:infected_county = {
-					any_county_province = {
-						any_province_epidemic = {
-							NOT = { epidemic_type = epidemic_type:bubonic_plague }
-							outbreak_intensity = apocalyptic
-						}
+					any_county_province_epidemic = {
+						intensity = apocalyptic
+						NOT = { epidemic_type = epidemic_type:bubonic_plague }
 					}
 				}
 			}
@@ -111,16 +107,14 @@ notify_holders_and_above = {
 			# If it's minor we send you a toast unless it's in your domain
 			limit = {
 				scope:infected_county = {
-					any_county_province = {
-						any_province_epidemic = {
-							NOR = {
-								epidemic_type = epidemic_type:bubonic_plague
-								outbreak_intensity >= major
-							}
+					any_county_province_epidemic = {
+						NOR = {
+							epidemic_type = epidemic_type:bubonic_plague
+							outbreak_intensity >= major
 						}
 					}
 					holder = {
-						NOT = { this = top_liege }
+						this != top_liege
 					}
 				}
 			}
@@ -144,7 +138,7 @@ notify_holders_and_above = {
 					every_vassal_or_below = { #Toast notif
 						limit = {
 							is_ai = no
-							NOT = { this = scope:infected_county.holder }
+							this != scope:infected_county.holder
 							notified_of_plague_trigger = no
 						}
 						add_to_variable_list = {
@@ -259,7 +253,7 @@ start_black_death_chain_effect = {
 				in_diplomatic_range = scope:black_death_holder
 				NOT = {
 					any_owned_story = {
-						story_type = story_cycle_black_death
+						type = story_cycle_black_death
 					}
 				}
 			}
@@ -271,7 +265,7 @@ start_black_death_chain_effect = {
 				in_diplomatic_range = scope:black_death_holder
 				NOT = {
 					any_owned_story = {
-						story_type = story_cycle_black_death
+						type = story_cycle_black_death
 					}
 				}
 			}
@@ -320,38 +314,22 @@ get_superstitious_courtier_effect = {
 get_random_realm_epidemic = {
 	random_sub_realm_county = {
 		limit = {
-			any_county_province = {
-				any_province_epidemic = {
-					count >= 1
-					outbreak_intensity >= $INTENSITY$
-				}
-			}
+			any_county_province_epidemic = { outbreak_intensity >= $INTENSITY$ }
 		}
 		weight = {
 			base = 1
 			modifier = {
 				add = 750
-				any_county_province = {
-					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= apocalyptic
-					}
-				}
+				has_province_with_epidemic = { intensity >= apocalyptic }
 			}
 			modifier = {
 				add = 5
-				any_county_province = {
-					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= major
-					}
-				}
+				has_province_with_epidemic = { intensity >= major }
 			}
 		}
 		random_county_province = {
 			limit = {
 				any_province_epidemic = {
-					count >= 1
 					outbreak_intensity >= $INTENSITY$
 				}
 			}
@@ -360,15 +338,13 @@ get_random_realm_epidemic = {
 				modifier = {
 					add = 750
 					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= apocalyptic
+						intensity >= apocalyptic
 					}
 				}
 				modifier = {
 					add = 5
 					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= major
+						intensity >= major
 					}
 				}
 			}
@@ -405,7 +381,6 @@ get_random_nearby_realm_epidemic = {
 					}
 				}
 				any_province_epidemic = {
-					count >= 1
 					outbreak_intensity >= $INTENSITY$
 				}
 			}
@@ -414,27 +389,16 @@ get_random_nearby_realm_epidemic = {
 			base = 1
 			modifier = {
 				add = 750
-				any_county_province = {
-					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= apocalyptic
-					}
-				}
+				has_province_with_epidemic = { intensity >= apocalyptic }
 			}
 			modifier = {
 				add = 5
-				any_county_province = {
-					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= major
-					}
-				}
+				has_province_with_epidemic = { intensity >= major }
 			}
 		}
 		random_county_province = {
 			limit = {
 				any_province_epidemic = {
-					count >= 1
 					outbreak_intensity >= $INTENSITY$
 				}
 			}
@@ -443,15 +407,13 @@ get_random_nearby_realm_epidemic = {
 				modifier = {
 					add = 750
 					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= apocalyptic
+						intensity >= apocalyptic
 					}
 				}
 				modifier = {
 					add = 5
 					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= major
+						intensity >= major
 					}
 				}
 			}
@@ -689,7 +651,7 @@ remove_isolated_capital_modifiers_effect = {
 			has_county_modifier = isolate_capital_decision_modifier
 			NOT = {
 				any_county_province = {
-					NOT = { this = root }
+					this != root
 					any_province_epidemic = {
 						this = scope:epidemic
 					}
@@ -707,7 +669,7 @@ remove_isolated_capital_modifiers_effect = {
 				NOT = {
 					any_sub_realm_county = {
 						any_county_province = {
-							NOT = { this = root }
+							this != root
 							any_province_epidemic = {
 								this = scope:epidemic
 							}

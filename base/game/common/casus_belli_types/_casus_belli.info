@@ -98,6 +98,19 @@
 	}
 	ai = no # If set, the AI will ignore this CB entirely
 
+	### Overlord join chance (fixed point between 0 and 1)
+	# How likely is it that the overlord will join their subject when unable to be called in immediately?
+	# The attacking AI will consider a weighted power of subject and overlord when evaluating whether to attack an unprotected subject
+	# 	giving the overlord this weight (0.4 = 40% of the power of the overlord, 60% of the power of the subject)
+	# a result of 0 implies that the AI doesn't believe the overlord will come in aid of the subject
+	# a result of 1 will make the AI evaluate the full strength of the overlord instead of just considering the subject's strength
+	#
+	# Scopes:
+	#	- root, attacker: the character evaluating the war declaration
+	#	- defender: the subject being targeted
+	#	- overlord: the overlord of the defender that would intervene
+	ai_overlord_defensive_power_impact = {}
+
 	white_peace_possible = no # If set to "no", white peaces can't happen; only victory, defeat, or invalidation
 	check_all_defenders_for_ticking_war_score = yes # If set to "yes", then we check land held by all defenders within the wargoal
 	ticking_war_score_targets_entire_realm = yes # If set to "yes" we check the whole realm instead of the wargoal

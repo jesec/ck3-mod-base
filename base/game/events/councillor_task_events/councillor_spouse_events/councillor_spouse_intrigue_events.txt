@@ -249,7 +249,7 @@ scripted_trigger councillor_spouse_intrigue_0003_secret_trigger = {
 }
 
 scripted_trigger councillor_spouse_intrigue_0003_character_trigger = {
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	any_secret = {
 		councillor_spouse_intrigue_0003_secret_trigger = yes
 	}
@@ -539,7 +539,7 @@ councillor_spouse_intrigue.0004 = {
 scripted_trigger councillor_spouse_intrigue_0005_target_trigger = {
 	is_available_healthy_adult = yes
 	is_ai = yes
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	root = {
 		can_add_hook = {
 			target = prev
@@ -920,7 +920,7 @@ scripted_trigger councillor_spouse_intrigue_1002_secret_trigger = {
 }
 
 scripted_trigger councillor_spouse_intrigue_1002_character_trigger = {
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	any_secret = {
 		councillor_spouse_intrigue_1002_secret_trigger = yes
 	}
@@ -1043,7 +1043,7 @@ councillor_spouse_intrigue.1002 = {
 #A vassal in a Scheme is removed, and you gain a hook on them instead
 scripted_trigger councillor_spouse_intrigue_1003_scheme_agent_trigger = {
 	NOT = { is_agent_exposed_in_scheme = scope:scheme }
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	OR = {
 		is_courtier_of = root
 		AND = {
@@ -1072,7 +1072,7 @@ scripted_trigger councillor_spouse_intrigue_1003_scheme_agent_trigger = {
 scripted_trigger councillor_spouse_intrigue_1003_scheme_trigger = {
 	scheme_owner = {
 		is_ai = yes
-		NOT = { this = scope:councillor }
+		this != scope:councillor
 	}
 	is_scheme_exposed = yes
 	hostile_scheme_trigger = yes
@@ -1381,8 +1381,8 @@ councillor_spouse_intrigue.1004 = {
 #A vassal leaves a faction and starts desipising the faction leader
 # by Petter Vilberg
 scripted_trigger councillor_spouse_intrigue_1005_faction_member_trigger = {
-	NOT = { this = scope:faction.faction_leader }
-	NOT = { this = scope:councillor }
+	this != scope:faction.faction_leader
+	this != scope:councillor
 }
 
 scripted_trigger councillor_spouse_intrigue_1005_faction_trigger = {
@@ -1486,7 +1486,7 @@ councillor_spouse_intrigue.1005 = {
 # by Petter Vilberg
 scripted_trigger councillor_spouse_intrigue_1006_plant_trigger = {
 	is_available_healthy_ai_adult = yes
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	NOT = {
 		is_of_major_interest_trigger = {
 			CHARACTER = root
@@ -1503,7 +1503,7 @@ scripted_trigger councillor_spouse_intrigue_1006_plant_trigger = {
 scripted_trigger councillor_spouse_intrigue_1006_scheme_target_trigger = {
 	trigger_if = {
 		limit = { exists = court_owner }
-		NOT = { court_owner = scope:councillor }
+		court_owner != scope:councillor
 	}
 }
 
@@ -1561,7 +1561,7 @@ councillor_spouse_intrigue.1006 = {
 		}
 		if = {
 			limit = {
-				NOT = { scope:target = scope:target.court_owner }
+				scope:target != scope:target.court_owner
 			}
 			scope:target.court_owner = {
 				save_scope_as = other_court_owner

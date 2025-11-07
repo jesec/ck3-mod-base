@@ -54,7 +54,7 @@ excellent_food = {
 			}
 		}
 		any_attending_character = {
-			NOT = { this = scope:host }
+			this != scope:host
 			is_physically_able_ai_adult = yes
 			location = scope:province
 			OR = {
@@ -111,7 +111,7 @@ excellent_food = {
 		
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:host }
+				this != scope:host
 				is_physically_able_ai_adult = yes
 				location = scope:province
 				OR = {
@@ -183,7 +183,7 @@ impressed_courtly_vassal = {
 		}
 		any_attending_character = {
 			count >= 2
-			NOT = { this = scope:host }
+			this != scope:host
 			is_physically_able_ai_adult = yes
 			is_vassal_of = scope:host
 			has_vassal_stance = courtly
@@ -196,7 +196,7 @@ impressed_courtly_vassal = {
 	effect = {
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:host }
+				this != scope:host
 				is_physically_able_ai_adult = yes
 				is_vassal_of = scope:host
 				has_vassal_stance = courtly
@@ -206,12 +206,12 @@ impressed_courtly_vassal = {
 		}
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:host }
+				this != scope:host
 				is_physically_able_ai_adult = yes
 				is_vassal_of = scope:host
 				has_vassal_stance = courtly
 				location = scope:province
-				NOT = { this = scope:first }
+				this != scope:first
 			}
 			save_scope_as = second
 		}
@@ -252,14 +252,14 @@ hook_trusting_guest = {
 		is_current_phase_active = yes
 		coronation_feast_phase = yes # If Coronation, only in feast phase
 		any_attending_character = {
-			NOT = { this = scope:host }
+			this != scope:host
 			has_trait = trusting
 			is_ai = yes
 			location = scope:province
 			save_temporary_scope_as = first_temp
 		}
 		any_attending_character = {
-			NOT = { this = scope:first_temp }
+			this != scope:first_temp
 			location = scope:province
 			can_add_hook = {
 				target = scope:first_temp
@@ -273,14 +273,14 @@ hook_trusting_guest = {
 	effect = {
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:host }
+				this != scope:host
 				location = scope:province
 				has_trait = trusting
 				is_ai = yes
 				save_temporary_scope_as = first_temp
 				scope:activity = {
 					any_attending_character = {
-						NOT = { this = scope:first_temp }
+						this != scope:first_temp
 						location = scope:province
 						can_add_hook = {
 							target = scope:first_temp
@@ -294,7 +294,7 @@ hook_trusting_guest = {
 		random_attending_character = {
 			limit = {
 				location = scope:province
-				NOT = { this = scope:first }
+				this != scope:first
 				can_add_hook = {
 					target = scope:first
 					type = favor_hook
@@ -340,8 +340,8 @@ impressed_guest_honor = {
 			is_alive = yes
 		}
 		any_attending_character = {
-			NOT = { this = scope:host }
-			NOT = { this = scope:activity.special_guest:honorary_guest_regular }
+			this != scope:host
+			this != scope:activity.special_guest:honorary_guest_regular
 			is_physically_able_ai_adult = yes
 			location = scope:province
 			likes_character_trigger = { CHARACTER = scope:host }
@@ -356,8 +356,8 @@ impressed_guest_honor = {
 		}
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:host }
-				NOT = { this = scope:activity.special_guest:honorary_guest_regular }
+				this != scope:host
+				this != scope:activity.special_guest:honorary_guest_regular
 				is_physically_able_ai_adult = yes
 				location = scope:province
 				likes_character_trigger = { CHARACTER = scope:host }
@@ -613,7 +613,7 @@ good_kitty = {
 		}
 		any_attending_character = {
 			location = scope:province
-			NOT = { this = scope:pet_owner_temp }
+			this != scope:pet_owner_temp
 			NOT = { has_character_modifier = cat_story_allergy_modifier }
 			NOT = { has_trait = callous }
 		}
@@ -636,7 +636,7 @@ good_kitty = {
 				scope:activity = {
 					any_attending_character = {
 						location = scope:province
-						NOT = { this = scope:pet_owner_temp }
+						this != scope:pet_owner_temp
 						NOT = { has_character_modifier = cat_story_allergy_modifier }
 						NOT = { has_trait = callous }
 					}
@@ -647,7 +647,7 @@ good_kitty = {
 		
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:second }
+				this != scope:second
 				location = scope:province
 				NOT = { has_character_modifier = cat_story_allergy_modifier }
 				NOT = { has_trait = callous }
@@ -686,7 +686,7 @@ good_puppy = {
 			save_temporary_scope_as = pet_owner_temp
 		}
 		any_attending_character = {
-			NOT = { this = scope:pet_owner_temp }
+			this != scope:pet_owner_temp
 			location = scope:province
 			NOT = { has_trait = callous }
 		}
@@ -707,7 +707,7 @@ good_puppy = {
 				save_temporary_scope_as = pet_owner_temp
 				scope:activity = {
 					any_attending_character = {
-						NOT = { this = scope:pet_owner_temp }
+						this != scope:pet_owner_temp
 						location = scope:province
 						NOT = { has_trait = callous }
 					}
@@ -718,7 +718,7 @@ good_puppy = {
 		
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:second }
+				this != scope:second
 				location = scope:province
 				NOT = { has_trait = callous }
 			}
@@ -846,7 +846,7 @@ jester_entertained_guests = {
 		}
 		any_attending_character = {
 			location = scope:province
-			NOT = { this = scope:temp_jester }
+			this != scope:temp_jester
 		}
 	}
 
@@ -880,7 +880,7 @@ jester_entertained_guests = {
 		random_attending_character = {
 			limit = {
 				location = scope:province
-				NOT = { this = scope:first }
+				this != scope:first
 			}
 			save_scope_as = second
 		}

@@ -553,7 +553,7 @@ petition_liege_0101_county_convert_effect = {
 		list = petition_liege_county_convert_list
 		limit = {
 			holder = scope:petition_vassal
-			NOT = { county.faith = ROOT.faith }
+			county.faith != ROOT.faith
 		}
 		custom = petition_liege_0101_county_convert_effect_tt
 		add_county_modifier = {
@@ -850,6 +850,159 @@ petition_liege_0101_development_effect = {
 	}
 }
 
+### House Fief
+petition_liege_0101_house_fief_effect = {
+	scope:petition_liege = {
+		stress_impact = {
+			arrogant = medium_stress_impact_gain
+		}
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0101.t.house_fief
+				left_icon = scope:petition_vassal
+				custom_tooltip = petition_liege_house_fief_allowed
+			}
+		}
+	}
+	scope:petition_vassal = {
+		set_variable = {
+			name = petition_liege_house_fief_allowed_flag
+			value = scope:petition_liege
+			years = 10
+		}
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0101.t.house_fief
+				left_icon = scope:petition_liege
+				custom_tooltip = petition_liege_house_fief_allowed
+			}
+		}
+	}
+}
+
+petition_liege_0121_regent_effect = {
+	custom_tooltip = petition_liege_regent_support
+	scope:petition_liege = {
+		stress_impact = {
+			arrogant = medium_stress_impact_gain
+		}
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0121.t.regent
+				left_icon = scope:petition_vassal
+				right_icon = top_liege.primary_title
+				custom_tooltip = petition_liege_regent_support
+			}
+		}
+	}
+	scope:petition_vassal = {
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0121.t.regent
+				left_icon = scope:petition_liege
+				right_icon = top_liege.primary_title
+				set_variable = {
+					name = petition_liege_regent_support
+					value = scope:petition_liege
+				}
+				custom_tooltip = petition_liege_regent_support
+			}
+		}
+	}
+}
+
+petition_liege_0121_appointment_effect = {
+	custom_tooltip = petition_liege_appointment_support
+	scope:petition_liege = {
+		stress_impact = {
+			arrogant = medium_stress_impact_gain
+		}
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0121.t.appointment
+				left_icon = scope:petition_vassal
+				right_icon = scope:petition_vassal.house
+				custom_tooltip = petition_liege_appointment_support
+			}
+		}
+	}
+	scope:petition_vassal = {
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0121.t.appointment
+				left_icon = scope:petition_liege
+				right_icon = house
+				house = {
+					set_variable = {
+						name = petition_liege_appointment_support
+						value = scope:petition_liege
+					}
+				}
+				custom_tooltip = petition_liege_appointment_support
+			}
+		}
+	}
+}
+
+petition_liege_0121_wedding_effect = {
+	scope:petition_vassal = { custom_tooltip = petition_liege_wedding_permission }
+	scope:petition_liege = {
+		stress_impact = {
+			arrogant = medium_stress_impact_gain
+		}
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0121.t.wedding
+				left_icon = scope:petition_vassal
+				right_icon = house
+				custom_tooltip = petition_liege_wedding_permission
+			}
+		}
+	}
+	scope:petition_vassal = {
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0121.t.wedding
+				left_icon = scope:petition_liege
+				right_icon = scope:petition_liege.house
+				house = {
+					set_variable = {
+						name = petition_liege_wedding_permission_flag
+						value = scope:petition_liege.house
+						years = 5
+					}
+				}
+				custom_tooltip = petition_liege_wedding_permission
+			}
+		}
+	}
+}
+
+petition_liege_0121_privilege_effect = {
+	scope:petition_liege = {
+		stress_impact = {
+			arrogant = medium_stress_impact_gain
+		}
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0121.t.privilege
+				left_icon = scope:petition_vassal
+				show_as_tooltip = { add_prestige = major_prestige_value }
+			}
+		}
+	}
+	scope:petition_vassal = {
+		add_prestige = major_prestige_value
+		hidden_effect = {
+			send_interface_toast = {
+				title = petition_liege.0121.t.privilege
+				left_icon = scope:petition_liege
+				show_as_tooltip = { add_prestige = major_prestige_value }
+			}
+		}
+	}
+}
+
 ### Grandeur/Renown
 petition_pos_grandeur_renown_effect = {
 	if = {
@@ -957,6 +1110,11 @@ petition_type_outcome_effect = {
 		flag:construct_city = { petition_liege_0101_construct_city_effect = yes }
 		flag:construct_temple = { petition_liege_0101_construct_temple_effect = yes }
 		flag:development = { petition_liege_0101_development_effect = yes }
+		flag:house_fief = { petition_liege_0101_house_fief_effect = yes }
+		flag:regent = { petition_liege_0121_regent_effect = yes }
+		flag:appointment = { petition_liege_0121_appointment_effect = yes }
+		flag:wedding = { petition_liege_0121_wedding_effect = yes }
+		flag:privilege = { petition_liege_0121_privilege_effect = yes }
 	}
 	petition_pos_grandeur_renown_effect = yes
 }
@@ -1017,6 +1175,16 @@ petition_liege_0101_petitioner_contract_increase_effect = {
 	hidden_effect = { set_subject_contract_modification_blocked = yes }
 }
 
+# Vows
+petition_liege_0101_petitioner_vows_effect = {
+	scope:monk = { add_trait = devoted }
+}
+
+# Knight
+petition_liege_0101_petitioner_knight_effect = {
+	scope:petition_liege = { add_courtier = scope:knight }
+}
+
 petition_skill_duel_lose_effect = {
 	send_interface_toast = {
 		title = petition_liege.0401.failure
@@ -1062,8 +1230,8 @@ petition_liege_governorship_effect = {
 		$TITLE$ = {
 			$GRANTED_FROM$ = {
 				every_held_title = {
+					title_tier >= county
 					limit = {
-						tier >= tier_county
 						OR = {
 							de_jure_liege = $TITLE$
 							de_jure_liege.de_jure_liege = $TITLE$
@@ -1168,6 +1336,23 @@ petition_liege_house_governorship_rights_effect = {
 				value = scope:petition_vassal.house
 				years = 100
 			}	
+		}
+	}
+}
+
+# Add petitioner to bloc
+petition_liege_0121_petitioner_force_join_bloc_effect = {
+	scope:petition_vassal.house = {
+		if = {
+			limit = { exists = house_confederation }
+			tgp_leave_house_bloc_effect = {
+				OPINION = flag:yes
+				TRUCE = flag:yes
+			}
+		}
+		tgp_join_house_bloc_effect = {
+			INVITER = scope:petition_liege.house
+			OPINION = flag:no
 		}
 	}
 }

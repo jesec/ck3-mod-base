@@ -92,7 +92,7 @@ on_alliance_added = {
 		if = {
 			limit = {
 				scope:first = {
-					NOT = { faith = scope:second.faith }
+					faith != scope:second.faith
 					any_character_struggle = {
 						involvement = involved
 						has_struggle_phase_parameter = interfaith_marriages_available_between_involved_characters
@@ -157,9 +157,9 @@ on_alliance_added = {
 		}
 		if = {
 			limit = {
-				scope:second = { is_independent_ruler = yes }
+				scope:second = { top_liege = this }
 				scope:first = {
-					is_independent_ruler = yes
+					top_liege = this
 					any_character_struggle = {
 						involvement = involved
 						activate_struggle_catalyst_secondary_character_involvement_involved_trigger = {

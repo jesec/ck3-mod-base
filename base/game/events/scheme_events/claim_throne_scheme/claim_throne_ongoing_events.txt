@@ -218,7 +218,7 @@ claim_throne_ongoing.1003 = {
 		remove_short_term_gold = major_gold_value
 		liege = {
 			every_vassal = {
-				limit = { NOT = { this = root } }
+				limit = { this != root }
 				add_opinion = { # Opinion rather than a fellow_vassal modifier in order to sustain it even if you become their ruler
 					target = root
 					modifier = claim_throne_bought_support_opinion
@@ -445,7 +445,7 @@ claim_throne_ongoing.1005 = {
 # by Petter Vilberg
 ####################
 scripted_trigger claim_throne_ongoing_1006_friend_trigger = {
-	NOT = { this = scope:target }
+	this != scope:target
 	top_liege = root.top_liege # Is in the same realm
 	NOT = { has_relation_friend = scope:target }
 }
@@ -534,7 +534,7 @@ claim_throne_ongoing.1006 = {
 
 scripted_trigger claim_throne_ongoing_1007_knight_trigger = {
 	is_ai = yes
-	NOT = { this = root }
+	this != root
 	scope:scheme = {
 		NOT = { scheme_is_character_agent = prev }
 	}
@@ -695,7 +695,6 @@ claim_throne_ongoing.1008 = {
 
 	option = { # Fool the peasants
 		name = claim_throne_ongoing.1008.a
-		# TODO_DJ duel????
 		scope:target = {
 			add_opinion = {
 				target = root

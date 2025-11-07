@@ -1,4 +1,11 @@
-﻿# root - Character joining the confederation.
+﻿# root = vassal changing their status
+on_apply_inherited_confederation = {
+    effect = {
+        tgp_liege_change_bloc_management_effect = { VASSAL = root }
+    }
+}
+
+# root - Character joining the confederation.
 # scope:confederation - The confederation that's being joined.
 on_confederation_join = {
 	effect = {
@@ -93,12 +100,11 @@ on_confederation_leave = {
 		#If confederation is being destroyed, delete from global variable list
 		if = {
 			limit = {
-				NOT = {
-					scope:confederation = {
+				scope:confederation = {
+					is_house_based = no # any_confederation_member is not performant for house blocs
+					NOT = {
 						any_confederation_member = {
-							NOT = {
-								this = root
-							}
+							NOT = { this = root }
 						}
 					}
 				}
@@ -115,16 +121,14 @@ on_confederation_leave = {
 					has_character_flag = migrating_from_confederation
 					has_variable = left_confederation
 				}
-				exists = confederation
+				confederation ?= { is_house_based = no }
 			}
 			save_scope_as = left_confederation
 			
 			confederation = {
 				every_confederation_member = {
 					limit = {
-						NOT = {
-							this = root
-						}
+						NOT = { this = root }
 					}
 					send_interface_message = {
 						type = msg_broken_confederation

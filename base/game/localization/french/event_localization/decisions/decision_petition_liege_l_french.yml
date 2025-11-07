@@ -1,14 +1,14 @@
 ﻿l_french:
  #Decision Menu Localization
  petition_liege_decision: "Demander audience [ROOT.Char.GetTopLiege.Custom('FR_au_Char_L')][ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip]"
- petition_liege_decision_desc: "Je peux demander à m[ROOT.Char.GetLiege.Custom('FR_OnA')] [ROOT.Char.GetLiege.Custom('FR_SeigneurDame')] lige de m’aider à relever les défis auxquels je suis confronté[ROOT.Char.Custom('FR_E')]. Les requêtes sincères qui contribuent au bien du pays sont souvent accordées."
+ petition_liege_decision_desc: "Je peux demander à m[ROOT.Char.GetLiege.Custom('FR_OnA')] [ROOT.Char.GetLiege.Custom('FR_SeigneurDame')] [Concept('liege', 'lige')|E] de m’aider à relever les défis auxquels je suis confronté[ROOT.Char.Custom('FR_E')]. Les requêtes sincères qui contribuent au bien du pays sont souvent accordées."
  petition_liege_decision_tooltip: "[petition_liege|E] à votre [liege|El] pour un cadeau ou un service"
- petition_liege_decision_effects: "Vous vous rendez à la Cour [THIS.Char.GetLiege.Custom('FR_du_Char_Pi')][THIS.Char.GetLiege.GetTitledFirstName] pour formuler votre requête"
+ petition_liege_decision_effects: "Vous vous [Concept('travel', 'rendez')|E] à la Cour [THIS.Char.GetLiege.Custom('FR_du_Char_U_Pi')][THIS.Char.GetLiege.GetShortUIName] pour formuler votre [Concept('petition_liege', 'demande d’audience')|E]"
  petition_liege_decision_confirm: "Demander audience"
  petition_liege_decision_second_tooltip: "$DESC$\n$petition_liege_grace_tt$"
  petition_liege_grace_tt: "#weak Demander audience sera indisponible pendant 5 ans#!"
  CHOOSE_PETITION_DECISION_NEXT_STEP_BUTTON: "Choisissez le type de requête"
- petition_liege_warning_effect: "#weak La personnalité du [liege|El], l’[opinion|El] et le type de [petition_liege|El] affectent la probabilité d’acceptation#!"
+ petition_liege_warning_effect: "#weak La personnalité, l’[opinion|El] et le type de [Concept('petition_liege', 'demande d’audience')|E] affectent la probabilité d’acceptation#!"
  #Council
  petition_liege_decision_option_council_seat: "Nomination au Conseil\n#low Accorder un siège au [council|E]#!"
  petition_liege_council_seat_desc: "Demander [ROOT.Char.GetLiege.Custom('FR_au_Char_Pi')][ROOT.Char.GetLiege.GetTitledFirstName] de vous accorder un siège à son [council|E]"
@@ -109,9 +109,55 @@
  petition_liege_development_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_development_tt: "#X Votre [capital|El] a déjà plus de 66% du [development|El] de celui de votre [liege|El]#!"
  petition_liege_decision_effects_development: "[THIS.Char.GetLiege.Custom('FR_IlElle')|U] peut transférer une part du [development|El] de sa [capital|El] vers la vôtre"
+ #House Fief
+ petition_liege_decision_option_house_fief: "Permission de fief de Maison\n#low Autoriser la transition vers [soryo|El]#!"
+ petition_liege_house_fief_desc: "Demander [ROOT.Char.GetLiege.Custom('FR_au_Char_Pi')][ROOT.Char.GetLiege.GetTitledFirstName] d’accepter que la transition vers [soryo|El] ne soit pas un [crime|El]"
+ petition_liege_house_fief_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_liege_house_fief_tt: "Vous avez déjà obtenu ce privilège"
+ petition_liege_decision_effects_house_fief: "[THIS.Char.GetLiege.GetSheHe|U] peut légaliser la [decision|El] d’#TUT_KW établir un fief de Maison#!"
+ petition_liege_house_fief_allowed: "La [decision|El] d’[GetDecisionWithKey('tgp_japan_establish_house_fief_decision').GetName|Vl] n’est plus considérée comme un [crime|El][crime_i|E] pendant #V 10 ans#!\n[petition_liege.Custom('FR_le_Char_Pi')|U][petition_liege.GetTitledFirstName] ne peut pas révoquer votre nouveau fief pendant #V 10 ans#!, à moins que vous soyez un [criminal|El]"
+ #Wedding
+ petition_liege_decision_option_wedding: "Mariage royal\n#low Se marier avec la [ceremonial_house|E]"
+ petition_liege_wedding_desc: "Solliciter [ROOT.Char.GetLiege.Custom('FR_le_Char_Pi')][ROOT.Char.GetLiege.GetTitledFirstName] pour un [marriage|El] avec la dynastie impériale [ROOT.Char.GetLiege.Custom('FR_du_Char_Pi')][ROOT.Char.GetLiege.GetTitledFirstName]"
+ petition_liege_wedding_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_liege_wedding_tt: "Votre [house|E] n’a pas de candidat valable"
+ petition_liege_decision_effects_wedding: "[THIS.Char.GetLiege.GetSheHe|U] pourrait approuver un [marriage|El] avec la [ceremonial_house|E]"
+ petition_liege_wedding_permission: "Acceptation d’un [marriage|El] de la Maison [THIS.Char.GetHouse.GetName] avec la [ceremonial_house|E] : +#P 50#!"
  #Shared
  petition_liege_faith_tt: "#X Vous n’avez pas la même [faith|El] que votre [liege|El]#!"
  petition_liege_holding_tt: "#X Votre [liege|El] ne peut pas se permettre de construire une [holding|El]#!"
  petition_liege_debt_tt: "#X Votre [liege|El] est [Concept('debt','endetté')|E]#!"
  petition_liege_council_no_petition_valid_tt: "#X Il n’y a rien que vous puissiez demander à votre seigneur lige#!"
  petition_liege_city_planning_innovation_tt: "#X Vous et votre [liege|El] devez appartenir à des [cultures|El] possédant l’[innovation|El] Plans de cité#!"
+ #Non Royal Liege
+ ## Decision Menu Localization
+ petition_liege_decision_desc_non_royal: "Je peux demander [ROOT.Char.GetLiege.Custom('FR_au_Char_L')][ROOT.Char.GetLiege.GetTitleAsNameNoTooltip|l] de m’aider à relever les défis auxquels je suis confronté[ROOT.Char.Custom('FR_E')]. Les requêtes sincères qui contribuent au bien du pays sont souvent accordées."
+ petition_liege_decision_tooltip_non_royal: "[petition_liege|E] au [ceremonial_regent|El] pour un cadeau ou un service"
+ petition_ceremonial_liege_decision_title: "Pétitionner [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.Custom('FR_le_Char_L')][ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetTitleAsNameNoTooltip|l]"
+ petition_ceremonial_liege_decision: "Pétitionner le $game_concept_ceremonial_liege|l$"
+ petition_ceremonial_liege_decision_desc: "Je peux demander à mon [ceremonial_liege|El] de m’aider à relever les défis auxquels je suis confronté[ROOT.Char.Custom('FR_E')]. Les requêtes sincères qui contribuent au bien du pays sont souvent accordées."
+ petition_ceremonial_liege_decision_effects: "Vous vous rendez à la Cour [ceremonial_liege.Custom('FR_du_Char_U_Pi')][ceremonial_liege.GetShortUIName] pour formuler votre [Concept('petition_liege', 'demande d’audience')|E]"
+ tgp_is_ceremonial_petition_shown_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.Custom('FR_le_Char_U_Pi')|U][THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] doit être disponible"
+ petition_ceremonial_liege_decision_confirm: "$petition_ceremonial_liege_decision_title$"
+ #Kampaku
+ petition_ceremonial_liege_regent_desc: "Solliciter le soutien [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.Custom('FR_du_Char_U_Pi')][ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] pour votre [appointment|El] en tant que [ceremonial_regent|El]"
+ petition_ceremonial_liege_decision_option_regent: "Approbation [ROOT.Char.GetTopLiege.Custom('FR_du_Char_L')][ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip|l]\n#low Renforcer votre [candidate_score|El]#!"
+ petition_ceremonial_liege_regent_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_ceremonial_liege_regent_already_given_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.Custom('FR_le_Char_U_Pi')|U][THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] vous a déjà approuvé"
+ #Appointment
+ petition_ceremonial_liege_appointment_desc: "Solliciter le soutien [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.Custom('FR_du_Char_U_Pi')][ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] pour le [candidate_score|El] au [governorship|El] des membres de la [house|E] [ROOT.Char.GetHouse.GetName]"
+ petition_ceremonial_liege_decision_option_appointment: "Avancement de la Maison\n#low Renforcer votre [candidate_score|El]#!"
+ petition_ceremonial_liege_appointment_tooltip: "$petition_liege_decision_second_tooltip$"
+ #Wedding
+ petition_ceremonial_liege_wedding_desc: "Solliciter le soutien [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.Custom('FR_du_Char_U_Pi')][ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] à un [marriage|El] entre votre [house|E] et la [ceremonial_house|E]"
+ petition_ceremonial_liege_decision_option_wedding: "Mariage royal\n#low [Concept('marry', 'Se marier')|E] avec la [ceremonial_house|E]#!"
+ petition_ceremonial_liege_wedding_tooltip: "$petition_liege_decision_second_tooltip$"
+ #Privilege
+ petition_ceremonial_liege_privilege_desc: "Solliciter la reconnaissance [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.Custom('FR_du_Char_U_Pi')][ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] de la dignité de la [house|E] [ROOT.Char.GetHouse.GetName]"
+ petition_ceremonial_liege_decision_option_privilege: "Reconnaître la dignité\n#low Gagner en [prestige|El]#!"
+ petition_ceremonial_liege_privilege_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_ceremonial_liege_warning_effect: "#weak La personnalité du [ceremonial_liege|El], l’[opinion|El] et le type de [Concept('petition_liege', 'demande d’audience')|E] affectent la probabilité d’acceptation#!"
+ petition_liege_regent_support: "Votre [candidate_score|El] pour [petition_vassal.GetTopLiege.GetPrimaryTitle.GetDefinitiveName] : #P +10%#!"
+ petition_liege_appointment_support: "Le [candidate_score|El] au [governorship|El] de tous les membres de la [house|E] [THIS.Char.GetHouse.GetBaseName] : #P +15#!"
+ petition_liege_regent_support_desc: "Demander audience"
+ petition_liege_appointment_support_desc: "Demander audience"

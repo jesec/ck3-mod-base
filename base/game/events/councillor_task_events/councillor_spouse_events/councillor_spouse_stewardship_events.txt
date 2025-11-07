@@ -422,9 +422,7 @@ councillor_spouse_stewardship.1006 = {
 				hidden_effect = {
 					if = {
 						limit = {
-							NOT = {
-								this = scope:councillor
-							}
+							this != scope:councillor
 						}
 						add_opinion = {
 							target = scope:councillor
@@ -501,7 +499,7 @@ councillor_spouse_stewardship.1007 = {
 }
 
 scripted_trigger councillor_spouse_stewardship_1008_courtier_trigger = {
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	health <= poor_health
 	is_adult = yes
 	is_ai = yes
@@ -702,9 +700,7 @@ councillor_spouse_stewardship.1009 = {
 }
 
 scripted_trigger councillor_spouse_stewardship_1010_courtier_trigger = {
-	NOT = {
-		this = scope:councillor
-	}
+	this != scope:councillor
 	is_adult = yes
 	is_ai = yes
 	root = {
@@ -809,9 +805,7 @@ councillor_spouse_stewardship.1011 = {
 		}
 
 		any_sub_realm_county = {
-			OR = {
-				councillor_spouse_stewardship_1011_has_negative_modifier = yes
-			}
+			councillor_spouse_stewardship_1011_has_negative_modifier = yes
 		}
 	}
 
@@ -967,13 +961,18 @@ councillor_spouse_stewardship.2001 = {
 	desc = councillor_spouse_stewardship.2001.desc
 	theme = stewardship
 	left_portrait = {
+		character = root
+		animation = interested
+	}
+	right_portrait = {
 		character = scope:councillor
-		animation = personality_greedy
+		animation = steward
 	}
 	
 	trigger = {
 		valid_spouse_councillor_trigger = yes
 		spouse_stewardship_tier_2_trigger = yes
+		is_available_adult = yes
 		NOT = {
 			has_character_flag = had_event_councillor_spouse_stewardship_2001
 		}
@@ -1018,7 +1017,7 @@ councillor_spouse_stewardship.2001 = {
 		every_courtier = {
 			custom = councillor_spouse_stewardship_1006_every_courtier
 			limit = {
-				NOT = { this = scope:councillor }
+				this != scope:councillor
 			}
 			add_opinion = {
 				target = root
@@ -1068,7 +1067,7 @@ councillor_spouse_stewardship.2001 = {
 		name = councillor_spouse_stewardship.2001.c
 		add_character_modifier = {
 			modifier = spouse_increased_defenses_modifier
-			days = 1825
+			years = 15
 		}
 		stress_impact = {
 			deceitful = minor_stress_impact_loss
@@ -1084,7 +1083,7 @@ councillor_spouse_stewardship.2001 = {
 	}
 	option = { #Save the money
 		name = councillor_spouse_stewardship.2001.d
-		add_gold = medium_gold_value
+		add_treasury_or_gold = medium_treasury_or_gold_value
 		ai_chance = {
 			base = 25
 			ai_value_modifier = {
@@ -1138,6 +1137,7 @@ councillor_spouse_stewardship.2002 = {
 		any_courtier = {
 			councillor_spouse_stewardship_2002_courtier_trigger = yes
 		}
+		is_available_adult = yes
 	}
 
 	weight_multiplier = {
@@ -1262,7 +1262,7 @@ councillor_spouse_stewardship.2002 = {
 		if = {
 			limit = {
 				exists = root.faith.religious_head
-				NOT = { root.faith.religious_head = root }
+				root.faith.religious_head != root
 			}
 			root.faith.religious_head = {
 				add_opinion = {
@@ -1344,7 +1344,7 @@ councillor_spouse_stewardship.2002 = {
 #Neighboring ruler as a trade-partner. Both get gold and opinion bonus.
 scripted_trigger councillor_spouse_stewardship_2003_ruler_trigger = {
 	exists = this
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	NOT = { government_has_flag = government_is_theocracy }
 	is_available_ai_adult = yes
 	opinion = {
@@ -1405,6 +1405,7 @@ councillor_spouse_stewardship.2003 = {
 			councillor_spouse_stewardship_2003_ruler_trigger = yes
 			count >= 3
 		}
+		is_available_adult = yes
 	}
 
 	weight_multiplier = {
@@ -1471,7 +1472,7 @@ councillor_spouse_stewardship.2003 = {
 		random_in_list = {
 			list = neighboring_rulers
 			limit = {
-				NOT = { this = scope:ruler_1 }
+				this != scope:ruler_1
 			}
 			weight = {
 				base = 1
@@ -1523,9 +1524,9 @@ councillor_spouse_stewardship.2003 = {
 				modifier = friendliness_opinion
 				opinion = opinion_boost_neighboring_ruler_value
 			}
-			add_gold = minor_gold_value
+			add_treasury_or_gold = minor_treasury_or_gold_value
 		}
-		add_gold = scope:ruler_1.minor_gold_value
+		add_treasury_or_gold = scope:ruler_1.minor_treasury_or_gold_value
 		add_opinion = {
 			target = scope:ruler_1
 			modifier = friendliness_opinion
@@ -1547,9 +1548,9 @@ councillor_spouse_stewardship.2003 = {
 				modifier = friendliness_opinion
 				opinion = opinion_boost_neighboring_ruler_value
 			}
-			add_gold = minor_gold_value
+			add_treasury_or_gold = minor_treasury_or_gold_value
 		}
-		add_gold = scope:ruler_2.minor_gold_value
+		add_treasury_or_gold = scope:ruler_2.minor_treasury_or_gold_value
 		add_opinion = {
 			target = scope:ruler_2
 			modifier = friendliness_opinion
@@ -1571,9 +1572,9 @@ councillor_spouse_stewardship.2003 = {
 				modifier = friendliness_opinion
 				opinion = opinion_boost_neighboring_ruler_value
 			}
-			add_gold = minor_gold_value
+			add_treasury_or_gold = minor_treasury_or_gold_value
 		}
-		add_gold = scope:ruler_3.minor_gold_value
+		add_treasury_or_gold = scope:ruler_3.minor_treasury_or_gold_value
 		add_opinion = {
 			target = scope:ruler_3
 			modifier = friendliness_opinion
@@ -1615,7 +1616,7 @@ councillor_spouse_stewardship.2003 = {
 #Gain favor hook since your spouse helped a vassal out
 scripted_trigger councillor_spouse_stewardship_2004_vassal_to_hook_trigger = {
 	is_ai = yes
-	NOT = { this = scope:councillor }
+	this != scope:councillor
 	root = {
 		can_add_hook = {
 			target = prev
@@ -1647,6 +1648,7 @@ councillor_spouse_stewardship.2004 = {
 		any_vassal = {
 			councillor_spouse_stewardship_2004_vassal_to_hook_trigger = yes
 		}
+		is_available_adult = yes
 	}
 
 	weight_multiplier = {
@@ -1742,6 +1744,7 @@ councillor_spouse_stewardship.2005 = {
 		any_directly_owned_province = {
 			county = { development_level < good_development_level }
 		}
+		is_available_adult = yes
 	}
 
 	weight_multiplier = { #More likely the more development is needed
@@ -1833,12 +1836,16 @@ councillor_spouse_stewardship.2005 = {
 		scope:county_to_boost = {
 			change_county_control = 15
 		}
-		remove_short_term_gold = minor_gold_value
+		remove_treasury_or_gold = minor_treasury_or_gold_value
 		ai_chance = {
 			base = 50
 			modifier = {
 				add = -50
 				has_trait = greedy
+			}
+			modifier = {
+				factor = 0
+				short_term_treasury_or_gold <= minor_treasury_or_gold_value
 			}
 		}
 	}

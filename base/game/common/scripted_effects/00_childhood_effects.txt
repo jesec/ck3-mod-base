@@ -41,6 +41,15 @@ get_guardian_scope_effect = {
 			save_scope_as = guardian
 		}
 	}
+	else_if = {
+		limit = {
+			NOT = { exists = scope:guardian }
+			exists = court_owner.court_position:court_guru_court_position
+		}
+		court_owner.court_position:court_guru_court_position ?= {
+			save_scope_as = guardian
+		}
+	}
 	if = {
 		limit = {
 			NOT = { exists = scope:guardian }
@@ -115,8 +124,7 @@ get_guardian_scope_effect = {
 	if = {
 		limit = {
 			NOT = { exists = scope:guardian }
-			exists = liege
-			liege = {
+			liege ?= {
 				any_courtier_or_guest = {
 					is_available_ai_adult = yes
 				}
@@ -134,8 +142,7 @@ get_guardian_scope_effect = {
 	if = {
 		limit = {
 			NOT = { exists = scope:guardian }
-			exists = liege
-			liege = {
+			liege ?= {
 				is_available_ai_adult = yes
 			}
 		}
@@ -262,7 +269,7 @@ save_good_character_effect = {
 			is_playable_character = yes
 			NOT = { exists = scope:$RELATION$ }
 			exists = liege
-			NOT = { this = liege }
+			this != liege
 		}
 		liege = {
 			if = {
@@ -310,7 +317,7 @@ save_good_character_effect = {
 			is_playable_character = no
 			NOT = { exists = scope:$RELATION$ }
 			exists = liege
-			NOT = { this = liege }
+			this != liege
 		}
 		liege = {
 			if = {
@@ -364,7 +371,7 @@ save_good_character_effect = {
 		limit = {
 			NOT = { exists = scope:$RELATION$ }
 			exists = host
-			NOT = { this = host }
+			this != host
 		}
 		host = {
 			if = {
@@ -485,11 +492,9 @@ save_good_character_effect = {
 send_event_about_player_heir_childhood_personality_effect = {
 	every_heir_title = {
 		limit = {
-			exists = holder
-			holder = {
+			holder ?= {
 				is_ai = no
-				exists = player_heir
-				player_heir = scope:personality_child
+				player_heir ?= scope:personality_child
 				NOT = { is_in_list = childhood_personality_event }
 			}
 			is_title_created = yes #Since partition succession may result in uncreated titles having heirs but not holders.
@@ -507,104 +512,44 @@ send_event_about_player_heir_childhood_personality_effect = {
 
 add_suitable_same_realm_children_to_list = {
 	if = {
-		limit = { exists = location.county.holder.top_liege }
-		location.county.holder.top_liege = {
+		limit = {
+			OR = {
+				father ?= {
+					is_ai = no
+				}
+				mother ?= {
+					is_ai = no
+				}
+				host ?= {
+					is_ai = no
+				}
+			}
+		}
+		if = {
+			limit = { exists = location.county.holder.top_liege }
+			location.county.holder.top_liege = {
+				save_scope_as = top_liege_scope
+			}
+		}
+		else = {
 			save_scope_as = top_liege_scope
 		}
-	}
-	else_if = {
-		limit = { exists = location.county.holder }
-		location.county.holder = {
-			save_scope_as = top_liege_scope
-		}
-	}
-	else = {
-		save_scope_as = top_liege_scope
-	}
-	scope:top_liege_scope = {
-		if = {
-			limit = {
-				is_ai = yes
-				is_available_child = yes
-				NOT = { this = root }
-				age >= 6
-			}
-			add_to_list = suitable_same_realm_children
-		}
-		if = {
-			limit = {
-				any_courtier_or_guest = {
-					is_ai = yes
-					is_available_child = yes
-					NOT = { this = root }
-					age >= 6
-				}
-			}
-			every_courtier_or_guest = {
+		scope:top_liege_scope = {
+			if = {
 				limit = {
 					is_ai = yes
 					is_available_child = yes
-					NOT = { this = root }
+					this != root
 					age >= 6
 				}
 				add_to_list = suitable_same_realm_children
 			}
-		}
-		if = {
-			limit = {
-				any_warden_hostage = {
-					is_ai = yes
-					is_available_child = yes
-					NOT = { this = root }
-					age >= 6
-				}
-			}
-			every_warden_hostage = {
-				limit = {
-					is_ai = yes
-					is_available_child = yes
-					NOT = { this = root }
-					age >= 6
-				}
-				add_to_list = suitable_same_realm_children
-			}
-		}
-		if = {
-			limit = {
-				any_vassal_or_below = {
-					is_ai = yes
-					is_available_child = yes
-					NOT = { this = root }
-					age >= 6
-				}
-			}
-			every_vassal_or_below = {
-				limit = {
-					is_ai = yes
-					is_available_child = yes
-					NOT = { this = root }
-					age >= 6
-				}
-				add_to_list = suitable_same_realm_children
-			}
-		}
-		if = {
-			limit = {
-				any_vassal_or_below = {
-					any_courtier_or_guest = {
-						is_ai = yes
-						is_available_child = yes
-						NOT = { this = root }
-						age >= 6
-					}
-				}
-			}
-			every_vassal_or_below = {
+			if = {
 				limit = {
 					any_courtier_or_guest = {
 						is_ai = yes
 						is_available_child = yes
-						NOT = { this = root }
+						this != root
 						age >= 6
 					}
 				}
@@ -612,30 +557,18 @@ add_suitable_same_realm_children_to_list = {
 					limit = {
 						is_ai = yes
 						is_available_child = yes
-						NOT = { this = root }
+						this != root
 						age >= 6
 					}
 					add_to_list = suitable_same_realm_children
 				}
 			}
-		}
-		if = {
-			limit = {
-				any_vassal_or_below = {
-					any_warden_hostage = {
-						is_ai = yes
-						is_available_child = yes
-						NOT = { this = root }
-						age >= 6
-					}
-				}
-			}
-			every_vassal_or_below = {
+			if = {
 				limit = {
 					any_warden_hostage = {
 						is_ai = yes
 						is_available_child = yes
-						NOT = { this = root }
+						this != root
 						age >= 6
 					}
 				}
@@ -643,11 +576,133 @@ add_suitable_same_realm_children_to_list = {
 					limit = {
 						is_ai = yes
 						is_available_child = yes
-						NOT = { this = root }
+						this != root
 						age >= 6
 					}
 					add_to_list = suitable_same_realm_children
 				}
+			}
+			if = {
+				limit = {
+					any_vassal_or_below = {
+						is_ai = yes
+						is_available_child = yes
+						this != root
+						age >= 6
+					}
+				}
+				every_vassal_or_below = {
+					limit = {
+						is_ai = yes
+						is_available_child = yes
+						this != root
+						age >= 6
+					}
+					add_to_list = suitable_same_realm_children
+				}
+			}
+			if = {
+				limit = {
+					any_vassal_or_below = {
+						any_courtier_or_guest = {
+							is_ai = yes
+							is_available_child = yes
+							this != root
+							age >= 6
+						}
+					}
+				}
+				every_vassal_or_below = {
+					limit = {
+						any_courtier_or_guest = {
+							is_ai = yes
+							is_available_child = yes
+							this != root
+							age >= 6
+						}
+					}
+					every_courtier_or_guest = {
+						limit = {
+							is_ai = yes
+							is_available_child = yes
+							this != root
+							age >= 6
+						}
+						add_to_list = suitable_same_realm_children
+					}
+				}
+			}
+			if = {
+				limit = {
+					any_vassal_or_below = {
+						any_warden_hostage = {
+							is_ai = yes
+							is_available_child = yes
+							this != root
+							age >= 6
+						}
+					}
+				}
+				every_vassal_or_below = {
+					limit = {
+						any_warden_hostage = {
+							is_ai = yes
+							is_available_child = yes
+							this != root
+							age >= 6
+						}
+					}
+					every_warden_hostage = {
+						limit = {
+							is_ai = yes
+							is_available_child = yes
+							this != root
+							age >= 6
+						}
+						add_to_list = suitable_same_realm_children
+					}
+				}
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = { exists = location.county.holder }
+			location.county.holder = {
+				save_scope_as = top_liege_scope
+			}
+		}
+		else = {
+			save_scope_as = top_liege_scope
+		}
+
+		scope:top_liege_scope = {
+			if = {
+				limit = {
+					is_ai = yes
+					is_available_child = yes
+					this != root
+					age >= 6
+				}
+				add_to_list = suitable_same_realm_children
+			}
+			every_courtier = {
+				limit = {
+					is_ai = yes
+					is_available_child = yes
+					this != root
+					age >= 6
+				}
+				add_to_list = suitable_same_realm_children
+			}
+			every_warden_hostage = {
+				limit = {
+					is_ai = yes
+					is_available_child = yes
+					this != root
+					age >= 6
+				}
+				add_to_list = suitable_same_realm_children
 			}
 		}
 	}
@@ -706,6 +761,14 @@ guardian_or_court_tutor_trigger_event = {
 			type = guardian
 			trigger_event = $EVENT$
 		}
+	}
+	else_if = {
+		limit = {
+			exists = court_owner.court_position:court_guru_court_position
+		}
+		court_owner.court_position:court_guru_court_position = {
+			trigger_event = $EVENT$
+		}	
 	}
 	else = {
 		court_owner.court_position:court_tutor_court_position ?= {

@@ -1,0 +1,3796 @@
+﻿@main_light_radius = 160
+@main_light_height = 260
+@main_light_angle = 20
+
+#########################################################################
+#########################################################################
+#																		#
+#					All Under Heaven ENVIRONMENTS						#
+#																		#
+#########################################################################
+
+environment_tgp_frontend_celestial_main  = {
+	cubemap = "gfx/portraits/environments/tgp_frontend_celestial.dds"
+	cubemap_intensity = 1.0
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .7 6 }
+			position = cylindrical	{ 200 300 60 }
+
+			look_at = {	0 0 0 }
+			# For spot lights and directional lights
+			look_at = { 0 -40 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 345
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 20
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 1.2 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 50 -125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 1.5 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 150 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 200 300 60 }	# Radius, height, angle
+		look_at = { 0 -40	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_frontend_celestial_secondary  = {
+	cubemap = "gfx/portraits/environments/tgp_frontend_celestial.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .65 3 }
+			position = cylindrical	{ 200 300 60 }
+
+			look_at = {	0 0 0 }
+			# For spot lights and directional lights
+			look_at = { 0 -40 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 345
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 15
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 1.0 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 50 -125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 1.5 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 150 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical{ 200 300 60  }
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 90
+		camera_near_far = { 10 550 }
+	}
+}
+
+environment_tgp_frontend_celestial_heir  = {
+	cubemap = "gfx/portraits/environments/tgp_frontend_celestial.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .65 2 }
+			position = cylindrical	{ 200 300 60 }
+
+			look_at = {	0 0 0 }
+			# For spot lights and directional lights
+			look_at = { 0 -40 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 345
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 20
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 1.5 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 50 -125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 1.5 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 150 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical{ 200 300 60  }
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 90
+		camera_near_far = { 10 550 }
+	}
+}
+
+environment_tgp_frontend_japan_main  = {
+	cubemap = "gfx/portraits/environments/tgp_frontend_japan.dds"
+	cubemap_intensity = 0.8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .55 7 }
+			position = cylindrical	{ 300 200 -60 }
+
+			look_at = {	0 0 0 }
+			# For spot lights and directional lights
+			look_at = { 0 -40 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 365
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 20
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 1 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 300 50 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 50
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 0 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 150 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 200 -60 }	# Radius, height, angle
+		look_at = { 0 -40	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_frontend_japan_secondary  = {
+	cubemap = "gfx/portraits/environments/tgp_frontend_japan.dds"
+	cubemap_intensity = 0.8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .55 4 }
+			position = cylindrical	{ 300 200 -60 }
+
+			look_at = {	0 0 0 }
+			# For spot lights and directional lights
+			look_at = { 0 -45 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 365
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 20
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 2 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 300 50 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 50
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 0 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 150 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 200 -60 }	# Radius, height, angle
+		look_at = { 0 -45	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_frontend_japan_heir  = {
+	cubemap = "gfx/portraits/environments/tgp_frontend_japan.dds"
+	cubemap_intensity = 0.8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .55 5 }
+			position = cylindrical	{ 300 200 -60 }
+
+			look_at = {	0 0 0 }
+			# For spot lights and directional lights
+			look_at = { 0 -30 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 365
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 20
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 1 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 300 50 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 50
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .04 .8 0 } # Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 200 150 125 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 40
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 200 -60 }	# Radius, height, angle
+		look_at = { 0 -30	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_alley_day_asia = {
+	cubemap = "gfx/portraits/environments/tgp_alley_day_asia.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200 	400 	-60 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 500
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 20
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "directional_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.6 1.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 100 	400 	180 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 200 	400 	-60 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_alley_night_asia = {
+	cubemap = "gfx/portraits/environments/tgp_alley_night_asia.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 2.3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	250 	-90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "directional_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.8 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	400 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	250 	-90 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_asia_estate = {
+	cubemap = "gfx/portraits/environments/tgp_asia_estate.dds"
+	cubemap_intensity = .70
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 9 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 1 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-70 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_camp_asia = {
+	cubemap = "gfx/portraits/environments/tgp_camp_asia.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 4 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-90 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_chinese_city = {
+	cubemap = "gfx/portraits/environments/tgp_chinese_city.dds"
+	cubemap_intensity = .55
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 4 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-70 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-70 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+
+environment_tgp_chinese_corridor_day = {
+	cubemap = "gfx/portraits/environments/tgp_chinese_corridor_day.dds"
+	cubemap_intensity = 0.8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.08 0.8 4 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	110 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ 0.08 0.9 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	60 	-120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 85
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	110 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_chinese_corridor_night = {
+	cubemap = "gfx/portraits/environments/tgp_chinese_corridor_day.dds"
+	cubemap_intensity = .4
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 1 1.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 100 	400 	-30 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 500
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 15
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	150 	140 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 100 	400 	-30 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 300 }
+	}
+}
+
+environment_tgp_courtyard_asia = {
+	cubemap = "gfx/portraits/environments/tgp_courtyard_asia.dds"
+	cubemap_intensity = .55
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .5 3.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200 	400 	70 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.5 1.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 200 	400 	70 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_crossroad_inn_asia = {
+	cubemap = "gfx/portraits/environments/tgp_crossroad_inn.dds"
+	cubemap_intensity = .65
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .6 .3 4 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-70 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 45
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-70 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_docks_asia = {
+	cubemap = "gfx/portraits/environments/tgp_docks_asia.dds"
+	cubemap_intensity = .7
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	300 	30 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 20
+			inner_cone_angle = 15
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	100 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.8 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	300 	30 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_examination_room = {
+	cubemap = "gfx/portraits/environments/tgp_examination_room.dds"
+	cubemap_intensity = .85
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 2.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 400 	200 	60 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 500
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .6 0.3 1.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 10 	200 	-120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .6 0.3 0.2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200 	100 	-120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 400 	200 	60 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 500 }
+	}
+}
+
+environment_tgp_farm_asia = {
+	cubemap = "gfx/portraits/environments/tgp_farm_asia.dds"
+	cubemap_intensity = .55
+	cubemap_y_rotation = 90
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-90 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_feast_asia = {
+	cubemap = "gfx/portraits/environments/tgp_feast_asia.dds"
+	cubemap_intensity = .85
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .3 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .4 0.2 1.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	140 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .6 .2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200	180 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-120 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_festival_ritual_japan = {
+	cubemap = "gfx/portraits/environments/tgp_festival_ritual_japan.dds"
+	cubemap_intensity = .55
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .05 .8 5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 400 	200 	70 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 600
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .4 .01 1.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 100 	200 	-150 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .6 .2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200	180 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 500 	200 	-120 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_garden_asia = {
+	cubemap = "gfx/portraits/environments/tgp_garden_asia.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .8 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	150 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .25 .5 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	150 	-140 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 45
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .8 0.3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 100 	50 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 20
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	150 	120 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_holysite_asia = {
+	cubemap = "gfx/portraits/environments/tgp_holysite_asia.dds"
+	cubemap_intensity = 0.6
+	cubemap_y_rotation = -40
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .09 .9 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	300 	80 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.6 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200 	300 	-120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	300 	80 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_hunt_generic_asia = {
+	cubemap = "gfx/portraits/environments/tgp_hunt_generic_asia.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .1 .3 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 100 	400 	-50 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.4 0.8 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .2 .7 0.2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 80 	50 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 160
+			inner_cone_angle = 100
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 100 	400 	-50 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_japanese_city = {
+	cubemap = "gfx/portraits/environments/tgp_japanese_city.dds"
+	cubemap_intensity = 1.0
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .07 .8 5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 400 	200 	-20 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 500
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .75 0.3 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 50 	200 	180 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .2 .7 0.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 80 	50 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 160
+			inner_cone_angle = 100
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 400 	200 	-20 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_kitchen_asia = {
+	cubemap = "gfx/portraits/environments/tgp_kitchen_asia.dds"
+	cubemap_intensity = .9
+	cubemap_y_rotation = -40
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 0.4 0.2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-120 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_market_asia = {
+	cubemap = "gfx/portraits/environments/tgp_market_asia.dds"
+	cubemap_intensity = .55
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 2.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	300 	60 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	300 	60 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_moon_festival_japan = {
+	cubemap = "gfx/portraits/environments/tgp_moon_festival_japan.dds"
+	cubemap_intensity = .85
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .05 .8 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 500 	200 	80 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 600
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .8 .3 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	300 	-150 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .6 .2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200	180 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 500 	200 	-120 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_overflowing_river = {
+	cubemap = "gfx/portraits/environments/tgp_overflowing_river.dds"
+	cubemap_intensity = .55
+	cubemap_y_rotation = 0
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 2.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	90 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_physician_asia = {
+	cubemap = "gfx/portraits/environments/tgp_physician_asia.dds"
+	cubemap_intensity = .85
+	cubemap_y_rotation = 90
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .3 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -50 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .6 0.3 1.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 1.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-140 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	90 }	# Radius, height, angle
+		look_at = { 0 -50	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_relaxing_room_asia = {
+	cubemap = "gfx/portraits/environments/tgp_relaxing_room_asia.dds"
+	cubemap_intensity = 0.65
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 4 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -40 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 0.4 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-130 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .1 .2 1.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 225 	200 	50 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 20
+			inner_cone_angle = 5
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 225 	200 	50 }	# Radius, height, angle
+		look_at = { 0 -40	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_rice_fields = {
+	cubemap = "gfx/portraits/environments/tgp_rice_fields.dds"
+	cubemap_intensity = 0.6
+	cubemap_y_rotation = 90
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .7 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	180 	-50 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.4 0.3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	140 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	180 	-50 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_ruined_holding = {
+	cubemap = "gfx/portraits/environments/tgp_ruined_holding.dds"
+	cubemap_intensity = .6
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200 	300 	-70 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 45
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .1 1 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200 	300 	150 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 200 	300 	-70 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_study_asia = {
+	cubemap = "gfx/portraits/environments/tgp_study_asia.dds"
+	cubemap_intensity = .65
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .3 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	55 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-100 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .9 .3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200 	150 	-30 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	55 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_study_japan = {
+	cubemap = "gfx/portraits/environments/tgp_study_japan.dds"
+	cubemap_intensity = .55
+	cubemap_y_rotation = -90
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .9 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-80 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -40 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .08 .9 1.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	160 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .08 .2 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	150 	150 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-80 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_tavern_asia = {
+	cubemap = "gfx/portraits/environments/tgp_tavern_asia.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 2.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	20 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 0.4 0.6 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-130 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 0.4 0.2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	130 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	20  }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_tanabata_festival_japan = {
+	cubemap = "gfx/portraits/environments/tgp_tanabata_festival_japan.dds"
+	cubemap_intensity = .6
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 9 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 45
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 0.4 0.2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	130 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 1 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-55 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_tanabata_festival_night_japan = {
+	cubemap = "gfx/portraits/environments/tgp_tanabata_festival_night_japan.dds"
+	cubemap_intensity = .85
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .05 .8 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 280 	200 	100 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 600
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 90
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .4 .01 1.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 250 	200 	-150 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .6 .2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200	180 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 15
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 500 	200 	-120 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_temple_asia = {
+	cubemap = "gfx/portraits/environments/tgp_temple_asia.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -40 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .08 0.9 1.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	60 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -60 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 30
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .08 0.9 1.8 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-80 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 -60 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 30
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+		look_at = { 0 -40	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_village_sea = {
+	cubemap = "gfx/portraits/environments/tgp_village_sea.dds"
+	cubemap_intensity = .55
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 2.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	300 	60 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 0.3 0.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	120 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	300 	60 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 35
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_wedding_bedroom_asia = {
+	cubemap = "gfx/portraits/environments/tgp_wedding_bedroom_asia.dds"
+	cubemap_intensity = .65
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 4 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 200 	400 	160 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 45
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 0.8 0.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-60 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 45
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 0.8 0.3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 45
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 200 	400 	160 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}
+
+environment_tgp_wedding_ceremony_asia = {
+	cubemap = "gfx/portraits/environments/tgp_wedding_ceremony_asia.dds"
+	cubemap_intensity = .6
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .4 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	-55 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 45
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 0.4 0.2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 	200 	130 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .15 .6 .0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { @main_light_radius 	@main_light_height 	0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 200
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 	200 	-55 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 15
+		camera_near_far = { 50 400 }
+	}
+}

@@ -38,8 +38,7 @@ action_can_assign_guardian = {
 				}
 				num_of_relation_guardian = 0
 				age >= childhood_education_start_age
-				exists = liege
-				liege = root
+				liege ?= root
 				root = {
 					is_character_interaction_valid = {
 						recipient = prev
@@ -55,8 +54,9 @@ action_can_assign_guardian = {
 							}
 						}
 					}
-					NOT = {
+					NOR = {
 						exists = root.court_position:court_tutor_court_position
+						exists = root.court_position:court_guru_court_position
 					}
 				}
 			}
@@ -122,8 +122,7 @@ action_can_ransom = {
 					}
 					AND = {
 						is_ruler = no
-						exists = liege
-						liege = {
+						liege ?= {
 							gold > 10
 						}
 					}
@@ -170,7 +169,7 @@ action_should_pay_ransom = {
 					}
 				}
 				# Don't pay ransoms of own prisoners
-				NOT = { imprisoner = root }
+				imprisoner != root
 			}
 			try_create_important_action = {
 				important_action_type = action_should_pay_ransom
@@ -209,7 +208,7 @@ action_vassal_ransom_gives_hook = {
 					}
 				}
 				# Don't pay ransoms of own prisoners
-				NOT = { imprisoner = root }
+				imprisoner != root
 			}
 			try_create_important_action = {
 				important_action_type = action_vassal_ransom_gives_hook
@@ -486,8 +485,7 @@ action_can_ask_hof_for_claim = {
 				}
 				every_kingdom = {
 					limit = {
-						exists = holder
-						holder = { in_diplomatic_range = root }
+						holder ?= { in_diplomatic_range = root }
 						root = {
 							is_character_interaction_potentially_accepted = {
 								recipient = faith.religious_head
@@ -509,12 +507,12 @@ action_can_ask_hof_for_claim = {
 			}
 			if = {
 				limit = {
-					is_independent_ruler = no
+					top_liege != this
 					top_liege ?= {
 						any_sub_realm_title = {
 							tier > tier_county
 							exists = holder
-							NOT = { holder = root }
+							holder != root
 							root = {
 								is_character_interaction_potentially_accepted = {
 									recipient = faith.religious_head
@@ -531,7 +529,7 @@ action_can_ask_hof_for_claim = {
 						limit = {
 							tier > tier_county
 							exists = holder
-							NOT = { holder = root }
+							holder != root
 							root = {
 								is_character_interaction_potentially_accepted = {
 									recipient = faith.religious_head
@@ -556,7 +554,7 @@ action_can_ask_hof_for_claim = {
 				limit = {
 					any_neighboring_top_liege_realm_owner = {
 						any_held_title = {
-							tier > tier_county
+							title_tier > county
 							root = {
 								is_character_interaction_potentially_accepted = {
 									recipient = faith.religious_head
@@ -570,8 +568,8 @@ action_can_ask_hof_for_claim = {
 				}
 				every_neighboring_top_liege_realm_owner = {
 					every_held_title = {
+						title_tier > county
 						limit = {
-							tier > tier_county
 							root = {
 								is_character_interaction_potentially_accepted = {
 									recipient = faith.religious_head

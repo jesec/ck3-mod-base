@@ -1234,3 +1234,39 @@ has_any_high_skill_rating = {
 		stewardship >= high_skill_rating
 	}
 }
+
+has_any_decent_skill_rating = {
+	OR = {
+		diplomacy >= decent_skill_rating
+		intrigue >= decent_skill_rating
+		prowess >= decent_skill_rating
+		learning >= decent_skill_rating
+		martial >= decent_skill_rating
+		stewardship >= decent_skill_rating
+	}
+}
+
+has_same_highest_skill = {
+	OR = {
+		AND = {
+			highest_skill = diplomacy
+			$CHARACTER$ = { highest_skill = diplomacy }
+		}
+		AND = {
+			highest_skill = martial
+			$CHARACTER$ = { highest_skill = martial }
+		}
+		AND = {
+			highest_skill = stewardship
+			$CHARACTER$ = { highest_skill = stewardship }
+		}
+		AND = {
+			highest_skill = intrigue
+			$CHARACTER$ = { highest_skill = intrigue }
+		}
+		AND = {
+			highest_skill = learning
+			$CHARACTER$ = { highest_skill = learning }
+		}
+	}
+}

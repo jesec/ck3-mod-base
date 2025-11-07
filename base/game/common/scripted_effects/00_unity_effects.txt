@@ -50,7 +50,7 @@ stop_attacker_vassal_war_add_clan_unity_effect = {
 		limit = { # If we are asking a non-house member to stop attacking a house member, gain unity
 			exists = scope:actor.house
 			exists = scope:recipient.house
-			NOT = { scope:recipient.house = scope:actor.house }
+			scope:recipient.house != scope:actor.house
 		}
 		add_clan_unity_interaction_effect = {
 			CHARACTER = scope:actor
@@ -64,7 +64,7 @@ stop_attacker_vassal_war_add_clan_unity_effect = {
 		limit = { # If we are asking a house member to stop attacking a non-house member, lose unity
 			exists = scope:actor.house
 			exists = scope:defender.house
-			NOT = { scope:defender.house = scope:actor.house }
+			scope:defender.house != scope:actor.house
 		}
 		add_clan_unity_interaction_effect = {
 			CHARACTER = scope:actor
@@ -86,7 +86,7 @@ stop_defender_vassal_war_add_clan_unity_effect = {
 		limit = { # If recipient is a house member and the attacker is not, lose unity
 			exists = scope:actor.house
 			exists = scope:attacker.house
-			NOT = { scope:attacker.house = scope:actor.house }
+			scope:attacker.house != scope:actor.house
 		}
 		add_clan_unity_interaction_effect = {
 			CHARACTER = scope:actor
@@ -100,7 +100,7 @@ stop_defender_vassal_war_add_clan_unity_effect = {
 		limit = { # If recipient is a non-house member and the attacker is, gain unity
 			exists = scope:actor.house
 			exists = scope:recipient.house
-			NOT = { scope:recipient.house = scope:actor.house }
+			scope:recipient.house != scope:actor.house
 		}
 		add_clan_unity_interaction_effect = {
 			CHARACTER = scope:actor

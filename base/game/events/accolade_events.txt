@@ -314,25 +314,31 @@ accolade.0006 = {
 		#		}
 		#	}
 		#}
-
+		
 		if = {
 			limit = {
-				can_recruit_character_to_court_trigger = {
-					RECRUITER = root
-					RECRUITEE = scope:chosen_knight
-				}
-				# make sure the chosen knight is not already a courtier
-				scope:chosen_knight ?= {
-					NOT = { is_courtier_of = root }
-				}
+				exists = scope:chosen_knight
 			}
-			add_courtier = scope:chosen_knight
+			if = {
+				limit = {
+					can_recruit_character_to_court_trigger = {
+						RECRUITER = root
+						RECRUITEE = scope:chosen_knight
+					}
+					# make sure the chosen knight is not already a courtier
+					scope:chosen_knight ?= {
+						NOT = { is_courtier_of = root }
+					}
+				}
+				add_courtier = scope:chosen_knight
+			}
+
+			trigger_event = {
+				id = accolade.0007
+				days = 1
+			}
 		}
 
-		trigger_event = {
-			id = accolade.0007
-			days = 1
-		}
 	}
 }
 

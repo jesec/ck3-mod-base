@@ -1,14 +1,14 @@
 ﻿l_simp_chinese:
  #Decision Menu Localization
  petition_liege_decision: "向[ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip]请愿"
- petition_liege_decision_desc: "我可以请求领主帮我解决面临的挑战；对领地有利的真诚请求一般总是能得到满足。"
+ petition_liege_decision_desc: "我可以请求[liege|E]帮我解决面临的挑战；对领地有利的真诚请求一般总是能得到满足。"
  petition_liege_decision_tooltip: "向你的[liege|E][petition_liege|E]寻求帮助"
- petition_liege_decision_effects: "你前往[THIS.Char.GetLiege.GetTitledFirstNamePossessive]的宫廷请愿"
+ petition_liege_decision_effects: "你[travel|E]前往[THIS.Char.GetLiege.GetShortUINamePossessive]的宫廷[petition_liege|E]"
  petition_liege_decision_confirm: "$petition_liege_decision$"
  petition_liege_decision_second_tooltip: "$DESC$\n$petition_liege_grace_tt$"
  petition_liege_grace_tt: "#weak 5年内不可向领主请愿#!"
  CHOOSE_PETITION_DECISION_NEXT_STEP_BUTTON: "选择请愿类型"
- petition_liege_warning_effect: "#weak [liege|E]的性格，[opinion|E]以及[petition_liege|E]类型都会影响接受的几率#!"
+ petition_liege_warning_effect: "#weak 性格，[opinion|E]以及[petition_liege|E]类型都会影响接受的几率#!"
  #Council
  petition_liege_decision_option_council_seat: "内阁任命\n#low 授予[council|E]席位#!"
  petition_liege_council_seat_desc: "请求[ROOT.Char.GetLiege.GetTitledFirstName]授予你一个[ROOT.Char.GetLiege.GetHerHis][council|E]的席位"
@@ -109,9 +109,55 @@
  petition_liege_development_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_development_tt: "#X 你的[capital|E][development|E]已经达到你[liege|E]的66%#!"
  petition_liege_decision_effects_development: "[THIS.Char.GetLiege.GetSheHe|U]也许会将[THIS.Char.GetLiege.GetHerHis][capital|E]的[development|E]转移给你"
+ #House Fief
+ petition_liege_decision_option_house_fief: "允许家族封地\n#low 允许转化为[soryo|E]#!"
+ petition_liege_house_fief_desc: "向[ROOT.Char.GetLiege.GetTitledFirstName]提出请愿让转变为[soryo|E]不再是一种[crime|e]"
+ petition_liege_house_fief_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_liege_house_fief_tt: "你已经被授予这项特权了"
+ petition_liege_decision_effects_house_fief: "[THIS.Char.GetLiege.GetSheHe|U]可以合法化#TUT_KW 建立家族封地#![decision|E]"
+ petition_liege_house_fief_allowed: "[GetDecisionWithKey('tgp_japan_establish_house_fief_decision').GetName|V][decision|E]不再被视为[crime_i|E][crime|E]，持续#V 10年#!\n[petition_liege.GetTitledFirstName]在#V 10年#!内无法剥夺你的新封地，除非你犯下[criminal|E]"
+ #Wedding
+ petition_liege_decision_option_wedding: "联姻\n#low 与[ceremonial_house|E]联姻"
+ petition_liege_wedding_desc: "请求[ROOT.Char.GetLiege.GetTitledFirstNamePossessive]同意与[ROOT.Char.GetLiege.GetTitledFirstNamePossessive]皇室缔结[marriage|E]"
+ petition_liege_wedding_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_liege_wedding_tt: "你的[house|E]没有有效候选人"
+ petition_liege_decision_effects_wedding: "[THIS.Char.GetLiege.GetSheHe|U]可能同意与[ceremonial_house|E]的[marriage|E]"
+ petition_liege_wedding_permission: "[THIS.Char.GetHouse.GetName]氏与[ceremonial_house|E]的[marriage|E]的接受度：+#P 50#!"
  #Shared
  petition_liege_faith_tt: "#X 你与你的[liege|E]的[faith|E]不同#!"
  petition_liege_holding_tt: "#X 你的[liege|E]无法负担修建一座[holding|E]#!"
  petition_liege_debt_tt: "#X 你的[liege|E][debt|E]#!"
  petition_liege_council_no_petition_valid_tt: "#X 你没有可向你的领主提出的事项#!"
  petition_liege_city_planning_innovation_tt: "#X 你和你[liege|E]的[cultures|E]都必须拥有城市规划[innovation|E]#!"
+ #Non Royal Liege
+ ## Decision Menu Localization
+ petition_liege_decision_desc_non_royal: "我可以请求[ROOT.Char.GetLiege.GetTitleAsNameNoTooltip]帮我解决面临的挑战；对领地有利的真诚请求一般总是能得到满足。"
+ petition_liege_decision_tooltip_non_royal: "向[ceremonial_regent|E][petition_liege|E]寻求帮助"
+ petition_ceremonial_liege_decision_title: "向[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetTitleAsNameNoTooltip]请愿"
+ petition_ceremonial_liege_decision: "向$game_concept_ceremonial_liege$请愿"
+ petition_ceremonial_liege_decision_desc: "我可以请求[ceremonial_liege|E]帮我解决面临的挑战；对领地有利的真诚请求一般总是能得到满足。"
+ petition_ceremonial_liege_decision_effects: "你前往[ceremonial_liege.GetShortUINamePossessive]的宫廷[petition_liege|E]"
+ tgp_is_ceremonial_petition_shown_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName]必须有空闲"
+ petition_ceremonial_liege_decision_confirm: "$petition_ceremonial_liege_decision_title$"
+ #Kampaku
+ petition_ceremonial_liege_regent_desc: "请求[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName]支持你被[appointment|E]为[ceremonial_regent|E]"
+ petition_ceremonial_liege_decision_option_regent: "[ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip]认可\n#low 提高你的[candidate_score|E]#!"
+ petition_ceremonial_liege_regent_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_ceremonial_liege_regent_already_given_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName]已认可于你"
+ #Appointment
+ petition_ceremonial_liege_appointment_desc: "请求[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName]支持[ROOT.Char.GetHouse.GetName][house|E]成员的[governorship|E][candidate_score|E]"
+ petition_ceremonial_liege_decision_option_appointment: "家族晋升\n#low 提高你的[candidate_score|E]#!"
+ petition_ceremonial_liege_appointment_tooltip: "$petition_liege_decision_second_tooltip$"
+ #Wedding
+ petition_ceremonial_liege_wedding_desc: "请求[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName]支持你的[house|E]与[ceremonial_house|E]缔结[marriage|E]"
+ petition_ceremonial_liege_decision_option_wedding: "联姻\n#low 与[ceremonial_house|E][marry|E]#!"
+ petition_ceremonial_liege_wedding_tooltip: "$petition_liege_decision_second_tooltip$"
+ #Privilege
+ petition_ceremonial_liege_privilege_desc: "请求[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName]认可[ROOT.Char.GetHouse.GetName][house|E]的威严"
+ petition_ceremonial_liege_decision_option_privilege: "认可威严\n#low 获得[prestige|E]#!"
+ petition_ceremonial_liege_privilege_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_ceremonial_liege_warning_effect: "#weak [ceremonial_liege|E]的性格，[opinion|E]以及[petition_liege|E]类型都会影响接受的几率#!"
+ petition_liege_regent_support: "你对[petition_vassal.GetTopLiege.GetPrimaryTitle.GetDefinitiveName]的[candidate_score|E]：#P +10%#!"
+ petition_liege_appointment_support: "[THIS.Char.GetHouse.GetBaseName][house|E]所有成员的[governorship|E][candidate_score|E]：#P +15#!"
+ petition_liege_regent_support_desc: "请愿"
+ petition_liege_appointment_support_desc: "请愿"

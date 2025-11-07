@@ -24,12 +24,12 @@ scripted_trigger internal_affairs_10_holding_trigger = {
 				limit = {
 					this = root
 				}
-				NOT = { this.capital_barony = scope:test_scope }
+				this.capital_barony != scope:test_scope
 				trigger_if = {
 					limit = {
 						highest_held_title_tier > tier_county
 					}
-					NOT = { this.capital_barony.duchy = scope:test_scope.duchy }
+					this.capital_barony.duchy != scope:test_scope.duchy
 				}
 			}
 			OR = {
@@ -45,7 +45,7 @@ scripted_trigger internal_affairs_10_holding_trigger = {
 			}
 			trigger_if = {
 				limit = {
-					NOT = { this = root }
+					this != root
 				}
 				is_ai = yes
 			}
@@ -122,7 +122,7 @@ internal_affairs.10 = { # Chance for Republic/Theocracy
 	}
 
 	lower_left_portrait = {
-		trigger = { NOT = { scope:county_holder = root } }
+		trigger = { scope:county_holder != root }
 		character = scope:county_holder
 	}
 	lower_right_portrait = scope:barony_holder
@@ -167,14 +167,14 @@ internal_affairs.10 = { # Chance for Republic/Theocracy
 				base = 1
 				modifier = {
 					factor = 50
-					NOT = { county.holder = root }
+					county.holder != root
 				}
 			}
 			save_scope_as = barony_title
 			holder = { save_scope_as = barony_holder }
 			if = {
 				limit = {
-					NOT = { county.holder = root }
+					county.holder != root
 				}
 				county.holder = { save_scope_as = county_holder }
 			}
@@ -340,7 +340,7 @@ scripted_trigger internal_affairs_20_county_trigger = {
 		is_ai = yes
 		highest_held_title_tier <= tier_duchy
 	}
-	NOT = { holder = root }
+	holder != root
 	OR = {
 		county_control < 50
 		county_opinion < -25
@@ -432,7 +432,7 @@ internal_affairs.20 = { # Unfitting Lord/Lady
 				dread >= 50
 			}
 		}
-		add_gold = minor_gold_value
+		add_treasury_or_gold = minor_treasury_or_gold_value
 		scope:county_title = {
 			add_county_modifier = {
 				modifier = inspection_unfitting_ruler_modifier
@@ -651,7 +651,7 @@ internal_affairs.30 = { # A Small Bribe
 
 	after = {
 		scope:merchant_character = {
-			silent_dissapear_ai_if_not_hired = yes
+			silent_disappear_ai_if_not_hired = yes
 		}
 	}
 }

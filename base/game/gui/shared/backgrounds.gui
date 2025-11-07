@@ -226,7 +226,8 @@ template Background_Button_Illustration
 template Background_Guest
 {
 	background = {
-		texture = "gfx/interface/component_masks/patterns/mask_pattern_02.dds"
+		texture = "gfx/interface/skinned/mask_pattern.dds"
+		texture_density = 3
 		spriteType = Corneredtiled
 		color = { 0.5 0.5 0.6 0.3 }
 
@@ -263,9 +264,12 @@ template Background_Guest
 template Background_Knight
 {
 	visible = "[And(Character.IsKnight, Character.IsValid)]"
-	texture = "gfx/interface/component_masks/patterns/mask_pattern_02.dds"
 	spriteType = Corneredtiled
 	color = { 0.7 0.4 0.3 0.7 }
+
+	background = {
+		using = Background_Pattern
+	}
 
 	modify_texture = {
 		texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
@@ -338,7 +342,7 @@ template Background_Inset
 }
 
 template Background_Letter
-{	
+{
 	background = {
 		name = "paper_texture_shadow"
 		texture = "gfx/interface/skinned/window_letter/tile_letter_shadow.dds"
@@ -359,7 +363,7 @@ template Background_Letter
 			blend_mode = overlay
 		}
 	}
-	
+
 	background = {
 		name = "paper_texture_frame"
 		texture = "gfx/interface/skinned/window_letter/ornament_frame.dds"
@@ -367,11 +371,10 @@ template Background_Letter
 		spriteType = Corneredtiled
 		spriteborder = { 200 200 }
 	}
-
 }
 
 template Background_Letter_No_Frame
-{	
+{
 	background = {
 		name = "paper_texture_shadow_no_frame"
 		texture = "gfx/interface/skinned/window_letter/tile_letter_shadow.dds"
@@ -388,6 +391,31 @@ template Background_Letter_No_Frame
 		modify_texture = {
 			name = "paper_texture_overlay_no_frame"
 			texture = "gfx/interface/skinned/window_letter/overlay_letter_texture.dds"
+			spriteType = Corneredstretched
+			blend_mode = overlay
+		}
+	}
+}
+
+# For when you want the default letter background without it being skinned
+template Background_Letter_Default
+{
+	background = {
+		name = "paper_texture_shadow"
+		texture = "gfx/interface/component_tiles/tile_letter_shadow.dds"
+		spriteType = Corneredtiled
+		spriteborder = { 200 200 }
+	}
+
+	background = {
+		name = "paper_texture_flat"
+		texture = "gfx/interface/component_tiles/tile_letter_flat.dds"
+		spriteType = Corneredtiled
+		spriteborder = { 200 200 }
+
+		modify_texture = {
+			name = "paper_texture_overlay"
+			texture = "gfx/interface/component_tiles/overlay_letter_texture.dds"
 			spriteType = Corneredstretched
 			blend_mode = overlay
 		}
@@ -544,8 +572,7 @@ template Status_Good
 template Status_Suggestion
 {
 	texture = "gfx/interface/component_masks/mask_brushed.dds"
-	# color = { 0.14 0.14 0.25 0.5 }
-	color = { 0.2 0.2 0.31 0.5 }
+	color = { 0.13 0.13 0.17 1 }
 
 	spriteType = Corneredtiled
 	spriteborder = { 20 10 }
@@ -554,7 +581,7 @@ template Status_Suggestion
 template Status_Suggestion_Bad
 {
 	texture = "gfx/interface/component_masks/mask_brushed.dds"
-	color = { 0.18 0.13 0.13 1 }
+	color = { 0.13 0.08 0.08 1 }
 	spriteType = Corneredtiled
 	spriteborder = { 20 10 }
 
@@ -566,7 +593,7 @@ template Status_Suggestion_Bad
 template Status_Suggestion_Good
 {
 	texture = "gfx/interface/component_masks/mask_brushed.dds"
-	color = { 0.17 0.24 0.16 1 }
+	color = { 0.14 0.18 0.12 1 }
 
 	spriteType = Corneredtiled
 	spriteborder = { 20 10 }
@@ -656,20 +683,97 @@ template Background_DropDown
 	}
 }
 
-template Background_Header
-{
-	name = "header"
-	texture = "gfx/interface/component_tiles/tile_title_big_top_01.dds"
+template Background_Header {
+	texture = "gfx/interface/skinned/color_theme.dds"
 	spriteType = Corneredtiled
-	texture_density = 2
+	
+	modify_texture = {
+		texture = "gfx/interface/colors/grey.dds"
+		alpha = 0.2
+	}
 
-	using = Mask_Background_Header
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_header.dds"
+		blend_mode = alphaMultiply
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_solid.dds"
+		blend_mode = overlay
+		alpha = 0.3
+	}
 }
 
-template Background_Header_Tall
-{
+template Background_Window_Header {
+	
 	using = Background_Header
-	spriteborder = { 0 18 }
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_thick.dds"
+		blend_mode = alphaMultiply
+		alpha = 0.6
+	}
+}
+
+template Background_Header_Pattern {
+	texture = "gfx/interface/skinned/color_theme.dds"
+	alpha = 0.8
+	using = Mask_Rough_Edges
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_header.dds"
+		blend_mode = alphaMultiply
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/skinned/mask_pattern.dds"
+		texture_density = 3
+		spriteType = Corneredtiled
+		blend_mode = alphaMultiply
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_solid.dds"
+		blend_mode = overlay
+		alpha = 0.3
+	}
+}
+
+template Background_Window_Header_Pattern {
+		using = Background_Header_Pattern
+
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_thick.dds"
+			blend_mode = alphaMultiply
+		}
+}
+
+template Background_Color {
+	background = {
+		texture = "gfx/interface/skinned/tile_window_background_no_edge.dds"
+		alpha = 0.8
+
+		modify_texture = {
+			texture = "gfx/interface/colors/white.dds"
+			blend_mode = overlay
+			alpha = 0.1
+		}
+	}
+}
+
+template Background_Pattern
+{
+	texture = "gfx/interface/skinned/color_theme.dds"
+	spriteType = Corneredtiled
+	blend_mode = overlay
+	alpha = 0.5
+
+	modify_texture = {
+		texture = "gfx/interface/skinned/mask_pattern.dds"
+		texture_density = 3
+		spriteType = Corneredtiled
+		blend_mode = alphaMultiply
+	}
 }
 
 ### Masks

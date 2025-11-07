@@ -1172,7 +1172,7 @@ dalmatian_hybrid = {
 				culture = scope:culture
 				culture = scope:other_culture
 			}
-			any_county_province = { is_coastal = yes }
+			has_coastal_province = yes
 		}
 	}
 	hybrid = yes
@@ -1533,6 +1533,59 @@ egyptiote_hybrid = {
 		}
 		scope:culture = { has_cultural_pillar = heritage_byzantine }
 		scope:other_culture = { has_cultural_pillar = heritage_arabic }
+	}
+	hybrid = yes
+}
+
+shirazi = {
+	trigger = {
+		capital_county.title_province ?= { geographical_region = world_africa_east }
+		any_sub_realm_county = {
+			OR = {
+				culture = scope:culture
+				culture = scope:other_culture
+			}
+			title_province = {
+				geographical_region = world_africa_east
+			}
+		}
+		OR = {
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_bantu }
+				scope:other_culture = { has_cultural_pillar = heritage_arabic }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_arabic }
+				scope:other_culture = { has_cultural_pillar = heritage_bantu }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_bantu }
+				scope:other_culture = { has_cultural_pillar = heritage_iranian }
+			}
+			AND = {
+				scope:culture = { has_cultural_pillar = heritage_iranian }
+				scope:other_culture = { has_cultural_pillar = heritage_bantu }
+			}
+		}
+	}
+	hybrid = yes
+}
+
+goryeo_hybrid = {
+	trigger = {
+		scope:culture = culture:goguryeo
+		scope:other_culture = { has_cultural_pillar = heritage_korean }
+	}
+	hybrid = yes
+}
+
+samhan_hybrid = {
+	trigger = {
+		OR = {
+			scope:culture = culture:silla
+			scope:culture = culture:baekje
+		}
+		scope:other_culture = { has_cultural_pillar = heritage_korean }
 	}
 	hybrid = yes
 }

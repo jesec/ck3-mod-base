@@ -90,7 +90,7 @@ bp2_hostage_claims_casus_bellis_modifier = {
 	modifier = { # Claims on truce target
 		$SENDER$ = {
 			any_held_title = {
-				tier >= tier_county 
+				title_tier >= county 
 				save_temporary_scope_as = title_temp
 			}
 		}
@@ -128,7 +128,7 @@ bp2_hostage_claims_casus_bellis_modifier = {
 bp2_hostage_vassals_lieges_modifier = {
 	modifier = { # Vassals are already protected
 		add = -50
-		$RECEIVER$ = { is_independent_ruler = no }
+		$RECEIVER$ = { top_liege != this }
 		NOR = {
 			$RECEIVER$.liege ?= $SENDER$
 			$SENDER$.liege ?= $RECEIVER$.liege
@@ -136,10 +136,10 @@ bp2_hostage_vassals_lieges_modifier = {
 		desc = HOSTAGE_PROTECTED_BY_LIEGE_REASON
 	}
 	modifier = { # Reluctance to make truces with other realm's vassals
-		$SENDER$ = { is_independent_ruler = no } # Sender is a vassal
+		$SENDER$ = { top_liege != this } # Sender is a vassal
 		$RECEIVER$ = {
 			trigger_if = {
-				limit = { is_independent_ruler = no }
+				limit = { top_liege != this }
 				NOT = { $SENDER$.liege = $RECEIVER$.liege }
 			}
 		}
@@ -159,7 +159,7 @@ bp2_hostage_vassals_lieges_modifier = {
 bp2_hostage_recall_vassals_lieges_modifier = {
 	modifier = { # Vassals are already protected
 		add = 50
-		$RECALLER$ = { is_independent_ruler = no }
+		$RECALLER$ = { top_liege != this }
 		NOR = {
 			$WARDEN$.liege ?= $RECALLER$
 			$RECALLER$.liege ?= $WARDEN$.liege
@@ -167,10 +167,10 @@ bp2_hostage_recall_vassals_lieges_modifier = {
 		desc = HOSTAGE_PROTECTED_BY_LIEGE_REASON
 	}
 	modifier = { # Reluctance to make truces with other realm's vassals
-		$RECALLER$ = { is_independent_ruler = no } # Sender is a vassal
+		$RECALLER$ = { top_liege != this } # Sender is a vassal
 		$WARDEN$ = {
 			trigger_if = {
-				limit = { is_independent_ruler = no }
+				limit = { top_liege != this }
 				NOT = { $RECALLER$.liege = $WARDEN$.liege }
 			}
 		}

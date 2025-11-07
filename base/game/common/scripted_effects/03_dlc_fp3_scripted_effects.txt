@@ -2,9 +2,7 @@
 	# Create a HoF title & assign it appropriately.
 	if = {
 		limit = {
-			NOT = {
-				faith.religious_head = root
-			}
+			faith.religious_head != root
 		}
 		hidden_effect = {
 			# Are we Nizari?
@@ -162,8 +160,7 @@ avenge_the_battle_of_nahrawan_scripted_effect = {
 					faith = { has_doctrine = muhammad_succession_muhakkima_doctrine }
 				}
 				is_ai = yes
-				exists = capital_province
-				capital_province = { 
+				capital_province ?= { 
 					OR = {
 						geographical_region = world_middle_east
 						geographical_region = world_persian_empire 
@@ -178,8 +175,7 @@ avenge_the_battle_of_nahrawan_scripted_effect = {
 					faith = { has_doctrine = muhammad_succession_muhakkima_doctrine }
 				}
 				is_ai = yes
-				exists = capital_province
-				capital_province = { 
+				capital_province ?= { 
 					OR = {
 						geographical_region = world_middle_east
 						geographical_region = world_persian_empire 
@@ -256,7 +252,7 @@ promote_persian_scripture_scripted_effect = {
 	if = { 
 		limit = { 
 			exists = faith.religious_head 
-			NOT = { this = faith.religious_head }
+			this != faith.religious_head
 		}
 		custom_tooltip = fp3_promoted_scriptures_caliph_angry.tt
 	}
@@ -410,7 +406,7 @@ read_name_in_friday_prayer_guts_apply_house_unity_changes_effect = {
 		limit = {
 			NOT = { has_character_flag = fp3_friday_prayer_twiddling_house_unity_force_correct_ui }
 			exists = house.house_head
-			NOT = { this = house.house_head }
+			this != house.house_head
 			OR = {
 				AND = {
 					has_trait = fp3_struggle_supporter
@@ -435,7 +431,7 @@ read_name_in_friday_prayer_guts_apply_house_unity_changes_effect = {
 		limit = {
 			NOT = { has_character_flag = fp3_friday_prayer_twiddling_house_unity_force_correct_ui }
 			exists = house.house_head
-			NOT = { this = house.house_head }
+			this != house.house_head
 			OR = {
 				AND = {
 					has_trait = fp3_struggle_detractor
@@ -461,7 +457,7 @@ read_name_in_friday_prayer_guts_apply_house_unity_changes_effect = {
 		limit = {
 			has_character_flag = fp3_friday_prayer_twiddling_house_unity_force_correct_ui
 			exists = house.house_head
-			NOT = { this = house.house_head }
+			this != house.house_head
 			OR = {
 				AND = {
 					has_trait = fp3_struggle_supporter
@@ -486,7 +482,7 @@ read_name_in_friday_prayer_guts_apply_house_unity_changes_effect = {
 		limit = {
 			has_character_flag = fp3_friday_prayer_twiddling_house_unity_force_correct_ui
 			exists = house.house_head
-			NOT = { this = house.house_head }
+			this != house.house_head
 			OR = {
 				AND = {
 					has_trait = fp3_struggle_detractor
@@ -545,7 +541,7 @@ read_name_in_friday_prayer_scripted_effect = {
 			every_involved_ruler = {
 				custom = custom.every_opposed_involved_struggle_ruler.supporter
 				limit = {
-					NOT = { this = root }
+					this != root
 					has_trait = fp3_struggle_supporter
 				}
 				add_opinion = {
@@ -557,7 +553,7 @@ read_name_in_friday_prayer_scripted_effect = {
 			every_interloper_ruler = {
 				custom = custom.every_opposed_interloper_struggle_ruler.supporter
 				limit = {
-					NOT = { this = root }
+					this != root
 					has_trait = fp3_struggle_supporter
 				}
 				add_opinion = {
@@ -576,7 +572,7 @@ read_name_in_friday_prayer_scripted_effect = {
 			every_involved_ruler = {
 				custom = custom.every_opposed_involved_struggle_ruler.detractor
 				limit = {
-					NOT = { this = root }
+					this != root
 					has_trait = fp3_struggle_detractor
 				}
 				add_opinion = {
@@ -588,7 +584,7 @@ read_name_in_friday_prayer_scripted_effect = {
 			every_interloper_ruler = {
 				custom = custom.every_opposed_interloper_struggle_ruler.detractor
 				limit = {
-					NOT = { this = root }
+					this != root
 					has_trait = fp3_struggle_detractor
 				}
 				add_opinion = {
@@ -720,4 +716,33 @@ fp3_story_cycle_seljuks_invasion_events_grant_seljuks_land_effect = {
 		add_character_flag = settled_seljuk
 		change_government = clan_government
 	}
+}
+
+set_house_head_effect = {
+	$NEW_HEAD$ = { save_scope_as = new_head }
+	$OLD_HEAD$ = {
+		save_scope_as = old_head
+		if = {
+			limit = {
+				any_held_title = { is_noble_family_title = yes }
+			}
+			random_held_title = {
+				limit = { is_noble_family_title = yes }
+				save_scope_as = nf_title
+			}
+		}
+	}
+	create_title_and_vassal_change = {
+		type = granted
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	scope:nf_title = {
+		change_title_holder_include_vassals = {
+			holder = scope:new_head
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+	scope:new_head.house = { set_house_head = scope:new_head }
 }

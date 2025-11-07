@@ -32,8 +32,9 @@
  coronation_phase_feast_desc: ""
  # Types
  coronation_type_normal: "Couronnement"
- coronation_type_normal_desc: "$BULLET_WITH_TAB$Prouvez votre [legitimacy|El][legitimacy_i]\n$BULLET_WITH_TAB$Prêtez un [oath|El] et engagez-vous sur l’objectif de votre règne\n$BULLET_WITH_TAB$Vous pouvez gagner de l’[opinion|El][opinion_i] avec les [vassals|El]\n$BULLET_WITH_TAB$Les [vassals|El] peuvent quitter les [factions|El]@faction_icon!\n$BULLET_WITH_TAB$Vous pouvez vous couronner pour du [prestige|El][prestige_i] supplémentaire\n\n#weak $coronation_type_normal_flavor$#!"
+ coronation_type_normal_desc: "$BULLET_WITH_TAB$Prouvez votre [legitimacy|El][legitimacy_i]\n$BULLET_WITH_TAB$Prêtez un [oath|El] et engagez-vous sur l’objectif de votre règne\n$BULLET_WITH_TAB$Vous pouvez gagner de l’[opinion|El][opinion_i] avec les [vassals|El] [AddLocalizationIf( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_mandala' ), 'coronation_type_tributaries' )]\n$BULLET_WITH_TAB$Les [vassals|El] peuvent quitter les [factions|El]@faction_icon!\n$BULLET_WITH_TAB$Vous pouvez vous couronner pour du [prestige|El][prestige_i] supplémentaire\n\n#weak $coronation_type_normal_flavor$#!"
  coronation_type_normal_flavor: "Une cérémonie majestueuse prouvera la légitimité de votre règne, et la majesté du pays sera votre vêtement souverain."
+ coronation_type_tributaries: "et les [tributaries|El]"
  coronation_type_anointment: "Onction"
  coronation_type_anointment_desc: "$BULLET_WITH_TAB$Rendez incontestable votre [legitimacy|El][legitimacy_i]\n$BULLET_WITH_TAB$Gagnez de la [piety|El][piety_i], de la [fervor|El]@fervor_icon! et les faveurs du [vassal|El] [GetVassalStance( 'zealot' ).GetName|l][GetVassalStance( 'zealot' ).GetTextIcon]\n$BULLET_WITH_TAB$Faites un [oath|El] et engagez-vous sur l’objectif de votre règne\n$BULLET_WITH_TAB$Gain d’[opinion|El][opinion_i] avec les [vassals|El]\n$BULLET_WITH_TAB$Gain d’[opinion|El][opinion_i] avec d’autres [rulers|El]\n$BULLET_WITH_TAB$Les [vassals|El] peuvent quitter les [factions|El]@faction_icon!\n$BULLET_WITH_TAB$@alert_icon! #alert_trial Doit être organisé dans un [holy_site|El] de votre [faith|El]#!\n\n#weak $coronation_type_anointment_flavor$#!"
  coronation_type_anointment_flavor: "Un véritable souverain doit être revêtu d’une mission sacrée et être établi par la grâce divine. Le pouvoir séculier ne peut pas le remplacer."
@@ -43,20 +44,24 @@
  coronation_small_ceremony: "Rites simples"
  coronation_small_ceremony_desc: "$EFFECT_LIST_BULLET$Diminution de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$ Les [rulers|El] étrangers ne rejoindront pas l’[activity|El]\n$EFFECT_LIST_BULLET$Si la [coronation_magnificence|El] est en dessous de #high 50#! lors de la clôture, vous obtenez [GetModifier('ach_coronation_low_ceremony_modifier').GetNameWithTooltip] pendant #high 10 ans#!\n\n#weak Je règne déjà, n’est-ce pas ? Pourquoi soumettre tout le pays à cette simple formalité ?#!"
  coronation_medium_ceremony: "Vénérables parures"
- coronation_medium_ceremony_desc: "$EFFECT_LIST_BULLET$ Augmentation de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$ Les [activity_guests|El] seront un peu plus susceptibles de rejoindre\n\n#weak Les serments sacrés des dirigeants doivent être accompagnés d’un cadre royal et d’un vaste rassemblement empreint de respect.#!"
+ coronation_medium_ceremony_desc: "$EFFECT_LIST_BULLET$Augmentation de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$Les [activity_guests|El] seront un peu plus susceptibles de rejoindre\n\n#weak Les serments sacrés des dirigeants doivent être accompagnés d’un cadre royal et d’un vaste rassemblement empreint de respect.#!"
  coronation_large_ceremony: "Gloire et splendeur"
- coronation_large_ceremony_desc: "$EFFECT_LIST_BULLET$ Augmentation substantielle de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$ Les [activity_guests|El] seront nettement plus susceptibles de rejoindre\n\n#weak Au milieu de saintes reliques et de joyaux étincelants, au son d’une belle musique, seront présents tous mes proches, mes vassaux et des invités prestigieux venus de loin.#!"
+ coronation_large_ceremony_desc: "$EFFECT_LIST_BULLET$Augmentation substantielle de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$Les [activity_guests|El] seront nettement plus susceptibles de rejoindre\n\n#weak Au milieu de saintes reliques et de joyaux étincelants, au son d’une belle musique, seront présents tous mes proches, mes vassaux et des invités prestigieux venus de loin.#!"
  ceremony_feast_type: "Célébrations"
  ceremony_feast_type_austere: "Observances austères"
- ceremony_feast_type_austere_desc: "$EFFECT_LIST_BULLET$ Diminution de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$Si la [coronation_magnificence|El] est en dessous de #high 50#! lors de la clôture, vous obtenez [GetModifier('ach_coronation_low_feast_modifier').GetNameWithTooltip] pendant #high 10 ans#!\n\n#weak Une invitation à cet événement historique n’est-elle pas un plaisir suffisant ?#!"
+ ceremony_feast_type_austere_desc: "$EFFECT_LIST_BULLET$Diminution de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$Si la [coronation_magnificence|El] est en dessous de #high 50#! lors de la clôture, vous obtenez [SelectLocalization( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_mandala' ), 'mandala_coronation_low_feast', 'generic_coronation_low_feast' )] pendant #high 10 ans#!\n\n#weak Une invitation à cet événement historique n’est-elle pas un plaisir suffisant ?#!"
+ generic_coronation_low_feast: "[GetModifier('ach_coronation_low_feast_modifier').GetNameWithTooltip]"
+ mandala_coronation_low_feast: "[GetModifier('mandala_coronation_low_feast_modifier').GetNameWithTooltip]"
  ceremony_feast_type_regular: "Réjouissances appropriées"
- ceremony_feast_type_regular_desc: "$EFFECT_LIST_BULLET$ Augmentation de la [coronation_magnificence|El]\n\n#weak Lors de ce grand rassemblement de la noblesse et du festin qui suivra la cérémonie, peu d’économies seront réalisées.#!"
+ ceremony_feast_type_regular_desc: "$EFFECT_LIST_BULLET$Augmentation de la [coronation_magnificence|El]\n\n#weak Lors de ce grand rassemblement de la noblesse et du festin qui suivra la cérémonie, peu d’économies seront réalisées.#!"
  ceremony_feast_type_lavish: "Banquets fastueux"
- ceremony_feast_type_lavish_desc: "$EFFECT_LIST_BULLET$ Augmentation substantielle de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$ Risque réduit d’événements négatifs\n\n#weak Des couloirs interminables de mets dont l’odeur vous met l’eau à la bouche, des plaisirs grandioses pour border la haute table du monarque.#!"
+ ceremony_feast_type_lavish_desc: "$EFFECT_LIST_BULLET$Augmentation substantielle de la [coronation_magnificence|El]\n$EFFECT_LIST_BULLET$Risque réduit d’événements négatifs\n\n#weak Des couloirs interminables de mets dont l’odeur vous met l’eau à la bouche, des plaisirs grandioses pour border la haute table du monarque.#!"
  ach_coronation_low_ceremony_modifier: "Couronnement dans l’obscurité"
  ach_coronation_low_ceremony_modifier_desc: "Le peuple ignore presque que ce dirigeant est son seigneur et la noblesse est ravie d’oublier ses cérémonies inaugurales misérables."
  ach_coronation_low_feast_modifier: "Noblesse méprisée"
  ach_coronation_low_feast_modifier_desc: "Les célébrations misérables au point d’être offensantes qui entourent le couronnement de ce dirigeant font que les participants débordent de dédain et repartent le ventre vide."
+ mandala_coronation_low_feast_modifier: "Sujets méprisés"
+ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_desc$"
  # Special Guests
  coronation_hof_guest: "Chef de la foi"
  coronation_hof_guest_desc: "$coronation_hof_guest_desc_for_host$"
@@ -79,7 +84,7 @@
  coronation_small_ceremony_value: "$coronation_small_ceremony$ : $VALUE|=+0$"
  coronation_medium_ceremony_value: "$coronation_medium_ceremony$ : $VALUE|=+0$"
  coronation_large_ceremony_value: "$coronation_large_ceremony$ : $VALUE|=+0$"
- coronation_special_guest_value: "$priest_for_host$ : $VALUE|=+0$"
+
  coronation_special_vassal_value: "[coronation|E][coronation_i] du [liege|El] : $VALUE|=+0$"
  coronation_pope_not_anointment: "Le [head_of_faith|El] ne rejoindra qu’un [coronation|El] par [coronation_anointment|El] : $VALUE|=+0$"
  coronation_liege_value: "Couronnement du [vassal|El] : $VALUE|=+0$"
@@ -312,15 +317,15 @@
  ## Purge Pretenders
  coronation_events.0110.desc.purge_pretenders_oath: "#emp « Les faux prétendants au trône du pays se sont multipliés tels des rats dans les égouts. Tout comme la vermine, ils doivent être exterminés. »#!"
  ## End the Struggle
- coronation_events.0110.desc.end_the_struggle_oath: "#emp « La [ROOT.Char.MakeScope.Var('end_the_struggle_oath_type_var').Struggle.GetName|l] fait couler le sang des bons [ROOT.Char.GetCulture.GetCollectiveNoun] depuis des générations. Je vais mettre fin à cette folie et inaugurerai une nouvelle ère de prospérité dans la région, puisse la foi [ROOT.Char.GetFaith.GetAdjective] me venir en aide. »#!"
+ coronation_events.0110.desc.end_the_struggle_oath: "#emp « La [activity.GetHost.MakeScope.Var('end_the_struggle_oath_type_var').Struggle.GetName|l] fait couler le sang des bons [activity.GetHost.GetCulture.GetCollectiveNoun] depuis des générations. Je vais mettre fin à cette folie et inaugurerai une nouvelle ère de prospérité dans la région, puisse la foi [activity.GetHost.GetFaith.GetAdjective] me venir en aide. »#!"
  ## Greatest Hunter
  coronation_events.0110.desc.greatest_hunter_oath: "#emp « La chasse n’est pas seulement une épreuve pour prouver sa valeur, mais une célébration de la vie et de la nature. Je deviendrai le plus grand chasseur et maître de la nature sauvage. »#!"
  ## Heir Preparation
- coronation_events.0110.desc.heir_preparation_oath: "#emp « Sans un héritier digne de ce nom, la dynastie [ROOT.Char.GetDynasty.GetName] tombera dans l’oubli. Je mènerai donc son éducation et lui apporterai le savoir et la sagesse nécessaires pour porter notre dynastie vers de nouveaux sommets. »#!"
+ coronation_events.0110.desc.heir_preparation_oath: "#emp « Sans un héritier digne de ce nom, la dynastie [activity.GetHost.GetDynasty.GetName] tombera dans l’oubli. Je mènerai donc son éducation et lui apporterai le savoir et la sagesse nécessaires pour porter notre dynastie vers de nouveaux sommets. »#!"
  ## Install Claimants
  coronation_events.0110.desc.install_claimants_oath: "#emp « Le droit légitime au trône n’est pas seulement une question de sang, mais aussi de justice. Je mettrai en place les prétendants légitimes, renverserai les usurpateurs et rétablirai l’ordre. »#!"
  ## Mend the Fracture
- coronation_events.0110.desc.mend_the_fracture_oath: "#emp « La fracture culturelle qui règne dans le pays est source de conflits depuis trop longtemps. Je vais unir les peuples sous la bannière de la Maison [ROOT.Char.GetHouse.GetName], tout en préservant leur identité. »#!"
+ coronation_events.0110.desc.mend_the_fracture_oath: "#emp « La fracture culturelle qui règne dans le pays est source de conflits depuis trop longtemps. Je vais unir les peuples sous la bannière de la Maison [activity.GetHost.GetHouse.GetName], tout en préservant leur identité. »#!"
  ## Provide for the Warriors
  coronation_events.0110.desc.provide_for_the_warriors_oath: "#emp « Les guerriers de [activity.GetHost.GetPrimaryTitle.GetNameNoTier] sont mon épée et mon bouclier. Je veillerai à ce qu’ils soient bien équipés et prêts à défendre nos terres. »#!"
  ## Provide for the Faithful
@@ -328,7 +333,7 @@
  ## Provide for the Poor
  coronation_events.0110.desc.provide_for_the_poor_oath: "#emp « Les pauvres de [activity.GetHost.GetPrimaryTitle.GetNameNoTier] sont le sel de la terre, la lumière du monde. Ils travaillent en silence pour le bien de tous. Je veillerai à ce que même les plus pauvres puissent vivre dans la dignité et l’espoir. »#!"
  ## Repent
- coronation_events.0110.desc.repent_oath: "#emp « Qu’est-ce qui peut changer la nature d’une personne ? Ma volonté suffit-elle ? Puis-je convaincre les autres [ROOT.Char.GetFaith.GetAdherentNamePlural], puis-je convaincre [ROOT.Char.GetFaith.HighGodName] que je me repens sincèrement de mes péchés ? Il serait peut-être insensé d’essayer, mais ce serait un péché grave de ne pas le faire. »#!"
+ coronation_events.0110.desc.repent_oath: "#emp « Qu’est-ce qui peut changer la nature d’une personne ? Ma volonté suffit-elle ? Puis-je convaincre les autres [activity.GetHost.GetFaith.GetAdherentNamePlural], puis-je convaincre [activity.GetHost.GetFaith.HighGodName] que je me repens sincèrement de mes péchés ? Il serait peut-être insensé d’essayer, mais ce serait un péché grave de ne pas le faire. »#!"
  ## Other
  coronation_events.0110.desc.fallback: "#emp « Mon règne restera dans les mémoires de ceux qui nous succéderont comme le début d’un âge d’or pour le pays. »#!"
  coronation_events.0110.desc.outro: ""
@@ -350,7 +355,7 @@
  diplomacy_oath_2_tooltip: "Je fais le [oath|El] de #V renforcer la Maison#! :\n\t$EFFECT_LIST_BULLET$Doit avoir au moins #V 7#! [children|El] [Concept('legitimate', 'légitimes')|E] #weak (actuellement [host.MakeScope.ScriptValue('children_oath_value')|V0]/#V 7#!)#!\n\t$EFFECT_LIST_BULLET$Cela doit être achevé d’ici #V 30 ans#!\n\t$EFFECT_LIST_BULLET$Récompenses : [legitimacy|El][legitimacy_i], [prestige|El][prestige_i], [dynasty_prestige|El][dynasty_prestige_i] et [GetModifier('oath_of_children').GetNameWithTooltip]"
  ## Martial
  martial_oath_1_tooltip: "Je fais le [oath|El] de #V renforcer [host.GetPrimaryTitle.GetNameNoTierNoTooltip]#! :\n\t$EFFECT_LIST_BULLET$Ce pays doit [Concept('completely_control', 'contrôler complètement')|E] ses frontières [de_jure|El] #low (actuellement [host.MakeScope.ScriptValue('oath_reconquest_value_1')|V0]/[host.MakeScope.ScriptValue('oath_reconquest_value_2')|V0])#!\n$EFFECT_LIST_BULLET$Cela doit être achevé dans les #V 20 ans#!\n$EFFECT_LIST_BULLET$Récompenses : [legitimacy|El][legitimacy_i], [prestige|El][prestige_i] et [GetModifier('oath_of_reconquest').GetNameWithTooltip]"
- oath_reconquest_tooltip: "[Concept('completely_control', 'Contrôler complètement')|E] [de_jure|El] [root_scope.GetPrimaryTitle.GetName] #low ([root_scope.MakeScope.ScriptValue('oath_reconquest_value_1')]/[root_scope.MakeScope.ScriptValue('oath_reconquest_value_2')])#!"
+ oath_reconquest_tooltip: "[Concept('completely_control', 'Contrôler complètement')|E] [de_jure|El] [THIS.Var('oath_reconquest_title').Title.GetName] #low ([root_scope.MakeScope.ScriptValue('oath_reconquest_value_1')]/[root_scope.MakeScope.ScriptValue('oath_reconquest_value_2')])#!"
  martial_oath_2_tooltip: "Je fais le [oath|El] d’#V agrandir le pays#! :\n\t$EFFECT_LIST_BULLET$Le [realm|El] doit avoir au moins une taille de [host.MakeScope.ScriptValue('oath_conquest_value_1')|V0] #low (actuellement [host.MakeScope.ScriptValue('oath_conquest_value_2')|V0])#!\n$EFFECT_LIST_BULLET$Cela doit être achevé dans les #V 20 ans#!\n$EFFECT_LIST_BULLET$Choisissez entre une aubaine à la [capital|El] et un changement [de_jure|El] de terre\n$EFFECT_LIST_BULLET$Récompenses : [legitimacy|El][legitimacy_i], [prestige|El][prestige_i] et [GetModifier('oath_of_conquest').GetNameWithTooltip]"
  ## Stewardship
  stewardship_oath_1_tooltip: "Je fais le [oath|El] de #V garantir la paix#! :\n\t$EFFECT_LIST_BULLET$Doit avoir au moins #V 5 ans#! de paix continus\n\t$EFFECT_LIST_BULLET$Cela doit être achevé d’ici #V 50 ans#!\n\t$EFFECT_LIST_BULLET$Récompenses : [legitimacy|El][legitimacy_i], [prestige|El][prestige_i], [development|El][development_i] et [GetModifier('oath_of_peace').GetNameWithTooltip|l]"
@@ -576,7 +581,7 @@
  greatest_hunter_oath_decision_confirm: "Je ne me connais aucun égal à la chasse"
  greatest_hunter_decision_l3_trigger: "Organiser une [GetActivityType('activity_hunt').GetName|l][GetActivityType('activity_hunt').GetTextIcon] #V légendaire#! réussie #V 3#! fois ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/3)"
  greatest_hunter_decision_l1_trigger: "Organiser une [GetActivityType('activity_hunt').GetName|l][GetActivityType('activity_hunt').GetTextIcon] #V légendaire#! réussie #V 1#! fois ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/1)"
- greatest_hunter_decision_r10_trigger: "Organiser une [GetActivityType('activity_hunt').GetName|l][GetActivityType('activity_hunt').GetTextIcon] réussie #V 10#! fois ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/10)"
+ greatest_hunter_decision_r10_trigger: "Organiser une [GetActivityType('activity_hunt').GetName|l][GetActivityType('activity_hunt').GetTextIcon] réussie #V 10#! fois ([THIS.Char.MakeScope.Var('greatest_hunter_oath_r_counter').GetValue|0]/10)"
  greatest_hunter_decision_trigger_2: "Vous avez un #V arc#! comme [artifact|El]"
  greatest_hunter_decision_no_artifact_xp_effect: "Votre [artifact|El] de type #V arc#! obtient #V #P 20%#! de $trait_track_hunter_xp_gain_mult|l$#!"
  greatest_hunter_decision_no_artifact_stress_effect: "Votre [artifact|El] de type #V arc#! obtient #V #P -15%#! de gain de [stress|El]#!"
@@ -584,7 +589,7 @@
  # Heir Preparation
  heir_preparation_oath_decision: "$GetHeirPreparationOathText$ [CoronationTimer('heir_preparation_oath_decision','heir_preparation_oath_decision_timer')]"
  heir_preparation_oath_decision_timer: "\t#weak ([RemainingTime('heir_preparation_oath_timer')])#!"
- heir_preparation_oath_decision_desc: "J’ai juré de préparer mon [primary_heir|El] aux épreuves à venir. Mon règne n’a pas d’autre but que celui qui lui succède. $heir_preparation_oath_decision_desc_extra$"
+ heir_preparation_oath_decision_desc: "J’ai juré de préparer mon héritier aux épreuves à venir. Mon règne n’a pas d’autre but que celui qui lui succède. $heir_preparation_oath_decision_desc_extra$"
  heir_preparation_oath_decision_desc_extra: "\n\n@alert_icon!#alert_trial Il reste [RemainingTime('heir_preparation_oath_timer')] pour respecter le [oath|El]#![IsOngoingCoronationOath('heir_preparation_oath')]"
  heir_preparation_oath_decision_tooltip: "Préparer votre [primary_heir|El] à vous succéder"
  heir_preparation_oath_decision_confirm: "La succession est assurée"

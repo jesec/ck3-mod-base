@@ -41,7 +41,7 @@ feast_main_befriend.0001 = {
 			scope:activity = {
 				any_attending_character = {
 					feast_default_participant_trigger = yes
-					NOT = { this = scope:activity.activity_host }
+					this != scope:activity.activity_host
 					NOT = { has_relation_friend = root }
 					opinion = {
 						target = scope:activity.activity_host
@@ -116,7 +116,7 @@ feast_main_befriend.0001 = {
 				random_attending_character = {
 					limit = {
 						feast_default_participant_trigger = yes
-						NOT = { this = scope:activity.activity_host }
+						this != scope:activity.activity_host
 						NOT = { has_relation_friend = root }
 						opinion = {
 							target = scope:activity.activity_host
@@ -131,8 +131,8 @@ feast_main_befriend.0001 = {
 			random_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = scope:activity.activity_host }
-					NOT = { this = scope:potential_friend }
+					this != scope:activity.activity_host
+					this != scope:potential_friend
 					highest_held_title_tier > 1
 					OR = {
 						has_trait = arrogant
@@ -144,18 +144,18 @@ feast_main_befriend.0001 = {
 			random_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = scope:activity.activity_host }
-					NOT = { this = scope:potential_friend }
+					this != scope:activity.activity_host
+					this != scope:potential_friend
 					trigger_if = {
 						limit = { exists = scope:arrogant_guest }
-						NOT = { this = scope:arrogant_guest }
+						this != scope:arrogant_guest
 					}
 					highest_held_title_tier > 1
 					OR = {
 						has_trait = humble
 						has_trait = compassionate
 						any_secret = {
-							secret_type = secret_cannibal
+							type = secret_cannibal
 						}
 					}
 				}
@@ -165,21 +165,21 @@ feast_main_befriend.0001 = {
 				limit = {
 					exists = scope:kind_to_lower_nobility
 					scope:kind_to_lower_nobility = {
-						any_secret = { secret_type = secret_cannibal }
+						any_secret = { type = secret_cannibal }
 					}
 				}
 				random_attending_character = {
 					limit = {
 						feast_default_participant_trigger = yes
-						NOT = { this = scope:activity.activity_host }
-						NOT = { this = scope:potential_friend }
+						this != scope:activity.activity_host
+						this != scope:potential_friend
 						trigger_if = {
 							limit = { exists = scope:arrogant_guest }
-							NOT = { this = scope:arrogant_guest }
+							this != scope:arrogant_guest
 						}
 						trigger_if = {
 							limit = { exists = scope:kind_to_lower_nobility }
-							NOT = { this = scope:kind_to_lower_nobility }
+							this != scope:kind_to_lower_nobility
 						}
 						OR = {
 							has_trait = gluttonous
@@ -222,19 +222,19 @@ feast_main_befriend.0001 = {
 			every_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = scope:activity.activity_host }
-					NOT = { this = scope:potential_friend }
+					this != scope:activity.activity_host
+					this != scope:potential_friend
 					trigger_if = {
 						limit = { exists = scope:arrogant_guest }
-						NOT = { this = scope:arrogant_guest }
+						this != scope:arrogant_guest
 					}
 					trigger_if = {
 						limit = { exists = scope:kind_to_lower_nobility }
-						NOT = { this = scope:kind_to_lower_nobility }
+						this != scope:kind_to_lower_nobility
 					}
 					trigger_if = {
 						limit = { exists = scope:glutton_target }
-						NOT = { this = scope:glutton_target }
+						this != scope:glutton_target
 					}
 				}
 				trigger_event = feast_main_befriend.3001
@@ -272,7 +272,7 @@ feast_main_befriend.1001 = {
 					triggered_desc = {
 						trigger = {
 							scope:kind_to_lower_nobility = {
-								any_secret = { secret_type = secret_cannibal }
+								any_secret = { type = secret_cannibal }
 							}
 						}
 						desc = feast_main_befriend.1001.really_hungry
@@ -297,10 +297,9 @@ feast_main_befriend.1001 = {
 	trigger = {
 		OR = {
 			any_scheme = {
-				scheme_type = befriend
+				type = befriend
 				scheme_target_character = {
-					exists = involved_activity
-					involved_activity = scope:activity
+					involved_activity ?= scope:activity
 				}
 			}
 			AND = {
@@ -312,7 +311,7 @@ feast_main_befriend.1001 = {
 			scope:activity = {
 				any_attending_character = {
 					feast_default_participant_trigger = yes
-					NOT = { this = scope:activity.activity_host }
+					this != scope:activity.activity_host
 					NOT = { has_relation_friend = root }
 					opinion = {
 						target = scope:activity.activity_host
@@ -337,19 +336,17 @@ feast_main_befriend.1001 = {
 		else_if = {
 			limit = {
 				any_scheme = {
-					scheme_type = befriend
+					type = befriend
 					scheme_target_character = {
-						exists = involved_activity
-						involved_activity = scope:activity
+						involved_activity ?= scope:activity
 					}
 				}
 			}
 			random_scheme = {
+				type = befriend
 				limit = {
-					scheme_type = befriend
 					scheme_target_character = {
-						exists = involved_activity
-						involved_activity = scope:activity
+						involved_activity ?= scope:activity
 					}
 				}
 				scheme_target_character = {
@@ -362,7 +359,7 @@ feast_main_befriend.1001 = {
 				random_attending_character = {
 					limit = {
 						feast_default_participant_trigger = yes
-						NOT = { this = scope:activity.activity_host }
+						this != scope:activity.activity_host
 						NOT = { has_relation_friend = root }
 						opinion = {
 							target = scope:activity.activity_host
@@ -408,13 +405,13 @@ feast_main_befriend.1001 = {
 		if = {
 			limit = {
 				any_scheme = {
-					scheme_type = befriend
+					type = befriend
 					scheme_target_character = scope:potential_friend
 				}
 			}
 			random_scheme = {
+				type = befriend
 				limit = {
-					scheme_type = befriend
 					scheme_target_character = scope:potential_friend
 				}
 				end_scheme = yes
@@ -461,7 +458,7 @@ feast_main_befriend.2001 = {
 					triggered_desc = {
 						trigger = {
 							scope:kind_to_lower_nobility = {
-								any_secret = { secret_type = secret_cannibal }
+								any_secret = { type = secret_cannibal }
 							}
 						}
 						desc = feast_main_befriend.2001.really_hungry
@@ -568,14 +565,14 @@ feast_main_befriend.2003 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					any_secret = { secret_type = secret_cannibal }
+					any_secret = { type = secret_cannibal }
 					exists = scope:glutton_target
 				}
 				desc = feast_main_befriend.2003.kind_to_glutton
 			}
 			triggered_desc = {
 				trigger = {
-					any_secret = { secret_type = secret_cannibal }
+					any_secret = { type = secret_cannibal }
 				}
 				desc = feast_main_befriend.2003.cannibal_kindness
 			}
@@ -598,7 +595,7 @@ feast_main_befriend.2003 = {
 					feast_default_participant_trigger = yes
 					trigger_if = {
 						limit = { exists = scope:arrogant_guest }
-						NOT = { this = scope:arrogant_guest }
+						this != scope:arrogant_guest
 					}
 				}
 				add_opinion = {
@@ -698,7 +695,7 @@ feast_main_befriend.3001 = {
 					triggered_desc = {
 						trigger = {
 							scope:kind_to_lower_nobility = {
-								any_secret = { secret_type = secret_cannibal }
+								any_secret = { type = secret_cannibal }
 							}
 						}
 						desc = feast_main_befriend.3001.really_hungry
@@ -774,8 +771,8 @@ feast_main_befriend.5001 = {
 			every_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = scope:activity.activity_host }
-					NOT = { this = scope:potential_friend }
+					this != scope:activity.activity_host
+					this != scope:potential_friend
 				}
 				trigger_event = feast_main_befriend.5004
 			}
@@ -806,10 +803,9 @@ feast_main_befriend.5002 = {
 	trigger = {
 		OR = {
 			any_scheme = {
-				scheme_type = befriend
+				type = befriend
 				scheme_target_character = {
-					exists = involved_activity
-					involved_activity = scope:activity
+					involved_activity ?= scope:activity
 				}
 			}
 			AND = {
@@ -821,7 +817,7 @@ feast_main_befriend.5002 = {
 			scope:activity = {
 				any_attending_character = {
 					feast_default_participant_trigger = yes
-					NOT = { this = scope:activity.activity_host }
+					this != scope:activity.activity_host
 					NOT = { has_relation_friend = root }
 					opinion = {
 						target = scope:activity.activity_host
@@ -845,19 +841,17 @@ feast_main_befriend.5002 = {
 		else_if = {
 			limit = {
 				any_scheme = {
-					scheme_type = befriend
+					type = befriend
 					scheme_target_character = {
-						exists = involved_activity
-						involved_activity = scope:activity
+						involved_activity ?= scope:activity
 					}
 				}
 			}
 			random_scheme = {
+				type = befriend
 				limit = {
-					scheme_type = befriend
 					scheme_target_character = {
-						exists = involved_activity
-						involved_activity = scope:activity
+						involved_activity ?= scope:activity
 					}
 				}
 				scheme_target_character = {
@@ -870,7 +864,7 @@ feast_main_befriend.5002 = {
 				random_attending_character = {
 					limit = {
 						feast_default_participant_trigger = yes
-						NOT = { this = scope:activity.activity_host }
+						this != scope:activity.activity_host
 						NOT = { has_relation_friend = root }
 						opinion = {
 							target = scope:activity.activity_host

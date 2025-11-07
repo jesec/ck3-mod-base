@@ -54,6 +54,11 @@ window = {
 							text = "[Situation.GetNameNoTooltip]"
 						}
 
+						blockoverride "button_back"
+						{
+							onclick = "[OpenGameView( 'situations' )]"
+						}
+
 						blockoverride "button_close"
 						{
 							onclick = "[SituationWindow.Close]"
@@ -234,14 +239,14 @@ window = {
 								text_single = {
 									layoutpolicy_horizontal = expanding
 
-									text = "SITUATION_WINDOW_CURRENT_PHASE"
+									text = "SITUATION_CURRENT_PHASE_NAME"
 									align = nobaseline
 								}
 
 								text_single = {
 									layoutpolicy_horizontal = expanding
 
-									text = "SITUATION_WINDOW_CURRENT_PHASE_ENDS"
+									text = "SITUATION_CURRENT_PHASE_ENDS"
 									default_format = "#Weak"
 									align = nobaseline
 								}
@@ -344,7 +349,7 @@ window = {
 
 												icon = {
 													name = "selected_or_leading_phase_icon"
-													visible = "[EqualTo_int32( ComplexBarItem.GetIndex, '(int32)2' ))]"
+													visible = "[EqualTo_int32( ComplexBarItem.GetIndex, '(int32)2' )]"
 													size = { 40 40 }
 													texture = "[SituationWindow.GetSelectedOrLeadingFuturePhaseType.GetIcon]"
 													parentanchor = center
@@ -353,12 +358,12 @@ window = {
 
 												text_single = {
 													parentanchor = center
-													visible = "[EqualTo_int32( ComplexBarItem.GetIndex, '(int32)1' ))]"
+													visible = "[EqualTo_int32( ComplexBarItem.GetIndex, '(int32)1' )]"
 
 													text = "[ComplexBarItem.GetValue|0%/]"
 													tooltip = "[SchemeItem.GetProgressLevelTooltips( PdxGuiWidget.GetIndexInDataModel )]"
 													align = nobaseline
- 												}
+												}
 											}
 										}
 									}
@@ -709,7 +714,7 @@ window = {
 				}
 
 				expand = {
-					visible = "[IsDataModelEmpty( SituationWindow.GetCatalystsForSelectedPhase ) )]"
+					visible = "[IsDataModelEmpty( SituationWindow.GetCatalystsForSelectedPhase )]"
 				}
 			}
 		}
@@ -717,9 +722,14 @@ window = {
 
 	window_situation_participant_groups = {
 		datacontext = "[SituationWindow.AccessParticipantCharacterList]"
-		datacontext = "[SituationWindowParticipantCharacterList.AccessCharacterList]"
+		datacontext = "[SituationParticipantCharacterList.AccessCharacterList]"
+		visible = "[SituationParticipantCharacterList.IsVisible]"
 
-		visible = "[SituationWindowParticipantCharacterList.IsVisible]"
+		datacontext = "[SituationWindow.GetSelectedSubRegion]"
+		blockoverride "header_text"
+		{
+			text = "[SituationWindow.GetParticipationWindowHeader]"
+		}
 	}
 }
 
@@ -867,69 +877,91 @@ types Situation
 			header_pattern = {
 				layoutpolicy_horizontal = expanding
 
-				blockoverride "header_text"
-				{
-					text = "SITUATION_PARTICIPANT_WINDOW_HEADER"
-				}
-
 				blockoverride "button_close"
 				{
-					onclick = "[SituationWindowParticipantCharacterList.Close]"
+					onclick = "[SituationParticipantCharacterList.Close]"
 				}
 			}
 
-			vbox = {
-				layoutpolicy_vertical = preferred
+			hbox = {
 				layoutpolicy_horizontal = expanding
-				margin = { 10 0 }
+				margin = { 8 0 }
+				margin_bottom = 4
+				
+				background = {
+					using = Background_Area
+					margin = { 0 4 }
+				}
 
-				spacing = 10
+				flowcontainer = {
+					layoutstretchfactor_horizontal = 50
 
-				datamodel = "[SituationWindow.GetSelectedSubRegion.GetParticipantGroups]"
+					datamodel = "[SituationSubRegion.GetParticipantGroups]"
+					spacing = 10
+					margin = { 10 10 }
 
-				item = {
-					hbox = {
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding
-
-						icon = {
+					item = {
+						button = {
+							size = { 46 46 }
 							visible = "[SituationParticipantGroup.IsValid]"
+							onclick = "[SituationParticipantCharacterList.SetSelectedParticipantGroup( SituationParticipantGroup.Self )]"
+							tooltip = "[SituationParticipantGroup.GetName]"
 
-							size = { 40 40 }
-							texture = "[SituationParticipantGroup.GetType.GetIcon]"
+							icon = {
+								visible = "[SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self )]"
+								parentanchor = center
 
-							background = {
-								texture = "gfx/interface/buttons/button_lifestyles_base.dds"
-								margin = { 5 5 }
-							}
-						}
+								texture = "gfx/interface/buttons/button_round_frame.dds"
+								size = { 58 58 }
+								color = { 0.75 0.75 0.65 1 }
 
-						vbox = {
-							margin_left = 10
-
-							text_single = {
-								layoutpolicy_horizontal = expanding
-								text = "[SituationParticipantGroup.GetName]"
-								align = nobaseline
+								modify_texture = {
+									texture = "gfx/interface/colors/gold.dds"
+									alpha = 1
+								}
 							}
 
-							text_single = {
-								layoutpolicy_horizontal = expanding
-								text = "SITUATION_PARTICIPANT_GROUP_SUBTITLE"
-								align = nobaseline
-								default_format = "#Weak"
+							icon_round_button_base = {
+								parentanchor = center
+								size = { 100% 100% }
+								enabled = "[Not( SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self ) )]"
 							}
-						}
 
-						expand = {}
+							icon = {
+								parentanchor = center
+								size = { 36 36 }
 
-						button_standard_small = {
-							onclick = "[SituationWindowParticipantCharacterList.ToggleSelectedParticipantGroup( SituationParticipantGroup.Self )]"
-							down = "[ObjectsEqual( SituationWindowParticipantCharacterList.GetSelectedParticipantGroup.Self, SituationParticipantGroup.Self )]"
-							text = "SITUATION_PARTICIPANT_GROUP_FILTER"
+								visible = "[SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self )]"
+								texture = "[SituationParticipantGroup.GetType.GetIcon]"
+							}
+
+							icon = {
+								parentanchor = center
+								size = { 36 36 }
+
+								visible = "[Not( SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self ) )]"
+								texture = "[SituationParticipantGroup.GetType.GetIcon]"
+								alpha = "[Select_float(SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self ),'(float)1.0','(float)0.6')]"
+							}
 						}
 					}
 				}
+				expand = {}
+
+				divider_light = {
+					layoutpolicy_vertical = expanding
+				}
+
+				expand = {}
+				
+				vbox_participant_group_summary = {
+					datacontext = "[SituationParticipantCharacterList.GetSelectedParticipantGroup]"
+
+					layoutpolicy_vertical = expanding
+					layoutstretchfactor_horizontal = 50
+				}
+
+				expand = {}
 			}
 
 			vbox_character_list = {
@@ -972,6 +1004,7 @@ types Situation
 						item = {
 							widget_character_list_item_finder = {
 								size = { 630 94 }
+								blockoverride "character_relation" {}
 							}
 						}
 					}

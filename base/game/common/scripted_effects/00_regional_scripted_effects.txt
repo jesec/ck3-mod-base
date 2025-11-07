@@ -338,7 +338,15 @@ set_up_regional_mythical_creature_effect = {
 	else_if = {
 		#East Asia
 		limit = {
-			location = { geographical_region = world_tibet }
+			location = {
+				OR = {
+					geographical_region = world_tibet 
+					geographical_region = world_asia_china
+					geographical_region = world_asia_japan
+					geographical_region = world_asia_korea
+					geographical_region = world_asia_southeast
+					}
+				}
 			NOT = { exists = var:regional_mythical_creature_trinket }
 		}
 		random_list = {
@@ -358,6 +366,24 @@ set_up_regional_mythical_creature_effect = {
 				set_variable = {
 					name = regional_mythical_creature_trinket
 					value = flag:camphruch
+				}
+			}
+			50 = {
+				set_variable = {
+					name = regional_mythical_creature_trinket
+					value = flag:qilin
+				}
+			}
+			50 = {
+				set_variable = {
+					name = regional_mythical_creature_trinket
+					value = flag:tengu
+				}
+			}
+			50 = {
+				set_variable = {
+					name = regional_mythical_creature_trinket
+					value = flag:naga
 				}
 			}
 		}
@@ -486,6 +512,9 @@ select_local_farm_animal_effect = {
 				location = {
 					NOR = {
 						geographical_region = world_tibet
+						geographical_region = world_asia_china
+						geographical_region = world_asia_korea
+						geographical_region = world_asia_southeast
 						geographical_region = ghw_region_mongolia
 					}
 				}
@@ -639,6 +668,8 @@ select_scapegoat_faith_effect = {
 								geographical_region = world_europe_west_iberia
 								geographical_region = world_africa_east
 								geographical_region = world_africa_north
+								geographical_region = world_asia_china
+								geographical_region = world_asia_southeast
 							}
 						}
 						NOT = { root.faith.religion = religion:islam_religion }
@@ -664,6 +695,7 @@ select_scapegoat_faith_effect = {
 								geographical_region = world_middle_east
 								geographical_region = world_africa_east
 								geographical_region = world_africa_north
+								geographical_region = world_asia_china
 							}
 						}
 						NOT = { root.faith.religion = religion:christianity_religion }
@@ -706,6 +738,9 @@ select_scapegoat_faith_effect = {
 							OR = {
 								geographical_region = world_india
 								geographical_region = world_burma
+								geographical_region = world_asia_china
+								geographical_region = world_asia_korea
+								geographical_region = world_asia_southeast
 							}
 						}
 						NOT = { root.faith.religion = religion:jainism_religion }
@@ -722,6 +757,8 @@ select_scapegoat_faith_effect = {
 							OR = {
 								geographical_region = world_india
 								geographical_region = world_middle_east_persia
+								geographical_region = world_asia_china
+								geographical_region = world_asia_southeast
 							}
 						}
 						NOT = { root.faith.religion = religion:zoroastrianism_religion }
@@ -738,6 +775,10 @@ select_scapegoat_faith_effect = {
 							OR = {
 								geographical_region = world_tibet
 								geographical_region = world_burma # In case Burma ceases to be Buddhist
+								geographical_region = world_asia_china # for non buddhist chinese et al
+								geographical_region = world_asia_japan
+								geographical_region = world_asia_korea
+								geographical_region = world_asia_southeast
 							}
 						}
 						NOT = { root.faith.religion = religion:buddhism_religion }
@@ -752,6 +793,7 @@ select_scapegoat_faith_effect = {
 					trigger = {
 						capital_province ?= {
 							geographical_region = world_tibet
+							geographical_region = world_asia_china
 						}
 						NOT = { root.faith.religion = religion:bon_religion }
 					}

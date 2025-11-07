@@ -3,7 +3,7 @@
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:host = {
 			any_courtier_or_guest = {
@@ -15,7 +15,7 @@
 		}
 		scope:province.county.holder = {
 			any_courtier_or_guest = {
-				NOT = { this = scope:friend_1 }
+				this != scope:friend_1
 				num_of_relation_friend < 2
 				is_physically_able_ai_adult = yes
 				NOT = { has_relation_friend = scope:friend_1 }
@@ -37,7 +37,7 @@
 						any_courtier_or_guest = {
 							num_of_relation_friend < 2
 							is_physically_able_ai_adult = yes
-							NOT = { this = scope:friend_1 }
+							this != scope:friend_1
 							NOT = {
 								has_relation_friend = scope:friend_1
 							}
@@ -52,7 +52,7 @@
 				limit = {
 					num_of_relation_friend < 2
 					is_physically_able_ai_adult = yes
-					NOT = { this = scope:first }
+					this != scope:first
 					NOT = {
 						has_relation_friend = scope:first
 					}
@@ -101,7 +101,7 @@ courtiers_became_lovers = {
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:host = {
 			any_courtier_or_guest = {
@@ -114,7 +114,7 @@ courtiers_became_lovers = {
 		}
 		scope:province.county.holder = {
 			any_courtier_or_guest = {
-				NOT = { this = scope:first_lover_temp }
+				this != scope:first_lover_temp
 				might_cheat_on_every_partner_trigger = yes
 				NOT = { has_relation_lover = scope:first_lover_temp }
 				num_of_relation_lover < 2
@@ -142,7 +142,7 @@ courtiers_became_lovers = {
 					save_temporary_scope_as = first_lover_temp
 					scope:province.county.holder = {
 						any_courtier_or_guest = {
-							NOT = { this = scope:first_lover_temp }
+							this != scope:first_lover_temp
 							might_cheat_on_every_partner_trigger = yes
 							NOT = { has_relation_lover = scope:first_lover_temp }
 							num_of_relation_lover < 2
@@ -162,7 +162,7 @@ courtiers_became_lovers = {
 		scope:province.county.holder = {
 			random_courtier_or_guest = {
 				limit = {
-					NOT = { this = scope:first }
+					this != scope:first
 					might_cheat_on_every_partner_trigger = yes
 					NOT = { has_relation_lover = scope:first }
 					num_of_relation_lover < 2
@@ -218,7 +218,7 @@ courtiers_became_rivals = {
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:host = {
 			any_courtier_or_guest = {
@@ -314,7 +314,7 @@ courtiers_got_into_fight = {
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:host = {
 			any_courtier = {
@@ -469,7 +469,7 @@ courtier_improved_skill = {
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:host = {
 			any_courtier_or_guest = {
@@ -533,12 +533,12 @@ courtier_theological_debate = {
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:province.county.holder = {
 			any_courtier_or_guest = {
 				is_physically_able_ai_adult = yes
-				NOT = { faith = scope:host.faith }
+				faith != scope:host.faith
 			}
 		}
 		scope:host = {
@@ -569,7 +569,7 @@ courtier_theological_debate = {
 			random_courtier_or_guest = {
 				limit = {
 					is_physically_able_ai_adult = yes
-					NOT = { faith = scope:host.faith }
+					faith != scope:host.faith
 				}
 				save_scope_as = second
 			}
@@ -669,7 +669,7 @@ courtier_learned_language = {
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:host = {
 			any_courtier_or_guest = {
@@ -722,7 +722,7 @@ liege_local_tax = {
 	icon = money
 	is_valid = {
 		exists = scope:host.location.barony.holder
-		NOT = { scope:host.location.barony.holder = scope:host }
+		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
 		NOT = {
 			scope:host.location.barony = {
@@ -767,7 +767,7 @@ liege_local_benevolence = {
 	icon = positive
 	is_valid = {
 		exists = scope:host.location.barony.holder
-		NOT = { scope:host.location.barony.holder = scope:host }
+		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
 		NOT = { 
 			scope:host.location.county = {
@@ -818,7 +818,7 @@ liege_intimidated_courtier = {
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:activity = {
 			has_activity_option = {
@@ -861,7 +861,7 @@ liege_visited_benevolence = {
 	icon = development
 	is_valid = {
 		exists = scope:host.location.barony.holder
-		NOT = { scope:host.location.barony.holder = scope:host }
+		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
 		NOT = {
 			scope:host.location.county = {
@@ -908,7 +908,7 @@ levied_tax = {
 	is_valid = {
 		exists = scope:province.county.holder
 		scope:host.location = scope:province
-		NOT = { scope:province.county.holder = scope:host }
+		scope:province.county.holder != scope:host
 		scope:province.county.holder.top_liege = scope:host.top_liege
 		scope:activity = {
 			has_activity_option = {
@@ -997,7 +997,7 @@ local_mayor_tax = {
 	icon = money
 	is_valid = {
 		exists = scope:host.location.barony.holder
-		NOT = { scope:host.location.barony.holder = scope:host }
+		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
 		scope:host.location.barony.holder = {
 			government_has_flag = government_is_republic
@@ -1061,9 +1061,9 @@ tax_rich_local = {
 	icon = money
 	is_valid = {
 		exists = scope:host.location.barony.holder
-		NOT = { scope:host.location.barony.holder = scope:host }
+		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
-		NOT = { scope:host.location = scope:activity.activity_location }
+		scope:host.location != scope:activity.activity_location
 		any_pool_character = {
 			province = scope:host.location
 			gold >= 5
@@ -1144,7 +1144,7 @@ church_tax = {
 	icon = money
 	is_valid = {
 		exists = scope:host.location.barony.holder
-		NOT = { scope:host.location.barony.holder = scope:host }
+		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
 		scope:host.location.county.holder = {
 			any_courtier_or_guest = {
@@ -1226,7 +1226,7 @@ increased_control = {
 	icon = control
 	is_valid = {
 		exists = scope:host.location.barony.holder
-		NOT = { scope:host.location.barony.holder = scope:host }
+		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
 		scope:host.location.county = {
 			county_control < 100
@@ -1268,7 +1268,7 @@ local_baron_tax = {
 	icon = money
 	is_valid = {
 		exists = scope:host.location.barony.holder
-		NOT = { scope:host.location.barony.holder = scope:host }
+		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
 		scope:host.location.barony.holder = {
 			NOT = {

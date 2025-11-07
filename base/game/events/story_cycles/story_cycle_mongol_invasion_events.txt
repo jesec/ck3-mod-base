@@ -87,7 +87,7 @@ mongol_invasion.1001 = {
 
 	trigger = {
 		in_diplomatic_range = scope:new_khan
-		NOT = { root = scope:new_khan }
+		root != scope:new_khan
 	}
 
 	immediate = {
@@ -121,9 +121,7 @@ mongol_invasion.1001 = {
 	option = {
 		name = mongol_invasion.1001.c # Good riddance
 		trigger = {
-			NOT = {
-				scope:old_khan.faith.religion = root.faith.religion
-			}
+			scope:old_khan.faith.religion != root.faith.religion
 		}
 	}
 }
@@ -142,7 +140,7 @@ mongol_invasion.1002 = {
 							OR = {
 								geographical_region = special_mongol_empire_start_region
 								geographical_region = special_mongol_empire_conquest_region_prio_1
-								geographical_region = special_mongol_empire_conquest_region_prio_2
+								geographical_region = special_mongol_empire_conquest_region_prio_1_alpha
 							}
 						}
 						NOT = {
@@ -346,7 +344,7 @@ mongol_invasion.1005 = {
 
 	trigger = {
 		in_diplomatic_range = scope:new_khan
-		NOT = { root = scope:new_khan }
+		root != scope:new_khan
 	}
 
 	option = {
@@ -374,7 +372,7 @@ mongol_invasion.2001 = {
 
 	trigger = {
 		NOT = { is_at_war_with = scope:mongol_emperor }
-		NOT = { root = scope:mongol_emperor }
+		root != scope:mongol_emperor
 	}
 
 	immediate = {
@@ -558,7 +556,7 @@ mongol_invasion.2101 = {
 	}
 
 	trigger = {
-		NOT = { root = scope:mongol_emperor }
+		root != scope:mongol_emperor
 	}
 
 	immediate = {
@@ -728,7 +726,7 @@ mongol_invasion.2111 = {
 	}
 
 	trigger = {
-		NOT = { root = scope:mongol_emperor }
+		root != scope:mongol_emperor
 	}
 
 	immediate = {
@@ -785,9 +783,6 @@ mongol_invasion.3000 = {
 					AND = {
 						highest_held_title_tier < tier_empire
 						primary_title.empire.holder = scope:mongolia_ruler
-					}
-					any_neighboring_and_across_water_top_liege_realm_owner = {
-						this = scope:mongolia_ruler
 					}
 					any_land_neighboring_realm_with_tributaries_owner = {
 						this = scope:mongolia_ruler
@@ -933,15 +928,35 @@ mongol_invasion.9999 = {
 	immediate = {
 		
 	# Final cleanup
+		#In the weird case where there is a Mongol Empire holder who has none of the successor khanates, transfers all of their lands to Mongolia
 		if = {
 			limit = {
 				exists = title:e_mongol_empire.holder
+				title:e_mongol_empire.holder = {
+					NOT = {
+						any_held_title = {
+							OR = {
+								this = title:e_ilkhanate
+								this = title:e_golden_horde
+								this = title:e_chagatai
+								this = title:e_red_horde
+								this = title:e_white_horde
+								this = title:e_aarlud_khanate
+								this = title:e_togskol_khanate
+								this = title:e_baruun_khanate
+								this = title:e_great_yuan
+								this = title:e_blue_horde
+								this = title:e_omnod_dalai_khanate
+							}
+						}
+					}
+				}
 			}
 			title:e_mongol_empire.holder = {
 				if = {
 					limit = {
 						any_held_title = {
-							tier = tier_county
+							title_tier = county
 						}
 					}
 					create_title_and_vassal_change = {
@@ -956,9 +971,7 @@ mongol_invasion.9999 = {
 						}
 					}
 					every_held_title = {
-						limit = {
-							tier = tier_county
-						}
+						title_tier = county
 						add_to_list = mongol_final_cleanup
 					}
 					every_in_list = {
@@ -975,25 +988,66 @@ mongol_invasion.9999 = {
 		}
 		if = {
 			limit = {
-				any_held_title = {
-					this = title:e_mongolia
+				title:e_mongol_empire = {
+					any_direct_de_jure_vassal_title = {
+						count >= 1
+						tier = tier_kingdom
+					}
 				}
-				any_held_title = {
-					this = title:e_mongol_empire
+			}
+			title:e_mongol_empire = {
+				every_in_de_jure_hierarchy = {
+					continue = {
+						tier > tier_kingdom
+					}
+					limit = {
+						tier = tier_kingdom
+					}
+					set_de_jure_liege_title = title:e_mongolia
 				}
 			}
 		}
-		title:e_mongol_empire = {
-			every_in_de_jure_hierarchy = {
-				continue = {
-					tier > tier_kingdom
+		if = {
+			limit = {
+				exists = title:e_mongol_empire.holder
+			}
+			destroy_title = title:e_mongol_empire
+		}
+	}
+}
+
+#Change illegal governments on a slight delay during breakup
+mongol_invasion.3100 = {
+	hidden = yes
+	trigger = {
+		OR = {
+			government_has_flag = government_is_theocracy
+			government_has_flag = government_is_herder
+			government_has_flag = government_is_republic
+		}
+	}
+	immediate = {
+		if = {
+			limit = {
+				has_mpo_dlc_trigger = yes
+			}
+			change_government = nomad_government
+			domicile = {
+				change_herd = {
+					value = 8000
 				}
-				limit = {
-					tier = tier_kingdom
-				}
-				set_de_jure_liege_title = title:e_mongolia
 			}
 		}
-		destroy_title = title:e_mongol_empire
+		else = {
+			change_government = tribal_government
+		}
+	}
+}
+
+#After Mongol breakup, just give any remaining exclaves of Mongolia independence
+mongol_invasion.3200 = {
+	hidden = yes
+	immediate = {
+		mongol_breakup_purge_mongolia_exclaves_effect = yes
 	}
 }

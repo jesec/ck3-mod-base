@@ -49,7 +49,7 @@
 
 			blockoverride "header_text"
 			{
-				text = "[HiredTroop.GetName]"
+				text = "[HiredTroopItem.GetName]"
 			}
 
 			blockoverride "button_close"
@@ -69,12 +69,12 @@
 				spacing = 5
 
 				coa_realm_medium = {
-					datacontext = "[HiredTroop.GetTitle.GetHolder]"
-					visible = "[Not( HiredTroop.IsAdministrativeArmy )]"
+					datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
+					visible = "[Not( HiredTroopItem.IsAdministrativeArmy )]"
 				}
 				coa_title_medium_crown = {
-					datacontext = "[HiredTroop.GetTitle]"
-					visible = "[HiredTroop.IsAdministrativeArmy]"
+					datacontext = "[HiredTroopItem.GetTitle]"
+					visible = "[HiredTroopItem.IsAdministrativeArmy]"
 					scale = 0.9
 				}
 
@@ -139,31 +139,6 @@
 									using = Font_Size_Big
 									align = nobaseline
 								}
-
-								#hbox = {
-								#	visible = "[GreaterThan_int32( HiredTroop.GetKnightCount, '(int32)0' )]"
-								#	spacing = 5
-								#
-								#	icon = {
-								#		texture = "gfx/interface/icons/icon_knight_small.dds"
-								#		size = { 30 30 }
-								#	}
-								#
-								#	text_single = {
-								#		name = "knights_count"
-								#		layoutpolicy_horizontal = expanding
-								#		layoutpolicy_vertical = expanding
-								#
-								#		text = "HIRED_TROOPS_VIEW_LIST_NUMBER_OF_KNIGHTS"
-								#		align = nobaseline
-								#		default_format = "#high"
-								#		fontsize_min = 14
-								#		max_width = 95
-								#		using = Font_Size_Big
-								#
-								#		tooltip = "[HiredTroop.GetKnightsTooltip]"
-								#	}
-								#}
 							}
 
 							hbox = {
@@ -172,7 +147,7 @@
 								progressbar_standard = {
 									name = "strength_bar"
 									size = { 380 15 }
-									value = "[HiredTroop.GetSoldiersProgressBarRatio]"
+									value = "[HiredTroopItem.GetSoldiersProgressBarRatio]"
 								}
 							}
 						}
@@ -186,17 +161,17 @@
 					layoutpolicy_horizontal = expanding
 
 					vbox = {
-						visible = "[LessThanOrEqualTo_int32(GetDataModelSize(HiredTroop.GetRegiments), '(int32)4')]"
+						visible = "[LessThanOrEqualTo_int32(GetDataModelSize(HiredTroopItem.GetRegiments), '(int32)4')]"
 						margin = { 15 0 }
 						margin_top = 10
 						layoutpolicy_horizontal = expanding
 
 						fixedgridbox = {
 							name = "regiments"
-							visible = "[LessThanOrEqualTo_int32(GetDataModelSize(HiredTroop.GetRegiments), '(int32)4')]"
+							visible = "[LessThanOrEqualTo_int32(GetDataModelSize(HiredTroopItem.GetRegiments), '(int32)4')]"
 							addcolumn = 190
 							addrow = 110
-							datamodel = "[HiredTroop.GetRegiments]"
+							datamodel = "[HiredTroopItem.GetRegiments]"
 							flipdirection = yes
 							datamodel_wrap = 2
 
@@ -227,7 +202,7 @@
 										name = "image"
 										visible = "[Not(HiredTroopRegiment.IsLevies)]"
 
-										texture = "[HiredTroopRegiment.GetMenAtArmsType.GetHorizontalImage]"
+										texture = "[HiredTroopRegiment.GetMenAtArmsType.GetHorizontalImageForCulture( HiredTroopRegiment.GetRegiment.GetOwner.GetCulture )]"
 										alpha = 0.7
 										using = Mask_Rough_Edges
 										margin = { -2 -2 }
@@ -294,7 +269,7 @@
 
 					#### REGIMENTS ####
 					scrollbox = {
-						visible = "[GreaterThan_int32(GetDataModelSize(HiredTroop.GetRegiments), '(int32)4')]"
+						visible = "[GreaterThan_int32(GetDataModelSize(HiredTroopItem.GetRegiments), '(int32)4')]"
 						layoutpolicy_horizontal = expanding
 						maximumsize = { -1 300 }
 						autoresizescrollarea = yes
@@ -317,7 +292,7 @@
 									name = "regiments"
 									addcolumn = 190
 									addrow = 110
-									datamodel = "[HiredTroop.GetRegiments]"
+									datamodel = "[HiredTroopItem.GetRegiments]"
 									flipdirection = yes
 									datamodel_wrap = 2
 
@@ -346,7 +321,7 @@
 											background = {
 												name = "image"
 												visible = "[Not(HiredTroopRegiment.IsLevies)]"
-												texture = "[HiredTroopRegiment.GetMenAtArmsType.GetHorizontalImage]"
+												texture = "[HiredTroopRegiment.GetMenAtArmsType.GetHorizontalImageForCulture( HiredTroopRegiment.GetRegiment.GetOwner.GetCulture )]"
 												margin = { -2 -2 }
 
 												using = Mask_Rough_Edges
@@ -421,7 +396,7 @@
 
 					text_label_left = {
 						name = "leader_label_ho"
-						visible = "[HiredTroop.IsHolyOrder]"
+						visible = "[HiredTroopItem.IsHolyOrder]"
 						layoutpolicy_horizontal = expanding
 						text = "HIRED_TROOPS_VIEW_HO_GRANDMASTER_LABEL"
 						default_format = "#low"
@@ -429,7 +404,7 @@
 
 					text_label_left = {
 						name = "leader_label_ma"
-						visible = "[HiredTroop.IsMercenaryCompany]"
+						visible = "[HiredTroopItem.IsMercenaryCompany]"
 						layoutpolicy_horizontal = expanding
 						text = "HIRED_TROOPS_VIEW_MC_CAPTAIN_LABEL"
 						default_format = "#low"
@@ -437,7 +412,7 @@
 
 					text_label_left = {
 						name = "leader_label_aa"
-						visible = "[HiredTroop.IsAdministrativeArmy]"
+						visible = "[HiredTroopItem.IsAdministrativeArmy]"
 						layoutpolicy_horizontal = expanding
 						text = "HIRED_TROOPS_VIEW_AA_GOVERNOR_LABEL"
 						default_format = "#low"
@@ -448,7 +423,7 @@
 						spacing = 5
 
 						portrait_head_small = {
-							datacontext = "[HiredTroop.GetTitle.GetHolder]"
+							datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
 						}
 
 						vbox = {
@@ -460,14 +435,14 @@
 								layoutpolicy_horizontal = expanding
 								autoresize = yes
 								max_width = 294
-								text = "[HiredTroop.GetTitle.GetHolder.GetUIName]"
+								text = "[HiredTroopItem.GetTitle.GetHolder.GetUIName]"
 								default_format = "#high"
 							}
 
 							hbox = {
 								name = "governor_skills"
-								visible = "[HiredTroop.IsAdministrativeArmy]"
-								datacontext = "[HiredTroop.GetTitle.GetHolder]"
+								visible = "[HiredTroopItem.IsAdministrativeArmy]"
+								datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
 								layoutpolicy_horizontal = expanding
 								spacing = 5
 
@@ -482,20 +457,20 @@
 
 							hbox = {
 								name = "commander_leader_skills"
-								visible = "[Or( Or( HiredTroop.IsHolyOrder, HiredTroop.IsMercenaryCompany ), HiredTroop.IsHireableRuler )]"
+								visible = "[Or( Or( HiredTroopItem.IsHolyOrder, HiredTroopItem.IsMercenaryCompany ), HiredTroopItem.IsHireableRuler )]"
 								layoutpolicy_horizontal = expanding
 								spacing = 5
 								margin_top = 5
 
 								skill_icon_label = {
 									name = "martial_skill"
-									datacontext = "[HiredTroop.GetMartialSkillItem]"
+									datacontext = "[HiredTroopItem.GetMartialSkillItem]"
 								}
 
 								hbox = {
 									name = "commander_traits"
-									datacontext = "[HiredTroop.GetTitle.GetHolder]"
-									datamodel = "[HiredTroop.GetCommanderTraits]"
+									datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
+									datamodel = "[HiredTroopItem.GetCommanderTraits]"
 
 									item = {
 										icon_trait = {
@@ -535,23 +510,23 @@
 
 				vbox = {
 					name = "hire_area"
-					visible = "[Not(HiredTroop.IsHiredByPlayer)]"
+					visible = "[Not( HiredTroopItem.IsHiredByPlayer )]"
 					spacing = 5
 
 					text_single = {
 						name = "mercenary_hire_info"
-						visible = "[HiredTroop.IsMercenaryCompany]"
+						visible = "[HiredTroopItem.IsMercenaryCompany]"
 						text = "HIRED_TROOPS_VIEW_MC_HIRE_INFO"
 					}
 
 					text_single = {
-						visible = "[HiredTroop.IsHolyOrder]"
+						visible = "[HiredTroopItem.IsHolyOrder]"
 						name = "holy_order_hire_info"
 						text = "HIRED_TROOPS_VIEW_HO_HIRE_INFO"
 					}
 
 					text_multi = {
-						visible = "[And( HiredTroop.IsHired, HiredTroop.GetHolyOrder.IsPlayerPatron )]"
+						visible = "[And( HiredTroopItem.IsHired, HiredTroopItem.GetHolyOrder.IsPlayerPatron )]"
 						text = "HIRED_TROOPS_HIRED_BY"
 						autoresize = yes
 						max_width = 280
@@ -559,15 +534,15 @@
 
 					text_single = {
 						name = "hireable_ruler_hire_info"
-						visible = "[HiredTroop.IsHireableRuler]"
+						visible = "[HiredTroopItem.IsHireableRuler]"
 						text = "HIRED_TROOPS_VIEW_HR_COST_INFO"
 					}
 
 					text_single = {
 						name = "admin_cost_area"
-						visible = "[And(HiredTroop.IsAdministrativeArmy, And(GetPlayer.IsIndependentRuler, Not(HiredTroop.IsHiredByPlayer)))]"
+						visible = "[And( HiredTroopItem.IsAdministrativeArmy, And( GetPlayer.IsIndependentRuler, Not( HiredTroopItem.IsHiredByPlayer ) ) )]"
 						text = "HIRED_TROOPS_REASSIGN_COST"
-						tooltip = "[HiredTroop.GetAdminReassignCostTooltip]"
+						tooltip = "[HiredTroopItem.GetAdminReassignCostTooltip]"
 					}
 
 					hbox = {
@@ -575,30 +550,30 @@
 
 						button_primary = {
 							name = "hire_button_non_interaction"
-							visible = "[Not( Or( HiredTroop.IsHireableRuler, HiredTroop.IsAdministrativeArmy ) )]"
-							onclick = "[HiredTroop.Hire]"
-							enabled = "[HiredTroop.CanBeHired]"
+							visible = "[Not( Or( HiredTroopItem.IsHireableRuler, HiredTroopItem.IsAdministrativeArmy ) )]"
+							onclick = "[HiredTroopItem.Hire]"
+							enabled = "[HiredTroopItem.CanBeHired]"
 							text = "HIRED_TROOPS_VIEW_HIRE"
 
 							using = tooltip_ne
-							tooltip = "[HiredTroop.GetHireTooltip]"
+							tooltip = "[HiredTroopItem.GetHireTooltip]"
 						}
 
 						button_primary = {
 							name = "hire_button_non_interaction_admin"
-							visible = "[And(HiredTroop.IsAdministrativeArmy, GetPlayer.IsIndependentRuler)]"
-							onclick = "[HiredTroop.Hire]"
-							enabled = "[HiredTroop.CanBeHired]"
+							visible = "[And(HiredTroopItem.IsAdministrativeArmy, GetPlayer.IsIndependentRuler)]"
+							onclick = "[HiredTroopItem.Hire]"
+							enabled = "[HiredTroopItem.CanBeHired]"
 							text = "HIRED_TROOPS_REQUEST_AS_EMPEROR"
-						
+
 							using = tooltip_ne
-							tooltip = "[HiredTroop.GetHireTooltip]"
+							tooltip = "[HiredTroopItem.GetHireTooltip]"
 						}
 
 						button_primary = {
 							name = "hire_button_interaction"
-							visible = "[HiredTroop.IsHireableRuler]"
-							datacontext = "[HiredTroop.GetHireableRuler]"
+							visible = "[HiredTroopItem.IsHireableRuler]"
+							datacontext = "[HiredTroopItem.GetHireableRuler]"
 
 							onclick = "[Character.OpenPlayerInteraction( 'hire_laamp_mercenaries_interaction' )]"
 							enabled = "[Character.IsPlayerInteractionValid( 'hire_laamp_mercenaries_interaction' )]"
@@ -610,24 +585,24 @@
 
 						button_standard = {
 							name = "reassign_button"
-							visible = "[HiredTroop.CanBeReassigned]"
+							visible = "[HiredTroopItem.CanBeReassigned]"
 							onclick = "[HiredTroopDetailView.OpenTitleTroopAssignmentView]"
-							enabled = "[HiredTroop.CanBeHired]"
-							tooltip = "[HiredTroop.GetHireTooltip]"
+							enabled = "[HiredTroopItem.CanBeHired]"
+							tooltip = "[HiredTroopItem.GetHireTooltip]"
 
 							text = "HIRED_TROOPS_VIEW_REASSIGN"
 						}
 
 						hbox = {
-							visible = "[HiredTroop.IsAdministrativeArmy]"
-							datacontext = "[HiredTroop.GetTitle.GetHolder]"
+							visible = "[HiredTroopItem.IsAdministrativeArmy]"
+							datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
 							spacing = 8
 
 							button_standard = {
 								name = "request_admin_troops_from_emperor"
 								visible = "[And( Not(Character.IsPlayer), Character.IsPlayerInteractionShown('request_emperor_title_troops_interaction') )]"
 								enabled = "[Character.IsPlayerInteractionValid('request_emperor_title_troops_interaction')]"
-								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_emperor_title_troops_interaction', HiredTroop.GetTitle)]"
+								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_emperor_title_troops_interaction', HiredTroopItem.GetTitle)]"
 								tooltip = "[Character.GetPlayerInteractionTooltip('request_emperor_title_troops_interaction')]"
 
 								text = "HIRED_TROOPS_REQUEST_FROM_EMPEROR"
@@ -638,7 +613,7 @@
 								name = "hire_peer_admin_vassal"
 								visible = "[Character.IsPlayerInteractionShown('request_ally_title_troops_interaction')]"
 								enabled = "[Character.IsPlayerInteractionValid('request_ally_title_troops_interaction')]"
-								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_ally_title_troops_interaction', HiredTroop.GetTitle)]"
+								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_ally_title_troops_interaction', HiredTroopItem.GetTitle)]"
 								tooltip = "[Character.GetPlayerInteractionTooltip('request_ally_title_troops_interaction')]"
 
 								text = "HIRED_TROOPS_REQUEST_FROM_GOVERNOR"
@@ -649,13 +624,13 @@
 				}
 
 				vbox = {
-					visible = "[And(HiredTroop.IsAdministrativeArmy, HiredTroop.IsHiredByPlayer)]"
+					visible = "[And( HiredTroopItem.IsAdministrativeArmy, HiredTroopItem.IsHiredByPlayer )]"
 					margin_top = 10
 
 					button_primary = {
 						name = "return_button"
-						visible = "[HiredTroop.GetTitle.CanReturnTitleMaaToOwner]"
-						onclick = "[HiredTroop.GetTitle.ReturnTitleMaaToOwner]"
+						visible = "[HiredTroopItem.GetTitle.CanReturnTitleMaaToOwner]"
+						onclick = "[HiredTroopItem.GetTitle.ReturnTitleMaaToOwner]"
 
 						text = "HIRED_TROOPS_VIEW_RETURN"
 					}
@@ -664,10 +639,10 @@
 				button_primary = {
 					name = "take_back_button"
 					visible = "[Character.IsPlayerInteractionShown('request_title_troops_back_interaction')]"
-					datacontext = "[HiredTroop.GetTitle.GetHolder]"
-					
+					datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
+
 					enabled = "[Character.IsPlayerInteractionValid('request_title_troops_back_interaction')]"
-					onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_title_troops_back_interaction', HiredTroop.GetTitle)]"
+					onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_title_troops_back_interaction', HiredTroopItem.GetTitle)]"
 					tooltip = "[Character.GetPlayerInteractionTooltip('request_title_troops_back_interaction')]"
 
 					text = "HIRED_TROOPS_VIEW_RECLAIM"
@@ -675,12 +650,12 @@
 
 				vbox = {
 					name = "extend_area"
-					visible = "[And(HiredTroop.IsMercenaryCompany, HiredTroop.IsHiredByPlayer)]"
+					visible = "[And( HiredTroopItem.IsMercenaryCompany, HiredTroopItem.IsHiredByPlayer )]"
 					spacing = 5
 
 					text_single = {
 						name = "time_left"
-						datacontext = "[HiredTroop.GetMercenaryCompany]"
+						datacontext = "[HiredTroopItem.GetMercenaryCompany]"
 						text = "HIRED_TROOPS_VIEW_HIRED_BY_ME"
 						default_format = "#weak"
 					}
@@ -695,7 +670,7 @@
 						spacing = 5
 
 						button_primary = {
-							datacontext = "[HiredTroop.GetMercenaryCompany]"
+							datacontext = "[HiredTroopItem.GetMercenaryCompany]"
 							tooltip = "RAISE_HIRED_TROOP"
 							onclick = "[RaiseMercenaryCompany(MercenaryCompany.Self)]"
 							text = "RAISE_HIRED_TROOP"
@@ -704,12 +679,12 @@
 
 						button_standard = {
 							name = "extend_button"
-							onclick = "[HiredTroop.Extend]"
-							enabled = "[HiredTroop.CanBeExtended]"
+							onclick = "[HiredTroopItem.Extend]"
+							enabled = "[HiredTroopItem.CanBeExtended]"
 							text = "HIRED_TROOPS_VIEW_MC_EXTEND"
 
 							using = tooltip_ne
-							tooltip = "[HiredTroop.GetExtendTooltip]"
+							tooltip = "[HiredTroopItem.GetExtendTooltip]"
 						}
 					}
 				}
@@ -723,7 +698,7 @@ types HiredTroopHolyOrderDetails
 {
 	type vbox_holy_order_troop_header_details = vbox
 	{
-		visible = "[HiredTroop.IsHolyOrder]"
+		visible = "[HiredTroopItem.IsHolyOrder]"
 		layoutpolicy_horizontal = expanding
 
 		text_single = {
@@ -749,7 +724,7 @@ types HiredTroopMercenaryCompanyDetails
 {
 	type vbox_mercenary_company_header_details = vbox
 	{
-		visible = "[HiredTroop.IsMercenaryCompany]"
+		visible = "[HiredTroopItem.IsMercenaryCompany]"
 		layoutpolicy_horizontal = expanding
 
 		text_single = {
@@ -772,7 +747,7 @@ types HiredTroopAdministrativeArmyDetails
 {
 	type vbox_administrative_army_header_details = vbox
 	{
-		visible = "[HiredTroop.IsAdministrativeArmy]"
+		visible = "[HiredTroopItem.IsAdministrativeArmy]"
 		layoutpolicy_horizontal = expanding
 
 		text_single = {
@@ -788,7 +763,7 @@ types HiredTroopAdministrativeArmyDetails
 			name = province_army_status
 			layoutpolicy_horizontal = expanding
 
-			datacontext = "[HiredTroop.GetAdministrativeTitle]"
+			datacontext = "[HiredTroopItem.GetAdministrativeTitle]"
 			text = "TITLE_TROOPS_MAPMODE_TOOLTIP_STATUS"
 			default_format = "#low"
 			autoresize = yes
@@ -801,7 +776,7 @@ types HiredTroopHireableRulerDetails
 {
 	type vbox_hireable_ruler_header_details = vbox
 	{
-		visible = "[HiredTroop.IsHireableRuler]"
+		visible = "[HiredTroopItem.IsHireableRuler]"
 		layoutpolicy_horizontal = expanding
 
 		text_single = {

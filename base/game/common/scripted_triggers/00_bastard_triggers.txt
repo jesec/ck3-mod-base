@@ -62,7 +62,7 @@ secret_unmarried_illegitimate_child_is_valid_trigger = {
 				exists = father
 				exists = scope:temp_child.real_father
 			}
-			NOT = { father = scope:temp_child.real_father }
+			father != scope:temp_child.real_father
 		}
 	}
 }
@@ -73,11 +73,21 @@ secret_disputed_heritage_is_valid_trigger = {
 		exists = real_father
 		exists = father
 		exists = mother
-		NOT = { real_father = father }
+		real_father != father
 		NOR = {
 			has_trait = bastard
 			has_trait = wild_oat
 			has_trait = legitimized_bastard
+			real_father = { 
+				government_has_flag = government_is_mandala
+				house ?= { has_house_power_parameter = aspect_of_creation }
+				is_house_head = yes
+			}
+			mother = { 
+				government_has_flag = government_is_mandala
+				house ?= { has_house_power_parameter = aspect_of_creation }
+				is_house_head = yes
+			}
 		}
 	}
 }
@@ -86,20 +96,26 @@ bastard_secret_is_criminal = {
 	$TARGET$ = { save_temporary_scope_as = criminal_bastard }
 	$PARTICIPANT$ = { save_temporary_scope_as = criminal_participant }
 	OR = {
-		#Mother if female adultery is criminal
+		#Adultery of parent is criminal
 		scope:criminal_participant = {
-			scope:criminal_bastard = { mother = scope:criminal_participant }
-			OR = {
-				faith = { has_doctrine_parameter = adultery_female_crime }
-				any_liege_or_above = { faith = { has_doctrine_parameter = adultery_female_crime } }
+			NAND = { 
+				government_has_flag = government_is_mandala
+				house ?= { has_house_power_parameter = aspect_of_creation }
+				is_house_head = yes
 			}
-		}
-		#Real father is male adultery is criminal
-		scope:criminal_participant = {
-			scope:criminal_bastard = { real_father = scope:criminal_participant }
 			OR = {
-				faith = { has_doctrine_parameter = adultery_male_crime }
-				any_liege_or_above = { faith = { has_doctrine_parameter = adultery_male_crime } }
+				trait_is_criminal_in_faith_trigger = {
+					FAITH = faith
+					TRAIT = adulterer
+					GENDER_CHARACTER = scope:criminal_participant
+				}
+				any_liege_or_above = {
+					trait_is_criminal_in_faith_trigger = {
+						FAITH = faith
+						TRAIT = adulterer
+						GENDER_CHARACTER = scope:criminal_participant
+					}
+				}
 			}
 		}
 	}
@@ -107,7 +123,6 @@ bastard_secret_is_criminal = {
 
 
 bastard_secret_is_shunned = {
-	# FOR DEBUG PURPOSES -- REMOVE ONCE RESOLVED TODO_CD
 	assert_if = {
 		limit = { NOT = { exists = $TARGET$ } }
 		text = "Empty TARGET was passed to bastard_secret_is_shunned!"
@@ -141,22 +156,21 @@ bastard_secret_is_shunned = {
 	OR = {
 		#Bastard child: always shunned, never criminal
 		scope:participant = scope:bastard
-		#Mother if female adultery is shunned
+		#Adultery is shunned
 		scope:participant = {
-			exists = scope:bastard.mother
-			this = scope:bastard.mother
 			OR = {
-				faith = { has_doctrine_parameter = adultery_female_shunned }
-				any_liege_or_above = { faith = { has_doctrine_parameter = adultery_female_shunned } }
-			}
-		}
-		#Real father is male adultery is shunned
-		scope:participant = {
-			exists = scope:bastard.real_father
-			this = scope:bastard.real_father
-			OR = {
-				faith = { has_doctrine_parameter = adultery_male_shunned }
-				any_liege_or_above = { faith = { has_doctrine_parameter = adultery_male_shunned } }
+				trait_is_shunned_in_faith_trigger = {
+					FAITH = faith
+					TRAIT = adulterer
+					GENDER_CHARACTER = scope:participant
+				}
+				any_liege_or_above = {
+					trait_is_shunned_in_faith_trigger = {
+						FAITH = faith
+						TRAIT = adulterer
+						GENDER_CHARACTER = scope:participant
+					}
+				}
 			}
 		}
 		#Either parent if incest is shunned

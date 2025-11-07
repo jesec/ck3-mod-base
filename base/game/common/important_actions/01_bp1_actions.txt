@@ -6,12 +6,14 @@
 	check_create_action = {
 		if = {
 			limit = {
-				house.house_head = {
-					any_owned_story = {
-						story_type = story_cycle_house_feud
-						has_variable = house_feud_house
-						exists = var:house_feud_house.house_head
-						var:house_feud_house.house_head = { save_temporary_scope_as = house_feud_rival_temp }
+				house = {
+					save_temporary_scope_as = my_house_temp
+					any_house_relation = {
+						has_house_relation_level = feud
+						any_relation_house = {
+							NOT = { this = scope:my_house_temp }
+							house_head ?= { save_temporary_scope_as = house_feud_rival_temp }
+						}
 					}
 				}
 			}
@@ -19,16 +21,6 @@
 				important_action_type = action_ongoing_house_feud
 				actor = root
 				recipient = scope:house_feud_rival_temp
-			}
-		}
-	}
-
-	unimportant = {
-		house.house_head = {
-			any_owned_story = {
-				story_type = story_cycle_house_feud
-				has_variable = house_feud_house
-				house_feud_balance_value < -0.5
 			}
 		}
 	}

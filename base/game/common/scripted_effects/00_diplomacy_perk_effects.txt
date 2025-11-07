@@ -28,37 +28,74 @@ sound_foundations_skill_gain_effect = {
 				count > scope:affected_parent.var:current_sound_foundations_value
 			}
 		}
-		random_list = {
-			1 = {
-				add_character_modifier = {
-					modifier = sound_foundations_martial_gain
+		if = {
+			limit = { government_has_flag = government_is_mandala }
+			random_list = {
+				1 = {
+					add_character_modifier = {
+						modifier = mandala_sound_foundations_martial_gain
+					}
+				}
+				1 = {
+					add_character_modifier = {
+						modifier = mandala_sound_foundations_diplomacy_gain
+					}
+				}
+				1 = {
+					add_character_modifier = {
+						modifier = mandala_sound_foundations_intrigue_gain
+					}
+				}
+				1 = {
+					add_character_modifier = {
+						modifier = mandala_sound_foundations_stewardship_gain
+					}
+				}
+				1 = {
+					add_character_modifier = {
+						modifier = mandala_sound_foundations_learning_gain
+					}
 				}
 			}
-			1 = {
-				add_character_modifier = {
-					modifier = sound_foundations_diplomacy_gain
-				}
-			}
-			1 = {
-				add_character_modifier = {
-					modifier = sound_foundations_intrigue_gain
-				}
-			}
-			1 = {
-				add_character_modifier = {
-					modifier = sound_foundations_stewardship_gain
-				}
-			}
-			1 = {
-				add_character_modifier = {
-					modifier = sound_foundations_learning_gain
-				}
+			change_variable = {
+				name = current_sound_foundations_value
+				add = 1
 			}
 		}
-		change_variable = {
-			name = current_sound_foundations_value
-			add = 1
+		else = {
+			random_list = {
+				1 = {
+					add_character_modifier = {
+						modifier = sound_foundations_martial_gain
+					}
+				}
+				1 = {
+					add_character_modifier = {
+						modifier = sound_foundations_diplomacy_gain
+					}
+				}
+				1 = {
+					add_character_modifier = {
+						modifier = sound_foundations_intrigue_gain
+					}
+				}
+				1 = {
+					add_character_modifier = {
+						modifier = sound_foundations_stewardship_gain
+					}
+				}
+				1 = {
+					add_character_modifier = {
+						modifier = sound_foundations_learning_gain
+					}
+				}
+			}
+			change_variable = {
+				name = current_sound_foundations_value
+				add = 1
+			}
 		}
+		
 	}
 }
 

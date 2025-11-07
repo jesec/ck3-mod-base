@@ -74,7 +74,7 @@ murder_ongoing.3010 = {
 						has_trait = wrathful
 					}
 					any_scheme_agent_character = { #A courtier of target that likes them well enough
-						NOT = { this = scope:agent_in_question }
+						this != scope:agent_in_question
 						is_courtier_of = scope:target
 						reverse_opinion = {
 							target = scope:target
@@ -84,7 +84,7 @@ murder_ongoing.3010 = {
 				}
 				random_scheme_agent_character = {
 					limit = {
-						NOT = { this = scope:agent_in_question }
+						this != scope:agent_in_question
 						is_courtier_of = scope:target
 						reverse_opinion = {
 							target = scope:target
@@ -197,8 +197,8 @@ murder_ongoing.3010 = {
 				target = scope:target
 			}
 			random_secret = {
+				type = secret_murder_attempt
 				limit = {
-					secret_type = secret_murder_attempt
 					secret_target = scope:target
 				}
 				expose_secret = scope:target

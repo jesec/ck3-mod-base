@@ -1,14 +1,14 @@
 ﻿l_german:
  #Decision Menu Localization
  petition_liege_decision: "Petition an [ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip]"
- petition_liege_decision_desc: "Ich kann eine Petition an meinen Lehnsherrn richten, damit er mir hilft, die Herausforderungen zu bewältigen, vor denen ich stehe. Ehrlichen Bitten, die zum Wohl des Reichs beitragen, wird öfter stattgegeben."
+ petition_liege_decision_desc: "Ich kann eine Petition an meinen [Concept('liege', 'Lehnsherrn')|E] richten, damit er mir hilft, die Herausforderungen zu bewältigen, vor denen ich stehe. Ehrlichen Bitten, die zum Wohl des Reichs beitragen, wird öfter stattgegeben."
  petition_liege_decision_tooltip: "Euren [Concept('liege', 'Lehnsherrn')|E] um [Concept('petition_liege', 'Hilfe')|E] bitten"
- petition_liege_decision_effects: "Ihr reist an den Hof von [THIS.Char.GetLiege.GetTitledFirstName], um Eure Petition zu überbringen"
+ petition_liege_decision_effects: "Ihr [Concept('travel', 'reist')|E] an den Hof von [THIS.Char.GetLiege.GetShortUIName], um Eure [petition_liege|E] zu überbringen"
  petition_liege_decision_confirm: "$petition_liege_decision$"
  petition_liege_decision_second_tooltip: "$DESC$\n$petition_liege_grace_tt$"
  petition_liege_grace_tt: "#weak Petition an den Lehnsherrn wird 5 Jahre nicht verfügbar sein#!"
  CHOOSE_PETITION_DECISION_NEXT_STEP_BUTTON: "Art der Petition auswählen"
- petition_liege_warning_effect: "#weak Persönlichkeit des [Concept('liege', 'Lehnsherrn')|E], [Concept('opinion', 'Meinung')|E] und Art der [Concept('petition_liege', 'Petition')|E] wirken sich auf die Annahmewahrscheinlichkeit aus#!"
+ petition_liege_warning_effect: "#weak Persönlichkeit, [opinion|E] und Art der [Concept('petition_liege', 'Lehnsherrnpetition')|E] wirken sich auf die Annahmewahrscheinlichkeit aus#!"
  #Council
  petition_liege_decision_option_council_seat: "Ratsposten\n#low Gewährt einen Sitz im [council|E]#!"
  petition_liege_council_seat_desc: "[ROOT.Char.GetLiege.GetTitledFirstName] darum ersuchen, Euch einen Sitz in [ROOT.Char.GetLiege.Custom('DE_PRO_POS_S_3P')]em [council|E] zu gewähren"
@@ -109,9 +109,55 @@
  petition_liege_development_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_development_tt: "#X Euer [capital|E] hat bereits mehr als 66 % der [development|E] des Hauptsitzes Eures [Concept('liege', 'Lehnsherrn')|E]#!"
  petition_liege_decision_effects_development: "[THIS.Char.GetLiege.Custom('DE_PRO_PER_S_3P_N')|U] könnte einen Teil der [development|E] [THIS.Char.GetLiege.Custom('DE_PRO_POS_S_3P')]es [Concept('capital', 'Hauptsitzes')|E] an Euch übertragen"
+ #House Fief
+ petition_liege_decision_option_house_fief: "Hauslehenerlaubnis\n#low Erlaubt Übergang zu [soryo|E]#!"
+ petition_liege_house_fief_desc: "Erbitten, dass [ROOT.Char.GetLiege.GetTitledFirstName] Euren Übergang zu einem [soryo|E] nicht als [crime|e] betrachtet"
+ petition_liege_house_fief_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_liege_house_fief_tt: "Ihr habt dieses Privileg bereits gewährt"
+ petition_liege_decision_effects_house_fief: "[THIS.Char.GetLiege.Custom('DE_PRO_PER_S_3P_N')|U] könnte die [decision|E] #TUT_KW Hauslehen einrichten#! zulassen"
+ petition_liege_house_fief_allowed: "Die [decision|E] „[GetDecisionWithKey('tgp_japan_establish_house_fief_decision').GetName|V]“ gilt für #V 10 Jahre#! nicht mehr als [crime_i|E][crime|E]\n[petition_liege.GetTitledFirstName|U] kann Euer Lehen für #V 10 Jahre#! nicht mehr widerrufen, außer Ihr seid ein [criminal|E]"
+ #Wedding
+ petition_liege_decision_option_wedding: "Königliche Heirat\n#low In [ceremonial_house|E] einheiraten"
+ petition_liege_wedding_desc: "[ROOT.Char.GetLiege.GetTitledFirstName|U] bitten, einer [marriage|E] mit der kaiserlichen Dynastie von [ROOT.Char.GetLiege.GetTitledFirstName] zuzustimmen."
+ petition_liege_wedding_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_liege_wedding_tt: "Euer [house|E] hat keine zulässigen Kandidaten"
+ petition_liege_decision_effects_wedding: "[THIS.Char.GetLiege.Custom('DE_PRO_PER_S_3P_N')|U] könnte einer [marriage|E] mit dem [ceremonial_house|E] zustimmen"
+ petition_liege_wedding_permission: "[THIS.Char.GetHouse.GetName]-[Concept('marriage', 'Heirats')|E]-Annahme mit [ceremonial_house|E]: +#P 50#!"
  #Shared
  petition_liege_faith_tt: "#X Ihr habt nicht denselben [Concept('faith', 'Glauben')|E] wie Euer [liege|E]#!"
  petition_liege_holding_tt: "#X Euer [liege|E] kann sich nicht leisten, ein [holding|E] zu errichten#!"
  petition_liege_debt_tt: "#X Euer [liege|E] hat [debt|E]#!"
  petition_liege_council_no_petition_valid_tt: "#X Es gibt nichts, worum Ihr Euren Lehnsherrn bitten könntet#!"
  petition_liege_city_planning_innovation_tt: "#X Sowohl Ihr als auch Euer [liege|E] müssen [cultures|E] mit der [innovation|E] „Stadtplanung“ angehören#!"
+ #Non Royal Liege
+ ## Decision Menu Localization
+ petition_liege_decision_desc_non_royal: "Ich kann eine Petition an [Select_CString(ROOT.Char.GetLiege.IsFemale, 'die', 'den')] [ROOT.Char.GetLiege.GetTitleAsNameNoTooltip] richten, damit [Select_CString(ROOT.Char.GetLiege.IsFemale, 'sie', 'er')] mir hilft, die Herausforderungen zu bewältigen, vor denen ich stehe. Ehrlichen Bitten, die zum Wohl des Reichs beitragen, wird öfter stattgegeben."
+ petition_liege_decision_tooltip_non_royal: "Den [Concept('ceremonial_regent', 'Zeremonienregenten')|E] um ein Geschenk oder einen Dienst [Concept('petition_liege', 'bitten')|E]"
+ petition_ceremonial_liege_decision_title: "Petition an [ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetTitleAsNameNoTooltip]"
+ petition_ceremonial_liege_decision: "$game_concept_ceremonial_liege$n-Petition"
+ petition_ceremonial_liege_decision_desc: "Ich kann eine Petition an meinen [Concept('ceremonial_liege', 'Zeremonienlehnsherrn')|E] richten, damit er mir hilft, die Herausforderungen zu bewältigen, vor denen ich stehe. Ehrlichen Bitten, die zum Wohl des Reichs beitragen, wird öfter stattgegeben."
+ petition_ceremonial_liege_decision_effects: "Ihr reist an den Hof von [ceremonial_liege.GetShortUIName], um Eure [petition_liege|E] zu überbringen"
+ tgp_is_ceremonial_petition_shown_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName|U] muss verfügbar sein"
+ petition_ceremonial_liege_decision_confirm: "$petition_ceremonial_liege_decision_title$"
+ #Kampaku
+ petition_ceremonial_liege_regent_desc: "[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName|U] bitten, Eure [appointment|E] als [ceremonial_regent|E] zu unterstützen"
+ petition_ceremonial_liege_decision_option_regent: "[ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip]-Billigung\n#low Stärkt Euren [candidate_score|E]#!"
+ petition_ceremonial_liege_regent_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_ceremonial_liege_regent_already_given_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName|U] hat Euch bereits gebilligt"
+ #Appointment
+ petition_ceremonial_liege_appointment_desc: "[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName] bitten, den [governorship|E]-[candidate_score|E] von Mitgliedern des [Concept('house', 'Hauses')|E] [ROOT.Char.GetHouse.GetName] zu unterstützen"
+ petition_ceremonial_liege_decision_option_appointment: "Hausfortschritt\n#low Stärkt Euren [candidate_score|E]#!"
+ petition_ceremonial_liege_appointment_tooltip: "$petition_liege_decision_second_tooltip$"
+ #Wedding
+ petition_ceremonial_liege_wedding_desc: "[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName|U] bitten, eine [marriage|E] zwischen Eurem [house|E] und dem [ceremonial_house|E] zu unterstützen"
+ petition_ceremonial_liege_decision_option_wedding: "Königliche Heirat\n#low In [ceremonial_house|E] [Concept('marry', 'einheiraten')|E]#!"
+ petition_ceremonial_liege_wedding_tooltip: "$petition_liege_decision_second_tooltip$"
+ #Privilege
+ petition_ceremonial_liege_privilege_desc: "[ROOT.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetShortUIName|U] bitten, die Würde von [house|E] [ROOT.Char.GetHouse.GetName] anzuerkennen"
+ petition_ceremonial_liege_decision_option_privilege: "Würdeanerkennung\n#low [prestige|E] erschmeicheln#!"
+ petition_ceremonial_liege_privilege_tooltip: "$petition_liege_decision_second_tooltip$"
+ petition_ceremonial_liege_warning_effect: "#weak Persönlichkeit des [Concept('ceremonial_liege', 'Zeremonienlehnsherrn')|E], [opinion|E] und Art der [petition_liege|E] wirken sich auf die Annahmewahrscheinlichkeit aus#!"
+ petition_liege_regent_support: "Euer [candidate_score|E] für „[petition_vassal.GetTopLiege.GetPrimaryTitle.GetDefinitiveName]“: #P +10#!"
+ petition_liege_appointment_support: "[governorship|E]-[candidate_score|E] aller Mitglieder von [house|E] [THIS.Char.GetHouse.GetBaseName]: #P +15#!"
+ petition_liege_regent_support_desc: "Petition"
+ petition_liege_appointment_support_desc: "Petition"

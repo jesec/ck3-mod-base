@@ -132,6 +132,9 @@ cultural_acceptance = {
 	
 	is_valid = {
 		is_current_phase_active = yes
+		exists = scope:activity.special_guest:spouse_1.culture
+		exists = scope:activity.special_guest:spouse_2.culture
+		scope:activity.special_guest:spouse_1.culture != scope:activity.special_guest:spouse_2.culture
 		trigger_if = {
 			limit = {
 				scope:activity = { has_activity_type = activity_wedding }
@@ -1470,7 +1473,7 @@ poetry_performance = {
 		is_current_phase_active = yes
 		any_attending_character = {
 			OR = {
-				has_trait = poet
+				has_trait = lifestyle_poet
 				AND = {
 					has_court_position = court_poet_court_position
 					aptitude = {
@@ -1501,7 +1504,7 @@ poetry_performance = {
 		}
 		if = {
 			limit = {
-				scope:host = { has_trait = poet }
+				scope:host = { has_trait = lifestyle_poet }
 			}
 			add = 0.5
 		}
@@ -1514,7 +1517,7 @@ poetry_performance = {
 		if = {
 			limit = {
 				scope:host = {
-					has_trait = poet
+					has_trait = lifestyle_poet
 					is_physically_able_ai_adult = yes
 					location = scope:province
 				}
@@ -1525,7 +1528,7 @@ poetry_performance = {
 			random_attending_character = {
 				limit = {
 					OR = {
-						has_trait = poet
+						has_trait = lifestyle_poet
 						AND = {
 							has_court_position = court_poet_court_position
 							aptitude = {
@@ -1552,7 +1555,7 @@ poetry_performance = {
 			}
 			if = {
 				limit = {
-					NOT = { scope:first = scope:host }
+					scope:first != scope:host
 				}
 				scope:host = {
 					add_prestige = minor_prestige_gain
@@ -1800,9 +1803,7 @@ spouse_impressed = {
 	is_valid = {
 		is_current_phase_active = yes
 		any_attending_character = {
-			NOT = {
-				this = scope:host
-			}
+			this != scope:host
 			is_spouse_of = scope:host
 			is_physically_able_ai_adult = yes
 			location = scope:province
@@ -1880,9 +1881,7 @@ spouse_impressed = {
 		
 		random_attending_character = {
 			limit = {
-				NOT = {
-					this = scope:host
-				}
+				this != scope:host
 				is_spouse_of = scope:host
 				is_physically_able_ai_adult = yes
 				location = scope:province

@@ -50,6 +50,11 @@
 						datacontext = "[SteppeWindow.GetSituation]"
 					}
 
+					blockoverride "button_back"
+					{
+						onclick = "[OpenGameView( 'situations' )]"
+					}
+
 					blockoverride "button_close"
 					{
 						onclick = "[SteppeWindow.Close]"
@@ -196,7 +201,7 @@ types SituationTypes
 			}
 
 			text_label_center = {
-				visible = "[And( ObjectsEqual( SituationSubRegion.Self, SteppeWindow.GetPlayerSubRegion.Self ), Not( SteppeWindow.IsSubRegionSelected( SituationSubRegion.Self ) ) )]"
+				visible = "[And( SteppeWindow.IsParticipant, And( ObjectsEqual( SituationSubRegion.Self, SteppeWindow.GetPlayerSubRegion.Self ), Not( SteppeWindow.IsSubRegionSelected( SituationSubRegion.Self ) ) ) )]"
 				parentanchor = bottom|hcenter
 				position = { 0 -8 }
 
@@ -205,7 +210,7 @@ types SituationTypes
 			}
 
 			text_label_center = {
-				visible = "[And( ObjectsEqual( SituationSubRegion.Self, SteppeWindow.GetPlayerSubRegion.Self ), SteppeWindow.IsSubRegionSelected( SituationSubRegion.Self ) )]"
+				visible = "[And( SteppeWindow.IsParticipant, And( ObjectsEqual( SituationSubRegion.Self, SteppeWindow.GetPlayerSubRegion.Self ), SteppeWindow.IsSubRegionSelected( SituationSubRegion.Self ) ) )]"
 				parentanchor = bottom|hcenter
 				position = { 0 -8 }
 
@@ -298,7 +303,7 @@ types SituationTypes
 					flipdirection = yes
 
 					item = {
-						button_situation_phase_effect_item = {}
+						icon_situation_phase_effect_item = {}
 					}
 				}
 			}
@@ -308,7 +313,7 @@ types SituationTypes
 		vbox_court_astrologer_card = {}
 	}
 
-	type button_situation_phase_effect_item = icon {
+	type icon_situation_phase_effect_item = icon {
 		datacontext = "[GetPlayer]"
 
 		icon = {
@@ -327,6 +332,47 @@ types SituationTypes
 
 		tooltipwidget = {
 			using = situation_modifier_named_set_tooltip
+		}
+	}
+
+	type icon_situation_phase_effect_participant_group_item = icon {
+		datacontext = "[GetPlayer]"
+
+		### Selected with double outer blue ring
+		highlight_icon = {
+			visible = "[ObjectsEqual( SituationSubRegion.GetCharacterParticipantGroup( Character.Self ).GetName, SituationParticipantGroupType.GetName)]"
+			size = { 58 58 }
+			parentanchor = center
+
+			texture = "gfx/interface/icons/struggle_banners/icon_background_blue_frame.dds"
+		}
+
+		### Blue ring outline
+		icon = {
+			size = { 52 52 }
+			parentanchor = center
+
+			texture = "gfx/interface/icons/struggle_banners/icon_background_blue_frame.dds"
+		}
+
+		icon_flat_standard = {
+			visible = "[Situation.GetType.UseSituationPhaseFlatIcons]"
+			size = { 35 35 }
+			parentanchor = center
+
+			texture = "[SituationParticipantGroupType.GetIcon]"
+		}
+
+		icon = {
+			visible = "[Not( Situation.GetType.UseSituationPhaseFlatIcons )]"
+			size = { 40 40 }
+			parentanchor = center
+
+			texture = "[SituationParticipantGroupType.GetIcon]"
+		}
+
+		tooltipwidget = {
+			using = situation_participant_group_type_phase_effects_tooltip
 		}
 	}
 
@@ -364,7 +410,7 @@ types SituationTypes
 		hbox = {
 			layoutpolicy_horizontal = expanding
 			margin = { 25 0 }
-			
+
 			background =  {
 				texture = "gfx/interface/illustrations/event_story/mpo_steppe_region.dds"
 				fittype = centercrop
@@ -372,7 +418,7 @@ types SituationTypes
 				alpha = 0.15
 				margin_bottom = 40
 			}
-			
+
 			### GURKHAN PORTRAIT ###
 			widget = {
 				size = { 220 250 }
@@ -443,13 +489,13 @@ types SituationTypes
 								using = Background_Area_Solid
 								margin = { 10 0 }
 							}
-							
+
 							background = {
 								using = GenericObjectCardHeaderBackground
 								using = Color_Blue
 								margin = { 10 0 }
 							}
-							
+
 							icon = {
 								size = { 40 50 }
 								texture = "gfx/interface/icons/icon_gurkhan.dds"
@@ -668,10 +714,10 @@ types SituationTypes
 								layoutpolicy_horizontal = expanding
 								max_width = 180
 
-								text = "COURT_POSITIONS_WINDOW_SALARY_SHORT"
+								text = "COURT_POSITIONS_WINDOW_EMPLOYER_SALARY_SHORT"
 								align = right|nobaseline
 
-								tooltip = "[CourtPosition.GetSalaryBreakdownTooltip]"
+								tooltip = "[CourtPosition.GetEmployerSalaryBreakdownTooltip]"
 							}
 						}
 					}
@@ -747,9 +793,10 @@ types SituationTypes
 
 					### PREDICTION - NO ASTROLOGER ###
 					vbox = {
-						visible = "[Not(Character.IsValid)]"
+						visible = "[Not( Character.IsValid )]"
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
+						minimumsize = { 0 195 }
 
 						background = {
 							using = Background_Area_ExtraDark
@@ -822,7 +869,7 @@ types SituationTypes
 						size = { 180 195 }
 						allow_outside = yes
 						scissor = yes
-						visible = "[Not( Character.IsValid )]"
+						visible = "[And( SteppeWindow.IsParticipant, Not( Character.IsValid ) )]"
 						tooltip = "THE_GREAT_STEPPE_WINDOW_HIRE_ASTROLOGER"
 						tooltip_offset = { -100 10 }
 
@@ -1038,6 +1085,7 @@ types SituationTypes
 						item = {
 							widget_character_list_item_finder = {
 								size = { 630 100 }
+								blockoverride "character_relation" {}
 
 								background = {
 									using = Background_Area

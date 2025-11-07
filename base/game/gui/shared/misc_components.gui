@@ -269,12 +269,75 @@
 		}
 	}
 
+	type button_expandable_toggle_field_silk_road = button_tertiary {
+		layoutpolicy_horizontal = expanding
+
+		block "onclick"
+		{
+			onclick = "[PdxGuiFoldOut.Toggle]"
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			ignoreinvisible = yes
+
+			margin = { 15 0 }
+			spacing = 5
+
+			button_expand_fold_out = {
+				block "foldout_button" {}
+			}
+
+			vbox = {
+				layoutpolicy_vertical = expanding
+
+				expand = {}
+
+				icon = {
+					texture = "gfx/interface/icons/travel/icon_travel_silk_road_marketplace.dds"
+					size = { 65 65 }
+					scale = 0.9
+				}
+			}
+
+			vbox = {
+				text_single = {
+					layoutpolicy_horizontal = growing
+					text = "[Building.GetName]"
+					align = nobaseline
+					max_width = 180
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					align = nobaseline
+					alwaystransparent = yes
+					max_width = 180
+
+					block "text" {}
+				}
+			}
+
+			expand = {}
+
+			text_single = {
+				layoutpolicy_horizontal = growing
+				datacontext = "[SituationSubRegion.GetCurrentPhase]"
+				text = "CURRENT_PHASE_IN_SUBREGION_HEADER"
+				align = right|nobaseline
+				multiline = yes
+				max_width = 180
+			}
+		}
+	}
+
 	type hbox_tab_buttons = hbox
 	{
+		visible = "[GreaterThan_int32( GetDataModelSize( PdxGuiTabs.GetTabItems ), '(int32)1' )]"
+
 		layoutpolicy_horizontal = expanding
 
 		datamodel = "[PdxGuiTabs.GetTabItems]"
-
 		item = {
 			button_tab = {
 				layoutpolicy_horizontal = expanding

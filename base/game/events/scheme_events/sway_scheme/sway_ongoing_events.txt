@@ -33,7 +33,7 @@ sway_ongoing.1001 = {
 			is_alive = yes
 		}
 		scope:target = {
-			NOT = { culture = root.culture }
+			culture != root.culture
 		}
 		exists = location
 	}
@@ -2111,10 +2111,7 @@ sway_ongoing.5011 = {
 			is_landed = yes
 		}
 		OR = {
-			AND = {
-				exists = liege
-				liege = scope:target
-			}
+			liege ?= scope:target
 			AND = {
 				exists = scope:target.liege
 				scope:target.liege = scope:owner

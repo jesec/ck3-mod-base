@@ -42,18 +42,29 @@ mep3_mood_06 = {
 mep3_mood_07 = {
     music = "event:/DLC/EP3/MX/Moodtracks/mx_mep3_landless_adventurer_mood_07"
     name = "mx_mood_ep3_07"
-    group = group_ep3_moodtrack
+    group = group_ep3_adventurer_moodtrack
 }
 mep3_mood_08 = {
     music = "event:/DLC/EP3/MX/Moodtracks/mx_mep3_landless_adventurer_mood_08"
     name = "mx_mood_ep3_08"
-    group = group_ep3_moodtrack
+    group = group_ep3_adventurer_moodtrack
 }
 ######### GROUPS
 group_ep3_cuetrack = {
     pause_factor = 30
 }
 group_ep3_moodtrack = {
+    pause_factor = 15
+    #subsequent_playback_chance = { 0.65 0.35 0.1 }
+    mood = yes
+    can_be_interrupted = yes
+    trigger_prio_override = no
+    is_valid = {
+		has_ep3_dlc_trigger = yes
+		should_use_byzantine_music_trigger = yes
+	}
+}
+group_ep3_adventurer_moodtrack = {
     pause_factor = 15
     #subsequent_playback_chance = { 0.65 0.35 0.1 }
     mood = yes

@@ -30,7 +30,7 @@
  coronation_events.1004.intimidation: "#EMP Stare at [spy.GetHerHim] with murderous intent.#!"
  coronation_events.1004.intimidation.tt.success: "Your dreadful display terrifies [spy.GetTitledFirstNameNoTooltip]"
  coronation_events.1004.intimidation.tt.failure: "Your threats fail to sway [spy.GetTitledFirstNameNoTooltip]"
- coronation_events.1004.guards: ""Drag this [spy.Custom('InsultNoun')] to the dungeons!""
+ coronation_events.1004.guards: "Drag this [spy.Custom2('InsultNoun', ROOT.Char)] to the dungeons!"
  coronation_events.1004.opt-out: ""That is not my concern.""
 
  coronation_events.1007.t: "A Question of Precedence"
@@ -119,11 +119,11 @@
  bp4_coronation_good_harvest_modifier: "Abundance of Foreign Drinks"
  
  coronation_events.1018.t: "A Game of Chairs"
- coronation_events.1018.desc: "As I survey the banquet, I hear my [supporter.Custom('ComplimentAdjective')] [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('supporter'))], [supporter.GetFirstName], call out from across the table: "Your Grace, surely [detractor.GetFirstName] ought not sit so near!" I glance down at my [detractor.Custom('InsultAdjective')] [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('detractor'))], [detractor.GetFirstName], perched at my left hand."
+ coronation_events.1018.desc: "As I survey the banquet, I hear my [supporter.Custom('ComplimentAdjective')] [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('supporter'))], [supporter.GetFirstName], call out from across the table: "Your Grace, surely [detractor.GetFirstName] ought not sit so near!" I glance down at my [detractor.Custom2('InsultAdjective', ROOT.Char)] [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('detractor'))], [detractor.GetFirstName], perched at my left hand."
  coronation_events.1018.desc.wrathful: "\n\nDecorum impedes my hand, but the best course of action is clearly to throw [detractor.GetFirstName] and [detractor.GetHerHis] chair far away from me."
  coronation_events.1018.desc.diplo: "\n\nProtocol demands that I keep my head high and smile."
  coronation_events.1018.deal: "Keep your friends close..."
- coronation_events.1018.switch: "Keep that [detractor.Custom('InsultNoun')] far away from me."
+ coronation_events.1018.switch: "Keep that [detractor.Custom2('InsultNoun', ROOT.Char)] far away from me."
  bp4_shielded_reign_modifier: "Avoiding Dissenters"
 
  coronation_events.1019.t: "Tokens of Loyalty"
@@ -295,7 +295,8 @@
  coronation_events.1031.e: ""I have a perfect composition for that!""
  every_attending_vassal: "Every attending vassal"
  every_attending_detractor_or_compassionate: "Every attending detractor and compassionate guest"
- every_poet_scholar: "Every [GetTrait('poet').GetName( GetNullCharacter )] and [GetTrait('scholar').GetName( GetNullCharacter )] attending character"
+ every_attending_poet_scholar: "Every [GetTrait('lifestyle_poet').GetName( GetNullCharacter )] and [GetTrait('scholar').GetName( GetNullCharacter )] attending character"
+ every_poet_scholar: "Every [GetTrait('lifestyle_poet').GetName( GetNullCharacter )] and [GetTrait('scholar').GetName( GetNullCharacter )] attending character"
 
  coronation_events.1032.t: "A Bold Gesture"
  coronation_events.1032.desc: "The occasion, while stately and proper, still feels... incomplete. Is this just some rote gathering, some casual feast? Or is this a moment for great political action, for historic change? My [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('supporter'))], [supporter.GetTitledFirstName], whispers in my ear.\n\n"Rulers are not made great by words... but by deeds," [supporter.GetSheHe] urges. "Deeds! Deeds that shake the [ROOT.Char.GetPrimaryTitle.GetTierAsName] to its foundations!"\n\nMy [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('detractor'))] [detractor.GetFirstName], who thinks nothing of this occasion, watches with contempt."
@@ -340,7 +341,8 @@
  exalt_crown_opinion: "$EFFECT_LIST_BULLET$Because of your #V [GetPlayer.GetInvolvedActivityIntent.GetName]#! Intent:\n$BULLET_WITH_TAB$Every [GetVassalStance( 'parochial' ).GetTextIcon][GetVassalStance( 'parochial' ).GetName] [vassal|E]"
  embrace_supporters_opinion: "$EFFECT_LIST_BULLET$Because of your #V [GetPlayer.GetInvolvedActivityIntent.GetName]#! Intent:\n$BULLET_WITH_TAB$Every [GetVassalStance( 'glory_hound' ).GetTextIcon][GetVassalStance( 'glory_hound' ).GetName] and [GetVassalStance( 'zealot' ).GetTextIcon][GetVassalStance( 'zealot' ).GetName] [vassal|E]"
  impress_attendees_opinion: "$EFFECT_LIST_BULLET$Because of your #V [GetPlayer.GetInvolvedActivityIntent.GetName]#! Intent:\n$BULLET_WITH_TAB$Every [GetVassalStance( 'courtly' ).GetTextIcon][GetVassalStance( 'courtly' ).GetName] and [GetVassalStance( 'minority' ).GetTextIcon][GetVassalStance( 'minority' ).GetName] [vassal|E]"
-# Coronation host is ded, notify guests
+
+ # Coronation host is ded, notify guests
  ach_maintenance_events.0100.t: "[host.GetTitleAsNamePossessiveNoTooltip] Death"
  ach_maintenance_events.0100.desc: "[host.GetName] [host.GetDeathReason] on the eve of [host.GetHerHis] ascension to the throne. Little is left for me to do but to gather my entourage and depart."
  ach_maintenance_events.0100.a: "May [ROOT.Char.GetFaith.HighGodName] have mercy on [host.GetPrimaryTitle.GetNameNoTooltip]."
@@ -362,3 +364,45 @@
  ach_maintenance_events.0106.t: "$ach_maintenance_events.0105.t$" #Host excommunicated, notify host
  ach_maintenance_events.0106.desc: "That [ROOT.Char.Custom('InsultAdjective')] [ROOT.Char.Custom('InsultNoun')], [hof.Custom('GetDaughterSon')] of [ROOT.Char.Custom('InsultAdjective')] [ROOT.Char.Custom('InsultNounPlural')] has excommunicated #EMP me#! On the eve of my anointment! It was not [hof.GetFaith.HighGodNamePossessive] divine will, but a whisper of [ROOT.Char.GetFaith.DevilName] that guided [hof.GetHerHim] in this insulting and blasphemous act.\n\nI must cancel the ceremonies. This insult will not be forgotten."
  ach_maintenance_events.0106.a: "$ach_maintenance_events.0100.a$"
+
+ coronation_events.1034.t: "Ceremonial Threads"
+ coronation_events.1034.desc: ""So the [host.GetTitleAsName] dares to wear [detractor.Custom('GetComplexColor')] [detractor.Custom('RegionalFabric')]?" [detractor.Custom2('MyCharacterIntroduction', ROOT.Char)] mutters, eyes narrowing. "Those colors are reserved for virtue and rank — not vanity. If I wore such a shade without sanction, I'd face censure."\n\n"Censure?" [supporter.Custom2('MyCharacterIntroduction', ROOT.Char)] cuts in. "That robe is sanctioned. It honors rites older than our great-grandfathers. Harmony, balance, rightful rule — this is not vanity but legitimacy."\n\nTheir words slice the air, hushed but heated. I glance down at my own sleeves. The final choice is still mine... but now I wonder: what will it proclaim when I step into the hall?"
+ coronation_events.1034.a: "My robe will outshine [host.GetTitledHouseNameOrFirstName]!"
+ coronation_events.1034.a.tt: "The consequences of this choice will be decided by [host.GetTitledHouseNameOrFirstName]"
+ coronation_events.1034.b: "I will match [host.GetTitledHouseNameOrFirstName]'s colors as a quiet show of loyalty."
+ coronation_events.1034.c: "I will wear what the rites prescribe."
+ coronation_events.1034.d: "Let me echo the capital's palette."
+
+ coronation_events.1035.t: "The Forbidden Hue"
+ coronation_events.1035.desc: "As [offending_guest.Custom2('MyCharacterIntroduction', ROOT.Char)] appears, the murmurs were instant. [offending_guest.GetHerHis|U] robe — lavish, brilliant, and above [offending_guest.GetHerHis] station — broke more than custom. It bent law.\n\n[offending_guest.GetSheHe|U] approaches me with a smug smile. "What do you think, [ROOT.Char.Custom('FormOfAddressForLiege')]?""
+ coronation_events.1035.a: "Let [offending_guest.GetHerHim] have [offending_guest.GetHerHis] moment."
+ coronation_events.1035.a.toast: "[host.GetTitledHouseNameOrFirstName] ignored the transgression"
+ coronation_events.1035.b: "[offending_guest.GetHerHis|U] breach will not pass unmarked."
+ coronation_events.1035.b.toast: "[host.GetTitledHouseNameOrFirstName] felt offended"
+ coronation_events.1035.c: "I will speak to [offending_guest.GetHerHim] in private. A warning may suffice."
+ coronation_events.1035.c.toast: "[host.GetTitledHouseNameOrFirstName] gave a private warning"
+
+ coronation_events.1036.t: "Verses Across the Table"
+ coronation_events.1036.china.desc: "[host.Custom('GetExpensiveDrink_Singular')|U] flows, cups clink, and the hall hums with laughter until a voice rings clear.\n\n"Let us turn this feast to verse," [verse_initiator.Custom2('MyCharacterIntroduction', ROOT.Char)] declares, having just finished a polished [Glossary('lüshi', 'GLOSS_LUSHI')] praising [host.Custom2('MyCharacterIntroduction', ROOT.Char)]. "Such contests test one's [Glossary('wen', 'CONFUCIAN_WEN')], as scholars are wont to show."\n\nThe company stirs — some eager to display learning, others wary of hidden barbs in verse."
+ CONFUCIAN_WEN: "It refers to cultured refinement, the civilizing power of literature, ritual, and eloquence in Confucian thought."
+ GLOSS_LUSHI: "It is a regulated verse form, with strict tonal patterns and parallelism. Mastery of lüshi is a hallmark of cultured learning."
+ coronation_events.1036.japan.desc: "The fragrance of [host.Custom('GetExpensiveDrink_Singular')] and the rustle of [host.Custom('RegionalFabric')] fill the hall, when a voice rises with deliberate grace.\n\n"Shall we not compose verses for this gathering?" [verse_initiator.Custom2('MyCharacterIntroduction', ROOT.Char)] proposes, reciting a [Glossary('waka', 'GLOSS_waka')] in honor of [host.Custom2('MyCharacterIntroduction', ROOT.Char)]. "Such poems reveal the heart's [Glossary('miyabi', 'JAPANESE_MIYABI')], as courtiers know well."\n\nSmiles pass among the guests — for a poem may praise, or it may sting with subtle wit."
+ JAPANESE_MIYABI: "It  refers to courtly elegance and refinement, an ideal of beauty and sensitivity central to Japanese aristocratic culture."
+ GLOSS_WAKA: "It is a poetic form of 31 syllables (5-7-5-7-7), popular among Japanese nobility."
+ coronation_events.1036.korea.desc: "As the feast deepens, cups of [host.Custom('GetExpensiveDrink_Singular')] are lifted high and laughter fills the hall. Then one voice calls for silence.\n\n"Let us offer verses in honor of the host," [verse_initiator.Custom2('MyCharacterIntroduction', ROOT.Char)] declares, completing a dignified couplet extolling [host.Custom2('MyCharacterIntroduction', ROOT.Char)]. "In this, we show [Glossary('mun', 'KOREAN_MUN')], the cultivated learning treasured since the sages."\n\nSome nod in agreement, others steel themselves — for not all verse is mere praise."
+ KOREAN_MUN: "It refers to literary refinement and Confucian learning, a mark of scholarship among nobles."
+ coronation_events.1036.desc: "As the feast deepens, a voice rises above the din — assured and graceful.\n\n"Let us each share a verse," [verse_initiator.Custom2('MyCharacterIntroduction', ROOT.Char)] proclaims after a polished recital honoring [host.Custom2('MyCharacterIntroduction', ROOT.Char)]. "In poetry we reveal what we prize — be it virtue, order, or splendor."\n\nA ripple passes through the hall. Not all poetry is flattery; some words carry sharper edges."
+ coronation_events.1036.a: ""I will match the tone and praise [host.GetTitledFirstNamePossessive] [host.GetPrimaryTitle.GetTierAsNameNoTooltip].""
+ coronation_events.1036.b: ""I have a line in mind... a pointed echo from an old master's lament.""
+ coronation_events.1036.c: ""Let my words be elegant and proper — a formal verse, for formality's sake.""
+ coronation_events.1036.d: ""[verse_initiator.GetFirstNamePossessiveNoTooltip] piece was lovely. I'll make that known.""
+ coronation_events.1036.e: ""There were flaws. I'll offer a few gentle suggestions.""
+
+ coronation_events.1037.t: "[ROOT.Char.GetFaith.HighGodName|U] Speaks"
+ coronation_events.1037.desc: "A low murmur ripples through the court. The [omen_happening.GetNameNoTooltip] has just been reported, tongues wagging as if [ROOT.Char.GetFaith.HighGodName] [ROOT.Char.GetFaith.HighGodHerselfHimself] had spoken.\n\nWith a troubled glance, [skeptical_guest.Custom2('MyCharacterIntroduction', ROOT.Char)] leans close: "The news spreads quickly, [ROOT.Char.Custom('FormOfAddressForLiege')]. Many here are unsettled. They wonder if [ROOT.Char.GetFaith.HighGodName] sends a warning.""
+ coronation_events.1037.a: ""Those before me have endured worse.""
+ coronation_events.1037.b: ""Let [respected_elder.GetTitledFirstName] speak.""
+ coronation_events.1037.c: ""Out with this fearmonger!""
+ coronation_events.1037.d: ""[ROOT.Char.GetFaith.HighGodName|U] stirs, but we proceed.""
+
+ 

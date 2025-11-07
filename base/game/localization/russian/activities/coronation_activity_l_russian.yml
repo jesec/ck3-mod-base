@@ -22,7 +22,7 @@
  coronation_location_owned: "Не является частью [Concept('realm', 'державы')|E]"
  coronation_location_hof_owned: "[THIS.Province.GetName] #bol не#! является [Concept('holy_site', 'святым местом')|E] в [Concept('realm', 'державе')|E] [Concept('head_of_faith', 'главы вашей конфессии')|E]"
  coronation_location_holy_site_host: "[THIS.Province.GetName] #bol не#! является [Concept('holy_site', 'святым местом')|E] в вашей [Concept('realm', 'державе')|E] (у [Concept('head_of_faith', 'главы вашей конфессии')|E] нет [Concept('holy_site', 'святых мест')|E])"
- coronation_location_neither_capital_nor_holy_site: "[PROVINCE.GetName] #bol не#! является [Concept('county_capital', 'столицей графства')|E] или [Concept('holy_site', 'священным местом')|E]"
+ coronation_location_neither_capital_nor_holy_site: "[THIS.Province.GetName] #bol не#! является [Concept('county_capital', 'столицей графства')|E] или [Concept('holy_site', 'священным местом')|E]"
  # Phases
  coronation_phase_preparations: "Прелюдия"
  coronation_phase_preparations_desc: ""
@@ -32,8 +32,9 @@
  coronation_phase_feast_desc: ""
  # Types
  coronation_type_normal: "Коронация"
- coronation_type_normal_desc: "$BULLET_WITH_TAB$Докажите свою [legitimacy_i][Concept('legitimacy', 'легитимность')|E]\n$BULLET_WITH_TAB$Принесите [Concept('oath', 'обет')|E] и определите будущее своего царствования\n$BULLET_WITH_TAB$Можно улучшить [opinion_i][Concept('opinion','мнение')|E] [Concept('vassals', 'вассалов')|E]\n$BULLET_WITH_TAB$[Concept('vassals', 'Вассалы')|E] могут выйти из @faction_icon![Concept('factions', 'фракций')|E]\n$BULLET_WITH_TAB$Можно короновать себя, получив дополнительный [prestige_i][Concept('prestige', 'престиж')|E]\n\n#weak $coronation_type_normal_flavor$#!"
+ coronation_type_normal_desc: "$BULLET_WITH_TAB$Докажите свою [legitimacy_i][Concept('legitimacy', 'легитимность')|E]\n$BULLET_WITH_TAB$Принесите [Concept('oath', 'обет')|E] и определите будущее своего царствования\n$BULLET_WITH_TAB$Можно улучшить [opinion_i][Concept('opinion','мнение')|E] [Concept('vassals', 'вассалов')|E] [AddLocalizationIf( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_mandala' ), 'coronation_type_tributaries' )]\n$BULLET_WITH_TAB$[Concept('vassals', 'Вассалы')|E] могут выйти из @faction_icon![Concept('factions', 'фракций')|E]\n$BULLET_WITH_TAB$Можно короновать себя, получив дополнительный [prestige_i][Concept('prestige', 'престиж')|E]\n\n#weak $coronation_type_normal_flavor$#!"
  coronation_type_normal_flavor: "Торжественная церемония засвидетельствует законность вашей власти, а величие вашей державы облечет вас наподобие царской мантии."
+ coronation_type_tributaries: "и [Concept('tributaries', 'данников')|E]"
  coronation_type_anointment: "Помазание"
  coronation_type_anointment_desc: "$BULLET_WITH_TAB$Докажите, что вашу [legitimacy_i][Concept('legitimacy', 'легитимность')|E] невозможно подорвать\n$BULLET_WITH_TAB$Получите [piety_i][Concept('piety', 'благочестие')|E], @fervor_icon![Concept('fervor', 'рвение')|E] и обязательства [GetVassalStance( 'zealot' ).GetTextIcon]фанатичных [Concept('vassals', 'вассалов')|E]\n$BULLET_WITH_TAB$Принесите [Concept('oath', 'обет')|E] и определите будущее своего царствования\n$BULLET_WITH_TAB$Улучшите [opinion_i][Concept('opinion','мнение')|E] [Concept('vassals', 'вассалов')|E]\n$BULLET_WITH_TAB$Улучшите [opinion_i][Concept('opinion','мнение')|E] других [Concept('rulers', 'правителей')|E]\n$BULLET_WITH_TAB$[Concept('vassals', 'Вассалы')|E] могут выйти из @faction_icon![Concept('factions', 'фракций')|E]\n$BULLET_WITH_TAB$@alert_icon! #alert_trial Можно устроить только в [Concept('holy_site', 'священном месте')|E] вашей [Concept('faith', 'конфессии')|E]#!\n\n#weak $coronation_type_anointment_flavor$#!"
  coronation_type_anointment_flavor: "Настоящий правитель должен быть утвержден благословением свыше и следовать святому призванию. Одной лишь земной силы для этого мало."
@@ -48,7 +49,9 @@
  coronation_large_ceremony_desc: "$EFFECT_LIST_BULLET$ Значительный прирост [Concept('coronation_magnificence', 'великолепия')|E]\n$EFFECT_LIST_BULLET$ [Concept('activity_guests', 'Гости')|E] намного охотнее присоединятся к вам\n\n#weak В окружении священных реликвий и блистающих драгоценностей, под звуки дивной музыки соберутся все мои родичи, вассалы и знатные гости из дальних краев.#!"
  ceremony_feast_type: "Празднество"
  ceremony_feast_type_austere: "Постный стол"
- ceremony_feast_type_austere_desc: "$EFFECT_LIST_BULLET$ Меньше [Concept('coronation_magnificence', 'великолепия')|E]\n$EFFECT_LIST_BULLET$Если [Concept('coronation_magnificence', 'великолепие')|E] будет ниже #high 50#! на момент завершения, вы получите модификатор «[GetModifier('ach_coronation_low_feast_modifier').GetNameWithTooltip]» на #high 10 лет#!\n\n#weak Разве приглашения на эту историческую церемонию будет недостаточно?#!"
+ ceremony_feast_type_austere_desc: "$EFFECT_LIST_BULLET$Меньше [Concept('coronation_magnificence', 'великолепия')|E]\n$EFFECT_LIST_BULLET$Если [Concept('coronation_magnificence', 'великолепие')|E] будет ниже #high 50#! на момент завершения, вы получите модификатор «[SelectLocalization( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_mandala' ), 'mandala_coronation_low_feast', 'generic_coronation_low_feast' )]» на #high 10 лет#!\n\n#weak Разве приглашения на эту историческую церемонию будет недостаточно?#!"
+ generic_coronation_low_feast: "[GetModifier('ach_coronation_low_feast_modifier').GetNameWithTooltip]"
+ mandala_coronation_low_feast: "[GetModifier('mandala_coronation_low_feast_modifier').GetNameWithTooltip]"
  ceremony_feast_type_regular: "Достойный пир"
  ceremony_feast_type_regular_desc: "$EFFECT_LIST_BULLET$ Дополнительное [Concept('coronation_magnificence', 'великолепие')|E]\n\n#weak Встреча знатнейших вассалов должна пройти с подобающим размахом, и на пиру не будет недостатка в угощениях.#!"
  ceremony_feast_type_lavish: "Роскошный банкет"
@@ -57,6 +60,8 @@
  ach_coronation_low_ceremony_modifier_desc: "Простой народ едва ли знает, что этот правитель их сюзерен, а знать охотно забывает о скромной церемонии вступления на престол."
  ach_coronation_low_feast_modifier: "Отверженные дворяне"
  ach_coronation_low_feast_modifier_desc: "Оскорбительно жалкие празднования коронации этого правителя вызвали глубочайшее недовольство у посетителей коронации, лишенных изысканных яств."
+ mandala_coronation_low_feast_modifier: "Оскорбленные подданные"
+ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_desc$"
  # Special Guests
  coronation_hof_guest: "Глава конфессии"
  coronation_hof_guest_desc: "$coronation_hof_guest_desc_for_host$"
@@ -79,7 +84,7 @@
  coronation_small_ceremony_value: "$coronation_small_ceremony$: $VALUE|=+0$"
  coronation_medium_ceremony_value: "$coronation_medium_ceremony$: $VALUE|=+0$"
  coronation_large_ceremony_value: "$coronation_large_ceremony$: $VALUE|=+0$"
- coronation_special_guest_value: "$priest_for_host$: $VALUE|=+0$"
+
  coronation_special_vassal_value: "[coronation_i][coronation|E] [Concept('liege', 'сюзерена')|E]: $VALUE|=+0$"
  coronation_pope_not_anointment: "[Concept('head_of_faith', 'Глава конфессии')|E] прибудет только на [Concept('coronation', 'коронацию')|E] с [Concept('coronation_anointment', 'помазанием')|E]: $VALUE|=+0$"
  coronation_liege_value: "Коронация [Concept('vassal', 'вассала')|E]: $VALUE|=+0$"
@@ -206,7 +211,7 @@
  oath_greatest_hunter: "Величайший охотник"
  oath_greatest_hunter_desc: "[Concept('prestige', 'Престиж')|E] за #V охоту#!: #P +10%#!"
  oath_heir_preparation: "Наследник подготовлен"
- oath_heir_preparation_heir: "Подготовленный наследник"
+ oath_heir_preparation_heir: "Готовность к наследованию"
  oath_heir_preparation_desc: "Количество наследуемой [Concept('legitimacy', 'легитимности')|E]: #P +20%#!"
  oath_install_claimants: "Претенденты возведены на престолы"
  oath_mend_the_fracture: "Раскол устранен"
@@ -221,7 +226,7 @@
  oath_provide_for_the_poor_province: "Исполнен обет перед бедняками"
  oath_provide_for_the_poor_province_desc: "Открывает возможность построить [Concept('building', 'здание')|E] «[GetBuilding('oath_poor_building_04').GetName]» в этом [Concept('barony', 'баронстве')|E]"
  oath_repent: "Искупление грехов"
- oath_peaceful_ai_modifier: "$motto_peaceful$"
+ oath_peaceful_ai_modifier: "Миролюбие"
  oath_warlike_ai_modifier: "$game_concept_ai_warlike_personality$"
  ### Events
  # Oaths
@@ -234,7 +239,7 @@
  coronation_events.0100.desc.previous_ruler_not_family: "Буду ли я лучше, чем [Select_CString(previous_ruler.IsFemale, 'моя предшественница', 'мой предшественник' )] [previous_ruler.GetFirstName] [previous_ruler.GetHouse.GetName]?"
  coronation_events.0100.desc.first_ruler: "Как буду править я, [Select_CString(ROOT.Char.IsFemale, 'первая', 'первый' )] [ROOT.Char.GetTitleAsNameNoTooltip|l] этих земель?"
  # Outro
- coronation_events.0100.desc.outro: "\n\nНо я, [ROOT.Char.GetTitleAsName|l], здесь не для того, чтобы озвучивать их ожидания. Я выберу свой путь, путь, по которому двинется [ROOT.Char.GetPrimaryTitle.GetTierAsNameNoTooltip|l].\n\nНе знаю, чем станет [ROOT.Char.GetPrimaryTitle.GetNameNoTier], чем стану я, но начнется это с этого мгновения."
+ coronation_events.0100.desc.outro: "\n\nНо я, [ROOT.Char.GetTitleAsNameNoTooltip|l], здесь не для того, чтобы озвучивать их ожидания. Я выберу свой путь — путь, по которому двинется [ROOT.Char.GetPrimaryTitle.GetTierAsNameNoTooltip|l].\n\nНе знаю, чем станет [ROOT.Char.GetPrimaryTitle.GetNameNoTier], чем стану я, но начнется всё с этого мгновения."
  # Options
  diplomacy_oath_reason: "Это [Concept('diplomacy', 'дипломатический')|E] [Concept('oath', 'обет')|E]"
  martial_oath_reason: "Это [Concept('martial', 'военный')|E] [Concept('oath', 'обет')|E]"
@@ -310,25 +315,25 @@
  ## Learning
  coronation_events.0110.desc.learning_oath_1: "#emp «Ни один властитель не должен принимать невежество за силу. Страна, направляемая разумом, переживёт любую державу, чья мощь зиждется лишь на страхе.\n\n[activity.GetHost.GetCapitalLocation.GetName] примет мудрейших людей страны, и их наставления позволят построить лучшее будущее для #L [activity.GetHost.GetPrimaryTitle.GetAdjective|l]ой#! державы».#!"
  ## Purge Pretenders
- coronation_events.0110.desc.purge_pretenders_oath: "#emp «Самозванцы, претендующие на трон державы [ROOT.Char.GetPrimaryTitle.GetName], множатся словно крысы в сточной трубе. И поступать с ними следует как с вредителями».#!"
+ coronation_events.0110.desc.purge_pretenders_oath: "#emp «Самозванцы, претендующие на трон державы [activity.GetHost.GetPrimaryTitle.GetName], множатся, словно крысы в сточной трубе. И поступать с ними следует как с вредителями».#!"
  ## End the Struggle
- coronation_events.0110.desc.end_the_struggle_oath: "#emp «[ROOT.Char.MakeScope.Var('end_the_struggle_oath_type_var').Struggle.GetName] истощает уже не первое поколение добрых #L [ROOT.Char.GetCulture.GetCollectiveNoun|l]их#! людей. Довольно. Я положу конец этой бессмысленной трате ресурсов, чтобы в регион пришла новая эпоха процветания. И поможет мне в этом [ROOT.Char.GetFaith.GetAdjective|l]».#!"
+ coronation_events.0110.desc.end_the_struggle_oath: "#emp «[activity.GetHost.MakeScope.Var('end_the_struggle_oath_type_var').Struggle.GetName] истощает уже не первое поколение добрых #L [activity.GetHost.GetCulture.GetCollectiveNoun|l]их#! людей. Довольно. Я положу конец этой бессмысленной трате ресурсов, чтобы в регион пришла новая эпоха процветания. И поможет мне в этом [activity.GetHost.GetFaith.GetAdjective|l]».#!"
  ## Greatest Hunter
- coronation_events.0110.desc.greatest_hunter_oath: "#emp «Охота — это не только испытание мастерства, но и торжество жизни и естества. Я стану величайшим охотником, царем природы, истинным властителем дикого сердца державы [ROOT.Char.GetPrimaryTitle.GetNameNoTier]».#!"
+ coronation_events.0110.desc.greatest_hunter_oath: "#emp «Охота — это не только испытание мастерства, но и торжество жизни и естества. Я стану величайшим охотником, царем природы, истинным властителем дикого сердца державы [activity.GetHost.GetPrimaryTitle.GetNameNoTier]».#!"
  ## Heir Preparation
- coronation_events.0110.desc.heir_preparation_oath: "#emp «Без подобающего наследника династия [ROOT.Char.GetDynasty.GetName] обречена кануть в забвение. Я позабочусь об образовании своего наследника и воспитаю необходимые ценности и мудрость, чтобы привести династию [ROOT.Char.GetDynasty.GetName] к новым высотам».#!"
+ coronation_events.0110.desc.heir_preparation_oath: "#emp «Без подобающего наследника династия [activity.GetHost.GetDynasty.GetName] обречена кануть в забвение. Я позабочусь об образовании своего наследника и воспитаю необходимые ценности и мудрость, чтобы привести династию [activity.GetHost.GetDynasty.GetName] к новым высотам».#!"
  ## Install Claimants
  coronation_events.0110.desc.install_claimants_oath: "#emp «Законные притязания на престол — это вопрос не только крови, но и справедливости. Я верну престолы их законным владельцам, сверну узурпаторов и восстановлю порядок».#!"
  ## Mend the Fracture
- coronation_events.0110.desc.mend_the_fracture_oath: "#emp «Культурный раскол в державе слишком долго порождал недовольство. Я объединю народы под знаменем дома [ROOT.Char.GetHouse.GetName], но позволю им сохранить свое наследие».#!"
+ coronation_events.0110.desc.mend_the_fracture_oath: "#emp «Культурный раскол в державе слишком долго порождал недовольство. Я объединю народы под знаменем дома [activity.GetHost.GetHouse.GetName], но позволю им сохранить свое наследие».#!"
  ## Provide for the Warriors
  coronation_events.0110.desc.provide_for_the_warriors_oath: "#emp «Воины державы [activity.GetHost.GetPrimaryTitle.GetNameNoTier] — мой меч и мой щит. Я прослежу, чтобы у них было все необходимое для защиты наших земель».#!"
  ## Provide for the Faithful
- coronation_events.0110.desc.provide_for_the_faithful_oath: "#emp «Верующие державы [activity.GetHost.GetPrimaryTitle.GetNameNoTier] являются ее опорой. Я прослежу, чтобы их мирские нужды были удовлетворены и они оставались преданными служителями [ROOT.Char.GetFaith.HighGodNamePossessive] и заботились о спасении державы».#!"
+ coronation_events.0110.desc.provide_for_the_faithful_oath: "#emp «Верующие державы [activity.GetHost.GetPrimaryTitle.GetNameNoTier] являются ее опорой. Я прослежу, чтобы их мирские нужды были удовлетворены и они оставались преданными служителями [ROOT.Char.GetFaith.HighGodNamePossessive], заботясь о спасении державы».#!"
  ## Provide for the Poor
  coronation_events.0110.desc.provide_for_the_poor_oath: "#emp «Бедняки державы [activity.GetHost.GetPrimaryTitle.GetNameNoTier] — это соль земли, светочи нашего мира. Они неустанно трудятся на общее благо. Я прослежу, чтобы даже самые бедные жители моих земель могли жить достойно и с надеждой».#!"
  ## Repent
- coronation_events.0110.desc.repent_oath: "#emp «Что может изменить человеческую природу? Достаточно ли будет моей воли? Увидят ли другие [ROOT.Char.GetFaith.GetAdherentNamePlural|l] и даже [ROOT.Char.GetFaith.HighGodName], что я могу искупить свои грехи? Возможно, глупо даже пытаться, но не попытаться было бы величайшим грехом».#!"
+ coronation_events.0110.desc.repent_oath: "#emp «Что может изменить человеческую природу? Достаточно ли будет моей воли? Увидят ли другие [activity.GetHost.GetFaith.GetAdherentNamePlural|l] и даже [activity.GetHost.GetFaith.HighGodName], что я могу искупить свои грехи? Возможно, глупо даже пытаться, но не попытаться было бы величайшим грехом».#!"
  ## Other
  coronation_events.0110.desc.fallback: "#emp «Потомки будут вспоминать мое правление как начало золотого века державы [activity.GetHost.GetPrimaryTitle.GetNameNoTier]».#!"
  coronation_events.0110.desc.outro: ""
@@ -350,7 +355,7 @@
  diplomacy_oath_2_tooltip: "Я приношу [Concept('oath', 'обет')|E] #V укрепить династию#!:\n\t$EFFECT_LIST_BULLET$Нужно иметь не менее #V 7#! [Concept('legitimate', 'законных')|E] [Concept('children', 'детей')|E] #weak (сейчас: [host.MakeScope.ScriptValue('children_oath_value')|V0]/#V 7#!)#!\n\t$EFFECT_LIST_BULLET$Необходимо выполнить в течение #V 30 лет#!\n\t$EFFECT_LIST_BULLET$Награды: [legitimacy_i][Concept('legitimacy', 'легитимность')|E], [prestige_i][Concept('prestige', 'престиж')|E], [dynasty_prestige_i][Concept('dynasty_prestige', 'признание')|E] и модификатор «[GetModifier('oath_of_children').GetNameWithTooltip]»"
  ## Martial
  martial_oath_1_tooltip: "Я приношу [Concept('oath', 'обет')|E] #V объединить державу [host.GetPrimaryTitle.GetNameNoTierNoTooltip]#!:\n\t$EFFECT_LIST_BULLET$Держава [host.GetPrimaryTitle.GetName] должна [Concept('completely_control', 'полностью контролировать')|E] свои [Concept('de_jure', 'де-юре')|E] границы #low (сейчас [host.MakeScope.ScriptValue('oath_reconquest_value_1')|V0]/[host.MakeScope.ScriptValue('oath_reconquest_value_2')|V0])#!\n$EFFECT_LIST_BULLET$Необходимо выполнить в течение #V 20 лет#!\n$EFFECT_LIST_BULLET$Награды: [legitimacy_i][legitimacy|El], [prestige_i][prestige|El] и модификатор «[GetModifier('oath_of_reconquest').GetNameWithTooltip]»"
- oath_reconquest_tooltip: "[Concept('completely_control', 'Полностью контролировать')|E] [Concept('de_jure', 'де-юре')|E] земли державы [root_scope.GetPrimaryTitle.GetName] #low ([root_scope.MakeScope.ScriptValue('oath_reconquest_value_1')]/[root_scope.MakeScope.ScriptValue('oath_reconquest_value_2')])#!"
+ oath_reconquest_tooltip: "Добейтесь [Concept('completely_control', 'полного контроля')|E] [Concept('de_jure', 'де-юре')|E] над титулом [THIS.Var('oath_reconquest_title').Title.GetName] #low ([root_scope.MakeScope.ScriptValue('oath_reconquest_value_1')]/[root_scope.MakeScope.ScriptValue('oath_reconquest_value_2')])#!"
  martial_oath_2_tooltip: "Я приношу [Concept('oath', 'обет')|E] #V расширить державу#!:\n\t$EFFECT_LIST_BULLET$Размер [Concept('realm', 'державы')|E] должен составлять хотя бы [host.MakeScope.ScriptValue('oath_conquest_value_1')|V0] #low (сейчас [host.MakeScope.ScriptValue('oath_conquest_value_2')|V0])#!\n$EFFECT_LIST_BULLET$Необходимо выполнить в течение #V 20 лет#!\n$EFFECT_LIST_BULLET$Выберите между бонусом для [Concept('capital', 'столицы')|E] и переходом [Concept('de_jure', 'де-юре')|E] земель\n$EFFECT_LIST_BULLET$Награды: [legitimacy_i][legitimacy|El], [prestige_i][prestige|El] и модификатор «[GetModifier('oath_of_conquest').GetNameWithTooltip]»"
  ## Stewardship
  stewardship_oath_1_tooltip: "Я приношу [Concept('oath', 'обет')|E] #V хранить мир#!:\n\t$EFFECT_LIST_BULLET$Нужно прожить в мире не менее #V 5 лет#! подряд\n\t$EFFECT_LIST_BULLET$Необходимо выполнить в течение #V 50 лет#!\n\t$EFFECT_LIST_BULLET$Награды: [legitimacy_i][Concept('legitimacy', 'легитимность')|E], [prestige_i][Concept('prestige', 'престиж')|E], [development_i][Concept('development', 'развитие')|E] и модификатор «[GetModifier('oath_of_peace').GetNameWithTooltip]»"
@@ -576,7 +581,7 @@
  greatest_hunter_oath_decision_confirm: "Я охотник, не знающий себе равных"
  greatest_hunter_decision_l3_trigger: "#V 3#! раза провести успешную #V легендарную#! [GetActivityType('activity_hunt').GetTextIcon]#TOOLTIP:ACTIVITY_TYPE,activity_hunt #L охоту#!#! ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/3)"
  greatest_hunter_decision_l1_trigger: "#V Один#! раз провести успешную #V легендарную#! [GetActivityType('activity_hunt').GetTextIcon]#TOOLTIP:ACTIVITY_TYPE,activity_hunt #L охоту#!#! ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/1)"
- greatest_hunter_decision_r10_trigger: "#V 10#! раз провести успешную [GetActivityType('activity_hunt').GetTextIcon]#TOOLTIP:ACTIVITY_TYPE,activity_hunt #L охоту#!#! ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/10)"
+ greatest_hunter_decision_r10_trigger: "#V 10#! раз провести успешную [GetActivityType('activity_hunt').GetTextIcon]#TOOLTIP:ACTIVITY_TYPE,activity_hunt #L охоту#!#! ([THIS.Char.MakeScope.Var('greatest_hunter_oath_r_counter').GetValue|0]/10)"
  greatest_hunter_decision_trigger_2: "У вас есть [Concept('artifact', 'артефакт')|E]-#V лук#!"
  greatest_hunter_decision_no_artifact_xp_effect: "Ваш [Concept('artifact', 'артефакт')|E]-#V лук#! дает #V #P 20%#! к [Concept( 'trait_level_track_xp', 'опыту пути развития свойства' )|E] «Венатор» #weak ([GetTrait('lifestyle_hunter').GetName( GetNullCharacter )])#!#!"
  greatest_hunter_decision_no_artifact_stress_effect: "Ваш [Concept('artifact', 'артефакт')|E]-#V лук#! снимает #V #P 15%#! с прироста [Concept('stress', 'стресса')|E]#!"
@@ -584,7 +589,7 @@
  # Heir Preparation
  heir_preparation_oath_decision: "$GetHeirPreparationOathText$ [CoronationTimer('heir_preparation_oath_decision','heir_preparation_oath_decision_timer')]"
  heir_preparation_oath_decision_timer: "\t#weak ([RemainingTime('heir_preparation_oath_timer')])#!"
- heir_preparation_oath_decision_desc: "Я [Select_CString(ROOT.Char.IsFemale, 'дала', 'дал' )] клятву подготовить [Concept('primary_heir', 'первого наследника')|E] к будущему. Величайшей целью моего правления является его преемник. $heir_preparation_oath_decision_desc_extra$"
+ heir_preparation_oath_decision_desc: "Я [Select_CString(ROOT.Char.IsFemale, 'дала', 'дал' )] клятву подготовить наследника к будущему. Величайшим достижением моего правления станет тот, кто придет мне на смену. $heir_preparation_oath_decision_desc_extra$"
  heir_preparation_oath_decision_desc_extra: "\n\n@alert_icon!#alert_trial Осталось [RemainingTime('heir_preparation_oath_timer')] на исполнение [Concept('oath', 'обета')|E]#![IsOngoingCoronationOath('heir_preparation_oath')]"
  heir_preparation_oath_decision_tooltip: "Подготовьте своего [Concept('primary_heir', 'первого наследника')|E] к будущему"
  heir_preparation_oath_decision_confirm: "Наследие в хороших руках"

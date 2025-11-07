@@ -9,8 +9,12 @@ ConstantBuffer( GameSharedConstants )
 	float		FlatMapLerp;
 	float		MapHighlightIntensity;
 	float		SnowHighlightIntensity;
+	float		FlatMapBrightnessIntensity;
 
-	int 		HasFlatMapLightingEnabled;
+	float2 _MapSadowTintNoiseUVTiling;
+	float _MapSadowTintStrength;
+	float _MapSadowTintThresholdMin;
+	float _MapSadowTintThresholdMax;
 
 	// Winter
 	float _SnowValue;
@@ -48,4 +52,8 @@ ConstantBuffer( GameSharedConstants )
 	float _SnowTerrainHeightMax;
 
 	float _DebugSeasonWinter;
+
+	int _HasCloudShadowEnabled;
+	int _HasTreeDitheringEnabled;
+	float Alignment_1; // Alignment
 };

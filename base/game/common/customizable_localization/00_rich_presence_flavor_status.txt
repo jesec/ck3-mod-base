@@ -36,12 +36,7 @@
 	text = { # Epidemic
 		trigger = {
 			any_sub_realm_county = {
-				any_county_province = {
-					any_province_epidemic = {
-						count >= 1
-						outbreak_intensity >= major
-					}
-				}
+				has_province_with_epidemic = { intensity >= major }
 			}
 		}
 		localization_key = rich_presence_epidemic
@@ -210,7 +205,7 @@
 	text = { # Attending Activity
 		trigger = {
 			involved_activity ?= {
-				not = { root = activity_host }
+				root != activity_host
 			}
 		}
 		localization_key = rich_presence_attending_activity
@@ -317,20 +312,20 @@
 	
 	text = { # Iranian Struggle Ending - Strengthening Caliphate
 		trigger = {
-			any_realm_county = {
+			global_var:fp3_struggle_ending ?= flag:fp3_struggle_strengthen_caliphate_ending
+			any_sub_realm_county = {
 				any_county_province = { geographical_region = world_persian_empire }
 			}
-			global_var:fp3_struggle_ending ?= flag:fp3_struggle_strengthen_caliphate_ending
 		}
 		localization_key = rich_presence_fp3_struggle_strengthen_caliphate_ending
 	}
 
 	text = { # Iranian Struggle Ending - Rekindle Iran
 		trigger = {
-			any_realm_county = {
+			global_var:fp3_struggle_ending ?= flag:fp3_struggle_rekindle_iran_ending
+			any_sub_realm_county = {
 				any_county_province = { geographical_region = world_persian_empire }
 			}
-			global_var:fp3_struggle_ending ?= flag:fp3_struggle_rekindle_iran_ending
 		}
 		localization_key = rich_presence_fp3_struggle_rekindle_iran_ending
 	}
@@ -360,7 +355,7 @@
 	
 	text = { # Roman Empire
 		trigger = {
-			has_title = title:e_roman_empire
+			is_roman_emperor_excluding_byzantium_trigger = yes
 		}
 		localization_key = rich_presence_rome
 	}
@@ -390,7 +385,7 @@
 
 	text = { # Nemeses
 		trigger = {
-			num_of_relation_nemesis > 0
+			any_relation = { type = nemesis }
 		}
 		localization_key = rich_presence_enemies
 	}
@@ -418,13 +413,16 @@
 
 	text = { # House Feud
 		setup_scope = {
-			random_owned_story = {
-				limit = {
-					story_type = story_cycle_house_feud
-					has_variable = house_feud_house
-				}
-				var:house_feud_house = {
-					save_scope_as = house
+			house = {
+				save_scope_as = my_house
+				random_house_relation = {
+					limit = { has_house_relation_level = feud }
+					random_relation_house = {
+						limit = {
+							NOT = { this = scope:my_house}
+						}
+						save_scope_as = house
+					}
 				}
 			}
 		}
@@ -477,7 +475,7 @@
 	
 	text = { # Poet
 		trigger = {
-			has_trait = poet
+			has_trait = lifestyle_poet
 		}
 		localization_key = rich_presence_poet
 	}
@@ -541,7 +539,7 @@
 
 	text = { # Admin Government - Scheming
 		trigger = {
-			is_independent_ruler = no
+			top_liege != this
 			government_allows = administrative
 			highest_held_title_tier >= tier_duchy
 			liege = { government_allows = administrative }
@@ -554,7 +552,7 @@
 
 	text = { # Admin Government
 		trigger = {
-			is_independent_ruler = no
+			top_liege != this
 			government_allows = administrative
 			highest_held_title_tier >= tier_duchy
 			liege = { government_allows = administrative }

@@ -21,11 +21,13 @@
 
 @maximum_prestige_winner = 1000
 @maximum_piety_winner = 1000
+@maximum_merit_winner = 1000
 @minimum_prestige_loser = -1000
 @minimum_piety_loser = -1000
 
 @maximum_prestige_winner_ally = 1000
 @maximum_piety_winner_ally = 1000
+@maximum_merit_winner_ally = 1000
 @maximum_prestige_loser_ally = 1000
 @maximum_piety_loser_ally = 1000
 
@@ -83,6 +85,39 @@ modify_all_participants_fame_values = {
 					value = $FAME_BASE$
 					multiply = $WINNER_FAME_SCALE$
 					max = @maximum_prestige_winner
+				}
+			}
+		}
+	}
+	if = {
+		# Award Merit to the victorious attacker
+		limit = {
+			$WINNER$ = scope:attacker
+		}
+		scope:attacker = {
+			if = {
+				limit = {
+					government_allows = merit
+				}
+				change_merit = {
+					value = $FAME_BASE$
+					multiply = $WINNER_FAME_SCALE$
+					max = @maximum_merit_winner
+				}
+			}
+		}
+	}
+	else = {
+		# Award Merit to the victorious defender
+		scope:defender = {
+			if = {
+				limit = {
+					government_allows = merit
+				}
+				change_merit = {
+					value = $FAME_BASE$
+					multiply = $WINNER_FAME_SCALE$
+					max = @maximum_merit_winner
 				}
 			}
 		}
@@ -297,6 +332,107 @@ modify_allies_of_participants_fame_values = {
 			}
 		}
 	}
+	# Award Merit to each participant of the winning side
+	if = {
+		# Award Merit to the victorious attacker's allies.
+		limit = {
+			$WINNER$ = scope:attacker
+		}
+		add_from_contribution_attackers = {
+			merit = {
+				value = $FAME_BASE$
+				multiply = $WINNER_ALLY_FAME_SCALE$
+				max = @maximum_merit_winner_ally
+			}
+		}
+	}
+	else = {
+		# Award Merit to the victorious defender's allies.
+		add_from_contribution_defenders = {
+			merit = {
+				value = $FAME_BASE$
+				multiply = $LOSER_ALLY_FAME_SCALE$
+				max = @maximum_merit_winner_ally
+			}
+		}
+	}
+}
+
+modify_allies_of_participants_fame_both_values = {
+	# Give the allies of both primary participants the appropriate type & amount of 'fame'.
+
+	if = {
+		# Award Piety to the victorious attacker's allies.
+		limit = {
+			$WINNER$ = scope:attacker
+		}
+		add_from_contribution_attackers = {
+			prestige = {
+				value = $PRESTIGE_FAME_BASE$
+				multiply = $WINNER_ALLY_FAME_SCALE$
+				max = @maximum_prestige_winner_ally
+			}
+			piety = {
+				value = $PIETY_FAME_BASE$
+				multiply = $WINNER_ALLY_FAME_SCALE$
+				max = @maximum_piety_winner_ally
+			}
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+		# Award Piety to the defeated defender's allies.
+		add_from_contribution_defenders = {
+			prestige = {
+				value = $PRESTIGE_FAME_BASE$
+				multiply = $LOSER_ALLY_FAME_SCALE$
+				max = @maximum_prestige_loser_ally
+			}
+			piety = {
+				value = $PIETY_FAME_BASE$
+				multiply = $LOSER_ALLY_FAME_SCALE$
+				max = @maximum_piety_loser_ally
+			}
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+	}
+	else = {
+		# Award Piety to the victorious defender's allies.
+		add_from_contribution_defenders = {
+			prestige = {
+				value = $PRESTIGE_FAME_BASE$
+				multiply = $WINNER_ALLY_FAME_SCALE$
+				max = @maximum_prestige_winner_ally
+			}
+			piety = {
+				value = $PIETY_FAME_BASE$
+				multiply = $WINNER_ALLY_FAME_SCALE$
+				max = @maximum_piety_winner_ally
+			}
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+		# Award Piety to the defeated attacker's allies.
+		add_from_contribution_attackers = {
+			prestige = {
+				value = $PRESTIGE_FAME_BASE$
+				multiply = $LOSER_ALLY_FAME_SCALE$
+				max = @maximum_prestige_loser_ally
+			}
+			piety = {
+				value = $PIETY_FAME_BASE$
+				multiply = $LOSER_ALLY_FAME_SCALE$
+				max = @maximum_piety_loser_ally
+			}
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}	
+	}
+
 }
 
 modify_allies_of_participants_fame_values_crusading_claim = {
@@ -362,7 +498,7 @@ add_hook_from_temp_de_jure_liege_to_attacker = {
 	if = {
 		limit = {
 			exists = scope:temp_de_jure_liege
-			NOT = { scope:temp_de_jure_liege = scope:attacker }
+			scope:temp_de_jure_liege != scope:attacker
 			scope:temp_de_jure_liege = { target_is_liege_or_above = scope:attacker }
 			scope:temp_de_jure_liege = {
 				is_ai = yes

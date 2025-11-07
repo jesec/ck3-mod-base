@@ -46,7 +46,7 @@ bp1_yearly.8050 = {
         }
         trigger_if = {
             limit = { exists = house }
-            NOT = { this = this.house.house_head }
+            this != this.house.house_head
         }
     }
 
@@ -181,21 +181,21 @@ bp1_yearly.8060 = {
             limit = {
                 any_in_list = {
                     list = captured_rivals
-                    NOT = { this = scope:captured_rival }
+                    this != scope:captured_rival
                 }
             }
             random_in_list = {
                 list = captured_rivals
                 limit = {
-                    NOT = { this = scope:captured_rival }
+                    this != scope:captured_rival
                     has_relation_nemesis = root
                 }
                 alternative_limit = {
-                     NOT = { this = scope:captured_rival }
+                     this != scope:captured_rival
                      this = scope:primary_combat_loser
                 }
                 alternative_limit = {
-                     NOT = { this = scope:captured_rival }
+                     this != scope:captured_rival
                      is_landed = yes
                 }
                 alternative_limit = { always = yes }
@@ -222,7 +222,7 @@ bp1_yearly.8060 = {
         }
         name = {
             trigger = {
-                NOT = { scope:captured_rival = scope:primary_combat_loser }
+                scope:captured_rival != scope:primary_combat_loser
                 faith = { has_doctrine = unreformed_faith_doctrine }
             }
             text = bp1_yearly.8060.a

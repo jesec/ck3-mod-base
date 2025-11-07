@@ -34,7 +34,15 @@ mongol_invasion_target_character_weight = {
 					geographical_region = special_mongol_empire_start_region
 				}
 			}
-			add = 10000
+			add = 240000
+		}
+		else_if = {
+			limit = {
+				title_province = {
+					geographical_region = special_mongol_empire_conquest_region_prio_1_alpha
+				}
+			}
+			add = 80000
 		}
 		else_if = {
 			limit = {
@@ -42,7 +50,7 @@ mongol_invasion_target_character_weight = {
 					geographical_region = special_mongol_empire_conquest_region_prio_1
 				}
 			}
-			add = 5000
+			add = 40000
 		}
 		else_if = {
 			limit = {
@@ -50,7 +58,7 @@ mongol_invasion_target_character_weight = {
 					geographical_region = special_mongol_empire_conquest_region_prio_2
 				}
 			}
-			add = 3000
+			add = 24000
 		}
 		else_if = {
 			limit = {
@@ -58,7 +66,7 @@ mongol_invasion_target_character_weight = {
 					geographical_region = special_mongol_empire_conquest_region_prio_3
 				}
 			}
-			add = 2000
+			add = 16000
 		}
 		else_if = {
 			limit = {
@@ -66,7 +74,7 @@ mongol_invasion_target_character_weight = {
 					geographical_region = special_mongol_empire_conquest_region_prio_4
 				}
 			}
-			add = 1000
+			add = 8000
 		}
 		else_if = {
 			limit = {
@@ -74,25 +82,18 @@ mongol_invasion_target_character_weight = {
 					geographical_region = special_mongol_empire_conquest_region_prio_5
 				}
 			}
-			add = 500
+			add = 4000
 		}
 		else_if = {
 			limit = {
 				title_province = {
-					geographical_region = special_mongol_empire_conquest_region_cleanup
+					geographical_region = special_mongol_empire_conquest_region_bonus
 				}
 			}
-			add = 250
-		}
-		else_if = {
-			limit = {
-				title_province = {
-					geographical_region = world_tibet
-				}
-			}
-			add = -100
+			add = 800
 		}
 	}
+	divide = realm_size
 }
 
 # Mongol breakup succession score
@@ -108,8 +109,7 @@ mongol_breakup_succession_score = {
 	# A bonus for being of the same house
 	if = {
 		limit = {
-			exists = house
-			house = scope:old_mongol_emperor.house
+			house ?= scope:old_mongol_emperor.house
 		}
 		add = 50
 	}
@@ -195,7 +195,7 @@ mongol_breakup_succession_score = {
 		limit = {
 			OR = {
 				has_contagious_deadly_disease_trigger = yes
-				has_epidemic_disease_trigger = yes
+				has_trait_with_flag = epidemic_disease
 				health <= poor_health
 				has_trait = infirm
 				has_trait = incapable

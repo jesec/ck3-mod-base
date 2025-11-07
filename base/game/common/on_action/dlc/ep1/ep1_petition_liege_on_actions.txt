@@ -45,6 +45,37 @@ petition_liege_travel_planner_exit = {
 	}
 }
 
+petition_ceremonial_liege_travel_planner_exit = {
+	effect = {
+		send_interface_toast = {
+			type = event_toast_effect_neutral
+			title = petition_liege_costs_refunded
+			left_icon = root
+			remove_decision_cooldown = petition_ceremonial_liege_decision
+			# refund prestige and influence cost
+			if = {
+				limit = { petition_liege_admin_valid_trigger = yes }
+				change_influence_no_experience = standard_activity_cost
+			}
+			else = {
+				add_prestige_no_experience = standard_activity_cost
+			}
+		}
+		if = {
+			limit = { has_variable = petition_liege_scope }
+			remove_variable = petition_liege_scope
+		}
+		if = {
+			limit = { has_variable = petition_type }
+			remove_variable = petition_type
+		}
+		if = {
+			limit = { has_character_flag = petition_liege_character_flag }
+			remove_character_flag = petition_liege_character_flag
+		}
+	}
+}
+
 petition_liege_0101 = {
 	effect = {
 		if = {
@@ -121,6 +152,31 @@ petition_liege_ghosted = {
 			limit = {
 				has_variable = petition_liege_scope 
 			}
+			trigger_event = petition_liege.0009
+		}
+	}
+}
+
+# Petition Ceremonial Liege On Action
+petition_ceremonial_liege_start = {
+	effect = {
+		add_character_flag = petition_ceremonial_liege_character_flag
+		set_variable = {
+			name = petition_ceremonial_liege_scope
+			value = scope:ceremonial_liege
+		}
+		switch = {
+			trigger = has_trait 
+			shy = { add_stress = medium_stress_impact_gain }
+			arrogant = { add_stress = medium_stress_impact_gain }
+		}
+	}
+}
+
+petition_ceremonial_liege_ghosted = {
+	effect = {
+		if = {
+			limit = { has_variable = petition_ceremonial_liege_scope  }
 			trigger_event = petition_liege.0009
 		}
 	}

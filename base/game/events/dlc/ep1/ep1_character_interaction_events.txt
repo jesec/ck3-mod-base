@@ -28,11 +28,10 @@
 scripted_trigger ep1_character_interaction_0001_valid_hostile_relation_trigger = {
 	# Must be at a court of some kind *other* than your own.
 	exists = host
-	NOT = { scope:actor = host }
+	scope:actor != host
 	# And not in scope:actor's prison.
 	NOR = {
-		exists = imprisoner
-		imprisoner = scope:actor
+		imprisoner ?= scope:actor
 	}
 	# Double check that this'd be an appropriate court to send a plant.
 	save_temporary_scope_as = current_target
@@ -53,7 +52,7 @@ scripted_trigger ep1_character_interaction_0001_valid_rival_trigger = {
 	ep1_character_interaction_0001_valid_hostile_relation_trigger = yes
 	OR = {
 		NOT = { exists = scope:actor_nemesis }
-		NOT = { this = scope:actor_nemesis }
+		this != scope:actor_nemesis
 	}
 }
 
@@ -66,7 +65,7 @@ scripted_effect ep1_character_interaction_0001_move_character_and_family_effect 
 		hidden_effect = {
 			if = {
 				limit = {
-					any_traveling_family_member = { count >= 1 }
+					any_traveling_family_member = { }
 				}
 				every_traveling_family_member = {
 					save_temporary_scope_as = family_to_shunt

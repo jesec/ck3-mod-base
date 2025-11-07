@@ -100,9 +100,7 @@ apa_taught_repair = {
 		}
 		random_attending_character = {
 			limit = {
-				NOT = {
-					this = scope:first
-				}
+				this != scope:first
 			}
 			save_scope_as = second
 		}
@@ -260,7 +258,7 @@ apa_lauded_food_camp = {
 			}
 		}
 		any_attending_character = {
-			NOT = { this = scope:host }
+			this != scope:host
 			is_physically_able_ai_adult = yes
 			OR = {
 				likes_character_trigger = { CHARACTER = scope:host }
@@ -287,7 +285,7 @@ apa_lauded_food_camp = {
 
 		random_attending_character = {
 			limit = {
-				NOT = { this = scope:host }
+				this != scope:host
 				is_physically_able_ai_adult = yes
 				OR = {
 					likes_character_trigger = { CHARACTER = scope:host }
@@ -478,9 +476,7 @@ apa_cultural_acceptance = {
 		}
 		any_attending_character = {
 			is_physically_able_ai_adult = yes
-			NOT = {
-				culture = scope:attendee_1.culture
-			}
+			culture != scope:attendee_1.culture
 		}
 	}
 
@@ -508,9 +504,7 @@ apa_cultural_acceptance = {
 		random_attending_character = {
 			limit = {
 				is_physically_able_ai_adult = yes
-				NOT = {
-					culture = scope:first.culture
-				}
+				culture != scope:first.culture
 			}
 			save_scope_as = second
 		}
@@ -1034,7 +1028,7 @@ apa_fireside_chat_shared_drinks = {
 		random_attending_character = {
 			limit = {
 				is_physically_able_ai_adult = yes
-				NOT = { this = scope:first }
+				this != scope:first
 			}
 			save_scope_as = second
 		}
@@ -1129,7 +1123,7 @@ apa_fireside_chat_inspiring_speech = {
 		random_attending_character = {
 			limit = {
 				is_physically_able_ai_adult = yes
-				NOT = { this = scope:first }
+				this != scope:first
 			}
 			save_scope_as = second
 		}
@@ -1160,9 +1154,7 @@ apa_camp_party_sad_lonesome = {
 		is_current_phase_active = yes
 		any_attending_character = {
 			count = 0
-			NOT = {
-				this = scope:activity.activity_host
-			}
+			this != scope:activity.activity_host
 		}
 		scope:activity.activity_host ?= {
 			NOT = {
@@ -1208,9 +1200,7 @@ apa_camp_party_shadows_in_the_dark = {
 		is_current_phase_active = yes
 		any_attending_character = {
 			count <= 1
-			NOT = {
-				this = scope:activity.activity_host
-			}
+			this != scope:activity.activity_host
 		}
 		scope:activity.activity_host ?= {
 			NOT = {
@@ -1255,9 +1245,7 @@ apa_camp_party_fortress_of_solitude = {
 		is_current_phase_active = yes
 		any_attending_character = {
 			count = 0
-			NOT = {
-				this = scope:activity.activity_host
-			}
+			this != scope:activity.activity_host
 		}
 		scope:activity.activity_host ?= {
 			NOT = {
@@ -1310,7 +1298,7 @@ apa_camp_party_lecture = {
 		}
 		any_attending_character = {
 			is_physically_able_ai_adult = yes
-			NOT = { this = scope:attendee_1 }
+			this != scope:attendee_1
 			martial < scope:attendee_1.learning
 		}
 	}
@@ -1338,9 +1326,7 @@ apa_camp_party_lecture = {
 				root = {
 					any_attending_character = {
 						is_physically_able_ai_adult = yes
-						NOT = {
-							this = scope:first_temp
-						}
+						this != scope:first_temp
 						learning < scope:first_temp.learning
 						save_temporary_scope_as = second_temp
 					}
@@ -1383,7 +1369,7 @@ apa_camp_party_tales_of_distant_lands = {
 		}
 		any_attending_character = {
 			is_physically_able_ai_adult = yes
-			NOT = { this = scope:attendee_1 }
+			this != scope:attendee_1
 		}
 	}
 
@@ -1412,7 +1398,7 @@ apa_camp_party_tales_of_distant_lands = {
 		random_attending_character = {
 			limit = {
 				is_physically_able_ai_adult = yes
-				NOT = { this = scope:first }
+				this != scope:first
 			}
 			save_scope_as = second
 		}
@@ -1482,7 +1468,7 @@ apa_camp_party_tales_of_war = {
 		}
 		any_attending_character = {
 			is_physically_able_ai_adult = yes
-			NOT = { this = scope:attendee_1 }
+			this != scope:attendee_1
 			martial < scope:attendee_1.martial
 		}
 	}
@@ -1509,9 +1495,7 @@ apa_camp_party_tales_of_war = {
 				save_temporary_scope_as = first_temp
 				root = {
 					any_attending_character = {
-						NOT = {
-							this = scope:first_temp
-						}
+						this != scope:first_temp
 						is_physically_able_ai_adult = yes
 						martial < scope:first_temp.martial
 						save_temporary_scope_as = second_temp
@@ -1573,7 +1557,7 @@ apa_camp_party_tales_of_lands_lost = {
 		random_attending_character = {
 			limit = {
 				is_physically_able_ai_adult = yes
-				NOT = { this = scope:activity.activity_host }
+				this != scope:activity.activity_host
 				dynasty = scope:activity.activity_host.dynasty
 			}
 			save_scope_as = second
@@ -1643,7 +1627,7 @@ apa_camp_party_blademaster_sparring = {
 		}
 		any_attending_character = {
 			is_physically_able_ai_adult = yes
-			NOT = { this = scope:attendee_1 }
+			this != scope:attendee_1
 		}
 	}
 
@@ -1672,7 +1656,7 @@ apa_camp_party_blademaster_sparring = {
 		random_attending_character = {
 			limit = {
 				is_physically_able_ai_adult = yes
-				NOT = { this = scope:first }
+				this != scope:first
 			}
 			save_scope_as = second
 		}
@@ -1733,7 +1717,7 @@ apa_camp_party_tales_of_piety = {
 		}
 		any_attending_character = {
 			is_physically_able_ai_adult = yes
-			NOT = { this = scope:attendee_1 }
+			this != scope:attendee_1
 			faith = scope:attendee_1.faith
 		}
 	}
@@ -1763,7 +1747,7 @@ apa_camp_party_tales_of_piety = {
 		random_attending_character = {
 			limit = {
 				is_physically_able_ai_adult = yes
-				NOT = { this = scope:first }
+				this != scope:first
 				faith = scope:first.faith
 			}
 			save_scope_as = second

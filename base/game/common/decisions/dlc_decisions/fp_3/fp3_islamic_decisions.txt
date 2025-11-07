@@ -3,7 +3,14 @@
 		reference = "gfx/interface/illustrations/decisions/fp3/fp3_decision_supremacy.dds"
 	}
 	decision_group_type = major
-	ai_check_interval = 120
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
 	sort_order = 30
 
 	title = {
@@ -31,8 +38,7 @@
 	is_shown = {
 		has_fp3_dlc_trigger = yes
 		faith = { has_doctrine = muhammad_succession_muhakkima_doctrine	}
-		exists = capital_province
-		capital_province = {
+		capital_province ?= {
 			OR = {
 				geographical_region = world_persian_empire
 				geographical_region = world_middle_east 
@@ -169,7 +175,7 @@
 		trigger_event = fp3_decision.0011
 		every_player = {
 			limit = {
-				NOT = { this = scope:avenger }
+				this != scope:avenger
 				is_within_diplo_range = { CHARACTER = scope:avenger }
 			}
 			trigger_event = fp3_decision.0012
@@ -197,7 +203,14 @@ fp3_promote_persian_scripture_decision = {
 	decision_group_type = major
 	selection_tooltip = fp3_promote_persian_scripture_decision_tooltip 
 	sort_order = -10
-	ai_check_interval = 120
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
 
 	is_shown = {
 		has_religion = religion:islam_religion
@@ -206,8 +219,7 @@ fp3_promote_persian_scripture_decision = {
 		NOT = {
 			culture = { has_cultural_pillar = heritage_arabic }		
 		}
-		exists = capital_province
-		capital_province = { geographical_region = world_persian_empire	}
+		capital_province ?= { geographical_region = world_persian_empire }
 		
 		NOT = {
 			is_target_in_global_variable_list = {
@@ -218,7 +230,7 @@ fp3_promote_persian_scripture_decision = {
 	}
 
 	is_valid = {
-		is_independent_ruler = yes
+		top_liege = this
 		highest_held_title_tier >= tier_kingdom
 		piety_level >= high_piety_level 
 		OR = {
@@ -252,7 +264,24 @@ fp3_promote_persian_scripture_decision = {
 	}
 
 	cost = {
-		gold = 500
+		gold = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = no
+				}
+				add = 500
+			}
+		}
+		treasury = {
+			value = 0
+			if = {
+				limit = {
+					has_treasury = yes
+				}
+				add = 500
+			}
+		}
 		piety = promote_persian_scripture_piety_cost
 	}
 
@@ -311,7 +340,7 @@ fp3_promote_persian_scripture_decision = {
 		modifier = {
 			add = 30
 			exists = root.faith.religious_head 
-			NOT = { this = root.faith.religious_head }
+			this != root.faith.religious_head
 			root.faith.religious_head = { num_sinful_traits >= 1 }		
 		}
 		modifier = { #AI doesn't do it if their Head of Faith is a player, since that'd require additional events

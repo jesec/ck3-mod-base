@@ -229,7 +229,7 @@ ep3_admin_events.0002 = {
 				desc = ep3_admin_events.0002.house
 			}
 		}
-		desc = double_line_break
+		#desc = double_line_break
 		first_valid = {
 			triggered_desc = {
 				trigger = { exists = scope:appointment_succession }
@@ -255,19 +255,23 @@ ep3_admin_events.0002 = {
 	lower_right_portrait = {
 		character = root.liege
 		trigger = {
-			NOT = { root.liege = scope:previous_governor }
+			root.liege != scope:previous_governor
 		}
 	}
 	cooldown = { days = 1 }
 
 	trigger = {
-		is_governor = yes
+		this != top_liege
+		any_held_title = {
+			tier = root.highest_held_title_tier
+			is_landless_type_title = no
+			is_noble_family_title = no
+		}
 		NOT = { has_character_flag = successful_governorship_elevation }
 	}
 
 	immediate = {
 		play_sound_effect = "event:/DLC/EP3/SFX/Stingers/Byzantine_Flavor/ep3_mx_sting_byzantineflavor_become_governor"
-
 		ordered_held_title = {
 			limit = {
 				tier = root.highest_held_title_tier
@@ -298,8 +302,70 @@ ep3_admin_events.0002 = {
 	}
 
 	option = {
+		name = ep3_admin_events.0002.prosperity
+		trigger = {
+			is_landed = yes
+			government_has_flag = government_has_merit
+		}
+		flavor = building_buildings_give_merit_tt
+		custom_tooltip = ep3_admin_events.0002.tt
+		add_character_modifier = {
+			modifier = tgp_diligent_governor_modifier
+			years = 3
+		}
+		
+		stress_impact = {
+			lazy = medium_stress_impact_gain
+			diligent = miniscule_stress_impact_loss
+		}
+		ai_chance = {
+			base = 0
+		}
+	}
+
+	option = {
+		name = ep3_admin_events.0002.inspection
+		trigger = {
+			is_landed = yes
+			government_has_flag = government_has_merit
+			any_held_title = {
+				tier = tier_county
+				is_landless_type_title = no
+				count >= 1
+			}
+		}
+		flavor = inspections_give_merit_tt
+		custom_tooltip = ep3_admin_events.0002.tt
+		custom_tooltip = ep3_admin_events.0002.tt_inspection
+		
+		add_character_flag = free_inspection
+		
+		stress_impact = {
+			lazy = medium_stress_impact_gain
+			diligent = miniscule_stress_impact_loss
+		}		
+		ai_chance = {
+			base = 0
+		}
+	}
+
+	option = {
 		name = ep3_admin_events.0002.a
 		custom_tooltip = ep3_admin_events.0002.tt
+		stress_impact = {
+			base = miniscule_stress_impact_loss
+		}
+	}
+	
+	after = {
+		if = {
+			limit = {
+				is_ai = yes
+			}
+			domicile ?= {
+				move_domicile = root.capital_province
+			}
+		}
 	}
 }
 
@@ -362,7 +428,7 @@ ep3_admin_events.0004 = {
 		}
 	}
 	theme = landless_adventurer
-	override_background = { reference = ep3_mediterranean_estate }
+	override_background = { reference = estate }
 	left_portrait = {
 		character = root
 		triggered_animation = {

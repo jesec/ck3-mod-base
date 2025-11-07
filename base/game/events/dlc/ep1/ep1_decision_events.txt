@@ -46,7 +46,7 @@ ep1_decision.0201 = {
 			save_scope_as = ling_cul_1
 		}
 		# Save liege as example to fetch faiths if relevant
-		if = { 
+		if = {
 			limit = {
 				exists = scope:language_scheme_type
 				liege = { has_court_language_of_culture = root.liege.culture }
@@ -59,18 +59,18 @@ ep1_decision.0201 = {
 		}
 		# Find 2nd culture that speaks target language natively
 		if = {
-			limit = { 
+			limit = {
 				any_culture_global = {
 					exists = culture_head
 					scope:target_court_language = { has_court_language_of_culture = prev }
-					NOT = { THIS = scope:ling_cul_1 }
+					THIS != scope:ling_cul_1
 				}
 			}
-			random_culture_global = { 
+			random_culture_global = {
 				limit = {
 					exists = culture_head
 					scope:target_court_language = { has_court_language_of_culture = prev }
-					NOT = { THIS = scope:ling_cul_1 }
+					THIS != scope:ling_cul_1
 				}
 				save_scope_as = ling_cul_2
 			}
@@ -159,7 +159,7 @@ ep1_decision.0201 = {
 			}
 		}
 	}
-	
+
 	# Cheaper linguist; less learning, not a good teacher
 	option = {
 		name = ep1_decision.0201.b
@@ -179,7 +179,7 @@ ep1_decision.0201 = {
 			}
 		}
 	}
-	
+
 	# I know a good tutor through scholarly circles!
 	option = {
 		name = ep1_decision.0201.c
@@ -190,7 +190,7 @@ ep1_decision.0201 = {
 			base = 100
 		}
 	}
-	
+
 	# I'm cheap, get me anyone who can vaguely speak my language
 	option = {
 		name = ep1_decision.0201.d
@@ -205,7 +205,7 @@ ep1_decision.0201 = {
 			}
 		}
 	}
-	
+
 	# On seconds thoughts, I won't hire a linguist at all...
 	option = {
 		name = ep1_decision.0201.e
@@ -286,14 +286,14 @@ ep1_decision.0101 = {
 			base = 100
 		}
 	}
-	
+
 	# Everyone who doesn't have a job or a close blood tie, *out*!
 	option = {
 		name = ep1_decision.0101.b
 		trigger = {
 			# If you have no spare rooms at all, you can dismiss useless courtiers for a bit extra.
 			amenity_level = {
-				type = court_lodging_standards
+				target = court_lodging_standards
 				value <= low_amenity_level
 			}
 		}
@@ -315,7 +315,7 @@ ep1_decision.0101 = {
 			base = 100
 		}
 	}
-	
+
 	# On seconds thoughts, this is unbecoming...
 	option = {
 		name = ep1_decision.0101.c
@@ -349,7 +349,7 @@ scripted_trigger ep1_decision_0111_list_builder_guts_trigger = {
 	holder = {
 		# Filter out anyone who has the right rank but lacks a mechanical royal court.
 		has_royal_court = yes
-		NOT = { this = root }
+		this != root
 		# Can the two communicate?
 		in_diplomatic_range = root
 	}
@@ -501,7 +501,7 @@ ep1_decision.0111 = {
 			#opinion_modifier = { opinion_target = scope:option_1 }
 		}
 	}
-	
+
 	# I find the architecture of scope:option_2 enthralling!
 	option = {
 		name = {
@@ -525,7 +525,7 @@ ep1_decision.0111 = {
 			#opinion_modifier = { opinion_target = scope:option_2 }
 		}
 	}
-	
+
 	# Perhaps a scope:option_3ikkan lounge?
 	option = {
 		name = {

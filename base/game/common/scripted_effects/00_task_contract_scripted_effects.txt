@@ -20,3 +20,16 @@ laamp_base_contract_schemes_set_up_outcome_immediate_effect = {
 		}
 	}
 }
+
+governor_contract_travel_or_progress_effect = {
+	if = {
+		limit = { location != $DESTINATION$ }
+		start_travel_plan = {
+			destination = $DESTINATION$
+			on_arrival_event = $ARRIVAL_EVENT$
+			on_travel_planner_cancel_event = governor_contract_event.1012
+			on_arrival_destinations = all_but_last
+		}
+	}
+	else = { trigger_event = $ARRIVAL_EVENT$ }
+}

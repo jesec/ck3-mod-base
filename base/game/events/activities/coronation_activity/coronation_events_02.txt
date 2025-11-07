@@ -16,7 +16,8 @@ coronation_events.3001 = {
 
 	trigger = {
 		any_vassal = {
-			exists = this
+			coronation_events_3001_angry_vassal_trigger = yes
+			count > 1
 		}
 	}
 	
@@ -31,6 +32,7 @@ coronation_events.3001 = {
 		every_vassal = {
 			limit = {
 				coronation_events_3001_angry_vassal_trigger = yes
+				NOT = { this = scope:main_vassal }
 			}
 			add_to_list = angry_vassals
 		}

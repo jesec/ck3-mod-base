@@ -71,6 +71,18 @@ ImprisonCharacterDeclineSummary = {
 	type = character
 
 	text = {
+		localization_key = imprison_decline_summary_war_bloc
+		trigger = {
+			is_playable_character = yes
+			primary_title.tier > tier_barony
+			exists = house.house_confederation
+			trigger_if = {
+				limit = { exists = root.liege.house.house_confederation }
+				NOT = { root.liege.house.house_confederation = house.house_confederation }
+			}
+		}
+	}
+	text = {
 		localization_key = imprison_decline_summary_war
 		trigger = {
 			is_playable_character = yes
@@ -122,6 +134,17 @@ RevokeTitleDeclineSummary = {
 			OR = {
 				highest_held_title_tier = tier_barony
 				is_imprisoned_by = scope:second
+			}
+		}
+	}
+
+	text = {
+		localization_key = general_rebellion_decline_summary_bloc
+		trigger = {
+			exists = house.house_confederation
+			trigger_if = {
+				limit = { exists = scope:second.house.house_confederation }
+				NOT = { scope:second.house.house_confederation = house.house_confederation }
 			}
 		}
 	}

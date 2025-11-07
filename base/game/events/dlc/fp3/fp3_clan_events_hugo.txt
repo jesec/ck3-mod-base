@@ -15,7 +15,7 @@ scripted_trigger is_bad_tulip_stealing_child = {
 	any_close_or_extended_family_member = {
 		is_available_ai_adult = yes
 		house = root.house
-		NOT = { this = root }
+		this != root
 	}
 }
 
@@ -49,7 +49,7 @@ fp3_clan.3000 = {
 	trigger = {
 		has_fp3_dlc_trigger = yes
 		is_landed_or_landless_administrative = yes
-		culture = { has_cultural_tradition = tradition_gardening }
+		culture = { has_cultural_parameter = can_appoint_court_gardener }
 		house = { any_house_member = { is_bad_tulip_stealing_child = yes } }
 	}
 
@@ -61,7 +61,7 @@ fp3_clan.3000 = {
 				save_scope_as = fp3_clan_3000_bad_child
 
 				random_close_or_extended_family_member = {
-					limit = { NOT = { this = root } }
+					limit = { this != root }
 					save_scope_as = fp3_clan_3000_random_family_member
 				}
 			}

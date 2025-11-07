@@ -17,25 +17,23 @@
 			has_character_flag = bp2_inspired_culture_for_conquest
 			has_variable = mpo_desperate_stance_invasion_cb_enable_var
 			ai_should_get_extreme_conqueror_bonuses = yes
+			AND = {
+				house ?= { has_house_head_parameter = has_unlimited_invasion_cb }
+				is_house_head = yes
+			}
 		}
 		trigger_if = {
-			limit = {
-				NOT = { ai_should_get_extreme_conqueror_bonuses = yes }
-			}
-			NOT = {
-				has_character_flag = used_lifetime_invasion
-			}
+			limit = { ai_should_get_extreme_conqueror_bonuses = no }
+			NOT = { has_character_flag = used_lifetime_invasion }
 		}
-		NOT = {
-			government_has_flag = government_is_landless_adventurer
-		}
+		NOT = { government_has_flag = government_is_landless_adventurer }
 	}
 
 	allowed_for_character_display_regardless = {
 		trigger_if = {
 			limit = {
 				has_character_flag =  bp2_inspired_culture_for_conquest
-				NOT = { ai_should_get_extreme_conqueror_bonuses = yes }
+				ai_should_get_extreme_conqueror_bonuses = no
 			}
 			prestige_level >= 0
 		}
@@ -48,7 +46,7 @@
 				culture = {
 					has_cultural_parameter = cb_lower_prestige_level_requirement
 				}
-				NOT = { ai_should_get_extreme_conqueror_bonuses = yes }
+				ai_should_get_extreme_conqueror_bonuses = no
 			}
 			prestige_level >= 2
 		}
@@ -65,14 +63,12 @@
 						has_cultural_parameter = cb_lower_prestige_level_requirement
 					}
 				}
-				NOT = { ai_should_get_extreme_conqueror_bonuses = yes }
+				ai_should_get_extreme_conqueror_bonuses = no
 			}
 			prestige_level >= 3
 		}
 		trigger_else_if = {
-			limit = {
-				ai_should_get_extreme_conqueror_bonuses = yes
-			}
+			limit = { ai_should_get_extreme_conqueror_bonuses = yes }
 		}
 		trigger_else = {
 			prestige_level >= 4
@@ -82,6 +78,7 @@
 			text = struggle_involvement_cb_check_failure
 			struggle_blocks_invasion_conquest_cb_trigger = yes
 		}
+		tgp_japan_offensive_wars_ban_trigger = yes
 	}
 	
 	allowed_against_character = {
@@ -102,25 +99,15 @@
 	}
 	ai_score_mult = {
 		value = viking_conquest_ai_score_value
-
+		# HOUSE RELATIONS
+		add = house_relation_ai_score_value
 		# AI in struggles act insularly for wars that don't have a familial or legal basis.
 		multiply = struggle_wars_prioritise_struggle_targets_value
 		# Tell the Romans to stop going adventuring into the steppe for no gods-damned reason.
 		multiply = byzantium_conquests_ai_score_value
 		multiply = muslim_invasions_prefer_nonmuslims_ai_score_value
-
-		#Declaring war on the frankokratia leader can really ruin the whole thing
-		if = {
-			limit = {
-				scope:defender = {
-					any_owned_story = {
-						story_type = frankokratia_story
-						NOT = { has_variable = franko_war_complete }
-					}
-				}
-			}
-			multiply = 0
-		}
+		
+		add = frankokratia_leader_protection_value #Set back to 0. Declaring war on the frankokratia leader can really ruin the whole thing
 	}
 
 	valid_to_start = {
@@ -181,16 +168,44 @@
 
 	cost = {
 		piety = {
-			value = 0
-			add = common_cb_impious_piety_cost
+			if = {
+				limit = {
+					scope:attacker = {
+						NOT = {
+							government_has_flag = government_is_mandala
+							house ?= { has_house_head_parameter = has_unlimited_invasion_cb }
+							is_house_head = yes
+						}
+					}
+				}
+				value = common_cb_impious_piety_cost
+			}
+			else = {
+				value = {
+					value = 2000
+					desc = CB_BASE_COST
+				}
+				multiply = common_cb_prestige_cost_multiplier
+			}
 		}
 		prestige = {
-			add = {
-				value = 2000
-				desc = CB_BASE_COST
+			if = {
+				limit = {
+					scope:attacker = {
+						government_has_flag = government_is_mandala
+						house ?= { has_house_head_parameter = has_unlimited_invasion_cb }
+						is_house_head = yes
+					}
+				}
+				value = 0
 			}
-
-			multiply = common_cb_prestige_cost_multiplier
+			else = {
+				value = {
+					value = 2000
+					desc = CB_BASE_COST
+				}
+				multiply = common_cb_prestige_cost_multiplier
+			}
 		}
 	}
 	
@@ -290,6 +305,9 @@
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_victory_effects = yes
 	}
 
 	on_white_peace_desc = {
@@ -357,9 +375,12 @@
 
 		# Influence
 		add_influence_attacker_defeat_effect = yes
-
-		#EP2 accolade glory gain for winning against higher ranked enemy
-		scope:defender = { accolade_defender_war_end_glory_gain_high_effect = yes }
+		
+		scope:defender = { 
+			mandala_peacemaker_perk_serenity_effect = yes
+			#EP2 accolade glory gain for winning against higher ranked enemy
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
 
 		# Prestige loss for the attacker
 		scope:attacker = {
@@ -401,6 +422,9 @@
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_defeat_effects = yes
 	}
 	
 	transfer_behavior = transfer
@@ -437,15 +461,13 @@ clan_invasion_war = {
 	allowed_for_character = {
 		government_has_flag = government_is_clan
 		NAND = {
-			exists = house
-			house = {
+			house ?= {
 				has_house_unity_parameter = unity_disable_invasions
 			}
 		}
 		trigger_if = {
 			limit = {
-				exists = house
-				house = {
+				house ?= {
 					has_house_unity_parameter = unity_multiple_invasions
 				}
 			}
@@ -453,8 +475,7 @@ clan_invasion_war = {
 		}
 		trigger_else_if = {
 			limit = {
-				exists = house
-				house = {
+				house ?= {
 					has_house_unity_parameter = unity_unlimited_invasions
 				}
 			}
@@ -505,6 +526,7 @@ clan_invasion_war = {
 			text = struggle_involvement_cb_check_failure
 			struggle_blocks_invasion_conquest_cb_trigger = yes
 		}
+		tgp_japan_offensive_wars_ban_trigger = yes
 	}
 	
 	allowed_against_character = {
@@ -523,25 +545,15 @@ clan_invasion_war = {
 
 	ai_score_mult = {
 		value = 1
-
+		# HOUSE RELATIONS
+		add = house_relation_ai_score_value
 		# AI in struggles act insularly for wars that don't have a familial or legal basis.
 		multiply = struggle_wars_prioritise_struggle_targets_value
 		# Tell the Romans to stop going adventuring into the steppe for no gods-damned reason.
 		multiply = byzantium_conquests_ai_score_value
 		multiply = muslim_invasions_prefer_nonmuslims_ai_score_value
-
-		#Declaring war on the frankokratia leader can really ruin the whole thing
-		if = {
-			limit = {
-				scope:defender = {
-					any_owned_story = {
-						story_type = frankokratia_story
-						NOT = { has_variable = franko_war_complete }
-					}
-				}
-			}
-			multiply = 0
-		}
+		
+		add = frankokratia_leader_protection_value #Set back to 0. Declaring war on the frankokratia leader can really ruin the whole thing
 	}
 	
 	valid_to_start = {
@@ -793,6 +805,9 @@ clan_invasion_war = {
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_victory_effects = yes
 	}
 
 	on_white_peace_desc = {
@@ -860,8 +875,11 @@ clan_invasion_war = {
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		#EP2 accolade glory gain for winning against higher ranked enemy
-		scope:defender = { accolade_defender_war_end_glory_gain_high_effect = yes }
+		scope:defender = { 
+			mandala_peacemaker_perk_serenity_effect = yes
+			#EP2 accolade glory gain for winning against higher ranked enemy
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
 
 		# Prestige loss for the attacker
 		scope:attacker = {
@@ -905,6 +923,9 @@ clan_invasion_war = {
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_defeat_effects = yes
 	}
 	
 	transfer_behavior = transfer
@@ -943,6 +964,10 @@ mongol_invasion_war = {
 		this = title:e_mongol_empire.holder
 		prestige_level >= 1
 		has_mpo_dlc_trigger = no
+	}
+
+	allowed_for_character_display_regardless = {
+		tgp_japan_offensive_wars_ban_trigger = yes
 	}
 
 	allowed_against_character = {
@@ -1071,8 +1096,7 @@ mongol_invasion_war = {
 				}
 				limit = {
 					#tier = tier_county
-					exists = holder
-					holder = {
+					holder ?= {
 						OR = {
 							this = scope:defender
 							target_is_liege_or_above = scope:defender
@@ -1144,6 +1168,9 @@ mongol_invasion_war = {
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_victory_effects = yes
 	}
 
 	on_white_peace_desc = {
@@ -1208,8 +1235,11 @@ mongol_invasion_war = {
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		#EP2 accolade glory gain for winning against higher ranked enemy
-		scope:defender = { accolade_defender_war_end_glory_gain_high_effect = yes }
+		scope:defender = { 
+			mandala_peacemaker_perk_serenity_effect = yes
+			#EP2 accolade glory gain for winning against higher ranked enemy
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
 
 		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
 		modify_allies_of_participants_fame_values = {
@@ -1272,6 +1302,9 @@ mongol_invasion_war = {
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_defeat_effects = yes
 	}
 	
 	transfer_behavior = transfer
@@ -1297,18 +1330,7 @@ mongol_invasion_war = {
 
 	ai_score_mult = {
 		value = 1
-		#Declaring war on the frankokratia leader can really ruin the whole thing
-		if = {
-			limit = {
-				scope:defender = {
-					any_owned_story = {
-						story_type = frankokratia_story
-						NOT = { has_variable = franko_war_complete }
-					}
-				}
-			}
-			multiply = 0
-		}
+		add = frankokratia_leader_protection_value #Set back to 0. Declaring war on the frankokratia leader can really ruin the whole thing
 	}
 }
 
@@ -1326,9 +1348,13 @@ mongol_realm_invasion_war = {
 		is_ai = yes # To keep it clean and simple for players
 		prestige_level >= 1
 	}
-	
+
+	allowed_for_character_display_regardless = {
+		tgp_japan_offensive_wars_ban_trigger = yes
+	}
+
 	allowed_against_character = {
-		NOT = { scope:defender.top_liege = scope:attacker }
+		scope:defender.top_liege != scope:attacker
 		scope:attacker = {
 			ALL_FALSE = {
 				top_liege = scope:defender.top_liege
@@ -1568,7 +1594,7 @@ mongol_realm_invasion_war = {
 				limit = {
 					target_is_liege_or_above = scope:attacker
 					any_held_title = {
-						tier = tier_kingdom
+						title_tier = kingdom
 					}
 				}
 				create_title_and_vassal_change = {
@@ -1577,9 +1603,7 @@ mongol_realm_invasion_war = {
 					add_claim_on_loss = yes
 				}
 				every_held_title = {
-					limit = {
-						tier = tier_kingdom
-					}
+					title_tier = kingdom
 					change_title_holder = {
 						holder = scope:attacker
 						change = scope:change_two
@@ -1613,6 +1637,9 @@ mongol_realm_invasion_war = {
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_victory_effects = yes
 	}
 
 	on_white_peace_desc = {
@@ -1677,8 +1704,11 @@ mongol_realm_invasion_war = {
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		#EP2 accolade glory gain for winning against higher ranked enemy
-		scope:defender = { accolade_defender_war_end_glory_gain_very_high_effect = yes }
+		scope:defender = { 
+			mandala_peacemaker_perk_serenity_effect = yes
+			#EP2 accolade glory gain for winning against higher ranked enemy
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
 
 		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
 		modify_allies_of_participants_fame_values = {
@@ -1746,6 +1776,9 @@ mongol_realm_invasion_war = {
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_defeat_effects = yes
 	}
 	
 	transfer_behavior = transfer
@@ -1771,18 +1804,7 @@ mongol_realm_invasion_war = {
 
 	ai_score_mult = {
 		value = 1
-		#Declaring war on the frankokratia leader can really ruin the whole thing
-		if = {
-			limit = {
-				scope:defender = {
-					any_owned_story = {
-						story_type = frankokratia_story
-						NOT = { has_variable = franko_war_complete }
-					}
-				}
-			}
-			multiply = 0
-		}
+		add = frankokratia_leader_protection_value #Set back to 0. Declaring war on the frankokratia leader can really ruin the whole thing
 	}
 }
 
@@ -1796,10 +1818,14 @@ pax_romana_invasion_war = {
 
 	allow_hostages = no
 	allowed_for_character = {
-		this = title:e_roman_empire.holder
+		is_roman_emperor_excluding_byzantium_trigger = yes
 		government_has_flag = government_is_administrative
-		any_owned_story = { story_type = ep3_story_cycle_restoring_rome }
+		any_owned_story = { type = ep3_story_cycle_restoring_rome }
 		prestige_level >= 1
+	}
+
+	allowed_for_character_display_regardless = {
+		tgp_japan_offensive_wars_ban_trigger = yes
 	}
 
 	allowed_against_character = {
@@ -1915,8 +1941,7 @@ pax_romana_invasion_war = {
 					tier > tier_county
 				}
 				limit = {
-					exists = holder
-					holder = {
+					holder ?= {
 						OR = {
 							this = scope:defender
 							target_is_liege_or_above = scope:defender
@@ -1988,6 +2013,9 @@ pax_romana_invasion_war = {
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_victory_effects = yes
 	}
 
 	on_white_peace_desc = {
@@ -2052,8 +2080,11 @@ pax_romana_invasion_war = {
 		# Legitimacy
 		add_legitimacy_attacker_defeat_effect = yes
 
-		#EP2 accolade glory gain for winning against higher ranked enemy
-		scope:defender = { accolade_defender_war_end_glory_gain_high_effect = yes }
+		scope:defender = { 
+			mandala_peacemaker_perk_serenity_effect = yes
+			#EP2 accolade glory gain for winning against higher ranked enemy
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
 
 		# Allies on both sides get full prestige value for helping in the war, based on their war participation.
 		modify_allies_of_participants_fame_values = {
@@ -2116,6 +2147,9 @@ pax_romana_invasion_war = {
 
 		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
 		laamp_as_mercenary_payout_tooltip_effect = yes
+
+		#Mandalas gain or lose piety/devotion depending on Decree
+		mandala_war_defeat_effects = yes
 	}
 	
 	transfer_behavior = transfer
@@ -2141,17 +2175,6 @@ pax_romana_invasion_war = {
 	
 	ai_score_mult = {
 		value = 1
-		#Declaring war on the frankokratia leader can really ruin the whole thing
-		if = {
-			limit = {
-				scope:defender = {
-					any_owned_story = {
-						story_type = frankokratia_story
-						NOT = { has_variable = franko_war_complete }
-					}
-				}
-			}
-			multiply = 0
-		}
+		add = frankokratia_leader_protection_value #Set back to 0. Declaring war on the frankokratia leader can really ruin the whole thing
 	}
 }

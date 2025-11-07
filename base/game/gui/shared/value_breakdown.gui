@@ -15,57 +15,75 @@
 		}
 
 		vbox = {
-			datamodel = "[ValueBreakdown.GetSubValues]"
-			alwaystransparent = no
 			set_parent_size_to_minimum = yes
 			margin = { 20 10 }
-			spacing = 5
 
-			block "list" {}
 
-			block "header" {}
+			vbox = {
+				datamodel = "[ValueBreakdown.GetSubValues]"
+				alwaystransparent = no
+				spacing = 5
 
-			item = {
-				hbox = {
-					name = "value_breakdown"
-					layoutpolicy_horizontal = expanding
+				block "list" {}
 
-					text_single = {
-						name = "name"
+				block "header" {}
+
+				item = {
+					hbox = {
+						name = "value_breakdown"
 						layoutpolicy_horizontal = expanding
-						text = "[ValueBreakdown.GetName]"
-						min_width = 180
-						max_width = 275
-						fonttintcolor = "[TooltipInfo.GetTintColor]"
-						margin_right = 10
-					}
 
-					text_single= {
-						visible = "[And(ValueBreakdown.HasTooltip, ValueBreakdown.ShouldShowValue)]"
-						name = "value_with_tooltip"
-						text = "[ValueBreakdown.GetValue|L]"
-						align = right
-						fonttintcolor = "[TooltipInfo.GetTintColor]"
+						text_single = {
+							name = "name"
+							layoutpolicy_horizontal = expanding
+							text = "[ValueBreakdown.GetName]"
+							min_width = 180
+							max_width = 275
+							fonttintcolor = "[TooltipInfo.GetTintColor]"
+							margin_right = 10
+						}
 
-						using = tooltip_below
+						text_single= {
+							visible = "[And(ValueBreakdown.HasTooltip, ValueBreakdown.ShouldShowValue)]"
+							name = "value_with_tooltip"
+							text = "[ValueBreakdown.GetValue|L]"
+							align = right
+							fonttintcolor = "[TooltipInfo.GetTintColor]"
 
-						tooltipwidget = {
-							recursive = yes
+							using = tooltip_below
 
-							widget_value_breakdown_tooltip = {}
+							tooltipwidget = {
+								recursive = yes
+
+								widget_value_breakdown_tooltip = {}
+							}
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+
+							visible = "[And( Not(ValueBreakdown.HasTooltip), ValueBreakdown.ShouldShowValue )]"
+							name = "value_with_no_tooltip"
+							text = "[ValueBreakdown.GetValue]"
+							align = right
+							fonttintcolor = "[TooltipInfo.GetTintColor]"
 						}
 					}
-
-					text_single = {
-						layoutpolicy_horizontal = expanding
-
-						visible = "[And( Not(ValueBreakdown.HasTooltip), ValueBreakdown.ShouldShowValue )]"
-						name = "value_with_no_tooltip"
-						text = "[ValueBreakdown.GetValue]"
-						align = right
-						fonttintcolor = "[TooltipInfo.GetTintColor]"
-					}
 				}
+			}
+
+			# Things like "click to X", hotkeys etc
+			textbox = {
+				name = "input_info"
+				layoutpolicy_horizontal = expanding
+				margin_top = 4
+				margin_bottom = 8
+				using = DefaultTooltipText
+				multiline = yes
+				block "input_info_text" {
+					visible = no
+				}
+				fonttintcolor = "[TooltipInfo.GetTintColor]"
 			}
 		}
 	}
@@ -81,9 +99,9 @@
 					layoutpolicy_horizontal = expanding
 					block "header_text" {
 						text = "[ValueBreakdown.GetName]"
+						visible = "[Not( StringIsEmpty( ValueBreakdown.GetName ) )]"
 					}
 					default_format = "#T"
-					visible = "[Not( StringIsEmpty( ValueBreakdown.GetName ) )]"
 				}
 			}
 		}
@@ -243,6 +261,11 @@
 	type widget_resource_value_tooltip = widget {
 		alwaystransparent = no
 
+		state = {
+			name = _mouse_enter
+			on_start = "[PlayerValueItem.ResetLastUpdateFrame]"
+		}
+
 		using = DefaultTooltipBackground
 
 		vbox = {
@@ -359,6 +382,13 @@
 						expand = {}
 					}
 				}
+
+				text_single = {
+					name = "hud_max_level"
+					visible = "[PlayerValueItem.HasNonStandardLevel( GetPlayer )]"
+					text = "[PlayerValueItem.GetMaxLevel( GetPlayer )]"
+					tooltip = "[PlayerValueItem.GetMaxLevelBreakdown( GetPlayer )]"
+				}
 			}
 		}
 	}
@@ -440,6 +470,10 @@
 				background = {
 					using = Background_Header
 					margin = { 15 0 }
+				}
+
+				background = {
+					using = Background_Header_Pattern
 				}
 
 				hbox = {
@@ -591,6 +625,10 @@
 				background = {
 					using = Background_Header
 					margin = { 15 0 }
+				}
+
+				background = {
+					using = Background_Header_Pattern
 				}
 
 				hbox = {
@@ -792,6 +830,42 @@
 
 				tooltipwidget = { widget_value_breakdown_tooltip = {} }
 			}
+
+			text_single = {
+				name = "treasury"
+				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'treasury' )]"
+				visible = "[CostBreakdown.HasCost( 'treasury' )]"
+
+				raw_text = "@treasury_icon![CostBreakdown.GetCost( 'treasury' )|0]"
+				align = nobaseline
+				default_format = "#high"
+
+				tooltipwidget = { widget_value_breakdown_tooltip = {} }
+			}
+
+			text_single = {
+				name = "merit"
+				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'merit' )]"
+				visible = "[CostBreakdown.HasCost( 'merit' )]"
+
+				raw_text = "@merit_icon![CostBreakdown.GetCost( 'merit' )|0]"
+				align = nobaseline
+				default_format = "#high"
+
+				tooltipwidget = { widget_value_breakdown_tooltip = {} }
+			}
+
+			text_single = {
+				name = "barter_goods"
+				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'barter_goods' )]"
+				visible = "[CostBreakdown.HasCost( 'barter_goods' )]"
+
+				raw_text = "@barter_goods_icon![CostBreakdown.GetCost( 'barter_goods' )|0]"
+				align = nobaseline
+				default_format = "#high"
+
+				tooltipwidget = { widget_value_breakdown_tooltip = {} }
+			}
 		}
 
 		text_single  = {
@@ -824,6 +898,10 @@
 				background = {
 					using = Background_Header
 					margin = { 15 0 }
+				}
+
+				background = {
+					using = Background_Header_Pattern
 				}
 
 				hbox = {

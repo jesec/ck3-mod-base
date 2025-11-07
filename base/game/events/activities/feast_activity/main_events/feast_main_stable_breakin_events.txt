@@ -28,7 +28,7 @@ feast_main_stable_breakin.0001 = {
 			any_attending_character = {
 				feast_default_participant_including_player_trigger = yes
 				NOT = { has_trait = temperate }
-				NOT = { this = scope:activity.activity_host }
+				this != scope:activity.activity_host
 			}
 		}
 	}
@@ -45,13 +45,13 @@ feast_main_stable_breakin.0001 = {
 						has_trait = lunatic
 						has_trait = shrewd
 					}
-					NOT = { this = scope:activity.activity_host }
+					this != scope:activity.activity_host
 				}
 				# Or just someone who's had a little too much to drink
 				alternative_limit = {
 					feast_default_participant_including_player_trigger = yes
 					NOT = { has_trait = temperate }
-					NOT = { this = scope:activity.activity_host }
+					this != scope:activity.activity_host
 				}
 				save_scope_as = breakin_stager
 			}
@@ -63,7 +63,7 @@ feast_main_stable_breakin.0001 = {
 					OR = {
 						has_trait = deviant
 						any_secret = {
-							secret_type = secret_deviant
+							type = secret_deviant
 						}
 					}
 					NOR = {
@@ -107,12 +107,8 @@ feast_main_stable_breakin.0001 = {
 					}
 					alternative_limit = {
 						feast_default_participant_including_player_trigger = yes
-						NOT = {
-							this = scope:breakin_stager
-						}
-						NOT = {
-							this = scope:activity.activity_host
-						}
+						this != scope:breakin_stager
+						this != scope:activity.activity_host
 					}
 
 					save_scope_as = breakin_helper
@@ -134,9 +130,7 @@ feast_main_stable_breakin.0001 = {
 							this = scope:breakin_helper
 						}
 					}
-					NOT = {
-						this = scope:activity.activity_host
-					}
+					this != scope:activity.activity_host
 
 				}
 				save_scope_as = breakin_bystander
@@ -160,9 +154,7 @@ feast_main_stable_breakin.0001 = {
 							this = scope:breakin_helper
 						}
 					}
-					NOT = {
-						this = scope:activity.activity_host
-					}
+					this != scope:activity.activity_host
 				}
 
 				trigger_event = feast_main_stable_breakin.0002
@@ -190,7 +182,7 @@ feast_main_stable_breakin.0001 = {
 			if = {
 				limit = {
 					exists = scope:breakin_deviant
-					NOT = { scope:breakin_deviant = scope:breakin_stager }
+					scope:breakin_deviant != scope:breakin_stager
 				}
 				scope:breakin_deviant = {
 					trigger_event = feast_main_stable_breakin.0005
@@ -228,9 +220,7 @@ feast_main_stable_breakin.0002 = {
 				# The deviant, so they are partly responsible for their own demise
 				trigger = {
 					exists = scope:breakin_deviant
-					NOT = {
-						scope:breakin_deviant = scope:breakin_stager
-					}
+					scope:breakin_deviant != scope:breakin_stager
 				}
 				desc = feast_main_stable_breakin.0002.breakin_with_deviant
 			}
@@ -289,7 +279,7 @@ feast_main_stable_breakin.0002 = {
 			NOR = {
 				has_trait = deviant
 				any_secret = {
-					secret_type = secret_deviant
+					type = secret_deviant
 				}
 			}
 		}
@@ -311,7 +301,7 @@ feast_main_stable_breakin.0002 = {
 			OR = {
 				has_trait = deviant
 				any_secret = {
-					secret_type = secret_deviant
+					type = secret_deviant
 				}
 			}
 		}
@@ -358,9 +348,7 @@ feast_main_stable_breakin.0003 = {
 				# The deviant, so they are partly responsible for their own demise
 				trigger = {
 					exists = scope:breakin_deviant
-					NOT = {
-						scope:breakin_deviant = scope:breakin_stager
-					}
+					scope:breakin_deviant != scope:breakin_stager
 				}
 				desc = feast_main_stable_breakin.0003.breakin_with_deviant
 			}
@@ -454,9 +442,7 @@ feast_main_stable_breakin.0004 = {
 			triggered_desc = {
 				trigger = {
 					exists = scope:breakin_deviant
-					NOT = {
-						scope:breakin_deviant = scope:breakin_stager
-					}
+					scope:breakin_deviant != scope:breakin_stager
 				}
 				desc = feast_main_stable_breakin.0004.breakin_with_deviant
 			}
@@ -551,14 +537,12 @@ feast_main_stable_breakin.0005 = {
 		if = {
 			limit = {
 				any_secret = {
-					secret_type = secret_deviant
+					type = secret_deviant
 				}
 				scope:activity = { has_variable = deviant_discovered }
 			}
 			random_secret = {
-				limit = {
-					secret_type = secret_deviant
-				}
+				type = secret_deviant
 				expose_secret = scope:activity.activity_host
 			}
 		}

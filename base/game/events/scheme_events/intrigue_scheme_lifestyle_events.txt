@@ -161,7 +161,7 @@ intrigue_scheme_lifestyle.3001 = {
 			triggered_desc = {
 				trigger = {
 					scope:scheme = {
-						any_scheme_agent_character = { count >= 1 }
+						any_scheme_agent_character = { }
 					}
 				}
 				desc = intrigue_scheme_lifestyle.3001.desc_agents
@@ -215,7 +215,7 @@ intrigue_scheme_lifestyle.3001 = {
 		name = {
 			trigger = {
 				scope:scheme = {
-					any_scheme_agent_character = { count >= 1 }
+					any_scheme_agent_character = { }
 				}
 			}
 			text = intrigue_scheme_lifestyle.3001.a_agent
@@ -397,7 +397,7 @@ intrigue_scheme_lifestyle.3201 = {
 	trigger = {
 		NOT = { has_character_flag = had_event_intrigue_scheme_lifestyle_3201 }
 		scope:scheme = {
-			any_scheme_agent_character = { count >= 1 }
+			any_scheme_agent_character = { }
 		}
 		has_trait = schemer
 	}
@@ -533,8 +533,7 @@ intrigue_scheme_lifestyle.3301 = {
 					exists = secret_target
 					secret_owner = { is_ai = yes }
 					secret_target = {
-						exists = real_father
-						real_father = scope:target
+						real_father ?= scope:target
 					}
 					OR = {
 						secret_type = secret_unmarried_illegitimate_child
@@ -568,7 +567,7 @@ intrigue_scheme_lifestyle.3301 = {
 					if = {
 						limit = {
 							exists = secret_target
-							NOT = { secret_target = scope:target }
+							secret_target != scope:target
 						}
 						secret_target = {
 							save_scope_as = secret_to_reveal_target
@@ -580,16 +579,14 @@ intrigue_scheme_lifestyle.3301 = {
 				limit = {
 					any_known_secret = {
 						secret_owner = { is_ai = yes }
-						exists = secret_target
-						secret_target = scope:target
+						secret_target ?= scope:target
 						NOT = { is_known_by = root }
 					}
 				}
 				random_known_secret = {
 					limit = {
 						secret_owner = { is_ai = yes }
-						exists = secret_target
-						secret_target = scope:target
+						secret_target ?= scope:target
 						NOT = { is_known_by = root }
 					}
 					save_scope_as = secret_to_reveal
@@ -602,10 +599,8 @@ intrigue_scheme_lifestyle.3301 = {
 				random_known_secret = {
 					limit = {
 						secret_owner = { is_ai = yes }
-						exists = secret_target
-						secret_target = {
-							exists = real_father
-							real_father = { this = scope:target }
+						secret_target ?= {
+							real_father ?= { this = scope:target }
 						}
 						OR = {
 							secret_type = secret_unmarried_illegitimate_child

@@ -153,12 +153,11 @@ reactive_advice_admin_gov = {
 	ra_admin_gov_1 = { # Intro
 		text = "ra_admin_gov_1_desc"
 		animation = center
+
 		highlight_widget = "tab_government_administration"
 
-		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
+		highlight_widget_with_index = {
+			administration_tabs = 2
 		}
 
 		trigger_transition = {
@@ -169,60 +168,27 @@ reactive_advice_admin_gov = {
 			trigger = {
 				custom_tooltip = {
 					text = "ra_open_admin_gov_panel_prompt"
-					is_widgetid_open = government_administration_window
+					is_widgetid_open = admin_panel_province_list
 				}
 			}
 		}
 	}
 
-	ra_admin_gov_1b = { # Intro
-		text = "ra_admin_gov_1_desc"
-		animation = center
-		highlight_widget = "tab_government_administration"
-
-		interface_effect = {
-			close_view = admin_vassal_detail_view
-		}
-
-		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
-		}
-
-		gui_transition = {
-			button_id = "next"
-			button_text = "tutorial_lesson_button_next"
-			target = ra_admin_gov_2
-
-			enabled = {
-				custom_tooltip = {
-					text = "ra_open_admin_gov_panel_prompt"
-					is_widgetid_open = government_administration_window
-				}
-			}
-		}
-	}
 
 	ra_admin_gov_2 = { # Province Overview
 		text = "ra_admin_gov_2_desc"
 		animation = center
-		highlight_widget = "tab_government_administration"
+
+		highlight_widget = "admin_panel_province_list"
 
 		interface_effect = {
 			close_view = admin_vassal_detail_view
 		}
 
 		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
-		}
-
-		gui_transition = {
 			button_id = "back"
 			button_text = "tutorial_lesson_button_back"
-			target = ra_admin_gov_1b
+			target = ra_admin_gov_1
 		}
 
 		trigger_transition = {
@@ -239,65 +205,34 @@ reactive_advice_admin_gov = {
 		}
 	}
 
-	ra_admin_gov_2b = { # Province Overview
-		text = "ra_admin_gov_2_desc"
-		animation = left
-		highlight_widget = "tab_government_administration"
-
-		interface_effect = {
-			close_view = admin_vassal_detail_view
-		}
-
-		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
-		}
-
-		gui_transition = {
-			button_id = "back"
-			button_text = "tutorial_lesson_button_back"
-			target = ra_admin_gov_1b
-		}
-
-		gui_transition = {
-			button_id = "next"
-			button_text = "tutorial_lesson_button_next"
-			target = ra_admin_gov_3
-
-			enabled = {
-				custom_tooltip = {
-					text = "ra_open_admin_gov_theme_detail_prompt"
-					is_widgetid_open = admin_vassal_detail_view
-				}
-			}
-		}
-	}
 
 	ra_admin_gov_3 = { # Province Details
 		text = "ra_admin_gov_3_desc"
 		animation = left
-		highlight_widget = "tab_government_administration"
-		highlight_widget = "ra_highlight_theme_info"
+		highlight_widget = "province_window_tax_levy_efficiency"
 
 
-		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
+		highlight_widget_with_index = {
+			province_window_tabs = 1
 		}
 
 		gui_transition = {
 			button_id = "back"
 			button_text = "tutorial_lesson_button_back"
-			target = ra_admin_gov_2b
+			target = ra_admin_gov_2
 		}
 
-		gui_transition = {
+		trigger_transition = {
 			button_id = "next"
 			button_text = "tutorial_lesson_button_next"
 			target = ra_admin_gov_4
 
+			trigger = {
+				custom_tooltip = {
+					text = "ra_admin_gov_3_prompt"
+					is_widgetid_open = province_window_succession_info
+				}
+			}
 		}
 	}
 
@@ -307,11 +242,6 @@ reactive_advice_admin_gov = {
 		highlight_widget = "influence"
 		highlight_widget = "succession_info"
 
-		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
-		}
 
 		gui_transition = {
 			button_id = "back"
@@ -329,16 +259,13 @@ reactive_advice_admin_gov = {
 	ra_admin_gov_5 = { # Provinces are governed by families
 		text = "ra_admin_gov_5_desc"
 		animation = center
-		highlight_widget = "administration_tabs"
 
 		interface_effect = {
 			close_view = admin_vassal_detail_view
 		}
 
-		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
+		highlight_widget_with_index = {
+			administration_tabs = 1
 		}
 
 		gui_transition = {
@@ -361,41 +288,6 @@ reactive_advice_admin_gov = {
 		}
 	}
 
-	ra_admin_gov_5b = { # Provinces are governed by families
-		text = "ra_admin_gov_5_desc"
-		animation = center
-		highlight_widget = "administration_tabs"
-
-		interface_effect = {
-			close_view = admin_vassal_detail_view
-		}
-
-		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
-		}
-
-		gui_transition = {
-			button_id = "back"
-			button_text = "tutorial_lesson_button_back"
-			target = ra_admin_gov_4
-		}
-
-		gui_transition = {
-			button_id = "next"
-			button_text = "tutorial_lesson_button_next"
-			target = ra_admin_gov_6
-
-			enabled = {
-				custom_tooltip = {
-					text = "ra_open_admin_gov_powerful_families_intro"
-					is_widgetid_open = powerful_families
-				}
-			}
-		}
-	}
-
 	ra_admin_gov_6 = { # Powerful families introduction
 		text = "ra_admin_gov_6_desc"
 		animation = center
@@ -405,15 +297,9 @@ reactive_advice_admin_gov = {
 		}
 
 		gui_transition = {
-			button_id = "skip"
-			button_text = "tutorial_lesson_button_skip"
-			target = lesson_finish
-		}
-
-		gui_transition = {
 			button_id = "back"
 			button_text = "tutorial_lesson_button_back"
-			target = ra_admin_gov_5b
+			target = ra_admin_gov_5
 		}
 
 		gui_transition = {
@@ -478,7 +364,7 @@ reactive_advice_admin_gov_troops = {
 		text = "ra_admin_gov_troops_1_desc"
 		animation = center
 		highlight_widget = ra_highlight_imperial_armies
-		highlight_widget = tab_military
+		highlight_widget = tab_military_tutorial_uses_this
 
 		gui_transition = {
 			button_id = "skip"
@@ -503,7 +389,7 @@ reactive_advice_admin_gov_troops = {
 		text = "ra_admin_gov_troops_1_desc"
 		animation = center
 		highlight_widget = ra_highlight_imperial_armies
-		highlight_widget = tab_military
+		highlight_widget = tab_military_tutorial_uses_this
 
 		gui_transition = {
 			button_id = "skip"
@@ -536,16 +422,10 @@ reactive_advice_admin_gov_troops = {
 			target = ra_admin_gov_troops_1b
 		}
 
-		trigger_transition = {
+		gui_transition = {
 			button_id = "next"
 			button_text = "tutorial_lesson_button_next"
 			target = ra_admin_gov_troops_3
-			trigger = {
-				custom_tooltip = {
-					text = "ra_admin_gov_troops_2_prompt"
-					is_widgetid_open = hired_troop_detail_view
-				}
-			}
 		}
 	}
 
@@ -565,18 +445,15 @@ reactive_advice_admin_gov_troops = {
 			button_id = "next"
 			button_text = "tutorial_lesson_button_next"
 			target = ra_admin_gov_troops_3
-			enabled = {
-				custom_tooltip = {
-					text = "ra_admin_gov_troops_2_prompt"
-					is_widgetid_open = hired_troop_detail_view
-				}
-			}
 		}
 	}
 
 	ra_admin_gov_troops_3 = { # Armies in other governorships + reassigning / taking control yourself
 		text = "ra_admin_gov_troops_3_desc"
-		animation = left
+		animation = center
+
+		highlight_widget = "hire_peer_admin_vassal"
+		highlight_widget = "hire_button_non_interaction_admin"
 
 		gui_transition = {
 			button_id = "back"
@@ -593,8 +470,7 @@ reactive_advice_admin_gov_troops = {
 
 	ra_admin_gov_troops_4 = { # If the troops are in use, you will not be able to transfer them
 		text = "ra_admin_gov_troops_4_desc"
-		animation = left
-		highlight_widget = province_army_status
+		animation = center
 
 		gui_transition = {
 			button_id = "back"
@@ -611,7 +487,7 @@ reactive_advice_admin_gov_troops = {
 
 	ra_admin_gov_troops_5 = { # Wrapping up
 		text = "ra_admin_gov_troops_5_desc"
-		animation = left
+		animation = center
 
 		gui_transition = {
 			button_id = "back"

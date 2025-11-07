@@ -62,6 +62,7 @@ total_county_levies = {
 		}
 		title_province = {
 			add = building_levies
+			add = combined_building_level
 		}
 	}
 
@@ -96,6 +97,13 @@ county_levies_to_raise = {
 		value = county_opinion
 		multiply = -0.01
 		add = 0.5
+	}
+	if = {
+		limit = {
+			culture != holder.culture
+			culture = { has_cultural_parameter = county_peasant_and_populist_factions_more_common }
+		}
+		multiply = 1.5
 	}
 	min = {
 		value = building_max_garrison
@@ -154,3 +162,37 @@ liege_opinion_value = {
 
 # How many years of truce do you get with a faction's members for appointing their leader as co-emperor?
 faction_counter_offer_appointed_co_emperor_value = 10
+
+peasant_leader_xp_value = {
+	value = { 1 10 }
+	if = {
+		limit = {
+			is_lowborn = no
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			culture = { has_cultural_parameter = county_peasant_and_populist_factions_more_common }
+		}
+		multiply = 1.5
+	}
+	# Adds bonus from situation
+	if = {
+		limit = {
+			save_temporary_scope_as = peasant_leader
+			situation:dynastic_cycle ?= {
+				any_situation_county = {
+					title_province = scope:peasant_leader.location
+					holder = {
+						top_participant_group:dynastic_cycle ?= {
+							has_participant_group_parameter = dynastic_cycle_more_peasant_factions
+						}
+					}
+				}
+			}
+		}
+		multiply = 1.5
+	}
+	max = 80
+}

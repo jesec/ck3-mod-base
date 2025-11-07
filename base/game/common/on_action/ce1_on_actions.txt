@@ -1,7 +1,7 @@
 ﻿epidemic_ongoing_events = {
 	random_events = {
 		chance_of_no_event = 95
-		
+
 		# General
 		100 = epidemic_events.1000 # Charismatic priest is convincing the sick that the plague is a result of their heathen ways
 		100 = epidemic_events.1010 # Superstitious courtiers want you to nail the coffin of your deceased lover shut to prevent them from rising as a revanent
@@ -19,7 +19,6 @@
 
 		100 = epidemic_events.5000 # Church officials want to cull an animal
 		100 = epidemic_events.5001 # A minor epidemic is causing massive panic
-		100 = epidemic_events.5002 # You can pile the dead into a boat and set it adrift
 		100 = epidemic_events.5003 # A peasant asks for your healing touch
 		100 = epidemic_events.5004 # People are trying to get into your castle!
 		100 = epidemic_events.5005 # The plague is spreading in from the coast
@@ -28,7 +27,7 @@
 		100 = epidemic_events.5008 # You begin sequestering yourself more often
 		100 = epidemic_events.5009 # A merchant tries selling you a herbal sachet
 		20 = epidemic_events.5010 # An apocalyptic plague enters your capital
-		
+
 		# Event chains
 		100 = epidemic_events.1060 # People blaming the plague on witches/animals event chain
 
@@ -47,7 +46,7 @@
 				limit = {
 					any_province_epidemic = { this = scope:epidemic }
 					province_infection_rate = {
-						epidemic = scope:epidemic
+						target = scope:epidemic
 						value >= 100
 					}
 					NOT = { has_variable = recent_infection_capital_var }
@@ -62,11 +61,11 @@
 
 		# Trigger Black Death splash screen
 		if = {
-			limit = {	
+			limit = {
 				any_realm_province = {
 					any_province_epidemic = {
+						intensity = apocalyptic
 						epidemic_type.epidemic_trait = trait:bubonic_plague
-						outbreak_intensity = apocalyptic
 					}
 				}
 				NOT = {
@@ -87,13 +86,13 @@
 		if = {
 			limit = {
 				OR = {
-					is_landless_adventurer = yes
+					has_government = landless_adventurer_government
 					is_landless_administrative = yes
 				}
 				location = {
 					any_province_epidemic = {
+						intensity = apocalyptic
 						epidemic_type.epidemic_trait = trait:bubonic_plague
-						outbreak_intensity = apocalyptic
 					}
 				}
 				has_dlc_feature = legends_of_the_dead
@@ -110,11 +109,11 @@ legend_ongoing_events = {
 	random_events = {
 		chance_of_no_event = 90
 		delay = { days = { 1 100 } } #to avoid them always firing the same day
-		
+
 		### Event chains
 		50 = legend_spread_events.0070 # Are you worthy of this legend?
 		10 = legend_spread_events.8000 # Ancient tome
-		
+
 		### Legend spreading
 		100 = legend_spread_events.0001 # Do you wanna send children to praise your legend?
 		100 = legend_spread_events.0020 # Someone in your court doubts you! Oh no!
@@ -165,7 +164,7 @@ legend_ongoing_events = {
 		100 = legend_spread_events.5325 # Legend is spreading towards you: do you become a promoter for extra rewards?
 		100 = legend_spread_events.5330 # Legend owner is evil; stop promoting?
 		100 = legend_spread_events.5335 # Legend owner is very godly; promote more?
-	}	
+	}
 }
 
 legend_changing_events = {

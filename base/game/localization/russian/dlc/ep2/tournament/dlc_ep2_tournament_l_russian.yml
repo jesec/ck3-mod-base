@@ -8,7 +8,7 @@
  train_for_tournament_decision_confirm: "Начать тренировку"
  grand_tournament_active: "Требуется [GetActivityType('activity_tournament').GetName|l], где вы можете участвовать"
  ep2_decision_events.0001.t: "Тренировка перед турниром"
- ep2_decision_events.0001.desc: "«А потом разворот вправо! — кричит [marshal.GetTitledFirstName] и наносит могучий удар по моему клинку, заставляя отступить на пару шагов. — На турнире вас никто жалеть не будет, [Select_CString(ROOT.Char.IsFemale, 'моя', 'мой' )] [ROOT.Char.GetLadyLord]». — [marshal.GetSheHe|U] вытирает пот со лба.\n\n«Хотите победить — значит, проигрывать нельзя. Даже мне. Ни разу»."
+ ep2_decision_events.0001.desc: "«А потом разворот вправо! — кричит [marshal.GetTitledFirstName] и наносит могучий удар по моему клинку, заставляя отступить на пару шагов. — На турнире вас никто жалеть не будет, [ROOT.Char.Custom('FormOfAddressForLiege')]». — [marshal.GetSheHe|U] вытирает пот со лба.\n\n«Хотите победить — значит, проигрывать нельзя. Даже мне. Ни разу»."
  ep2_decision_events.0001.a: "«#EMP А-а-а-а-а-а!#!»"
  ep2_decision_events.0001.a.crit_success: "Тренировка прошла #EMP идеально#!"
  ep2_decision_events.0001.a.success: "Тренировка прошла отлично"
@@ -22,8 +22,9 @@
  tradition_tournament_discount_desc: "Переход к [Concept( 'culture_tradition', 'культурной традиции' )|E] «$tradition_chivalry_name$» будет стоить на 2000 ед. [Concept( 'prestige', 'престижа' )|E] меньше"
  ### ACTIVITY
  activity_tournament: "Большой турнир"
+ activity_tournament_plural: "Большие турниры"
  activity_tournament_desc: "Проведите серию боевых или культурных [Concept( 'contests', 'состязаний' )|E] и пригласите участников со всего света, которые будут сражаться за [Concept( 'prizes', 'призы' )|E] и [Concept( 'prestige', 'престиж' )|E]"
- activity_tournament_host_desc: "$BULLET_WITH_TAB$[prestige_i|E][Concept( 'prestige', 'Престиж' )|E]\n$BULLET_WITH_TAB$Прирост [legitimacy_i] [Concept('legitimacy', 'легитимности')|E]\n$BULLET_WITH_TAB$[stress_loss_i]Снижение [Concept( 'stress', 'стресса' )|E]\n$BULLET_WITH_TAB$[Concept( 'trait_level_track_xp', 'Опыт пути развития свойства' )|E] «[GetTrait('tourney_participant').GetName( GetNullCharacter )]»\n$BULLET_WITH_TAB$[Concept( 'acclaimed_knights', 'Именитые рыцари' )|E] получают [Concept( 'glory', 'славу' )|E]"
+ activity_tournament_host_desc: "$BULLET_WITH_TAB$[prestige_i|E] [Concept('prestige', 'Престиж')|E]\n$BULLET_WITH_TAB$[legitimacy_i] Повышение [Concept('legitimacy', 'легитимности')|E]\n$BULLET_WITH_TAB$[stress_loss_i][Concept('stress_loss', 'Снижение стресса')|E]\n$BULLET_WITH_TAB$[Concept('trait_level_track_xp', 'Опыт свойства')|E] «[GetTrait('tourney_participant').GetName( GetNullCharacter )]»\n$BULLET_WITH_TAB$[Concept('acclaimed_knights', 'Именитые рыцари')|E] получают [Concept('glory', 'славу')|E]"
  activity_tournament_selection_tooltip: "По вашему приглашению ваши [GetPlayer.Custom( 'KnightCulturePlural' )|l], подданные и соседи прибудут на состязания\n\nОжидаемые награды:\n$BULLET_WITH_TAB$[prestige_i] [Concept( 'prestige', 'Престиж' )|E]\n$BULLET_WITH_TAB$[legitimacy_i] Повышение [Concept( 'legitimacy', 'легитимности' )|E]\n$BULLET_WITH_TAB$[stress_loss_i] Потеря [Concept( 'stress', 'стресса' )|E]"
  tournament_contest: "Состязание"
  progress_to_victory: "Прогресс победы"
@@ -43,13 +44,11 @@
  ### PHASES
  #TEAM
  tournament_phase_melee: "Ближний бой"
- #TODO_CD_EP2: [GetPlayer.Custom('GetMeleeVariant')]
  tournament_phase_melee_desc: "Притворное сражение пеших или верховых бойцов, которые делятся на две команды и пытаются удержать контроль над полем и захватить соперников ради выкупа.\n\n$tournament_contest_format_team$"
  #TURN
  tournament_phase_archery: "Стрельба из лука"
  tournament_phase_archery_desc: "Состязание лучников. Каждый участник получает ограниченное количество стрел и пытается поразить цель, чтобы заработать как можно больше очков.\n\n$tournament_contest_formaty_turn$"
  tournament_phase_recital: "Декламация"
- #TODO_CD_EP2: [GetPlayer.Custom('GetRecitalVariant')]
  tournament_phase_recital_desc: "Состязание поэтов. Участники сочиняют конкурсные стихотворения и соревнуются между собой в их публичном чтении.\n\n$tournament_contest_formaty_turn$"
  #VERSUS
  tournament_phase_joust: "Рыцарский поединок"
@@ -57,7 +56,6 @@
  tournament_phase_duel: "Поединок"
  tournament_phase_duel_desc: "Серия пеших поединков с оружием. Участники пытаются разоружить соперника и остаться на ногах.\n\n$tournament_contest_format_versus$\nКоличество [Concept( 'contest_rounds', 'этапов' )|E]: 3"
  tournament_phase_wrestling: "Борьба"
- #TODO_CD_EP2: [GetPlayer.Custom('GetWrestlingVariant')]
  tournament_phase_wrestling_desc: "Состязание в силе и смекалке. Участники пытаются повалить соперника или выбросить его за пределы арены и остаться на ногах.\n\n$tournament_contest_format_versus$\nКоличество [Concept( 'contest_rounds', 'этапов' )|E]: 3"
  tournament_phase_board_game: "Настольная игра"
  tournament_phase_board_game_desc: "Поединок интеллектов. Участники играют несколько партий в настольную игру, и победителем считается тот, кто не выбывает до конца.\n\n$tournament_contest_format_versus$\nКоличество [Concept( 'contest_rounds', 'этапов' )|E]: 3"

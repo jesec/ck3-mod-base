@@ -191,28 +191,57 @@ window = {
 									}
 								}
 							}
+							
+							hbox = {
+								spacing = 5
+								margin_top = -5
+								button_standard = {
+									name = "raise_raid_button"
+									onclick = "[RallyPointWindow.OnRaiseRaid]"
+									visible = "[GetPlayer.CanRaid]"
+									enabled = "[RallyPointWindow.CanRaiseRaid]"	
+									tooltip = "[RallyPointWindow.GetRaiseRaidTooltip]"
+									minimumsize = { 210 40 }
 
-							button_standard = {
-								name = "raise_raid_button"
-								onclick = "[RallyPointWindow.OnRaiseRaid]"
-								visible = "[GetPlayer.CanRaid]"
-								enabled = "[RallyPointWindow.CanRaiseRaid]"	
-								tooltip = "[RallyPointWindow.GetRaiseRaidTooltip]"
-								minimumsize = { 210 40 }
+									hbox = {
+										margin = { 5 0 }
 
-								hbox = {
-									margin = { 5 0 }
+										button_army_toggle_raiding = {}
 
-									button_army_toggle_raiding = {}
+										text_single = {
+											layoutpolicy_horizontal = expanding
+											align = center
+											text = "RP_RAISE_RAID"
+											default_format = "#clickable"
+											max_width = 160
+										}
+									}
+								}
 
-									text_single = {
-										layoutpolicy_horizontal = expanding
-										align = center
-										text = "RP_RAISE_RAID"
-										default_format = "#clickable"
+								button_standard = {
+									name = "raise_barter_button"
+									onclick = "[RallyPointWindow.OnRaiseBarter]"
+									visible = "[GetPlayer.HasBarterGoods]"
+									enabled = "[RallyPointWindow.CanRaiseBarter]"	
+									tooltip = "[RallyPointWindow.GetRaiseBarterTooltip]"
+									minimumsize = { 210 40 }
+
+									hbox = {
+										margin = { 5 0 }
+
+										button_army_toggle_bartering = {}
+
+										text_single = {
+											layoutpolicy_horizontal = expanding
+											align = center
+											text = "RP_RAISE_BARTER"
+											default_format = "#clickable"
+											max_width = 160
+										}
 									}
 								}
 							}
+
 						}
 					}
 				}

@@ -3,7 +3,7 @@
 scripted_effect transfer_warhorse_story_effect = {
 	$OWNER$ = {
 		random_owned_story = {
-			limit = { story_type = story_cycle_martial_lifestyle_warhorse }
+			type = story_cycle_martial_lifestyle_warhorse
 			make_story_owner = $TARGET$
 		}
 	}
@@ -55,11 +55,11 @@ ep3_yearly.1010 = {
 		NOT = { owns_story_of_type = story_cycle_martial_lifestyle_warhorse }
 		liege = {
 			any_vassal = {
-				NOT = { this = root }
+				this != root
 				is_available_ai_adult = yes
 				is_governor = yes
 				any_owned_story = {
-					story_type = story_cycle_martial_lifestyle_warhorse
+					type = story_cycle_martial_lifestyle_warhorse
 					exists = var:horse_gender
 					exists = var:story_cycle_horse_name
 				}
@@ -71,7 +71,7 @@ ep3_yearly.1010 = {
 		liege = {
 			random_vassal = {
 				limit = {
-					NOT = { this = root }
+					this != root
 					is_available_ai_adult = yes
 					owns_story_of_type = story_cycle_martial_lifestyle_warhorse
 				}
@@ -237,7 +237,7 @@ ep3_yearly.1010 = {
 					custom_tooltip = ep3_yearly.1010.d.dead_horse
 					scope:horse_owner = {
 						random_owned_story = {
-							limit = { story_type = story_cycle_martial_lifestyle_warhorse }
+							type = story_cycle_martial_lifestyle_warhorse
 							end_story = yes
 						}
 					}
@@ -251,7 +251,7 @@ ep3_yearly.1010 = {
 					custom_tooltip = ep3_yearly.1010.d.dead_horse
 					scope:horse_owner = {
 						random_owned_story = {
-							limit = { story_type = story_cycle_martial_lifestyle_warhorse }
+							type = story_cycle_martial_lifestyle_warhorse
 							end_story = yes
 						}
 					}

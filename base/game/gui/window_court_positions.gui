@@ -22,13 +22,16 @@
 
 			hbox = {
 				layoutpolicy_horizontal = expanding
-				
+
 				margin = { 15 10 }
 				spacing = 10
 
 				background = {
-					using = Background_Header_Tall
-					margin_bottom = 10
+					using = Background_Window_Header
+				}
+
+				background = {
+					using = Background_Window_Header_Pattern
 				}
 
 				hbox = {
@@ -38,24 +41,24 @@
 						name = "FancyHeader"
 						layoutpolicy_horizontal = expanding
 						alwaystransparent = no
-						
+
 						hbox = {
 							layoutpolicy_horizontal = expanding
 							spacing = 10
-							
+
 							icon = {
 								name = "tooltip_icon"
 								size = { 60 60 }
 								texture = "[CourtPositionTaskType.GetIcon]"
 							}
-							
+
 							text_multi = {
 								name = "task_info"
 								layoutpolicy_horizontal = expanding
 								layoutpolicy_vertical = expanding
-								
+
 								margin = { 0 5 }
-								
+
 								text = "COURT_POSITION_TASK_HEADER"
 								autoresize = yes
 								align = left|nobaseline
@@ -80,7 +83,7 @@
 
 				text_multi = {
 					text = "[GetCommandDesc( CourtPosition.ToggleTaskCmd(  CourtPositionTaskType.Self ) )]"
-					
+
 					using = court_position_tooltip_text_format
 				}
 
@@ -93,7 +96,7 @@
 				text_multi = {
 					visible = "[Not( StringIsEmpty( CourtPositionTaskType.GetEmployerModifierDescription( CourtPosition.Self ) ) )]"
 					text = COURT_POSITION_TASK_EMPLOYER_EFFECTS
-					
+
 					using = court_position_tooltip_text_format
 				}
 
@@ -107,34 +110,34 @@
 				text_multi = {
 					visible = "[Not( StringIsEmpty( CourtPositionTaskType.GetOnStartEffectDesc( CourtPosition.Self ) ) )]"
 					text = COURT_POSITION_TASK_START_EFFECTS
-					
+
 					using = court_position_tooltip_text_format
 				}
 
 				text_multi = {
 					visible = "[Not( StringIsEmpty( CourtPositionTaskType.GetEmployeeModifierDescription ) )]"
 					text = COURT_POSITION_TASK_EMPLOYEE_EFFECTS
-					
+
 					using = court_position_tooltip_text_format
 				}
 
 				text_multi = {
 					visible = "[Not( StringIsEmpty( CourtPositionTaskType.GetOnEndEffectDesc( CourtPosition.Self )  ) )]"
 					text = COURT_POSITION_TASK_END_EFFECTS
-					
-					using = court_position_tooltip_text_format	
+
+					using = court_position_tooltip_text_format
 				}
 
 				text_multi = {
 					text = COURT_POSITION_TASK_COST
-					
+
 					using = court_position_tooltip_text_format
 				}
 
 				text_multi = {
 					text = "[CourtPositionTaskType.GetDescription]"
 					default_format = "#F"
-					
+
 					using = court_position_tooltip_text_format
 				}
 
@@ -142,10 +145,10 @@
 				{
 					text_multi = {
 						visible = "[IsValidCommand( CourtPosition.ToggleTaskCmd( CourtPositionTaskType.Self ) )]"
-						
+
 						text = "COURT_POSITION_TASK_CLICK_TT"
 						default_format = "#I"
-						
+
 						using = court_position_tooltip_text_format
 					}
 				}
@@ -155,28 +158,28 @@
 			vbox = {
 				visible = "[Not( CourtPosition.IsValid )]"
 				layoutpolicy_horizontal = expanding
-				
+
 				margin = { 20 0 }
 				spacing = 5
 
 				text_multi = {
 					visible = "[Not( StringIsEmpty( CourtPositionTaskType.GetEmployerModifierGenericDescription ) )]"
 					text = COURT_POSITION_TASK_EMPLOYER_GENERIC_EFFECTS
-					
+
 					using = court_position_tooltip_text_format
 				}
 
 				text_multi = {
 					visible = "[CourtPositionTaskType.HasEmployerCourtModifiers]"
 					text = COURT_POSITION_TASK_EMPLOYER_COURT_GENERIC_EFFECTS
-					
+
 					using = court_position_tooltip_text_format
 				}
 
 				text_multi = {
 					visible = "[Not( StringIsEmpty( CourtPositionTaskType.GetOnStartEffectGenericDesc() ) )]"
 					text = COURT_POSITION_TASK_START_GENERIC_EFFECTS
-					
+
 					using = court_position_tooltip_text_format
 				}
 
@@ -192,20 +195,20 @@
 				text_multi = {
 					visible = "[Not( StringIsEmpty( CourtPositionTaskType.GetOnEndEffectGenericDesc() ) )]"
 					text = COURT_POSITION_TASK_END_GENERIC_EFFECTS
-					
+
 					using = court_position_tooltip_text_format
 				}
 
 				text_multi = {
 					text = COURT_POSITION_TASK_GENERIC_COST
-					
+
 					using = court_position_tooltip_text_format
 				}
 
 				text_multi = {
 					text = "[CourtPositionTaskType.GetDescription]"
 					default_format = "#F"
-					
+
 					using = court_position_tooltip_text_format
 				}
 			}
@@ -349,9 +352,17 @@
 		text_single = {
 			max_width = 100
 
-			text = "COURT_POSITIONS_WINDOW_SALARY_SHORT"
+			text = "COURT_POSITIONS_WINDOW_EMPLOYER_SALARY_SHORT"
 			align = nobaseline
-			tooltip = "[CourtPosition.GetSalaryBreakdownTooltip]"
+			tooltip = "[CourtPosition.GetEmployerSalaryBreakdownTooltip]"
+		}
+
+		text_single = {
+			visible = "[AIWatchWindowsEnabled]"
+			max_width = 100
+
+			text = "COURT_POSITIONS_WINDOW_POSITION_AI_SHORT"
+			default_format= "#D"
 		}
 	}
 
@@ -545,8 +556,19 @@
 						position = { 0 10 }
 						parentanchor = center
 
-						text = "[CourtPositionType.GetHighestAiHireScore( Character.Self )]"
+						text = "[CourtPositionType.GetBestCandidateAiScore( Character.Self )]"
 						default_format = "#D"
+						align = nobaseline
+					}
+
+					text_label_center = {
+						visible = "[AIWatchWindowsEnabled]"
+
+						position = { 0 20 }
+						parentanchor = center
+
+						text = "COURT_POSITIONS_WINDOW_POSITION_AI_SHORT"
+						default_format= "#D"
 						align = nobaseline
 					}
 

@@ -64,9 +64,7 @@ middle_east_decisions.0001 = {
 				}
 			}
 			every_held_title = { # Should shift all dejure of all Empires owned at the time.
-				limit = {
-					tier = tier_empire
-				}
+				title_tier = empire
 				every_in_de_jure_hierarchy = {
 					limit = {
 						tier = tier_kingdom
@@ -76,9 +74,7 @@ middle_east_decisions.0001 = {
 				}
 			}
 			every_held_title = { # And any other held Kingdom.
-				limit = {
-					tier = tier_kingdom
-				}
+				title_tier = kingdom
 				set_de_jure_liege_title = title:e_outremer
 			}
 			if = {
@@ -132,7 +128,7 @@ middle_east_decisions.0001 = {
 		every_ruler = {
 			limit = {
 				is_landed = yes
-				NOT = { this = root }
+				this != root
 				capital_province = {
 					OR = {
 						geographical_region = world_europe_west
@@ -146,9 +142,9 @@ middle_east_decisions.0001 = {
 			random = {
 				chance = 35
 				every_held_title = {
+					title_tier = county
 					limit = {
-						tier = tier_county
-						NOT = { faith = root.faith }
+						faith != root.faith
 					}
 					set_county_faith = root.faith
 				}
@@ -162,7 +158,7 @@ middle_east_decisions.0001 = {
 					chance = 35
 					set_character_faith = root.faith
 					every_held_title = {
-						limit = { tier = tier_county }
+						title_tier = county
 						set_county_faith = root.faith
 					}
 				}
@@ -290,7 +286,7 @@ middle_east_decisions.0003 = {
 		name = middle_east_decisions.0003.a
 		every_player = {
 			limit = {
-				NOT = { this = root }
+				this != root
 				faith.religion = faith:ashari.religion
 			}
 			trigger_event = middle_east_decisions.0004 # Notification.
@@ -388,9 +384,7 @@ middle_east_decisions.0005 = {
 				50 = { set_nickname_effect = { NICKNAME = nick_the_judge } }
 			}
 			every_held_title = {
-				limit = {
-					tier = tier_county
-				}
+				title_tier = county
 				random = { # Communities flowing back home.
 					chance = 33
 					set_county_culture = root.culture
@@ -414,7 +408,7 @@ middle_east_decisions.0005 = {
 		hidden_effect = {
 			every_player = {
 				limit = {
-					NOT = { this = root }
+					this != root
 					OR = {
 						faith.religion = root.faith.religion
 						AND = {
@@ -450,9 +444,7 @@ middle_east_decisions.0006 = {
 			# Every other Muslim
 			triggered_desc = {
 				trigger = {
-					NOT = {
-						root.faith.religion = scope:scoped_ruler.faith.religion
-					}
+					root.faith.religion != scope:scoped_ruler.faith.religion
 				}
 				desc = middle_east_decisions.0006.desc.others
 			}
@@ -511,7 +503,7 @@ middle_east_decisions.0007 = {
 	left_portrait = {
 		character = scope:portrait_ruler
 		triggered_animation = {
-			trigger = { NOT = { scope:new_priest = scope:scoped_ruler } }
+			trigger = { scope:new_priest != scope:scoped_ruler }
 			animation = happiness
 		}
 		triggered_animation = {
@@ -626,7 +618,7 @@ middle_east_decisions.0007 = {
 
 	option = {
 		name = {
-			trigger = { NOT = { scope:new_priest = scope:scoped_ruler } }
+			trigger = { scope:new_priest != scope:scoped_ruler }
 			text = middle_east_decisions.0007.a
 		}
 		name = {
@@ -672,7 +664,7 @@ middle_east_decisions.0007 = {
 		hidden_effect = {
 			every_player = {
 				limit = {
-					NOT = { this = root }
+					this != root
 					OR = {
 						faith = root.faith
 						AND = {
@@ -709,9 +701,7 @@ middle_east_decisions.0008 = {
 			# Everybody else
 			triggered_desc = {
 				trigger = {
-					NOT = {
-						root.faith = scope:scoped_ruler.faith
-					}
+					root.faith != scope:scoped_ruler.faith
 				}
 				desc = middle_east_decisions.0008.desc.others
 			}
@@ -746,9 +736,7 @@ middle_east_decisions.0008 = {
 	option = {
 		name = middle_east_decisions.0008.b
 		trigger = {
-			NOT = {
-				root.faith = scope:scoped_ruler.faith
-			}
+			root.faith != scope:scoped_ruler.faith
 		}
 	}
 }
@@ -892,7 +880,7 @@ middle_east_decisions.0009 = {
 		hidden_effect = {
 			every_player = {
 				limit = {
-					NOT = { this = root }
+					this != root
 					OR = {
 						faith.religion = root.faith.religion
 						AND = {
@@ -973,9 +961,7 @@ middle_east_decisions.0010 = {
 	option = {
 		name = middle_east_decisions.0010.b
 		trigger = {
-			NOT = {
-				root.faith.religion = scope:scoped_ruler.faith.religion
-			}
+			root.faith.religion != scope:scoped_ruler.faith.religion
 		}
 	}
 	option = {
@@ -1009,7 +995,7 @@ middle_east_decisions.0011 = {
 		hidden_effect = {
 			every_player = {
 				limit = {
-					NOT = { this = root }
+					this != root
 					OR = {
 						faith.religion = root.faith.religion
 						AND = {
@@ -1074,8 +1060,7 @@ middle_east_decisions.0012 = {
 	trigger = {
 		OR = {
 			AND = {
-				exists = mother
-				mother = {
+				mother ?= {
 					OR = {
 						has_trait = saoshyant
 						has_trait = saoshyant_descendant
@@ -1083,8 +1068,7 @@ middle_east_decisions.0012 = {
 				}
 			}
 			AND = {
-				exists = father
-				father = {
+				father ?= {
 					OR = {
 						has_trait = saoshyant
 						has_trait = saoshyant_descendant
@@ -1198,9 +1182,7 @@ middle_east_decisions.0013 = {
 	option = {
 		name = middle_east_decisions.0013.b
 		trigger = {
-			NOT = {
-				root.faith.religion = scope:scoped_ruler.faith.religion
-			}
+			root.faith.religion != scope:scoped_ruler.faith.religion
 		}
 	}
 	option = {
@@ -1237,7 +1219,7 @@ middle_east_decisions.0014 = {
 		play_music_cue = "mx_cue_positive_effect"
 		save_scope_as = scoped_ruler
 		if = {
-			limit = { is_independent_ruler = no }
+			limit = { top_liege != this }
 			liege = { save_scope_as = former_liege }
 		}
 		if = {
@@ -1245,8 +1227,12 @@ middle_east_decisions.0014 = {
 			title:e_byzantium.holder = { save_scope_as = roman_emperor }
 		}
 		else_if = {
-			limit = { exists = title:e_roman_empire.holder }
-			title:e_roman_empire.holder = { save_scope_as = roman_emperor }
+			limit = { exists = title:h_roman_empire.holder }
+			title:h_roman_empire.holder = { save_scope_as = roman_emperor }
+		}
+		else_if = {
+			limit = { exists = title:h_eastern_roman_empire.holder }
+			title:h_eastern_roman_empire.holder = { save_scope_as = roman_emperor }
 		}
 
 		legend_seed_new_title_effect = yes
@@ -1284,9 +1270,7 @@ middle_east_decisions.0014 = {
 				set_de_jure_liege_title = title:k_rum
 			}
 			every_held_title = { # Should shift all dejure of all Duchies owned at the time.
-				limit = {
-					tier = tier_duchy
-				}
+				title_tier = duchy
 				set_de_jure_liege_title = title:k_rum
 			}
 		}
@@ -1298,11 +1282,10 @@ middle_east_decisions.0014 = {
 		# Send narrative fluff to other players (if any).
 		every_player = {
 			limit = {
-				NOT = { this = root }
+				this != root
 				OR = {
 					top_liege = scope:former_liege
-					has_title = title:e_byzantium
-					has_title = title:e_roman_empire
+					is_roman_emperor_trigger = yes
 				}
 			}
 			trigger_event = middle_east_decisions.0015
@@ -1324,17 +1307,14 @@ middle_east_decisions.0015 = {
 			}
 			triggered_desc = {
 				trigger = {
-					OR = {
-						has_title = title:e_byzantium
-						has_title = title:e_roman_empire
-					}
+					is_roman_emperor_trigger = yes
 				}
 				desc = middle_east_decisions.0015.desc.romans
 			}
 			# Everybody else's.
 			triggered_desc = {
 				trigger = {
-					NOT = { this = scope:former_liege }
+					this != scope:former_liege
 				}
 				desc = middle_east_decisions.0015.desc.others
 			}
@@ -1371,15 +1351,14 @@ middle_east_decisions.0015 = {
 		trigger = {
 			OR = {
 				this = scope:former_liege
-				has_title = title:e_byzantium
-				has_title = title:e_roman_empire
+				is_roman_emperor_trigger = yes
 			}
 		}
 	}
 	option = {
 		name = middle_east_decisions.0015.b
 		trigger = {
-			NOT = { this = scope:former_liege }
+			this != scope:former_liege
 		}
 	}
 }
@@ -1533,5 +1512,171 @@ middle_east_decisions.1020 = {
 			}
 		}
 		no_faith_beth_nahrain_scripted_effect = yes
+	}
+}
+
+###################
+# Dar al-Islam
+# By Emil Tisander
+###################
+
+# Creating the Dar al-Islam
+middle_east_decisions.1100 = {
+	type = character_event
+	window = big_event_window
+	title = middle_east_decisions.1100.t
+	desc = middle_east_decisions.1100.desc
+	theme = crown
+	override_background = {
+		trigger = {
+			capital_county ?= {
+				this != title:c_mecca
+			}
+		}
+		reference = ep2_holy_site_mena
+	}
+	override_background = {
+		trigger = {
+			capital_county ?= {
+				this = title:c_mecca
+			}
+		}
+		reference = holy_site_mecca
+	}
+	override_effect_2d = { reference = legend_glow }
+	left_portrait = {
+		character = root
+		animation = jockey_wave
+		camera = camera_event_table_right
+	}
+	
+	immediate = {
+		create_dar_al_islam_effect = yes
+	}
+	
+	option = {
+		name = middle_east_decisions.1100.a
+	}
+}
+
+# Notify players
+middle_east_decisions.1101 = {
+	type = character_event
+	window = big_event_window
+	title = middle_east_decisions.1100.t
+	desc = {
+		desc = middle_east_decisions.1101.intro
+		desc = newline.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = { faith.religion = religion:islam_religion }
+				desc = middle_east_decisions.1101.islam_desc
+			}
+			desc = middle_east_decisions.1101.other_desc
+		}
+	}
+	theme = crown
+	override_background = {
+		trigger = {
+			scope:dar_al_islam_ruler.capital_county ?= {
+				this != title:c_mecca
+			}
+		}
+		reference = ep2_holy_site_mena
+	}
+	override_background = {
+		trigger = {
+			scope:dar_al_islam_ruler.capital_county ?= {
+				this = title:c_mecca
+			}
+		}
+		reference = holy_site_mecca
+	}
+	override_effect_2d = { reference = legend_glow }
+	left_portrait = {
+		character = scope:dar_al_islam_ruler
+		animation = jockey_wave
+		camera = camera_event_table_right
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:dar_al_islam_ruler = {
+				get_title = title:h_dar_al_islam
+			}
+		}
+	}
+	
+	option = {
+		name = {
+			trigger = {
+				faith.religion = religion:islam_religion
+				top_liege = scope:dar_al_islam_ruler
+			}
+			text = middle_east_decisions.1101.a
+		}
+		name = {
+			trigger = {
+				faith.religion = religion:islam_religion
+				top_liege != scope:dar_al_islam_ruler
+			}
+			text = middle_east_decisions.1101.b
+		}
+		name = {
+			trigger = { faith.religion != religion:islam_religion }
+			text = middle_east_decisions.1101.c
+		}
+	}
+}
+
+# Notify other Islamic head of faiths, and destroy their (now obsolete) head of faith title
+middle_east_decisions.1102 = {
+	type = character_event
+	window = big_event_window
+	title = middle_east_decisions.1100.t
+	desc = {
+		desc = middle_east_decisions.1101.intro
+		desc = newline.desc
+		desc = middle_east_decisions.1102.desc
+	}
+	theme = crown
+	override_background = {
+		trigger = {
+			scope:dar_al_islam_ruler.capital_county ?= {
+				this != title:c_mecca
+			}
+		}
+		reference = ep2_holy_site_mena
+	}
+	override_background = {
+		trigger = {
+			scope:dar_al_islam_ruler.capital_county ?= {
+				this = title:c_mecca
+			}
+		}
+		reference = holy_site_mecca
+	}
+	override_effect_2d = { reference = legend_glow }
+	left_portrait = {
+		character = scope:dar_al_islam_ruler
+		animation = jockey_wave
+		camera = camera_event_table_right
+	}
+	
+	immediate = {
+		show_as_tooltip = {
+			scope:dar_al_islam_ruler = {
+				get_title = title:h_dar_al_islam
+			}
+		}
+		if = {
+			limit = { exists = var:old_hof_title }
+			destroy_title = var:old_hof_title
+			remove_variable = old_hof_title
+		}
+	}
+	
+	option = {
+		name = middle_east_decisions.1102.a
 	}
 }

@@ -46,7 +46,7 @@ feast_lifestyle.1001 = {
 		scope:activity = {
 			any_attending_character = {
 				feast_default_participant_trigger = yes
-				NOT = { this = root }
+				this != root
 				is_ai = yes
 				number_of_commander_traits > 0
 				number_of_commander_traits_in_common = {
@@ -82,7 +82,7 @@ feast_lifestyle.1001 = {
 			random_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = root }
+					this != root
 					is_ai = yes
 					number_of_commander_traits > 0
 					number_of_commander_traits_in_common = {
@@ -360,7 +360,7 @@ feast_lifestyle.1004 = {
 			random_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = root }
+					this != root
 					number_of_commander_traits > 0
 				}
 				save_scope_as = consultant_1
@@ -368,8 +368,8 @@ feast_lifestyle.1004 = {
 			random_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = root }
-					NOT = { this = scope:consultant_1 }
+					this != root
+					this != scope:consultant_1
 					number_of_commander_traits > 0
 				}
 				save_scope_as = consultant_2
@@ -377,9 +377,9 @@ feast_lifestyle.1004 = {
 			random_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = root }
-					NOT = { this = scope:consultant_1 }
-					NOT = { this = scope:consultant_2 }
+					this != root
+					this != scope:consultant_1
+					this != scope:consultant_2
 					number_of_commander_traits > 0
 				}
 				save_scope_as = consultant_3
@@ -489,13 +489,13 @@ feast_lifestyle.2001 = {
 			random_attending_character = {
 				limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = root }
+					this != root
 					is_available_healthy_ai_adult = yes
 					has_relation_rival = root
 				}
 				alternative_limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = root }
+					this != root
 					is_available_healthy_ai_adult = yes
 					reverse_opinion = {
 						target = root
@@ -504,7 +504,7 @@ feast_lifestyle.2001 = {
 				}
 				alternative_limit = {
 					feast_default_participant_trigger = yes
-					NOT = { this = root }
+					this != root
 					is_available_healthy_ai_adult = yes
 					reverse_opinion = {
 						target = root
@@ -549,7 +549,7 @@ scripted_trigger feast_lifestyle_2002_secret_trigger = {
 
 scripted_trigger feast_lifestyle_2002_secret_holder_trigger = {
 	feast_default_participant_trigger = yes
-	NOT = { this = root }
+	this != root
 	is_available_healthy_ai_adult = yes
 	is_close_family_or_spouse_of_root_trigger = no
 	save_temporary_scope_as = secret_participant
@@ -981,7 +981,7 @@ feast_lifestyle.3001 = {
 						CHARACTER = scope:guest_check
 					}
 				}
-				NOT = { this = scope:guest_check }
+				this != scope:guest_check
 				save_temporary_scope_as = guest_check_2
 			}
 			any_attending_character = {
@@ -1036,7 +1036,7 @@ feast_lifestyle.3001 = {
 							CHARACTER = scope:important_guest_1
 						}
 					}
-					NOT = { this = scope:important_guest_1 }
+					this != scope:important_guest_1
 				}
 				save_scope_as = important_guest_2
 			}

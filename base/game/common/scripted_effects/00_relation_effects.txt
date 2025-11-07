@@ -60,7 +60,7 @@ progress_towards_friend_effect = {
 						character = prev
 						target = $CHARACTER$
 					}
-				} # TODO_CD_EP2 make all activities use this without creating duplicate entries
+				}
 			}
 		}
 		else_if = {
@@ -763,7 +763,7 @@ get_potential_enemies_effect = {
 		}
 		if = {
 			limit = {
-				is_independent_ruler = no
+				top_liege != this
 				liege = {
 					opinion = {
 						target = $CHARACTER$
@@ -780,7 +780,7 @@ get_potential_enemies_effect = {
 		}
 		if = {
 			limit = {
-				is_independent_ruler = yes
+				top_liege = this
 			}
 			every_neighboring_top_liege_realm_owner = {
 				limit = {
@@ -1013,14 +1013,12 @@ set_random_friendship_reason = { # Use for adults, primarily
 			}
 			10 = {
 				trigger = {
-					exists = liege
 					exists = liege.capital_province
 				}
 				set_relation_friend = { reason = friend_random_9 target = $TARGET$ involved_character = liege province = liege.capital_province }
 			}
 			10 = {
 				trigger = {
-					exists = liege
 					exists = liege.capital_province
 				}
 				set_relation_friend = { reason = friend_random_10 target = $TARGET$ involved_character = liege province = liege.capital_province }
@@ -1099,14 +1097,12 @@ set_random_rivalry_reason = { # Use for adults, primarily
 			}
 			10 = {
 				trigger = {
-					exists = liege
 					exists = liege.capital_province
 				}
 				set_relation_$RELATION$ = { reason = rival_random_9 target = $TARGET$ involved_character = liege province = liege.capital_province }
 			}
 			10 = {
 				trigger = {
-					exists = liege
 					exists = liege.capital_province
 				}
 				set_relation_$RELATION$ = { reason = rival_random_10 target = $TARGET$ involved_character = liege province = liege.capital_province }

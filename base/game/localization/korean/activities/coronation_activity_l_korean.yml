@@ -32,8 +32,9 @@
  coronation_phase_feast_desc: ""
  # Types
  coronation_type_normal: "대관식"
- coronation_type_normal_desc: "$BULLET_WITH_TAB$당신의 [legitimacy_i][legitimacy|E] 증명\n$BULLET_WITH_TAB$[oath|E]를 선서하고 당신의 통치 방향을 서약\n$BULLET_WITH_TAB$[vassals|E]의 [opinion_i][opinion|E] 획득 가능\n$BULLET_WITH_TAB$[vassals|E]이 @faction_icon![factions|E]에서 이탈할 수 있음\n$BULLET_WITH_TAB$스스로 대관하면 [prestige_i][prestige|E] 추가 획득 가능\n\n#weak $coronation_type_normal_flavor$#!"
+ coronation_type_normal_desc: "$BULLET_WITH_TAB$당신의 [legitimacy_i][legitimacy|E] 증명\n$BULLET_WITH_TAB$[oath|E]를 선서하고 당신의 통치 방향을 서약\n$BULLET_WITH_TAB$[vassals|E]([AddLocalizationIf( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_mandala' ), 'coronation_type_tributaries' )])의 [opinion_i][opinion|E] 획득 가능\n$BULLET_WITH_TAB$[vassals|E]이 @faction_icon![factions|E]에서 이탈할 수 있음\n$BULLET_WITH_TAB$스스로 대관하면 [prestige_i][prestige|E] 추가 획득 가능\n\n#weak $coronation_type_normal_flavor$#!"
  coronation_type_normal_flavor: "위엄 있는 예식은 당신의 통치 정당성을 증명하며, 봉역의 위엄은 곧 당신의 주권을 나타내는 예복이 됩니다."
+ coronation_type_tributaries: "및 [tributaries|E]"
  coronation_type_anointment: "도유식"
  coronation_type_anointment_desc: "$BULLET_WITH_TAB$의심의 여지 없이 당신의 [legitimacy_i][legitimacy|E] 증명\n$BULLET_WITH_TAB$[piety_i][piety|E], @fervor_icon![fervor|E], 그리고 [GetVassalStance( 'zealot' ).GetTextIcon][GetVassalStance( 'zealot' ).GetName] [vassals|E]의 호의 획득\n$BULLET_WITH_TAB$[oath|E]를 선서하고 당신의 통치 방향을 서약\n$BULLET_WITH_TAB$[vassals|E]의 [opinion_i][opinion|E] 획득\n$BULLET_WITH_TAB$다른 [rulers|E]의 [opinion_i][opinion|E] 획득\n$BULLET_WITH_TAB$[vassals|E] 이 @faction_icon![factions|E]에서 이탈할 수 있음\n$BULLET_WITH_TAB$@alert_icon! #alert_trial 반드시 당신 [faith|E]의 [holy_site|E]에서 열려야 함#!\n\n#weak $coronation_type_anointment_flavor$#!"
  coronation_type_anointment_flavor: "진정한 군주는 신성한 목적을 두르고 신의 은총으로 임명되어야 합니다. 세속의 권력은 그것을 대체할 수 없습니다."
@@ -43,20 +44,24 @@
  coronation_small_ceremony: "소박한 의식"
  coronation_small_ceremony_desc: "$EFFECT_LIST_BULLET$[coronation_magnificence|E] 감소\n$EFFECT_LIST_BULLET$타국 [rulers|E]가 [activity|E]에 참여하지 않음\n$EFFECT_LIST_BULLET$종료 시점에 [coronation_magnificence|E]이 #high 50#!보다 낮을 경우, 당신은 #high 10년#! 동안 [GetModifier('ach_coronation_low_ceremony_modifier').GetNameWithTooltip](을)를 획득함\n\n#weak 나는 이미 군주 아닌가? 왜 이런 의례적인 행사를 위해 온 세계를 불러야 하지...?#!"
  coronation_medium_ceremony: "전통적인 예식"
- coronation_medium_ceremony_desc: "$EFFECT_LIST_BULLET$ [coronation_magnificence|E] 증가\n$EFFECT_LIST_BULLET$ [activity_guests|E]의 참석 확률이 다소 높아짐\n\n#weak 통치의 신성한 맹세는 왕실의 환경과 웅장하고 경건한 집회로 뒷받침되어야 한다.#!"
+ coronation_medium_ceremony_desc: "$EFFECT_LIST_BULLET$[coronation_magnificence|E] 증가\n$EFFECT_LIST_BULLET$[activity_guests|E]의 참석 확률이 다소 높아짐\n\n#weak 통치의 신성한 맹세는 왕실의 환경과 웅장하고 경건한 집회로 뒷받침되어야 한다.#!"
  coronation_large_ceremony: "찬란한 영광"
- coronation_large_ceremony_desc: "$EFFECT_LIST_BULLET$ [coronation_magnificence|E] 대폭 증가\n$EFFECT_LIST_BULLET$ [activity_guests|E]의 참석 확률이 대폭 높아짐\n\n#weak 신성한 유물과 빛나는 보석들, 아름다운 음악이 가득한 가운데, 내 혈족과 봉신들, 먼 곳의 고귀한 손님들이 자리를 빛낼 것이다.#!"
+ coronation_large_ceremony_desc: "$EFFECT_LIST_BULLET$[coronation_magnificence|E] 대폭 증가\n$EFFECT_LIST_BULLET$[activity_guests|E]의 참석 확률이 대폭 높아짐\n\n#weak 신성한 유물과 빛나는 보석들, 아름다운 음악이 가득한 가운데, 내 혈족과 봉신들, 먼 곳의 고귀한 손님들이 자리를 빛낼 것이다.#!"
  ceremony_feast_type: "기념식"
  ceremony_feast_type_austere: "근엄한 의식"
- ceremony_feast_type_austere_desc: "$EFFECT_LIST_BULLET$ [coronation_magnificence|E] 감소\n$EFFECT_LIST_BULLET$종료 시점에 [coronation_magnificence|E]이 #high 50#!보다 낮을 경우, 당신은 #high 10년#! 동안 [GetModifier('ach_coronation_low_feast_modifier').GetNameWithTooltip](을)를 획득함\n\n#weak 이 역사적 행사에 초대받았다는 것만으로도 충분한 영광 아닌가...?#!"
+ ceremony_feast_type_austere_desc: "$EFFECT_LIST_BULLET$[coronation_magnificence|E] 감소\n$EFFECT_LIST_BULLET$종료 시점에 [coronation_magnificence|E]이 #high 50#!보다 낮을 경우, 당신은 #high 10년#! 동안 [SelectLocalization( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_mandala' ), 'mandala_coronation_low_feast', 'generic_coronation_low_feast' )](을)를 획득함\n\n#weak 이 역사적 행사에 초대받았다는 것만으로도 충분한 영광 아닌가...?#!"
+ generic_coronation_low_feast: "[GetModifier('ach_coronation_low_feast_modifier').GetNameWithTooltip]"
+ mandala_coronation_low_feast: "[GetModifier('mandala_coronation_low_feast_modifier').GetNameWithTooltip]"
  ceremony_feast_type_regular: "적절한 연회"
- ceremony_feast_type_regular_desc: "$EFFECT_LIST_BULLET$ [coronation_magnificence|E] 증가\n\n#weak 의식을 치른 후 귀족들의 모임과 훌륭한 음식을 준비하는 데 아낌이 없을 것이다.#!"
+ ceremony_feast_type_regular_desc: "$EFFECT_LIST_BULLET$[coronation_magnificence|E] 증가\n\n#weak 의식을 치른 후 귀족들의 모임과 훌륭한 음식을 준비하는 데 아낌이 없을 것이다.#!"
  ceremony_feast_type_lavish: "호화로운 연회"
- ceremony_feast_type_lavish_desc: "$EFFECT_LIST_BULLET$ [coronation_magnificence|E] 대폭 증가\n$EFFECT_LIST_BULLET$ 부정적인 사건 발생 확률 감소\n\n#weak 향기로운 진미가 끝없이 이어진다. 그 장엄한 분위기는 군주의 주빈석을 떠받치는 장대한 기쁨이 될 것이다.#!"
+ ceremony_feast_type_lavish_desc: "$EFFECT_LIST_BULLET$[coronation_magnificence|E] 대폭 증가\n$EFFECT_LIST_BULLET$부정적인 사건 발생 확률 감소\n\n#weak 향기로운 진미가 끝없이 이어진다. 그 장엄한 분위기는 군주의 주빈석을 떠받치는 장대한 기쁨이 될 것이다.#!"
  ach_coronation_low_ceremony_modifier: "어둠 속의 대관"
  ach_coronation_low_ceremony_modifier_desc: "서민들은 해당 영주가 자신들의 진짜 주군이라는 사실조차 거의 모르고, 귀족들은 그 초라한 즉위식을 기꺼이 잊었습니다."
  ach_coronation_low_feast_modifier: "무시당한 귀족층"
  ach_coronation_low_feast_modifier_desc: "식탁이 비어 있었을 정도로 해당 영주의 대관식이 터무니없이 빈약하게 치러졌기에 참석자들은 모욕감을 느낍니다."
+ mandala_coronation_low_feast_modifier: "무시당한 신하들"
+ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_desc$"
  # Special Guests
  coronation_hof_guest: "교계 지도자"
  coronation_hof_guest_desc: "$coronation_hof_guest_desc_for_host$"
@@ -79,7 +84,7 @@
  coronation_small_ceremony_value: "$coronation_small_ceremony$: $VALUE|=+0$"
  coronation_medium_ceremony_value: "$coronation_medium_ceremony$: $VALUE|=+0$"
  coronation_large_ceremony_value: "$coronation_large_ceremony$: $VALUE|=+0$"
- coronation_special_guest_value: "$priest_for_host$: $VALUE|=+0$"
+
  coronation_special_vassal_value: "[liege|E]의 [coronation_i][coronation|E]: $VALUE|=+0$"
  coronation_pope_not_anointment: "[head_of_faith|E]가 [coronation_anointment|E] [coronation|E]에만 참가할 예정: $VALUE|=+0$"
  coronation_liege_value: "[vassal|E]의 대관식: $VALUE|=+0$"
@@ -234,7 +239,7 @@
  coronation_events.0100.desc.previous_ruler_not_family: "나는 나의 전임자 [previous_ruler.GetFirstName] [previous_ruler.GetHouse.GetName](을)를 능가할 수 있을까?"
  coronation_events.0100.desc.first_ruler: "이 땅의 초대 [ROOT.Char.GetTitleAsNameNoTooltip|l](으)로서 나는 어떤 통치를 하게 될까?"
  # Outro
- coronation_events.0100.desc.outro: "\n\n내가 [ROOT.Char.GetTitleAsName](으)로서 이 자리에 선 것은 저들의 기대에 응하기 위함이 아니다. 나의 길을 선택하고, 이 [ROOT.Char.GetPrimaryTitle.GetTierAsNameNoTooltip|l](이)가 나아갈 길을 정하기 위해 선 것이다.\n\n[ROOT.Char.GetPrimaryTitle.GetNameNoTier](이)가, 그리고 내가 무엇이 되든 그 시작은 바로 이 순간이리라."
+ coronation_events.0100.desc.outro: "\n\n내가 [ROOT.Char.GetTitleAsNameNoTooltip|l](으)로서 이 자리에 선 것은 저들의 기대에 응하기 위함이 아니다. 나의 길을 선택하고, 이 [ROOT.Char.GetPrimaryTitle.GetTierAsNameNoTooltip|l](이)가 나아갈 길을 정하기 위해 선 것이다.\n\n[ROOT.Char.GetPrimaryTitle.GetNameNoTier](이)가, 그리고 내가 무엇이 되든 그 시작은 바로 이 순간이리라."
  # Options
  diplomacy_oath_reason: "이것은 [diplomacy|E] [oath|E]임"
  martial_oath_reason: "이것은 [martial|E] [oath|E]임"
@@ -310,25 +315,25 @@
  ## Learning
  coronation_events.0110.desc.learning_oath_1: "#emp \"무지함을 힘으로 착각하지 말라. 통찰로 인도되는 봉역은, 공포로만 세워진 봉역보다 오래 이어진다.\n\n[activity.GetHost.GetCapitalLocation.GetName]에서 나는 가장 뛰어난 지성들을 모아 조언을 통해 [activity.GetHost.GetPrimaryTitle.GetNameNoTier]의 미래를 설계하리라.\"#!"
  ## Purge Pretenders
- coronation_events.0110.desc.purge_pretenders_oath: "#emp \"하수구 속 쥐처럼 [ROOT.Char.GetPrimaryTitle.GetName]의 거짓 참칭자들이 늘어나고 있다. 그리고 해충의 운명을 따라 그들은 모두 박멸되어야 한다.\"#!"
+ coronation_events.0110.desc.purge_pretenders_oath: "#emp \"하수구 속 쥐처럼 [activity.GetHost.GetPrimaryTitle.GetName]의 거짓 참칭자들이 늘어나고 있다. 그리고 해충의 운명을 따라 그들은 모두 박멸되어야 한다.\"#!"
  ## End the Struggle
- coronation_events.0110.desc.end_the_struggle_oath: "#emp [ROOT.Char.MakeScope.Var('end_the_struggle_oath_type_var').Struggle.GetName](은)는 수세대에 걸쳐 훌륭한 [ROOT.Char.GetCulture.GetCollectiveNoun]인들을 서서히 소모해 왔다. 더는 안 된다. 무의미한 자원 낭비에 결정적인 마침표를 찍고, 이곳에 새로운 번영의 시대를 열 것이다. [ROOT.Char.GetFaith.GetName](이)시여, 제게 힘을 주소서.\"#!"
+ coronation_events.0110.desc.end_the_struggle_oath: "#emp [activity.GetHost.MakeScope.Var('end_the_struggle_oath_type_var').Struggle.GetName](은)는 수세대에 걸쳐 훌륭한 [activity.GetHost.GetCulture.GetCollectiveNoun]인들을 서서히 소모해 왔다. 더는 안 된다. 무의미한 자원 낭비에 결정적인 마침표를 찍고, 이곳에 새로운 번영의 시대를 열 것이다. [activity.GetHost.GetFaith.GetName](이)시여, 제게 힘을 주소서.\"#!"
  ## Greatest Hunter
- coronation_events.0110.desc.greatest_hunter_oath: "#emp \"사냥은 단지 기술을 겨루는 대결이 아니라, 생명과 자연을 기리는 축제이기도 하다. 나는 가장 위대한 사냥꾼, 황야의 주인, [ROOT.Char.GetPrimaryTitle.GetNameNoTier]의 미개척 중심지의 진정한 군주가 될 것이다.\"#!"
+ coronation_events.0110.desc.greatest_hunter_oath: "#emp \"사냥은 단지 기술을 겨루는 대결이 아니라, 생명과 자연을 기리는 축제이기도 하다. 나는 가장 위대한 사냥꾼, 황야의 주인, [activity.GetHost.GetPrimaryTitle.GetNameNoTier]의 미개척 중심지의 진정한 군주가 될 것이다.\"#!"
  ## Heir Preparation
- coronation_events.0110.desc.heir_preparation_oath: "#emp \"제대로 된 후계자가 없다면 [ROOT.Char.GetDynasty.GetName] 가문은 망각 속으로 사라질 것이다. 나는 후계자의 교육을 이끌고, [ROOT.Char.GetDynasty.GetName](을)를 새로운 높이로 끌어올릴 가치와 지혜를 심어줄 것이다.\"#!"
+ coronation_events.0110.desc.heir_preparation_oath: "#emp \"제대로 된 후계자가 없다면 [activity.GetHost.GetDynasty.GetName] 가문은 망각 속으로 사라질 것이다. 나는 후계자의 교육을 이끌고, [activity.GetHost.GetDynasty.GetName](을)를 새로운 높이로 끌어올릴 가치와 지혜를 심어줄 것이다.\"#!"
  ## Install Claimants
  coronation_events.0110.desc.install_claimants_oath: "#emp \"옥좌에 대한 정당한 명분은 혈통의 문제가 아니라 정의의 문제다. 나는 정당한 주장자들을 옥좌에 앉히고 찬탈자들을 몰아내어 질서를 회복할 것이다.\"#!"
  ## Mend the Fracture
- coronation_events.0110.desc.mend_the_fracture_oath: "#emp \"봉역의 문화적 균열은 너무 오랫동안 불화를 일으켜 왔다. 나는 그들의 정체성을 존중하면서, 모든 이를 하나의 [ROOT.Char.GetHouse.GetName] 깃발 아래로 통합할 것이다.\"#!"
+ coronation_events.0110.desc.mend_the_fracture_oath: "#emp \"봉역의 문화적 균열은 너무 오랫동안 불화를 일으켜 왔다. 나는 그들의 정체성을 존중하면서, 모든 이를 하나의 [activity.GetHost.GetHouse.GetName] 깃발 아래로 통합할 것이다.\"#!"
  ## Provide for the Warriors
  coronation_events.0110.desc.provide_for_the_warriors_oath: "#emp \"[activity.GetHost.GetPrimaryTitle.GetNameNoTier]의 전사들은 나의 검이자 방패다. 나는 그들이 충분히 무장하고 우리의 땅을 언제든 지킬 준비가 되어 있도록 보장할 것이다.\"#!"
  ## Provide for the Faithful
- coronation_events.0110.desc.provide_for_the_faithful_oath: "#emp \"[activity.GetHost.GetPrimaryTitle.GetNameNoTier]의 신앙인들은 봉역의 중추다. 나는 그들의 세속적 필요가 충족되도록 하여, 그들이 [ROOT.Char.GetFaith.HighGodName]의 종복으로서 [ROOT.Char.GetPrimaryTitle.GetTierAsNamePossessive] 구원에 전념할 수 있도록 지원할 것이다.\"#!"
+ coronation_events.0110.desc.provide_for_the_faithful_oath: "#emp \"[activity.GetHost.GetPrimaryTitle.GetNameNoTier]의 신앙인들은 봉역의 중추다. 나는 그들의 세속적 필요가 충족되도록 하여, 그들이 [ROOT.Char.GetFaith.HighGodName]의 종복으로서 [activity.GetHost.GetPrimaryTitle.GetTierAsNamePossessive] 구원에 전념할 수 있도록 지원할 것이다.\"#!"
  ## Provide for the Poor
  coronation_events.0110.desc.provide_for_the_poor_oath: "#emp \"[activity.GetHost.GetPrimaryTitle.GetNameNoTier]의 가난한 자들은 대지의 소금이며 세상의 빛이다. 그들은 모두의 이익을 위해 묵묵히 땀 흘린다. 나는 내 봉역의 가장 가난한 이들조차 존엄과 희망을 품을 수 있도록 보장할 것이다.\"#!"
  ## Repent
- coronation_events.0110.desc.repent_oath: "#emp \"무엇이 인간의 본성을 바꿀 수 있는가? 나의 의지만으로 충분할까? 다른 [ROOT.Char.GetFaith.GetAdherentNamePlural] 신자들, 그리고 [ROOT.Char.GetFaith.HighGodName](을)를 설득해 내가 진정 죄악을 뉘우친다는 것을 믿게 할 수 있을까? 어리석은 시도일지라도, 시도하지 않는 것이야말로 가장 큰 죄악일 것이다.\"#!"
+ coronation_events.0110.desc.repent_oath: "#emp \"무엇이 인간의 본성을 바꿀 수 있는가? 나의 의지만으로 충분할까? 다른 [activity.GetHost..GetFaith.GetAdherentNamePlural] 신자들, 그리고 [activity.GetHost.GetFaith.HighGodName](을)를 설득해 내가 진정 죄악을 뉘우친다는 것을 믿게 할 수 있을까? 어리석은 시도일지라도, 시도하지 않는 것이야말로 가장 큰 죄악일 것이다.\"#!"
  ## Other
  coronation_events.0110.desc.fallback: "#emp \"나의 통치는 후세에 [activity.GetHost.GetPrimaryTitle.GetNameNoTier]의 황금기를 연 출발점으로 기억될 것이다.\"#!"
  coronation_events.0110.desc.outro: ""
@@ -350,7 +355,7 @@
  diplomacy_oath_2_tooltip: "#V 집안 보강#! [oath|E]를 서약함:\n\t$EFFECT_LIST_BULLET$#V 7#!명 이상의 [legitimate|E] [children|E]를 가져야 함 #weak (현재 [host.MakeScope.ScriptValue('children_oath_value')|V0]/#V 7#!)#!\n\t$EFFECT_LIST_BULLET$#V 30년#! 이내에 완수해야 함\n\t$EFFECT_LIST_BULLET$보상: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [dynasty_prestige_i][dynasty_prestige|E] 및 [GetModifier('oath_of_children').GetNameWithTooltip]"
  ## Martial
  martial_oath_1_tooltip: "#V [host.GetPrimaryTitle.GetNameNoTierNoTooltip] 통합#! [oath|E]를 서약함:\n\t$EFFECT_LIST_BULLET$[host.GetPrimaryTitle.GetName](은)는 그 [de_jure|E] 경계를 [completely_control|E]해야 함 #low (현재 [host.MakeScope.ScriptValue('oath_reconquest_value_1')|V0]/[host.MakeScope.ScriptValue('oath_reconquest_value_2')|V0])#!\n$EFFECT_LIST_BULLET$#V 20년#! 이내에 완수해야 함\n$EFFECT_LIST_BULLET$보상: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E] 및 [GetModifier('oath_of_reconquest').GetNameWithTooltip]"
- oath_reconquest_tooltip: "[de_jure|E] [root_scope.GetPrimaryTitle.GetName] [completely_control|E] #low ([root_scope.MakeScope.ScriptValue('oath_reconquest_value_1')]/[root_scope.MakeScope.ScriptValue('oath_reconquest_value_2')])#!"
+ oath_reconquest_tooltip: "[completely_control|E]하는 [de_jure|E] [THIS.Var('oath_reconquest_title').Title.GetName] #low ([root_scope.MakeScope.ScriptValue('oath_reconquest_value_1')]/[root_scope.MakeScope.ScriptValue('oath_reconquest_value_2')])#!"
  martial_oath_2_tooltip: "#V 봉역 확장#! [oath|E]를 서약함:\n\t$EFFECT_LIST_BULLET$[realm|E]이 최소 [host.MakeScope.ScriptValue('oath_conquest_value_1')|V0] 크기를 보유해야 함 #low (현재 [host.MakeScope.ScriptValue('oath_conquest_value_2')|V0])#!\n$EFFECT_LIST_BULLET$#V 20년#! 이내에 완수해야 함\n$EFFECT_LIST_BULLET$[capital|E]에 혜택을 주거나 [de_jure|E] 땅을 옮기는 것 중 선택\n$EFFECT_LIST_BULLET$보상: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E] 및 [GetModifier('oath_of_conquest').GetNameWithTooltip]"
  ## Stewardship
  stewardship_oath_1_tooltip: "#V 평화 보장#! [oath|E]를 서약함:\n\t$EFFECT_LIST_BULLET$연속 #V 5년#! 이상 평화를 유지해야 함\n\t$EFFECT_LIST_BULLET$#V 50년#! 이내에 완수해야 함\n\t$EFFECT_LIST_BULLET$보상: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], [development_i][development|E] 및 [GetModifier('oath_of_peace').GetNameWithTooltip]"
@@ -576,7 +581,7 @@
  greatest_hunter_oath_decision_confirm: "나는 견줄 데 없는 사냥꾼이다"
  greatest_hunter_decision_l3_trigger: "#V 전설적인#! [GetActivityType('activity_hunt').GetTextIcon][GetActivityType('activity_hunt').GetName](을)를 성공적으로 #V 3회#! 주최함 ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/3)"
  greatest_hunter_decision_l1_trigger: "#V 전설적인#! [GetActivityType('activity_hunt').GetTextIcon][GetActivityType('activity_hunt').GetName](을)를 성공적으로 #V 1회#! 주최함 ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/1)"
- greatest_hunter_decision_r10_trigger: "[GetActivityType('activity_hunt').GetTextIcon][GetActivityType('activity_hunt').GetName](을)를 성공적으로 #V 10회#! 주최함 ([THIS.Char.MakeScope.Var('greatest_hunter_oath_l_counter').GetValue|0]/10)"
+ greatest_hunter_decision_r10_trigger: "[GetActivityType('activity_hunt').GetTextIcon][GetActivityType('activity_hunt').GetName](을)를 성공적으로 #V 10회#! 주최함 ([THIS.Char.MakeScope.Var('greatest_hunter_oath_r_counter').GetValue|0]/10)"
  greatest_hunter_decision_trigger_2: "당신이 #V 활#! 유형 [artifact|E]을 보유함"
  greatest_hunter_decision_no_artifact_xp_effect: "당신의 #V 활#! 유형 [artifact|E]이 #V #P 20%#! $trait_track_hunter_xp_gain_mult$#!를 획득합니다"
  greatest_hunter_decision_no_artifact_stress_effect: "당신의 #V 활#! 유형 [artifact|E]이 #V #P -15%#! [stress|E] 획득량#!을 획득합니다"
@@ -584,7 +589,7 @@
  # Heir Preparation
  heir_preparation_oath_decision: "$GetHeirPreparationOathText$ [CoronationTimer('heir_preparation_oath_decision','heir_preparation_oath_decision_timer')]"
  heir_preparation_oath_decision_timer: "\t#weak ([RemainingTime('heir_preparation_oath_timer')])#!"
- heir_preparation_oath_decision_desc: "나는 다가올 시련에 대비해 [primary_heir|E]를 준비하겠다고 맹세했다. 나의 통치는 그 자체보다 후계에 더 큰 의미가 있다. $heir_preparation_oath_decision_desc_extra$"
+ heir_preparation_oath_decision_desc: "나는 다가올 시련에 대비해 후계자를 준비하겠다고 맹세했다. 나의 통치는 그 자체보다 후계에 더 큰 의미가 있다. $heir_preparation_oath_decision_desc_extra$"
  heir_preparation_oath_decision_desc_extra: "\n\n@alert_icon!#alert_trial [RemainingTime('heir_preparation_oath_timer')] 내에 [oath|E]를 완수해야 함#![IsOngoingCoronationOath('heir_preparation_oath')]"
  heir_preparation_oath_decision_tooltip: "미래를 위해 [primary_heir|E]를 준비함"
  heir_preparation_oath_decision_confirm: "승계는 안전하다"

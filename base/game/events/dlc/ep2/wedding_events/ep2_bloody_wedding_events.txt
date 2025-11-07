@@ -156,9 +156,9 @@ ep2_wedding.0101 = {
 
 scripted_trigger ep2_wedding_0202_valid_family_member_trigger = {
 	is_close_or_extended_family_of = scope:spouse_2
-	NOT = { this = root }
+	this != root
 	is_close_family_or_spouse_of_root_trigger = no
-	NOT = { this = scope:spouse_2 }
+	this != scope:spouse_2
 }
 
 ep2_wedding.0202 = {
@@ -352,15 +352,15 @@ ep2_wedding.0202 = {
 				random_attending_character = {
 					limit = {
 						ep2_wedding_0202_valid_family_member_trigger = yes
-						NOT = { this = scope:entourage_1 }
+						this != scope:entourage_1
 					}
 					save_scope_as = entourage_2
 				}
 				random_attending_character = {
 					limit = {
 						ep2_wedding_0202_valid_family_member_trigger = yes
-						NOT = { this = scope:entourage_1 }
-						NOT = { this = scope:entourage_2 }
+						this != scope:entourage_1
+						this != scope:entourage_2
 					}
 					save_scope_as = entourage_3
 				}
@@ -1023,7 +1023,7 @@ ep2_wedding.0301 = {
 	}
 	right_portrait = {
 		trigger = {
-			NOT = { root = scope:spouse_1 }
+			root != scope:spouse_1
 		}
 		character = scope:spouse_1
 		animation = grief
@@ -1044,9 +1044,9 @@ ep2_wedding.0301 = {
 					any_attending_character = {
 						is_alive = yes
 						is_adult = yes
-						NOT = { this = scope:activity.special_guest:spouse_1 }
-						NOT = { this = scope:spouse_2 }
-						NOT = { this = scope:host }
+						this != scope:activity.special_guest:spouse_1
+						this != scope:spouse_2
+						this != scope:host
 					}
 				}
 			}
@@ -1055,8 +1055,8 @@ ep2_wedding.0301 = {
 					limit = {
 						is_alive = yes
 						is_adult = yes
-						NOT = { this = scope:activity.special_guest:spouse_1 }
-						NOT = { this = scope:host }
+						this != scope:activity.special_guest:spouse_1
+						this != scope:host
 					}
 					weight = {
 						base = 1
@@ -1095,8 +1095,8 @@ ep2_wedding.0301 = {
 		scope:activity = {
 			every_attending_character = {
 				limit = {
-					NOT = { this = scope:host }
-					NOT = { this = scope:spouse_1 }
+					this != scope:host
+					this != scope:spouse_1
 				}
 				trigger_event = ep2_wedding.0956
 			}
@@ -1587,7 +1587,7 @@ ep2_wedding.0204 = {
 			triggered_desc = {
 				trigger = {
 					#you only get this event if the host chose family kill
-					NOT = { this = scope:spouse_2 }
+					this != scope:spouse_2
 				}
 				desc = ep2_wedding.0204.desc.family.non_spouse
 			}
@@ -1621,7 +1621,7 @@ ep2_wedding.0204 = {
 	}
 	lower_center_portrait = {
 		trigger = {
-			NOT = { root = scope:spouse_2 }
+			root != scope:spouse_2
 			NOT = { scope:host = { has_variable = bloody_wedding_murder_solo_var } }
 		}
 		character = scope:spouse_2
@@ -1629,7 +1629,7 @@ ep2_wedding.0204 = {
 	lower_right_portrait = {
 		trigger = {
 			exists = scope:entourage_1
-			NOT = { root = scope:entourage_1 }
+			root != scope:entourage_1
 			NOT = { scope:host = { has_variable = bloody_wedding_murder_solo_var } }
 		}
 		character = scope:entourage_1
@@ -1637,7 +1637,7 @@ ep2_wedding.0204 = {
 	lower_left_portrait = {
 		trigger = {
 			exists = scope:entourage_2
-			NOT = { root = scope:entourage_2 }
+			root != scope:entourage_2
 			NOT = { scope:host = { has_variable = bloody_wedding_murder_solo_var } }
 		}
 		character = scope:entourage_2
@@ -1763,7 +1763,7 @@ ep2_wedding.0204 = {
 					any_attending_character = {
 						ep2_wedding_0202_valid_family_member_trigger = yes
 						is_ai = yes
-						NOT = { this = root }
+						this != root
 					}
 				}
 			}
@@ -1772,7 +1772,7 @@ ep2_wedding.0204 = {
 					limit = {
 						ep2_wedding_0202_valid_family_member_trigger = yes
 						is_ai = yes
-						NOT = { this = root }
+						this != root
 					}
 					custom = every_attending_relative_of_spouse_2
 					death = {
@@ -1809,7 +1809,7 @@ ep2_wedding.0957 = {
 				#DLC check
 				has_bp1_dlc_trigger = yes
 				scope:avenging_family.house.house_head = {
-					house_head_can_start_feud_against_trigger = { TARGET = root }
+					valid_for_feud_events_with_target_trigger = { TARGET = root }
 				}
 			}
 			scope:avenging_family = {
@@ -1832,7 +1832,7 @@ ep2_wedding.0957 = {
 				custom = ep2_wedding.0957.a.tt
 				limit = {
 					is_close_family_or_spouse_of_root_trigger = no
-					NOT = { this = scope:avenging_family }
+					this != scope:avenging_family
 				}
 				add_opinion = {
 					target = root

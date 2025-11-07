@@ -45,6 +45,18 @@ sway_outcome.0001 = {
 							opinion = sway_opinion_increase_per_success
 						}
 					}
+					scope:owner = {
+						if = {
+							limit = {
+								faith = { has_doctrine_parameter = sway_scheme_piety }
+								OR = {
+									liege ?= scope:target
+									target_is_vassal_or_below = scope:target
+								}
+							}
+							add_piety = minor_piety_gain
+						}
+					}
 				}
 			}
 			sway_end_effect = yes
@@ -149,6 +161,18 @@ sway_outcome.1001 = {
 								opinion = 50
 							}
 						}
+						scope:owner = {
+							if = {
+								limit = {
+									faith = { has_doctrine_parameter = sway_scheme_piety }
+									OR = {
+										liege ?= scope:target
+										target_is_vassal_or_below = scope:target
+									}
+								}
+								add_piety = minor_piety_gain
+							}
+						}
 					}
 				}
 			}
@@ -176,6 +200,18 @@ sway_outcome.1001 = {
 				target = scope:owner
 				modifier = scheme_sway_opinion
 				opinion = 30
+			}
+		}
+		scope:owner = {
+			if = {
+				limit = {
+					faith = { has_doctrine_parameter = sway_scheme_piety }
+					OR = {
+						liege ?= scope:target
+						target_is_vassal_or_below = scope:target
+					}
+				}
+				add_piety = minor_piety_gain
 			}
 		}
 		sway_end_effect = yes
@@ -276,6 +312,18 @@ sway_outcome.1002 = {
 								opinion = 50
 							}
 						}
+						scope:owner = {
+							if = {
+								limit = {
+									faith = { has_doctrine_parameter = sway_scheme_piety }
+									OR = {
+										liege ?= scope:target
+										target_is_vassal_or_below = scope:target
+									}
+								}
+								add_piety = minor_piety_gain
+							}
+						}
 					}
 				}
 			}
@@ -305,6 +353,18 @@ sway_outcome.1002 = {
 				target = scope:owner
 				modifier = scheme_sway_opinion
 				opinion = 30
+			}
+		}
+		scope:owner = {
+			if = {
+				limit = {
+					faith = { has_doctrine_parameter = sway_scheme_piety }
+					OR = {
+						liege ?= scope:target
+						target_is_vassal_or_below = scope:target
+					}
+				}
+				add_piety = minor_piety_gain
 			}
 		}
 		sway_end_effect = yes
@@ -365,6 +425,18 @@ sway_outcome.1003 = {
 					target = scope:owner
 					modifier = scheme_sway_opinion
 					opinion = 30
+				}
+			}
+			scope:owner = {
+				if = {
+					limit = {
+						faith = { has_doctrine_parameter = sway_scheme_piety }
+						OR = {
+							liege ?= scope:target
+							target_is_vassal_or_below = scope:target
+						}
+					}
+					add_piety = minor_piety_gain
 				}
 			}
 		}
@@ -688,6 +760,18 @@ sway_outcome.1004 = {
 			}
 			remove_trait = disloyal 
 		}
+		scope:owner = {
+			if = {
+				limit = {
+					faith = { has_doctrine_parameter = sway_scheme_piety }
+					OR = {
+						liege ?= scope:target
+						target_is_vassal_or_below = scope:target
+					}
+				}
+				add_piety = minor_piety_gain
+			}
+		}
 	}
 
 	option = {
@@ -805,10 +889,7 @@ sway_outcome.2001 = {
 			any_consort = {
 				this = scope:target
 			}
-			AND = {
-				exists = betrothed
-				betrothed = scope:target
-			}
+			betrothed ?= scope:target
 		}
 	}
 

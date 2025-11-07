@@ -12,8 +12,8 @@ launch_hungarian_migration_ducal_processing_trigger = {
 	#Doesn't hold a valid duchy-tier title in Pannonia.
 	NOT = {
 		any_held_title = {
+			title_tier = duchy
 			title_capital_county.title_province = { geographical_region = custom_hungary }
-			tier = tier_duchy
 		}
 	}
 }
@@ -22,7 +22,7 @@ launch_hungarian_migration_count_processing_trigger = {
 	#Doesn't hold a valid county-tier title in Pannonia.
 	NOT = {
 		any_held_title = {
-			tier = tier_county
+			title_tier = county
 			title_province = { geographical_region = custom_hungary }
 		}
 	}
@@ -36,7 +36,7 @@ launch_hungarian_migration_sub_vassal_liege_pairing_trigger = {
 	scope:receiving_vassal.liege = {
 		any_held_title = {
 			count >= 2
-			tier = tier_county
+			title_tier = county
 			title_province = { geographical_region = custom_hungary }
 		}
 	}
@@ -55,8 +55,7 @@ launch_hungarian_migration_county_is_within_custom_hungary_trigger = {
 launch_hungarian_migration_misplaced_count_suitable_liege_trigger = {
 	launch_hungarian_migration_county_is_within_custom_hungary_trigger = yes
 	duchy = {
-		exists = holder
-		holder = {
+		holder ?= {
 			NOT = { this = $INVADER$ }
 			liege = $INVADER$
 		}
@@ -102,7 +101,7 @@ negotiate_the_danelaw_basic_filter_trigger = {
 }
 negotiate_the_danelaw_additional_filter_trigger = {
 	# Independent only, please.
-	is_independent_ruler = yes
+	top_liege = this
 	# Kings & Emperors are too high a rank to make concessions.
 	highest_held_title_tier <= tier_duchy
 	# Plus, a capital inside title:k_england. Not strictly necessary, but removes *so* many edge-cases.
@@ -171,7 +170,7 @@ favour_the_countryside_basques_rationale_sinful_traits_trigger = {
 favour_the_countryside_basques_rationale_virtuous_basque_pagan_traits_trigger = {
 	num_virtuous_traits = {
 		value >= favour_the_countryside_basques_decision_basque_pagan_virtues_tally_value
-		faith = faith:basque_pagan
+		target = faith:basque_pagan
 	}
 }
 

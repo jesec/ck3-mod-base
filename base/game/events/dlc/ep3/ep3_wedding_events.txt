@@ -320,10 +320,7 @@ ep3_wedding.0001 = {
 		}
 		modifier = {
 			add = 2
-			any_relation = {
-				type = lover
-				count >= 1
-			}
+			any_relation = { type = lover }
 		}
 		modifier = {
 			factor = 0.5
@@ -498,7 +495,7 @@ ep3_wedding.0001 = {
 					root = scope:activity.special_guest:spouse_1
 					AND = {
 						is_close_family_of = scope:activity.special_guest:spouse_1
-						NOT = { root = scope:activity.special_guest:spouse_2 }
+						root != scope:activity.special_guest:spouse_2
 					}
 					
 				}
@@ -513,7 +510,7 @@ ep3_wedding.0001 = {
 					root = scope:activity.special_guest:spouse_2
 					AND = {
 						is_close_family_of = scope:activity.special_guest:spouse_2
-						NOT = { root = scope:activity.special_guest:spouse_1 }
+						root != scope:activity.special_guest:spouse_1
 					}
 				}
 			}
@@ -690,10 +687,7 @@ ep3_wedding.0001 = {
 			}
 			modifier = {
 				add = 50
-				any_relation = {
-					type = soulmate
-					count >= 1
-				}
+				any_relation = { type = soulmate }
 			}
 			modifier = {
 				factor = 0
@@ -2463,9 +2457,7 @@ ep3_wedding.0003 = {
 			scope:flirting_in_law = {
 				every_consort = {
 					limit = {
-						NOT = {
-							this = root
-						}
+						this != root
 						NOR = {
 							AND = {
 								faith = {

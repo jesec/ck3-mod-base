@@ -8,7 +8,7 @@
  train_for_tournament_decision_confirm: "훈련 시작"
  grand_tournament_active: "당신이 참여할 수 있는 [GetActivityType('activity_tournament').GetName](이)가 존재해야 함"
  ep2_decision_events.0001.t: "토너먼트 훈련"
- ep2_decision_events.0001.desc: "\"곧바로 오른쪽으로 돌앗!\" [marshal.GetTitledFirstName]의 강력한 일격이 검을 강타하자, 나는 그대로 몇 걸음 주춤 물러났다. \"토너먼트에서 상대가 봐주는 일은 절대 없을 겁니다, 영주님.\" [marshal.GetTitledFirstName](이)가 이마에 맺힌 땀을 닦았다.\n\n\"우승하려면 절대 지면 안 됩니다. 단 한 번도.\""
+ ep2_decision_events.0001.desc: "\"곧바로 오른쪽으로 돌앗!\" [marshal.GetTitledFirstName]의 강력한 일격이 검을 강타하자, 나는 그대로 몇 걸음 주춤 물러났다. \"토너먼트에서 상대가 봐 주는 일은 절대 없을 겁니다, [ROOT.Char.Custom('FormOfAddressForLiege')].\" [marshal.GetSheHe]가 이마에 맺힌 땀을 닦았다.\n\n\"우승하려면 절대 지면 안 됩니다. 저한테 져서도 안 되고요. 단 한 번의 패배도 안 됩니다.\""
  ep2_decision_events.0001.a: "\"#EMP 이야아아압!#!\""
  ep2_decision_events.0001.a.crit_success: "훈련이 #EMP 매우 큰 성과를 거둠#!"
  ep2_decision_events.0001.a.success: "훈련이 잘 풀림"
@@ -22,8 +22,9 @@
  tradition_tournament_discount_desc: "$tradition_chivalry_name$ [culture_tradition|E]으로 전환 시 2000의 [prestige|E] 할인 적용"
  ### ACTIVITY
  activity_tournament: "대규모 토너먼트"
+ activity_tournament_plural: "대규모 토너먼트"
  activity_tournament_desc: "장엄한 무예 또는 문화 [contests|E]를 주최합니다. 세계 각지에서 참가자들이 모여 하스틸루드 [prizes|E]과 [prestige|E]을 두고 경쟁을 펼칩니다."
- activity_tournament_host_desc: "$BULLET_WITH_TAB$[prestige_i|E][prestige|E]\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E] 획득\n$BULLET_WITH_TAB$[stress_loss_i][stress|E] 감소\n$BULLET_WITH_TAB$[GetTrait('tourney_participant').GetName( GetNullCharacter )] [trait_level_track_xp|E]\n$BULLET_WITH_TAB$[acclaimed_knights|E]가 [glory|E] 획득"
+ activity_tournament_host_desc: "$BULLET_WITH_TAB$[prestige_i|E] [prestige|E]\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E]\n$BULLET_WITH_TAB$[stress_loss_i] [stress_loss|E]\n$BULLET_WITH_TAB$[GetTrait('tourney_participant').GetName( GetNullCharacter )] [trait_level_track_xp|E]\n$BULLET_WITH_TAB$[acclaimed_knights|E]가 [glory|E] 획득"
  activity_tournament_selection_tooltip: "당신의 $knight_culture_player_plural$(와)과 신하, 이웃을 장엄한 경연 대회에 초청합니다.\n\n예상 보상\n$BULLET_WITH_TAB$[prestige_i] [prestige|E]\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E] 획득\n$BULLET_WITH_TAB$[stress_loss_i] [stress|E] 감소"
  tournament_contest: "경연 대회"
  progress_to_victory: "$game_concept_progress_to_victory$"
@@ -43,13 +44,11 @@
  ### PHASES
  #TEAM
  tournament_phase_melee: "모의전"
- #TODO_CD_EP2: [GetPlayer.Custom('GetMeleeVariant')]
  tournament_phase_melee_desc: "기마전 혹은 육상전을 벌이는 모의 전투로, 두 조가 전장의 주도권을 두고 겨룹니다. 또한 상대 진영의 전투원을 사로잡아 몸값을 받아낼 수도 있습니다.\n\n$tournament_contest_format_team$"
  #TURN
  tournament_phase_archery: "궁술"
  tournament_phase_archery_desc: "각 참가자가 정해진 수의 화살로 과녁을 쏘아 최대한 많은 점수를 획득하는 것을 목표로 하는 활쏘기 대회입니다.\n\n$tournament_contest_formaty_turn$"
  tournament_phase_recital: "웅변"
- #TODO_CD_EP2: [GetPlayer.Custom('GetRecitalVariant')]
  tournament_phase_recital_desc: "각 참가자가 행사를 위해 쓴 시를 공개적으로 낭송하고 다른 모든 참가자를 대상으로 심사를 받는 시 대회입니다.\n\n$tournament_contest_formaty_turn$"
  #VERSUS
  tournament_phase_joust: "마상 시합"
@@ -57,7 +56,6 @@
  tournament_phase_duel: "결투"
  tournament_phase_duel_desc: "육상에서 펼쳐지는 일련의 무장 결투로, 참가자는 상대의 무장을 해제하거나 적보다 더 많은 점수를 획득하여 최후의 승자가 되어야 합니다.\n\n$tournament_contest_format_versus$\n[contest_rounds|E] 회전 수: 3"
  tournament_phase_wrestling: "레슬링"
- #TODO_CD_EP2: [GetPlayer.Custom('GetWrestlingVariant')]
  tournament_phase_wrestling_desc: "힘과 재치를 겨루는 경연 대회로, 참가자는 상대를 쓰러뜨리거나 경기장 밖으로 던져 최후의 승자가 되어야 합니다.\n\n$tournament_contest_format_versus$\n[contest_rounds|E] 회전 수: 3"
  tournament_phase_board_game: "보드게임"
  tournament_phase_board_game_desc: "참가자가 일련의 보드게임 경기를 펼쳐 지혜를 겨루는 경연 대회로, 최후까지 살아남는 선수가 우승자로 인정됩니다.\n\n$tournament_contest_format_versus$\n[contest_rounds|E] 회전 수: 3"

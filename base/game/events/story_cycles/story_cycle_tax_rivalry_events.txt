@@ -63,9 +63,7 @@ tax_rivalry.0010 = {
 	weight_multiplier = {
 		base = 1
 		modifier = {
-			AND = {
-				house = { has_house_unity_stage = friendly }
-			}
+			house = { has_house_unity_stage = friendly }
 			factor = 1.5
 		}
 		modifier = {
@@ -74,10 +72,8 @@ tax_rivalry.0010 = {
 		}
 		# ...and vice versa
 		modifier = {
-			AND = {
-				house = {
-					has_house_unity_stage = competitive
-				}
+			house = {
+				has_house_unity_stage = competitive
 			}
 			factor = 0.67
 		}
@@ -720,15 +716,15 @@ scripted_effect tax_rivalry_3000_sabotage_setup_effect = {
 		if = {
 			limit = {
 				any_targeting_faction = {
-					faction_is_type = peasant_faction
+					faction_type = peasant_faction
 					any_faction_county_member = {
 						this = $COUNTY$
 					}
 				}
 			}
 			random_targeting_faction = {
+				faction_type = peasant_faction
 				limit = {
-					faction_is_type = peasant_faction
 					any_faction_county_member = {
 						this = $COUNTY$
 					}
@@ -871,7 +867,7 @@ tax_rivalry.3001 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					# TODO_CD_EREN: Check whether the rival is assigned to the county
+					scope:sabotaged_county.holder ?= scope:other_rival
 				}
 				desc = tax_rivalry.3001.desc_outro_assigned
 			}
@@ -1043,9 +1039,7 @@ tax_rivalry.3003 = {
 				}
 				scope:story.story_owner = {
 					random_targeting_faction = {
-						limit = {
-							faction_is_type = peasant_faction
-						}
+						faction_type = peasant_faction
 						save_scope_as = sabotage_faction
 						setup_peasant_leader_effect = yes
 					}
@@ -1194,9 +1188,7 @@ scripted_effect tax_rivalry_4010_deepen_rivalry_effect = {
 		# Add an opinion malus if the two are nemeses and their relationship cannot deteriorate any further
 		if = {
 			limit = {
-				OR = {
-					has_relation_nemesis = scope:tax_collector
-				}
+				has_relation_nemesis = scope:tax_collector
 			}
 			add_opinion = {
 				target = scope:tax_collector
