@@ -2309,8 +2309,65 @@ on_game_start_after_lobby = {
 			}
 			add_legitimacy = base_legitimacy_value
 		}
-	}
+		
+		if = { # Special historical events for Matilda!
+			limit = {
+				character:7757 ?= { is_alive = yes }
+			}
+			character:7757 ?= {
+				trigger_event = bookmark.1066 # Matildas marriage to her step-brother, with plausible historical options!
+				trigger_event = { # Matildas suspected witchcraft, the player decides if its true or not!
+					id = bookmark.1067
+					years = { 1 5 }
+				}
+			}
+		}
+		
+		if = { # Special historical events for Vratislav!
+			limit = {
+				character:522 ?= { is_alive = yes }
+			}
+			character:522 ?= {
+				trigger_event = { # Vratislav and the Slavic Marches, he didn't historically get them (one briefly, but eh). The player chooses to appease the emperor or go after the coveted lands themselves!
+					id = bookmark.1068
+					days = { 35 120 }
+				}
+				trigger_event = { # Jaromir, Vratislav's brother, was a pain - this event is an opportunity for the player to handle the rivalry
+					id = bookmark.1069
+					days = { 1 29 }
+				}
+			}
+		}
+		
+		if = { # Special historical events for Robert the Fox!
+			limit = {
+				character:1128 ?= { is_alive = yes }
+			}
+			character:1128 ?= {
+				trigger_event = { # A Norman Sicily - Robert historically conquered quite a bit here, the player can choose how far they want to go and the risk they want to take. The more risk, the more event troops/claims.
+					id = bookmark.1070
+					days = { 35 120 }
+				}
+				trigger_event = { # The Pretender Monk - Raiktor is a historical character, a monk wo pretended to be a deposed Byzantine emperor which Robert used to beat up Byzantium. Here you can follow historical conquests (taking a bit of the coast) or go full on 'install him as emperor for real'-mode!
+					id = bookmark.1071
+					years = { 1 7 }
+				}
+			}
+		}
+		
+		if = { # Special historical events for Emir Yahya!
+			limit = {
+				character:3924 ?= { is_alive = yes }
+			}
+			character:3924 ?= {
+				trigger_event = { # Conquering Cordoba - Gain an opportunity to conquer Cordoba while gaining one of two buffs; one intrigue-focused, and one military. Historically he was poisoned after having conquered the city... but that's no fun for the player!
+					id = bookmark.1072
+					days = { 10 35 }
+				}
+			}
+		}
 
+	}
 	events = {
 		game_rule.1000	#Autopopulate families.
 		game_rule.1011	#Hungarian Migration management.

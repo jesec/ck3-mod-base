@@ -510,10 +510,18 @@ action_not_endorsed_by_realm_priest = {
 				view = character
 			}
 		}
-		open_interaction_window = {
-			interaction = sway_interaction
-			actor = scope:actor
-			recipient = scope:recipient
+		if = {
+			limit = {
+				has_global_variable = tutorial_completed
+			}
+			start_tutorial_lesson = reactive_advice_bishop_endorsement
+		}
+		else = {
+			open_interaction_window = {
+				interaction = sway_interaction
+				actor = scope:actor
+				recipient = scope:recipient
+			}
 		}
 	}
 }
@@ -862,6 +870,7 @@ action_station_men_at_arms = {
 			limit = {
 				number_of_maa_regiments > number_of_stationed_maa_regiments
 				domain_size > number_of_stationed_maa_regiments
+				NOT = { has_global_variable = tutorial_current_situation_gradual_reveal_2 }
 			}
 			try_create_important_action = {
 				important_action_type = action_station_men_at_arms

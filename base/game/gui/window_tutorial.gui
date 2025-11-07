@@ -224,9 +224,10 @@ types TutorialWindow {
 
 			scrollbox = {
 				autoresizescrollarea = yes
-
 				blockoverride "scrollbox_content"
 				{
+					# this might break with really, really long localizations
+					set_parent_size_to_minimum = yes
 					text_multi = {
 						max_width = 490
 						min_width = 490
@@ -237,8 +238,7 @@ types TutorialWindow {
 
 					vbox = {
 						visible = "[Tutorial.HasStepInstructions]"
-						layoutpolicy_vertical = expanding
-
+						layoutpolicy_vertical = preferred
 						text_single = {
 							layoutpolicy_horizontal = expanding
 							margin_top = 20
@@ -255,13 +255,35 @@ types TutorialWindow {
 						}
 						expand = {}
 					}
+					
+
 				}
 				blockoverride "scrollbox_expand"
 				{
 					expand = {}
-				}
-			}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						visible = "[Tutorial.HasTransition('full_tutorial_explanation')]"
+						max_width = 490
+						min_width = 490
+				
+						text_single = {
+							align = left
+							text = "[Tutorial.GetTransitionText('full_tutorial_explanation')]"
+							margin_left = 5
+						}
+						expand = {}
+						text_single = {
+							align = right
+							text = "[Tutorial.GetTransitionText('quick_tutorial_explanation')]"
+							margin_right = 5
+						}
 
+					}
+					
+				}
+				
+			}
 			hbox = {
 				margin = { 10 10 }
 				spacing = 5
@@ -296,6 +318,7 @@ types TutorialWindow {
 					text = "[Tutorial.GetTransitionText('next')]"
 					onclick = "[Tutorial.OnClickTransition('next')]"
 				}
+
 			}
 		}
 	}

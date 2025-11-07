@@ -1045,7 +1045,7 @@ spouse.2002 = {
 		add_character_flag = {
 			flag = had_event_spouse_2002
 			days = 3650
-		}
+		} 
 		primary_spouse = {
 			save_scope_as = spouse
 			#Add all vassals of spouse
@@ -1631,7 +1631,7 @@ spouse.2014 = {
 	right_portrait = scope:agent
 
 	trigger = {
-		any_spouse = {
+		primary_spouse ?= {
 			is_available_healthy_ai_adult = yes
 			save_temporary_scope_as = spouse_check
 		}
@@ -1676,26 +1676,7 @@ spouse.2014 = {
 
 	immediate = {
 		save_scope_as = first_spouse
-		random_spouse = {
-			limit = {
-				is_available_healthy_ai_adult = yes
-				save_temporary_scope_as = spouse_check
-				OR = {
-					any_courtier_or_guest = {
-						spouse_2014_base_agent_trigger = yes
-						save_temporary_scope_as = agent_check
-					}
-					root = {
-						any_courtier_or_guest = {
-							spouse_2014_base_agent_trigger = yes
-						}
-						save_temporary_scope_as = agent_check
-					}
-				}
-				any_targeting_scheme = {
-					spouse_2014_base_scheme_trigger = yes
-				}
-			}
+		primary_spouse = {
 			save_scope_as = spouse
 
 			if = {

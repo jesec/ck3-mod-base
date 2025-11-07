@@ -26,6 +26,8 @@ lesson_safety_gating = {
 			# Removes all tutorial flags added in this file...
 			remove_character_flag = tutorial_declared_war
 			remove_character_flag = tutorial_raised_troops
+
+			send_long_tutorial_finished_telemetry = yes
 		}
 
 		gui_transition = {
@@ -348,6 +350,7 @@ lesson_siege_mechanics = {
 	trigger = {
 		NOT = { is_tutorial_lesson_completed = lesson_siege_mechanics }
 		has_raised_armies = yes
+		has_global_variable = tutorial_completed
 		OR = {
 			any_army = {
 				is_army_in_siege = yes
@@ -384,6 +387,7 @@ lesson_warscore = {
 	# Warscore and War outcomes...
 	trigger = {
 		NOT = { is_tutorial_lesson_completed = lesson_warscore }
+		has_global_variable = tutorial_completed
 		any_character_war = {
 			OR = {
 				attacker_war_score > 5
@@ -436,6 +440,7 @@ lesson_winning_wars = {
 	
 	# Win the War...
 	trigger = {
+		has_global_variable = tutorial_completed
 		NOT = { is_tutorial_lesson_completed = lesson_winning_wars }
 		any_character_war = {
 			attacker_war_score > 75
@@ -481,6 +486,7 @@ lesson_losing_wars = {
 	
 	# Lose the War...
 	trigger = {
+		has_global_variable = tutorial_completed
 		NOT = { is_tutorial_lesson_completed = lesson_losing_wars }
 		any_character_war = {
 			attacker_war_score < -75
@@ -516,6 +522,7 @@ lesson_war_final_notes_victory = {
 	
 	# End of War Tutorial (VICTORY)...
 	trigger = {
+		has_global_variable = tutorial_completed
 		NOT = { is_tutorial_lesson_completed = lesson_war_final_notes_victory }
 		has_war_result_message_with_outcome = victory
 	}
@@ -534,6 +541,7 @@ lesson_war_final_notes_victory = {
 					remove_global_variable = is_in_tutorial
 				}
 			}
+			send_long_tutorial_finished_telemetry = yes
 		}
 
 		gui_transition = {
@@ -552,6 +560,7 @@ lesson_war_final_notes_defeat = {
 	
 	# End of War Tutorial (DEFEAT)...
 	trigger = {
+		has_global_variable = tutorial_completed
 		NOT = { is_tutorial_lesson_completed = lesson_war_final_notes_defeat }
 		has_war_result_message_with_outcome = defeat
 	}
@@ -570,6 +579,7 @@ lesson_war_final_notes_defeat = {
 					remove_global_variable = is_in_tutorial
 				}
 			}
+			send_long_tutorial_finished_telemetry = yes
 		}
 
 		gui_transition = {
@@ -588,6 +598,7 @@ lesson_war_final_notes_white_peace = {
 
 	# End of War Tutorial (WHITE PEACE)...
 	trigger = {
+		has_global_variable = tutorial_completed
 		NOT = { is_tutorial_lesson_completed = lesson_war_final_notes_white_peace }
 		has_war_result_message_with_outcome = white_peace
 	}
@@ -606,6 +617,7 @@ lesson_war_final_notes_white_peace = {
 					remove_global_variable = is_in_tutorial
 				}
 			}
+			send_long_tutorial_finished_telemetry = yes
 		}
 
 		gui_transition = {
@@ -623,6 +635,7 @@ lesson_war_final_notes_invalidated = {
 
 	# End of War Tutorial...
 	trigger = {
+		has_global_variable = tutorial_completed
 		NOT = { is_tutorial_lesson_completed = lesson_war_final_notes_invalidated }
 		has_war_result_message_with_outcome = invalidated
 	}
@@ -641,6 +654,7 @@ lesson_war_final_notes_invalidated = {
 					remove_global_variable = is_in_tutorial
 				}
 			}
+			send_long_tutorial_finished_telemetry = yes
 		}
 
 		gui_transition = {
@@ -659,6 +673,7 @@ lesson_guided_final_notes_mission = {
 
 	# End of War Tutorial...
 	trigger = {
+		has_global_variable = tutorial_completed
 		OR = {
 			is_tutorial_lesson_completed = lesson_war_final_notes_victory
 			is_tutorial_lesson_completed = lesson_war_final_notes_defeat
@@ -681,9 +696,6 @@ lesson_guided_final_notes_mission = {
 			remove_character_flag = tutorial_declared_war
 			remove_character_flag = tutorial_raised_troops
 			open_view_data = character
-
-			remove_global_variable = lesson_chain_war_tutorial_started
-			remove_global_variable = is_in_tutorial
 		}
 
 		gui_transition = {
