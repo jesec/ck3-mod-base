@@ -285,7 +285,7 @@ flowcontainer = {
 						parentanchor = center
 						position = { 0 1 }
 						size = { 30 30 }
-						texture = "gfx/interface/icons/icon_legitimacy.dds"
+						texture = "gfx/interface/icons/legitimacy_types/_default.dds"
 					}
 				}
 
@@ -480,6 +480,23 @@ flowcontainer = {
 						texture = "gfx/interface/icons/currencies/icon_influence_04.dds"
 					}
 				}
+
+				dockable_button = {
+					name = "herd_console_button"
+					onclick = "[ExecuteConsoleCommand('effect domicile = { change_herd = 1000 }')]"
+					onrightclick = "[ExecuteConsoleCommand('effect domicile = { change_herd = -1000 }')]"
+					button_ignore = none
+
+					raw_tooltip = "Left-click: Gain 1000 Herd, Right-click: Lose 1000 Herd"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 30 30 }
+						texture = "gfx/interface/icons/icon_herd.dds"
+					}
+				}
 			}
 
 			hbox = {
@@ -596,6 +613,15 @@ flowcontainer = {
 				dockable_button  = {
 					layoutpolicy_horizontal = expanding
 					size = { 0 30 }
+					raw_text = "Animation Info"
+					onclick = "[ExecuteConsoleCommand('Portrait.Animation.Info')]"
+					tintcolor = { 0.9 0.9 0 0.8 }
+					raw_tooltip = "List what animations are playing in the character tooltip"
+				}
+
+				dockable_button  = {
+					layoutpolicy_horizontal = expanding
+					size = { 0 30 }
 					raw_text = "GUI Editor"
 					onclick = "[ExecuteConsoleCommand('gui_editor')]"
 					tintcolor = { 0.9 0.9 0 0.8 }
@@ -623,7 +649,7 @@ flowcontainer = {
 				#	tintcolor = { 0.9 0.9 0 0.8 }
 				#	raw_tooltip = "Window for GUI testing (test_gui.gui)"
 				#}
-				
+
 				dockable_button = {
 					layoutpolicy_horizontal = expanding
 					size = { 0 30 }

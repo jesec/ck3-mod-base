@@ -97,6 +97,7 @@
  bp2_yearly.2019.desc.spymaster_unlanded: "размещение наших людей по стране»."
  bp2_yearly.2019.desc.chancellor: "наши отношения с соседними державами»."
  bp2_yearly.2019.desc.chancellor_unlanded: "наши отношения с другими домами»."
+ bp2_yearly.2019.desc.kurultai: "сохранность наших стад»."
  bp2_yearly.2019.desc.outro: "\n\n«Разумеется! — отвечаю я. — Пойдем с нами, [ROOT.Var('imaginary_friend_name').Char.GetFirstNameNoTooltip]. Я хочу узнать твое мнение по данному вопросу».\n\n«Н-но, [ROOT.Char.GetLadyLord], — хмурится [target_councilor.GetFirstNameNoTooltip], — здесь нет никого, кроме нас двоих...»"
  bp2_yearly.2019.a: "Как нет, есть же! [ROOT.Char.Custom('GetSheHeOpposite')|U] мой самый доверенный советник!"
  bp2_yearly.2019.a.tt: "Вы признаете, что вы и [ROOT.Var('imaginary_friend_name').Char.GetFirstNameNoTooltip] связаны"
@@ -132,7 +133,7 @@
  bp2_yearly.2024.b: "$bp2_yearly.2023.b$"
  #Devil Imaginary Friend Conclusion
  bp2_yearly.2025.t: "[Select_CString(ROOT.Char.IsFemale, 'Безумная', 'Безумный' )] [ROOT.Char.GetTitleAsNameNoTooltip|l]"
- bp2_yearly.2025.desc: "«Вот это настрой, [ROOT.Char.GetFirstNameNoTooltip]! Я тобой горжусь», — передо мной появляется [ROOT.Var('imaginary_friend_name').Char.GetFirstNameNoTooltip].\n\nЯ могу лишь представлять и #EMP смаковать#!, с каким визгливым звуком [Select_CString(target.IsFemale, 'моя','мой')] [ROOT.Char.Custom2( 'RelationToMe', target )] [Select_CString(target.IsFemale, 'издавала','издавал')] свой последний жалкий вздох!\n\n«Полагаю, у меня здесь больше нет дел», — говорит [ROOT.Var('imaginary_friend_name').Char.GetFirstNameNoTooltip].\n\n...но слова еле слышны на фоне моего истеричного хохота."
+ bp2_yearly.2025.desc: "«Вот это настрой, [ROOT.Char.GetFirstNameNoTooltip]! Я тобой горжусь», — передо мной появляется [ROOT.Var('imaginary_friend_name').Char.GetFirstNameNoTooltip].\n\nЯ могу лишь представлять и #EMP смаковать#!, с каким визгливым звуком [Select_CString(target.IsFemale, 'моя', 'мой')] [ROOT.Char.Custom2( 'RelationToMe', target )] [Select_CString(target.IsFemale, 'издавала', 'издавал')] свой последний жалкий вздох!\n\n«Полагаю, у меня здесь больше нет дел», — говорит [ROOT.Var('imaginary_friend_name').Char.GetFirstNameNoTooltip].\n\n...но слова еле слышны на фоне моего истеричного хохота."
  bp2_yearly.2025.a: "Я жажду #EMP крови!#!"
  imaginary_friend_mad_modifier_bribe_discount: "Приглашение [Concept( 'agents', 'соучастников' )|E] в [schemes|El] будет стоить на 50% меньше"
  #Angle Imaginary Friend Conclusion
@@ -169,7 +170,7 @@
  bp2_yearly.2100.a.tt: "Вы продвинетесь в [Concept( 'education_focus', 'обучении' )|E] [Concept( 'diplomacy', 'дипломатии' )|E]"
  bp2_yearly.2100.b.tt: "Вы продвинетесь в [Concept( 'education_focus', 'обучении' )|E] [Concept( 'martial', 'военному делу' )|E]"
  bp2_yearly.2100.c.tt: "Вы продвинетесь в [Concept( 'education_focus', 'обучении' )|E] [Concept( 'stewardship', 'управлению' )|E]"
- bp2_yearly.2100.d.tt: "Вы продвинетесь в [Concept( 'education_focus', 'обучении' )|E] [Concept( 'stewardship', 'интригам' )|E]"
+ bp2_yearly.2100.d.tt: "Вы продвинетесь в [Concept( 'education_focus', 'обучении' )|E] [Concept('intrigue', 'интригам')|E]"
  bp2_yearly.2100.e.tt: "Вы продвинетесь в [Concept( 'education_focus', 'обучении' )|E] [Concept( 'learning', 'учености' )|E]"
  bp2_yearly.2110.t: "[GetTrait('humble').GetNameNoTooltip( ROOT.Char )] или [GetTrait('arrogant').GetNameNoTooltip( ROOT.Char )|l]?"
  bp2_yearly.2110.desc: "[Select_CString(interlocutor.IsFemale, 'Моя', 'Мой' )] [ROOT.Char.Custom2( 'RelationToMeShort', interlocutor )], [interlocutor.GetFirstName], и я практикуем воинское искусство во дворе.\n\n«#EMP Ух!#! — ворчит [interlocutor.GetSheHe], когда я сбиваю [interlocutor.GetHerHis] на землю. [interlocutor.GetSheHe|U] с трепетом смотрит на меня. — Вы хорошо обращаетесь с оружием, [ROOT.Char.GetFirstNameNoTooltip]. Хотелось бы мне иметь хотя бы половину вашего мастерства»."
@@ -200,6 +201,6 @@
  bp2_yearly.2160.b: "«Ваша боль позволит не забыть об этой ошибке!»"
  bp2_yearly.2160.b.flavor: "Вы поднимаете пригоршню пыли и втираете [Select_CString(interlocutor.IsFemale, 'ей', 'ему' )] в рану"
  ### Opinion Modifiers
- courtly_imaginary_friend: "[GetVassalStance( 'courtly' ).GetTextIcon]Куртуазный вассал не одобряет воображаемых друзей"
+ courtly_imaginary_friend: "#TOOLTIP:VASSAL_STANCE,courtly #L [GetVassalStance( 'courtly' ).GetTextIcon]Куртуазный#!#! вассал не одобряет воображаемых друзей"
  courtly_imaginary_friend_opinion: "Воображаемый друг"
- courtly_imaginary_friend_opinion_desc: "[GetVassalStance( 'courtly' ).GetTextIcon]Куртуазный вассал не одобряет воображаемых друзей"
+ courtly_imaginary_friend_opinion_desc: "#TOOLTIP:VASSAL_STANCE,courtly #L [GetVassalStance( 'courtly' ).GetTextIcon]Куртуазный#!#! вассал не одобряет воображаемых друзей"

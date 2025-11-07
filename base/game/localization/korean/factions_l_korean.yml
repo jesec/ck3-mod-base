@@ -72,6 +72,15 @@
  FACTION_DEMAND_PEASANT_REFUSE: "어딜 감히! 농노의 본분은 주군을 섬기는 것이거늘!"
  FACTION_PEASANT_NAME: "농노 폭도"
  FACTION_PEASANT_TITLE_NAME: "농노 봉기군"
+ #Nomadic Faction
+ nomadic_faction: "유목 파벌"
+ nomadic_faction_desc: "유목 [faction|E]이 자기 [culture|E] 및 [faith|E]을 공유하는 [yurt|E]를 지닌 [GetGovernment( 'nomad_government' ).GetName] [ruler|E]의 지배를 원합니다."
+ nomadic_faction_short_effect_desc: "새로운 [GetGovernment( 'nomad_government' ).GetName] [realms|E]을 세우길 원합니다."
+ FACTION_DEMAND_NOMADIC: "[ROOT.Char.Custom('InsultAdjective')] [ROOT.Char.GetTitledFirstName]에게"
+ FACTION_DEMAND_NOMADIC_DESC: "더 이상 그대의 압제 아래 고개를 숙이지 않겠다! 우리는 자랑스러운 [GetGovernment( 'nomad_government' ).GetName] [peasant_leader.GetCulture.GetCollectiveNoun]인으로서 끝없이 펼쳐진 하늘 아래 자유롭게 떠돌기 위해 태어났다.\n\n우리의 기수를 이끄시는 [peasant_leader.GetFaith.WarGodName]의 인도로 그대의 한심한 지배를 벗어던지고, 드넓은 초원에서 우리의 자리를 되찾을 것이다!"
+ FACTION_DEMAND_NOMADIC_ACCEPT_GRANT_INDEPENDENCE: "좋다! 내 봉역엔 너희 더러운 가축 떼가 설 자리는 없다."
+ FACTION_DEMAND_NOMADIC_VASSAL_DESC: "자랑스러운 [peasant_leader.GetCulture.GetName] [peasant_leader.GetFaith.GetAdherentNamePlural]에 대한 그대의 추악한 압제를 더 이상 용납하지 않겠다. 열린 하늘 아래를 자유롭게 떠돌기 위해 태어난 우리는 그대의 폭정을 거부하며, 우리의 시대가 도래했음을 선언한다!\n\n그대와 그대의 주군 [faction_target.GetTitledFirstName]의 지배를 완전히 끝장낼 것이다!"
+ FACTION_DEMAND_NOMADIC_VASSAL_JOIN_WAR: "그렇다면 우리가 다음에 만날 곳은 전장이 되겠군, #EMP 부랑자#!!"
  #Populist Faction
  populist_faction: "민중영합 파벌"
  populist_faction_desc: "민중영합 [faction|E]은 외국인 혹은 불신자의 지배로부터 자유를 원하는 이들로, 이질적인 [culture|E] 혹은 [faith|E]을 가진 주군으로부터 독립을 꾀합니다."
@@ -90,6 +99,7 @@
  FACTION_DEMAND_POPULIST_REFUSE_ADMIN: "무례한 [peasant_leader.Custom('InsultNoun')], 네게는 그럴 권한이 없다!"
  FACTION_DEMAND_POPULIST_REFUSE_TT: "#high [peasant_leader.GetTitledFirstName]#!(와)과 #high [faction.GetName]#!(이)가 당신에게 [war|E]을 선포함"
  FACTION_POPULIST_REVOLT_TITLE_NAME: "민중영합 봉기군"
+ FACTION_NOMADIC_REVOLT_TITLE_NAME: "유목 봉기"
  FACTION_POPULIST_CREATED_TITLE_NAME: "[founder_culture.GetCollectiveNounNoTooltip]"
  FACTION_DEMAND_POPULIST_VASSAL_DESC_SAME_CULTURE_AND_FAITH: "아무리 전통과 신앙이 같다고 해도 더 이상 당신이나 [faction_target.Custom('InsultAdjective')] [faction_target.GetTitledFirstName]의 폭거를 참진 않겠소!\n\n옆으로 물러나 방관하든, 우리가 정당한 자유를 쟁취하는 데 힘을 보태든 결정하시오!"
  FACTION_DEMAND_POPULIST_VASSAL_DESC_CULTURE: "더는 너희 이방인 놈들이 우리 [peasant_leader.GetCulture.GetName] 공동체를 억압하는 꼴을 보고만 있을 순 없다. 이제 우리의 시대가 도래하리라!\n\n우리가 원하는 것은 단 하나, [faction_target.GetTitledFirstName](으)로부터 벗어나 완전한 자유를 쟁취하는 것이다!"
@@ -162,6 +172,7 @@
  FACTION_CLAIMANT_EVERY_FACTION_MEMBER: "모든 파벌 구성원"
  FACTION_CLAMAINT_DYNAMIC_NAME: "[ROOT.Faction.GetSpecialTitle.GetAdjective] 왕좌에 [ROOT.Faction.GetSpecialCharacter.GetTitledFirstName] 옹립"
  FACTION_POPULIST_DYNAMIC_NAME: "[ROOT.Var('faction_culture').Culture.GetNameNoTooltip] [ROOT.Var('faction_faith').Faith.GetAdjectiveNoTooltip] 민중영합 파벌"
+ FACTION_NOMAD_DYNAMIC_NAME: "[ROOT.Var('faction_culture').Culture.GetNameNoTooltip] [ROOT.Var('faction_faith').Faith.GetAdjectiveNoTooltip] 유목민"
  WARNING_I_HAVE_ALREADY_JOINED_A_FACTION: "@warning_icon! #X 이미 [faction|E]에 합류한 상태입니다.#!"
  WARNING_I_AM_ALREADY_AT_WAR_WITH_TARGET: "@warning_icon! #X 이미 [faction_target.GetTitledFirstName](와)과 전쟁 중입니다.#!"
  WARNING_I_AM_AT_WAR_WITH_FACTION_LEADER: "@warning_icon! #X [faction_invite_from.GetTitledFirstName](와)과 전쟁 중입니다.#!"
@@ -212,6 +223,7 @@
  FACTION_REASON_PREFER_POPULIST_FACTION: "$populist_faction$ 선호: $VALUE|0+=$"
  FACTION_REASON_RULING_CASTE: "[GetCultureTradition('tradition_ruling_caste').GetName]: $VALUE|0+=$"
  FACTION_REASON_AT_WAR_WITH_TARGET: "이미 [liege|E]에 맞서 봉기를 일으킴: $VALUE|0+=$"
+ FACTION_REASON_DISLIKE_NON_NOMADS: "[GetGovernment( 'nomad_government' ).GetName] [ruler|E]를 원함: $VALUE|0+=$"
  #liberty_faction_modifiers
  FACTION_REASON_CROWN_AUTHORITY_1: "$crown_authority_1$: $VALUE|0+=$"
  FACTION_REASON_CROWN_AUTHORITY_2: "$crown_authority_2$: $VALUE|0+=$"
@@ -261,7 +273,7 @@
  FACTION_REASON_CULTURAL_ACCEPTANCE: "[cultural_acceptance|E]: $VALUE|0+=$"
  FACTION_REASON_TARGET_NOT_FULL_CONTROL: "[liege|E]이 [de_jure] 지역 전체를 장악하고 있지 않음: $VALUE|0+=$"
  FACTION_REASON_RECENT_LOST_WAR: "[liege|E]이 최근 [war|E]에서 패전함: $VALUE|0+=$"
- FACTION_REASON_TRIBAL_CLAN: "[liege|E]이 [GetGovernment( 'tribal_government' ).GetName] 또는 [GetGovernment( 'clan_government' ).GetName] [government|E] 보유: $VALUE|0+=$"
+ FACTION_REASON_TRIBAL_CLAN: "[liege|E]이 [GetGovernment( 'tribal_government' ).GetName], [GetGovernment( 'nomad_government' ).GetName] 또는 [GetGovernment( 'clan_government' ).GetName] [government|E] 보유: $VALUE|0+=$"
  FACTION_REASON_STRUGGLE_PHASE: "현재 [struggle_phase|E]: $VALUE|0+=$"
  FACTION_REASON_ELECTIVE_PRIMARY: "[liege|E]의 [primary_title|E]가 선거제 [succession_law|E] 보유: $VALUE|0+=$"
  FACTION_REASON_BYZANTINE_RELIGION: "비잔틴 [liege|E]과 [religion|E]가 같음: $VALUE|0+=$"
@@ -289,6 +301,11 @@
  FACTION_REASON_HOUSE_HOSTILITY: "[GetCultureTradition('tradition_ep3_indomitable_azatani').GetName]: $FACTOR|^%+=$"
  #Duty Focus
  FACTION_REASON_duty_focus: "[liege_possessive|E] 의무 [focus|E]: $VALUE|0+=$"
+ #Court Position Task
+ FACTION_REASON_court_position_task: "[liege_possessive|E] [court_position_task|E]: $VALUE|0+=$"
+ #Nomads
+ MPO_OBEDIENT_NOMAD: "[obedient|E]: $VALUE|0+=$"
+ MPO_NON_OBEDIENT_NOMAD: "[obedient|E]하지 #bold 않음#!: $VALUE|0+=$"
  #Harrying of the North
  FACTION_REASON_HARRYING_RESISTANCE: "북부의 탄압 저항: $VALUE|1+=$"
  FACTION_REASON_HARRYING_PACIFICATION: "북부의 탄압 진압: $VALUE|1+=$"
@@ -338,3 +355,4 @@
  FACTION_REASON_ADMIN_CLAIMANT_JUNIOR_EMPEROR: "[claimant|E]가 [junior_emperor|E]: $FACTOR|0%+=$"
  FACTION_REASON_CLAIMANT_PRIMARY_HEIR: "[claimant|E]가 나의 [heir|E]: $VALUE|+0=$"
  FACTION_REASON_ADMINISTRATIVE: "[administrative|E] [vassal|E]: $VALUE|+0=$"
+ FACTION_REASON_NOMADIC: "[GetGovernment( 'nomad_government' ).GetName]: $VALUE|+0=$"

@@ -1,7 +1,7 @@
 ﻿### Seneschal Tasks ###
 
 seneschal_improve_court = {
-	court_position_types = { seneschal_court_position }
+	court_position_types = { seneschal_court_position yeke_jarquchi_court_position }
 
 	# Monthly cost for the task
 	cost = {
@@ -40,17 +40,11 @@ seneschal_improve_court = {
 
 	ai_will_do = {
 		value = 50 # Always good
-		if = {
-			limit = {
-				monthly_character_income < monthly_court_position_task_cost_double
-			}
-			add = -1000
-		}
 	}
 }
 
 seneschal_improve_domain = {
-	court_position_types = { seneschal_court_position }
+	court_position_types = { seneschal_court_position yeke_jarquchi_court_position }
 
 	# Monthly cost for the task
 	cost = {
@@ -101,12 +95,8 @@ seneschal_handling_estate = {
 
 	is_shown = {
 		has_ep3_dlc_trigger = yes
-	}
-	is_valid_showing_failures_only = {
-		scope:liege = {
-			government_has_flag = government_is_administrative
-			has_domicile = yes
-		}
+		government_has_flag = government_is_administrative
+		has_domicile = yes
 	}
 
 	# Monthly cost for the task

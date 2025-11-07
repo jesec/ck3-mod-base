@@ -4,7 +4,7 @@
 window = {
 	name = "test_window"
 	parentanchor = center
-	size = { 1100 920 }
+	size = { 1000 800 }
 	layer = top
 	filter_mouse = all
 	alwaystransparent = no
@@ -12,4 +12,27 @@ window = {
 	using = Window_Background
 	using = Window_Decoration
 	using = Window_Movable
+
+	vbox = {
+		using = Window_Margins
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				raw_text = "Test Window"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[ExecuteConsoleCommand( 'gui.clearwidgets test_window')]"
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+		}
+	}
 }

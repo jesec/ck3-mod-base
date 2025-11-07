@@ -5,6 +5,16 @@ action_can_create_title = {
 	
 	check_create_action = {
 		ordered_alert_creatable_title = { # list all creatable/usurpable
+			limit = {
+				trigger_if = { # For Nomads they are only informed about lower or equal tier titles, as they cannot create higher tier titles regularly
+					limit = {
+						prev = {
+							government_has_flag = government_is_nomadic
+						}
+					}
+					tier <= prev.highest_held_title_tier
+				}
+			}
 			order_by = tier
 			max = 99
 			check_range_bounds = no

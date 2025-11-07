@@ -1,6 +1,6 @@
 ﻿188905 = {
 	name="YelU_-Dashi"
-	dynasty=khitan_yelu # Qarakhitai, possibly of the Liao dynasty or just a general
+	dynasty=1045082 # Liao Dynasty
 	religion=mahayana
 	culture=khitan
 
@@ -31,7 +31,7 @@
 
 188907 = {
 	name="Yilie" # or Renzong
-	dynasty=khitan_yelu # Qarakhitai
+	dynasty=1045082 # Liao Dynasty
 	religion=mahayana
 	culture=khitan
 	father=188905
@@ -48,7 +48,7 @@
 188908 = {
 	name="Pusuwan"
 	female=yes
-	dynasty=khitan_yelu # Qarakhitai
+	dynasty=1045082 # Liao Dynasty
 	religion=mahayana
 	culture=khitan
 	father=188905
@@ -61,7 +61,13 @@
 		add_spouse = 188910
 	}
 	1177.1.1={
-		death=yes
+		effect = {
+			add_trait = adulterer
+		}
+		death = {
+			death_reason = death_execution
+			killer = 188909
+		}
 	}
 }
 
@@ -70,12 +76,31 @@
 	dynasty=214010
 	religion=mahayana
 	culture=khitan
-	stewardship = 6
+	
+	martial = 5
+	diplomacy = 5
+	intrigue = 6
+	stewardship = 10
+	learning = 8
+	prowess = 10
 	trait = education_martial_3
-	trait = ambitious
+	trait = just
 	trait = callous
+	trait = vengeful
+	trait = lifestyle_hunter
+
+	dna = bookmark_nomads_duolubu_188910
 	1116.1.1 = {
 		birth=yes
+	}
+	1177.1.1 = {
+		effect = {
+			add_trait = kinslayer_2
+			add_hook = {
+				target = character:188912
+				type = strong_influence_hook
+			}
+		}
 	}
 	1206.1.1 = {
 		death=yes
@@ -89,11 +114,19 @@
 	culture=khitan
 	father=188909
 
+	trait = trusting
+	trait = diligent
+	trait = education_martial_2
+	intrigue = 6
+
 	1139.1.1={
 		birth=yes
 	}
-	1190.1.1={
-		death=yes
+	1174.1.1={
+		death = {
+			death_reason = death_execution
+			killer = 188908
+		}	
 	}
 }
 
@@ -107,6 +140,7 @@
 		birth=yes
 	}
 	1177.1.1={
+		effect = { add_trait = fornicator}
 		death = {
 			death_reason = death_execution
 			killer = 188909
@@ -116,7 +150,7 @@
 
 188912 = {
 	name="Zhilugu"
-	dynasty=khitan_yelu
+	dynasty=1045082 # Liao Dynasty
 	stewardship = 8
 	religion=mahayana
 	culture=khitan
@@ -259,6 +293,17 @@
 	religion="mahayana"
 	culture=khitan
 	father=194332
+	martial = 5
+	stewardship = 4
+	diplomacy = 6
+	intrigue = 1
+	learning = 7
+	prowess = 6
+	trait = zealous
+	trait = arbitrary
+	trait = trusting
+	trait = scholar
+	trait = education_learning_3
 	1032.9.14 = {
 		birth = yes
 	}

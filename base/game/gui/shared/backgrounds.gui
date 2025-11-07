@@ -338,25 +338,107 @@ template Background_Inset
 }
 
 template Background_Letter
-{
+{	
 	background = {
 		name = "paper_texture_shadow"
-		texture = "gfx/interface/window_event/tile_letter_shadow.dds"
+		texture = "gfx/interface/skinned/window_letter/tile_letter_shadow.dds"
 		spriteType = Corneredtiled
 		spriteborder = { 200 200 }
 	}
 
 	background = {
 		name = "paper_texture_flat"
-		texture = "gfx/interface/window_event/tile_letter_flat.dds"
+		texture = "gfx/interface/skinned/window_letter/tile_letter_flat.dds"
 		spriteType = Corneredtiled
 		spriteborder = { 200 200 }
 
 		modify_texture = {
 			name = "paper_texture_overlay"
-			texture = "gfx/interface/window_event/overlay_letter_texture.dds"
+			texture = "gfx/interface/skinned/window_letter/overlay_letter_texture.dds"
 			spriteType = Corneredstretched
 			blend_mode = overlay
+		}
+	}
+	
+	background = {
+		name = "paper_texture_frame"
+		texture = "gfx/interface/skinned/window_letter/ornament_frame.dds"
+		alpha = 0.5
+		spriteType = Corneredtiled
+		spriteborder = { 200 200 }
+	}
+
+}
+
+template Background_Letter_No_Frame
+{	
+	background = {
+		name = "paper_texture_shadow_no_frame"
+		texture = "gfx/interface/skinned/window_letter/tile_letter_shadow.dds"
+		spriteType = Corneredtiled
+		spriteborder = { 200 200 }
+	}
+
+	background = {
+		name = "paper_texture_flat_no_frame"
+		texture = "gfx/interface/skinned/window_letter/tile_letter_flat.dds"
+		spriteType = Corneredtiled
+		spriteborder = { 200 200 }
+
+		modify_texture = {
+			name = "paper_texture_overlay_no_frame"
+			texture = "gfx/interface/skinned/window_letter/overlay_letter_texture.dds"
+			spriteType = Corneredstretched
+			blend_mode = overlay
+		}
+	}
+}
+
+template Character_Background
+{
+	icon = {
+		name = "character_background"
+		size = { 110% 110% }
+		parentanchor = center
+		texture = "gfx/interface/window_legend_chronicle/marginalia_portrait_dark_bg.dds"
+
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_clouds.dds"
+			blend_mode = alphamultiply
+			spriteType = corneredTiled
+			alpha = 0.5
+		}
+
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_scratches.dds"
+			blend_mode = alphamultiply
+			spriteType = corneredTiled
+		}
+
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_fade_textured_vertical_up.dds"
+			blend_mode = alphamultiply
+		}
+
+		modify_texture = {
+			name = "mask"
+			texture = "gfx/interface/component_masks/mask_fade_circle.dds"
+			blend_mode = alphamultiply
+		}
+
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_seamless_torn_edge_vertical.dds"
+			spriteType = corneredtiled
+			spriteborder_right = 1080
+			blend_mode = alphamultiply
+		}
+
+		modify_texture = {
+			name = "mask"
+			texture = "gfx/interface/component_masks/mask_seamless_torn_edge_horizontal.dds"
+			spriteType = corneredtiled
+			spriteborder_top = 1080
+			blend_mode = alphamultiply
 		}
 	}
 }
@@ -387,7 +469,7 @@ template Contract_2
 
 template Contract_3
 {
-		background = {
+	background = {
 		name = "paper_texture_shadow"
 		texture = "gfx/interface/window_contract/tile_contract_3_shadow.dds"
 		spriteType = Corneredtiled
@@ -541,7 +623,7 @@ template Toast_Header
 	texture = "gfx/interface/hud/toast_title_bg_header.dds"
 	spriteType = Corneredstretched
 	spriteborder = { 5 5 }
-	margin = { 50 -3 }
+	margin = { 50 0 }
 	alpha = 0.9
 
 	modify_texture = {

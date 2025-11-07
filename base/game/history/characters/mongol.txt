@@ -457,6 +457,7 @@
 }
 172003 = {
 	name = "Hoelun" # Mother of Genghis Khan
+	dna = "bookmark_nomads_temujin_hoelun_172003"
 	dynasty = 101946
 	female = yes
 	religion = "tengri_pagan"
@@ -811,9 +812,10 @@
 	dynasty = 11100
 	martial = 10
 	diplomacy = 8
-	intrigue = 8
+	intrigue = 15
 	stewardship = 9
 	learning = 4
+	prowess = 10
 	religion = "tengri_pagan"
 	culture = "mongol"
 	trait = vengeful
@@ -822,7 +824,6 @@
 	trait = lifestyle_hunter
 	trait = open_terrain_expert
 	trait = education_martial_4
-	trait = adventurer
 	trait = shrewd
 	father = 93055
 	mother = 172003
@@ -830,10 +831,27 @@
 		birth = "1162.1.1"
 		effect = {
 			add_character_flag = is_temujin
+			set_global_variable = {
+				name =  temujin_was_born
+				value = this
+			}
+		}
+	}
+	1173.1.1 = {
+		effect = {
+			set_relation_friend = { reason = best_friend_childhood_oath target = character:mpo_mongol_1 } # Jamukha
 		}
 	}
 	1178.1.1 = {
 		add_spouse = 172004
+		effect = {
+			if = {
+				limit = {
+					has_dlc_feature = khans_of_the_steppe
+				}
+				change_government = nomad_government
+			}
+		}
 	}
 	1206.1.1 = {
 		effect = {
@@ -843,20 +861,6 @@
 	1220.2.1 = {
 		effect = {
 			add_gold = 200
-			## TODO_CD: Figure out how we want Ghengis' hordes to work. Are the event troops tied to wars? Should they be special MaA?
-			#spawn_unit = {
-			#	province = 904 #Balkh
-			#	owner = ROOT
-			#	#leader = 34852
-			#	troops =
-			#	{
-			#		horse_archers = { 2200 2300 }
-			#		light_cavalry = { 1366 1366 }
-			#		light_infantry = { 455 455 }
-			#		heavy_infantry = { 177 177 }
-			#		knights = { 40 40 }
-			#	}
-			#}
 		}
 	}
 	1227.12.2 = {
@@ -4214,10 +4218,21 @@
 
 172004 = {
 	name = "Borte" # Wife of Genghis Khan
+	dna = "bookmark_nomads_temujin_borte_172004"
 	dynasty = 1041000
 	female = yes
 	religion = "tengri_pagan"
 	culture = "mongol"
+	trait = education_learning_3
+	trait = beauty_good_2
+	trait = honest
+	trait = calm
+	trait = gregarious
+	learning = 5
+	diplomacy = 7
+	martial = 3
+	intrigue = 4
+	stewardship = 2
 	1161.1.1 = {
 		birth = "1161.1.1"
 	}
@@ -6790,5 +6805,257 @@ bayad0012 = {
 	}
 	1222.7.24 = {
 		death = yes
+	}
+}
+
+#MPO Fictional Mongols
+fictional_mongols_1 = {	#Mongols under Kirghiz in 867
+	name = "Munglig"
+	religion = tengri_pagan
+	culture = mongol
+	830.4.28 = {
+		birth = yes
+	}
+	882.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_2 = {	#Mongols under Great Liao in 1066
+	name = "Morokha"
+	religion = tengri_pagan
+	culture = mongol
+	1022.1.21 = {
+		birth = yes
+	}
+	1078.1.1 = {
+		death = yes
+	}
+}
+# Jamukha, blood brother of Temujin
+mpo_mongol_1 = {
+	name = "Jamukha"
+	religion = tengri_pagan
+	culture = mongol
+	dynasty = mpo_dynasty_1
+	dna = bookmark_nomads_jamukha_mpo_mongol_1
+	
+	martial = 14
+	diplomacy = 4
+	intrigue = 7
+	stewardship = 10
+	learning = 7
+	prowess = 12
+
+	# Education
+	trait = education_martial_3
+
+	# Personality Traits
+	trait = impatient # He "tires of things quickly", according to Borte
+	trait = honest # In the end, he has an honorable death
+	trait = arrogant #He stands for the traditional Mongol aristocracy
+	trait = lifestyle_hunter
+
+	1162.1.1 = {
+		birth = "1162.1.1"
+	}
+	1176.1.1 = { 
+		#give_council_position = councillor_kurultai_1
+		effect = {
+			if = {
+				limit = {
+					has_dlc_feature = khans_of_the_steppe
+				}
+				change_government = nomad_government
+			}
+		}
+	}
+	1201.1.1 = { # Battle of the Thirteen Sides
+		effect = {
+			set_relation_rival = { 
+				reason = rival_generic_history target = character:125501 #Temujin
+			}
+		}
+	}
+	1206.1.1 = {
+		death = {
+			death_reason = death_murder
+			killer = 125501 #Temujin
+		}
+	}
+}
+
+fictional_mongols_3 = {	#Herder
+	name = "Munglig"
+	religion = tengri_pagan
+	culture = mongol
+	1140.2.20 = {
+		birth = yes
+	}
+	1198.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_4 = {	#Herder
+	name = "Alan_Gua"
+	religion = tengri_pagan
+	female = yes
+	culture = mongol
+	1151.12.9 = {
+		birth = yes
+	}
+	1207.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_5 = {	#Herder
+	name = "Okhotur"
+	religion = tengri_pagan
+	culture = mongol
+	1134.3.14 = {
+		birth = yes
+	}
+	1202.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_6 = {	#Herder
+	name = "Duua"
+	religion = tengri_pagan
+	culture = mongol
+	1138.11.09 = {
+		birth = yes
+	}
+	1198.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_7 = {	#Herder
+	name = "Habich_Baghatur"
+	religion = tengri_pagan
+	culture = mongol
+	991.4.5 = {
+		birth = yes
+	}
+	1069.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_8 = {	#Herder
+	name = "Chigu"
+	religion = tengri_pagan
+	culture = mongol
+	1049.2.10 = {
+		birth = yes
+	}
+	1098.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_9 = {	#Herder
+	name = "Conchaka"
+	religion = tengri_pagan
+	culture = mongol
+	female = yes
+	1035.4.3 = {
+		birth = yes
+	}
+	1071.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_10 = {	#Herder 867
+	name = "Khojin"
+	religion = tengri_pagan
+	culture = mongol
+	female = yes
+	835.11.20 = {
+		birth = yes
+	}
+	872.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_11 = {	#Herder 867
+	name = "Jochi"
+	religion = tengri_pagan
+	culture = mongol
+	799.6.21 = {
+		birth = yes
+	}
+	871.1.1 = {
+		death = yes
+	}
+}
+
+fictional_mongols_12 = {	#Herder 867
+	name = "Bilge"
+	religion = tengri_pagan
+	culture = mongol
+	850.2.19 = {
+		birth = yes
+	}
+	915.1.1 = {
+		death = yes
+	}
+}
+
+#For when Genghis appears dynamically
+dynamic_mongol_1 = {
+	name = "Temujin"
+	# AKA: Genghis Khan
+	dna = "125501_temujin_ulaanbaatar"
+	martial = 10
+	diplomacy = 8
+	intrigue = 8
+	stewardship = 9
+	learning = 4
+	prowess = 8
+	religion = "tengri_pagan"
+	culture = "mongol"
+	trait = vengeful
+	trait = ambitious
+	trait = diligent
+	trait = lifestyle_hunter
+	trait = open_terrain_expert
+	trait = education_martial_4
+	trait = shrewd
+	1.1.1 = {
+		birth = "1.1.1"
+	}
+	1.1.2 = {
+		death = "1.1.2"
+	}
+}
+
+dynamic_mongol_2 = {
+	name = "Borte" # Wife of Genghis Khan
+	dna = "bookmark_nomads_temujin_borte_172004"
+	female = yes
+	religion = "tengri_pagan"
+	culture = "mongol"
+	trait = education_learning_3
+	trait = beauty_good_2
+	trait = honest
+	trait = calm
+	trait = gregarious
+	learning = 5
+	diplomacy = 7
+	martial = 3
+	intrigue = 4
+	stewardship = 2
+	1.1.1 = {
+		birth = "1.1.1"
+	}
+	1.1.2 = {
+		death = "1.1.2"
 	}
 }

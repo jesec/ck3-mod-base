@@ -124,7 +124,7 @@
 	{
 		texture = "gfx/interface/icons/flat_icons/prison_ransom.dds"
 
-		using = Placeholder_Pink_Texture
+		using = Texture_Placeholder
 	}
 
 	type button_play_sound = button_icon
@@ -374,10 +374,16 @@
 		texture = "gfx/interface/icons/flat_icons/prison_execute.dds"
 	}
 
-	type button_feudalize_tribe = button_icon
+	type button_feudalize_holding = button_icon
 	{
 		framesize = { 70 60 }
 		texture = "gfx/interface/icons/flat_icons/feudalize_tribe.dds"
+	}
+
+	type button_tribalize_holding = button_icon
+	{
+		framesize = { 60 60 }
+		texture = "gfx/interface/icons/flat_icons/internal_building.dds"
 	}
 
 	type button_dynasty_tree = button_icon
@@ -452,6 +458,21 @@
 		texture = "gfx/interface/icons/flat_icons/next.dds"
 	}
 
+	type button_travel = button_icon
+	{
+		texture = "gfx/interface/icons/flat_icons/travel.dds"
+	}
+
+	type button_migrate = button_icon
+	{
+		texture = "gfx/interface/icons/flat_icons/migrate.dds"
+	}
+
+	type button_situation = button_icon
+	{
+		texture = "gfx/interface/icons/flat_icons/map_modes/situation.dds"
+	}
+
 	type button_move_capital = button_icon
 	{
 		texture = "gfx/interface/icons/flat_icons/move_capital.dds"
@@ -517,16 +538,6 @@
 		texture = "gfx/interface/icons/title_actions/make_primary.dds"
 	}
 
-	type button_legitimacy = button_icon
-	{
-		texture = "gfx/interface/icons/flat_icons/legitimacy_small.dds"
-	}
-
-	type button_damage_legitimacy = button_icon
-	{
-		texture = "gfx/interface/icons/flat_icons/damage_legitimacy.dds"
-	}
-
 	type button_slander = button_icon
 	{
 		texture = "gfx/interface/icons/flat_icons/slander.dds"
@@ -556,7 +567,7 @@
 	{
 		texture = "gfx/interface/icons/flat_icons/subsume_province.dds"
 	}
-	
+
 	type button_declare_war = button_icon
 	{
 		texture = "gfx/interface/icons/flat_icons/declare_war.dds"
@@ -779,7 +790,7 @@
 		tooltip = "OPEN_MEMORIES_TOOLTIP"
 
 		icon_round_button_base = {}
-		
+
 		button_memories = {
 			onclick = "[ToggleGameViewData( 'memories', Character.GetID )]"
 			size = { 25 25 }
@@ -801,7 +812,10 @@
 		size = { 30 30 }
 		texture = "gfx/interface/icons/flat_icons/blank.dds"
 
-		using = Master_Button_Modify_Texture
+		block "button_icon_modify_texture"
+		{
+			using = Master_Button_Modify_Texture
+		}
 
 		block "button_frames"
 		{
@@ -823,6 +837,18 @@ template Master_Button_Modify_Texture
 {
 	modify_texture = {
 		texture = "gfx/interface/colors/colors_textured.dds"
+		blend_mode = add
+		framesize = { 96 96 }
+		spritetype = corneredtiled
+
+		block "master_color_frame" {}
+	}
+}
+
+template Button_Modify_Texture_Placeholder
+{
+	modify_texture = {
+		texture = "gfx/interface/_debug/colors_textured_placeholder.dds"
 		blend_mode = add
 		framesize = { 96 96 }
 		spritetype = corneredtiled

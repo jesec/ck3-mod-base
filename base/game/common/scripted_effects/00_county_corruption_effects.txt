@@ -326,75 +326,320 @@ add_lackluster_administration_modifier_effect = {
 	}
 }
 
+add_roaming_bandits_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		send_interface_message = {
+			type = msg_county_corruption_bad
+			title = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { exists = scope:deficit }
+						desc = gain_county_corruption.message.deficit
+					}
+					desc = gain_county_corruption.message.county_corruption
+				}
+			}
+			left_icon = scope:county
+			scope:county = {
+				add_county_modifier = {
+					modifier = county_corruption_roaming_bandits_modifier
+					years = 10
+				}
+			}
+		}
+	}
+}
+
+add_wild_beast_attacks_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		send_interface_message = {
+			type = msg_county_corruption_bad
+			title = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { exists = scope:deficit }
+						desc = gain_county_corruption.message.deficit
+					}
+					desc = gain_county_corruption.message.county_corruption
+				}
+			}
+			left_icon = scope:county
+			scope:county = {
+				add_county_modifier = {
+					modifier = county_corruption_wild_beast_attacks_modifier
+					years = 10
+				}
+			}
+		}
+	}
+}
+
+add_upset_shepherds_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		send_interface_message = {
+			type = msg_county_corruption_bad
+			title = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { exists = scope:deficit }
+						desc = gain_county_corruption.message.deficit
+					}
+					desc = gain_county_corruption.message.county_corruption
+				}
+			}
+			left_icon = scope:county
+			scope:county = {
+				add_county_modifier = {
+					modifier = county_corruption_upset_shepherds_modifier
+					years = 10
+				}
+			}
+		}
+	}
+}
+
+add_rogue_warriors_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		send_interface_message = {
+			type = msg_county_corruption_bad
+			title = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { exists = scope:deficit }
+						desc = gain_county_corruption.message.deficit
+					}
+					desc = gain_county_corruption.message.county_corruption
+				}
+			}
+			left_icon = scope:county
+			scope:county = {
+				add_county_modifier = {
+					modifier = county_corruption_rogue_warriors_modifier
+					years = 10
+				}
+			}
+		}
+	}
+}
+
+add_unruly_nomads_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		send_interface_message = {
+			type = msg_county_corruption_bad
+			title = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { exists = scope:deficit }
+						desc = gain_county_corruption.message.deficit
+					}
+					desc = gain_county_corruption.message.county_corruption
+				}
+			}
+			left_icon = scope:county
+			scope:county = {
+				add_county_modifier = {
+					modifier = county_corruption_unruly_nomads_modifier
+					years = 10
+				}
+			}
+		}
+	}
+}
+
 
 #Use this for random addition of County Corruption, APART from Low Control
 add_random_county_corruption_modifier_effect = {
 	random_list = {
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_inefficient_tax_collection_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_inefficient_tax_collection_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_inefficient_tax_collection_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_deserting_levies_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_deserting_levies_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_deserting_levies_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_smuggling_ring_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_smuggling_ring_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_smuggling_ring_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_bandits_rampant_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_bandits_rampant_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_bandits_rampant_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_inefficient_census_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_inefficient_census_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_inefficient_census_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_lack_of_sheriffs_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_lack_of_sheriffs_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_lack_of_sheriffs_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_lack_of_courts_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_lack_of_courts_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_lack_of_courts_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_thieves_guild_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_thieves_guild_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_thieves_guild_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_unsafe_highways_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_unsafe_highways_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_unsafe_highways_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_uncooperative_guilds_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_uncooperative_guilds_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_uncooperative_guilds_modifier_effect = yes
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_lackluster_administration_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_lackluster_administration_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			add_lackluster_administration_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_roaming_bandits_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_roaming_bandits_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_wild_beast_attacks_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_wild_beast_attacks_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_upset_shepherds_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_upset_shepherds_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_rogue_warriors_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_rogue_warriors_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_unruly_nomads_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_unruly_nomads_modifier_effect = yes
 		}
 	}
 }
@@ -405,7 +650,12 @@ add_random_county_corruption_low_control_effect = {
 	random_list = {
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_inefficient_tax_collection_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_inefficient_tax_collection_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -415,7 +665,12 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_deserting_levies_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_deserting_levies_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -425,7 +680,12 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_smuggling_ring_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_smuggling_ring_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -435,7 +695,12 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_bandits_rampant_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_bandits_rampant_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -445,7 +710,12 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_inefficient_census_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_inefficient_census_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -455,7 +725,12 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_lack_of_sheriffs_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_lack_of_sheriffs_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -465,7 +740,12 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_lack_of_courts_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_lack_of_courts_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -475,7 +755,12 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_thieves_guild_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_thieves_guild_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -485,7 +770,12 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_unsafe_highways_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_unsafe_highways_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
@@ -495,13 +785,83 @@ add_random_county_corruption_low_control_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_uncooperative_guilds_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_uncooperative_guilds_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = low_control
 				value = yes
 			}
 			add_uncooperative_guilds_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_roaming_bandits_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_roaming_bandits_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_wild_beast_attacks_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_wild_beast_attacks_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_upset_shepherds_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_upset_shepherds_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_rogue_warriors_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_rogue_warriors_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_unruly_nomads_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			add_unruly_nomads_modifier_effect = yes
 		}
 	}
 }
@@ -512,7 +872,12 @@ add_random_county_corruption_in_debt_effect = {
 	random_list = {
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_inefficient_tax_collection_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_inefficient_tax_collection_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -522,7 +887,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_deserting_levies_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_deserting_levies_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -532,7 +902,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_smuggling_ring_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_smuggling_ring_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -542,7 +917,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_bandits_rampant_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_bandits_rampant_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -552,7 +932,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_inefficient_census_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_inefficient_census_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -562,7 +947,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_lack_of_sheriffs_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_lack_of_sheriffs_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -572,7 +962,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_lack_of_courts_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_lack_of_courts_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -582,7 +977,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_thieves_guild_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_thieves_guild_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -592,7 +992,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_unsafe_highways_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_unsafe_highways_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -602,7 +1007,12 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		100 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_uncooperative_guilds_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_uncooperative_guilds_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
@@ -612,13 +1022,103 @@ add_random_county_corruption_in_debt_effect = {
 		}
 		500 = {
 			trigger = {
-				NOT = { has_county_modifier = county_corruption_lackluster_administration_modifier }
+				NOR = {
+					has_county_modifier = county_corruption_lackluster_administration_modifier
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
 			}
 			save_scope_value_as = {
 				name = deficit
 				value = yes
 			}
 			add_lackluster_administration_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_roaming_bandits_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			save_scope_value_as = {
+				name = deficit
+				value = yes
+			}
+			add_roaming_bandits_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_wild_beast_attacks_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			save_scope_value_as = {
+				name = deficit
+				value = yes
+			}
+			add_wild_beast_attacks_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_upset_shepherds_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			save_scope_value_as = {
+				name = deficit
+				value = yes
+			}
+			add_upset_shepherds_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_rogue_warriors_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			save_scope_value_as = {
+				name = deficit
+				value = yes
+			}
+			add_rogue_warriors_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				NOT = {
+					has_county_modifier = county_corruption_unruly_nomads_modifier
+				}
+				OR = {
+					title_province = { has_holding_type = nomad_holding }
+					title_province = { has_holding_type = herder_holding }
+				}
+				is_landless_type_title = no
+			}
+			save_scope_value_as = {
+				name = deficit
+				value = yes
+			}
+			add_unruly_nomads_modifier_effect = yes
 		}
 	}
 }
@@ -913,6 +1413,136 @@ remove_lackluster_administration_modifier_effect = {
 	}
 }
 
+remove_roaming_bandits_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		if = {
+			limit = {
+				exists = scope:marshal_removal
+			}
+			send_interface_message = {
+				type = msg_county_corruption_good_increase_control
+				title = remove_county_corruption.message.marshal_removal
+				left_icon = scope:county
+				right_icon = scope:councillor
+
+				scope:county = {
+					remove_county_modifier = county_corruption_roaming_bandits_modifier
+				}
+			}
+		}
+		else = {
+			scope:county = {
+				remove_county_modifier = county_corruption_roaming_bandits_modifier
+			}
+		}
+	}
+}
+
+remove_wild_beast_attacks_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		if = {
+			limit = {
+				exists = scope:marshal_removal
+			}
+			send_interface_message = {
+				type = msg_county_corruption_good_increase_control
+				title = remove_county_corruption.message.marshal_removal
+				left_icon = scope:county
+				right_icon = scope:councillor
+
+				scope:county = {
+					remove_county_modifier = county_corruption_wild_beast_attacks_modifier
+				}
+			}
+		}
+		else = {
+			scope:county = {
+				remove_county_modifier = county_corruption_wild_beast_attacks_modifier
+			}
+		}
+	}
+}
+
+remove_upset_shepherds_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		if = {
+			limit = {
+				exists = scope:marshal_removal
+			}
+			send_interface_message = {
+				type = msg_county_corruption_good_increase_control
+				title = remove_county_corruption.message.marshal_removal
+				left_icon = scope:county
+				right_icon = scope:councillor
+
+				scope:county = {
+					remove_county_modifier = county_corruption_upset_shepherds_modifier
+				}
+			}
+		}
+		else = {
+			scope:county = {
+				remove_county_modifier = county_corruption_upset_shepherds_modifier
+			}
+		}
+	}
+}
+
+remove_rogue_warriors_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		if = {
+			limit = {
+				exists = scope:marshal_removal
+			}
+			send_interface_message = {
+				type = msg_county_corruption_good_increase_control
+				title = remove_county_corruption.message.marshal_removal
+				left_icon = scope:county
+				right_icon = scope:councillor
+
+				scope:county = {
+					remove_county_modifier = county_corruption_rogue_warriors_modifier
+				}
+			}
+		}
+		else = {
+			scope:county = {
+				remove_county_modifier = county_corruption_rogue_warriors_modifier
+			}
+		}
+	}
+}
+
+remove_unruly_nomads_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		if = {
+			limit = {
+				exists = scope:marshal_removal
+			}
+			send_interface_message = {
+				type = msg_county_corruption_good_increase_control
+				title = remove_county_corruption.message.marshal_removal
+				left_icon = scope:county
+				right_icon = scope:councillor
+
+				scope:county = {
+					remove_county_modifier = county_corruption_unruly_nomads_modifier
+				}
+			}
+		}
+		else = {
+			scope:county = {
+				remove_county_modifier = county_corruption_unruly_nomads_modifier
+			}
+		}
+	}
+}
+
 remove_small_investment_in_revolt_modifier_effect = {
 	save_scope_as = county
 	holder = {
@@ -1061,6 +1691,36 @@ remove_random_county_corruption_modifier_effect = {
 		}
 		100 = {
 			trigger = {
+				has_county_modifier = county_corruption_roaming_bandits_modifier
+			}
+			remove_roaming_bandits_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_wild_beast_attacks_modifier
+			}
+			remove_wild_beast_attacks_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_upset_shepherds_modifier
+			}
+			remove_upset_shepherds_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_rogue_warriors_modifier
+			}
+			remove_rogue_warriors_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_unruly_nomads_modifier
+			}
+			remove_unruly_nomads_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
 				has_county_modifier = small_investment_in_revolt_modifier
 			}
 			remove_small_investment_in_revolt_modifier_effect = yes
@@ -1149,6 +1809,36 @@ remove_every_county_corruption_modifier_effect = {
 	}
 	if = {
 		limit = {
+			has_county_modifier = county_corruption_roaming_bandits_modifier
+		}
+		remove_roaming_bandits_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_wild_beast_attacks_modifier
+		}
+		remove_wild_beast_attacks_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_upset_shepherds_modifier
+		}
+		remove_upset_shepherds_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_rogue_warriors_modifier
+		}
+		remove_rogue_warriors_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_unruly_nomads_modifier
+		}
+		remove_unruly_nomads_modifier_effect = yes
+	}
+	if = {
+		limit = {
 			has_county_modifier = small_investment_in_revolt_modifier
 		}
 		remove_small_investment_in_revolt_modifier_effect = yes
@@ -1175,7 +1865,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1196,7 +1891,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1217,7 +1917,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1238,7 +1943,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1259,7 +1969,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1280,7 +1995,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1301,7 +2021,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1322,7 +2047,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1343,7 +2073,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1364,7 +2099,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1385,7 +2125,12 @@ marshal_remove_random_county_corruption_modifier_effect = {
 			}
 			if = {
 				limit = {
-					scope:councillor = holder.cp:councillor_marshal
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
 				}
 				save_scope_value_as = {
 					name = marshal_removal
@@ -1399,6 +2144,136 @@ marshal_remove_random_county_corruption_modifier_effect = {
 				}
 			}
 			remove_lackluster_administration_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_roaming_bandits_modifier
+			}
+			if = {
+				limit = {
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
+				}
+				save_scope_value_as = {
+					name = marshal_removal
+					value = yes
+				}
+			}
+			hidden_effect = {
+				set_variable = {
+					name = county_corruption_recent_removal
+					years = 3
+				}
+			}
+			remove_roaming_bandits_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_wild_beast_attacks_modifier
+			}
+			if = {
+				limit = {
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
+				}
+				save_scope_value_as = {
+					name = marshal_removal
+					value = yes
+				}
+			}
+			hidden_effect = {
+				set_variable = {
+					name = county_corruption_recent_removal
+					years = 3
+				}
+			}
+			remove_wild_beast_attacks_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_upset_shepherds_modifier
+			}
+			if = {
+				limit = {
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
+				}
+				save_scope_value_as = {
+					name = marshal_removal
+					value = yes
+				}
+			}
+			hidden_effect = {
+				set_variable = {
+					name = county_corruption_recent_removal
+					years = 3
+				}
+			}
+			remove_upset_shepherds_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_rogue_warriors_modifier
+			}
+			if = {
+				limit = {
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
+				}
+				save_scope_value_as = {
+					name = marshal_removal
+					value = yes
+				}
+			}
+			hidden_effect = {
+				set_variable = {
+					name = county_corruption_recent_removal
+					years = 3
+				}
+			}
+			remove_rogue_warriors_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = county_corruption_unruly_nomads_modifier
+			}
+			if = {
+				limit = {
+					scope:councillor = {
+						OR = {
+							scope:county.holder.cp:councillor_marshal ?= this
+							is_kurultai_trigger = yes
+						}
+					}
+				}
+				save_scope_value_as = {
+					name = marshal_removal
+					value = yes
+				}
+			}
+			hidden_effect = {
+				set_variable = {
+					name = county_corruption_recent_removal
+					years = 3
+				}
+			}
+			remove_unruly_nomads_modifier_effect = yes
 		}
 	}
 }

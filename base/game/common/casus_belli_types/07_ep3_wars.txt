@@ -281,6 +281,10 @@
 
 	on_victory = {
 		scope:attacker = {
+			add_character_flag = {
+				flag = domicile_culture_and_faith_check
+				days = 1
+			}
 			# Save target
 			ordered_in_list = {
 				list = target_titles
@@ -330,12 +334,29 @@
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
 			}
+			### If nomadic, they will prefer county fertility
+			else_if = {
+				limit = {
+					any_in_list = {
+						list = target_titles
+						tier = tier_county
+						uses_county_fertility = yes 
+					}
+				}
+				ordered_in_list = {
+					list = target_titles
+					limit = { tier = tier_county }
+					order_by =  county_fertility
+					save_temporary_scope_as = new_capital
+					scope:attacker = { set_realm_capital = scope:new_capital }
+				}
+			}
 			### Generally everyone prefers the highest development.
 			else = {
 				ordered_in_list = {
 					list = target_titles
 					limit = { tier = tier_county }
-					order_by = { add = development_level }
+					order_by = development_level
 					save_temporary_scope_as = new_capital
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
@@ -819,6 +840,10 @@ ep3_laamp_adventurer_duchy_invasion = {
 
 	on_victory = {
 		scope:attacker = {
+			add_character_flag = {
+				flag = domicile_culture_and_faith_check
+				days = 1
+			}
 			# Save target
 			ordered_in_list = {
 				list = target_titles
@@ -902,12 +927,29 @@ ep3_laamp_adventurer_duchy_invasion = {
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
 			}
+			### If nomadic, they will prefer county fertility
+			else_if = {
+				limit = {
+					any_in_list = {
+						list = target_titles
+						tier = tier_county
+						uses_county_fertility = yes 
+					}
+				}
+				ordered_in_list = {
+					list = target_titles
+					limit = { tier = tier_county }
+					order_by =  county_fertility
+					save_temporary_scope_as = new_capital
+					scope:attacker = { set_realm_capital = scope:new_capital }
+				}
+			}
 			### Generally everyone prefers the highest development.
 			else = {
 				ordered_in_list = {
 					list = target_titles
 					limit = { tier = tier_county }
-					order_by = { add = development_level }
+					order_by = development_level
 					save_temporary_scope_as = new_capital
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
@@ -1409,6 +1451,10 @@ ep3_laamp_adventurer_kingdom_invasion = {
 
 	on_victory = {
 		scope:attacker = {
+			add_character_flag = {
+				flag = domicile_culture_and_faith_check
+				days = 1
+			}
 			# Save target
 			ordered_in_list = {
 				list = target_titles
@@ -1486,12 +1532,29 @@ ep3_laamp_adventurer_kingdom_invasion = {
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
 			}
+			### If nomadic, they will prefer county fertility
+			else_if = {
+				limit = {
+					any_in_list = {
+						list = target_titles
+						tier = tier_county
+						uses_county_fertility = yes 
+					}
+				}
+				ordered_in_list = {
+					list = target_titles
+					limit = { tier = tier_county }
+					order_by =  county_fertility
+					save_temporary_scope_as = new_capital
+					scope:attacker = { set_realm_capital = scope:new_capital }
+				}
+			}
 			### Generally everyone prefers the highest development.
 			else = {
 				ordered_in_list = {
 					list = target_titles
 					limit = { tier = tier_county }
-					order_by = { add = development_level }
+					order_by = development_level
 					save_temporary_scope_as = new_capital
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
@@ -1990,6 +2053,10 @@ ep3_laamp_adventurer_empire_invasion = {
 
 	on_victory = {
 		scope:attacker = {
+			add_character_flag = {
+				flag = domicile_culture_and_faith_check
+				days = 1
+			}
 			# Save target
 			ordered_in_list = {
 				list = target_titles
@@ -2067,12 +2134,29 @@ ep3_laamp_adventurer_empire_invasion = {
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
 			}
+			### If nomadic, they will prefer county fertility
+			else_if = {
+				limit = {
+					any_in_list = {
+						list = target_titles
+						tier = tier_county 
+						uses_county_fertility = yes 
+					}
+				}
+				ordered_in_list = {
+					list = target_titles
+					limit = { tier = tier_county }
+					order_by =  county_fertility
+					save_temporary_scope_as = new_capital
+					scope:attacker = { set_realm_capital = scope:new_capital }
+				}
+			}
 			### Generally everyone prefers the highest development.
 			else = {
 				ordered_in_list = {
 					list = target_titles
 					limit = { tier = tier_county }
-					order_by = { add = development_level }
+					order_by = development_level
 					save_temporary_scope_as = new_capital
 					scope:attacker = { set_realm_capital = scope:new_capital }
 				}
@@ -4654,9 +4738,9 @@ ep3_roman_empire_border_war = {
 	ignore_effect = change_title_holder
 
 	ai_score_mult = {
-		value = 100
+		value = 0.5
 		if = {
-			limit = { prestige < massive_prestige_value }
+			limit = { scope:attacker.prestige < scope:attacker.massive_prestige_value }
 			multiply = 0
 		}
 		#Declaring war on the frankokratia leader can really ruin the whole thing
@@ -6344,7 +6428,7 @@ admin_barbarian_conquest_cb = {
 	ai_only_against_neighbors = yes
 	
 	ai_score_mult = {
-		value = 1.5
+		value = 3.5
 
 		# AI in struggles act insularly for wars that don't have a familial or legal basis.
 		multiply = struggle_wars_prioritise_struggle_targets_value
@@ -6367,6 +6451,13 @@ admin_barbarian_conquest_cb = {
 	valid_to_start = {
 		scope:target = {
 			trigger_if = {
+				limit = {
+					scope:defender = { is_in_civil_war = yes }
+				}
+				# In civil wars, you only cannot take the capital duchy
+				this != scope:defender.capital_county.duchy
+			}
+			trigger_else_if = {
 				limit = {
 					scope:defender.primary_title.tier = tier_empire
 				}

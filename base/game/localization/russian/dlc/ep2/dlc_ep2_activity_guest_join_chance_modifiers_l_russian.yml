@@ -10,7 +10,7 @@
  ACTIVITY_GUEST_CLOSE_FAMILY_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] в [Concept( 'close_family', 'близком родстве' )|E]: $VALUE|=+0$"
  ACTIVITY_GUEST_EXTENDED_FAMILY_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] в [Concept( 'extended_family', 'дальнем родстве' )|E]: $VALUE|=+0$"
  ACTIVITY_GUEST_SAME_DYNASTY_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] принадлежит к вашей [Concept( 'dynasty', 'династии' )|E]: $VALUE|=+0$"
- ACTIVITY_GUEST_SPOUSE: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] [Select_CString(ROOT.Char.IsFemale, 'ваша супруга', 'ваш супруг' )]: $VALUE|=+0$"
+ ACTIVITY_GUEST_SPOUSE: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] [Concept('spouse', Select_CString(ROOT.Char.IsFemale, 'ваша супруга', 'ваш супруг' ))|E]: $VALUE|=+0$"
  #REALM
  ACTIVITY_GUEST_VASSAL_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] ваш [vassal|El]: $VALUE|=+0$"
  ACTIVITY_GUEST_LIEGE_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] ваш [liege|El]: $VALUE|=+0$"
@@ -104,8 +104,9 @@
  ACTIVITY_GUEST_MASTER_OF_HUNT_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] [GetCourtPositionType('master_of_hunt_court_position').GetName()|l]: $VALUE|=+0$"
  ACTIVITY_GUEST_HUNTERS_REASON: "[ROOT.Char.GetCulture.GetCollectiveNoun]ая [Concept( 'tradition', 'традиция' )|E] «[GetCultureTradition('tradition_hunters').GetName]»: $VALUE|=+0$"
  ACTIVITY_GUEST_FALCONERS_REASON: "[ROOT.Char.GetCulture.GetCollectiveNoun]ая [Concept( 'tradition', 'традиция' )|E] «[GetCultureTradition('tradition_ep2_avid_falconers').GetName]»: $VALUE|=+0$"
- ACTIVITY_GUEST_GLORY_HOUND_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] [GetVassalStance('glory_hound').GetTextIcon]охочий до славы [Concept( 'vassal', 'вассал' )|E]: $VALUE|=+0$"
- ACTIVITY_GUEST_COURTLY_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] [GetVassalStance('courtly').GetTextIcon]куртуазный [Concept( 'vassal', 'вассал' )|E]: $VALUE|=+0$"
+ ACTIVITY_GUEST_GLORY_HOUND_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] #TOOLTIP:VASSAL_STANCE,glory_hound #L [GetVassalStance( 'glory_hound' ).GetTextIcon]охочий до славы#!#! [Concept( 'vassal', 'вассал' )|E]: $VALUE|=+0$"
+ ACTIVITY_GUEST_COURTLY_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] #TOOLTIP:VASSAL_STANCE,courtly #L [GetVassalStance( 'courtly' ).GetTextIcon]куртуазный#!#! [Concept( 'vassal', 'вассал' )|E]: $VALUE|=+0$"
+ ACTIVITY_GUEST_BELLIGERENT_REASON: "[ROOT.Char.GetSheHe|U] — #TOOLTIP:VASSAL_STANCE,belligerent #L [GetVassalStance( 'belligerent' ).GetTextIcon]воинственный#!#! [Concept('vassal', 'вассал')|E] [Concept('vassal', 'вассал')|E]: $VALUE|=+0$"
  ACTIVITY_GUEST_HEALTH_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] [Concept( 'health', 'недомогает' )|E]: $VALUE|=+0$"
  ACTIVITY_GUEST_ACCIDENTAL_HUNT_DEATH_REASON: "Смерти на ваших прошлых охотах: $VALUE|=+0$"
  ACTIVITY_GUEST_CANNOT_HUNT_REASON: "$ACTIVITY_GUEST_HUNTERS_MORE_COMMON_REASON$"
@@ -151,7 +152,7 @@
  ACTIVITY_GUEST_OPTIONS_CHARIOT_RACE_ENTERTAINMENT_NORMAL: "$chariot_entertainment_normal$: $VALUE|=+0$"
  ACTIVITY_GUEST_OPTIONS_CHARIOT_RACE_ENTERTAINMENT_GOOD: "$chariot_entertainment_good$: $VALUE|=+0$"
  #Plagues
- ACTIVITY_GUEST_EPIDEMIC_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] не отправится в путь во время эпидемии: $VALUE=+0$"
+ ACTIVITY_GUEST_EPIDEMIC_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] не отправится в путь во время эпидемии: $VALUE|=+0$"
  ACTIVITY_GUEST_EPIDEMIC_APOCALYPTIC_REASON: "[ROOT.Char.GetSheHe|U] не отправится в путь во время апокалиптической пандемии: $VALUE|=+0$"
  #Camp Party
  ACTIVITY_GUEST_LANDLESS_REASON: "[ROOT.Char.GetSheHe|U] считает, что $activity_camp_party|l$, который вы организуете, ниже [ROOT.Char.GetHerHim] достоинства: $VALUE|=+0$"

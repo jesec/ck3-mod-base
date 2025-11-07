@@ -1,7 +1,7 @@
 ﻿l_polish:
  ##################################################
  #Catalyst UI Keys
- PHASE_CATALYST_DESCRIPTION_HEADER: "#S Katalizatory w kierunku [Select_CString( EqualTo_string( StrugglePhase.GetNameNoTooltip, '$struggle_iberia_phase_hostility$' ), 'wrogości', Select_CString( EqualTo_string( StrugglePhase.GetNameNoTooltip, '$struggle_iberia_phase_compromise$' ), 'kompromisu', Select_CString( EqualTo_string( StrugglePhase.GetNameNoTooltip, '$struggle_iberia_phase_conciliation$' ), 'pojednania' , StrugglePhase.GetNameNoTooltip )))|l]#!"
+ PHASE_CATALYST_DESCRIPTION_HEADER: "#S Katalizatory w kierunku [Select_CString( EqualTo_string( StrugglePhase.GetNameNoTooltip, '$struggle_iberia_phase_hostility|q$' ), 'wrogości', Select_CString( EqualTo_string( StrugglePhase.GetNameNoTooltip, '$struggle_iberia_phase_compromise|q$' ), 'kompromisu', Select_CString( EqualTo_string( StrugglePhase.GetNameNoTooltip, '$struggle_iberia_phase_conciliation|q$' ), 'pojednania' , StrugglePhase.GetNameNoTooltip )))|l]#!"
  PHASE_CATALYST_DESCRIPTION_HEADER_INFO: "#I Ukończ katalizatory dowolną ilość razy, aby zwiększyć postęp fazy#!"
  PHASE_CATALYST_DESCRIPTION_ENTRY: "[CatalystEntry.GetCatalystDescription]"
  PHASE_CATALYST_COMPLETIONS: "[Select_CString(GreaterThan_int32(Struggle.GetNumCompletionsOfCatalystForPhase(StruggleWindow.GetSelectedPhase, CatalystEntry.GetCatalyst), '(int32)0'), '#COLOR_GREEN ', '#COLOR_GRAY ')]×[Struggle.GetNumCompletionsOfCatalystForPhase(StruggleWindow.GetSelectedPhase, CatalystEntry.GetCatalyst)]#!"
@@ -24,7 +24,7 @@
  catalyst_accepted_demand_from_faction_requesting_culture_faith_conversion: "[struggle_catalyst_catalyst|E]: zaakceptowano żądania frakcji"
  catalyst_accepted_demand_from_faction_requesting_culture_faith_conversion_desc: "Zaakceptowanie żądań [Concept( 'peasant_faction', 'frakcji chłopskiej' )|E] lub [Concept( 'popular_faction', 'populistycznej' )|E]"
  catalyst_granted_powerful_diff_faith_vassal_religious_protection: "Przyznano globalny [struggle_catalyst_catalyst|El] zmiany [Concept('vassal_contract', 'kontraktu wasalnego')|E]"
- catalyst_granted_powerful_diff_faith_vassal_religious_protection_desc: "Zaproponuj [Concept('powerful_vassal', 'wasalowi wpływowemu')|E] zobowiązanie na mocy [Concept('vassal_contract', 'kontraktu wasalnego')|E]: [GetVassalContractType( 'religious_rights' ).GetObligationName( 'religious_rights_protected' )|El]"
+ catalyst_granted_powerful_diff_faith_vassal_religious_protection_desc: "Na mocy [Concept('vassal_contract', 'kontraktu wasalnego')|E] zaproponuj [Concept('powerful_vassal', 'wasalowi wpływowemu')|E] zobowiązanie „[GetSubjectContractType( 'religious_rights' ).GetObligationName( 'religious_rights_protected' )|El]”"
  catalyst_became_best_friend_soulmate_with_very_important_character: "[struggle_catalyst_catalyst|E]: bliźniacze dusze"
  catalyst_became_best_friend_soulmate_with_very_important_character_desc: "Stanie się z [Concept( 'best_friends', 'najlepszymi przyjaciółmi' )|E] lub [Concept( 'soulmates', 'bratnimi duszami' )|E] z [Concept( 'struggle_involved', 'zaangażowanym' )|E] [Concept( 'ruler', 'władcą' )|E]"
  catalyst_became_friend_lover_with_character: "[struggle_catalyst_catalyst|E]: bliźniacze dusze"
@@ -34,7 +34,7 @@
  catalyst_hybridise_or_diverge_regional_cultures: "[struggle_catalyst_catalyst|E]: [Concept( 'hybridize', 'Zhybrydyzowano' )|E] lub [Concept( 'diverge', 'oddzielono' )|E] [Concept( 'struggle', 'zmagające się' )|E] [cultures|El]"
  catalyst_hybridise_or_diverge_regional_cultures_desc: "[Concept( 'hybridize', 'Zhybrydyzowanie' )|E] dwóch [Concept( 'struggle_involved', 'zaangażowanych' )|E] [Concept( 'culture', 'kultur' )|E] lub [Concept( 'diverge', 'oddzielenie' )|E] jednej"
  catalyst_revoked_powerful_diff_faith_vassal_religious_protection: "Anulowano globalny [struggle_catalyst_catalyst|El] [Concept('vassal_contract', 'kontraktu wasalnego')|E]"
- catalyst_revoked_powerful_diff_faith_vassal_religious_protection_desc: "Wycofaj [vassal_contract|El] [Concept('powerful_vassal', 'wasala wpływowego')|E] obejmujący zobowiązanie: [GetVassalContractType( 'religious_rights' ).GetObligationName( 'religious_rights_protected' )|El]"
+ catalyst_revoked_powerful_diff_faith_vassal_religious_protection_desc: "Wycofaj [vassal_contract|El] [powerful_vassal_possessive|El] obejmujący zobowiązanie „[GetSubjectContractType( 'religious_rights' ).GetObligationName( 'religious_rights_protected' )|El]”"
  catalyst_broke_truce_against_important_character: "[struggle_catalyst_catalyst|E]: Zerwano [truce|El]"
  catalyst_broke_truce_against_important_character_desc: "Zerwanie [Concept( 'truce', 'rozejmu' )|E] z [Concept( 'struggle_involved', 'zaangażowanym' )|E] [Concept( 'ruler', 'władcą' )|E]"
  catalyst_discovery_of_very_important_murder: "[struggle_catalyst_catalyst|E]: Ujawniono sekciarskie [GetScheme('murder').GetTypeName|l]"
@@ -140,7 +140,7 @@
  catalyst_gain_struggle_titles_from_interlopers_uninvolved: "[struggle_catalyst_catalyst|E]: pozyskano [title|El] od [Concept('struggle_uninvolved', 'niezaangażowanego')|E] [Concept('struggle_interloper', 'intruza')|E] lub [Concept('struggle_uninvolved', 'niezaangażowanego')|E] [Concept('ruler', 'władcy')|E]"
  catalyst_gain_struggle_titles_from_interlopers_uninvolved_desc: "Pozyskanie [Concept('title', 'tytułu')|E] w [Concept('struggle_region', 'regionie zmagań')|E] od [Concept('struggle_interloper', 'intruza')|E] lub [Concept('struggle_uninvolved', 'niezaangażowanego')|E] [Concept('ruler', 'władcy')|E]"
  catalyst_interloper_uninvolved_gain_struggle_vassals: "[struggle_catalyst_catalyst|E]: utracono [Concept('vassal', 'wasala')|E] na rzecz [Concept('struggle_interloper', 'intruza')|E] lub [Concept('struggle_uninvolved', 'niezaangażowanego')|E] [Concept('ruler', 'władcy')|E]"
- catalyst_interloper_uninvolved_gain_struggle_vassals_desc: "Utrata [Concept('struggle_involved', 'zaangażowanego')|E] wasala na rzecz [Concept('struggle_interloper', 'intruza')|E] lub [Concept('struggle_uninvolved', 'niezaangażowanego')|E] [Concept('ruler', 'władcy')|E]"
+ catalyst_interloper_uninvolved_gain_struggle_vassals_desc: "Utrata [Concept('struggle_involved', 'zaangażowanego')|E] [Concept('vassal', 'wasala')|E] na rzecz [Concept('struggle_interloper', 'intruza')|E] lub [Concept('struggle_uninvolved', 'niezaangażowanego')|E] [Concept('ruler', 'władcy')|E]"
  catalyst_interloper_uninvolved_gain_struggle_titles: "Utracono [title|El] na rzecz [Concept('struggle_involved', 'zaangażowanego')|E] [Concept('struggle_catalyst_catalyst', 'katalizatora')|E]"
  catalyst_interloper_uninvolved_gain_struggle_titles_desc: "Utrata [Concept('title', 'tytułu')|E] w [Concept('struggle_region', 'regionie zmagań')|E] na rzecz [Concept('struggle_interloper', 'intruza')|E] lub [Concept('struggle_uninvolved', 'niezaangażowanego')|E] [Concept('ruler', 'władcy')|E]"
  catalyst_declare_any_war_within_the_region: "[struggle_catalyst_catalyst|E]: rozpoczęcie [Concept('war', 'wojny')|E]"

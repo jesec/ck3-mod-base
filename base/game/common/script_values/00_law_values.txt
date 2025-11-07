@@ -26,8 +26,26 @@ learning_law_cost_modifier = {
 	min = -0.5
 }
 
+# Prowess: Base Dominance Cost Reduction
+prowess_law_cost_modifier = {
+	value = 0
+	subtract = prowess
+	add = 8
+	divide = 75
+	min = -0.5
+}
+
 #Faith: The modifier used to calculate the Legalism modifier if the character's faith has Legalism
 legalism_law_cost_modifier = {
+	value = 0
+	add = num_sinful_traits
+	subtract = num_virtuous_traits
+	divide = 10
+	min = -0.3
+}
+
+#Faith: The modifier used to calculate the Warmonger modifier if the character's faith has Warmonger
+warmonger_law_cost_modifier = {
 	value = 0
 	add = num_sinful_traits
 	subtract = num_virtuous_traits
@@ -318,6 +336,109 @@ increase_tribal_authority_prestige_cost = {
 		multiply = {
 			desc = "character_modifiers_law_cost_tooltip"
 			value = 1.1 # vassal_distrust_modifier = +10%
+		}
+	}
+}
+
+#Dominance / Nomadic Authority Change
+increase_nomadic_authority_herd_cost_base = 500
+
+increase_nomadic_authority_herd_cost = {
+	add = {
+		desc = "BASE_VALUE"
+		value = increase_nomadic_authority_herd_cost_base
+		format = "BASE_VALUE_FORMAT"
+	}
+	multiply = {
+		desc = "era_law_cost_scale"
+		value = domicile.herd_value_scale_by_era
+	}
+	multiply = {
+		desc = "dominance_law_cost_scale"
+		value = dominance_value
+	}
+}
+
+increase_nomadic_authority_prestige_base = 300
+
+increase_nomadic_authority_prestige_cost = {
+	add = {
+		desc = "BASE_VALUE"
+		value = increase_nomadic_authority_prestige_base
+		format = "BASE_VALUE_FORMAT"
+	}
+	# +10 Prestige cost per county controlled by you(r vassals)
+	add = {
+		desc = "realm_size"
+		format = "BREAKDOWN_FORMAT_REALM_SIZE_PRESTIGE_COST"
+		value = subrealm_size_modifier
+	}
+
+	# Prowess Modifier (2% more expensive for each skill point below 8 Prowess)
+	if = {
+		limit = {
+			prowess < 8
+		}
+		add = {
+			desc = "poor_prowess_law_cost_tooltip"
+			value = {
+				add = increase_nomadic_authority_prestige_base
+				add = subrealm_size_modifier
+			}
+			multiply = prowess_law_cost_modifier
+		}
+	}
+	else_if = { # (2% less expensive for each skill point above 8 Prowess)
+		limit = {
+			prowess > 8
+		}
+		add = {
+			desc = "prowess_law_cost_tooltip"
+			value = {
+				add = increase_nomadic_authority_prestige_base
+				add = subrealm_size_modifier
+			}
+			multiply = prowess_law_cost_modifier
+		}
+	}
+
+	# Tenet Modifiers
+	if = {
+		limit = {
+			faith = {
+				has_doctrine_parameter = warmonger
+			}
+		}
+		add = {
+			desc = "tenet_warmonger_law_cost_tooltip"
+			value = {
+				add = increase_crown_authority_prestige_base
+				add = subrealm_size_modifier
+			}
+			multiply = warmonger_law_cost_modifier
+		}
+	}
+
+	# Apply All-Things cooldown breaker multiplier.
+	if = {
+		limit = {
+			has_variable = nomadic_authority_cooldown
+			culture = { has_innovation = innovation_all_things }
+		 }
+		# If the tally exists, multiply by that.
+		if = {
+			limit = { has_variable = authority_cooldown_break_tally }
+			multiply = {
+				desc = "breaking_authority_cooldown"
+				value = var:authority_cooldown_break_tally
+			}
+		}
+		# Otherwise, multiply by the stock tally base.
+		else = {
+			multiply = {
+				desc = "breaking_authority_cooldown"
+				value = authority_cooldown_breaker_value
+			}
 		}
 	}
 }

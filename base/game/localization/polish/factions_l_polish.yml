@@ -72,6 +72,15 @@
  FACTION_DEMAND_PEASANT_REFUSE: "Zamknijcie się! Jestem waszym władcą! A władców się nie wybiera!"
  FACTION_PEASANT_NAME: "Chłopski motłoch"
  FACTION_PEASANT_TITLE_NAME: "Rebelia chłopska"
+ #Nomadic Faction
+ nomadic_faction: "Frakcja koczownicza"
+ nomadic_faction_desc: "[faction|E] koczownicza chce, aby rządzący nią [ruler|El] reprezentował [GetGovernment( 'nomad_government' ).GetName|l]. Oczekuje też, że [culture|El] i [faith|El] w [Concept('yurt', 'stolicy grupy koczowników')|E] będą pokrywały się z jej własnymi."
+ nomadic_faction_short_effect_desc: "Chce ustanowić nowe [realms|El], w których panować będzie [GetGovernment( 'nomad_government' ).GetName|l]"
+ FACTION_DEMAND_NOMADIC: "Do gnidy znanej jako [ROOT.Char.GetTitledFirstName]"
+ FACTION_DEMAND_NOMADIC_DESC: "Mamy już dość twojego ucisku! My, dumni [peasant_leader.GetCulture.GetCollectiveNoun] reprezentowani przez [GetGovernment( 'nomad_government' ).GetName|l], urodziliśmy się, by żyć wolno pod bezkresem nieba.\n\n[peasant_leader.GetFaith.WarGodName] sprzyja naszym jeźdźcom! Z boską pomocą wyrwiemy się spod twojej godnej pogardy tyranii i zajmiemy należne nam miejsce na wielkim stepie!"
+ FACTION_DEMAND_NOMADIC_ACCEPT_GRANT_INDEPENDENCE: "I bardzo dobrze! W moim państwie nie ma miejsca dla waszej brudnej gromady."
+ FACTION_DEMAND_NOMADIC_VASSAL_DESC: "Mamy dość ucisku, z jakim muszą się mierzyć dumni [peasant_leader.GetFaith.GetAdherentNamePlural|l] i kultura [peasant_leader.GetCulture.GetName|l]. Pisana jest nam wolność pod bezkresem nieba – pora więc zakończyć twoją tyranię. Nadchodzi nasz czas!\n\nTy i twój senior, [faction_target.GetTitledFirstName], już nigdy nie będziecie decydować o naszym losie!"
+ FACTION_DEMAND_NOMADIC_VASSAL_JOIN_WAR: "A zatem do zobaczenia na polu bitwy, #EMP włóczęgo#!!"
  #Populist Faction
  populist_faction: "Frakcja populistyczna"
  populist_faction_desc: "[faction|E] populistyczna dąży do uzyskania wolności od obcych lub niewiernych rządów, stale poszukując niezależności od seniora, który nie podziela jej [cultures|El] lub [faiths|El]."
@@ -90,6 +99,7 @@
  FACTION_DEMAND_POPULIST_REFUSE_ADMIN: "[peasant_leader.Custom('InsultNoun')|U] z ciebie, i to z niezłym tupetem! Nie do ciebie należy wprowadzanie takich zmian!"
  FACTION_DEMAND_POPULIST_REFUSE_TT: "#high [peasant_leader.GetTitledFirstName]#! oraz #high [faction.GetName|l]#! wypowiadają ci [Concept( 'war', 'wojnę' )|E]"
  FACTION_POPULIST_REVOLT_TITLE_NAME: "Powstanie populistów"
+ FACTION_NOMADIC_REVOLT_TITLE_NAME: "Bunt koczowników"
  FACTION_POPULIST_CREATED_TITLE_NAME: "[founder_culture.GetCollectiveNounNoTooltip]"
  FACTION_DEMAND_POPULIST_VASSAL_DESC_SAME_CULTURE_AND_FAITH: "Możesz dzielić nasze zwyczaje lub nasze wierzenia, ale ty i [Select_CString( faction_target.IsFemale, 'ta', 'ten' )] [faction_target.Custom('InsultAdjective')] [faction_target.GetTitledFirstName] jesteście osobami, których nie jesteśmy już w stanie dłużej tolerować!\n\nNie wadź, albo pomóż nam w zdobyciu wolności, na którą całkowicie zasługujemy!"
  FACTION_DEMAND_POPULIST_VASSAL_DESC_CULTURE: "My, [peasant_leader.GetCulture.GetCollectiveNoun], nie będziemy dłużej znosić obcego ucisku wobec naszych zwyczajów. Nasz czas wkrótce nadejdzie!\n\n[Select_CString( faction_target.IsFemale, 'Twoja pani', 'Twój pan' )], [faction_target.GetTitledFirstName], musi wiedzieć, że nie zażądamy niczego innego, jak całkowitej wolności od [Select_CString( faction_target.IsFemale, 'niej', 'niego' )]!"
@@ -162,6 +172,7 @@
  FACTION_CLAIMANT_EVERY_FACTION_MEMBER: "Każdy członek frakcji"
  FACTION_CLAMAINT_DYNAMIC_NAME: "Posadź osobę znaną jako [ROOT.Faction.GetSpecialCharacter.GetTitledFirstName] na tronie [ROOT.Faction.GetSpecialTitle.GetAdjective]"
  FACTION_POPULIST_DYNAMIC_NAME: "[ROOT.Var('faction_culture').Culture.GetNameNoTooltip] [ROOT.Var('faction_faith').Faith.GetAdjectiveNoTooltip|l] frakcja populistyczna"
+ FACTION_NOMAD_DYNAMIC_NAME: "[ROOT.Var('faction_culture').Culture.GetNameNoTooltip] – zbiorowość koczowników wyznających [ROOT.Var('faction_faith').Faith.GetNameNoTooltip|l]"
  WARNING_I_HAVE_ALREADY_JOINED_A_FACTION: "@warning_icon! #X Już dołączyłeś do [Concept('faction', 'frakcji')|E]#!"
  WARNING_I_AM_ALREADY_AT_WAR_WITH_TARGET: "@warning_icon! #X [faction_target.GetTitledFirstName] już jest w stanie wojny z tobą#!"
  WARNING_I_AM_AT_WAR_WITH_FACTION_LEADER: "@warning_icon! #X [faction_invite_from.GetTitledFirstName] jest w stanie wojny z tobą#!"
@@ -212,6 +223,7 @@
  FACTION_REASON_PREFER_POPULIST_FACTION: "Preferuje frakcję populistyczną: $VALUE|0+=$"
  FACTION_REASON_RULING_CASTE: "[GetCultureTradition('tradition_ruling_caste').GetName]: $VALUE|0+=$"
  FACTION_REASON_AT_WAR_WITH_TARGET: "Już buntuje się przeciwko [Concept( 'liege', 'seniorowi' )|E]: $VALUE|0+=$"
+ FACTION_REASON_DISLIKE_NON_NOMADS: "Chce, aby [ruler|El] reprezentował [GetGovernment( 'nomad_government' ).GetName|l]: $VALUE|0+=$"
  #liberty_faction_modifiers
  FACTION_REASON_CROWN_AUTHORITY_1: "$crown_authority_1$: $VALUE|0+=$"
  FACTION_REASON_CROWN_AUTHORITY_2: "$crown_authority_2$: $VALUE|0+=$"
@@ -225,7 +237,7 @@
  #claimant_faction_modifiers
  FACTION_REASON_CLAIMANT_GENDER: "Płeć [Concept( 'claimant', 'pretendenta' )|E]: $VALUE|0+=$"
  FACTION_REASON_CLAIMANT_GENDER_VS_TARGET: "Płeć [Concept( 'liege', 'seniora' )|E]: $VALUE|0+=$"
- FACTION_REASON_POWERFUL_LIKES_CLAIMANT_MORE: "[powerful_vassal|E] ma wyższą opinię o [Concept( 'claimant', 'pretendencie' )|E]: $VALUE|0+=$"
+ FACTION_REASON_POWERFUL_LIKES_CLAIMANT_MORE: "[powerful_vassal|E] ma wyższą [Concept('opinion', 'opinię')|E] o [Concept( 'claimant', 'pretendencie' )|E]: $VALUE|0+=$"
  FACTION_REASON_LIKES_LIEGE_UNLESS_CULTURE: "Wyższa [opinion|El] o [Concept( 'liege', 'seniorze' )|E] niż [Concept( 'claimant', 'pretendencie' )|E]: $VALUE|0+=$"
  FACTION_REASON_LIKE_CLAIMANT_MORE_THAN_LIEGE: "Wyższa [opinion|El] o [Concept( 'claimant', 'pretendencie' )|E]: $VALUE|0+=$"
  FACTION_REASON_LIKES_LIEGE: "Wyższa [opinion|El] o [Concept('liege', 'seniorze')|E]: $VALUE|0+=$"
@@ -261,7 +273,7 @@
  FACTION_REASON_CULTURAL_ACCEPTANCE: "[cultural_acceptance|E]: $VALUE|0+=$"
  FACTION_REASON_TARGET_NOT_FULL_CONTROL: "[liege|E] nie kontroluje całego obszaru [de_jure|El]: $VALUE|0+=$"
  FACTION_REASON_RECENT_LOST_WAR: "[liege|E] niedawno przegrał [Concept( 'war', 'wojnę' )|E]: $VALUE|0+=$"
- FACTION_REASON_TRIBAL_CLAN: "[government|E] [Concept('liege', 'seniora')|E] to [GetGovernment( 'tribal_government' ).GetName|l] lub [GetGovernment( 'clan_government' ).GetName|l]: $VALUE|0+=$"
+ FACTION_REASON_TRIBAL_CLAN: "[government|E] [Concept('liege', 'seniora')|E] to [GetGovernment( 'tribal_government' ).GetName|l], [GetGovernment( 'nomad_government' ).GetName|l] lub [GetGovernment( 'clan_government' ).GetName|l]: $VALUE|0+=$"
  FACTION_REASON_STRUGGLE_PHASE: "Obecna [struggle_phase|El]: $VALUE|0+=$"
  FACTION_REASON_ELECTIVE_PRIMARY: "[primary_title|E] [Concept('liege', 'seniora')|E] podlega elekcyjnemu [Concept('succession_law', 'prawu sukcesyjnemu')|E]: $VALUE|0+=$"
  FACTION_REASON_BYZANTINE_RELIGION: "Ta sama [religion|El] co wyznawana przez bizantyjskiego [Concept('liege', 'seniora')|E]: $VALUE|0+=$"
@@ -289,6 +301,11 @@
  FACTION_REASON_HOUSE_HOSTILITY: "[GetCultureTradition('tradition_ep3_indomitable_azatani').GetName]: $FACTOR|^%+=$"
  #Duty Focus
  FACTION_REASON_duty_focus: "[focus|E] [liege_possessive|El] dotyczący obowiązków: $VALUE|0+=$"
+ #Court Position Task
+ FACTION_REASON_court_position_task: "[court_position_task|E] [liege_possessive|El]: $VALUE|0+=$"
+ #Nomads
+ MPO_OBEDIENT_NOMAD: "[obedient|E]: $VALUE|0+=$"
+ MPO_NON_OBEDIENT_NOMAD: "#bold Nie#![obedient|El]: $VALUE|0+=$"
  #Harrying of the North
  FACTION_REASON_HARRYING_RESISTANCE: "Opór wobec nękania północy: $VALUE|1+=$"
  FACTION_REASON_HARRYING_PACIFICATION: "Pacyfikacja nękania północy: $VALUE|1+=$"
@@ -338,3 +355,4 @@
  FACTION_REASON_ADMIN_CLAIMANT_JUNIOR_EMPEROR: "[claimant|E] jest [Concept('junior_emperor', 'współcesarzem nominalnym')|E]: $FACTOR|0%+=$"
  FACTION_REASON_CLAIMANT_PRIMARY_HEIR: "[claimant|E] jest moim [Concept('heir', 'dziedzicem')|E]: $VALUE|+0=$"
  FACTION_REASON_ADMINISTRATIVE: "[vassal|E] [administrative|El]: $VALUE|+0=$"
+ FACTION_REASON_NOMADIC: "[GetGovernment( 'nomad_government' ).GetName]: $VALUE|+0=$"

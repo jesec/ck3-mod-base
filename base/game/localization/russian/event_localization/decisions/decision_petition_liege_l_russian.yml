@@ -33,9 +33,9 @@
  petition_liege_decision_option_war_aid: "Военная помощь\n#low Помочь во внешней [Concept( 'war', 'войне' )|E]#!"
  petition_liege_war_aid_desc: "Попросить, чтобы [ROOT.Char.GetLiege.GetTitledFirstName] [Select_CString(ROOT.Char.GetLiege.IsFemale, 'присоединилась', 'присоединился' )] к боевым действиям или [Select_CString(ROOT.Char.GetLiege.IsFemale, 'прислала', 'прислал' )] войска для участия в текущей [Concept( 'war', 'войне' )|E] с другой [Concept( 'realm', 'державой' )|E]"
  petition_liege_war_aid_tooltip: "$petition_liege_decision_second_tooltip$"
- petition_liege_war_aid_tt: "#X Вы не проигрываете [Concept( 'war', 'войну' )|E] за [Concept( 'realm', 'державу' )|E]#! со [Concept( 'war_score', 'счетом' )|E] как минимум [EmptyScope.ScriptValue('petition_war_aid_score_value')|0]%"
+ petition_liege_war_aid_tt: "#X Вы не являетесь [Concept('war_leader', 'военным лидером')|E] проигрываемой [Concept( 'war', 'войны' )|E] за пределами [Concept( 'realm', 'державы' )|E]#! со [Concept( 'war_score', 'счетом' )|E] как минимум -[EmptyScope.ScriptValue('petition_war_aid_score_value')|0]%"
  petition_liege_war_aid_liege_tt: "#X Ваш [liege|El] не участвует ни в одной из ваших [Concept( 'wars', 'войн' )|E]"
- petition_liege_war_aid_levies_tt: "#X Ваш [liege|El] не может поделиться войсками#!"
+ petition_liege_war_aid_levies_tt: "#X Ваш [Concept('liege', 'сюзерен')|E] слишком слаб, чтобы рисковать ввязываться в [Concept('war', 'войну')|E]"
  petition_liege_decision_effects_war_aid: "[THIS.Char.GetLiege.GetSheHe|U] может присоединиться к боевым действиям или прислать войска для участия в текущей [Concept( 'war', 'войне' )|E]"
  petition_liege_war_aid_troops: "Ополчение сюзерена"
  petition_liege_internal_war_aid_tt: "#X [liege|E] сражается с [Concept( 'factions', 'фракциями' )|E]#!"
@@ -66,7 +66,7 @@
  petition_liege_county_convert_tt: "#X Во всех ваших [Concept( 'county', 'графствах' )|E] исповедуют истинную [Concept( 'faith', 'веру' )|E]#!"
  petition_liege_decision_effects_county_convert: "[THIS.Char.GetLiege.GetSheHe|U] может помочь обратить ваши [counties|El]"
  #Opinion
- petition_liege_decision_option_county_opinion: "Монарший визит\n#low Повысить [Concept( 'county_opinion', 'мнение в ваших графствах' )|E]"
+ petition_liege_decision_option_county_opinion: "Монарший визит\n#low Повысить [Concept('county_opinion', 'народное мнение')|E] в [Concept('counties', 'графствах')|E]"
  petition_liege_county_opinion_desc: "Попросить, чтобы [ROOT.Char.GetLiege.GetTitledFirstName] [Select_CString(ROOT.Char.GetLiege.IsFemale, 'посетила', 'посетил' )] ваши [counties|El] — это повысит [county_opinion|El]"
  petition_liege_county_opinion_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_county_opinion_tt: "#X Во всех ваших [Concept( 'county', 'графствах' )|E] достаточно высокое [Concept( 'county_opinion', 'мнение' )|E]#!"
@@ -75,7 +75,7 @@
  petition_liege_decision_option_fortify_border: "Укрепить границы\n#low Усилить пограничные [counties|El]#!"
  petition_liege_fortify_border_desc: "Попросить, чтобы [ROOT.Char.GetLiege.GetTitledFirstName] [Select_CString(ROOT.Char.GetLiege.IsFemale, 'помогла', 'помог' )] усилить ваши [counties|El], граничащие с другими [Concept( 'realms', 'державами' )|E]"
  petition_liege_fortify_border_tooltip: "$petition_liege_decision_second_tooltip$"
- petition_liege_fortify_border_tt: "#X У вас нет [Concept( 'counties', 'графств' )|E], граничащих с другими [Concept( 'realms', 'державами' )|E], которые не были бы в союзе с вашим [Concept( 'liege', 'сюзереном' )|E]#!"
+ petition_liege_fortify_border_tt: "#X У вас нет [Concept( 'counties', 'графств' )|E], граничащих с другими [Concept( 'realms', 'державами' )|E], которые не были бы в [Concept('alliance', 'союзе')|E] с вашим [Concept( 'liege', 'сюзереном' )|E]#!"
  petition_liege_decision_effects_fortify_border: "[THIS.Char.GetLiege.GetSheHe|U] может усилить ваши пограничные [counties|El]"
  #Title Liege
  petition_liege_decision_option_title_liege: "Удовлетворить претензию\n#low Даровать [claimed|El] [title|El]#!"
@@ -87,7 +87,7 @@
  petition_liege_decision_option_title_vassal: "Передать претензию\n#low Отдать [claimed|El] [title|El] [Concept( 'vassal', 'вассала' )|E]"
  petition_liege_title_vassal_desc: "Попросить, чтобы [ROOT.Char.GetLiege.GetTitledFirstName] [Select_CString(ROOT.Char.GetLiege.IsFemale, 'даровала', 'даровал' )] вам [claimed|El] [title|El] другого [Concept( 'vassal', 'вассала' )|E]"
  petition_liege_title_vassal_tooltip: "$petition_liege_decision_second_tooltip$"
- petition_liege_title_vassal_liege_tt: "#X [crown_authority|E] вашего [Concept( 'liege', 'сюзерена' )|E] запрещает перераспределять [titles|El]#!"
+ petition_liege_title_vassal_liege_tt: "#X [Concept('crown_authority', 'Авторитет короны')|E] вашего [Concept('liege', 'сюзерена')|E] не позволяет [Concept('revocation', 'лишать')|E] [Concept('titles', 'титулов')|E]#!"
  petition_liege_title_vassal_claim_tt: "#X Ни один из [Concept( 'title', 'титулов' )|E], на которые вы [Concept( 'claims', 'претендуете' )|E], не принадлежит [Concept( 'vassal', 'вассалам' )|E] вашего [Concept( 'liege', 'сюзерена' )|E], или тот не может с ним расстаться#!"
  petition_liege_decision_effects_title_vassal: "[THIS.Char.GetLiege.GetSheHe|U] может передать оспариваемый [title|El] [Concept( 'vassal', 'вассала' )|E] вам"
  #Construct City

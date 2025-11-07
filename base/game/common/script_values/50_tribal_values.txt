@@ -1,4 +1,4 @@
-﻿feudalize_tribal_holding_interaction_cost = {
+﻿feudalize_holding_interaction_cost = {
 	value = 500
 	if = {
 		limit = {
@@ -6,5 +6,16 @@
 			capital_province = { has_holding_type = tribal_holding }
 		}
 		add = -250
+	}
+	if = {
+		limit = {
+			scope:target ?= {
+				OR = {
+					has_county_modifier = mpo_siberian_permafrost_modifier
+					has_county_modifier = mpo_siberian_permafrost_modifier_bad
+				} 
+			}
+		}
+		add = 2000
 	}
 }

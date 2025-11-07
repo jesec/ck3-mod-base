@@ -885,8 +885,18 @@ liege_visited_benevolence = {
 				score = 5
 				character = scope:first
 				# Effects
-				scope:host.location.county = {
-					change_development_progress = 10
+				if = {
+					limit = {
+						scope:host.location.county = { uses_county_fertility = yes }
+					}
+					scope:host.location.county = {
+						change_county_fertility = 5
+					}
+				}
+				else = {
+					scope:host.location.county = {
+						change_development_progress = 10
+					}
 				}
 			}
 		}

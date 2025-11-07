@@ -103,7 +103,7 @@
  ##################################################
  ##Ancillary Powers
  diarch_legal_meddling_interaction: "Ingerencja prawna"
- diarch_legal_meddling_interaction_desc: "Wykorzystaj swoją pozycję jako drugie[Select_CString( actor.IsFemale, 'j najpotężniejszej kobiety', 'go najpotężniejszego mężczyzny' )] w państwie, aby odebrać [Concept( 'vassal', 'wasalowi' )|E] [title|El]$diarch_boilerplate_postscript_partial$"
+ diarch_legal_meddling_interaction_desc: "Wykorzystaj swoją pozycję jako drugie[Select_CString( actor.IsFemale, 'j najpotężniejszej kobiety', 'go najpotężniejszego mężczyzny' )] w [Concept('realm', 'państwie')|E], aby sfabrykować [claim|El] do [Concept('title', 'tytułu')|E] [vassal_possessive|El]$diarch_boilerplate_postscript_partial$"
  recipient_secondary_diarch_legal_meddling_interaction: "$recipient_secondary_diarch_interaction$"
  diarch_legal_meddling_interaction.tt.they_must_have_at_least_one_unclaimed_title: "Wśród [Concept('titles', 'tytułów')|E], które ma [recipient.GetFirstNameNoTooltip], nie ma takich, do których nie masz jeszcze [Concept('claim', 'roszczenia')|E]"
  diarch_legal_meddling_interaction_duel_learning: "Nagnij prawo dzięki swojej biegłości w [Concept('learning', 'nauce')|E]"
@@ -121,6 +121,7 @@
  diarch_interactions.tt.must_embezzle_something: "Jeśli niczego nie zabierasz, nie ma mowy o sprzeniewierzeniu"
  diarch_syphon_treasury_interaction.tt.success: "Dokonujesz sprzeniewierzenia, które pozostaje nieodkryte"
  diarch_syphon_treasury_interaction.tt.success.syphon_development_growth: "Cechująca cię niezwykle wysoka biegłość w [Concept('stewardship', 'zarządzaniu')|E] pozwala ci wyprowadzać [development_growth|El] z [Concept('counties', 'hrabstw')|E] należących do twojego [Concept('liege', 'seniora')|E]"
+ diarch_syphon_treasury_interaction.tt.success.syphon_herd: "Twoja niezwykle wysoka biegłość w [Concept('stewardship', 'zarządzaniu')|E] pozwala ci wyprowadzać [Concept('herd', 'gromadę')|E] od twojego [Concept('liege', 'seniora')|E]"
  diarch_syphon_treasury_interaction.tt.success.syphon_control_several_counties: "Cechująca cię wysoka biegłość w [Concept('stewardship', 'zarządzaniu')|E] pozwala ci wyprowadzać [Concept('control', 'kontrolę')|E] z [Concept('counties', 'hrabstw')|E] należących do twojego [Concept('liege', 'seniora')|E]"
  diarch_syphon_treasury_interaction.tt.success.syphon_control_county: "Cechująca cię umiarkowana biegłość w [Concept('stewardship', 'zarządzaniu')|E] pozwala ci wyprowadzać [Concept('control', 'kontrolę')|E] z #EMP jednego#! [Concept('county', 'hrabstwa')|E] należącego do twojego [Concept('liege', 'seniora')|E]"
  diarch_syphon_treasury_interaction.tt.success.apply_county_modifier: "Cechująca cię fatalna biegłość w [Concept('stewardship', 'zarządzaniu')|E] pozwala ci tylko dodać ujemny [county_modifier|El] do jednego z [Concept('counties', 'hrabstw')|E] należących do twojego [Concept('liege', 'seniora')|E]"
@@ -282,7 +283,7 @@
  liege_dismiss_temporary_regency_interaction: "Zwolnij regenta"
  liege_dismiss_temporary_regency_interaction_desc: "Jestem już całkowicie zdoln[Select_CString( GetPlayer.IsFemale, 'a', 'y' )] do prowadzenia własnych spraw. [recipient.GetShortUINameNotMeNoTooltip] nie jest mi już potrzebn[Select_CString( recipient.IsFemale, 'a', 'y' )] i mogę pozbawić [Select_CString( recipient.IsFemale, 'ją', 'go' )] tej #EMP ograniczonej#! władzy"
  liege_dismiss_temporary_regency_interaction.tt.dynasty_receives_prestige: "[dynasty|E] [recipient.GetDynasty.GetBaseName] otrzymuje [dynasty_prestige_i] [EmptyScope.ScriptValue('liege_dismiss_temporary_regency_interaction_dynasty_prestige_value')|+0] [Concept( 'dynasty_prestige', 'renomy' )|E]"
- liege_dismiss_temporary_regency_interaction.tt.recipient_notification: "Osoba znana jako [actor.GetShortUINameNotMeNoTooltip] usunęła ze stanowiska regenta postać znaną jako [recipient.GetShortUINameNotMe]"
+ liege_dismiss_temporary_regency_interaction.tt.recipient_notification: "[actor.GetShortUINameNotMeNoTooltip] zwalnia postać znaną jako [recipient.GetUINameNotMeNoTooltip] z pozycji regenta"
  liege_dismiss_entrenched_regency_interaction: "Usuń zakorzenionego regenta"
  liege_dismiss_entrenched_regency_interaction_desc: "[recipient.GetShortUINameNotMeNoTooltip] może i podporządkował[Select_CString( recipient.IsFemale, 'a', '' )] sobie część organów państwa, jednakże nadszedł czas, aby się z nimi #EMP pożegnał[Select_CString( recipient.IsFemale, 'a', '' )]#!"
  liege_dismiss_entrenched_regency_interaction.tt.dynasty_receives_prestige: "[dynasty|E] [recipient.GetDynasty.GetBaseName] otrzymuje [dynasty_prestige_i] [EmptyScope.ScriptValue('liege_dismiss_entrenched_regency_interaction_dynasty_prestige_value')|+0] [Concept( 'dynasty_prestige', 'renomy' )|E]"
@@ -299,6 +300,8 @@
  diarchy_ending_gift_piety_desc: "[recipient.GetHerHis|U] wysiłkom poświęcone będzie kazanie"
  diarchy_ending_gift_cash: "[gold_i] Zaoferuj [gold|El]"
  diarchy_ending_gift_cash_desc: "Złoto zawsze można wydać w przeciwieństwie do suchego „dziękuję”"
+ diarchy_ending_gift_herd: "[herd_i] Zaoferuj [Concept('herd', 'gromadę')|E]"
+ diarchy_ending_gift_herd_desc: "Otrzyma nagrodę w postaci bogactwa stepów" #This offer shows we aren't horsing around
  liege_dismiss_entrenched_regency_interaction.tt.no_gift_necessary: "Osobie znanej jako [recipient.GetShortUINameNotMeNoTooltip] brakuje politycznego wpływu, by oprzeć się postaci, którą jest [actor.GetShortUINameNotMeNoTooltip], lub zażądać zapłaty"
  liege_dismiss_entrenched_regency_interaction.tt.stiff_them: "Osoba znana jako [actor.GetShortUINameNotMeNoTooltip], nie nagrodziła postaci, którą jest [actor.GetShortUINameNotMeNoTooltip], w zasłużony sposób"
  liege_dismiss_entrenched_regency_interaction.tt.force_ending: "[scales_of_power|E] przechyliły się zdecydowanie na moją niekorzyść"
@@ -356,7 +359,7 @@
  mulct_vizier_interaction_desc: "[recipient.GetFirstName] wydaje się żyć… podejrzanie dobrze…."
  mulct_vizier_interaction_minimal: "Niedbałe podatki"
  mulct_vizier_interaction_minor: "Osobiste luksusy za dziesięcinę"
- mulct_vizier_interaction_medium: "Zaległe płatności na pospolite ruszenie"
+ mulct_vizier_interaction_medium: "Zaległe płatności na kmieci"
  mulct_vizier_interaction_major: "Jednolite cła na wydatki"
  mulct_vizier_interaction_massive: "Agresywny audyt"
  mulct_vizier_interaction.extravagances_required.t1: "[recipient.GetFirstName] nie ma [Concept('modifiers', 'modyfikatorów')|E] [Concept('vizier_extravagance', 'znaczących kaprysów')|E]"

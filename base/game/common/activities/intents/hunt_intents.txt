@@ -7,7 +7,10 @@ slay_beast_intent = {
 		has_dlc_feature = advanced_activities
 		is_alive = yes
 		is_adult = yes
-		NOT = { scope:special_option ?= flag:hunt_type_falconry }
+		NOR = {
+			scope:special_option ?= flag:hunt_type_falconry
+			scope:special_option ?= flag:hunt_type_nerge
+		}
 	}
 
 	is_valid = {
@@ -59,5 +62,82 @@ slay_beast_intent = {
 
 	scripted_animation = {
 		animation = hunting_knife_start
+	}
+}
+
+successful_nerge_intent = {
+	icon = acquire_pelts_intent
+
+	is_shown = {
+		is_alive = yes
+		is_adult = yes
+		scope:special_option ?= flag:hunt_type_nerge
+	}
+
+	is_valid = {
+		can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = this }
+	}
+
+	ai_will_do = {
+		value = 50
+		if = {
+			limit = { has_trait = gluttonous }
+			add = 25
+		}
+		if = {
+			limit = { has_trait = diligent }
+			add = 25
+		}
+		if = {
+			limit = { has_trait = greedy }
+			add = 25
+		}
+		if = {
+			limit = { has_trait = content }
+			add = 25
+		}
+	}
+
+	scripted_animation = {
+		animation = hunting_knife_start
+	}
+}
+
+dreadful_nerge_intent = {
+	icon = overseer_intent
+
+	is_shown = {
+		has_dlc_feature = advanced_activities
+		is_alive = yes
+		is_adult = yes
+		scope:special_option ?= flag:hunt_type_nerge
+	}
+
+	is_valid = {
+		can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = this }
+	}
+
+	ai_will_do = {
+		value = 50
+		if = {
+			limit = { has_trait = callous }
+			add = 25
+		}
+		if = {
+			limit = { has_trait = ambitious }
+			add = 25
+		}
+		if = {
+			limit = { has_trait = sadistic }
+			add = 25
+		}
+		if = {
+			limit = { has_trait = vengeful }
+			add = 25
+		}
+	}
+
+	scripted_animation = {
+		animation = hunting_carcass_start
 	}
 }

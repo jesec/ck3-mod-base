@@ -53,27 +53,34 @@ call_ally.0100 = {
 				call_house_member_to_war_interaction_effect = yes
 			}
 			else = {
-				scope:actor = {
-					if = {
-						limit = {
-							scope:recipient.primary_title.tier = tier_county
+				if = {
+					limit = {
+						NOT = {
+							scope:actor = { has_relation_blood_brother = scope:recipient }
 						}
-						add_prestige = minor_prestige_loss
 					}
-					else_if = {
-						limit = {
-							scope:recipient.primary_title.tier = tier_duchy
+					scope:actor = {
+						if = {
+							limit = {
+								scope:recipient.primary_title.tier = tier_county
+							}
+							add_prestige = minor_prestige_loss
 						}
-						add_prestige = medium_prestige_loss
-					}
-					else_if = {
-						limit = {
-							scope:recipient.primary_title.tier = tier_kingdom
+						else_if = {
+							limit = {
+								scope:recipient.primary_title.tier = tier_duchy
+							}
+							add_prestige = medium_prestige_loss
 						}
-						add_prestige = major_prestige_loss
-					}
-					else = {
-						add_prestige = massive_prestige_loss
+						else_if = {
+							limit = {
+								scope:recipient.primary_title.tier = tier_kingdom
+							}
+							add_prestige = major_prestige_loss
+						}
+						else = {
+							add_prestige = massive_prestige_loss
+						}
 					}
 				}
 			}

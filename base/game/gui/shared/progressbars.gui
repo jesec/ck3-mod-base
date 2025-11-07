@@ -460,6 +460,39 @@
 		}
 	}
 
+	type hbox_complex_bar_equlibrium_marker = hbox {
+		allow_outside = yes
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_horizontal = "[ComplexBar.GetNextMarkerLeftWidth]"
+		}
+
+		hbox = {
+			allow_outside = yes
+			visible = "[ComplexBar.IsEquilibrium]"
+
+			widget = {
+				allow_outside = yes
+
+				block "equilibrium_marker" {
+					debug_square = {
+						size = { 20 20 }
+						parentanchor = center
+						widgetanchor = center
+					}
+				}
+			}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_horizontal = "[ComplexBar.GetNextMarkerRightWidth]"
+		}
+	}
+
 	type hbox_complex_bar_levels = hbox {
 		allow_outside = yes
 		datamodel = "[ComplexBar.GetItems]"
@@ -534,7 +567,7 @@
 					minimumsize = { 10 0 }
 					block "tax_progressbar_value"
 					{
-						value = "[FixedPointToProgressbarValue(VassalContract.GetTaxRatioForLiege)]"
+						value = "[FixedPointToProgressbarValue(SubjectContract.GetTaxRatioForLiege)]"
 					}
 				}
 
@@ -570,7 +603,7 @@
 						text_single = {
 							multiline = yes
 							maximumsize = { 250 -1 }
-							text = "[MyRealmWindowVassalItem.GetLevyTooltip]"
+							text = "[MyRealmWindowVassalItem.GetTaxTooltip]"
 						}
 					}
 				}
@@ -579,6 +612,7 @@
 		}
 
 		hbox = {
+			visible = "[GreaterThan_CFixedPoint( MyRealmWindowVassalItem.GetContract.GetLevyRatioForLiege, '(CFixedPoint)0' )]"
 			layoutpolicy_horizontal = expanding
 			spacing = 3
 
@@ -604,7 +638,7 @@
 					minimumsize = { 10 0 }
 					block "levy_progressbar_value"
 					{
-						value = "[FixedPointToProgressbarValue(VassalContract.GetLevyRatioForLiege)]"
+						value = "[FixedPointToProgressbarValue(SubjectContract.GetLevyRatioForLiege)]"
 					}
 				}
 
@@ -638,7 +672,77 @@
 						text_single = {
 							multiline = yes
 							maximumsize = { 250 -1 }
-							text = "[MyRealmWindowVassalItem.GetTaxTooltip]"
+							text = "[MyRealmWindowVassalItem.GetLevyTooltip]"
+						}
+					}
+				}
+			}
+			using = tooltip_ws
+		}
+
+		hbox = {
+			visible = "[GreaterThan_CFixedPoint( MyRealmWindowVassalItem.GetContract.GetHerdRatioForLiege, '(CFixedPoint)0' )]"
+			layoutpolicy_horizontal = expanding
+			spacing = 3
+
+			icon = {
+				size = { 25 25 }
+				texture = "gfx/interface/icons/icon_herd.dds"
+			}
+
+			widget = {
+				layoutpolicy_horizontal = expanding
+
+				background = {
+					using = Background_Area
+					margin = { 3 2 }
+				}
+
+				progressbar_standard_transparent = {
+					block "herd_progressbar_size"
+					{
+						size = "[MyRealmWindowVassalItem.GetRelativeSizeForHerd]"
+					}
+					minimumsize = { 10 0 }
+					block "herd_progressbar_value"
+					{
+						value = "[FixedPointToProgressbarValue(SubjectContract.GetHerdRatioForLiege)]"
+					}
+				}
+
+				flowcontainer = {
+					parentanchor = center
+					position = { 0 -2 }
+					spacing = 4
+
+					text_single = {
+						block "tax_value"
+						{
+							text = "[MyRealmWindowVassalItem.GetCachedHerd|=1]"
+						}
+					}
+				}
+			}
+
+			tooltipwidget = {
+				my_realm_window_contribution_tooltip = {
+					block "tax_breakdown"
+					{
+						datacontext = "[MyRealmWindowVassalItem.GetHerdBreakdown]"
+
+					}
+					blockoverride "herd_info_visible" { visible = no }
+					blockoverride "contribution_tooltip_header"
+					{
+						text = "MRW_TT_HERD_TO_ME"
+					}
+
+					blockoverride "herd_info"
+					{
+						text_single = {
+							multiline = yes
+							maximumsize = { 250 -1 }
+							text = "[MyRealmWindowVassalItem.GetHerdTooltip]"
 						}
 					}
 				}
@@ -659,6 +763,8 @@
 			name = "highlight_current_level"
 
 			block "visible_active" {}
+
+			block "highlight_addon" {}
 
 			parentanchor = center
 			size = { 65 65 }

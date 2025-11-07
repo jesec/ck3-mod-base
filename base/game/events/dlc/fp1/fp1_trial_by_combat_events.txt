@@ -174,7 +174,10 @@ scripted_effect fp1_tbc_non_lethal_results_effect = {
 		# TbC ends in mandated humiliation.
 		if = {
 			limit = { scope:tbc_humiliation = yes }
-			fp1_tbc_humiliation_effect = { TBC_LOSER = scope:recipient }
+			fp1_tbc_humiliation_effect = {
+				TBC_LOSER = scope:recipient
+				TBC_VICTOR = scope:actor
+			}
 		}
 	}
 }
@@ -226,7 +229,10 @@ fp1_tbc.0011 = {
 				limit = {
 					scope:actor = { is_alive = yes }
 				}
-				fp1_tbc_actor_defeated_effect = { TBC_LOSER = scope:actor }
+				fp1_tbc_actor_defeated_effect = {
+					TBC_LOSER = scope:actor
+					TBC_VICTOR = scope:recipient
+				}
 			}
 			# And send out the ending events.
 			scope:actor = {
@@ -454,7 +460,10 @@ fp1_tbc.0051 = {
 			limit = {
 				scope:actor = { is_alive = yes }
 			}
-			fp1_tbc_actor_defeated_effect = { TBC_LOSER = scope:actor }
+			fp1_tbc_actor_defeated_effect = {
+				TBC_LOSER = scope:actor
+				TBC_VICTOR = scope:recipient
+			}
 		}
 		show_as_tooltip = {
 			fp1_tbc_consume_imprisonment_reasons_effect = yes
@@ -862,7 +871,10 @@ fp1_tbc.0111 = {
 			limit = {
 				scope:actor = { is_alive = yes }
 			}
-			fp1_tbc_actor_defeated_effect = { TBC_LOSER = scope:actor }
+			fp1_tbc_actor_defeated_effect = {
+				TBC_LOSER = scope:actor
+				TBC_VICTOR = scope:recipient
+			}
 		}
 		# Sadly, we have to apply some effects here instead of in the initial output event in order to not break tooltips.
 		single_combat_have_slain_kin_effect = {

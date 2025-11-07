@@ -23,7 +23,7 @@
  diarchies.0000.diarch_mandate_fail.tt.acquire_character.self: "[Select_CString(diarch.IsFemale, 'Она пыталась', 'Он пытался' )] заручиться верностью [Concept( 'character', 'персонажа' )|E] для себя"
  diarchies.0000.diarch_mandate_fail.tt.acquire_troops.liege: "[Select_CString(diarch.IsFemale, 'Она пыталась', 'Он пытался' )] заполучить ваших солдат"
  diarchies.0000.diarch_mandate_fail.tt.acquire_troops.split: "[Select_CString(diarch.IsFemale, 'Она пыталась', 'Он пытался' )] заполучить солдат для вас обоих"
- diarchies.0000.diarch_mandate_fail.tt.affect_contract.liege: "[Select_CString(diarch.IsFemale, 'Она пыталась', 'Он пытался' )] изменить [Concept( 'feudal_contract', 'договор' )|E] [Concept( 'vassal', 'вассала' )|E] в ваших интересах"
+ diarchies.0000.diarch_mandate_fail.tt.affect_contract.liege: "[Select_CString(diarch.IsFemale, 'Она пыталась', 'Он пытался' )] изменить [Concept('vassal_contract', 'договор')|E] [Concept( 'vassal', 'вассала' )|E] в ваших интересах"
  diarchies.0000.diarch_mandate_fail.tt.harass_peasants.liege: "[Select_CString(diarch.IsFemale, 'Она пыталась', 'Он пытался' )] заполучить ресурсы у крестьян"
  diarchies.0000.diarch_mandate_fail.tt.boost_authority.liege: "[Select_CString(diarch.IsFemale, 'Она пыталась', 'Он пытался' )] укрепить вашу власть"
  diarchies.0000.diarch_mandate_fail.tt.affect_faction.liege: "[Select_CString(diarch.IsFemale, 'Она пыталась', 'Он пытался' )] распустить [Concept( 'faction', 'фракцию' )|E]"
@@ -433,7 +433,7 @@
  diarchy.8011.e: "Какое удачное совпадение."
  diarchy.8011.e.tt.keep_everything_but_legally: "Вы сохраните все завоеванные земли, и никто не сможет пожаловаться, что это нечестно"
  diarchy_8011.turn_over_titles.tt.titles_to_transfer_all: "[attacker.GetShortUIName|U] [Select_CString(attacker.IsLocalPlayer, 'получите', 'получит' )] [influence_i][attacker.MakeScope.ScriptValue('request_imperial_expedition_influence_from_counties_full_value')|P0] [Concept( 'influence', 'влияния' )|E] за переданные [Concept( 'counties', 'графства' )|E]"
- diarchy_8011.turn_over_titles.tt.vassals_to_transfer_all: "[attacker.GetShortUIName|U] [Select_CString(attacker.IsLocalPlayer, 'получите','получит')] [influence_i][attacker.MakeScope.ScriptValue('request_imperial_expedition_influence_from_vassals_full_value')|P0] [Concept('influence','влияния')|E] за переданных [Concept('vassals','вассалов')|E]"
+ diarchy_8011.turn_over_titles.tt.vassals_to_transfer_all: "[attacker.GetShortUIName|U] [Select_CString(attacker.IsLocalPlayer, 'получите', 'получит')] [influence_i][attacker.MakeScope.ScriptValue('request_imperial_expedition_influence_from_vassals_full_value')|P0] [Concept('influence', 'влияния')|E] за переданных [Concept('vassals', 'вассалов')|E]"
  diarchy_8011.turn_over_titles.tt.titles_to_transfer_prize: "[attacker.GetShortUIName|U] [Select_CString(attacker.IsLocalPlayer, 'получите', 'получит' )] [influence_i][attacker.MakeScope.ScriptValue('request_imperial_expedition_influence_from_vassals_prize_value')|P0] [Concept( 'influence', 'влияния' )|E] за переданные [Concept( 'counties', 'графства' )|E]"
  diarchy_8011.turn_over_titles.tt.vassals_to_transfer_prize: "[attacker.GetShortUIName|U] [Select_CString(attacker.IsLocalPlayer, 'получите', 'получит' )] [influence_i][attacker.MakeScope.ScriptValue('request_imperial_expedition_influence_from_counties_prize_value')|P0] [Concept( 'influence', 'влияния' )|E] за переданных [Concept( 'vassals', 'вассалов' )|E]"
  diarchy_8011.turn_over_titles.tt.interim_governors.county: "[attacker.GetShortUIName|U] [Select_CString(attacker.IsLocalPlayer, 'получите', 'получит' )] [influence_i][attacker.MakeScope.ScriptValue('request_imperial_expedition_influence_from_counties_reduced_value')|P0] [Concept( 'influence', 'влияния' )|E] за переданные [Concept( 'counties', 'графства' )|E]"
@@ -506,7 +506,7 @@
  diarchy.9001.desc.intro: "[usurper.Custom2('MyCharacterIntroduction', ROOT.Char)|U] врывается в мой тронный зал. За [Select_CString(usurper.IsFemale, 'ее', 'его' )] спиной толпа видных придворных с оружием в руках и уверенностью на лицах, присущей людям, которые знают, что хватит одной лишь угрозы. $diarch_attempt_to_overthrow_liege.desc.coup_start_boilerplate$"
  diarchy.9001.desc.proxy.none: "$diarchy.9011.desc.proxy.none$"
  diarchy.9001.desc.proxy.betrayed: "$diarchy.9011.desc.proxy.betrayed$"
- diarchy.9001.desc.proxy.loyal: "$diarchy.9011.desc.proxy.betrayed$"
+ diarchy.9001.desc.proxy.loyal: "$diarchy.9011.desc.proxy.loyal$"
  diarchy.9001.desc.outro: "\n\nНу вот и все. Измена вырвалась на свободу."
  diarchy.9001.a: "Думаешь, мои верные вассалы бросят меня ради #EMP тебя#!?"
  diarchy.9001.a.tt.success: "[usurper.GetFirstNameNoTooltip] со своими сторонниками сбиты с толку вашим красноречием"
@@ -674,7 +674,7 @@
  ##################################################
  ##Vizier Candidate Politicking Relation Reasons
  #We invert these relation reasons because they're always sent from the POV of the recipient, not the actor.
- vizierate_0001.reason.best_friend.saved_from_assassin: "[TARGET_CHARACTER.GetShortUIName|U] [Select_CString(TARGET_CHARACTER.IsLocalPlayer, 'спасли', Select_CString(CHARACTER.IsFemale, 'спасла', 'спас' ))] [Select_CString(CHARACTER.IsLocalPlayer, '', 'персонажа ' )][CHARACTER.GetNamePossessiveOrMy][Select_CString(CHARACTER.IsLocalPlayer, 'его персонажа', '' )] от покушения со стороны кровожадного соперника при дворе"
+ vizierate_0001.reason.best_friend.saved_from_assassin: "[TARGET_CHARACTER.GetShortUIName|U] [Select_CString(TARGET_CHARACTER.IsLocalPlayer, 'спасли', Select_CString(TARGET_CHARACTER.IsFemale, 'спасла', 'спас' ))] [Select_CString(CHARACTER.IsLocalPlayer, '', 'персонажа ' )][CHARACTER.GetNamePossessiveOrMy][Select_CString(CHARACTER.IsLocalPlayer, 'его персонажа', '' )] от покушения со стороны кровожадного соперника при дворе"
  vizierate_0001.reason.best_friend.saved_from_assassin_corresponding: "[CHARACTER.GetShortUIName|U] [Select_CString(CHARACTER.IsLocalPlayer, 'спасли', Select_CString(CHARACTER.IsFemale, 'спасла', 'спас' ))] [Select_CString(TARGET_CHARACTER.IsLocalPlayer, '', 'персонажа ' )][TARGET_CHARACTER.GetNamePossessiveOrMy][Select_CString(TARGET_CHARACTER.IsLocalPlayer, 'его персонажа', '' )] от покушения со стороны кровожадного соперника при дворе"
  vizierate_0001.reason.best_friend.natural_working_arrangement: "[TARGET_CHARACTER.GetShortUIName|U] и [CHARACTER.GetShortUIName] отлично уживаются друг с другом, что является основой крепкого союза и верной дружбы."
  vizierate_0001.reason.best_friend.mutually_assured_destruction: "Ни для кого не секрет, что [TARGET_CHARACTER.GetShortUIName] и [CHARACTER.GetShortUIName] знают нечто #EMP непостижимое#! друг о друге — примечательно, что общий риск лишь помог сближению."

@@ -982,6 +982,13 @@ new_culture_created_conversion_effect = {
 					}
 				}
 			}
+			if = {
+				limit = {
+					exists = domicile.domicile_culture
+					culture = domicile.domicile_culture
+				}
+				domicile = { set_domicile_culture = $CULTURE$ }
+			}
 			set_culture = $CULTURE$
 			hidden_effect = {
 				add_character_flag = converted_culture_this_lifetime
@@ -1016,6 +1023,13 @@ new_culture_created_conversion_effect = {
 						}
 					}
 				}
+				if = {
+					limit = {
+						exists = domicile.domicile_culture
+						culture = domicile.domicile_culture
+					}
+					domicile = { set_domicile_culture = $CULTURE$ }
+				}
 				set_culture = $CULTURE$
 				hidden_effect = {
 					add_character_flag = converted_culture_this_lifetime
@@ -1038,6 +1052,13 @@ new_culture_created_conversion_effect = {
 						}
 					}
 				}
+				if = {
+					limit = {
+						exists = domicile.domicile_culture
+						culture = domicile.domicile_culture
+					}
+					domicile = { set_domicile_culture = $CULTURE$ }
+				}
 				set_culture = $CULTURE$
 				hidden_effect = {
 					add_character_flag = converted_culture_this_lifetime
@@ -1059,6 +1080,13 @@ new_culture_created_conversion_effect = {
 								this = scope:family_check.culture
 							}
 						}
+					}
+					if = {
+						limit = {
+							exists = domicile.domicile_culture
+							culture = domicile.domicile_culture
+						}
+						domicile = { set_domicile_culture = $CULTURE$ }
 					}
 					set_culture = $CULTURE$
 					hidden_effect = {
@@ -1115,6 +1143,13 @@ new_culture_created_conversion_effect = {
 		}
 	}
 	$CONVERTEE$ = {
+		if = {
+			limit = {
+				exists = domicile.domicile_culture
+				culture = domicile.domicile_culture
+			}
+			domicile = { set_domicile_culture = $CULTURE$ }
+		}
 		set_culture = $CULTURE$
 		hidden_effect = {
 			add_character_flag = converted_culture_this_lifetime
@@ -1170,6 +1205,13 @@ new_culture_created_vassal_conversion_effect = {
 					}
 				}
 			}
+			if = {
+				limit = {
+					exists = domicile.domicile_culture
+					culture = domicile.domicile_culture
+				}
+				domicile = { set_domicile_culture = $CULTURE$ }
+			}
 			set_culture = $CULTURE$
 			hidden_effect = {
 				add_character_flag = converted_culture_this_lifetime
@@ -1204,6 +1246,13 @@ new_culture_created_vassal_conversion_effect = {
 						}
 					}
 				}
+				if = {
+					limit = {
+						exists = domicile.domicile_culture
+						culture = domicile.domicile_culture
+					}
+					domicile = { set_domicile_culture = $CULTURE$ }
+				}
 				set_culture = $CULTURE$
 				hidden_effect = {
 					add_character_flag = converted_culture_this_lifetime
@@ -1227,6 +1276,13 @@ new_culture_created_vassal_conversion_effect = {
 						}
 					}
 				}
+				if = {
+					limit = {
+						exists = domicile.domicile_culture
+						culture = domicile.domicile_culture
+					}
+					domicile = { set_domicile_culture = $CULTURE$ }
+				}
 				set_culture = $CULTURE$
 				hidden_effect = {
 					add_character_flag = converted_culture_this_lifetime
@@ -1249,6 +1305,13 @@ new_culture_created_vassal_conversion_effect = {
 							}
 						}
 					}
+					if = {
+						limit = {
+							exists = domicile.domicile_culture
+							culture = domicile.domicile_culture
+						}
+						domicile = { set_domicile_culture = $CULTURE$ }
+					}
 					set_culture = $CULTURE$
 					hidden_effect = {
 						add_character_flag = converted_culture_this_lifetime
@@ -1258,6 +1321,13 @@ new_culture_created_vassal_conversion_effect = {
 		}
 	}
 	$CONVERTEE$ = {
+		if = {
+			limit = {
+				exists = domicile.domicile_culture
+				culture = domicile.domicile_culture
+			}
+			domicile = { set_domicile_culture = $CULTURE$ }
+		}
 		set_culture = $CULTURE$
 		hidden_effect = {
 			add_character_flag = converted_culture_this_lifetime
@@ -1283,6 +1353,17 @@ new_culture_created_vassal_conversion_effect = {
 				recipient = this
 				execute_threshold = accept
 			}
+		}
+	}
+}
+
+inspired_by_tradition_effect = {
+	save_scope_as = tradition_scope
+	custom_tooltip = inspire_by_culture_tt
+	$CHARACTER$ = {
+		add_to_variable_list = {
+			name = culture_tradition_reduction
+			target = prev
 		}
 	}
 }

@@ -591,13 +591,18 @@ ep2_wedding.0203 = {
 		play_sound_effect = "event:/DLC/EP2/SFX/Events/Grand_Activities/Feasts/ep2_event_grand_murder_feast"
 		scope:activity.special_guest:spouse_1 = { save_scope_as = spouse_1 }
 		scope:activity.var:spouse_2_var = { save_scope_as = spouse_2 }
+		#save scopes for the celebration_spy_character template
+		location.faith = {
+			save_scope_as = guest_faith
+		}
+		location.culture = {
+			save_scope_as = guest_culture
+		}
 		hidden_effect = {
 			create_character = {
 				template = celebration_spy_character
 				dynasty = none
 				location = root.location
-				culture = root.location.culture
-				faith = root.location.faith
 				gender_female_chance = root_soldier_female_chance
 				save_scope_as = my_agent
 			}
@@ -1072,12 +1077,12 @@ ep2_wedding.0301 = {
 
 	option = { #What a tragedy!
 		name = ep2_wedding.0301.a
-		remove_character_modifier = wedding_fertility_delay_modifier
+		scope:spouse_1 = {
+			remove_character_modifier = wedding_fertility_delay_modifier
+		}
 	}
 	
 	after = {
-		scope:activity.special_guest:spouse_1 = { save_scope_as = spouse_1 }
-		scope:activity.var:spouse_2_var = { save_scope_as = spouse_2 }
 		if = {
 			limit = {
 				this = scope:host
@@ -1789,7 +1794,7 @@ ep2_wedding.0957 = {
 	desc = {
 		first_valid = {
 			triggered_desc = { 
-				trigger = { scope:avenging_family = { is_parent_of = scope:activity.var:spouse_2_var } }
+				trigger = { scope:avenging_family = { is_parent_of = scope:spouse_2 } }
 				desc = ep2_wedding.0957.desc.parent
 			}
 			desc = ep2_wedding.0957.desc
@@ -1807,17 +1812,19 @@ ep2_wedding.0957 = {
 					house_head_can_start_feud_against_trigger = { TARGET = root }
 				}
 			}
-			house_feud_start_effect = {
-				# Feuding House Head
-				ACTOR = scope:avenging_family
-				# Target House Head
-				TARGET = root
-				# Feud Reason
-				REASON = bloody_wedding
-				# House Member attacker if relevant, otherwise same as ACTOR 
-				ATTACKER = root
-				# House Member victim if relevant, otherwise same as TARGET 
-				VICTIM = scope:spouse_2
+			scope:avenging_family = {
+				house_feud_start_effect = {
+					# Feuding House Head
+					ACTOR = scope:avenging_family
+					# Target House Head
+					TARGET = root
+					# Feud Reason
+					REASON = bloody_wedding
+					# House Member attacker if relevant, otherwise same as ACTOR 
+					ATTACKER = scope:avenging_family
+					# House Member victim if relevant, otherwise same as TARGET 
+					VICTIM = scope:spouse_2
+				}
 			}
 		}
 		scope:spouse_2 = {

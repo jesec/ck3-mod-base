@@ -257,6 +257,7 @@
  court_position_desc_executioner: "범죄자와 반역자들에게 의로운 정의를 실현합니다."
  court_position_desc_food_taster: "맛있고 방해받을 일 없는 식사를 제공합니다."
  court_position_desc_court_jester: "폐하의 위엄에 걸맞은 음식으로 궁정을 즐겁게 합니다."
+ court_position_desc_court_astrologer: "하늘을 살피는 직무를 맡겨주십시오."
  #Interest
  hold_court_8090_interest_architect: "\n\n\"염려 마십시오. 훌륭한 건물을 건설하는 것이 제 열망입니다.\""
  hold_court_8090_interest_seneschal_administrator: "\n\n\"안심하십시오. 저보다 행정에 열성적인 사람은 세상에 없을 것입니다.\""
@@ -548,7 +549,7 @@
  hold_court.8190.a: "우리 귀족의 문화가 [aggressor_vassal.GetCulture.GetNameNoTooltip](이)가 되어야 하오!"
  hold_court.8190.a.tt_accept: "[other_vassal.GetTitledFirstName](이)가 동의함"
  hold_court.8190.a.tt_refuse: "[other_vassal.GetTitledFirstName](이)가 거절함"
- hold_court.8190.a.tt.vassals: "[THIS.Char.GetCulture.GetName](이)가 아닌 모든 봉신"
+ hold_court.8190.a.tt.vassals: "모든 비-[THIS.Char.GetCulture.GetName]계 봉신"
  hold_court.8190.a.tt.promote: "[THIS.Char.GetPrimaryTitle.GetBaseNameNoTier] 내 모든 [other_vassal.GetCulture.GetName] [Concept( 'counties', '영지' )|E](이)가 통합하기 어렴게 됨 ([SCOPE.ScriptValue('court_8190_county_value')|0X])"
  hold_court.8190.b: "다른 전통도 배울 점이 많다오."
  hold_court.8190.b.tt.vassals: "다른 모든 [other_vassal.GetCulture.GetName] 봉신"
@@ -575,7 +576,7 @@
  hold_court.8200.a: "그대 말이 맞소. [infidel_vassal.GetTitledFirstNameNoTooltip](은)는 개종해야 하오!"
  hold_court.8200.a.tt_accept: "[infidel_vassal.GetTitledFirstName](이)가 개종에 동의함"
  hold_court.8200.a.tt_refuse: "[infidel_vassal.GetTitledFirstName](이)가 개종을 거부함"
- hold_court.8200.a.tt.vassals: "[THIS.Char.GetFaith.GetAdjective](이)가 아닌 모든 봉신"
+ hold_court.8200.a.tt.vassals: "모든 비-[THIS.Char.GetFaith.GetAdjective]계 봉신"
  hold_court.8200.a.tt.convert: "[THIS.Char.GetPrimaryTitle.GetBaseNameNoTier] 내 모든 [infidel_vassal.GetFaith.GetAdjective] [Concept( 'counties', '영지' )|E](이)가 개종하기 어렴게 됨 ([SCOPE.ScriptValue('court_8200_county_value')|0X])"
  hold_court.8200.c: "[infidel_vassal.GetFaith.HighGodName] 맙소사! 이제야 진실을 알겠구나!"
  hold_court.8200.c.tt.vassals: "모든 [infidel_vassal.GetFaith.GetAdjective] 봉신"
@@ -698,7 +699,7 @@
  hold_court.8330.c.success: "당신이 두 귀족을 설득함"
  hold_court.8330.c.failure: "둘의 지지자들이 불만을 표함"
  hold_court.8330.d: "그런 자만심은 동료 봉신들에 대한 모욕일 뿐이다."
- every_other_non_minor_vassal_actor: "다른 모든 비 $barons_and_minor_landholders_vassal$ ([actor.MakeScope.ScriptValue('hold_court_8330_other_vassals_count')|V0])"
+ every_other_non_minor_vassal_actor: "다른 모든 비-$barons_and_minor_landholders_vassal$ ([actor.MakeScope.ScriptValue('hold_court_8330_other_vassals_count')|V0])"
  hold_court.8340.t: "구직 활동"
  hold_court.8340.desc: "품위가 드러나는 한 [candidate.Custom('GetYoungMiddleAgedOld')] [candidate.GetWomanMan](이)가 내게 다가와서 몸을 숙였다. \"만나 뵙게 되어 영광입니다. 저는 영주님의 충성스러운 종 [candidate.GetFirstName]입니다. 궁정에서 일할 곳을 찾으러 이렇게 오게 되었습니다.\"\n\n"
  hold_court.8340.diplomacy: "\"저는 수많은 궁정을 겪었습니다. 고향인 [birthplace.GetNameNoTierNoTooltip]의 지방 영주들과 많은 방문객을 응접했지요."
@@ -737,6 +738,7 @@
  court_position_keeper_of_swans: "[GetCourtPositionType('keeper_of_swans_court_position').GetName()]"
  court_position_travel_leader: "[GetCourtPositionType('travel_leader_court_position').GetName()]"
  court_position_akolouthos: "[GetCourtPositionType('akolouthos_court_position').GetName()]"
+ court_position_court_astrologer: "[GetCourtPositionType('court_astrologer_court_position').GetName()]"
  court_position_charioteer: "[GetCourtPositionType('charioteer_court_position').GetName()]"
  court_position_bookmaker: "[GetCourtPositionType('bookmaker_court_position').GetName()]"
  court_position_executioner: "[GetCourtPositionType('executioner_court_position').GetName()]"
@@ -974,3 +976,35 @@
  master_of_spoils_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'master_of_spoils_camp_officer' ) )]임"
  master_of_spoils_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'master_of_spoils_camp_officer' ) )]임 #weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'master_of_spoils_camp_officer' ) )])#!"
  master_of_spoils_salary_tooltip: "[GetCourtPositionType( 'master_of_spoils_camp_officer' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"
+ #court_astrologer
+ court_astrologer_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'court_astrologer_court_position' ) )]임"
+ court_astrologer_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'court_astrologer_court_position' ) )]임#weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'court_astrologer_court_position' ) )])#!"
+ court_astrologer_salary_tooltip: "[GetCourtPositionType( 'court_astrologer_court_position' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"
+ #Boyan
+ boyan_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'boyan_court_position' ) )]임"
+ boyan_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'boyan_court_position' ) )]임 #weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'boyan_court_position' ) )])#!"
+ boyan_salary_tooltip: "[GetCourtPositionType( 'boyan_court_position' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"
+ #Siege Engineer
+ siege_engineer_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'siege_engineer_court_position' ) )]임"
+ siege_engineer_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'siege_engineer_court_position' ) )]임 #weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'siege_engineer_court_position' ) )])#!"
+ siege_engineer_salary_tooltip: "[GetCourtPositionType( 'siege_engineer_court_position' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"
+ #Yurtchi
+ yurtchi_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'yurtchi_court_position' ) )]임"
+ yurtchi_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'yurtchi_court_position' ) )]임 #weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'yurtchi_court_position' ) )])#!"
+ yurtchi_salary_tooltip: "[GetCourtPositionType( 'yurtchi_court_position' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"
+ #Cherbi
+ cherbi_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'cherbi_court_position' ) )]임"
+ cherbi_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'cherbi_court_position' ) )]임 #weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'cherbi_court_position' ) )])#!"
+ cherbi_salary_tooltip: "[GetCourtPositionType( 'cherbi_court_position' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"
+ #Yeke Jarquchi
+ yeke_jarquchi_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'yeke_jarquchi_court_position' ) )]임"
+ yeke_jarquchi_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'yeke_jarquchi_court_position' ) )]임 #weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'yeke_jarquchi_court_position' ) )])#!"
+ yeke_jarquchi_salary_tooltip: "[GetCourtPositionType( 'yeke_jarquchi_court_position' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"
+ #Foreign Emissary
+ foreign_emissary_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'foreign_emissary_court_position' ) )]임"
+ foreign_emissary_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'foreign_emissary_court_position' ) )]임 #weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'foreign_emissary_court_position' ) )])#!"
+ foreign_emissary_salary_tooltip: "[GetCourtPositionType( 'foreign_emissary_court_position' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"
+ #Keeper of the Horses
+ keeper_of_the_horses_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'keeper_of_the_horses_court_position' ) )]임"
+ keeper_of_the_horses_old_holder_aptitude_tooltip: "[candidate.GetHerHisMy|U] [aptitude|E]이 [candidate.GetCourtPositionAptitude( GetCourtPositionType( 'keeper_of_the_horses_court_position' ) )]임 #weak ([old_holder.GetFirstName] [old_holder.GetCourtPositionAptitude( GetCourtPositionType( 'keeper_of_the_horses_court_position' ) )])#!"
+ keeper_of_the_horses_salary_tooltip: "[GetCourtPositionType( 'keeper_of_the_horses_court_position' ).GetName()](은)는 매달 [gold_i][SCOPE.ScriptValue('minor_court_position_salary')|2]의 봉급을 받음"

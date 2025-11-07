@@ -45,16 +45,18 @@
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
 
+			spacing = 10
+
 			text_multi = {
 				name = "instruction_text"
 
 				text = "TRAVEL_EDIT_ROUTE_INSTRUCTION"
-				default_format = "#I"
-
+				align = center|nobaseline
 				autoresize = yes
-				max_width = 400
+				default_format = "#I"
+				max_width = 380
 
-				margin = {8 8}
+				margin = { 15 10 }
 
 				background = {
 					using = Background_Area_Dark
@@ -128,7 +130,8 @@
 
 			vbox = {
 				layoutpolicy_horizontal = expanding
-				margin = {16 16}
+				margin = { 15 0 }
+				margin_bottom = 15
 
 				spacing = 10
 
@@ -137,11 +140,11 @@
 					visible = "[Not( TravelRouteEditWindow.IsRouteValid )]"
 
 					text = "[TravelRouteEditWindow.GetRouteValidDesc]"
-
+					align = center|nobaseline
 					autoresize = yes
-					max_width = 400
+					max_width = 380
 
-					margin = {8 8}
+					margin = { 10 10 }
 
 					background = {
 						using = Background_Area_Dark
@@ -211,9 +214,8 @@ types TravelRouteEditTypes
 		hbox = {
 			using = travel_stop_bg
 
-			margin = {8 8}
-			margin_right = 4
-			spacing = 4
+			margin = { 10 10 }
+			spacing = 5
 
 			coa_title_tiny = {
 				datacontext = "[Province.GetCoATitle]"
@@ -268,9 +270,9 @@ types TravelRouteEditTypes
 		hbox = {
 			using = travel_stop_bg
 
-			margin = {8 8}
-			margin_right = 4
-			spacing = 4
+			margin = { 10 10 }
+			margin_right = 10
+			spacing = 5
 
 			coa_title_tiny = {
 				datacontext = "[Province.GetCoATitle]"
@@ -333,8 +335,8 @@ types TravelRouteEditTypes
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					
-					margin = {4 4}
-					spacing = 4
+					margin = { 10 10 }
+					spacing = 5
 
 					coa_title_tiny = {
 						visible = "[Province.GetCoATitle.IsValid]"
@@ -345,6 +347,7 @@ types TravelRouteEditTypes
 					widget = {
 						visible = "[Not( Province.GetCoATitle.IsValid )]"
 						size = { 42 42 }
+						
 						icon = {
 							parentanchor = center
 							texture = "[Province.GetTerrain.GetIcon]"
@@ -356,6 +359,7 @@ types TravelRouteEditTypes
 					text_single = {
 						text = "TRAVEL_EDIT_ROUTE_DETOUR_LABEL"
 						align = nobaseline
+						max_width = 220
 					}
 
 					button_cancel = {

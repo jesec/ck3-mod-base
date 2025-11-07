@@ -1,4 +1,4 @@
-#barony, county, duchy, kingdom
+﻿#barony, county, duchy, kingdom
 
 ## Liege ##
 
@@ -6,7 +6,7 @@ line = {
 	name = "line_liege"
 	
 	curvature = 0.6									# 0.0 = flat, 1.0 = perfect semi-circle
-	max_height = 20
+	max_height = 19
 	fade_in = 0.75
 	fade_out = 0.6
 	priority = 3
@@ -31,7 +31,7 @@ line = {
 
 			{ zoom_step = 6 value = 0.125 	}
 			{ zoom_step = 11 value = 1.0	}
-			{ zoom_step = 20 value = 0		}
+			{ zoom_step = 19 value = 0		}
 		}
 
 		mask_uv_scale  = 		{ 0.03 1.0 	}
@@ -58,7 +58,7 @@ line = {
 
 			{ zoom_step = 6 value = 0.240 	}
 			{ zoom_step = 11 value = 2 		}
-			{ zoom_step = 20 value = 0		}
+			{ zoom_step = 19 value = 0		}
 		}
 
 		mask_uv_scale  = 		{ 0.03 1.0 	}
@@ -66,6 +66,140 @@ line = {
 		animation_speed = 		{ 0.35 0.0 }		# speed of the UV translation
 
 		}
+}
+
+## Suzerain ##
+
+line = {
+	name = "line_suzerain"
+	
+	curvature = 0.6									# 0.0 = flat, 1.0 = perfect semi-circle
+	max_height = 19
+	fade_in = 0.75
+	fade_out = 0.6
+	priority = 3
+	progress_animation_time = 0.1
+	progress_animation_looping = no
+
+	#Fill
+	layer = {
+		diffuse = "gfx/lines/line_diffuse_07.dds"
+		mask = "gfx/lines/line_mask_08.dds"
+	
+		shader = "standard_alpha_blend_depth"
+		priority = 0
+		tintcolor = hsv{ 0.04 0.9 0.9		} 		# colour to overlay on texture
+
+		width = { 
+			{ zoom_step = 6 value = 2.4		}
+			{ zoom_step = 11 value = 4 		}
+		}
+		
+		opacity = { 
+
+			{ zoom_step = 6 value = 0.125 	}
+			{ zoom_step = 9 value = 0.9	}
+			{ zoom_step = 19 value = 0		}
+		}
+
+		mask_uv_scale  = 		{ 0.03 1.0 	}
+		uv_scale = 				{ 0.025 1.0 }
+		animation_speed = 		{ 0.15 0.0 }		# speed of the UV translation
+	}
+		
+	#Arrow
+	layer = {
+		diffuse = "gfx/lines/line_diffuse_02.dds"
+		mask = "gfx/lines/line_mask_09.dds"
+
+		shader = "standard_alpha_blend_depth"
+		priority = 1
+		
+		tintcolor = hsv{ 0.04 0.9 0.9		} 		# colour to overlay on texture
+		width = { 
+			{ zoom_step = 6 value = 1.7		}
+			{ zoom_step = 11 value = 3		}
+		}
+		
+		opacity = { 
+
+			{ zoom_step = 6 value = 0.7 	}
+			{ zoom_step = 11 value = 0.5	}
+			{ zoom_step = 19 value = 0		}
+		}
+
+		mask_uv_scale  = 		{ 0.03 1.0 	}
+		uv_scale = 				{ 0.05 1.0	}
+		animation_speed = 		{ 0.35 0.0 }		# speed of the UV translation
+	}
+}
+
+## Tributary ##
+
+line = {
+	name = "line_tributary"
+	
+	curvature = 0.25								# 0.0 = flat, 1.0 = perfect semi-circle
+	max_height = 10
+	fade_in = 1.25
+	fade_out = 0.6
+	priority = 2
+	progress_animation_time = 0.1
+	progress_animation_looping = no
+
+	#Fill
+	layer = {
+		diffuse = "gfx/lines/line_diffuse_07.dds"
+		mask = "gfx/lines/line_mask_08.dds"
+
+	
+		shader = "standard_alpha_blend_depth"
+		priority = 0
+		
+		tintcolor = hsv{ 0.04 0.5 0.5		} 		# colour to overlay on texture
+		width = { 
+			{ zoom_step = 6 value = 0.9		}
+			{ zoom_step = 11 value = 3.2 	}
+		}
+		
+		opacity = { 
+			{ zoom_step = 4 value = 0.24 	}
+			{ zoom_step = 6 value = 0.25 	}
+			{ zoom_step = 9 value = 0.25	}
+			{ zoom_step = 19 value = 0		}
+		}
+
+		mask_uv_scale  = 	{ 0.03 1.0 		}
+		uv_scale = 			{ 0.025 1.0 	}
+		animation_speed = 	{ 0.1 0.0 		}		# speed of the UV translation
+	}
+	
+		
+	#Arrow
+	layer = {
+		diffuse = "gfx/lines/line_diffuse_02.dds"
+		mask = "gfx/lines/line_mask_09.dds"
+	
+		shader = "standard_alpha_blend_depth"
+		priority = 1
+
+		tintcolor = hsv{  0.04 0.2 0.2		}		# colour to overlay on texture
+		width = { 
+			{ zoom_step = 6 value = 0.7		}
+			{ zoom_step = 11 value = 1.9 	}
+		}
+		
+		opacity = {
+			{ zoom_step = 4 value = 0.25 	}			
+			{ zoom_step = 6 value = 0.25 	}
+			{ zoom_step = 9 value = 0.25	}
+			{ zoom_step = 11 value = 0		}
+		}
+		
+		mask_uv_scale  = 	{ 0.03 1.0 		}
+		uv_scale = 			{ 0.15 1.0 		}
+		animation_speed = 	{ 0.5 0.0 		}		# speed of the UV translation
+	}
 }
 
 ## Vassal ##
@@ -99,8 +233,8 @@ line = {
 		opacity = { 
 			{ zoom_step = 4 value = 0.24 	}
 			{ zoom_step = 6 value = 0.25 	}
-#			{ zoom_step = 11 value = 1		}
-			{ zoom_step = 9 value = 0		}
+			{ zoom_step = 11 value = 0.25	}
+			{ zoom_step = 19 value = 0		}
 		}
 
 		mask_uv_scale  = 	{ 0.03 1.0 		}
@@ -118,7 +252,7 @@ line = {
 		shader = "standard_alpha_blend_depth"
 		priority = 1
 
-		tintcolor = hsv{ 0.07 0.35 0.25		}		# colour to overlay on texture
+		tintcolor = hsv{ 0.07 0.35 0.25   	}		# colour to overlay on texture
 		width = { 
 			{ zoom_step = 6 value = 0.7		}
 			{ zoom_step = 11 value = 1.9 	}
@@ -159,7 +293,7 @@ line = {
 		shader = "standard_alpha_blend_depth"
 		priority = 0
 		
-		tintcolor = hsv{ 0.05 0.2 0.2		}		# colour to overlay on texture
+		tintcolor = hsv{ 0.15 0.3 0.3		}		# colour to overlay on texture 
 		width = { 
 			{ zoom_step = 6 value = 0.9		}
 			{ zoom_step = 11 value = 3.2 	}
@@ -168,8 +302,8 @@ line = {
 		opacity = { 
 			{ zoom_step = 4 value = 0.24 	}
 			{ zoom_step = 6 value = 0.25 	}
-#			{ zoom_step = 11 value = 1		}
-			{ zoom_step = 9 value = 0		}
+			{ zoom_step = 11 value = 0.25	}
+			{ zoom_step = 19 value = 0		}
 		}
 
 		mask_uv_scale  = 	{ 0.03 1.0 		}
@@ -187,7 +321,7 @@ line = {
 		shader = "standard_alpha_blend_depth"
 		priority = 1
 
-		tintcolor = hsv{ 0.07 0.35 0.25		}		# colour to overlay on texture
+		tintcolor = hsv{ 0.15 0.3 0.3		}		# colour to overlay on texture
 		width = { 
 			{ zoom_step = 6 value = 0.7		}
 			{ zoom_step = 11 value = 1.9 	}

@@ -6,7 +6,7 @@ window = {
 	name = "decisiondetail_view"
 	parentanchor = top|right
 	position = "[DecisionDetailView.GetDynamicPosition]" # can be changed by DECISION_DETAILS_VIEW_POSITION_DEFAULT and DECISION_DETAILS_VIEW_POSITION_COURT in 00_graphics.txt
-	size = { 630 935 }
+	size = { 630 940 }
 	layer = middle
 
 	using = Window_Movable
@@ -60,7 +60,10 @@ window = {
 			}
 		}
 
-		decision_detail_view_content = {}
+		decision_detail_view_content = {
+			margin_top = -10
+		}
+
 		decision_detail_buttons = {}
 	}
 }
@@ -191,17 +194,17 @@ types DecisionDetailViewTypes
 		layoutpolicy_horizontal = expanding
 		layoutpolicy_vertical = expanding
 
-		vbox = {
-			layoutpolicy_horizontal = expanding
-			minimumsize = { 550 220 }
+		widget = {
+			size = { 550 220 }
 			visible = "[Not(DecisionDetailView.IsOpenedFromRoyalCourt) ]"
-			
-			background = {
+
+			proportional_icon = {
 				name = "illustrations"
+				size = { 100% 100% }
 				texture = "[DecisionDetailView.GetDecisionPicture]"
-				margin_top = 10
 				alpha = 0.7
 				using = Mask_Rough_Edges
+				
 			}
 		}
 

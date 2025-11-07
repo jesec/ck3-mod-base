@@ -88,7 +88,7 @@ window = {
 			position = { 0 8 }
 
 			background = {
-				texture = "gfx/interface/window_event/letter_event_edge_top.dds"
+				texture = "gfx/interface/skinned/window_letter/letter_event_edge_top.dds"
 				spriteType = Corneredstretched
 				spriteborder = { 35 5 }
 			}
@@ -101,7 +101,7 @@ window = {
 			position = { 0 -8 }
 
 			background = {
-				texture = "gfx/interface/window_event/letter_event_edge_bottom.dds"
+				texture = "gfx/interface/skinned/window_letter/letter_event_edge_bottom.dds"
 				spriteType = Corneredstretched
 				spriteborder = { 35 5 }
 			}
@@ -150,14 +150,27 @@ window = {
 			using = Event_Window_Debug_Info
 		}
 
-		widget = {
-			size = { 322 544 }
-			position = { 10 15 }
-			scale = 0.8
+		icon = {
+			size = { 256 432 }
+			position = { 0 24 }
 			alpha = 0.8
 
+			texture = "gfx/interface/window_legend_chronicle/marginalia_portrait_gold_bg.dds"
+
+			modify_texture = {
+				texture = "gfx/interface/component_masks/mask_portrait.dds"
+				blend_mode = alphamultiply
+			}
+		}
+
+		widget = {
+			size = { 328 548 }
+			position = { 10 15 }
+			alpha = 0.8
+			scale = 0.8
+
 			background = {
-				texture = "gfx/interface/window_event/letter_event_pattern_big.dds"
+				texture = "gfx/interface/skinned/window_letter/letter_event_pattern_big.dds"
 			}
 		}
 
@@ -167,9 +180,9 @@ window = {
 			position = { -10 -20 }
 			scale = 0.6
 			alpha = 0.8
-
+			
 			background = {
-				texture = "gfx/interface/window_event/letter_event_pattern_small.dds"
+				texture = "gfx/interface/skinned/window_letter/letter_event_pattern_small.dds"
 			}
 		}
 
@@ -181,7 +194,7 @@ window = {
 			alpha = 0.8
 
 			background = {
-				texture = "gfx/interface/window_event/letter_event_pattern_small.dds"
+				texture = "gfx/interface/skinned/window_letter/letter_event_pattern_small.dds"
 				mirror = vertical
 			}
 		}
@@ -194,7 +207,7 @@ window = {
 			alpha = 0.8
 
 			background = {
-				texture = "gfx/interface/window_event/letter_event_pattern_small.dds"
+				texture = "gfx/interface/skinned/window_letter/letter_event_pattern_small.dds"
 				mirror = horizontal
 			}
 		}
@@ -254,6 +267,7 @@ window = {
 						maximumsize = { 430 -1 }
 						autoresize = yes
 						margin_top = 10
+						margin_right = 20
 						text = "[EventWindowData.GetOpening]"
 						default_format = "#light_background"
 						using = Font_Type_Flavor
@@ -413,7 +427,7 @@ window = {
 								using = Text_Light_Background_Overrides
 							}
 						}
-						
+
 						coa_character_sigil = {
 							datacontext = "[EventWindowData.GetPortraitCharacter('sender')]"
 							visible = "[EventWindowData.ShouldShowPortraitInfo('sender')]"
@@ -505,7 +519,7 @@ window = {
 
 												visible = "[ReasonItem.IsSkill]"
 												alwaystransparent = yes
-												
+
 												texture = "gfx/interface/icons/icon_skills.dds"
 												size = { 34 34 }
 												framesize = { 60 60 }

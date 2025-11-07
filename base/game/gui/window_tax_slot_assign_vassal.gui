@@ -9,10 +9,12 @@ window = {
 	using = Window_Decoration
 
 	vbox = {
-		using = Window_Margins
+		datacontext = "[TaxSlotAssignVassalWindow.GetVassal]"
 		layoutpolicy_vertical = expanding
-		spacing = 10
+
 		margin_bottom = 30
+
+		using = Window_Margins
 
 		header_pattern = {
 			layoutpolicy_horizontal = expanding
@@ -28,19 +30,10 @@ window = {
 			}
 		}
 
-		datacontext = "[TaxSlotAssignVassalWindow.GetVassal]"
-
 		vbox  = {
 			layoutpolicy_horizontal = expanding
-			margin = { 10 0}
+			margin = { 10 10 }
 			spacing = 10
-
-			text_single = {
-				layoutpolicy_horizontal = expanding
-				margin_left = 10
-				default_format = "#S"
-				text = "TAX_SLOT_ASSIGN_VASSAL_ASSIGNING_DESC"
-			}
 
 			hbox = {
 				layoutpolicy_horizontal = expanding
@@ -51,21 +44,29 @@ window = {
 				vbox = {
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-					margin_top = 10
-					
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "TAX_SLOT_ASSIGN_VASSAL_ASSIGNING_DESC"
+						default_format = "#S"
+						max_width = 500
+					}
+
+					expand = {}
+
 					text_multi = {
 						layoutpolicy_horizontal = expanding
-						max_width = 500
+
 						text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_DESC"
 						default_format = "#instruction"
+						max_width = 500
 					}
-					expand = {}
 				}
 			}
 
 			hbox = {
 				layoutpolicy_horizontal = expanding
-				margin = { 20 10}
+				margin = { 15 10 }
 
 				background = {
 					using = Background_Area_Dark
@@ -74,23 +75,26 @@ window = {
 
 				hbox = {
 					name = "assigned vassal"
-					layoutpolicy_horizontal = expanding
-
-					visible = "[Character.IsAssignedAsTaxpayer]"
-
 					datacontext = "[TaxSlotAssignVassalWindow.GetAssignedTaxSlot]"
 					datacontext = "[TaxSlotItem.GetTaxSlot]"
+					visible = "[Character.IsAssignedAsTaxpayer]"
+					layoutpolicy_horizontal = expanding
 
 					vbox = {
+						datacontext = "[TaxSlot.GetTaxCollector]"
 						layoutpolicy_horizontal = expanding
 						spacing = 5
 
-						datacontext = "[TaxSlot.GetTaxCollector]"
-
-						text_single = {
+						hbox = {
 							layoutpolicy_horizontal = expanding
-							max_width = 480
-							text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_CURRENT_TAX_SLOT"
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_CURRENT_TAX_SLOT"
+								max_width = 480
+							}
+
+							expand = {}
 						}
 
 						hbox = {
@@ -100,6 +104,7 @@ window = {
 
 							text_single = {
 								text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_TAX_COLLECTOR"
+								max_width = 270
 							}
 
 							divider_light = {
@@ -108,6 +113,7 @@ window = {
 
 							text_single = {
 								text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_TAX_COLLECTOR_APTITUDE"
+								max_width = 200
 							}
 
 							expand = {}
@@ -115,7 +121,7 @@ window = {
 
 						hbox = {
 							layoutpolicy_horizontal = expanding
-							spacing = 30
+							spacing = 20
 
 							text_single = {
 								text = "TAX_COLLECTOR_TAXED_VASSALS_COUNT"
@@ -181,7 +187,7 @@ window = {
 								}
 							}
 						}
-						
+
 						onclick = "[ToggleGameViewData( 'tax_slot_obligations', TaxSlot.GetID )]"
 					}
 				}
@@ -211,6 +217,7 @@ window = {
 					spacing = 10
 
 					datamodel = "[TaxSlotAssignVassalWindow.GetTaxSlots]"
+
 					item = {
 						tax_slot_assign_vassal_item = {}
 					}
@@ -224,23 +231,28 @@ window = {
 			}
 		}
 
-		widget = {
-			size = { 600 150 }
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			margin = { 10 0 }
+			margin_top = 10
 
-			background = {
-				using = Background_Area_Dark
-				alpha = 0.7
-			}
-
-			vbox = {
+			hbox = {
 				visible = "[Not( TaxSlotAssignVassalWindow.HasSelectedTaxSlot )]"
 				layoutpolicy_horizontal = expanding
+				margin = { 10 63 }
 				
 				text_multi = {
 					layoutpolicy_horizontal = expanding
 					text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_NO_SELECTION_DESC"
-					max_width = 580
+					align = center|nobaseline
+					autoresize = yes
+					max_width = 560
 					default_format = "#instruction"
+				}
+
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.7
 				}
 			}
 
@@ -249,34 +261,31 @@ window = {
 				layoutpolicy_horizontal = expanding
 				spacing = 5
 
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.7
+				}
+
 				text_label_center = {
 					layoutpolicy_horizontal = expanding
 					text = "TAX_SLOT_VASSAL_WINDOW_EFFECT_HEADER"
 				}
 
-				text_single = {
-					max_width = 580
+				text_multi = {
 					layoutpolicy_horizontal = expanding
 					text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_EFFECT_DESC"
 					align = center
+					autoresize = yes
+					max_width = 560
+					margin_bottom = 10
 				}
 
 				hbox = {
 					name = "vassal_contributions"
-
-					margin = { 10 5 }
-					margin_top = 3
+					margin = { 10 0 }
 					spacing = 5
 
-					background = {
-						using = Background_Area_Dark
-						alpha = 0.4
-					}
-
-					expand = {}
-
 					text_single = {
-						margin_right = 20
 						text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_EFFECT_VASSAL_NAME"
 					}
 
@@ -286,7 +295,6 @@ window = {
 					}
 
 					text_single = {
-						margin_right = 10
 						datacontext = "[TaxSlotAssignVassalWindow.GetVassalTaxBreakdown]"
 						datacontext = "[TaxSlotAssignVassalWindow.GetVassal]"
 						text = "[ValueBreakdown.GetValue]"
@@ -335,26 +343,14 @@ window = {
 						}
 						using = tooltip_ws
 					}
-
-					expand = {}
 				}
 
 				hbox = {
 					name = "total_contributions"
-
 					margin = { 10 5 }
-					margin_top = 3
 					spacing = 5
 
-					background = {
-						using = Background_Area_Dark
-						alpha = 0.4
-					}
-
-					expand = {}
-
 					text_single = {
-						margin_right = 20
 						text = "TAX_SLOT_OVERVIEW_WINDOW_TOTAL_CONTRIBUTION"
 					}
 
@@ -364,7 +360,6 @@ window = {
 					}
 
 					text_single = {
-						margin_right = 10
 						datacontext = "[TaxSlotAssignVassalWindow.GetTotalTaxBreakdown]"
 						datacontext = "[TaxSlotAssignVassalWindow.GetLiege]"
 
@@ -419,19 +414,21 @@ window = {
 						}
 						using = tooltip_ws
 					}
-
-					expand = {}
 				}
 
 				expand = {}
 			}
 		}
 
-		button_standard = {
-			enabled = "[TaxSlotAssignVassalWindow.HasSelectedTaxSlot]"
-			onclick = "[TaxSlotAssignVassalWindow.AssignVassal]"
-			onclick = "[TaxSlotAssignVassalWindow.Close]"
-			raw_text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_ASSIGN_BUTTON"
+		hbox = {
+			margin_top = 10
+
+			button_standard = {
+				enabled = "[TaxSlotAssignVassalWindow.HasSelectedTaxSlot]"
+				onclick = "[TaxSlotAssignVassalWindow.AssignVassal]"
+				onclick = "[TaxSlotAssignVassalWindow.Close]"
+				raw_text = "TAX_SLOT_ASSIGN_VASSAL_VIEW_ASSIGN_BUTTON"
+			}
 		}
 	}
 }
@@ -533,11 +530,6 @@ types TaxSlotAssignVassalWindowTypes
 		datacontext = "[TaxSlotItem.GetTaxCollector]"
 		datacontext = "[TaxSlot.GetTaxSlotType]"
 
-		background = {
-			using = Background_Area_Dark
-			alpha = 0.7
-		}
-
 		portrait_head_small = {
 			enabled = "[TaxSlotItem.HasTaxCollector]"
 
@@ -547,13 +539,8 @@ types TaxSlotAssignVassalWindowTypes
 			}
 		}
 
-		spacer = {
-			size = { 5 0 }
-		}
-
 		button_standard_clean = {
-			layoutpolicy_horizontal = expanding
-			size = { 0 95 }
+			size = { 490 85 }
 
 			enabled = "[TaxSlotAssignVassalWindow.CanSelectTaxSlot( TaxSlot.Self )]"
 			onclick = "[TaxSlotAssignVassalWindow.ToggleSelectedTaxSlot( TaxSlotItem.Self )]"
@@ -571,20 +558,24 @@ types TaxSlotAssignVassalWindowTypes
 					layoutpolicy_horizontal = expanding
 
 					text_single = {
-						max_width = 240
 						text = "[TaxSlot.GetName]"
+						align = nobaseline
+						max_width = 300
 					}
 
 					expand = {}
 
-					tax_collector_aptitude_text = {}
+					tax_collector_aptitude_text = {
+						align = nobaseline
+						max_width = 180
+					}
 				}
 
 				expand = {}
-				
+
 				hbox = {
 					layoutpolicy_horizontal = expanding
-					spacing = 30
+					spacing = 20
 
 					text_single = {
 						text = "TAX_COLLECTOR_TAXED_VASSALS_COUNT"

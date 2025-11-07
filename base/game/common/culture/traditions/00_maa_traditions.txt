@@ -84,6 +84,16 @@ tradition_futuwaa = {
 					desc = knights_with_prowess_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_futuwaa }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -168,6 +178,16 @@ tradition_mubarizuns = {
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = dry_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_mubarizuns }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -278,6 +298,16 @@ tradition_desert_ribat = {
 					desc = dry_percentage_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_desert_ribat }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -334,7 +364,7 @@ tradition_land_of_the_bow = {
 	}
 	character_modifier = {
 		defender_advantage = 5
-		archers_damage_add = 4
+		archers_damage_mult = 0.2
 	}
 	
 	cost = {
@@ -370,6 +400,16 @@ tradition_land_of_the_bow = {
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = culture_head_archers_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_land_of_the_bow }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -438,7 +478,7 @@ tradition_druzhina = {
 		knight_limit = 2
 		negate_prowess_penalty_add = 5
 		accolade_glory_gain_mult = 0.2
-		heavy_infantry_toughness_add = 2
+		heavy_infantry_toughness_mult = 0.1
 	}
 	
 	cost = {
@@ -474,6 +514,16 @@ tradition_druzhina = {
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = knights_with_prowess_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_druzhina }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -517,9 +567,9 @@ tradition_hussar = { #Konni Raids
 		unlock_maa_hussar = yes
 	}
 	character_modifier = {
-		skirmishers_screen_add = 2
-		light_cavalry_damage_add = 6
-		light_cavalry_screen_add = 6
+		skirmishers_screen_mult = 0.2
+		light_cavalry_damage_mult = 0.2
+		light_cavalry_screen_mult = 0.2
 		retreat_losses = -0.1
 		hard_casualty_modifier = -0.1
 	}
@@ -556,6 +606,16 @@ tradition_hussar = { #Konni Raids
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = culture_head_light_cavalry_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_hussar }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -655,6 +715,16 @@ tradition_horn_mountain_skirmishing = {
 					desc = mountain_percentage_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_horn_mountain_skirmishing }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -710,7 +780,7 @@ tradition_bush_hunting = {
 		can_recruit_jungle_specialist = yes
 	}
 	character_modifier = {
-		archers_damage_add = 4
+		archers_damage_mult = 0.2
 		jungle_supply_limit_mult = 0.25
 		jungle_travel_danger = jungle_medium_danger_reduction
 	}
@@ -748,6 +818,16 @@ tradition_bush_hunting = {
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = jungle_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_bush_hunting }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -796,12 +876,12 @@ tradition_mobile_guards = {
 		unlock_maa_shomer = yes
 	}
 	character_modifier = {
-		maa_toughness_add = 4
-		heavy_infantry_toughness_add = 4
+		maa_toughness_mult = 0.1
+		heavy_infantry_toughness_mult = 0.2
 		heavy_infantry_maintenance_mult = 0.1
-		heavy_cavalry_toughness_add = 20
+		heavy_cavalry_toughness_mult = 0.2
 		heavy_cavalry_maintenance_mult = 0.1
-		pikemen_toughness_add = 6
+		pikemen_toughness_mult = 0.2
 		pikemen_maintenance_mult = 0.1
 		hard_casualty_modifier = 0.25
 	}
@@ -840,6 +920,16 @@ tradition_mobile_guards = {
 					desc = culture_head_skirmishers_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_mobile_guards }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -859,6 +949,9 @@ tradition_mobile_guards = {
 					culture_has_archer_maa = yes
 					culture_has_light_cavalry_maa = yes
 					culture_has_archer_cavalry_maa = yes
+					scope:character = {
+						mpo_can_recruit_nomad_maa_trigger = yes
+					}
 				}
 			}
 			multiply = 0.25
@@ -935,6 +1028,16 @@ tradition_khadga_puja = {
 					desc = knights_with_prowess_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_khadga_puja }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -1007,6 +1110,16 @@ tradition_garuda_warriors = {
 					desc = knights_with_prowess_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_garuda_warriors }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -1040,8 +1153,8 @@ tradition_burman_royal_army = {
 		can_recruit_jungle_specialist = yes
 	}
 	character_modifier = {
-		elephant_cavalry_damage_add = 60
-		elephant_cavalry_toughness_add = 20
+		elephant_cavalry_damage_mult = 0.2
+		elephant_cavalry_toughness_mult = 0.2
 		jungle_travel_danger = jungle_medium_danger_reduction
 		accolade_glory_gain_mult = 0.1
 	}
@@ -1080,6 +1193,16 @@ tradition_burman_royal_army = {
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = culture_head_has_elephants_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_burman_royal_army }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -1180,6 +1303,16 @@ tradition_mountain_herding = {
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = mountain_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_mountain_herding }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -1307,6 +1440,16 @@ tradition_forest_wardens = {
 					desc = forest_percentage_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_forest_wardens }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -1411,6 +1554,16 @@ tradition_upland_skirmishing = {
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = hill_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_upland_skirmishing }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -1522,6 +1675,16 @@ tradition_strong_kinship = { #There can be only one!
 					desc = house_friends_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_strong_kinship }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -1621,6 +1784,16 @@ tradition_amharic_highlanders = { #Ethiopian Unique Tradition, replaces hill dwe
 					desc = hill_percentage_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_amharic_highlanders }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -1688,8 +1861,8 @@ tradition_polders = { #Dutch Unique Tradition, bonuses to buildings along coastl
 		coastal_holding_bonuses = yes
 	}
 	character_modifier = {
-		skirmishers_damage_add = 4
-		skirmishers_screen_add = 4
+		skirmishers_damage_mult = 0.2
+		skirmishers_screen_mult = 0.2
 		coastal_sea_travel_danger = low_sea_danger_reduction
 		wetlands_travel_danger = wetlands_medium_danger_reduction
 		floodplains_travel_danger = floodplains_medium_danger_reduction
@@ -1729,6 +1902,16 @@ tradition_polders = { #Dutch Unique Tradition, bonuses to buildings along coastl
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = coastal_percentage_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_polders }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			
@@ -1861,6 +2044,16 @@ tradition_caucasian_wolves = {
 					desc = mountain_percentage_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_caucasian_wolves }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -1990,6 +2183,16 @@ tradition_hird = {
 					desc = strong_rulers_desc
 				}
 			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_hird }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
+				}
+			}
 			
 			multiply = tradition_replacement_cost_if_relevant
 		}
@@ -2090,6 +2293,16 @@ tradition_chanson_de_geste = {
 				add = {
 					value = tradition_unfulfilled_criteria_penalty
 					desc = knights_with_prowess_desc
+				}
+			}
+
+			if = {
+				limit = {
+					culture_tradition_reduction_trigger = { TRADITION = tradition_chanson_de_geste }
+				}
+				multiply = {
+					value = 0.5
+					desc = inspired_by_culture_desc
 				}
 			}
 			

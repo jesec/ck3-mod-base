@@ -1,7 +1,7 @@
 ﻿realm_maintenance_quarterly_pulse = {
 	on_actions = {
 		low_control_pulse
-		high_countrol_pulse
+		high_control_pulse
 		in_debt_county_corruption_pulse
 	}
 }
@@ -11,13 +11,13 @@ in_debt_county_corruption_pulse = {
 	trigger = {
 		gold < 0
 		any_held_county = {
-			NOT = { immune_to_county_corruption_trigger = yes }
+			immune_to_county_corruption_trigger = no
 		}
 	}
 	effect = {
 		every_held_county = {
 			limit = {
-				NOT = { immune_to_county_corruption_trigger = yes }
+				immune_to_county_corruption_trigger = no
 			}
 			save_temporary_scope_as = county
 			random = {
@@ -40,14 +40,14 @@ low_control_pulse = {
 	trigger = {
 		any_held_county = {
 			county_control < low_county_control_limit
-			NOT = { immune_to_county_corruption_trigger = yes }
+			immune_to_county_corruption_trigger = no
 		}
 	}
 	effect = {
 		every_held_county = {
 			limit = {
 				county_control < low_county_control_limit
-				NOT = { immune_to_county_corruption_trigger = yes }
+				immune_to_county_corruption_trigger = no
 			}
 			random = {
 				chance = county_control_corruption_gain_chance
@@ -65,10 +65,11 @@ low_control_pulse = {
 }
 
 #High County Control may remove corruption
-high_countrol_pulse = {
+high_control_pulse = {
 	trigger = {
 		gold >= 0
 		any_held_county = {
+			is_landless_type_title = no
 			has_county_corruption_trigger = yes
 			county_control > high_county_control_limit
 		}
@@ -76,6 +77,7 @@ high_countrol_pulse = {
 	effect = {
 		every_held_county = {
 			limit = {
+				is_landless_type_title = no
 				has_county_corruption_trigger = yes
 				county_control > high_county_control_limit
 			}
