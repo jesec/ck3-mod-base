@@ -74,11 +74,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: base/scripts/package-lock.json
+          cache-dependency-path: base/scripts/automation/package-lock.json
 
       - name: Install Node dependencies
         run: npm ci
-        working-directory: base/scripts
+        working-directory: base/scripts/automation
 
       - name: Cache DepotDownloader binary
         id: cache-depot
@@ -86,7 +86,7 @@ jobs:
         with:
           path: /tmp/depotdownloader
           # Cache key includes both commit hash AND patch file hash
-          key: depotdownloader-${{ env.DEPOTDOWNLOADER_COMMIT }}-${{ hashFiles('base/scripts/depotdownloader.patch') }}
+          key: depotdownloader-${{ env.DEPOTDOWNLOADER_COMMIT }}-${{ hashFiles('base/scripts/automation/depotdownloader.patch') }}
 
       - name: Build patched DepotDownloader
         if: steps.cache-depot.outputs.cache-hit != 'true'
@@ -102,15 +102,15 @@ jobs:
           git checkout $DEPOTDOWNLOADER_COMMIT
 
           echo "🔧 Validating patch..."
-          if ! git apply --check $GITHUB_WORKSPACE/base/scripts/depotdownloader.patch 2>&1; then
+          if ! git apply --check $GITHUB_WORKSPACE/base/scripts/automation/depotdownloader.patch 2>&1; then
             echo "❌ Patch failed validation!"
             echo "::error::Patch file does not apply cleanly to commit $DEPOTDOWNLOADER_COMMIT"
-            git apply --check $GITHUB_WORKSPACE/base/scripts/depotdownloader.patch || true
+            git apply --check $GITHUB_WORKSPACE/base/scripts/automation/depotdownloader.patch || true
             exit 1
           fi
 
           echo "🔧 Applying 2FA authentication patch..."
-          git apply $GITHUB_WORKSPACE/base/scripts/depotdownloader.patch
+          git apply $GITHUB_WORKSPACE/base/scripts/automation/depotdownloader.patch
 
           echo "🏗️  Building DepotDownloader..."
           dotnet publish DepotDownloader/DepotDownloader.csproj \
@@ -168,7 +168,7 @@ jobs:
 
           echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
           echo "📋 Latest CK3 version: $LATEST_VERSION"
-        working-directory: base/scripts
+        working-directory: base/scripts/automation
 
       - name: Determine if update needed
         id: needs_update
@@ -208,7 +208,7 @@ jobs:
 
           # Credentials are passed via environment variables
           # Note: VERSION param is informational - DepotDownloader fetches latest
-          cd base/scripts
+          cd base/scripts/automation
           node index.js download "$VERSION" "$DOWNLOAD_DIR"
 
           if [ ! -d "$DOWNLOAD_DIR" ]; then
@@ -233,7 +233,7 @@ jobs:
           echo "✅ Parse complete"
           echo "   Metadata: base/.ck3-version.json"
           echo "   Release notes saved to: base/release-notes/"
-        working-directory: base/scripts
+        working-directory: base/scripts/automation
 
       - name: Extract game files
         if: steps.needs_update.outputs.needed == 'true'
@@ -251,7 +251,7 @@ jobs:
           fi
 
           echo "✅ Extraction complete"
-        working-directory: base/scripts
+        working-directory: base/scripts/automation
 
       - name: Check for changes
         if: steps.needs_update.outputs.needed == 'true'

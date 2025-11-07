@@ -15,9 +15,9 @@ Check `.ck3-version.json` for the current tracked version and depot manifests.
 
 ## Automation
 
-All automation scripts and documentation are in the `scripts/` directory. See `scripts/README.md` for:
+All automation scripts and documentation are in the `scripts/automation/` directory. See `scripts/automation/README.md` for:
 - How to check for updates
-- How to download and extract game files  
+- How to download and extract game files
 - How to run automation locally
 
 ## Binary Placeholders
