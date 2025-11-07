@@ -203,6 +203,8 @@ window = {
 						using = Font_Size_Big
 						using = Font_Type_Flavor
 						using = Text_Light_Background_Overrides
+
+						max_width = 490
 					}
 				}
 
@@ -225,6 +227,12 @@ window = {
 							blockoverride "scrollbox_background_fade" {}
 
 							blockoverride "scrollbox_margins" {}
+
+							blockoverride "scrollbox_scrollbar_vertical" {
+								scrollbar_vertical = {
+									using = Chronicle_Scrollbar_Vertical
+								}
+							}
 
 							blockoverride "scrollbox_content"
 							{
@@ -283,6 +291,7 @@ window = {
 				vbox = {
 					name = "buttons"
 					layoutpolicy_horizontal = expanding
+					visible = "[GetPlayer.IsValid]"
 
 					hbox = {
 						name = "owner_buttons"
@@ -319,17 +328,56 @@ window = {
 						name = "unowned_buttons"
 						visible = "[And( Not( Legend.GetOwner.IsValid ), Not( ObjectsEqual( Legend.GetOwner.Self, GetPlayer ) ) )]"
 
+						spacing = 10
+
 						button_primary = {
 							text = "LEGEND_CHRONICLE_START_OWNING"
 							onclick = "[PostCommand( GetPlayer.TakeUnownedLegend( Legend.Self ) )]"
 							enabled = "[IsValidCommand( GetPlayer.TakeUnownedLegend( Legend.Self ) )]"
 							tooltip = "[GetCommandDesc( GetPlayer.TakeUnownedLegend( Legend.Self ) )]"
+							visible = "[Not( Legend.IsCompleted )]"
 
 							background = {
 								using = Background_Area_Light
 								alpha = 0.7
 							}
 						}
+					}
+
+					hbox = {
+						name = "library_buttons"
+                    	visible = "[Legend.IsCompleted]"
+
+						button_primary = {
+                            text = "LEGEND_CHRONICLE_ADD_TO_LIBRARY"
+
+                            visible = "[Not( Legend.IsInPlayerLibrary( GetPlayer ) )]"
+
+                            onclick = "[PostCommand( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
+                            enabled = "[IsValidCommand( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
+                            tooltip = "[GetCommandDesc( GetPlayer.AddToLegendLibrary( Legend.Self ) )]"
+
+                            background = {
+                                using = Background_Area_Light
+                                alpha = 0.7
+                            }
+                        }
+
+                        button_primary = {
+                            text = "LEGEND_CHRONICLE_REMOVE_FROM_LIBRARY"
+
+                            visible = "[Legend.IsInPlayerLibrary( GetPlayer )]"
+
+                            onclick = "[PostCommand( GetPlayer.RemoveFromLegendLibrary( Legend.Self ) )]"
+							onclick = "[LegendChronicleWindow.Close]"
+							enabled = "[IsValidCommand( GetPlayer.RemoveFromLegendLibrary( Legend.Self ) )]"
+							tooltip = "[GetCommandDesc( GetPlayer.RemoveFromLegendLibrary( Legend.Self ) )]"
+
+                            background = {
+                                using = Background_Area_Light
+                                alpha = 0.7
+                            }
+                        }
 					}
 
 					hbox = {
@@ -340,6 +388,8 @@ window = {
 
 						button_primary = {
 							text = "LEGEND_CHRONICLE_STOP_PROMOTING"
+							visible = "[Legend.IsCharacterPromotingLegend( GetPlayer.Self )]"
+
 							onclick = "[PostCommand( GetPlayer.StopPromotingLegend( Legend.Self ) )]"
 							enabled = "[IsValidCommand( GetPlayer.StopPromotingLegend( Legend.Self ) )]"
 							tooltip = "[GetCommandDesc( GetPlayer.StopPromotingLegend( Legend.Self ) )]"
@@ -352,6 +402,8 @@ window = {
 
 						button_primary = {
 							text = "LEGEND_CHRONICLE_START_PROMOTING"
+							visible = "[Not( Legend.IsCharacterPromotingLegend( GetPlayer.Self ) )]"
+
 							onclick = "[CreateCommandPopup( GetPlayer.StartPromotingLegend( Legend.Self ) )]"
 							enabled = "[IsValidCommand( GetPlayer.StartPromotingLegend( Legend.Self ) )]"
 							tooltip = "[GetCommandDesc( GetPlayer.StartPromotingLegend( Legend.Self ) )]"
@@ -393,7 +445,7 @@ types LegendChronicleWindow
 			alwaystransparent = yes
 			tooltip_visible = no
 
-			portrait_texture = "[Character.GetPortrait( 'environment_painterly', 'camera_legend_chronicle', 'idle', PdxGetWidgetScreenSize( PdxGuiWidget.Self ) )]"
+			portrait_texture = "[Character.GetAnimatedPortraitEvenIfDead( 'environment_painterly', 'camera_legend_chronicle', Legend.GetPortraitAnimation, PdxGetWidgetScreenSize( PdxGuiWidget.Self ) )]"
 
 			mask = "gfx/portraits/portrait_mask_legend_chronicle.dds"
 			effectname = "NoHighlight"
@@ -408,5 +460,105 @@ types LegendChronicleWindow
 			size = { 100% 100% }
 			texture = "[GetIllustration( 'legend_chronicle_portrait_frame' ).GetTexture( Legend.MakeScope )]"
 		}
+
+		button = {
+			name = "legend_protagonist_name_plate"
+
+			parentanchor = bottom
+
+			size = { 160 36 }
+			position = { 20 -20 }
+            using = Background_Letter
+            alpha = 0.8
+
+            datacontext = "[Legend.GetProtagonist]"
+            onclick = "[DefaultOnCharacterClick( Character.GetID )]"
+
+			tooltipwidget = {
+				container_character_tooltip = {}
+			}
+
+			text_multi = {
+				min_width = 144
+	            max_width = 144
+	            min_height = 34
+                max_height = 34
+
+                position = { 8 1 }
+
+	            text = "[Legend.GetProtagonist.GetShortUINameNotMeNoTooltip]"
+	            default_format = "#light_background"
+	            align = vcenter|nobaseline|center
+	            using = Font_Size_Big
+	            using = Font_Type_Flavor
+	            using = Text_Light_Background_Overrides
+	        }
+        }
+	}
+}
+
+template Chronicle_Scrollbar_Vertical {
+	scrollbar = {
+	    name = "vertical_scrollbar"
+	    size = { 12 12 }
+	    wheelstep = 60
+	    direction = vertical
+
+	    track = {
+	        button = {
+	            size = { 12 12 }
+	            gfxtype = buttongfx
+
+			    alpha = 0.4 # This is the only difference with template 'Scrollbar_Vertical' - to provide contrast
+
+	            texture = "gfx/interface/scrollbars/scrollbar_track_vertical.dds"
+	            spriteType = Corneredtiled
+	            spriteborder = { 0 3 }
+	            effectname = "NoHighlight"
+	        }
+	    }
+
+	    slider = {
+	        button = {
+	            gfxtype = framedbuttongfx
+	            effectname = "NoHighlight"
+
+	            texture = "gfx/interface/scrollbars/scrollbar_slider.dds"
+	            spriteType = Corneredtiled
+	            spriteborder = { 0 3 }
+	            framesize = { 12 40 }
+	            minimumsize = { -1 40 }
+
+	            upframe = 1
+	            overframe = 2
+	            downframe = 2
+
+	            oversound = "event:/SFX/UI/Generic/sfx_ui_generic_icon_pointer_over"
+
+	            state = {
+	                name = _mouse_press
+	                start_sound = {
+	                    soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_select"
+	                }
+	            }
+
+	            state = {
+	                name = _mouse_release
+	                start_sound = {
+	                    soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_select"
+	                }
+	            }
+	        }
+	    }
+
+	    dec_button = {
+	        button = {
+	        }
+	    }
+
+	    inc_button = {
+	        button = {
+	        }
+	    }
 	}
 }

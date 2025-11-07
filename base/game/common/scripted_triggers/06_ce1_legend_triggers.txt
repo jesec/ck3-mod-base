@@ -1,5 +1,6 @@
 ﻿#is_standard_legend_spreading_courtier
 #has_access_to_legitimizing_seeds
+#has_legend_chapter_trigger - checks if you own a legend
 
 is_standard_legend_spreading_courtier = {
 	NOT = { this = root }
@@ -63,5 +64,49 @@ valid_for_legendary_integration_d = {
 	NOR = {
 		kingdom = root.primary_title
 		empire = root.primary_title
+	}
+}
+
+has_legend_chapter_trigger = {
+	has_dlc_feature = legends
+	exists = promoted_legend
+	promoted_legend.legend_owner = root
+	promoted_legend = {
+		has_legend_chapter = $CHAPTER$
+	}
+}
+
+has_legend_chapter_winner_trigger = {
+	has_dlc_feature = legends
+	exists = promoted_legend
+	promoted_legend.legend_owner = scope:winner
+	promoted_legend = {
+		has_legend_chapter = $CHAPTER$
+	}
+}
+
+has_any_point_of_interest_flag = {
+	OR = {
+		has_building_with_flag = {
+			flag = travel_point_of_interest_martial
+		}
+		has_building_with_flag = {
+			flag = travel_point_of_interest_religious
+		}
+		has_building_with_flag = {
+			flag = travel_point_of_interest_diplomatic
+		}
+		has_building_with_flag = {
+			flag = travel_point_of_interest_wonder
+		}
+		has_building_with_flag = {
+			flag = travel_point_of_interest_economic
+		}
+		has_building_with_flag = {
+			flag = travel_point_of_interest_learning
+		}
+		has_building_with_flag = {
+			flag = travel_point_of_interest_natural_feature
+		}
 	}
 }
