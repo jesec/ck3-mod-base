@@ -835,7 +835,7 @@ ep3_laamp_adventurer_duchy_invasion = {
 					limit = { duchy ?= scope:target }
 					add_to_list = target_titles
 				}
-				# Ensure at least some land is taken
+				# Ensure that the target's capital county and counties within the target held directly by the defender are taken
 				if = {
 					limit = {
 						NOT = {
@@ -845,8 +845,22 @@ ep3_laamp_adventurer_duchy_invasion = {
 							}
 						}
 					}
-					random_sub_realm_county = {
-						limit = { duchy = scope:target }
+					every_sub_realm_county = {
+						limit = {
+							OR = {
+								AND = {
+									duchy = scope:target
+									holder = scope:target.holder
+								}
+								scope:target.title_capital_county = this
+								AND = {
+									duchy = scope:target
+									holder = {
+										government_allows = administrative
+									}
+								}
+							}
+						}
 						add_to_list = target_titles
 					}
 				}
@@ -1411,7 +1425,7 @@ ep3_laamp_adventurer_kingdom_invasion = {
 					limit = { kingdom ?= scope:target }
 					add_to_list = target_titles
 				}
-				# Ensure at least some land is taken
+				# Ensure that the target's capital county and counties within the target held directly by the defender are taken
 				if = {
 					limit = {
 						NOT = {
@@ -1421,8 +1435,16 @@ ep3_laamp_adventurer_kingdom_invasion = {
 							}
 						}
 					}
-					random_sub_realm_county = {
-						limit = { kingdom = scope:target }
+					every_sub_realm_county = {
+						limit = {
+							OR = {
+								AND = {
+									kingdom = scope:target
+									holder = scope:target.holder
+								}
+								scope:target.title_capital_county = this
+							}
+						}
 						add_to_list = target_titles
 					}
 				}
@@ -1984,7 +2006,7 @@ ep3_laamp_adventurer_empire_invasion = {
 					limit = { empire ?= scope:target }
 					add_to_list = target_titles
 				}
-				# Ensure at least some land is taken
+				# Ensure that the target's capital county and counties within the target held directly by the defender are taken
 				if = {
 					limit = {
 						NOT = {
@@ -1994,8 +2016,16 @@ ep3_laamp_adventurer_empire_invasion = {
 							}
 						}
 					}
-					random_sub_realm_county = {
-						limit = { empire = scope:target }
+					every_sub_realm_county = {
+						limit = {
+							OR = {
+								AND = {
+									empire = scope:target
+									holder = scope:target.holder
+								}
+								scope:target.title_capital_county = this
+							}
+						}
 						add_to_list = target_titles
 					}
 				}
