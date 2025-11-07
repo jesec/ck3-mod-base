@@ -2,82 +2,13 @@
 # Values used by the Spymaster tasks and ongoing Scheme Discovery
 
 
-spymaster_scheme_discovery_base_chance = {
-	value = 1
-	add = {
-		add = intrigue
-		divide = 3
-	}
+monthly_scheme_discovery_chance_value = {
+	# First grab our percentage chance to be discovered.
+	value = 100
+	subtract = scheme_secrecy
+	# Then reduce it to 10% of itself, as it'll be checked very frequently.
+	multiply = 0.1
 }
-
-spymaster_scheme_discovery_chance = {
-	add = spymaster_scheme_discovery_base_chance
-	if = { # Percentage bonus applied to the base chance
-		limit = {
-			is_performing_council_task = task_disrupt_schemes
-		}
-		add = {
-			value = spymaster_scheme_discovery_base_chance
-			multiply = {
-				value = spymaster_disrupt_schemes_total_modifier
-				divide = 100
-			}
-		}
-	}
-	multiply = 0.5
-}
-
-spymaster_agent_discovery_base_chance = {
-	value = 1
-	add = {
-		add = intrigue
-		divide = 3
-	}
-}
-
-spymaster_agent_discovery_chance = {
-	add = spymaster_agent_discovery_base_chance
-	if = {
-		limit = {
-			is_performing_council_task = task_disrupt_schemes
-		}
-		add = {
-			value = spymaster_agent_discovery_base_chance
-			multiply = {
-				value = spymaster_find_secrets_disrupt_schemes_modifier
-				divide = 100
-			}
-		}
-	}
-	multiply = 0.5
-}
-
-spymaster_owner_discovery_base_chance = {
-	value = 1
-	add = {
-		add = intrigue
-		divide = 4
-	}
-}
-
-spymaster_owner_discovery_chance = {
-	add = spymaster_owner_discovery_base_chance
-	if = {
-		limit = {
-			is_performing_council_task = task_disrupt_schemes
-		}
-		add = {
-			value = spymaster_owner_discovery_base_chance
-			multiply = {
-				value = spymaster_find_secrets_disrupt_schemes_modifier
-				divide = 100
-			}
-		}
-	}
-	multiply = 0.5
-}
-
-
 
 spymaster_learn_on_the_job_scale = {
 	value = 0
@@ -207,10 +138,6 @@ spymaster_disrupt_schemes_modifier_final_scale = {
 	add = spymaster_disrupt_schemes_consulted_house_modifier_scale
 }
 
-spymaster_disrupt_schemes_scheme_discovery_base = {
-	add = 10
-}
-
 spymaster_disrupt_schemes_scheme_discovery_modifier = {
 	add = intrigue
 }
@@ -237,7 +164,6 @@ spymaster_disrupt_schemes_court_of_shadows_scheme_discovery_modifier_scale = {
 			liege = { has_perk = court_of_shadows_perk }
 		}
 		add = {
-			value = spymaster_disrupt_schemes_scheme_discovery_base
 			add = spymaster_disrupt_schemes_scheme_discovery_modifier
 			multiply = {
 				add = court_of_shadows_perk_percentage
@@ -254,7 +180,6 @@ spymaster_disrupt_schemes_erudition_legacy_5_discovery_modifier_scale = {
 			councillor_liege_has_erudition_legacy_5_perk = yes
 		}
 		add = {
-			value = spymaster_disrupt_schemes_scheme_discovery_base
 			add = spymaster_disrupt_schemes_scheme_discovery_modifier
 			multiply = {
 				add = erudition_legacy_5_percentage
@@ -271,7 +196,6 @@ spymaster_disrupt_schemes_family_business_discovery_modifier_scale = {
 			councillor_liege_has_family_business_bonus = yes
 		}
 		add = {
-			value = spymaster_disrupt_schemes_scheme_discovery_base
 			add = spymaster_disrupt_schemes_scheme_discovery_modifier
 			multiply = {
 				add = family_business_councillors_percentage
@@ -288,7 +212,6 @@ spymaster_disrupt_schemes_consulted_house_discovery_modifier_scale = {
 			councillor_liege_has_consulted_house_bonus = yes
 		}
 		add = {
-			value = spymaster_disrupt_schemes_scheme_discovery_base
 			add = spymaster_disrupt_schemes_scheme_discovery_modifier
 			multiply = {
 				add = consulted_house_councillors_percentage
@@ -299,7 +222,6 @@ spymaster_disrupt_schemes_consulted_house_discovery_modifier_scale = {
 }
 
 spymaster_disrupt_schemes_total_modifier = {
-	add = spymaster_disrupt_schemes_scheme_discovery_base
 	add = spymaster_disrupt_schemes_scheme_discovery_modifier
 	add = spymaster_disrupt_schemes_court_of_shadows_scheme_discovery_modifier_scale
 	add = spymaster_disrupt_schemes_erudition_legacy_5_discovery_modifier_scale
@@ -312,12 +234,10 @@ spymaster_disrupt_schemes_total_modifier = {
 ######## ESPIONAGE SCHEME TASK ##########
 #########################################
 
-spymaster_espionage_scheme_power_base = {
-	add = 10
-}
-
 spymaster_espionage_modifier_base_scale = {
 	add = intrigue
+	multiply = -1
+	max = -1
 }
 
 spymaster_espionage_legacy_bonus = {
@@ -327,8 +247,7 @@ spymaster_espionage_legacy_bonus = {
 			councillor_liege_has_erudition_legacy_5_perk = yes
 		}
 		add = {
-			value = spymaster_espionage_scheme_power_base
-			add = spymaster_espionage_modifier_base_scale
+			value = spymaster_espionage_modifier_base_scale
 			multiply = {
 				value = erudition_legacy_5_percentage
 				divide = 100
@@ -344,8 +263,7 @@ spymaster_espionage_family_business_bonus = {
 			councillor_liege_has_family_business_bonus = yes
 		}
 		add = {
-			value = spymaster_espionage_scheme_power_base
-			add = spymaster_espionage_modifier_base_scale
+			value = spymaster_espionage_modifier_base_scale
 			multiply = {
 				value = family_business_councillors_percentage
 				divide = 100
@@ -361,8 +279,7 @@ spymaster_espionage_consulted_house_bonus = {
 			councillor_liege_has_consulted_house_bonus = yes
 		}
 		add = {
-			value = spymaster_espionage_scheme_power_base
-			add = spymaster_espionage_modifier_base_scale
+			value = spymaster_espionage_modifier_base_scale
 			multiply = {
 				value = consulted_house_councillors_percentage
 				divide = 100
@@ -378,13 +295,13 @@ spymaster_espionage_court_type_bonus = {
 			has_dlc_feature = royal_court
 			scope:councillor_liege = {
 				has_royal_court = yes
+				has_dlc_feature = royal_court
 				has_court_type = court_intrigue
 				court_grandeur_current_level >= 4
 			}
 		}
 		add = {
-			value = spymaster_espionage_scheme_power_base
-			add = spymaster_espionage_modifier_base_scale
+			value = spymaster_espionage_modifier_base_scale
 			multiply = {
 				value = court_intrigue_spymaster_task_bonus
 				divide = 100
@@ -394,7 +311,6 @@ spymaster_espionage_court_type_bonus = {
 }
 
 spymaster_espionage_modifier_final_scale = {
-	add = spymaster_espionage_scheme_power_base
 	add = spymaster_espionage_modifier_base_scale
 	add = spymaster_espionage_legacy_bonus
 	add = spymaster_espionage_family_business_bonus
@@ -471,6 +387,7 @@ spymaster_espionage_success_chance_court_type_bonus = {
 			has_dlc_feature = royal_court
 			scope:councillor_liege = {
 				has_royal_court = yes
+				has_dlc_feature = royal_court
 				has_court_type = court_intrigue
 				court_grandeur_current_level >= 4
 			}
@@ -573,6 +490,14 @@ spymaster_find_secrets_consulted_house_monthly_increase = {
 	add = spymaster_find_secrets_base_total
 	multiply = {
 		add = consulted_house_councillors_percentage
+		divide = 100
+	}
+}
+
+spymaster_court_of_no_secrets_event_increase = {
+	add = spymaster_find_secrets_base_total
+	multiply = {
+		add = 15
 		divide = 100
 	}
 }

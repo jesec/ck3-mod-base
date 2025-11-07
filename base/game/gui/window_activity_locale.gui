@@ -1,4 +1,4 @@
-window = {
+﻿window = {
 	name = "activity_locale_window"
 
 	datacontext = "[GetPlayer]"
@@ -195,13 +195,12 @@ window = {
 	}
 
 	activity_pulse_action_popup_left = {
-		layer = top
+		datacontext = "[ActivityLocaleWindow.GetLastWeeklyPulseEffectData]"
+		visible = "[And( ActivityPulseEffect.IsValid, Not( ActivityLocaleWindow.HasActiveEvent ) )]"
 		parentanchor = bottom|left
 		position = { 0 -280 }
-		visible = "[Not(ActivityLocaleWindow.HasActiveEvent)]"
 
-		datacontext = "[ActivityLocaleWindow.GetActivity]"
-		datacontext = "[ActivityLocaleWindow.GetLastWeeklyPulseEffectData]"
+		layer = top
 	}
 
 	widget_activity_locale_fullscreen_event = {
@@ -275,13 +274,21 @@ window = {
 		}
 	}
 
-	widget_top_right_bar = {
-		name = "top_bar_hud"
-		visible = "[Not(VariableSystem.Exists('royal_court_screenshot_window'))]"
-		datacontext = "[AccessTopBar]"
-		parentanchor = top|right
+	widget = {
+		layer = hud_layer
+		size = { 100% 88 }
+		position = { 0 -10 }
 
-		using = Animation_ShowHide_Quick
+		hbox = {
+			expand = {}
+			resources_top_right_bar = {
+				name = "top_bar_hud"
+				visible = "[Not(VariableSystem.Exists('royal_court_screenshot_window'))]"
+				datacontext = "[AccessTopBar]"
+
+				using = Animation_ShowHide_Quick
+			}
+		}
 	}
 
 	## Top layer

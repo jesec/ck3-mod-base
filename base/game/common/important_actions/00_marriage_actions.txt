@@ -20,6 +20,9 @@
 					recipient = player_heir
 					interaction = marry_off_interaction
 				}
+				NOT = {
+					has_government = landless_adventurer_government
+				}
 			}
 			try_create_important_action = {
 				important_action_type = action_adult_player_heir_not_married
@@ -55,6 +58,9 @@ action_adult_ruler_not_married = {
 					recipient = root
 					interaction = marry_off_interaction
 				}
+				NOT = {
+					has_government = landless_adventurer_government
+				}
 			}
 			try_create_important_action = {
 				important_action_type = action_adult_ruler_not_married
@@ -88,6 +94,9 @@ action_non_adult_ruler_not_betrothed = {
 				is_character_interaction_valid = {
 					recipient = root
 					interaction = marry_off_interaction
+				}
+				NOT = {
+					has_government = landless_adventurer_government
 				}
 			}
 			try_create_important_action = {
@@ -172,7 +181,7 @@ action_close_family_can_marry = {
 		every_child = {
 			if = {
 				limit = {
-					is_landed = yes
+					is_playable_character = yes
 					is_married = no
 					is_betrothed = no
 					is_adult = yes
@@ -196,7 +205,7 @@ action_close_family_can_marry = {
 				limit = {
 					NAND = {
 						is_child_of = root
-						is_landed = yes
+						is_playable_character = yes
 					}
 					is_married = no
 					is_betrothed = no
@@ -291,6 +300,9 @@ action_can_take_concubine = {
 					recipient = scope:concubine
 					interaction = make_concubine_interaction
 				}
+				NOT = {
+					has_government = landless_adventurer_government
+				}
 			}
 			try_create_important_action = {
 				important_action_type = action_can_take_concubine
@@ -346,6 +358,9 @@ action_too_few_spouses = {
 						count < 1
 					}
 				}
+				NOT = {
+					has_government = landless_adventurer_government
+				}
 			}
 			try_create_important_action = {
 				important_action_type = action_too_few_spouses
@@ -369,6 +384,9 @@ action_grand_wedding_can_marry = {
 		every_potential_marriage_option = {
 			if = {
 				limit = {
+					NOT = {
+						has_government = landless_adventurer_government
+					}
 					is_betrothed = yes
 					is_adult = yes
 					has_been_promised_grand_wedding = yes

@@ -36,6 +36,7 @@ scripted_trigger 8000_valid_to_offer_favor = {
 		root.faith = { has_doctrine_parameter = homosexuality_accepted }
 	}
 	NOR = {
+		has_relation_soulmate = root
 		# Celibates should abstain always
 		has_trait = celibate
 		# No priests giving favours
@@ -150,12 +151,14 @@ tournament_events.8000 = { # Start
 						}
 						modifier = { # Cheaters are possible, but should be less likely
 							add = 20
-							AND = {
-								is_married = no
-								is_concubine = no
+							OR = {
+								AND = {
+									is_married = no
+									is_concubine = no
+								}
+								is_consort_of = root
+								is_concubine_of = root
 							}
-							is_consort_of = root
-							is_concubine = root
 						}
 						modifier = { # Get someone interesting
 							add = 20
@@ -213,13 +216,14 @@ tournament_events.8000 = { # Start
 								add = ai_honor
 							}
 							modifier = {
-								add = 20
-								AND = {
-									is_married = no
-									is_concubine = no
+								OR = {
+									AND = {
+										is_married = no
+										is_concubine = no
+									}
+									is_consort_of = root
+									is_concubine_of = root
 								}
-								is_consort_of = root
-								is_concubine = root
 							}
 							modifier = {
 								add = 20
@@ -259,9 +263,11 @@ tournament_events.8000 = { # Start
 				show_as_tooltip = {
 					scope:favor_1 = { set_owner = root }
 				}
-				if = {
-					limit = { exists = scope:favor_2 }
-					destroy_artifact = scope:favor_2
+				hidden_effect = {
+					if = {
+						limit = { exists = scope:favor_2 }
+						destroy_artifact = scope:favor_2
+					}
 				}
 			}
 		}
@@ -275,20 +281,20 @@ tournament_events.8000 = { # Start
 					scope:favor_giver_1 = {
 						any_scheme = {
 							scheme_type = courting
-							scheme_target = root
+							scheme_target_character = root
 						}
 					}
 					# I am not wooing them
 					any_scheme = {
 						scheme_type = courting
-						scheme_target = root
+						scheme_target_character = root
 					}
 				}
 			}
 			scope:favor_giver_1 = {
 				start_scheme = {
 					type = courting
-					target = root
+					target_character = root
 				}
 			}
 		}
@@ -357,9 +363,11 @@ tournament_events.8000 = { # Start
 				show_as_tooltip = {
 					scope:favor_2 = { set_owner = root }
 				}
-				if = {
-					limit = { exists = scope:favor_1 }
-					destroy_artifact = scope:favor_1
+				hidden_effect = {
+					if = {
+						limit = { exists = scope:favor_1 }
+						destroy_artifact = scope:favor_1
+					}
 				}
 			}
 		}
@@ -373,20 +381,20 @@ tournament_events.8000 = { # Start
 					scope:favor_giver_2 = {
 						any_scheme = {
 							scheme_type = courting
-							scheme_target = root
+							scheme_target_character = root
 						}
 					}
 					# I am not wooing them
 					any_scheme = {
 						scheme_type = courting
-						scheme_target = root
+						scheme_target_character = root
 					}
 				}
 			}
 			scope:favor_giver_2 = {
 				start_scheme = {
 					type = courting
-					target = root
+					target_character = root
 				}
 			}
 		}
@@ -443,6 +451,16 @@ tournament_events.8000 = { # Start
 	 		target = scope:favor_giver_1
 	 		modifier = rebuffed_opinion
 	 		opinion = -15
+		}
+		hidden_effect = {
+			if = {
+				limit = { exists = scope:favor_1 }
+				destroy_artifact = scope:favor_1
+			}
+			if = {
+				limit = { exists = scope:favor_2 }
+				destroy_artifact = scope:favor_2
+			}
 		}
 		if = {
 			limit = { exists = scope:favor_giver_2 }

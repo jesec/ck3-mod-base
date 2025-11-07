@@ -1,4 +1,4 @@
-types Miscelaneous
+﻿types Miscelaneous
 {
 	########################################################
 	##### Types used in several placer, non-categorized ####
@@ -223,7 +223,7 @@ types Miscelaneous
 		}
 	}
 
-	### Brief: hbox_expandable_toggle_field
+	### Brief: button_expandable_toggle_field
 	# Creates a field that governs the state of a collapsible widget.
 	#
 	# Use in a widget that a PdxGuiFoldOut set, by BindFoldOutContext or the Create_Resetting_Fold_Out template
@@ -231,48 +231,38 @@ types Miscelaneous
 	# Has the following blocks:
 	#
 	#	"onclick"
-	#		All onclick events associated with the toggle field. Usage: 
+	#		All onclick events associated with the toggle field. Usage:
 	#		Defaults to toggling the PdxGuiFoldOut context
-	#			
-	#	"button_expand"	
+	#
+	#	"button_expand"
 	#		Additional attributes to give the expand button for frame selection.
 	#		Defaults to setting the frame based on the PdxGuiFoldOut context
-	#	
+	#
 	#	"text"
-	#		The text header for the field. Usage: 
+	#		The text header for the field. Usage:
 	#			text = SOME_LOC_KEY
 	#
-	type hbox_expandable_toggle_field = hbox {
+	type button_expandable_toggle_field = button_tertiary {
 		layoutpolicy_horizontal = expanding
-		margin = { 10 5 }
 
-		background = {
-			using = Background_Area_Dark
-			alpha = 0.5
+		block "onclick"
+		{
+			onclick = "[PdxGuiFoldOut.Toggle]"
 		}
 
-		button_normal = {
-			layoutpolicy_horizontal = expanding
-			size = { 0 25 }
+		hbox = {
+			margin = { 10 0 }
+			ignoreinvisible = yes
+			spacing = 5
 
-			block "onclick" 
-			{
-				onclick = "[PdxGuiFoldOut.Toggle]"
-			}
+			button_expand_fold_out = {}
 
-			hbox = {
-				ignoreinvisible = yes
-				spacing = 5
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				align = nobaseline
+				alwaystransparent = yes
 
-				button_expand_fold_out = {}
-
-				text_single = {
-					layoutpolicy_horizontal = expanding
-					align = nobaseline
-					alwaystransparent = yes
-
-					block "text" {}
-				}
+				block "text" {}
 			}
 		}
 	}
@@ -286,10 +276,13 @@ types Miscelaneous
 		item = {
 			button_tab = {
 				layoutpolicy_horizontal = expanding
-				
+
 				block "tab_name"
 				{
 					raw_text = "#D [PdxGuiTabItem.GetKey]#!"
+				}
+				block "on_click"
+				{
 				}
 
 				onclick = "[PdxGuiTabs.SetTab( PdxGuiTabItem.Self )]"

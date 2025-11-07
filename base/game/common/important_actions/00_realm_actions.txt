@@ -18,7 +18,7 @@ action_can_lawfully_imprison = {
 			is_close_family_or_spouse_of_root_trigger = no
 			trigger_if = {
 				limit = {
-					is_landed = yes
+					is_playable_character = yes
 					target_is_liege_or_above = root
 				}
 				NOT = {
@@ -55,7 +55,7 @@ action_can_pardon = {
 			is_close_family_or_spouse_of_root_trigger = no
 			trigger_if = {
 				limit = {
-					is_landed = yes
+					is_playable_character = yes
 					target_is_liege_or_above = root
 				}
 				NOT = {
@@ -152,6 +152,7 @@ action_empty_council_position = {
 	check_create_action = {
 		if = {
 			limit = {
+				NOT = { government_has_flag = government_is_landless_adventurer }
 				highest_held_title_tier > tier_barony
 				has_free_council_slot = yes
 			}
@@ -484,6 +485,7 @@ action_not_endorsed_by_realm_priest = {
 	check_create_action = {
 		if = {
 			limit = {
+				NOT = { government_has_flag = government_is_landless_adventurer }
 				faith = { has_doctrine = doctrine_theocracy_temporal }
 				exists = cp:councillor_court_chaplain
 				cp:councillor_court_chaplain = {
@@ -491,6 +493,11 @@ action_not_endorsed_by_realm_priest = {
 					opinion = {
 						target = root
 						value <= 0
+					}
+					NOT = {
+						root = {
+							has_strong_hook = cp:councillor_court_chaplain
+						}
 					}
 				}
 				any_sub_realm_barony = { #They can actually provide you with levies
@@ -531,6 +538,7 @@ action_not_endorsed_by_realm_priest_no_holding = {
 	check_create_action = {
 		if = {
 			limit = {
+				NOT = { government_has_flag = government_is_landless_adventurer }
 				faith = { has_doctrine = doctrine_theocracy_temporal }
 				exists = cp:councillor_court_chaplain
 				cp:councillor_court_chaplain = {
@@ -616,8 +624,9 @@ action_can_use_hook_to_change_contract = {
 				vassal_contract_is_blocked_from_modification = no
 				is_busy_in_events_localised = yes
 				NOT = { is_at_war_with = root }
-				NOT = {
+				NOR = {
 					government_has_flag = government_is_clan
+					government_allows = administrative
 				}
 			}
 			try_create_important_action = {
@@ -791,7 +800,7 @@ action_can_claim_liege_title = {
 		if = {
 			limit = {
 				is_independent_ruler = no
-				liege = {
+				liege ?= {
 					any_held_title = {
 						tier >= tier_county
 						NOT = { any_claimant = { this = root } }
@@ -870,6 +879,7 @@ action_station_men_at_arms = {
 			limit = {
 				number_of_maa_regiments > number_of_stationed_maa_regiments
 				domain_size > number_of_stationed_maa_regiments
+				is_at_war = no
 				NOT = { has_global_variable = tutorial_current_situation_gradual_reveal_2 }
 			}
 			try_create_important_action = {

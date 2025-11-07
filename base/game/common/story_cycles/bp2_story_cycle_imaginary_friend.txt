@@ -16,24 +16,9 @@ story_cycle_imaginary_friend = {
 		debug_log_date = yes 
 
 		story_owner = {
-			if = {
-				limit = {
-					has_variable = imaginary_friend_name
-				}
-				remove_variable = imaginary_friend_name
-			}
-			if = {
-				limit = {
-					has_variable = imaginary_friend_char
-				}
-				remove_variable = imaginary_friend_char
-			}
-			if = {
-				limit = {
-					has_variable = imaginary_friend_disposition
-				}
-				remove_variable = imaginary_friend_disposition
-			}
+			remove_variable ?= imaginary_friend_name
+			remove_variable ?= imaginary_friend_char
+			remove_variable ?= imaginary_friend_disposition
 		}
 	}
 
@@ -61,8 +46,7 @@ story_cycle_imaginary_friend = {
 		days = { 40 60 }
 		chance = 100 
 		trigger = {
-			exists = var:imaginary_friend_disposition
-			var:imaginary_friend_disposition = flag:devil
+			var:imaginary_friend_disposition ?= flag:devil
 			story_owner = {
 				is_available_adult = yes
 				age > 25
@@ -85,7 +69,7 @@ story_cycle_imaginary_friend = {
 					NOT = {
 						any_scheme = {
 							scheme_type = murder 
-							scheme_target = root.var:imaginary_friend_murder_target
+							scheme_target_character = prev.var:imaginary_friend_murder_target
 						}
 					}
 
@@ -102,8 +86,7 @@ story_cycle_imaginary_friend = {
 		days = { 40 60 }
 		chance = 100 
 		trigger = {
-			exists = var:imaginary_friend_disposition
-			var:imaginary_friend_disposition = flag:angel
+			var:imaginary_friend_disposition ?= flag:angel
 			story_owner = {
 				is_available_adult = yes
 				age > 25
@@ -117,6 +100,24 @@ story_cycle_imaginary_friend = {
 						on_action = imaginary_friend_adult_angel_on_action
 					}
 				}
+			}
+		}
+	}
+
+	#Maintenance group
+	effect_group = {
+		days = 1
+		trigger = {
+			story_owner = { is_landed = no }
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				#You became a landless adventurer/administrative! Ending story prematurely.
+				story_owner = { save_scope_as = story_owner }
+				debug_log = "Imaginary Friend invalidated"
+				debug_log_scopes = yes
+				end_story = yes
 			}
 		}
 	}

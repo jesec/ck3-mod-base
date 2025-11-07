@@ -1,4 +1,4 @@
-######################################################
+﻿######################################################
 ################# MEN-AT-ARMS VIEW ###################
 ######################################################
 
@@ -384,6 +384,13 @@ window = {
 						layoutpolicy_horizontal = expanding
 						text = "MAA_MAINTENANCE"
 					}
+
+					text_single = {
+						visible = "[IsLandlessAdventurer( GetPlayer )]"
+						layoutpolicy_horizontal = expanding
+
+						text = "[Regiment.GetProvisionsCostString]"
+					}
 				}
 			}
 
@@ -498,9 +505,24 @@ types MenAtArmsTypes
 	type vbox_maa_active_regiment_stats_numbers = vbox_maa_stats_numbers_base
 	{
 		datacontext = "[Regiment.GetOriginProvince]"
+		datacontext = "[Regiment.GetOwningTitle]"
 	}
 
-	# Requires Province and Men at Arms data contexts
+	### Brief: vbox_maa_province_stats_numbers
+	#	Widget for showing the men at arms stationed in a province.
+	# 
+	#	Requires datacontexts: 
+	#		MenAtArmsType:
+	#			The type of men at arms we are looking at
+	# 
+	#		Province:
+	#			The province the men at arms are stationed in. If not 
+	#			stationed use null object
+	#
+	#		Title:
+	#			The Landed Title these men at arms are owned by, if any.
+	#			If Personal MAAs, this should be the null object.
+	#
 	type vbox_maa_province_stats_numbers = vbox_maa_stats_numbers_base
 	{
 		blockoverride "stat_spacing"
@@ -514,7 +536,7 @@ types MenAtArmsTypes
 		blockoverride "siege_tt"
 		{
 			tooltip = "REGIMENT_PROVINCE_SIEGE_TT"
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, 'siege_value' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
+			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'siege_value' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
 		}
 		blockoverride "siege_effective_level"
 		{
@@ -528,7 +550,7 @@ types MenAtArmsTypes
 		{
 			tooltip = "REGIMENT_PROVINCE_DAMAGE_TT"
 			# fade out if 0
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, 'damage' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
+			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'damage' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
 		}
 		blockoverride "toughness_stat"
 		{
@@ -538,7 +560,7 @@ types MenAtArmsTypes
 		{
 			tooltip = "REGIMENT_PROVINCE_TOUGHNESS_TT"
 			# fade out if 0
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, 'toughness' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
+			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'toughness' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
 		}
 		blockoverride "pursuit_stat"
 		{
@@ -548,7 +570,7 @@ types MenAtArmsTypes
 		{
 			tooltip = "REGIMENT_PROVINCE_PURSUIT_TT"
 			# fade out if 0
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, 'pursuit' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
+			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'pursuit' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
 		}
 		blockoverride "screen_stat"
 		{
@@ -558,7 +580,7 @@ types MenAtArmsTypes
 		{
 			tooltip = "REGIMENT_PROVINCE_SCREEN_TT"
 			# fade out if 0
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, 'screen' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
+			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'screen' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4'))]"
 		}
 		blockoverride "stat_icon_size"
 		{
@@ -572,13 +594,13 @@ types MenAtArmsTypes
 		margin = { 15 0 }
 
 		datacontext = "[Regiment.GetOriginProvince]"
+		datacontext = "[Regiment.GetOwningTitle]"
 
 		hbox = {
 			layoutpolicy_horizontal = expanding
 			name = "maa_no_location"
 			spacing = 8
-
-			visible = "[Not( Province.IsValid )]"
+			visible = "[And( Not( Province.IsValid ), Not(GetPlayer.GetGovernment.IsType( 'landless_adventurer_government' )) )]"
 
 
 			text_multi = {

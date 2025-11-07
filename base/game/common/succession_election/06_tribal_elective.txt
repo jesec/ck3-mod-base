@@ -13,7 +13,7 @@ tribal_elective = { #Loya Jirga
 		base = 0
 		modifier = { #Each voter is the "representative" of all the free men living in his domain. The larger the domain, the more voting power he has.
 			desc = tooltip_tribal_elective_development
-			is_landed = yes
+			is_landed_or_landless_administrative = yes
 			domain_size >= 1
 			any_held_title = {
 				tier = tier_county
@@ -48,7 +48,7 @@ tribal_elective = { #Loya Jirga
 		}
 		modifier = { #Further boost/reduction is given depending on capital county's opinion.
 			desc = tooltip_tribal_elective_capital_opinion
-			is_landed = yes
+			is_landed_or_landless_administrative = yes
 			exists = capital_county
 			OR = {
 				capital_county.county_opinion <= -5
@@ -107,6 +107,9 @@ tribal_elective = { #Loya Jirga
 
 		##########################	Elector voting patterns (opinion)	##########################
 		elector_voting_pattern_opinion_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (misc)	##########################
+		elector_voting_pattern_circumstances_misc_elective_modifier = yes
 	}
 	
 	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.

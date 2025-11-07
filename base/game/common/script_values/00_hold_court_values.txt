@@ -56,13 +56,6 @@ hold_court_holding_cost_architect_expensive_value = {
 	multiply = 1.2
 }
 
-hold_court_8030_average_mayor_diplomacy_value = {
-	value = 0
-	add = scope:mayor_1.diplomacy
-	add = scope:mayor_2.diplomacy
-	divide = 2
-}
-
 hold_court_8180_contract_weak_value = {
 	value = 2
 }
@@ -199,6 +192,26 @@ court_8090_discount_building_cost_value = {
 	max = 65
 }
 
+hold_court_8330_other_vassals_count = {
+	value = 0
+	every_vassal = {
+		limit = {
+			NOR = {
+				has_vassal_stance = barons_and_minor_landholders
+				trigger_if = {
+					limit = { exists = scope:vassal_1 }
+					has_same_vassal_stance_as_trigger = { COMPARE = scope:vassal_1 }	
+				}
+				trigger_if = {
+					limit = { exists = scope:vassal_2 }
+					has_same_vassal_stance_as_trigger = { COMPARE = scope:vassal_2 }	
+				}
+			}
+		}
+		add = 1
+	}
+}
+
 initial_petitioners_value = 3
 
 petitioner_total_chain_length_value = {
@@ -211,3 +224,5 @@ petitioner_current_progress_value = {
 	value = scope:event_chain_progress
 	add = 1
 }
+
+

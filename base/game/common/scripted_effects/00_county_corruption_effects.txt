@@ -913,6 +913,84 @@ remove_lackluster_administration_modifier_effect = {
 	}
 }
 
+remove_small_investment_in_revolt_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		if = {
+			limit = {
+				exists = scope:marshal_removal
+			}
+			send_interface_message = {
+				type = msg_county_corruption_good_increase_control
+				title = remove_county_corruption.message.marshal_removal
+				left_icon = scope:county
+				right_icon = scope:councillor
+
+				scope:county = {
+					remove_county_modifier = small_investment_in_revolt_modifier
+				}
+			}
+		}
+		else = {
+			scope:county = {
+				remove_county_modifier = small_investment_in_revolt_modifier
+			}
+		}
+	}
+}
+
+remove_medium_investment_in_revolt_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		if = {
+			limit = {
+				exists = scope:marshal_removal
+			}
+			send_interface_message = {
+				type = msg_county_corruption_good_increase_control
+				title = remove_county_corruption.message.marshal_removal
+				left_icon = scope:county
+				right_icon = scope:councillor
+
+				scope:county = {
+					remove_county_modifier = medium_investment_in_revolt_modifier
+				}
+			}
+		}
+		else = {
+			scope:county = {
+				remove_county_modifier = medium_investment_in_revolt_modifier
+			}
+		}
+	}
+}
+
+remove_high_investment_in_revolt_modifier_effect = {
+	save_scope_as = county
+	holder = {
+		if = {
+			limit = {
+				exists = scope:marshal_removal
+			}
+			send_interface_message = {
+				type = msg_county_corruption_good_increase_control
+				title = remove_county_corruption.message.marshal_removal
+				left_icon = scope:county
+				right_icon = scope:councillor
+
+				scope:county = {
+					remove_county_modifier = high_investment_in_revolt_modifier
+				}
+			}
+		}
+		else = {
+			scope:county = {
+				remove_county_modifier = high_investment_in_revolt_modifier
+			}
+		}
+	}
+}
+ 
 remove_random_county_corruption_modifier_effect = {
 	random_list = {
 		100 = {
@@ -981,6 +1059,111 @@ remove_random_county_corruption_modifier_effect = {
 			}
 			remove_lackluster_administration_modifier_effect = yes
 		}
+		100 = {
+			trigger = {
+				has_county_modifier = small_investment_in_revolt_modifier
+			}
+			remove_small_investment_in_revolt_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = medium_investment_in_revolt_modifier
+			}
+			remove_medium_investment_in_revolt_modifier_effect = yes
+		}
+		100 = {
+			trigger = {
+				has_county_modifier = high_investment_in_revolt_modifier
+			}
+			remove_high_investment_in_revolt_modifier_effect = yes
+		}
+	}
+}
+
+remove_every_county_corruption_modifier_effect = {
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_inefficient_tax_collection_modifier
+		}
+		remove_inefficient_tax_collection_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_deserting_levies_modifier
+		}
+		remove_deserting_levies_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_smuggling_ring_modifier
+		}
+		remove_smuggling_ring_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_bandits_rampant_modifier
+		}
+		remove_bandits_rampant_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_inefficient_census_modifier
+		}
+		remove_inefficient_census_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_lack_of_sheriffs_modifier
+		}
+		remove_lack_of_sheriffs_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_lack_of_courts_modifier
+		}
+		remove_lack_of_courts_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_thieves_guild_modifier
+		}
+		remove_thieves_guild_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_unsafe_highways_modifier
+		}
+		remove_unsafe_highways_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_uncooperative_guilds_modifier
+		}
+		remove_uncooperative_guilds_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = county_corruption_lackluster_administration_modifier
+		}
+		remove_lackluster_administration_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = small_investment_in_revolt_modifier
+		}
+		remove_small_investment_in_revolt_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = medium_investment_in_revolt_modifier
+		}
+		remove_medium_investment_in_revolt_modifier_effect = yes
+	}
+	if = {
+		limit = {
+			has_county_modifier = high_investment_in_revolt_modifier
+		}
+		remove_high_investment_in_revolt_modifier_effect = yes
 	}
 }
 

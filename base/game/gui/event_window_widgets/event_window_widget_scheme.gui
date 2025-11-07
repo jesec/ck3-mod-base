@@ -1,125 +1,114 @@
 hbox = {
 	name = "event_window_widget_scheme"
-	layoutpolicy_horizontal = expanding
 	datacontext = "[EventWindowWidget.GetScope.sScheme('scheme')]"
 	visible = "[Scheme.GetSchemeType.IsValid]"
+	layoutpolicy_horizontal = expanding
 	allow_outside = yes
-	margin = { 10 5 }
+	margin = { 15 5 }
 
 	background = {
-		using = Background_Area_With_Header
-	}
+		using = Background_Area_Dark
+		alpha = 0.8
+		margin_left = -5
 
-	vbox = {
-		hbox = {
-			layoutpolicy_horizontal = expanding
-
-			button_group = {
-				onclick = "[ToggleGameViewData('intrigue_window', GetPlayer.GetID)]"
-
-				hbox = {
-
-					text_single = {
-						text = "SCHEME_WINDOW_ITEM_NAME"
-						max_width = 260
-						using = Font_Size_Medium
-						align = left|nobaseline
-						margin_left = 5
-						tooltip = "SCHEME_WINDOW_TT_ITEM"
-					}
-
-					icon = {
-						visible = "[Scheme.IsExposed]"
-						size = { 30 30 }
-						texture = "gfx/interface/icons/schemes/icon_discovered_scheme.dds"
-						tooltip = "SCHEME_WINDOW_EXPOSED_TOOLTIP"
-					}
-
-					widget = {
-						size = { 30 28 }
-						button_play = {
-							parentanchor = bottom
-							onclick = "[ToggleGameViewData('intrigue_window', GetPlayer.GetID)]"
-							tooltip = "tooltip_open_scheme_view"
-						}
-					}
-					expand = {}
-				}
-			}
-
-			expand = {}
-		}
-
-		hbox = {
-			layoutpolicy_horizontal = expanding
-
-			progressbar_segmented_chance = {
-				name = "progress"
-				tooltip = "SCHEME_ITEM_PROGRESS_TOOLTIP"
-				datamodel = "[GetSegmentedProgressChanceBar( GetDefine( 'NScheme', 'STEPS_TO_PROGRESS' ), GetDefine( 'NScheme', 'PROGRESS_FRAMES' ), Scheme.GetProgress, Scheme.GetProgressChance )]"
-			}
-
-			expand = {}
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_fade_horizontal_extended.dds"
+			blend_mode = alphaMultiply
 		}
 	}
 
-	expand = {}
+	hbox = {
+		layoutpolicy_horizontal = expanding
 
-	vbox = {
-		layoutpolicy_vertical = expanding
+		button_group = {
+			onclick = "[ToggleGameViewData('intrigue_window', GetPlayer.GetID)]"
 
-		hbox = {
-			spacing = 20
+			hbox = {
+				text_single = {
+					text = "SCHEME_WINDOW_ITEM_NAME"
+					align = left|nobaseline
+					max_width = 260
+					margin_left = 5
+					using = Font_Size_Medium
 
-			flowcontainer = {
-				tooltip = "SCHEME_WINDOW_SUCCESS_TOOLTIP"
-				spacing = 5
+					tooltip = "SCHEME_WINDOW_TT_ITEM"
+				}
 
 				icon = {
-					name = success_icon
-					size = { 25 25 }
+					visible = "[Scheme.IsExposed]"
+					size = { 30 30 }
+					texture = "gfx/interface/icons/schemes/icon_discovered_scheme.dds"
 
-					texture = "gfx/interface/icons/schemes/icon_scheme_success.dds"
+					tooltip = "SCHEME_WINDOW_EXPOSED_TOOLTIP"
 				}
 
-				text_single = {
-					name = "success"
-					parentanchor = vcenter
-					text = "SCHEME_WINDOW_SUCCESS_CHANCE"
-					using = Font_Size_Small
+				widget = {
+					size = { 30 28 }
+
+					button_play = {
+						parentanchor = bottom
+						onclick = "[ToggleGameViewData('intrigue_window', GetPlayer.GetID)]"
+
+						tooltip = "tooltip_open_scheme_view"
+					}
 				}
+				expand = {}
 			}
-
-			flowcontainer = {
-				visible = "[Scheme.IsSecret]"
-				spacing = 5
-				tooltip = "SCHEME_WINDOW_SECRECY_TOOLTIP"
-
-				icon = {
-					name = "secrecy_icon"
-					size = { 25 25 }
-					texture = "gfx/interface/icons/schemes/icon_secrecy.dds"
-				}
-
-				text_single = {
-					name = "secrecy"
-					parentanchor = vcenter
-					text = "SCHEME_WINDOW_SECRECY"
-					using = Font_Size_Small
-				}
-			}
-
 		}
 
 		expand = {}
+	}
 
-		text_single = {
-			name = "estimated_time"
-			text = "SW_ESTIMATED_TIME"
-			layoutpolicy_horizontal = expanding
-			using = Font_Size_Small
-			align = left
-			tooltip = "[SelectLocalization( Scheme.IsReady, 'SCHEME_READY_TOOLTIP', Scheme.GetEstimatedTimeRemaining )]"
+	hbox = {
+		spacing = 10
+
+		flowcontainer = {
+			spacing = 5
+
+			tooltip = "SCHEME_WINDOW_SUCCESS_TOOLTIP"
+
+			icon = {
+				name = success_icon
+				size = { 30 30 }
+
+				texture = "gfx/interface/icons/schemes/icon_scheme_success.dds"
+			}
+
+			text_single = {
+				name = "success"
+				parentanchor = vcenter
+				text = "SCHEME_WIDGET_SUCCESS_CHANCE_SHORT"
+				align = nobaseline
+				default_format = "#high"
+				using = Font_Size_Medium
+			}
 		}
+
+		flowcontainer = {
+			visible = "[Scheme.IsSecret]"
+			spacing = 5
+
+			tooltip = "SCHEME_WINDOW_SECRECY_TOOLTIP"
+
+			icon = {
+				name = "secrecy_icon"
+				size = { 30 30 }
+				texture = "gfx/interface/icons/schemes/icon_secrecy.dds"
+			}
+
+			text_single = {
+				name = "secrecy"
+				parentanchor = vcenter
+				text = "SCHEME_WIDGET_SECRECY_SHORT"
+				align = nobaseline
+				default_format = "#high"
+				using = Font_Size_Medium
+
+			}
+		}
+	}
+
+	spacer = {
+		size = { 200 1 }
 	}
 }

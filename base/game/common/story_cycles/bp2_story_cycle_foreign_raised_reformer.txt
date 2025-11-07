@@ -19,33 +19,26 @@
 		debug_log_date = yes
 		story_owner = {
 			if = {
-				limit = {
-					has_character_flag = hostage_childhood
-				}
+				limit = { is_alive = yes }
 				remove_character_flag = hostage_childhood
-			}
-			if = {
-				limit = {
-					has_character_flag = education_childhood
-				}
 				remove_character_flag = education_childhood
+				remove_character_flag = foreign_realm_reforms
+				remove_character_flag = rejecting_foreign_realm_reforms
+				remove_character_flag = foreign_social_reforms
+				remove_character_flag = rejecting_foreign_social_reforms
+				remove_character_flag = foreign_ritual_reforms
+				remove_character_flag = rejecting_foreign_ritual_reforms
+				remove_character_flag = foreign_maa_reforms
+				remove_character_flag = rejecting_foreign_maa_reforms
+				remove_variable = childhood_location
+				remove_variable = advanced_culture
+				remove_variable = advanced_realm
+				remove_variable = foreign_educator
+				remove_variable = advanced_culture_faith
+				remove_variable = reform_counter
+				remove_variable = reaffirmation_counter
+				clear_variable_list = rejected_traditions
 			}
-			remove_character_flag ?= foreign_realm_reforms
-			remove_character_flag ?= rejecting_foreign_realm_reforms
-			remove_character_flag ?= foreign_social_reforms
-			remove_character_flag ?= rejecting_foreign_social_reforms
-			remove_character_flag ?= foreign_ritual_reforms
-			remove_character_flag ?= rejecting_foreign_ritual_reforms
-			remove_character_flag ?= foreign_maa_reforms
-			remove_character_flag ?= rejecting_foreign_maa_reforms
-			remove_variable = childhood_location
-			remove_variable = advanced_culture
-			remove_variable ?= advanced_realm
-			remove_variable ?= foreign_educator
-			remove_variable ?= advanced_culture_faith
-			remove_variable ?= reform_counter
-			remove_variable ?= reaffirmation_counter
-			clear_variable_list = rejected_traditions
 		}
 	}
 #
@@ -106,7 +99,7 @@
 				exists = var:advanced_culture
 				exists = var:childhood_location
 				is_at_war = no
-				is_landed = yes
+				is_landed_or_landless_administrative = yes
 				is_imprisoned = no
 				is_incapable = no
 				NOT = { has_character_flag = had_event_bp2_yearly_6090 }
@@ -151,7 +144,7 @@
 				exists = var:advanced_culture
 				exists = var:childhood_location
 				is_at_war = no
-				is_landed = yes
+				is_landed_or_landless_administrative = yes
 				is_imprisoned = no
 				is_incapable = no
 				NOT = { has_character_flag = had_event_bp2_yearly_6100 }
@@ -167,6 +160,24 @@
 						trigger_event = bp2_yearly.6100
 					}
 				}
+			}
+		}
+	}
+
+	#Maintenance group
+	effect_group = {
+		days = 1
+		trigger = {
+			story_owner = { is_landed = no }
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				#You became a landless adventurer/administrative! Ending story prematurely.
+				story_owner = { save_scope_as = story_owner }
+				debug_log = "Reformer invalidated"
+				debug_log_scopes = yes
+				end_story = yes
 			}
 		}
 	}

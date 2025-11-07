@@ -341,6 +341,7 @@
  feature_decoration_pattern_animals: "兽形图案"
  feature_decoration_pattern_bird: "一只威风凛凛的鸟"
  feature_decoration_material_inlay_HSB_placeholder: "#D 占位符#!"
+ feature_icon_decoration_pattern_saint: "[Artifact.GetOwner.Custom('PredeterminedSaintName')]"
  ###########
  #Quality and wealth #
  ###########
@@ -541,6 +542,9 @@
  feature_crown_decoration_filigree: "装饰着精致复杂的金银花丝"
  feature_crown_decoration_filigree_and_gem: "装饰有繁复的金银花丝，衬托着中心那块巨大的[Artifact.GetFeatureText( 'decoration_material_gem' )]"
  create_artifact_crown_tooltip: "[inspiration_owner.GetShortUIName]制造了一顶做工[SCOPE.Custom('ArtifactQuality')]的冠冕"
+ #Icons
+ artifact_icon_name: "[newly_created_artifact.GetFeatureText('icon_decoration')]圣像"
+ artifact_icon_description: "一幅[SCOPE.Custom('ArtifactArticleWealth')]的圣像，做工[SCOPE.Custom('ArtifactQuality')]，描绘了[newly_created_artifact.GetFeatureText('icon_decoration')]"
  #Brooches
  artifact_brooch: "胸针"
  artifact_brooch_pedestal: "$artifact_brooch$"
@@ -873,7 +877,7 @@
  artifact_zomorrodnegar_name: "祖母绿之剑"
  artifact_zomorrodnegar_description: "这把嵌有祖母绿的宝剑据说是神话中所罗门王的利刃，被用来杀死身着钢甲的魔鬼。"
  artifact_muhammads_epistles_name: "穆哈默德信札"
- artifact_muhammads_epistles_description: "这封信是先知穆罕默德与[THIS.Custom('EpistleReciever')|U]统治者间的通信。"
+ artifact_muhammads_epistles_description: "这封信是先知穆罕默德与[newly_created_artifact.Custom('EpistleReciever')|U]统治者间的通信。"
  epistle_syria: "叙利亚"
  epistle_arabia: "阿拉伯部落"
  epistle_persia: "波斯"
@@ -973,13 +977,13 @@
  mythical_creature_horn: "[ROOT.Char.Custom('HornedMythicalCreature')|U]之角"
  mythical_creature_horn.desc: "一块形状可疑的兽角，据传取自神话中的[ROOT.Char.Custom('HornedMythicalCreature')]。"
  mythical_creature_figurine: "[ROOT.Char.Custom('TrinketLookAdjective')|U]宝石的[ROOT.Char.Custom('RegionalMythicalCreature')]小雕像"
- mythical_creature_figurine.desc: "这座小雕像刻画了[new_trinket.Custom('ArtifactAnimalAdjective')]的[SCOPE.Custom('RegionalMythicalCreatureLower')]，似乎用产自[target_location.GetNameNoTooltip]的小巧而闪亮的宝石进行了[ROOT.Char.Custom('TrinketLookAdverbFollowup')][ROOT.Char.Custom('TrinketLookAdjective')]。"
+ mythical_creature_figurine.desc: "这座小雕像刻画了[new_trinket.Custom('ArtifactAnimalAdjective')][SCOPE.Custom('RegionalMythicalCreatureLower')]，似乎用产自[ROOT.Char.GetCurrentLocation.GetNameNoTooltip]的小巧而闪亮的宝石进行了[ROOT.Char.Custom('TrinketLookAdverbFollowup')][ROOT.Char.Custom('TrinketLookAdjective')]。"
  st_davids_taper: "圣达味的细烛"
  st_davids_taper.desc: "似乎有人曾试图把它两端都点燃。"
  jira_stick: "吉拉大理石杖"
  jira_stick.desc: "虽然已被使用多年，但其尖端仍具强大威力。"
- lucky_coin: "[ROOT.Char.GetCulture.GetNameNoTooltip]式幸运币"
- lucky_coin.desc: "一枚[ROOT.Char.GetCulture.GetNameNoTooltip]式钱币，产自[target_location.GetNameNoTooltip]。\n\n由于在指间不停被摩挲捻转，曾经铸刻的表面现在也变得光滑圆润了起来。"
+ lucky_coin: "[ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip]式幸运币"
+ lucky_coin.desc: "一枚[ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip]式钱币，产自[ROOT.Char.GetCurrentLocation.GetNameNoTooltip]。\n\n由于在指间不停被摩挲捻转，曾经铸刻的表面现在也变得光滑圆润了起来。"
  lavender_jade_pendant: "紫玉吊坠"
  lavender_jade_pendant.desc: "富贵的紫色纹理令人称奇。"
  #Rare
@@ -990,8 +994,8 @@
  #Easter eggs
  easteregg_artifact_elisabeth_plush: "伊丽莎白的毛绒狐狸"
  easteregg_artifact_elisabeth_plush_description: "伊丽莎白的毛绒狐狸是一件深受人们喜爱的玩具，在她生命中大部分时间都伴随其左右。无论是谁聘用伊丽莎白来编制复杂的密码，都常常会看到她对着这件玩具说话。它让人感到安慰，并激励它的持有者效仿狐狸的黠慧。"
- easteregg_artifact_nicks_redolence: "医生的香水"
- easteregg_artifact_nicks_redolence_description: "一个小烧瓶，里面装着[ROOT.Char.Custom('GetComplexColor')]的香水，一定会让男男女女都为之陶醉。瓶塞上刻着一行小字：“消除你的烦恼。”"
+ easteregg_artifact_nicks_redolence: "最终的香水"
+ easteregg_artifact_nicks_redolence_description: "一个小烧瓶，里面装着[ROOT.Char.Custom('GetComplexColor')]的香水，一定会让贵族男女们都为之心醉神迷。瓶塞上刻着一行小字：#EMP “如今，结局将至……”#!"
  easteregg_artifact_chad_book: "《埃涅阿斯纪（注释本）》"
  easteregg_artifact_chad_book_description: "一部广受喜爱、装帧华丽的维吉尔《埃涅阿斯纪》抄本，上面布满了歪歪扭扭的字迹——内容或暗昧昏晦，或洞明晓畅。"
  easteregg_artifact_chad_dagger: "匕首"
@@ -1106,3 +1110,9 @@
  artifact_fine_brooch_description: "这枚胸针的边缘微妙地刻上了[artifact.GetOwner.GetHouse.GetBaseName]家族的名称，让关于他们正统性的话语迅速传播开来。"
  medicine_jar: "药罐"
  medicine_jar_desc: "这个薄釉陶器中装着稀有高效的草药，医用矿物，以及各类脱水的动物器官——所有这些都是医生用来治疗疾病和平衡体液的。"
+ whale_fat_candles_name: "鲸脂蜡烛"
+ whale_fat_candles_description: "这些蜡烛是用一头可怕巨兽的鲸脂制成的，散发出一种可怕的气氛。"
+ warenne_coin: "瓦雷讷硬币"
+ warenne_coin_description: "这枚硬币正面带有瓦雷讷宗族蓝黄相间的棋盘徽章。硬币边缘有一片暗沉的血渍。"
+ traitors_head: "叛徒首级"
+ traitors_head_description: "一颗被整齐砍下的头颅。与其说是一件纪念品，不如说是一条信息。"

@@ -1,10 +1,8 @@
-types Popups
+﻿types Popups
 {
 	type activity_pulse_action_popup_right = widget
 	{
 		name = "pulse_action_popup"
-
-		datacontext = "[Activity.GetLastWeeklyPulseAction]"
 
 		visible_at_creation = no
 		size = { 700 96 }
@@ -23,18 +21,12 @@ types Popups
 			name = _show
 			next = activity_hide_activity_pulse_popup
 			using = Animation_FadeIn_Standard
-			on_start = "[PdxGuiWidget.AccessChild('toast_icon').TriggerAnimation('show')]"
-			on_start = "[PdxGuiWidget.AccessChild('toast_paper').TriggerAnimation('show')]"
-			on_start = "[PdxGuiWidget.AccessChild('toast_content').TriggerAnimation('show')]"
 		}
 
 		state = {
 			name = _hide
 			using = Animation_FadeOut_Standard
 			duration = 1
-			on_start = "[PdxGuiWidget.AccessChild('toast_icon').TriggerAnimation('hide')]"
-			on_start = "[PdxGuiWidget.AccessChild('toast_paper').TriggerAnimation('hide')]"
-			on_start = "[PdxGuiWidget.AccessChild('toast_content').TriggerAnimation('hide')]"
 		}
 
 		state = {
@@ -44,7 +36,6 @@ types Popups
 		}
 
 		widget = {
-			visible = "[ActivityPulseEffect.IsValid]"
 			size = { 100% 100% }
 
 			widgetanchor = center
@@ -176,6 +167,7 @@ types Popups
 
 							icon = {
 								name = "action_icon"
+								datacontext = "[Activity.GetLastWeeklyPulseAction]"
 								size = { 40 40 }
 								texture = "[ActivityPulseAction.GetIcon]"
 								using = tooltip_ws

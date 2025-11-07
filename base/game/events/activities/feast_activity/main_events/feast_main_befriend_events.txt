@@ -298,7 +298,7 @@ feast_main_befriend.1001 = {
 		OR = {
 			any_scheme = {
 				scheme_type = befriend
-				scheme_target = {
+				scheme_target_character = {
 					exists = involved_activity
 					involved_activity = scope:activity
 				}
@@ -338,7 +338,7 @@ feast_main_befriend.1001 = {
 			limit = {
 				any_scheme = {
 					scheme_type = befriend
-					scheme_target = {
+					scheme_target_character = {
 						exists = involved_activity
 						involved_activity = scope:activity
 					}
@@ -347,12 +347,12 @@ feast_main_befriend.1001 = {
 			random_scheme = {
 				limit = {
 					scheme_type = befriend
-					scheme_target = {
+					scheme_target_character = {
 						exists = involved_activity
 						involved_activity = scope:activity
 					}
 				}
-				scheme_target = {
+				scheme_target_character = {
 					save_scope_as = potential_friend
 				}
 			}
@@ -382,6 +382,21 @@ feast_main_befriend.1001 = {
 				can_set_relation_friend_trigger = { CHARACTER = scope:potential_friend }
 			}
 			set_relation_friend = { reason = friend_feast_talking_and_laughing target = scope:potential_friend }
+			# Complete activity intent if relevant
+			if = {
+				limit = {
+					exists = involved_activity
+					has_activity_intent = befriend_attendee_intent
+					intent_target ?= scope:potential_friend
+					intent_target.involved_activity ?= root.involved_activity
+				}
+				save_scope_as = intent_completer
+				send_interface_toast = {
+					title = activity_intent_complete_toast
+					left_icon = scope:potential_friend
+					complete_activity_intent = yes
+				}
+			}
 		}
 		else = {
 			progress_towards_friend_effect = {
@@ -394,13 +409,13 @@ feast_main_befriend.1001 = {
 			limit = {
 				any_scheme = {
 					scheme_type = befriend
-					scheme_target = scope:potential_friend
+					scheme_target_character = scope:potential_friend
 				}
 			}
 			random_scheme = {
 				limit = {
 					scheme_type = befriend
-					scheme_target = scope:potential_friend
+					scheme_target_character = scope:potential_friend
 				}
 				end_scheme = yes
 			}
@@ -792,7 +807,7 @@ feast_main_befriend.5002 = {
 		OR = {
 			any_scheme = {
 				scheme_type = befriend
-				scheme_target = {
+				scheme_target_character = {
 					exists = involved_activity
 					involved_activity = scope:activity
 				}
@@ -831,7 +846,7 @@ feast_main_befriend.5002 = {
 			limit = {
 				any_scheme = {
 					scheme_type = befriend
-					scheme_target = {
+					scheme_target_character = {
 						exists = involved_activity
 						involved_activity = scope:activity
 					}
@@ -840,12 +855,12 @@ feast_main_befriend.5002 = {
 			random_scheme = {
 				limit = {
 					scheme_type = befriend
-					scheme_target = {
+					scheme_target_character = {
 						exists = involved_activity
 						involved_activity = scope:activity
 					}
 				}
-				scheme_target = {
+				scheme_target_character = {
 					save_scope_as = potential_friend
 				}
 			}

@@ -36,3 +36,55 @@ adoption.0001 = {
 		}
 	}
 }
+
+# Adventurer Adoption accepted
+adoption.0002 = {
+	type = letter_event
+	opening = {
+		desc = adoption.0001.opening
+	}
+	desc = adoption.0002.desc
+	sender = scope:recipient
+
+	option = {
+		name = adoption.0002.a
+		play_music_cue = "mx_cue_touching_moment"
+		adventurer_adopt_effect = {
+			CHILD = scope:recipient
+			ADOPTER = scope:actor
+		}
+		set_designated_heir = scope:recipient
+		create_character_memory = {
+			type = adventurer_family_adopted
+			participants = {
+				adoptee = scope:recipient
+			}
+		}
+		scope:new_memory = {
+			set_variable = {
+				name = adopted_dynasty
+				value = scope:actor.dynasty
+			}
+		}
+		scope:recipient = {
+			create_character_memory = {
+				type = was_adventurer_family_adopted
+				participants = {
+					adopter = scope:actor
+				}
+			}
+			scope:new_memory = {
+				set_variable = {
+					name = adopted_dynasty
+					value = scope:actor.dynasty
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { exists = var:adopted_dynasty } # Error suppression 
+		}
+	}
+}

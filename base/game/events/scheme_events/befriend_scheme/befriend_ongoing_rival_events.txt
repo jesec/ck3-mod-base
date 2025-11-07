@@ -15,7 +15,14 @@ befriend_ongoing_rival.0001 = {
 	title = befriend_ongoing_rival.0001.t
 	desc = befriend_ongoing_rival.0001.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = writing
+	}
+	right_portrait = {
+		character = scope:target
+		animation = dismissal
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -55,6 +62,10 @@ befriend_ongoing_rival.0002 = {
 	desc = befriend_ongoing_rival.0002.desc
 	theme = befriend_scheme
 	left_portrait = {
+		character = root
+		animation = debating
+	}
+	right_portrait = {
 		character = scope:target
 		animation = rage
 	}
@@ -123,7 +134,7 @@ befriend_ongoing_rival.0002 = {
 		name = befriend_ongoing_rival_0002.b
 		duel = {
 			skill = diplomacy
-			target = scope:scheme.scheme_target
+			target = scope:scheme.scheme_target_character
 			15 = { 		
 				compare_modifier = {
 					value = scope:duel_value
@@ -132,6 +143,10 @@ befriend_ongoing_rival.0002 = {
 				}
 				show_as_tooltip = {
 					scope:scheme = {
+						add_scheme_progress = {
+				value = scheme_progress_gain
+				multiply = 2
+			}
 						add_scheme_modifier = {
 							type = settled_differences_modifier
 						}
@@ -185,7 +200,14 @@ befriend_ongoing_rival.0003 = {
 	title = befriend_ongoing_rival.0003.t
 	desc = befriend_ongoing_rival.0003.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_forgiving
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -201,6 +223,12 @@ befriend_ongoing_rival.0003 = {
 
 	option = {
 		name = befriend_ongoing_rival_0003.a
+		scope:scheme = {
+			add_scheme_progress = {
+				value = scheme_progress_gain
+				multiply = 2
+			}
+		}
 	}
 }
 
@@ -210,7 +238,14 @@ befriend_ongoing_rival.0004 = {
 	title = befriend_ongoing_rival.0004.t
 	desc = befriend_ongoing_rival.0004.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = anger
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_vengeful
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -233,14 +268,25 @@ befriend_ongoing_rival.0005 = {
 	title = befriend_ongoing_rival.0005.t
 	desc = befriend_ongoing_rival.0005.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = debating
+	}
+	right_portrait = {
+		character = scope:target
+		animation = rage
+	}
+	lower_right_portrait = scope:spymaster
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
 	}
 
 	trigger = {
-		exists = cp:councillor_spymaster
+		OR = {
+			exists = cp:councillor_spymaster
+			employs_court_position = second_camp_officer
+		}
 		scope:scheme = {
 			NOT = {
 				exists = var:had_lies_event
@@ -256,7 +302,16 @@ befriend_ongoing_rival.0005 = {
 				days = 180
 			}
 		}
-		cp:councillor_spymaster = {
+		if = {
+			limit = {
+				employs_court_position = second_camp_officer
+			}
+			random_court_position_holder = {
+				type = second_camp_officer
+				save_scope_as = spymaster
+			}
+		}
+		cp:councillor_spymaster ?= {
 			save_scope_as = spymaster
 		}
 	}
@@ -310,14 +365,21 @@ befriend_ongoing_rival.2000 = {
 	title = befriend_ongoing_rival.2000.t
 	desc = befriend_ongoing_rival.2000.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = writing
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_dishonorable
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
 	}
 	
 	trigger = {
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			OR = {
 				has_personality_benevolent_trigger = yes
 				has_personality_dominant_trigger = yes
@@ -349,11 +411,11 @@ befriend_ongoing_rival.2000 = {
 		custom_tooltip = befriend_ongoing_rival_2000.tt
 		set_variable = { name = personality_compliment value = flag:benevolent }
 		if = {
-			limit = { scope:scheme.scheme_target = { has_personality_benevolent_trigger = yes } }
+			limit = { scope:scheme.scheme_target_character = { has_personality_benevolent_trigger = yes } }
 			trigger_event = befriend_ongoing_rival.2001 #Success
 		}
 		else_if = {
-			limit = { scope:scheme.scheme_target = { has_personality_malicious_trigger = yes } }
+			limit = { scope:scheme.scheme_target_character = { has_personality_malicious_trigger = yes } }
 			trigger_event = befriend_ongoing_rival.2002 #Insulting failure
 		}
 		else = {
@@ -375,11 +437,11 @@ befriend_ongoing_rival.2000 = {
 		custom_tooltip = befriend_ongoing_rival_2000.tt
 		set_variable = { name = personality_compliment value = flag:dominant }
 		if = {
-			limit = { scope:scheme.scheme_target = { has_personality_dominant_trigger = yes } }
+			limit = { scope:scheme.scheme_target_character = { has_personality_dominant_trigger = yes } }
 			trigger_event = befriend_ongoing_rival.2001 #Success
 		}
 		else_if = {
-			limit = { scope:scheme.scheme_target = { has_personality_submissive_trigger = yes } }
+			limit = { scope:scheme.scheme_target_character = { has_personality_submissive_trigger = yes } }
 
 			trigger_event = befriend_ongoing_rival.2002 #Insulting failure
 		}
@@ -402,11 +464,11 @@ befriend_ongoing_rival.2000 = {
 		custom_tooltip = befriend_ongoing_rival_2000.tt
 		set_variable = { name = personality_compliment value = flag:extroverted }
 		if = {
-			limit = { scope:scheme.scheme_target = { has_personality_extroverted_trigger = yes } }
+			limit = { scope:scheme.scheme_target_character = { has_personality_extroverted_trigger = yes } }
 			trigger_event = befriend_ongoing_rival.2001 #Success
 		}
 		else_if = {
-			limit = { scope:scheme.scheme_target = { has_personality_introverted_trigger = yes } }
+			limit = { scope:scheme.scheme_target_character = { has_personality_introverted_trigger = yes } }
 			trigger_event = befriend_ongoing_rival.2002 #Insulting failure
 		}
 		else = {
@@ -428,11 +490,11 @@ befriend_ongoing_rival.2000 = {
 		custom_tooltip = befriend_ongoing_rival_2000.tt
 		set_variable = { name = personality_compliment value = flag:levelheaded }
 		if = {
-			limit = { scope:scheme.scheme_target = { has_personality_levelheaded_trigger = yes } }
+			limit = { scope:scheme.scheme_target_character = { has_personality_levelheaded_trigger = yes } }
 			trigger_event = befriend_ongoing_rival.2001 #Success
 		}
 		else_if = {
-			limit = { scope:scheme.scheme_target = { has_personality_emotional_trigger = yes } }
+			limit = { scope:scheme.scheme_target_character = { has_personality_emotional_trigger = yes } }
 			trigger_event = befriend_ongoing_rival.2002 #Insulting failure
 		}
 		else = {
@@ -489,7 +551,14 @@ befriend_ongoing_rival.2001 = {
 		desc = befriend_ongoing_rival.2001.end
 	}
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	right_portrait = {
+		character = scope:target
+		animation = happiness
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -505,6 +574,12 @@ befriend_ongoing_rival.2001 = {
 
 	option = {
 		name = befriend_ongoing_rival_2001.a
+		scope:scheme = {
+			add_scheme_progress = {
+				value = scheme_progress_gain
+				multiply = 2
+			}
+		}
 		hidden_effect = { remove_variable = personality_compliment }
 	}
 }
@@ -535,7 +610,14 @@ befriend_ongoing_rival.2002 = {
 		desc = befriend_ongoing_rival.2002.end
 	}
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = disbelief
+	}
+	right_portrait = {
+		character = scope:target
+		animation = anger
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -552,6 +634,12 @@ befriend_ongoing_rival.2002 = {
 
 	option = {
 		name = befriend_ongoing_rival_2002.a
+		scope:scheme = {
+			add_scheme_progress = {
+				value = scheme_progress_gain
+				multiply = 2
+			}
+		}
 		hidden_effect = { remove_variable = personality_compliment }
 	}
 }
@@ -581,7 +669,14 @@ befriend_ongoing_rival.2003 = {
 		desc = befriend_ongoing_rival.2003.end
 	}
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = disappointed
+	}
+	right_portrait = {
+		character = scope:target
+		animation = disapproval
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -589,7 +684,10 @@ befriend_ongoing_rival.2003 = {
 
 	immediate = {
 		scope:scheme = {
-			add_scheme_progress = scheme_progress_loss
+			add_scheme_progress = {
+				value = scheme_progress_gain
+				multiply = 2
+			}
 		}
 	}
 

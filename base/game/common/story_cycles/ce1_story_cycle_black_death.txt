@@ -1,6 +1,6 @@
 ﻿story_cycle_black_death = {
 	# by Nick Meredith
-	
+
 	on_setup = { #check if the plague is close enough
 		story_owner = {
 			trigger_event = {
@@ -168,6 +168,25 @@
 				effect = {
 					end_story = yes
 				}
+			}
+		}
+	}
+
+
+	#Maintenance group
+	effect_group = {
+		days = 1
+		trigger = {
+			story_owner = { is_landed = no }
+		}
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				#You became a landless adventurer/administrative! Ending story prematurely.
+				story_owner = { save_scope_as = story_owner }
+				debug_log = "Black Death invalidated"
+				debug_log_scopes = yes
+				end_story = yes
 			}
 		}
 	}

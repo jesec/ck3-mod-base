@@ -1,4 +1,4 @@
-textbox = {
+﻿textbox = {
 	name = "console_output_item"
 	maximumsize = { 389 -1 }
 	align = left|top
@@ -188,6 +188,8 @@ flowcontainer = {
 					raw_text = "Debug Menus"
 					autoresize = yes
 					fontcolor = { 1 1 1 0.5 }
+					max_width = 40
+					multiline = yes
 				}
 
 				expand = {}
@@ -257,15 +259,33 @@ flowcontainer = {
 				}
 
 				dockable_button = {
-					name = "kill_console_button"
-					onclick = "[ExecuteConsoleCommand('kill')]"
-					raw_tooltip = "Kill Currently Played Character"
+					name = "renown_console_button"
+					onclick = "[ExecuteConsoleCommand('effect = { dynasty = { add_dynasty_prestige = 1000 } }')]"
+					onrightclick = "[ExecuteConsoleCommand('effect = { dynasty = { add_dynasty_prestige = -1000 } }')]"
+					button_ignore = none
+					raw_tooltip = "Left-click: Gain 1000 Renown, Right-click: Lose 1000 Renown"
 					using = tooltip_ne
 
 					icon = {
 						parentanchor = center
 						size = { 30 30 }
-						texture = "gfx/interface/icons/icon_dead.dds"
+						texture = "gfx/interface/icons/currencies/icon_dynasty_prestige_03.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "legitimacy_console_button"
+					onclick = "[ExecuteConsoleCommand('effect = { add_legitimacy = 100 }')]"
+					onrightclick = "[ExecuteConsoleCommand('effect = { add_legitimacy = -100 }')]"
+					button_ignore = none
+					raw_tooltip = "Left-click: Gain 100 Legitimacy, Right-click: Lose 100 Legitimacy"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 30 30 }
+						texture = "gfx/interface/icons/icon_legitimacy.dds"
 					}
 				}
 
@@ -314,6 +334,150 @@ flowcontainer = {
 						position = { 0 1 }
 						size = { 30 30 }
 						texture = "gfx/interface/icons/icon_gold.dds"
+					}
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 5
+				margin = { 0 5 }
+				margin_left = 5
+
+				expand = {}
+
+				dockable_button = {
+					name = "kill_console_button"
+					onclick = "[ExecuteConsoleCommand('kill')]"
+					raw_tooltip = "Kill Currently Played Character"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						size = { 30 30 }
+						texture = "gfx/interface/icons/icon_dead.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "instabuild_button"
+					onclick = "[ExecuteConsoleCommand('instabuild')]"
+					raw_tooltip = "Build buildings instantly, click again to turn off"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 1 1 }
+						size = { 35 35 }
+						texture = "gfx/interface/icons/icon_holding_city.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "tech_button"
+					onclick = "[ExecuteConsoleCommand('discover_all_eras')]"
+					raw_tooltip = "Discover all Innovations"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 1 1 }
+						size = { 35 35 }
+						texture = "gfx/interface/icons/message_feed/technology.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "perks_button"
+					onclick = "[ExecuteConsoleCommand('gain_all_perks')]"
+					raw_tooltip = "Gain all Lifestyle Perks"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 1 1 }
+						framesize = { 60 60 }
+						frame = 2
+						size = { 25 25 }
+						texture = "gfx/interface/icons/lifestyles_perks/node_diplomacy.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "legacies_button"
+					onclick = "[ExecuteConsoleCommand('gain_all_dynasty_perks')]"
+					button_ignore = none
+					raw_tooltip = "Gain all Dynasty Legacies"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						size = { 25 25 }
+						texture = "gfx/interface/icons/currencies/icon_dynasty_prestige_05.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "birth_button"
+					onclick = "[ExecuteConsoleCommand('instant_birth')]"
+					button_ignore = none
+					raw_tooltip = "Instant Birth, click again to disable"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 30 30 }
+						texture = "gfx/interface/icons/traits/born_in_the_purple.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "save_button"
+					onclick = "[ExecuteConsoleCommand('save_every 5')]"
+					onrightclick = "[ExecuteConsoleCommand('save_every 15')]"
+					button_ignore = none
+
+					raw_tooltip = "Left-click: Create a Save every 5 years, Right-click: Create a Save every 15 years"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 25 25 }
+						texture = "gfx/interface/icons/court_position_types/chronicler_court_position.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "stress_button"
+					onclick = "[ExecuteConsoleCommand('add_stress 50')]"
+					onrightclick = "[ExecuteConsoleCommand('add_stress -50')]"
+					button_ignore = none
+					raw_tooltip = "Left-click: Gain 50 Stress, Right-click: Lose 50 Stress"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						size = { 30 30 }
+						texture = "gfx/interface/icons/stress/icon_stress.dds"
+					}
+				}
+
+				dockable_button = {
+					name = "influence_console_button"
+					onclick = "[ExecuteConsoleCommand('influence 1000')]"
+					onrightclick = "[ExecuteConsoleCommand('influence -1000')]"
+					button_ignore = none
+
+					raw_tooltip = "Left-click: Gain 1000 Influence, Right-click: Lose 1000 Influence"
+					using = tooltip_ne
+
+					icon = {
+						parentanchor = center
+						position = { 0 1 }
+						size = { 30 30 }
+						texture = "gfx/interface/icons/currencies/icon_influence_04.dds"
 					}
 				}
 			}
@@ -459,6 +623,15 @@ flowcontainer = {
 				#	tintcolor = { 0.9 0.9 0 0.8 }
 				#	raw_tooltip = "Window for GUI testing (test_gui.gui)"
 				#}
+				
+				dockable_button = {
+					layoutpolicy_horizontal = expanding
+					size = { 0 30 }
+					raw_text = "Script Profiler"
+					onclick = "[ExecuteConsoleCommand('Script.Profiling.Gui')]"
+					tintcolor = { 0.9 0.9 0 0.8 }
+					raw_tooltip = "Tool for profiling script performance"
+				}
 
 				dockable_button = {
 					layoutpolicy_horizontal = expanding

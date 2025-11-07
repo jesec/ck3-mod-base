@@ -33,12 +33,15 @@ murder_ongoing.3010 = {
 	}
 	theme = murder_scheme
 	left_portrait = {
-		character = scope:agent_in_question
-		animation = drink
+		character = root
+		animation = eyeroll
 	}
 	right_portrait = {
+		character = scope:agent_in_question
+		animation = wedding_drunk
+	}
+	lower_right_portrait = {
 		character = scope:agent_hero_of_the_moment
-		animation = idle
 	}
 	widget = {
 		gui = "event_window_widget_scheme"
@@ -47,14 +50,14 @@ murder_ongoing.3010 = {
 
 	trigger = {
 		scope:scheme = {
-			any_scheme_agent = { has_trait = drunkard }				
+			any_scheme_agent_character = { has_trait = drunkard }				
 		}
 		NOT = { exists = scope:scheme.var:had_drunkard_agent_event }
 	}
 
 	immediate = {
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					has_trait = drunkard
 					has_trait = wrathful
@@ -70,7 +73,7 @@ murder_ongoing.3010 = {
 					scope:agent_in_question = {
 						has_trait = wrathful
 					}
-					any_scheme_agent = { #A courtier of target that likes them well enough
+					any_scheme_agent_character = { #A courtier of target that likes them well enough
 						NOT = { this = scope:agent_in_question }
 						is_courtier_of = scope:target
 						reverse_opinion = {
@@ -79,7 +82,7 @@ murder_ongoing.3010 = {
 						}
 					}
 				}
-				random_scheme_agent = {
+				random_scheme_agent_character = {
 					limit = {
 						NOT = { this = scope:agent_in_question }
 						is_courtier_of = scope:target
@@ -201,7 +204,7 @@ murder_ongoing.3010 = {
 				expose_secret = scope:target
 			}
 		}
-		scope:scheme.scheme_target = {			
+		scope:scheme.scheme_target_character = {			
 			add_opinion = {
 				modifier = hero_of_the_moment_opinion
 				target = scope:agent_hero_of_the_moment
@@ -238,7 +241,14 @@ murder_ongoing.3301 = {
 	title = murder_ongoing.3301.t
 	desc = murder_ongoing.3301.desc
 	theme = murder_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = manic
+	}
+	right_portrait = {
+		character = scope:target
+		animation = boredom
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -302,6 +312,10 @@ murder_ongoing.3302 = {
 		character = root
 		animation = personality_dishonorable
 	}
+	right_portrait = {
+		character = scope:target
+		animation = toast_goblet
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -310,6 +324,7 @@ murder_ongoing.3302 = {
 		has_variable = poisonous_herbs
 		scope:scheme ?= {
 			scheme_type = murder #Only available for murder
+			scheme_agent_charges < opportunity_cap_value
 		}
 	}
 	weight_multiplier = {
@@ -328,7 +343,7 @@ murder_ongoing.3302 = {
 	option = {
 		name = murder_ongoing.3302.a
 		scope:scheme = { 
-			add_scheme_progress = scheme_progress_gain
+			change_opportunities = 2
 			add_scheme_modifier = {
 				type = scheme_poisonous_herbs_modifier
 			}

@@ -175,9 +175,17 @@ on_hostage_invalidated = {
 		save_scope_as = hostage
 		debug_log = "Hostage invalidated"
 		debug_log_scopes = yes
-		add_character_flag = {
-			flag = recently_invalidated_hostage
-			days = 1
+		set_variable = {
+			name = recently_invalidated_hostage
+			value = scope:home_court
+			days = 5
+		}
+		scope:warden = {
+			add_to_variable_list = {
+				name = invalidated_warden_hostages
+				target = scope:hostage
+				days = 5
+			}
 		}
 
 		### STARTING LOCATION
@@ -331,17 +339,12 @@ on_hostage_invalidated = {
 				}
 			}
 		}
-		else_if = {
-			limit = { scope:reason = flag:ruler }
-			scope:hostage = {
-				trigger_event = {
-					id = bp2_hostage_system.0402
-					days = 1
-				}
+		scope:warden ?= {
+			trigger_event = {
+				id = bp2_hostage_system.0400
+				days = 1
 			}
 		}
-		scope:warden ?= { trigger_event = bp2_hostage_system.0400 }
-		scope:home_court ?= { trigger_event = bp2_hostage_system.0401 }
 	}
 }
 
@@ -420,7 +423,7 @@ on_hostage_arrive_at_warden = {
 							# Warden dies (flag:warden)
 							is_alive = no
 							# Warden loses lands (flag:warden)
-							is_landed = no
+							is_playable_character = no
 							#War
 							AND = {
 								exists = scope:hostage_home_court
@@ -431,7 +434,7 @@ on_hostage_arrive_at_warden = {
 					# Hostage is jailed (flag:imprisoner)
 					is_imprisoned = yes
 					# Hostage becomes landed (flag:ruler)
-					is_landed = yes
+					is_playable_character = yes
 					# No longer important to home court (flag:invalid)
 					trigger_if = {
 						limit = { exists = liege }
@@ -455,6 +458,7 @@ on_hostage_arrive_at_warden = {
 			}
 			var:hostage_travelling_to_warden = {
 				send_interface_toast = {
+					type = event_toast_effect_neutral
 					title = hostage_invalidated_during_travel_title
 					left_icon = scope:hostage
 					right_icon = scope:home_court
@@ -470,6 +474,7 @@ on_hostage_arrive_at_warden = {
 			}
 			scope:home_court ?= {
 				send_interface_toast = {
+					type = event_toast_effect_neutral
 					title = hostage_invalidated_during_travel_title
 					left_icon = scope:hostage
 					right_icon = scope:hostage.var:hostage_travelling_to_warden
@@ -490,7 +495,7 @@ on_hostage_arrive_at_warden = {
 			limit = {
 				scope:hostage_warden ?= {
 					is_alive = yes
-					is_landed = yes
+					is_playable_character = yes
 				}
 			}
 			if = {
@@ -522,7 +527,7 @@ on_hostage_arrive_at_home_court = {
 			limit = {
 				scope:hostage_home_court ?= {
 					is_alive = yes
-					is_landed = yes
+					is_playable_character = yes
 				}
 			}
 			if = {

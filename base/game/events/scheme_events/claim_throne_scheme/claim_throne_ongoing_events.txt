@@ -14,7 +14,14 @@ claim_throne_ongoing.1001 = {
 	title = claim_throne_ongoing.1001.t
 	desc = claim_throne_ongoing.1001.desc
 	theme = claim_throne_scheme
-	right_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	right_portrait = {
+		character = scope:target
+		animation = worry
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -78,7 +85,14 @@ claim_throne_ongoing.1002 = {
 	title = claim_throne_ongoing.1002.t
 	desc = claim_throne_ongoing.1002.desc
 	theme = claim_throne_scheme
-	right_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_rational
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -87,6 +101,7 @@ claim_throne_ongoing.1002 = {
 	trigger = {
 		scope:scheme = {
 			NOT = { has_variable = had_event_claim_throne_ongoing_1002 }
+			scheme_agent_charges >= 1
 		}
 	}
 
@@ -119,6 +134,7 @@ claim_throne_ongoing.1002 = {
 			add_scheme_modifier = {
 				type = claim_throne_increased_responsibility
 			}
+			change_opportunities = -1
 		}
 		if = {
 			limit = { scope:target = { is_ai = no } }
@@ -162,7 +178,14 @@ claim_throne_ongoing.1003 = {
 	title = claim_throne_ongoing.1003.t
 	desc = claim_throne_ongoing.1003.desc
 	theme = claim_throne_scheme
-	right_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_dishonorable
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -238,10 +261,13 @@ claim_throne_ongoing.1004 = {
 	desc = claim_throne_ongoing.1004.desc
 	theme = claim_throne_scheme
 	left_portrait = {
-		character = scope:target
-		animation = shock
+		character = root
+		animation = eccentric
 	}
-	right_portrait = scope:target
+	right_portrait = {
+		character = scope:target
+		animation = boredom
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -251,6 +277,7 @@ claim_throne_ongoing.1004 = {
 		has_trait = lunatic
 		scope:scheme = {
 			NOT = { has_variable = had_event_claim_throne_ongoing_1004 }
+			scheme_agent_charges >= 1
 		}
 	}
 
@@ -284,6 +311,7 @@ claim_throne_ongoing.1004 = {
 			add_scheme_modifier = {
 				type = claim_throne_self_declared_modifier
 			}
+			change_opportunities = -1
 		}
 		ai_chance = {
 			base = 100
@@ -321,7 +349,10 @@ claim_throne_ongoing.1005 = {
 	title = claim_throne_ongoing.1005.t
 	desc = claim_throne_ongoing.1005.desc
 	theme = claim_throne_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = worry
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -425,10 +456,14 @@ claim_throne_ongoing.1006 = {
 	desc = claim_throne_ongoing.1006.desc
 	theme = claim_throne_scheme
 	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	right_portrait = {
 		character = scope:friend
 		animation = personality_bold
 	}
-	right_portrait = scope:target
+	lower_right_portrait = scope:target
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -437,6 +472,7 @@ claim_throne_ongoing.1006 = {
 	trigger = {
 		scope:scheme = {
 			NOT = { has_variable = had_event_claim_throne_ongoing_1006 }
+			scheme_agent_charges >= 1
 		}
 		any_relation = {
 			type = friend
@@ -472,6 +508,7 @@ claim_throne_ongoing.1006 = {
 			add_scheme_modifier = {
 				type = claim_throne_friend_support_modifier
 			}
+			change_opportunities = -1
 		}
 		ai_chance = {
 			base = 100
@@ -501,7 +538,7 @@ scripted_trigger claim_throne_ongoing_1007_knight_trigger = {
 	scope:scheme = {
 		NOT = { scheme_is_character_agent = prev }
 	}
-	is_valid_as_agent_in_scheme = scope:scheme
+	char_can_fit_into_scheme_trigger = { SCHEME = scope:scheme }
 	opinion = {
 		target = liege
 		value <= 0
@@ -518,11 +555,16 @@ claim_throne_ongoing.1007 = {
 	title = claim_throne_ongoing.1007.t
 	desc = claim_throne_ongoing.1007.desc
 	theme = claim_throne_scheme
+
 	left_portrait = {
-		character = scope:scheming_knight
-		animation = anger
+		character = root
+		animation = personality_callous
 	}
-	right_portrait = scope:target
+	right_portrait = {
+		character = scope:scheming_knight
+		animation = personality_bold
+	}
+	lower_right_portrait = scope:target
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -570,11 +612,10 @@ claim_throne_ongoing.1007 = {
 				scope:scheming_knight = { claim_throne_ongoing_1007_knight_trigger = yes }
 			}
 			remove_short_term_gold = medium_gold_value
-			scope:scheming_knight = {
-				force_add_to_scheme = {
-					years = 5
-					scheme = scope:scheme
-				}
+			try_to_force_assign_character_to_random_agent_slot_effect = {
+				SCHEME = scope:scheme
+				CHAR = scope:scheming_knight
+				YEARS = 5
 			}
 		}
 		stress_impact = {
@@ -613,7 +654,14 @@ claim_throne_ongoing.1008 = {
 	title = claim_throne_ongoing.1008.t
 	desc = claim_throne_ongoing.1008.desc
 	theme = claim_throne_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = writing
+	}
+	right_portrait = {
+		character = scope:target
+		animation = boredom
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -626,6 +674,7 @@ claim_throne_ongoing.1008 = {
 		}
 		scope:scheme = {
 			NOT = { has_variable = had_event_claim_throne_ongoing_1008 }
+			scheme_agent_charges >= 1
 		}
 	}
 
@@ -657,6 +706,7 @@ claim_throne_ongoing.1008 = {
 			add_scheme_modifier = {
 				type = claim_throne_tricked_peasants_modifier
 			}
+			change_opportunities = -1
 		}
 
 		stress_impact = {
@@ -679,6 +729,7 @@ claim_throne_ongoing.1008 = {
 			add_scheme_modifier = {
 				type = claim_throne_tricked_nobles_modifier
 			}
+			change_opportunities = -1
 		}
 
 		stress_impact = {
@@ -718,8 +769,15 @@ claim_throne_ongoing.1009 = {
 	title = claim_throne_ongoing.1009.t
 	desc = claim_throne_ongoing.1009.desc
 	theme = claim_throne_scheme
-	left_portrait = scope:fraud_catcher
-	right_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+	right_portrait = {
+		character = scope:fraud_catcher
+		animation = anger
+	}
+	lower_right_portrait = scope:target
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -736,7 +794,7 @@ claim_throne_ongoing.1009 = {
  		}
 		scope:scheme = {
 			has_scheme_modifier = claim_throne_tricked_nobles_modifier
-			NOT = { any_scheme_agent = { this = scope:potential_snitch } }
+			NOT = { any_scheme_agent_character = { this = scope:potential_snitch } }
 		}
 	}
 
@@ -751,7 +809,7 @@ claim_throne_ongoing.1009 = {
 					learning >= good_skill_level
 					save_temporary_scope_as = potential_snitch
 					scope:scheme = {
-						NOT = { any_scheme_agent = { this = scope:potential_snitch } }
+						NOT = { any_scheme_agent_character = { this = scope:potential_snitch } }
 					}
 				}
 				save_scope_as = fraud_catcher

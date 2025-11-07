@@ -341,6 +341,7 @@
  feature_decoration_pattern_animals: "einer Tierdarstellung"
  feature_decoration_pattern_bird: "einem majestätischen Vogel"
  feature_decoration_material_inlay_HSB_placeholder: "#D PLATZHALTER#!"
+ feature_icon_decoration_pattern_saint: "[Artifact.GetOwner.Custom('PredeterminedSaintName')]"
  ###########
  #Quality and wealth #
  ###########
@@ -541,6 +542,9 @@
  feature_crown_decoration_filigree: "mit filigranen Verzierungen versehen"
  feature_crown_decoration_filigree_and_gem: "mit filigranen Verzierungen versehen, die einen großen [Artifact.GetFeatureText('decoration_material_gem')] in ihrer Mitte umringen"
  create_artifact_crown_tooltip: "[inspiration_owner.GetShortUIName] erschuf eine Krone von [SCOPE.Custom('ArtifactQuality')]er Machart"
+ #Icons
+ artifact_icon_name: "Ikone von [newly_created_artifact.GetFeatureText('icon_decoration')]"
+ artifact_icon_description: "[SCOPE.Custom('ArtifactArticleWealth')|U]e Ikone von [SCOPE.Custom('ArtifactQuality')|l]er Machart, die Folgendes zeigt: [newly_created_artifact.GetFeatureText('icon_decoration')]."
  #Brooches
  artifact_brooch: "Brosche"
  artifact_brooch_pedestal: "$artifact_brooch$"
@@ -713,7 +717,7 @@
  lover_keepsake_clothes_male_name: "Bruoch von [original_lover.GetFirstNameNoTooltip]"
  lover_keepsake_clothes_female_name: "Hemdgewand von [original_lover.GetFirstNameNoTooltip]"
  lover_keepsake_clothes_description: "Ein intimes Kleidungsstück von [original_lover.GetTitledFirstName], das [original_lover.Custom('DE_PRO_PER_S_3P_N')] [original_lover.Custom('DE_PRO_POS_S_3P')]er fernen Liebschaft [lover.GetTitledFirstName] übersandte, um das Feuer ihrer Begegnungen im Schlafgemach lebendig zu halten."
- lover_keepsake_shell_name: "Muschel von [target.GetFirstNameNoTooltip] "
+ lover_keepsake_shell_name: "Muschel von [original_lover.GetFirstNamePossessiveNoTooltip]"
  lover_keepsake_shell_description: "Ein Andenken, das von [original_lover.GetTitledFirstName] an [original_lover.Custom('DE_PRO_POS_S_3P')]e ferne Liebschaft [lover.GetTitledFirstName] geschickt wurde. Es soll [lover.Custom('DE_PRO_PER_S_3P_A')] an ihre erste Liebesnacht erinnern."
  ## christian_saint_bone pilgrim reward
  christian_saint_bone_name: "[saint_bone_owner.Custom('RandomSaintBone')] von [saint_bone_owner.Custom('RandomSaintName')]"
@@ -774,7 +778,7 @@
  witchcraft_book: "Foliant über pflanzliche Heilmittel"
  witchcraft_book_description: "Ein Buch, das einst der Hexe von [ROOT.Char.GetCurrentLocation.GetTitle.GetNameNoTier] gehörte. Die Seiten sind mit einfach herzustellenden Heilmitteln aus Kräutern gefüllt, die die Körpersäfte ins Gleichgewicht bringen sollen."
  witchy_holy_text_mid: "Edelsteinbesetztes Zauberbuch ([ROOT.Char.GetFaith.ReligiousText|U])"
- witchy_holy_text_mid_description: "Ein Zauberbuch ([merchant_character_scope.GetFaith.ReligiousText|U]), das mit Edelsteinen besetzt ist."
+ witchy_holy_text_mid_description: "Ein Zauberbuch ([witch_scope.GetFaith.ReligiousText|U]), das mit Edelsteinen besetzt ist."
  immaculate_witchy_bones: "Makellose Hexengebeine"
  immaculate_witchy_bones_description: "Ein Haufen Knochen, die einst der Hexe von [ROOT.Char.GetCurrentLocation.GetTitle.GetNameNoTier] gehörten. Selbst nach der Verbrennung der Hexe sind die Knochen in einem makellosen Zustand."
  mysterious_lamp: "Mysteriöse Lampe"
@@ -873,7 +877,7 @@
  artifact_zomorrodnegar_name: "Shamshir-e Zomorrodnegar"
  artifact_zomorrodnegar_description: "Dieses smaragdbesetzte Schwert soll die mythische Klinge Salomos sein, mit der er den Dämon Fulad-zereh erschlug."
  artifact_muhammads_epistles_name: "Brief Mohammeds"
- artifact_muhammads_epistles_description: "Dieser Brief ist Teil des Schriftverkehrs des Propheten Mohammed und der Herrscher von [THIS.Custom('EpistleReciever')|U]."
+ artifact_muhammads_epistles_description: "Dieser Brief ist Teil des Schriftverkehrs zwischen dem Propheten Mohammed und den Herrschern von „[newly_created_artifact.Custom('EpistleReciever')|U]“."
  epistle_syria: "von Syrien"
  epistle_arabia: "der arabischen Stämme"
  epistle_persia: "von Persien"
@@ -973,13 +977,13 @@
  mythical_creature_horn: "Horn einer Sagengestalt ([ROOT.Char.Custom('HornedMythicalCreature')|U])"
  mythical_creature_horn.desc: "Ein fragwürdig geformtes Hornstück, das angeblich einer Sagengestalt ([ROOT.Char.Custom('HornedMythicalCreature')]) gehörte."
  mythical_creature_figurine: "[ROOT.Char.Custom('TrinketLookAdjective')|U]e Figurine einer Sagengestalt ([ROOT.Char.Custom('RegionalMythicalCreature')])"
- mythical_creature_figurine.desc: "Diese Figurine stellt eine [new_trinket.Custom('ArtifactAnimalAdjective')|l]e Sagengestalt ([SCOPE.Custom('RegionalMythicalCreatureLower')]) dar und scheint [ROOT.Char.Custom('TrinketLookAdverbFollowup')|l] mit kleinen, glänzenden Edelsteinen [ROOT.Char.Custom('TrinketLookAdjective')|l] zu sein, wie man sie in [target_location.GetNameNoTooltip] findet."
+ mythical_creature_figurine.desc: "Diese Figurine stellt eine [new_trinket.Custom('ArtifactAnimalAdjective')|l]e Sagengestalt ([SCOPE.Custom('RegionalMythicalCreatureLower')]) dar und scheint [ROOT.Char.Custom('TrinketLookAdverbFollowup')|l] mit kleinen, glänzenden Edelsteinen [ROOT.Char.Custom('TrinketLookAdjective')|l] zu sein, wie man sie in [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] findet."
  st_davids_taper: "Wachskerze des Heiligen David"
  st_davids_taper.desc: "Offenbar hat jemand versucht, sie an beiden Enden anzuzünden."
  jira_stick: "Marmorzepter von J’Ira"
  jira_stick.desc: "Auch wenn es schon viel ins Feld geführt wurde, ist die Spitze immer noch durchschlagsfähig."
- lucky_coin: "[ROOT.Char.GetCulture.GetNameNoTooltip|U]e Glücksmünze"
- lucky_coin.desc: "Eine [ROOT.Char.GetCulture.GetNameNoTooltip|l]e Münze, die aus [target_location.GetNameNoTooltip] stammt.\n\nDie einst geprägte Oberfläche ist durch das ständige Reiben und Polieren inzwischen ganz glatt und abgewetzt."
+ lucky_coin: "[ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip|U]e Glücksmünze"
+ lucky_coin.desc: "Eine [ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip|l]e Münze, die aus [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] stammt.\n\nDie einst geprägte Oberfläche ist durch das ständige Reiben und Polieren inzwischen ganz glatt und abgewetzt."
  lavender_jade_pendant: "Lavendelfarbener Jadeanhänger"
  lavender_jade_pendant.desc: "Die purpurfarbenen Schlieren sind atemberaubend."
  #Rare
@@ -990,8 +994,8 @@
  #Easter eggs
  easteregg_artifact_elisabeth_plush: "Elisabeths ausgestopfter Fuchs"
  easteregg_artifact_elisabeth_plush_description: "Elisabeths ausgestopfter Fuchs ist ein heiß geliebtes Spielzeug und hat sie den Großteil ihres Lebens begleitet. Oft sah man Elisabeth, wie sie mit ihm sprach, während sie die schmuckvollen Chiffren für ihre Arbeitgeber wob. Es ist beruhigend und ermutigt den Besitzer, es dem schlauen Fuchs gleich zu tun."
- easteregg_artifact_nicks_redolence: "Wohlgeruch des Arztes"
- easteregg_artifact_nicks_redolence_description: "Ein Fläschchen mit einem kleinen Maß an Duftstoff – die Farbe ein [ROOT.Char.Custom('GetComplexColor')] –, der Herren und Damen gleichermaßen ins Wanken bringt. Eine kleine Inschrift auf dem Stopfen lautet: „Für das, was dich plagt.“"
+ easteregg_artifact_nicks_redolence: "Der letzte Duft"
+ easteregg_artifact_nicks_redolence_description: "Ein Fläschchen mit einem kleinen Maß an Duftstoff – die Farbe ein [ROOT.Char.Custom('GetComplexColor')|U] –, der Herren und Damen gleichermaßen ins Wanken bringt. Eine kleine Inschrift auf dem Stopfen lautet: #EMP „Und nun, nun naht das Ende …“#!"
  easteregg_artifact_chad_book: "Die kommentierte Aeneis"
  easteregg_artifact_chad_book_description: "Eine oft gelesene und illuminierte Ausgabe der Aeneis von Virgil mit zahlreichen Randnotizen – manche albern, andere einsichtsreich."
  easteregg_artifact_chad_dagger: "Der Dolch"
@@ -1106,3 +1110,9 @@
  artifact_fine_brooch_description: "Da am Rand dieser Brosche dezent auf ein ganz bestimmtes Haus hingewiesen wird ([artifact.GetOwner.GetHouse.GetBaseName]), spricht sich dessen Legitimität rasch herum."
  medicine_jar: "Arzneikrug"
  medicine_jar_desc: "Dieses dünn glasierte Tongefäß enthält seltene und sehr wirksame Kräuter, heilende Mineralien und verschiedene getrocknete Tierteile, die Ärzte zur Behandlung von Krankheiten und zum Ausgleich der Körpersäfte verwenden."
+ whale_fat_candles_name: "Waltrankerzen"
+ whale_fat_candles_description: "Diese Kerzen wurden aus dem Blubber eines schrecklichen Leviathans hergestellt. Sie drohen mit Stacheln aus Walfett."
+ warenne_coin: "Warenne-Münze"
+ warenne_coin_description: "Diese Münze trägt auf der Vorderseite das blau-gelbe Schachbrettmuster der Warenne-Dynastie. Ein dunkler Blutspritzer verunziert den Rand."
+ traitors_head: "Verräterkopf"
+ traitors_head_description: "Ein sauber am Hals abgetrennter Kopf. Er ist eher eine Botschaft als ein Andenken."

@@ -292,6 +292,21 @@
 					scrollbox = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
+						background = {
+							#margin = { -20 -5 }
+							using = Background_Area_Dark
+							alpha = 0.8
+
+							using = Mask_Rough_Edges
+
+							modify_texture = {
+								texture = "gfx/interface/component_overlay/seamless_noise.dds"
+								spriteType = corneredtiled
+								texture_density =  2
+								alpha = 0.4
+					
+							}
+						}
 
 						blockoverride "scrollbox_content"
 						{
@@ -303,8 +318,7 @@
 								autoresize = yes
 								text = "[TaxSlotObligation.GetEffectText]"
 
-								default_format = "#light_background"
-								using = Text_Light_Background_Overrides
+								format_override = { weak medium }
 							}
 						}
 					}

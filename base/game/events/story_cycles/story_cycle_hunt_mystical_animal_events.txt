@@ -137,6 +137,7 @@ hunt_mystical_animal.1003 = {
 		scope:story = {
 			NOT = { exists = var:had_event_hunt_mystical_animal_1003 }
 		}
+		is_landed = yes
 	}
 
 	immediate = {
@@ -339,74 +340,12 @@ hunt_mystical_animal.1004 = {
 				value = yes
 			}
 		}
-		show_as_tooltip = {
-			random = {
-				chance = 30
-				modifier = {
-					has_trait_xp = {
-						trait = lifestyle_hunter
-						track = hunter
-						value >= 50
-					}
-					add = 5
-				}
-				modifier = {
-					has_trait_xp = {
-						trait = lifestyle_hunter
-						track = hunter
-						value >= 100
-					}
-					add = 5
-				}
-				modifier = { add = scope:integer }
-				custom_tooltip = hunt_mystical_animal.1004.a.success
-			}
-		}
-		hidden_effect = {
-			random_list = {
-				30 = { #You get it!!
-					modifier = {
-						has_trait_xp = {
-							trait = lifestyle_hunter
-							track = hunter
-							value >= 50
-						}
-						add = 5
-					}
-					modifier = {
-						has_trait_xp = {
-							trait = lifestyle_hunter
-							track = hunter
-							value >= 100
-						}
-						add = 5
-					}
-					modifier = { add = scope:integer }
-					custom_tooltip = hunt_mystical_animal.1004.a.success
-					trigger_event = {
-						id = hunt_mystical_animal.9001
-						days = { 7 14 }
-					}
-				}
-				70 = { #You don't catch it...
-					modifier = {
-						add = {
-							value = scope:integer
-							multiply = -1
-						}
-					}
-					trigger_event = {
-						id = hunt_mystical_animal.1005
-						days = { 7 14 }
-					}
-				}
-			}
-		}
 	}
 
 	option = { #Nah
 		name = hunt_mystical_animal.1004.b
 		custom_tooltip = hunt_mystical_animal.1003.b.tt
+		location.county = { hunt_remove_sighting_effect = yes }
 		scope:story = {
 			hidden_effect = { end_story = yes }
 		}

@@ -3,7 +3,7 @@
  petition_liege_header: "Demande d’audience :"
  #Activity Start: Liege decides whether or not to hear petition
  petition_liege.0001.opening: "[petition_vassal.Custom2('AppropriateGreetingPositive', ROOT.Char )]"
- petition_liege.0001.desc: "Nous arrivons, moi et ma suite, à [petition_liege.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip] après un voyage épuisant. Il y a des questions importantes concernant le bien-être de [petition_vassal.GetPrimaryTitle.GetNameNoTier] dont je souhaiterais discuter avec vous. Je demande une audience à votre meilleure convenance."
+ petition_liege.0001.desc: "Nous arrivons, moi et ma suite, à [petition_liege.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip] après un voyage épuisant pour vous rencontrer.\n\nJe demande une audience à votre meilleure convenance."
  petition_liege.0001.a: "Allez chercher [petition_vassal.Custom('FR_le_Char_Pi')][petition_vassal.GetTitledFirstNameNoTooltip] !"
  petition_liege.0001.a.tt: "Vous recevez [petition_vassal.Custom('FR_le_Char_Pi')][petition_vassal.GetTitledFirstName] à votre [royal_court|E]"
  petition_liege.0001.b: "Je suis trop occupé[ROOT.Char.Custom('FR_E')] pour le moment pour m’occuper d[petition_vassal.Custom('FR_EluiElle')]."
@@ -16,6 +16,7 @@
  petition_liege.0009.a: "Vous refusez même de m’écouter ? Quel toupet !"
  #Liege hears petition, makes a decision
  #Title
+ petition_liege.0101.t.gold: "$petition_liege_header$ or"
  petition_liege.0101.t.council_seat: "$petition_liege_header$ nomination au Conseil"
  petition_liege.0101.t.pay_debt: "$petition_liege_header$ régler les dettes"
  petition_liege.0101.t.war_aid: "$petition_liege_header$ aide militaire"
@@ -32,7 +33,8 @@
  petition_liege.0101.t.development: "$petition_liege_header$ développer la capitale"
  #Desc
  petition_liege.0101.desc: "[petition_vassal.Custom('FR_le_Char_Pi')|U][petition_vassal.GetTitledFirstName] entre dans ma grande salle et ne perd pas de temps avant de s’approcher de mon trône et de s’incliner solennellement.\n\n« Merci de me recevoir, [ROOT.Char.Custom('FR_MonseigneurMadame')|U]. Je viens vous voir aujourd’hui avec une requête urgente :"
- petition_liege.0101.desc.council_seat: "[petition_liege.Custom('FR_MonseigneurMadame')|U], me laisseriez-vous siéger au Conseil ? »\n\n« Mes talents sont négligés alors que des gens de moindre importance sont entendus au plus haut niveau ; je partagerais les fardeaux du pays en étant votre [petition_vassal.Custom('GetCouncilPositionRequest')]. »"
+ petition_liege.0101.desc.council_seat: "[petition_liege.Custom('FR_MonseigneurMadame')|U], me permettriez-vous de siéger au Conseil ? »\n\n« Mes talents sont négligés alors que des gens de moindre importance sont entendus au plus haut niveau ; je partagerais les fardeaux du pays en étant votre [petition_vassal.Custom('GetCouncilPositionRequest')|l]. »"
+ petition_liege.0101.desc.gold: "« [ROOT.Char.Custom('FR_MonseigneurMadame')|U], donneriez-vous de l’or au sujet loyal que je suis ? »\n\n« Je m’engage à le dépenser dans l’intérêt du pays. »"
  petition_liege.0101.desc.pay_debt: "j’ai rencontré quelques... difficultés financières, dues à des événements totalement indépendants de ma volonté. »\n\n« Pour le bien du pays, pourriez-vous m’aider à régulariser mes comptes ? »"
  petition_liege.0101.desc.war_aid: "la [petition_war.GetName|l] se passe mal, [second_party.Custom('FR_le_Char_Pi')][second_party.GetTitledFirstNameNoTooltip] a l’avantage. \n\n[petition_liege.Custom('FR_MonseigneurMadame')|U], mes défaites sont aussi les vôtres. Accordez-moi votre soutien, pour le bien du pays."
  petition_liege.0101.desc.end_war: "[second_party.Custom('FR_le_Char_Pi')][second_party.GetTitledFirstNameNoTooltip] nous fait la guerre, à moi et à vos loyaux sujets de [petition_vassal.GetPrimaryTitle.GetName] ! Ces querelles intestines ne font que nous affaiblir tous, alors ne devraient-elles pas être stoppées net ?"
@@ -46,9 +48,10 @@
  petition_liege.0101.desc.construct_city: "le [petition_construct_county.GetName] a un grand potentiel mais manque d’infrastructures nécessaires. » \n\n« [petition_liege.Custom('FR_MonseigneurMadame')|U], financer une nouvelle cité en [petition_construct.GetName] bénéficierait à l’ensemble du pays rien que par les implications sur le commerce. »"
  petition_liege.0101.desc.construct_temple: "les fidèles de [petition_construct_county.GetNameNoTooltip] ont besoin d’un lieu de culte. » \n\n« Je serais honoré[petition_vassal.Custom('FR_E')] si vous aidiez à financer [petition_liege.GetFaith.HouseOfWorship] à [petition_construct.GetName], pour la foi [petition_liege.GetFaith.GetAdjectiveNoTooltip]. »"
  petition_liege.0101.desc.development: "mes terres font pâle figure face à votre puissante capitale. » \n\n« S’il vous plaît, consacrez un peu de la fortune de [petition_liege.GetCapitalLocation.GetCounty.GetTitle.GetNameNoTier] pour l’humble [petition_county_example.GetName], et pour le bénéfice du pays en général. »"
- petition_liege.0101.desc.council_first_councillor: "\n\nDonc, [petition_vassal.Custom('FR_IlElle')] pense qu’il peut faire un meilleur travail que [second_party.Custom('FR_le_Char_Pi')][second_party.GetTitledFirstName]..."
+ petition_liege.0101.desc.council_first_councillor: "\n\nDonc, [petition_vassal.Custom('FR_IlElle')] pense pouvoir faire un meilleur travail que [second_party.Custom('FR_le_Char_Pi')][second_party.GetTitledFirstName]..."
  petition_liege.0101.desc.council_second_councillor: "Je devrais peut-être plutôt remplacer [second_councillor.Custom('FR_le_Char_Pi')][second_councillor.GetTitledFirstName]."
  #Accept
+ petition_liege.0101.accept.gold: "Je peux me passer de quelques pièces."
  petition_liege.0101.accept.council_seat: "Très bien, vous aurez votre siège."
  petition_liege.0101.accept.council_seat_occupied: "Vous remplacerez [second_party.Custom('FR_le_Char_Pi')][second_party.GetTitledFirstNameNoTooltip] en tant que [second_party.GetCouncilTitle|l]."
  petition_liege.0101.accept.pay_debt: "Très bien, vos dettes seront payées."
@@ -142,7 +145,7 @@
  petition_liege.0101.refusal.development: "Hélas, certaines terres sont plus bénies que d’autres."
  #Council
  petition_liege.0101.council_second_occupied: "[second_councillor.Custom('FR_le_Char_Pi')|U][second_councillor.GetTitledFirstNameNoTooltip] se retirera en tant que [second_councillor.GetCouncilTitle|l]."
- petition_liege.0101.council_second: "J’ai quelque chose en tête pour vous."
+ petition_liege.0101.council_second: "J’ai quelque chose en tête."
  #War Aid
  petition_liege.0101.war_aid_join: "Nous allons écraser [second_party.GetFirstNameNoTooltip]."
  #Tooltips
@@ -237,7 +240,7 @@
  petition_liege.0601_shared_intro: "Alors que ma requête avait été déposée et était sur le point de porter ses fruits,"
  petition_liege.0601.desc: "\n\nCela change la donne."
  petition_liege.0601.a_court: "En avant vers de plus grandes choses."
- petition_liege.0601.a_prison: "Malédictions !"
+ petition_liege.0601.a_prison: "Malédiction !"
  petition_liege.0601.a_liege: "Pourquoi dois-je..."
  petition_liege.0601.a: "Il est temps de reconsidérer la situation..."
  #Activity End
@@ -266,7 +269,7 @@
  petition_liege.9001.development: "Installer certains de ses sujets dans mon pays."
  petition_liege.9001.fallback: "De remplir mes coffres."
  petition_liege.0101.accept.fallback: "Fort bien, vos coffres seront remplis."
- petition_liege_block_firing_councillor_effect_tt: "[petition_vassal.Custom('FR_le_Char_U_Pi')|U][petition_vassal.GetShortUIName|U] ne peut pas être retiré du [council|E] pendant 5 ans"
+ petition_liege_block_firing_councillor_effect_tt: "Ne peut pas être retiré du [council|E] pendant 5 ans"
  ### Modifiers ###
  #Control
  petition_liege_0101_county_control_effect_tt: "Tous les comtés détenus avec moins de 66 en [control|El]"
@@ -293,5 +296,5 @@
  petition_liege_title_position: "[ROOT.Char.GetHeldCourtAndCouncilPositionsString|l]"
  petition_liege_title_landed: "[ROOT.Char.GetTitleAsNameNoTooltip|l]"
  petition_liege_title_courtier: "courtisan[ROOT.Char.Custom('FR_E')]"
- petition_liege_second_if_tt: "#bold Si [TARGET_CHARACTER.Custom('FR_le_Char_Pi')][TARGET_CHARACTER.GetTitledFirstName] accepte :#!"
- petition_liege_costs_refunded: "Frais remboursés de la demande d’audience au seigneur lige"
+ petition_liege_second_if_tt: "#bold Si [TARGET_CHARACTER.Custom('FR_le_Char_Pi')][TARGET_CHARACTER.GetTitledFirstNameRegnal] accepte :#!"
+ petition_liege_costs_refunded: "Frais de la demande d’audience au seigneur lige remboursés"

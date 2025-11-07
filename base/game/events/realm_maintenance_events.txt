@@ -80,6 +80,10 @@ realm_maintenance.0004 = {
 realm_maintenance.1000 = {
 	hidden = yes
 	
+	trigger = {
+		has_any_landed_title_trigger = yes
+	}
+
 	immediate = {
 		save_scope_as = new_liege
 		
@@ -131,6 +135,7 @@ realm_maintenance.1000 = {
 # I have a new liege toast!
 scripted_effect send_new_liege_toast_effect = {
 	send_interface_toast = {
+		type = msg_liege_changed
 		title = realm_maintenance.1001.t
 		left_icon = scope:new_liege
 		right_icon = scope:old_liege
@@ -213,6 +218,18 @@ realm_maintenance.1001 = {
 		else_if = {
 			limit = { scope:transfer_type = flag:swear_fealty }
 			send_new_liege_toast_effect = { TRANSFER_TYPE = swear_fealty }
+		}
+		else_if = {
+			limit = { scope:transfer_type = flag:appointment }
+			send_new_liege_toast_effect = { TRANSFER_TYPE = appointment }
+		}
+		else_if = {
+			limit = { scope:transfer_type = flag:appointment_succession }
+			send_new_liege_toast_effect = { TRANSFER_TYPE = appointment_succession }
+		}
+		else_if = {
+			limit = { scope:transfer_type = flag:stepped_down }
+			send_new_liege_toast_effect = { TRANSFER_TYPE = stepped_down }
 		}
 		else = {
 			send_new_liege_toast_effect = { TRANSFER_TYPE = error }

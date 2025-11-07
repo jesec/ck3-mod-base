@@ -341,6 +341,7 @@
  feature_decoration_pattern_animals: "motivos zoomórficos"
  feature_decoration_pattern_bird: "un ave majestuosa"
  feature_decoration_material_inlay_HSB_placeholder: "#D REFERENTE#!"
+ feature_icon_decoration_pattern_saint: "[Artifact.GetOwner.Custom('PredeterminedSaintName')]"
  ###########
  #Quality and wealth #
  ###########
@@ -409,7 +410,7 @@
  dagger_decoration_none: "$sword_decoration_none$"
  #Axe, Spear, Hammer, and Mace components (Heads, Shafts/Hafts)
  feature_head_decoration_etched_pattern: "tiene grabado un bajorrelieve de [Artifact.GetFeatureText( 'decoration_pattern' )]"
- feature_head_decoration_religious_motifs: "tiene grabados motivos [ROOT.Char.GetFaith.GetAdherentNamePlural]"
+ feature_head_decoration_religious_motifs: "tiene grabados motivos [Artifact.GetOwner.GetFaith.GetAdherentNamePlural]"
  feature_shaft_decoration_painted_pattern: "tiene pintadas imágenes de [Artifact.GetFeatureText( 'decoration_pattern' )]"
  feature_shaft_decoration_inlay: "tiene incrustaciones de [Artifact.GetFeatureText( 'decoration_material_inlay_HSB' )]"
  feature_shaft_decoration_varnish: "lleva una capa de barniz para darle un brillo intenso y oscuro."
@@ -447,7 +448,7 @@
  artifact_mace_head_undecorated: "$artifact_axe_head_undecorated$"
  artifact_mace_head_decorated: "$artifact_axe_head_decorated$"
  artifact_mace_handle_undecorated: "un mango sólido de [ROOT.Artifact.GetFeatureText( 'handle_metal' )]"
- artifact_mace_handle_decorated: "un mango elegante de [ROOT.Artifact.GetFeatureText( 'handle_metal' )] que [ROOT.Artifact.GetFeatureText('ArtifactDecorationShaft')]."
+ artifact_mace_handle_decorated: "un mango elegante de [ROOT.Artifact.GetFeatureText( 'handle_metal' )] que [ROOT.Artifact.GetFeatureText( 'metal_handle_decoration' )]."
  ############################
  #Wearable Descriptions	#
  ############################
@@ -541,6 +542,9 @@
  feature_crown_decoration_filigree: "adornada con una filigrana intricada"
  feature_crown_decoration_filigree_and_gem: "adornada con una filigrana intricada que enmarca una gran pieza central de [Artifact.GetFeatureText( 'decoration_material_gem' )]"
  create_artifact_crown_tooltip: "[inspiration_owner.GetShortUIName] ha creado una corona de [SCOPE.Custom('ArtifactQuality')] manufactura"
+ #Icons
+ artifact_icon_name: "Icono de [newly_created_artifact.GetFeatureText('icon_decoration')]"
+ artifact_icon_description: "Un [SCOPE.Custom('ArtifactArticleWealth')|l] icono de [SCOPE.Custom('ArtifactQuality')] factura que representa a [newly_created_artifact.GetFeatureText('icon_decoration')]"
  #Brooches
  artifact_brooch: "Broche"
  artifact_brooch_pedestal: "$artifact_brooch$"
@@ -873,7 +877,7 @@
  artifact_zomorrodnegar_name: "Shamshir-e Zomorrodnegar"
  artifact_zomorrodnegar_description: "Al parecer esta espada tachonada de esmeraldas es la hoja mítica de Salomón, que empleó matar al demonio Fulad-zereh."
  artifact_muhammads_epistles_name: "Carta de Mahoma"
- artifact_muhammads_epistles_description: "Esta carta es parte de la correspondencia entre el profeta Mahoma y los gobernantes de [THIS.Custom('EpistleReciever')|U]."
+ artifact_muhammads_epistles_description: "Esta carta es parte de la correspondencia entre el profeta Mahoma y los gobernantes de [newly_created_artifact.Custom('EpistleReciever')]."
  epistle_syria: "Siria"
  epistle_arabia: "las tribus árabes"
  epistle_persia: "Persia"
@@ -973,13 +977,13 @@
  mythical_creature_horn: "Cuerno de [ROOT.Char.Custom('HornedMythicalCreature')]"
  mythical_creature_horn.desc: "Un trozo de cuerno de forma dudosa, supuestamente del animal mitológico [ROOT.Char.Custom('HornedMythicalCreature')]."
  mythical_creature_figurine: "Figurita [ROOT.Char.Custom('TrinketLookAdjective')] de [ROOT.Char.Custom('RegionalMythicalCreature')]"
- mythical_creature_figurine.desc: "Esta figurita que representa al/a la [SCOPE.Custom('RegionalMythicalCreatureLower')] [new_trinket.Custom('ArtifactAnimalAdjective')] parece estar [ROOT.Char.Custom('TrinketLookAdverbFollowup')] [ROOT.Char.Custom('TrinketLookAdjective')] con piedrecitas preciosas relucientes, propias de [target_location.GetNameNoTooltip]."
+ mythical_creature_figurine.desc: "Esta figurita que representa al/a la [new_trinket.Custom('ArtifactAnimalAdjective')] [SCOPE.Custom('RegionalMythicalCreatureLower')] parece estar [ROOT.Char.Custom('TrinketLookAdverbFollowup')] [ROOT.Char.Custom('TrinketLookAdjective')] con piedrecitas preciosas relucientes, propias de [ROOT.Char.GetCurrentLocation.GetNameNoTooltip]."
  st_davids_taper: "Candela de San David"
  st_davids_taper.desc: "Parece que alguien intentó prenderla por ambos extremos."
  jira_stick: "Cetro de mármol de J'Ira"
  jira_stick.desc: "Aunque ha tenido mucho uso, el extremo puntiagudo sigue siendo poderoso."
- lucky_coin: "Moneda [ROOT.Char.GetCulture.GetNameNoTooltip] de la suerte"
- lucky_coin.desc: "Una moneda [ROOT.Char.GetCulture.GetNameNoTooltip], propia de [target_location.GetNameNoTooltip].\n\nLa superficie antaño acuñada es ahora lisa debido a los constantes manoseos e intercambios."
+ lucky_coin: "Moneda de la suerte [ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip]"
+ lucky_coin.desc: "Una moneda [ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip], propia de [ROOT.Char.GetCurrentLocation.GetNameNoTooltip].\n\nLa superficie antaño acuñada es ahora lisa debido a los constantes manoseos e intercambios."
  lavender_jade_pendant: "Colgante de jade lavanda"
  lavender_jade_pendant.desc: "Las ricas vetas púrpuras son impresionantes."
  #Rare
@@ -990,8 +994,8 @@
  #Easter eggs
  easteregg_artifact_elisabeth_plush: "El zorro de peluche de Elisabeth"
  easteregg_artifact_elisabeth_plush_description: "El zorro de peluche de Elisabeth es un juguete muy querido que estuvo con ella durante casi toda su vida. A menudo se veía a Elisabeth hablar con él mientras tejía intrincadas claves para quien contratara sus servicios. Es reconfortante e inspira a su poseedor a imitar la astucia del zorro."
- easteregg_artifact_nicks_redolence: "Fragancia del doctor"
- easteregg_artifact_nicks_redolence_description: "Un frasquito con una medida de fragancia [ROOT.Char.Custom('GetComplexColor')], que hará que señores y damas se desmayen en su presencia. Una pequeña inscripción en el tapón reza: «Para lo que os aflige»."
+ easteregg_artifact_nicks_redolence: "La fragancia final"
+ easteregg_artifact_nicks_redolence_description: "Un frasquito con algo de fragancia [ROOT.Char.Custom('GetComplexColor')], que hará que señores y damas se desmayen en su presencia. Una pequeña inscripción en el tapón reza: #EMP «Y así, el fin se acerca…».#!"
  easteregg_artifact_chad_book: "La Eneida comentada"
  easteregg_artifact_chad_book_description: "Un ejemplar muy amado y miniado de la Eneida de Virgilio, oscurecido por muchos garabatos, absurdos algunos, agudos otros."
  easteregg_artifact_chad_dagger: "La daga"
@@ -1101,8 +1105,14 @@
  artifact_magnificent_crown_name: "Corona magnífica"
  artifact_magnificent_crown_description: "La hermosa filigrana de esta corona y sus patrones finamente labrados sirven para resaltar la verdadera razón de su existencia: los relieves grabados de los antepasados de [ROOT.Char.GetFirstName] invocan su autoridad y la entrelazan con la suya propia."
  artifact_splendid_necklace_name: "Collar espléndido"
- artifact_splendid_necklace_description: "Este elegante collar está enguirnaldado con el escudo de armas de [Artifact.GetOwner.GetHouse.GetBaseName], para que no queden dudas sobre la legitimidad de su propietario."
+ artifact_splendid_necklace_description: "Este elegante collar está enguirnaldado con el escudo de armas de [artifact.GetOwner.GetHouse.GetBaseName], para que no queden dudas sobre la legitimidad de su propietario."
  artifact_fine_brooch_name: "Broche elegante"
  artifact_fine_brooch_description: "La sutil invocación del nombre de [artifact.GetOwner.GetHouse.GetBaseName] en los bordes de este broche hace que corra rápidamente la voz sobre su legitimidad."
  medicine_jar: "Tarro medicinal"
  medicine_jar_desc: "Esta loza de vidriado fino contiene hierbas raras y potentes, minerales curativos y diversas partes desecadas de animales, todo ello utilizado por los médicos para tratar enfermedades y equilibrar humores."
+ whale_fat_candles_name: "Velas de sebo de ballena"
+ whale_fat_candles_description: "Estas velas se han elaborado a partir del sebo de un terrible leviatán. Culminan en pinchos de grasa de ballena."
+ warenne_coin: "Moneda de Warenne"
+ warenne_coin_description: "Esta moneda porta la insignia ajedrezada azul y amarilla de la dinastía de Warenne en el reverso. Una salpicadura oscura de sangre marca el borde."
+ traitors_head: "La cabeza de un traidor"
+ traitors_head_description: "Una cabeza cortada, cercenada hábilmente a su propietario anterior. Más un mensaje que un recuerdo."

@@ -26,7 +26,10 @@ personal_scheme_ongoing.1000 = {
 		character = root
 		animation = personality_compassionate
 	}
-	right_portrait = scope:target
+	right_portrait = {
+		character = scope:target
+		animation = personality_greedy
+	}
 	trigger = {
 		OR = {
 			has_variable = 6540_exotic_wares_gift
@@ -41,6 +44,7 @@ personal_scheme_ongoing.1000 = {
 				scheme_type = courting
 			}
 			NOT = { has_variable = declined_6540_exotic_wares_gift }
+			scheme_agent_charges >= 2
 		}
 	}
 	immediate = {
@@ -83,8 +87,8 @@ personal_scheme_ongoing.1000 = {
 		#Apply modifier, remove variable
 		if = {
 			limit = { has_variable = 6540_exotic_wares_gift }
-			scope:scheme_to_apply_gift_to = { 
-				add_scheme_progress = scheme_progress_gain
+			scope:scheme_to_apply_gift_to = {
+				change_opportunities = -2
 				add_scheme_modifier = {
 					type = 6540_exotic_wares_gift_modifier
 				}
@@ -93,8 +97,8 @@ personal_scheme_ongoing.1000 = {
 		}
 		if = {
 			limit = { has_variable = 6540_exotic_wares_super_gift }
-			scope:scheme_to_apply_gift_to = { 
-				add_scheme_progress = scheme_progress_gain
+			scope:scheme_to_apply_gift_to = {
+				change_opportunities = -2
 				add_scheme_modifier = {
 					type = 6540_exotic_wares_gift_super_modifier
 				}

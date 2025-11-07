@@ -70,8 +70,20 @@ wedding_update_hosting_variable_effect = {
 # SPOUSE_2 = Second spouse character
 # HOST = Character promising to host the grand wedding
 create_grand_wedding_betrothal = {
-	$SPOUSE_1$ = {
-		create_betrothal = $SPOUSE_2$
+	if =  {
+		limit = {
+			$SPOUSE_1$ = {
+				is_female = yes
+			}
+		}
+		$SPOUSE_1$ = {
+			create_betrothal_matrilineal = $SPOUSE_2$
+		}
+	}
+	else = {
+		$SPOUSE_1$ = {
+			create_betrothal = $SPOUSE_2$
+		}
 	}
 	
 	set_grand_wedding_betrothal_variables = {

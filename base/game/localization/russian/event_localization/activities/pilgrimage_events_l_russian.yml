@@ -3,8 +3,8 @@
  activity_pilgrimage: "Паломничество"
  activity_pilgrimage_desc: "$game_concept_pilgrimage_desc$"
  activity_pilgrimage_host_desc: "$BULLET_WITH_TAB$Повышение [piety_i|E][Concept( 'piety', 'благочестия' )|E]\n$BULLET_WITH_TAB$Прирост [legitimacy_i] [Concept('legitimacy', 'легитимности')|E]\n$BULLET_WITH_TAB$[stress_loss_i]Снижение [Concept( 'stress', 'стресса' )|E]\n[GetPlayer.Custom('GetPilgrimOrHajjiTrait')]"
- activity_pilgrimage_pilgrim_custom_host_desc: "$BULLET_WITH_TAB$ [Concept( 'trait', 'Свойство' )|E] «[GetTrait('pilgrim').GetName( GetNullCharacter )]» / [Concept( 'trait_level_track_xp', 'опыт пути развития свойства' )|E] «[GetTrait('pilgrim').GetName( GetNullCharacter )]»"
- activity_pilgrimage_hajjaj_custom_host_desc: "$BULLET_WITH_TAB$[Concept( 'trait', 'Свойство' )|E] «[GetTrait('hajjaj').GetName( GetNullCharacter )]»"
+ activity_pilgrimage_pilgrim_custom_host_desc: "$BULLET_WITH_TAB$@pilgrim_trait_icon! [Concept('trait','Свойство')|E] «[GetTrait('pilgrim').GetName( GetNullCharacter )]» / [Concept('trait_level_track_xp','опыт свойства')|E] «[GetTrait('pilgrim').GetName( GetNullCharacter )]»\n$BULLET_WITH_TAB$@gallowsbait_trait_icon! Потеря [Concept('trait','свойства')|E] «[GetTrait('gallowsbait').GetName( GetNullCharacter )]» во время благочестивого [Concept('pilgrimage','паломничества')|E]"
+ activity_pilgrimage_hajjaj_custom_host_desc: "$BULLET_WITH_TAB$@hajjaj_trait_icon! [Concept('trait','Свойство')|E] «[GetTrait('hajjaj').GetName( GetNullCharacter )]»\n$BULLET_WITH_TAB$@gallowsbait_trait_icon! Потеря [Concept('trait','свойства')|E] «[GetTrait('gallowsbait').GetName( GetNullCharacter )]» во время благочестивого [Concept('hajj','хаджа')|E]"
  activity_pilgrimage_selection_tooltip: "Совершить [Concept( 'pilgrimage', 'паломничество' )|E], чтобы [GetPlayer.GetFaith.PantheonTerm] увидели мою преданность\n\nОжидаемая награда:\n$BULLET_WITH_TAB$Снижение [stress_loss_i] [Concept( 'stress', 'стресса' )|E]\n$BULLET_WITH_TAB$Прирост [piety_i] [Concept( 'piety', 'благочестия' )|E]\n$BULLET_WITH_TAB$Прирост [legitimacy_i] [Concept('legitimacy', 'легитимности' )|E]"
  activity_pilgrimage_destination_selection: "Чем больше расстояние между вашей столицей и местом назначения, тем больше [GetPlayer.GetFaith.PantheonTerm] замечают вашу преданность, и тем выше ваше [Concept( 'piety', 'благочестие' )|E]."
  activity_pilgrimage_owner: "Пилигрим"
@@ -290,7 +290,7 @@
  pilgrimage.1130.f.other: "[ROOT.Char.GetFaith.HighGodName] есть [ROOT.Char.GetFaith.HighGodName], [shrine_province.GetCounty.GetFaith.GetAdherentNameNoTooltip|l] ему ни к чему."
  #Strength in Numbers
  pilgrimage.1140.t: "$pilgrimage_header$ Сила в численности"
- pilgrimage.1140.desc: "По пути через графство [ROOT.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTier] к нам подходит простолюдин из числа тех, кто известен как [group_leader.GetCulture.GetName|l], а сам он называет себя предводителем отряда паломников, исповедующих [ROOT.Char.GetFaith.GetAdjective|l].\n\n«[Select_CString(ROOT.Char.IsFemale, 'Добрая', 'Добрый')] [ROOT.Char.GetTitleAsNameNoTooltip], наша цель — [destination.GetName], и мы идем туда уже несколько недель, но дороги стали слишком опасны, а у нас на исходе провизия.\n\nЕсли поможете нам, мы будем вечно благодарны»."
+ pilgrimage.1140.desc: "По пути через графство [ROOT.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTier] к нам подходит простолюдин из числа тех, кто известен как [group_leader.GetCulture.GetName|l], а сам он называет себя предводителем отряда паломников, исповедующих [ROOT.Char.GetFaith.GetAdjective|l].\n\n«[Select_CString(ROOT.Char.IsFemale, 'Добрая', 'Добрый')] [ROOT.Char.GetTitleAsNameNoTooltip|l], наша цель — [destination.GetName], и мы идем туда уже несколько недель, но дороги стали слишком опасны, а у нас на исходе провизия.\n\nЕсли поможете нам, мы будем вечно благодарны»."
  pilgrimage.1140.a: "Вместе веселее!"
  pilgrimage.1140.a.tt: "[ROOT.Char.GetInvolvedActivity.GetName] расширится — к вам присоединится [group_leader.GetFirstName] и еще до трех путников."
  pilgrimage.1140.b: "[group_leader.GetCulture.GetNameNoTooltip]? Не может быть и речи."
@@ -319,7 +319,7 @@
  pilgrimage.2004.b: "Чудесная встреча, но мне нужно помолиться в уединении."
  #A peasant inadvertedly insults you
  pilgrimage.2005.t: "$pilgrimage_header$ Грубость"
- pilgrimage.2005.desc: "У костра пилигрим из другой группы пересказывает услышанную как-то [Select_CString(rude_pilgrim.IsFemale, 'ею', 'им' )] историю. В истории упоминается [ROOT.Char.GetTitleAsNameNoTooltip]"
+ pilgrimage.2005.desc: "У костра пилигрим из другой группы пересказывает услышанную как-то [Select_CString(rude_pilgrim.IsFemale, 'ею', 'им' )] историю. В истории упоминается [ROOT.Char.GetTitleAsNameNoTooltip|l]"
  pilgrimage.2005.desc_close: "из этих земель."
  pilgrimage.2005.desc_far: "из далеких земель под названием [ROOT.Char.GetPrimaryTitle.GetNameNoTierNoTooltip]."
  pilgrimage.2005.outro: "Слушатели оглушительно хохочут.\n\nЗаметив мое замешательство, [Select_CString(rude_pilgrim.IsFemale, 'рассказчица', 'рассказчик' )] спешит заверить меня: «Не волнуйтесь, [ROOT.Char.GetLadyLord|l], это наверняка [Select_CString(ROOT.Char.IsFemale, 'какая-то #EMP другая#! женщина', 'какой-то #EMP другой#! мужчина' )] высокого положения»."
@@ -734,7 +734,7 @@
  pilgrimage.6510.c: "А, не стоит и усилий."
  #Time To Go Home Soon?
  pilgrimage.6520.t: "Не пора ли домой?"
- pilgrimage.6520.desc: "[impatient_pilgrim.GetTitledFirstName] медленно бредет вместе с нами, громко вздыхает и с трудом переставляет ноги. «Мы здесь словно целую вечность. Не пора ли уже отправиться домой?» — раздраженно бормочет [impatient_pilgrim.GetSheHe].\n\nЯ бросаю на [Select_CString(impatient_pilgrim.IsFemale, 'нее', 'него' )] быстрый взгляд и"
+ pilgrimage.6520.desc: "[impatient_pilgrim.GetTitledFirstName] медленно бредет вместе с нами, громко вздыхает и с трудом переставляет ноги. «Мы здесь словно целую вечность. Не пора ли уже отправиться домой?», — раздраженно бормочет [impatient_pilgrim.GetSheHe].\n\nЯ бросаю на [Select_CString(impatient_pilgrim.IsFemale, 'нее', 'него' )] быстрый взгляд и"
  pilgrimage.6520.desc_forgiving: "чувствую некоторое сострадание. Мало радости идти куда-то против воли."
  pilgrimage.6520.desc_nonforgiving: "раздражаюсь от подобной #EMP наглости#!. У меня сжимаются кулаки."
  pilgrimage.6520.a: "Да как ты #EMP смеешь#!!"
@@ -798,7 +798,7 @@
  pilgrimage.6540.c: "Мирские пожитки? Как это приземленно."
  #Repentance
  pilgrimage.6750.t: "Покаяние во владении [ROOT.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTierNoTooltip]"
- pilgrimage.6750.desc.intro: "Впереди [ROOT.Char.GetFaith.HouseOfWorship]. Я захожу туда, и на меня обрушивается всепоглощающее чувство вины. Свет, льющийся на алтарь, как лучи летнего солнца, такой густой, что его, кажется, можно потрогать.\n\nЧто за жизнь я веду? Что я за [ROOT.Char.GetTitleAsNameNoTooltip]? Что за [ROOT.Char.GetMotherFather]? Что за [ROOT.Char.Custom('GetDaughterSon')]?\n\n"
+ pilgrimage.6750.desc.intro: "Впереди [ROOT.Char.GetFaith.HouseOfWorship]. Я захожу туда, и на меня обрушивается всепоглощающее чувство вины. Свет, льющийся на алтарь, как лучи летнего солнца, такой густой, что его, кажется, можно потрогать.\n\nЧто за жизнь я веду? Что я за [ROOT.Char.GetTitleAsNameNoTooltip|l]? Что за [ROOT.Char.GetMotherFather]? Что за [ROOT.Char.Custom('GetDaughterSon')]?\n\n"
  pilgrimage.6750.desc.secret: "[repent_trait.GetNameNoTooltip]"
  pilgrimage.6750.desc.drunkard: "[GetTrait('drunkard').GetName( ROOT.Char )]"
  pilgrimage.6750.desc.hashishiyah: "[GetTrait('hashishiyah').GetName( ROOT.Char )]"
@@ -848,6 +848,7 @@
  pilgrimage.6780.c: "[current_employer.GetTitledFirstNameNoTooltip] будет в ярости. Риск того не стоит."
  obligation_hook_salary: "Оговоренное жалование"
  obligation_hook_tt: "Наем персонажей с влиянием #EMP Обязательство#! обходится дешевле"
+ generic_cp_discount: "Снижение стоимости контракта"
  #Meet local guru - trait flipping event
  pilgrimage.6790.t: "Духовное пробуждение во владении [ROOT.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTierNoTooltip]"
  pilgrimage.6790.desc: "«Лучше [Select_CString(spiritual_mentor.IsFemale, 'ее', 'его' )] нет человека на всей земле. [spiritual_mentor.GetSheHe|U] проводит каждый день, присматривая за священным местом, а на каждое всенощное бдение [spiritual_mentor.GetSheHe] возвращается в лагерь, что за пределами города, и молится, пока не взойдет солнце и уйдет луна».\n\nПрослышав о таких добродетелях, я делаю глубокий вдох, прежде чем приблизиться к костру, где отдыхает [Select_CString(spiritual_mentor.IsFemale, 'наставница', 'наставник' )].\n\n«А я жду тебя, — говорит [spiritual_mentor.GetSheHe], глядя прямо на меня. — Ждет тебя и [spiritual_mentor.GetFaith.HighGodName]. [ROOT.Char.Custom('SinfulTrait')|U] — вот что мешает тебе спастись. [Select_CString(ROOT.Char.IsFemale, 'Готова', 'Готов' )] ли ты избавиться от этого греха?»"
@@ -865,7 +866,7 @@
  pilgrimage.6800.e.tt: "Местное духовенство будет очень признательно за этот жест"
  #Do you wanna buy an indulgence?
  pilgrimage.6810.t: "Индульгенции"
- pilgrimage.6810.desc: "«Можешь идти, дитя мое...» — бормочет [bishop_pilgrim.GetTitledFirstName], когда я вхожу в [ROOT.Char.GetFaith.HouseOfWorship]. Паломник кланяется, прежде чем уйти, и я замечаю, что в руке священника блестят золотые монеты.\n\n«А, [Select_CString(ROOT.Char.IsFemale, 'любезная', 'любезный' )] [ROOT.Char.GetTitleAsNameNoTooltip], ты тоже желаешь искупить грехи? [religious_head_scope.GetTitledFirstName] велит давать индульгенции любому паломнику, которого примет [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] — за справедливую цену, конечно же»."
+ pilgrimage.6810.desc: "«Можешь идти, дитя мое...» — бормочет [bishop_pilgrim.GetTitledFirstName], когда я вхожу в [ROOT.Char.GetFaith.HouseOfWorship]. Паломник кланяется, прежде чем уйти, и я замечаю, что в руке священника блестят золотые монеты.\n\n«А, [Select_CString(ROOT.Char.IsFemale, 'любезная', 'любезный' )] [ROOT.Char.GetTitleAsNameNoTooltip|l], ты тоже желаешь искупить грехи? [religious_head_scope.GetTitledFirstName] велит давать индульгенции любому паломнику, которого примет [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] — за справедливую цену, конечно же»."
  pilgrimage.6810.a: "«Прошу, замолви за меня словечко. Пусть тебя послушает [ROOT.Char.GetFaith.HighGodName]»."
  pilgrimage.6810.b: "«[my_heir.GetFirstNameNoTooltip] не прогадает, если получит индульгенцию»."
  pilgrimage.6810.c: "«[ROOT.Char.GetFaith.DivineRealm], где вход покупается за деньги? Разве такое возможно?»"
@@ -887,7 +888,7 @@
  pilgrimage.6830.c.tt: "[votive_artifact.GetName] останется в святом месте"
  #Ask a local priest to bless your artifact
  pilgrimage.6840.t: "Благословенные вещи"
- pilgrimage.6840.desc: "Паломница кладет перед алтарем дарственную куклу и склоняет голову. Я вижу, как [blessed_bishop.GetTitledFirstName] благословляет женщину и шепчет что-то ей на ухо. Мне удается расслышать слово «священная».\n\n[blessed_bishop.GetFaith.BishopNeuter|U] жестом подзывает меня. «Ты тоже хочешь благословить свой дар, [Select_CString(ROOT.Char.IsFemale, 'любезная', 'любезный' )] [ROOT.Char.GetTitleAsNameNoTooltip]?»"
+ pilgrimage.6840.desc: "Паломница кладет перед алтарем дарственную куклу и склоняет голову. Я вижу, как [blessed_bishop.GetTitledFirstName] благословляет женщину и шепчет что-то ей на ухо. Мне удается расслышать слово «священная».\n\n[blessed_bishop.GetFaith.BishopNeuter|U] жестом подзывает меня. «Ты тоже хочешь благословить свой дар, [Select_CString(ROOT.Char.IsFemale, 'любезная', 'любезный' )] [ROOT.Char.GetTitleAsNameNoTooltip|l]?»"
  pilgrimage.6840.a: "«Вот у меня есть [blessed_artifact.GetNameNoTooltip]. Прошу, надели этот дар благочестием!»"
  pilgrimage.6840.b: "«У меня есть [blessed_artifact.GetNameNoTooltip]. Пусть все увидят, как великолепен этот артефакт!»"
  pilgrimage.6840.c: "Мне и без того есть на что потратить золото."
@@ -926,6 +927,7 @@
  pilgrimage.7000.a_hajj_cynical: "#EMP Отдам должное#!, размаха этому зрелищу и правда не занимать."
  pilgrimage.7000.a.tt: "Пора собираться домой"
  cultural_acceptance_gain_worldly_pilgrimage: "Паломничество изменило терпимость культур."
+ pilgrimage.7000.b: "Каюсь! Каюсь!"
  ###Generic Pilgrimage Return Events
  #Nice spiritual journey
  pilgrimage.9001.t: "$pilgrimage_header$ Возвращение"
@@ -942,13 +944,14 @@
  pilgrimage.9010.desc.relation_liked: "Вот и [ROOT.Char.GetCurrentLocation.GetNameNoTooltip]. Уже после полудня мы прибываем домой, и слуги, #EMP мои#! слуги, сразу же начинают приготовления, чтобы [Select_CString(old_pilgrimage_host.IsFemale, 'дорогая', 'дорогой' )] [old_pilgrimage_host.GetFirstName] наконец-то [Select_CString(old_pilgrimage_host.IsFemale, 'обрела', 'обрел' )] вечный покой.\n\n"
  pilgrimage.9010.desc.relation_neutral: "Вот и [ROOT.Char.GetCurrentLocation.GetNameNoTooltip]. Уже после полудня мы прибываем домой, и слуги, #EMP мои#! слуги, сразу же начинают приготовления, чтобы [old_pilgrimage_host.GetTitledFirstName] наконец-то [Select_CString(old_pilgrimage_host.IsFemale, 'обрела', 'обрел' )] вечный покой.\n\n"
  pilgrimage.9010.desc.turned_back_liked: "С тяжелым сердцем я слежу за ритуалами и стараюсь найти утешение в том, что, поскольку [old_pilgrimage_host.GetFirstName] [Select_CString(old_pilgrimage_host.IsFemale, 'умерла', 'умер' )] по пути в святые места, с [Select_CString(old_pilgrimage_host.IsFemale, 'ней', 'ним' )] наверняка теперь [ROOT.Char.GetFaith.HighGodName]\n\nВ конце концов, за кем [ROOT.Char.GetFaith.HighGodName] и присматривает, если не за паломниками?"
- pilgrimage.9010.desc.turned_back_neutral: "Я все еще привыкаю к своим новым владениям, и придворные уже спешат ко мне, стараясь заслужить мою благосклонность. [old_pilgrimage_host.GetTitledFirstName] [Select_CString(old_pilgrimage_host.IsFemale, 'умерла, ее', 'умер, его' )] тело здесь, оно вернулось из паломничества вместе со мной. Теперь всем особенно отчетливо ясно: новый правитель — #EMP я#!."
+ pilgrimage.9010.desc.turned_back_neutral: "[ROOT.Char.Custom('GetRealmOrDomicile')] все еще непривычное место для меня, но [ROOT.Char.Custom('GetCourtierPlural')|l] уже спешат ко мне, стараясь заслужить мою благосклонность. [old_pilgrimage_host.GetTitledFirstName] [Select_CString(old_pilgrimage_host.IsFemale, 'умерла, ее', 'умер, его' )] тело здесь, оно вернулось из паломничества вместе со мной. Теперь всем особенно отчетливо ясно: теперь [ROOT.Char.GetTitleAsNameNoTooltip] — #EMP я#!."
  pilgrimage.9010.desc.there_and_back_liked: "Оплакивая [Select_CString(old_pilgrimage_host.IsFemale, 'ее', 'его' )] смерть, я нахожу утешение в том, что [Select_CString(ROOT.Char.IsFemale, 'выполнила', 'выполнил' )] [Select_CString(old_pilgrimage_host.IsFemale, 'ее', 'его' )] желание и [Select_CString(ROOT.Char.IsFemale, 'довела', 'довел' )] паломничество, цель которого — [previous_holy_site.GetNameNoTierNoTooltip], до конца.\n\nГде бы [Select_CString(old_pilgrimage_host.IsFemale, 'она сейчас ни находилась, она должна быть довольна', 'он сейчас ни находился, он должен быть доволен' )]. Эта мысль заставляет меня осторожно улыбнуться."
- pilgrimage.9010.desc.there_and_back_neutral: "[previous_holy_site.GetNameNoTierNoTooltip] и обратно — на такое путешествие нас [Select_CString(old_pilgrimage_host.IsFemale, 'вдохновила и повела', 'вдохновил и повел' )] именно [old_pilgrimage_host.GetTitledFirstNamePossessive]. Я [Select_CString(ROOT.Char.IsFemale, 'довела', 'довел' )] паломничество до конца, что укрепило мою связь с [Select_CString(old_pilgrimage_host.IsFemale, 'ее', 'его' )] подданными — #EMP моими#! подданными. Теперь я начинаю привыкать к роли правителя этих земель."
+ pilgrimage.9010.desc.there_and_back_neutral: "[previous_holy_site.GetNameNoTierNoTooltip] и обратно — на такое путешествие нас [Select_CString(old_pilgrimage_host.IsFemale, 'вдохновила и повела', 'вдохновил и повел' )] именно [old_pilgrimage_host.GetTitledFirstNamePossessive]. Я [Select_CString(ROOT.Char.IsFemale, 'довела', 'довел' )] паломничество до конца, благодаря чему [Select_CString(old_pilgrimage_host.IsFemale, 'ее', 'его' )] [ROOT.Char.Custom('GetCourtierPlural')|l] — #EMP мои#! [ROOT.Char.Custom('GetCourtierPlural')|l], — и я стали еще ближе. Теперь я начинаю привыкать к тому, что я [ROOT.Char.GetTitleAsNameNoTooltip]."
  pilgrimage.9010.desc.invalidated_pilgrimage_liked: "Я оплакиваю [Select_CString(old_pilgrimage_host.IsFemale, 'ее', 'его' )] кончину и чувствую острое сожаление — ведь я так и не [Select_CString(ROOT.Char.IsFemale, 'похоронила', 'похоронил' )] [Select_CString(old_pilgrimage_host.IsFemale, 'ее', 'его' )] на священной земле. [previous_holy_site.GetNameNoTierNoTooltip] — что за последнее пристанище было бы [Select_CString(old_pilgrimage_host.IsFemale, 'усопшей', 'усопшему' )]!"
  pilgrimage.9010.desc.invalidated_pilgrimage_neutral: "Мне немного досадно, что я не [Select_CString(ROOT.Char.IsFemale, 'смогла', 'смог' )] похоронить [Select_CString(old_pilgrimage_host.IsFemale, 'усопшую', 'усопшего' )] на священной земле. [previous_holy_site.GetNameNoTierNoTooltip] — что за великолепное последнее пристанище было бы [Select_CString(old_pilgrimage_host.IsFemale, 'ей', 'ему' )]! Впрочем, так или иначе — [Select_CString(old_pilgrimage_host.IsFemale, 'она теперь обрела', 'он теперь обрел' )] вечный покой."
  pilgrimage.9010.a: "[ROOT.Char.GetCurrentLocation.GetNameNoTooltip] — одно сердце, один дом."
  pilgrimage.9010.a_interrupted: "Наконец-то мы дома, в целости и сохранности."
+ pilgrimage.9010.a_adventurer: "По крайней мере мы вернулись живыми."
  pilgrimage.9010.a.flavor: "$pilgrimage.4020.a.flavor$"
  #Follow-up to exotic wares event
  pilgrimage.9100.t: "$pilgrimage_header$ Экзотические товары"

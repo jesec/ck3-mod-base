@@ -25,7 +25,7 @@
 		exists = scope:character
 	}
 	effect = {
-		scope:character = { add_trait = eunuch }
+		scope:character = { add_trait = eunuch_1 }
 	}
 	expect = {
 		scope:character = {
@@ -53,7 +53,15 @@ TIT_2432_can_inherit = {
 	}
 	effect = {
 		scope:harolds_heir = {
-			add_trait = eunuch
+			if = {
+				limit = {
+					age >= 12
+				}
+				add_trait = eunuch_1
+			}
+			else = {
+				add_trait = beardless_eunuch
+			}
 		}
 		scriptedtests_recalculate_succession = yes
 	}

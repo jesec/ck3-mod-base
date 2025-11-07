@@ -584,6 +584,10 @@ has_a_personality_trait_in_common_with_root_trigger = {
 			has_trait = forgiving
 			root = { has_trait = forgiving }
 		}
+		AND = {
+			has_trait = eccentric
+			root = { has_trait = eccentric }
+		}
 	}
 }
 
@@ -639,10 +643,18 @@ has_a_personality_trait_opposite_to_root_trigger = {
 		}
 		AND = {
 			has_trait = stubborn
-			root = { has_trait = fickle }
+			root = { 
+				OR = {
+					has_trait = fickle
+					has_trait = eccentric
+				}
+			}
 		}
 		AND = {
-			has_trait = fickle
+			OR = {
+				has_trait = fickle
+				has_trait = eccentric
+			}
 			root = { has_trait = stubborn }
 		}
 		AND = {

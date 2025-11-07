@@ -32,7 +32,14 @@ intrigue_scheme_lifestyle.1001 = {
 	title = intrigue_scheme_lifestyle.1001.t
 	desc = intrigue_scheme_lifestyle.1001.desc
 	theme = generic_intrigue_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = marshal
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -95,7 +102,14 @@ intrigue_scheme_lifestyle.1002 = {
 	title = intrigue_scheme_lifestyle.1002.t
 	desc = intrigue_scheme_lifestyle.1002.desc
 	theme = generic_intrigue_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = disappointed
+	}
+	right_portrait = {
+		character = scope:target
+		animation = anger
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -147,7 +161,7 @@ intrigue_scheme_lifestyle.3001 = {
 			triggered_desc = {
 				trigger = {
 					scope:scheme = {
-						any_scheme_agent = { count >= 1 }
+						any_scheme_agent_character = { count >= 1 }
 					}
 				}
 				desc = intrigue_scheme_lifestyle.3001.desc_agents
@@ -156,7 +170,14 @@ intrigue_scheme_lifestyle.3001 = {
 		}
 	}
 	theme = generic_intrigue_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_rational
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -194,7 +215,7 @@ intrigue_scheme_lifestyle.3001 = {
 		name = {
 			trigger = {
 				scope:scheme = {
-					any_scheme_agent = { count >= 1 }
+					any_scheme_agent_character = { count >= 1 }
 				}
 			}
 			text = intrigue_scheme_lifestyle.3001.a_agent
@@ -239,7 +260,14 @@ intrigue_scheme_lifestyle.3101 = {
 		trigger = { scope:scheme = { scheme_type = elope } }
 		reference = "gfx/interface/icons/event_types/type_love.dds"
 	}
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_rational
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -298,7 +326,14 @@ intrigue_scheme_lifestyle.3102 = {
 		trigger = { scope:scheme = { scheme_type = elope } }
 		reference = "gfx/interface/icons/event_types/type_love.dds"
 	}
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = disappointed
+	}
+	right_portrait = {
+		character = scope:target
+		animation = anger
+	}
 	
 	trigger = {
 		scope:scheme = {
@@ -346,7 +381,14 @@ intrigue_scheme_lifestyle.3201 = {
 		trigger = { scope:scheme = { scheme_type = elope } }
 		reference = "gfx/interface/icons/event_types/type_love.dds"
 	}
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = reading
+	}
+	right_portrait = {
+		character = scope:servant
+		animation = writing
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -355,7 +397,7 @@ intrigue_scheme_lifestyle.3201 = {
 	trigger = {
 		NOT = { has_character_flag = had_event_intrigue_scheme_lifestyle_3201 }
 		scope:scheme = {
-			any_scheme_agent = { count >= 1 }
+			any_scheme_agent_character = { count >= 1 }
 		}
 		has_trait = schemer
 	}
@@ -464,8 +506,15 @@ intrigue_scheme_lifestyle.3301 = {
 		desc = intrigue_scheme_lifestyle.3301.desc_end
 	}
 	theme = generic_intrigue_scheme
-	left_portrait = scope:target
-	right_portrait = scope:secret_to_reveal_target
+	left_portrait = {
+		character = root
+		animation = eavesdrop
+	}
+	right_portrait = {
+		character = scope:secret_to_reveal_target
+		animation = personality_compassionate
+	}
+	lower_right_portrait = scope:target
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -667,9 +716,16 @@ intrigue_scheme_lifestyle.3302 = {
 		}
 	}
 	theme = generic_intrigue_scheme
-	left_portrait = scope:target
-	right_portrait = scope:secret_to_reveal_target
-	lower_right_portrait = scope:secret_to_reveal_owner
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:secret_to_reveal_target
+		animation = shame
+	}
+	lower_right_portrait = scope:target
+	lower_center_portrait = scope:secret_to_reveal_owner
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -710,8 +766,15 @@ intrigue_scheme_lifestyle.3401 = {
 	title = intrigue_scheme_lifestyle.3401.t
 	desc = intrigue_scheme_lifestyle.3401.desc
 	theme = generic_intrigue_scheme
-	left_portrait = scope:target
-	right_portrait = scope:courtier_to_fool
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:courtier_to_fool
+		animation = admiration
+	}
+	lower_right_portrait = scope:target
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -740,6 +803,7 @@ intrigue_scheme_lifestyle.3401 = {
 			NOT = {
 				scheme_is_character_agent = scope:courtier_check
 			}
+			scheme_agent_charges < opportunity_cap_value
 		}
 	}
 
@@ -848,6 +912,9 @@ intrigue_scheme_lifestyle.3401 = {
 
 	option = { #nah
 		name = intrigue_scheme_lifestyle.3401.b
+		scope:scheme = {
+			change_opportunities = 2
+		}
 	}
 }
 

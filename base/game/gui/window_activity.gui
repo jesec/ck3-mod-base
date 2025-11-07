@@ -3,6 +3,7 @@
 	size = { 1390 750 }
 	layer = middle
 	parentanchor = center
+	allow_outside = yes
 
 	datacontext = "[GetPlayer]"
 	datacontext = "[GetVariableSystem]"
@@ -235,13 +236,13 @@
 			}
 		}
 	}
-
+	
 	vbox = {
 		name = "main_content"
-
+		
 		layoutpolicy_vertical = expanding
 		layoutpolicy_horizontal = expanding
-
+		
 		expand = {
 			visible = "[Not(ActivityWindow.HasActiveEvent)]"
 		}
@@ -282,6 +283,14 @@
 			visible = "[ActivityWindow.HasActiveEvent]"
 			layoutpolicy_vertical = expanding
 			layoutpolicy_horizontal = expanding
+
+			# Used for pivotal moments in Chariot Races which are not fullscreen
+			widget = {
+				name = "widget_activity_pivotal_moment_event_window"
+				size = { 100% 100% }
+				parentanchor = top|hcenter
+				alwaystransparent = yes
+			}
 
 			activity_event_widget = {
 				name = "activity_event"
@@ -535,19 +544,27 @@
 						hbox = {
 							margin_right = 15
 							spacing = 25
-
+							
 							button_standard = {
 								name = "guest_list"
 								text = "ACTIVITY_WINDOW_GUEST_LIST"
 								down = "[IsGameViewDataShown( 'activity_guest_list', Activity.Self )]"
 								onclick = "[ToggleGameViewData( 'activity_guest_list', Activity.Self )]"
 							}
-
+							
 							button_standard = {
 								name = "activity_log"
 								text = "ACTIVITY_WINDOW_LOG"
 								down = "[IsGameViewDataShown( 'activity_log', Activity.Self )]"
 								onclick = "[ToggleGameViewData( 'activity_log', Activity.Self )]"
+							}
+
+							button_standard = {
+								name = "charioteers"
+								text = "CHARIOTEERS_WINDOW_LABEL"
+								visible = "[DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'charioteers' ) )]"
+								down = "[Not( GetVariableSystem.Exists( 'activity_charioteers_view' ) )]"
+								onclick = "[GetVariableSystem.Toggle( 'activity_charioteers_view' )]"
 							}
 						}
 					}
@@ -686,6 +703,10 @@
 			activity_event_header = {
 				name = "tour_arrival_event"
 			}
+
+			activity_event_header = {
+				name = "chariot_race_pivotal_moment_widget"
+			}
 		}
 
 		watch_window_button = {
@@ -713,8 +734,19 @@
 	}
 
 	activity_pulse_action_popup_right = {
-		datacontext = "[ActivityWindow.GetActivity]"
 		datacontext = "[ActivityWindow.GetLastWeeklyPulseEffectData]"
+		visible = "[And( ActivityPulseEffect.IsValid, Not( ActivityWindow.HasActiveEvent ) )]"
+	}
+
+	widget = {
+		parentanchor = right
+		allow_outside = yes
+
+		vbox = {
+			layoutpolicy_vertical = expanding
+
+			window_activity_contestants_right_bar = {}
+		}
 	}
 }
 
@@ -916,6 +948,12 @@ types ActivityWindowTypes
 				}
 			}
 		}
+	}
+
+	type window_activity_contestants_right_bar = vbox
+	{
+		allow_outside = yes
+		name = "window_activity_contestants_right_bar_container"
 	}
 
 	type activity_event_widget = margin_widget

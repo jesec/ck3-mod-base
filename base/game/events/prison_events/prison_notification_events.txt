@@ -10,11 +10,26 @@ prison_notification.0001 = {
 	theme = prison
 	left_portrait = {
 		character = scope:prisoner
-		animation = sadness
-
+		triggered_animation = {
+			trigger = { is_in_prison_type = house_arrest }
+			animation = prisonhouse
+		}
+		triggered_animation = {
+			trigger = { is_in_prison_type = dungeon }
+			animation = prisondungeon
+		}
+		override_imprisonment_visuals = yes
 	}
 	right_portrait = {
 		character = scope:imprisoner
+		animation = war_over_win
+	}
+	override_background = {
+		trigger = {
+			is_in_prison_type = house_arrest
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
 	}
 
 	trigger = {
@@ -35,7 +50,10 @@ prison_notification.0001 = {
 	immediate = {
 		play_music_cue = "mx_cue_prison"
 		save_scope_as = prisoner
-
+		imprisoner = {
+			save_scope_as = imprisoner
+			save_scope_as = bg_override_char
+		}
 		# Figure out who needs to be notified about this character being imprisoned.
 		every_player = {
 			save_scope_as = this_player
@@ -64,6 +82,19 @@ prison_notification.0001 = {
 				trigger_event = prison_notification.0003
 			}
 		}
+		show_as_tooltip = {
+			scope:imprisoner = {
+				imprison = {
+					target = root
+					type = dungeon
+				}
+			}
+			if = {
+				limit = { is_in_prison_type = house_arrest }
+				change_prison_type = house_arrest
+			}
+			else = { change_prison_type = dungeon }
+		}
 	}
 	
 	option = {
@@ -79,11 +110,26 @@ prison_notification.0002 = {
 	theme = prison
 	left_portrait = {
 		character = scope:prisoner
-		animation = sadness
-
+		triggered_animation = {
+			trigger = { is_in_prison_type = house_arrest }
+			animation = prisonhouse
+		}
+		triggered_animation = {
+			trigger = { is_in_prison_type = dungeon }
+			animation = prisondungeon
+		}
+		override_imprisonment_visuals = yes
 	}
 	right_portrait = {
 		character = scope:imprisoner
+		animation = war_over_win
+	}
+	override_background = {
+		trigger = {
+			scope:prisoner = { is_in_prison_type = house_arrest }
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
 	}
 
 	trigger = {
@@ -108,6 +154,13 @@ prison_notification.0002 = {
 					target = scope:prisoner
 					type = dungeon
 				}
+			}
+			scope:prisoner = {
+				if = {
+					limit = { is_in_prison_type = house_arrest }
+					change_prison_type = house_arrest
+				}
+				else = { change_prison_type = dungeon }
 			}
 		}
 	}
@@ -141,6 +194,13 @@ prison_notification.0003 = {
 						type = dungeon
 					}
 				}
+				scope:prisoner = {
+					if = {
+						limit = { is_in_prison_type = house_arrest }
+						change_prison_type = house_arrest
+					}
+					else = { change_prison_type = dungeon }
+				}
 			}
 		}
 	}
@@ -155,11 +215,18 @@ prison_notification.1001 = {
 	left_portrait = {
 		character = root
 		animation = prisondungeon
-
+		override_imprisonment_visuals = yes
 	}
 	right_portrait = {
-		character = imprisoner
+		character = scope:bg_override_char
 		animation = schadenfreude
+	}
+
+	immediate = {
+		imprisoner = { save_scope_as = bg_override_char }
+		show_as_tooltip = {
+			change_prison_type = dungeon
+		}
 	}
 	
 	option = {
@@ -177,10 +244,24 @@ prison_notification.1002 = {
 	left_portrait = {
 		character = root
 		animation = prisonhouse
+		override_imprisonment_visuals = yes
 	}
 	right_portrait = {
-		character = imprisoner
+		character = scope:bg_override_char
 		animation = schadenfreude
+	}
+	override_background = {
+		trigger = {
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
+	}
+
+	immediate = {
+		imprisoner = { save_scope_as = bg_override_char }
+		show_as_tooltip = {
+			change_prison_type = house_arrest
+		}
 	}
 	
 	option = {
@@ -203,12 +284,19 @@ prison_notification.2001 = {
 		character = root
 		animation = happiness
 	}
+	lower_right_portrait = scope:imprisoner
+	override_background = {
+		trigger = {
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
+	}
 
 	trigger = { NOT = { has_character_flag = block_for_prison_release_notification } }
 
 	immediate = {
 		save_scope_as = prisoner
-
+		scope:imprisoner = { save_scope_as = bg_override_char }
 		# Figure out who needs to be notified about this character being released.
 		every_player = {
 			save_scope_as = this_player
@@ -232,12 +320,13 @@ prison_notification.2001 = {
 			else_if = { # Otherwise, if they are of interest to a player, send the player a notification
 				limit = {
 					scope:prisoner = {
-						has_any_relation_trigger = {CHARACTER = scope:this_player }
+						has_any_relation_trigger = { CHARACTER = scope:this_player }
 					}
 				}
 				trigger_event = prison_notification.2003
 			}
 		}
+		show_as_tooltip = { release_from_prison = yes }
 	}
 	
 	option = {
@@ -258,8 +347,12 @@ prison_notification.2002 = {
 		character = scope:prisoner
 		animation = happiness
 	}
-	lower_right_portrait = {
-		character = scope:imprisoner
+	lower_right_portrait = scope:imprisoner
+	override_background = {
+		trigger = {
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
 	}
 
 	trigger = {
@@ -271,6 +364,7 @@ prison_notification.2002 = {
 	}
 	
 	immediate = {
+		scope:imprisoner = { save_scope_as = bg_override_char }
 		show_as_tooltip = {
 			scope:prisoner = {
 				release_from_prison = yes

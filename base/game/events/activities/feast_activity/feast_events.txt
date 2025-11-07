@@ -32,7 +32,7 @@ feast.0001 = {
 			limit = {
 				any_scheme = {
 					scheme_type = befriend
-					scheme_target = {
+					scheme_target_character = {
 						exists = involved_activity
 						involved_activity = scope:activity
 					}
@@ -41,12 +41,12 @@ feast.0001 = {
 			random_scheme = {
 				limit = {
 					scheme_type = befriend
-					scheme_target = {
+					scheme_target_character = {
 						exists = involved_activity
 						involved_activity = scope:activity
 					}
 				}
-				scheme_target = {
+				scheme_target_character = {
 					scope:activity = {
 						set_variable = {
 							name = potential_friend
@@ -711,6 +711,7 @@ feast.2001 = {
 	right_portrait = {
 		trigger = {
 			exists = scope:my_spouse
+			NOT = { scope:honorary_guest ?= scope:my_spouse }
 		}
 		character = scope:my_spouse
 		animation = ecstasy
@@ -768,7 +769,7 @@ feast.2001 = {
 				limit = {
 					any_scheme = {
 						scheme_type = murder
-						scheme_target = {
+						scheme_target_character = {
 							is_ai = yes
 							is_participant_in_activity = scope:activity
 						}
@@ -777,12 +778,12 @@ feast.2001 = {
 				every_scheme = {
 					limit = {
 						scheme_type = murder
-						scheme_target = {
+						scheme_target_character = {
 							is_ai = yes
 							is_participant_in_activity = scope:activity
 						}
 					}
-					scheme_target = {
+					scheme_target_character = {
 						add_to_list = murder_feast_enemies
 					}
 				}
@@ -1088,7 +1089,7 @@ feast.5004 = {
 	}
 	left_portrait = {
 		character = scope:host
-		animation = prison_dungeon
+		animation = prisondungeon
 	}
 
 	immediate = {
@@ -1121,7 +1122,7 @@ feast.5005 = {
 	}
 	left_portrait = {
 		character = scope:host
-		animation = prison_dungeon
+		animation = prisondungeon
 	}
 	
 	option = {
@@ -1689,13 +1690,34 @@ feast.7151 = {
 	type = activity_event
 	title = feast.7151.t
 	desc = {
-		desc = feast.7151.desc
 		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = { is_landless_adventurer = yes }
+					scope:activity = {
+						has_variable = roughed_up
+					}
+				}
+				desc = feast.7151.desc.desc_roughed_up
+			}
+			desc = feast.7151.desc
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					root = { is_landless_adventurer = yes }
+					scope:activity = {
+						has_variable = roughed_up
+					}
+				}
+				desc = feast_default.9002.desc_roughed_up
+			}
 			triggered_desc = {
 				trigger = {
 					OR = {
 						scope:host = {
 							has_royal_court = yes
+							has_dlc_feature = royal_court
 							amenity_level = { type = court_food_quality value >= 5 }
 						}
 						scope:activity = {
@@ -1713,6 +1735,7 @@ feast.7151 = {
 					OR = {
 						scope:host = {
 							has_royal_court = yes
+							has_dlc_feature = royal_court
 							amenity_level = { type = court_food_quality value >= 3 }
 						}
 						scope:activity = {
@@ -1730,6 +1753,7 @@ feast.7151 = {
 					OR = {
 						scope:host = {
 							has_royal_court = yes
+							has_dlc_feature = royal_court
 							amenity_level = { type = court_food_quality value <= 1 }
 						}
 						scope:activity = {
@@ -1752,6 +1776,15 @@ feast.7151 = {
 	}
 	right_portrait = {
 		character = scope:host
+		triggered_animation = {
+			trigger = {
+				root = { is_landless_adventurer = yes }
+				scope:activity = {
+					has_variable = roughed_up
+				}
+			}
+  			animation = stayback
+  		}
 		animation = toast_goblet
 	}
 	cooldown = { years = 5 }
@@ -1783,7 +1816,8 @@ feast.7151 = {
 			if = {
 				limit = {
 					has_royal_court = yes
-						amenity_level = { type = court_food_quality value >= 5 }
+					has_dlc_feature = royal_court
+					amenity_level = { type = court_food_quality value >= 5 }
 				}
 				stress_impact = {
 					base = exotic_feast_stress_loss_value
@@ -1799,6 +1833,7 @@ feast.7151 = {
 			else_if = {
 				limit = {
 					has_royal_court = yes
+					has_dlc_feature = royal_court
 					amenity_level = { type = court_food_quality value >= 4 }
 				}
 				stress_impact = {
@@ -1815,6 +1850,7 @@ feast.7151 = {
 		    else_if = {
 				limit = {
 					has_royal_court = yes
+					has_dlc_feature = royal_court
 					amenity_level = { type = court_food_quality value >= 3 }
 				}
 				stress_impact = {
@@ -1831,6 +1867,7 @@ feast.7151 = {
 			else_if = {
 				limit = {
 					has_royal_court = yes
+					has_dlc_feature = royal_court
 					amenity_level = { type = court_food_quality value <= 1 }
 				}
 				stress_impact = {
@@ -1904,7 +1941,7 @@ scripted_effect feast_7201_subtract_goh_prestige_effect = {
 	# Scope:goh isn't best pleased.
 	scope:goh = {
 		add_prestige = medium_prestige_loss
-		reverse_add_opinion = {
+		add_opinion = {
 			target = scope:host
 			modifier = humiliated_opinion
 			opinion = -40
@@ -2109,6 +2146,7 @@ feast.7202 = {
 	type = activity_event
 	title = feast.7202.t
 	desc = {
+		desc = feast.7202.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = { scope:honoured_goh = flag:honoured }
@@ -2184,6 +2222,64 @@ feast.7202 = {
 		}
 	}
 	
+	# Assault the host, take their stuff
+	option = {
+		name = feast.7202.adventurer_loot
+		trigger = {
+			NOT = { scope:honoured_goh = flag:honoured }
+			is_landless_adventurer = yes
+			scope:host = { is_ai = yes }
+		}
+		if = {
+			limit = {
+				NOT = { has_trait = gallowsbait }
+			}
+			add_trait = gallowsbait
+		}
+		add_trait_xp = {
+			trait = gallowsbait
+			track = bandit
+			value = 15
+		}
+		scope:host = {
+			if = {
+				limit = {
+					can_set_relation_rival_trigger = { CHARACTER = scope:goh }
+				}
+				set_relation_rival = {
+					target = scope:goh
+					reason = rival_goh_humiliated_at_feast
+				}
+			}
+			pay_short_term_gold = {
+				target = scope:goh
+				gold = medium_gold_value
+			}
+			increase_wounds_no_death_effect = { REASON = fight }
+		}
+		domicile ?= {
+			change_provisions = major_provisions_gain
+		}
+		hidden_effect = {
+			scope:activity = {
+				set_variable = {
+					name = roughed_up
+				}
+			}
+		}
+		stress_impact = {
+			forgiving = massive_stress_impact_gain
+			compassionate = major_stress_impact_gain
+			sadistic = medium_stress_impact_loss
+			arrogant = medium_stress_impact_loss
+			callous = medium_stress_impact_loss
+			vengeful = medium_stress_impact_loss
+		}
+		ai_chance = {
+			base = 0
+		}
+	}
+	
 	# How could you do this to me?
 	option = {
 		name = feast.7202.b
@@ -2249,6 +2345,7 @@ feast.7203 = {
 	type = activity_event
 	title = feast.7203.t
 	desc = {
+		desc = feast.7203.desc.intro
 		first_valid = {
 			triggered_desc = {
 				trigger = { scope:honoured_goh = flag:honoured }

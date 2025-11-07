@@ -341,6 +341,7 @@
  feature_decoration_pattern_animals: "동물을 본뜬 무늬"
  feature_decoration_pattern_bird: "위엄 있는 새"
  feature_decoration_material_inlay_HSB_placeholder: "#D PLACEHOLDER#!"
+ feature_icon_decoration_pattern_saint: "[Artifact.GetOwner.Custom('PredeterminedSaintName')]"
  ###########
  #Quality and wealth #
  ###########
@@ -541,6 +542,9 @@
  feature_crown_decoration_filigree: "선조 세공으로 만들어진 장식으로 꾸며져 있습니다."
  feature_crown_decoration_filigree_and_gem: "중앙에 커다란 [Artifact.GetFeatureText( 'decoration_material_gem' )](이)가 박힌 선조 세공 장식으로 꾸며져 있습니다."
  create_artifact_crown_tooltip: "[inspiration_owner.GetShortUIName](이)가 [SCOPE.Custom('ArtifactQuality')] 만듦새가 돋보이는 왕관을 만듦"
+ #Icons
+ artifact_icon_name: "[newly_created_artifact.GetFeatureText('icon_decoration')]의 이콘"
+ artifact_icon_description: "장인 정신으로 [newly_created_artifact.GetFeatureText('icon_decoration')](을)를 묘사한 [SCOPE.Custom('ArtifactQuality')]의 [SCOPE.Custom('ArtifactArticleWealth')] 이콘입니다."
  #Brooches
  artifact_brooch: "브로치"
  artifact_brooch_pedestal: "$artifact_brooch$"
@@ -873,7 +877,7 @@
  artifact_zomorrodnegar_name: "샴쉬르 에 조모로드네갈"
  artifact_zomorrodnegar_description: "솔로몬 신화에 등장하는, 에메랄드가 박힌 검입니다. 악마 플라드-제레흐를 죽일 때 사용했다고 합니다."
  artifact_muhammads_epistles_name: "무함마드의 서신"
- artifact_muhammads_epistles_description: "선지자 모함마드와 [THIS.Custom('EpistleReciever')|U] 통치자들이 주고받은 서신의 일부입니다."
+ artifact_muhammads_epistles_description: "선지자 모함마드와 [newly_created_artifact.Custom('EpistleReciever')|U] 통치자들이 주고받은 서신의 일부입니다."
  epistle_syria: "시리아"
  epistle_arabia: "아라비아 부족"
  epistle_persia: "페르시아"
@@ -973,13 +977,13 @@
  mythical_creature_horn: "[ROOT.Char.Custom('HornedMythicalCreature')|U]의 뿔"
  mythical_creature_horn.desc: "특이한 형상의 뿔입니다. 신화로 전해지는 [ROOT.Char.Custom('HornedMythicalCreature')]의 것이라는 소문이 돕니다."
  mythical_creature_figurine: "[ROOT.Char.Custom('TrinketLookAdjective')|U] [ROOT.Char.Custom('RegionalMythicalCreature')] 모형"
- mythical_creature_figurine.desc: "[new_trinket.Custom('ArtifactAnimalAdjective')] [SCOPE.Custom('RegionalMythicalCreatureLower')](을)를 묘사한 이 모형은 [ROOT.Char.Custom('TrinketLookAdverbFollowup')] [ROOT.Char.Custom('TrinketLookAdjective')](으)로, [target_location.GetNameNoTooltip]에서만 나는 작지만 빛나는 보석이 장식되어 있습니다."
+ mythical_creature_figurine.desc: "[new_trinket.Custom('ArtifactAnimalAdjective')] [SCOPE.Custom('RegionalMythicalCreatureLower')](을)를 묘사한 이 모형은 [ROOT.Char.Custom('TrinketLookAdverbFollowup')] [ROOT.Char.Custom('TrinketLookAdjective')](으)로, [ROOT.Char.GetCurrentLocation.GetNameNoTooltip]에서만 나는 작지만 빛나는 보석이 장식되어 있습니다."
  st_davids_taper: "성 다윗의 양초"
  st_davids_taper.desc: "누군가가 양쪽으로 피우려 한 흔적이 있습니다."
  jira_stick: "즐라의 대리석 왕홀"
  jira_stick.desc: "꽤 손때를 타긴 했지만, 여전히 뾰족한 부분은 강력합니다."
- lucky_coin: "행운의 [ROOT.Char.GetCulture.GetNameNoTooltip] 동전"
- lucky_coin.desc: "[target_location.GetNameNoTooltip]에서만 찾아볼 수 있는 [ROOT.Char.GetCulture.GetNameNoTooltip] 동전입니다.\n\n끊임없이 사람 손을 타다 보니 한때 각인이 새겨져 있던 표면은 매끈해진 지 오래입니다."
+ lucky_coin: "행운의 [ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip] 동전"
+ lucky_coin.desc: "[ROOT.Char.GetCurrentLocation.GetNameNoTooltip]에서만 찾아볼 수 있는 [ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip] 동전입니다.\n\n끊임없이 사람 손을 타다 보니 한때 각인이 새겨져 있던 표면은 매끈해진 지 오래입니다."
  lavender_jade_pendant: "연보랏빛 비취 펜던트"
  lavender_jade_pendant.desc: "농후한 보랏빛이 매우 매력적입니다."
  #Rare
@@ -990,8 +994,8 @@
  #Easter eggs
  easteregg_artifact_elisabeth_plush: "엘리자베스의 봉제 여우"
  easteregg_artifact_elisabeth_plush_description: "엘리자베스의 봉제 여우는 큰 사랑을 받은 장난감으로, 엘리자베스의 일생 대부분을 함께했습니다. 엘리자베스가 고용되어 치밀한 암호를 만들 때 종종 이 봉제 인형과 대화를 나누는 모습이 목격되기도 했습니다. 무척이나 아늑하며, 소유자로 하여금 여우의 영민함을 흉내 내게 합니다."
- easteregg_artifact_nicks_redolence: "의사의 향"
- easteregg_artifact_nicks_redolence_description: "작은 플라스크 안에 [ROOT.Char.Custom('GetComplexColor')] 기운의 향기가 가득 담겨 있습니다. 귀족과 귀부인마저 이 앞에서는 황홀감을 느끼게 됩니다. 마개에는 \"나쁜 공기를 막기 위하여\"라는 문구가 작게 새겨져 있습니다."
+ easteregg_artifact_nicks_redolence: "마지막 향기"
+ easteregg_artifact_nicks_redolence_description: "작은 플라스크 안에 [ROOT.Char.Custom('GetComplexColor')] 기운의 향기가 가득 담겨 있습니다. 귀족과 귀부인마저 이 앞에서는 황홀감을 느끼게 됩니다. 마개에는 #EMP \"이제 끝이 다가오네...\"#!라는 문구가 작게 새겨져 있습니다."
  easteregg_artifact_chad_book: "아이네이스 주석본"
  easteregg_artifact_chad_book_description: "숱한 사랑을 받은 베르길리우스의 아이네이스 채색 사본으로, 수많은 글귀가 휘갈겨져 있습니다. 무의미한 내용도 있지만 통찰이 느껴지는 글도 있습니다."
  easteregg_artifact_chad_dagger: "그 단검"
@@ -1004,8 +1008,8 @@
  #Blessed Junk
  fp2_blessed_junk: "[ROOT.Char.Custom('TrinketLookAdjective')|U] $blessed_artifact_modifier$"
  fp2_blessed_junk_desc: "[ROOT.Char.Custom('TrinketLookAdverbFollowup')] [ROOT.Char.Custom('TrinketLookAdjective')](으)로, 별다를 것 없는 무의미한 유물입니다. $blessed_artifact_modifier_desc$."
- local_artisan_modifier: "지역 장인"
- local_artisan_modifier_desc: "해당 인물은 지역 장인이며, 귀족 영주의 설득으로 일하고 있습니다.\n#weak 해당 인물의 [inspirations|E]으로 만들어지는 물품은 품질이 감소합니다.#!"
+ local_artisan_modifier: "지역 기능공"
+ local_artisan_modifier_desc: "해당 인물은 지역 기능공이며, 귀족 영주의 설득으로 일하고 있습니다.\n#weak 해당 인물의 [inspirations|E]으로 만들어지는 물품은 품질이 감소합니다.#!"
  #EP2
  #TOURNAMENT
  artifact_pas_darmes_token: "무기의 길 징표"
@@ -1106,3 +1110,9 @@
  artifact_fine_brooch_description: "주변에 [artifact.GetOwner.GetHouse.GetBaseName] 이름이 은은하게 새겨진 브로치입니다. 보유자의 정통성에 대한 이야기가 빠르게 퍼집니다."
  medicine_jar: "약병"
  medicine_jar_desc: "유약을 얇게 바른 항아리입니다. 희귀하고 효과가 강력한 약초, 치료용 광물, 여러 가지 말린 동물의 일부가 들어 있습니다. 전부 의사들이 질병을 치료하고 체액의 균형을 맞출 때 사용하는 약재입니다."
+ whale_fat_candles_name: "고래 기름 양초"
+ whale_fat_candles_description: "이 양초는 무시무시한 괴수의 지방을 가공하여 제작되었습니다. 고래 지방 특유의 가시가 위협적입니다."
+ warenne_coin: "워린 주화"
+ warenne_coin_description: "앞면에 파란색과 워린 가문의 노란색 체크무늬 문양이 있는 주화입니다. 가장자리에는 짙은 핏자국이 보입니다."
+ traitors_head: "배신자의 머리"
+ traitors_head_description: "본래 몸뚱이에서 깔끔하게 잘린 머리입니다. 기념품보다는 메시지에 가깝습니다."

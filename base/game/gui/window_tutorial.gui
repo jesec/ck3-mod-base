@@ -54,12 +54,6 @@ types TutorialWindow {
 			}
 		}
 
-		icon = {
-			size = { 100% 100% }
-
-			using = Window_Background_NoDecoration
-		}
-
 		state = {
 			name = center
 			using = Animation_Curve_Default
@@ -107,18 +101,21 @@ types TutorialWindow {
 			duration = 0.5
 			position = "[GetGuiPositionFromPercentCoordinates( PdxGuiWidget.Self, '(float)-25', '(float)0' )]"
 		}
+
 		state = {
 			name = far_left
 			using = Animation_Curve_Default
 			duration = 0.5
 			position = "[GetGuiPositionFromPercentCoordinates( PdxGuiWidget.Self, '(float)-35', '(float)0' )]"
 		}
+
 		state = {
 			name = right
 			using = Animation_Curve_Default
 			duration = 0.5
 			position = "[GetGuiPositionFromPercentCoordinates( PdxGuiWidget.Self, '(float)25', '(float)0' )]"
 		}
+
 		state = {
 			name = far_right
 			using = Animation_Curve_Default
@@ -148,9 +145,12 @@ types TutorialWindow {
 		}
 
 		vbox = {
-			margin = { 35 35 }
-			margin_top = 30
+			margin_top = 33
+			margin_bottom = 35
 			set_parent_size_to_minimum = yes
+
+			using = Window_Background_NoDecoration
+			using = Window_Margins
 
 			header_pattern = {
 				layoutpolicy_horizontal = expanding
@@ -174,22 +174,20 @@ types TutorialWindow {
 						using = Font_Size_Big
 					}
 
-
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						layoutstretchfactor_horizontal = 1
-						margin_right = 20
 
 						expand = {
 							visible = "[Not( Tutorial.HasTransition( 'read_later' ) )]"
 						}
 
-
 						text_single = {
 							visible = "[Not( StringIsEmpty( Tutorial.GetStepHeaderInfo ) )]"
-							margin = { 15 0 }
 							raw_text = "([Tutorial.GetStepHeaderInfo])"
 							default_format = "#weak"
+							align = nobaseline
+
 							using = Font_Size_Medium
 						}
 
@@ -218,10 +216,6 @@ types TutorialWindow {
 				}
 			}
 
-			spacer = {
-				size = { 5 5 }
-			}
-
 			scrollbox = {
 				autoresizescrollarea = yes
 				blockoverride "scrollbox_content"
@@ -243,16 +237,20 @@ types TutorialWindow {
 							layoutpolicy_horizontal = expanding
 							margin_top = 20
 							margin_bottom = 5
+							
 							text = "TUTORIAL_STEP_INSTRUCTIONS"
 							using = Font_Size_Medium
 						}
+
 						text_multi = {
 							max_width = 430
 							min_width = 430
+							
 							autoresize = yes
 							text = "[Tutorial.GetStepInstructions]"
 							using = Font_Size_Medium
 						}
+						
 						expand = {}
 					}
 					
@@ -285,6 +283,7 @@ types TutorialWindow {
 				
 			}
 			hbox = {
+				layoutpolicy_horizontal = expanding
 				margin = { 10 10 }
 				spacing = 5
 				ignoreinvisible = no
@@ -296,6 +295,7 @@ types TutorialWindow {
 					text = "[Tutorial.GetTransitionText('back')]"
 					onclick = "[Tutorial.OnClickTransition('back')]"
 				}
+
 				button_standard = {
 					size = { 120 33 }
 					visible = "[Tutorial.HasTransition('repeat')]"
@@ -303,6 +303,7 @@ types TutorialWindow {
 					text = "[Tutorial.GetTransitionText('repeat')]"
 					onclick = "[Tutorial.OnClickTransition('repeat')]"
 				}
+
 				button_tertiary = {
 					size = { 120 33 }
 					visible = "[Tutorial.HasTransition('skip')]"
@@ -310,6 +311,7 @@ types TutorialWindow {
 					text = "[Tutorial.GetTransitionText('skip')]"
 					onclick = "[Tutorial.OnClickTransition('skip')]"
 				}
+
 				button_primary = {
 					name = "tutorial_highlight_next_button"
 					size = { 120 33 }
@@ -326,7 +328,7 @@ types TutorialWindow {
 
 tutorial_window = {
 	name = "tutorial_window"
-	
+
 	using = Window_Movable
 	position = { 0 0 }
 	layer = tutorial

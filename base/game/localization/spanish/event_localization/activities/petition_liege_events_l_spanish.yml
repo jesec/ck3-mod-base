@@ -3,7 +3,7 @@
  petition_liege_header: "Petición:"
  #Activity Start: Liege decides whether or not to hear petition
  petition_liege.0001.opening: "[petition_vassal.Custom2('AppropriateGreetingPositive', ROOT.Char )]"
- petition_liege.0001.desc: "Mi séquito y yo acabamos de llegar a [petition_liege.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip] tras un viaje largo y agotador. Tengo asuntos importantes que tratar sobre el bienestar de [petition_vassal.GetPrimaryTitle.GetNameNoTier] que debo discutir con vos y solicito audiencia en vuestra corte lo antes posible."
+ petition_liege.0001.desc: "Mi séquito y yo acabamos de llegar a [petition_liege.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip] tras un viaje largo y agotador.\n\nSolicito audiencia en vuestra corte lo antes posible."
  petition_liege.0001.a: "¡Agarrad a [petition_vassal.GetTitledFirstNameNoTooltip|l] y traédme[petition_vassal.GetHerHim]!"
  petition_liege.0001.a.tt: "Recibes a [petition_vassal.GetTitledFirstName|l] en tu [royal_court|lE]"
  petition_liege.0001.b: "Tengo demasiado trabajo para ocuparme de [petition_vassal.GetSheHe] ahora mismo."
@@ -16,6 +16,7 @@
  petition_liege.0009.a: "¿Se niega a #EMP escucharme#! siquiera? ¡Qué desfachatez la de es[petition_liege.Custom('ES_EA')] [petition_liege.GetWomanMan]!"
  #Liege hears petition, makes a decision
  #Title
+ petition_liege.0101.t.gold: "$petition_liege_header$ oro"
  petition_liege.0101.t.council_seat: "$petition_liege_header$ Nombramientos del consejo"
  petition_liege.0101.t.pay_debt: "$petition_liege_header$ Liquidar deudas"
  petition_liege.0101.t.war_aid: "$petition_liege_header$ Ayuda militar"
@@ -33,6 +34,7 @@
  #Desc
  petition_liege.0101.desc: "[petition_vassal.GetTitledFirstName] aparece al fin en mi gran salón y no pierde el tiempo en acercarse al trono y inclinarse profundamente. \n\n«Gracias por recibirme, mi señor[ROOT.Char.Custom('ES_XA')]. Hoy acudo a veros con una petición urgente…"
  petition_liege.0101.desc.council_seat: "por favor, mi [petition_liege.GetLadyLord], dejad que me siente en vuestro consejo».\n\n«Mis talentos no se tienen en cuenta mientras que en los más altos niveles se escucha a gentes menores; compartiré las cargas del señorío como vuestr[petition_vassal.Custom('ES_OA')] [petition_vassal.Custom('GetCouncilPositionRequest')]»."
+ petition_liege.0101.desc.gold: "Me preguntaba si podríais prescindir de un poco de oro para [Select_CString( petition_vassal.IsFemale, 'una súbdita', 'un súbdito' )] fiel, dado mi servicio y lealtad aquí».\n\n«Os aseguro que se gastaría en beneficio de los intereses del señorío»."
  petition_liege.0101.desc.pay_debt: "Me he topado con algunas… dificultades financieras, debido a acontecimientos totalmente fuera de mi control». \n\n«Por el bien del señorío, ¿me ayudaríais a cuadrar mis cuentas?»."
  petition_liege.0101.desc.war_aid: "la [petition_war.GetName|l] no va bien; [second_party.GetTitledFirstNameNoTooltip|l] tiene ventaja. \n\nMi [petition_liege.GetLadyLord], mis derrotas son vuestras también. Dadme vuestro apoyo, por el bien del señorío."
  petition_liege.0101.desc.end_war: "¡[second_party.GetTitledFirstNameNoTooltip|l] está librando una guerra contra mí y vuestros súbditos buenos y leales del [petition_vassal.GetPrimaryTitle.GetName]! \n\n¿No os parece que estas luchas internas no hacen más que debilitarnos a todos y deberían detenerse en seco?"
@@ -46,9 +48,10 @@
  petition_liege.0101.desc.construct_city: "el [petition_construct_county.GetName] tiene un gran potencial, pero carece de la infraestructura necesaria». \n\n«Mi [petition_liege.GetLadyLord], patrocinar una nueva ciudad en [petition_construct.GetName] beneficiaría a todo el señorío solo por las consecuencias en el comercio»."
  petition_liege.0101.desc.construct_temple: "los fieles de [petition_construct_county.GetName] necesitan un lugar de culto». \n\n«Me conmovería que me ayudarais a construir un/a [petition_liege.GetFaith.HouseOfWorship] nuevo/a en [petition_construct.GetName] para la fe [petition_liege.GetFaith.GetAdjectiveNoTooltip]»."
  petition_liege.0101.desc.development: "mis tierras palidecen en comparación con vuestra poderosa capital». \n\n«Por favor, ceded algo de las riquezas de [petition_liege.GetCapitalLocation.GetCounty.GetTitle.GetNameNoTier] al humilde [petition_county_example.GetName] para así beneficiar al señorío en general»."
- petition_liege.0101.desc.council_first_councillor: "\n\nAsí que cree que puede hacer un trabajo mejor que [second_party.GetTitledFirstName|l]…"
+ petition_liege.0101.desc.council_first_councillor: "\n\nAsí que cree que puede hacer un trabajo mejor que [second_party.Custom('ES_ElLa')] [second_party.GetTitledFirstName|l]…"
  petition_liege.0101.desc.council_second_councillor: "Tal vez sería mejor sustituir a [second_councillor.GetTitledFirstName|l]."
  #Accept
+ petition_liege.0101.accept.gold: "Puedo librarme de algunas monedas."
  petition_liege.0101.accept.council_seat: "Muy bien, tendréis vuestro puesto."
  petition_liege.0101.accept.council_seat_occupied: "Reemplazaréis a [second_party.GetTitledFirstNameNoTooltip|l] como mi [second_party.GetCouncilTitle]."
  petition_liege.0101.accept.pay_debt: "Muy bien, vuestras deudas están pagadas."
@@ -74,7 +77,7 @@
  petition_liege.0101.bribe_gold.county_opinion: "Estas visitas acarrean mucho coste."
  petition_liege.0101.bribe_gold.fortify_border: "Vamos, vos sabéis que esas medidas son caras."
  petition_liege.0101.bribe_gold.title_liege: "¿Cuánto valen esos derechos para vos?"
- petition_liege.0101.bribe_gold.title_vassal: "¿Qué es [petition_vassal.GetFirstNameNoTooltip] para vos?"
+ petition_liege.0101.bribe_gold.title_vassal: "¿Cuánto vale para vos, [petition_vassal.GetFirstNameNoTooltip]?"
  petition_liege.0101.bribe_gold.construct_city: "Seguro que sabéis lo caras que son esas cosas…"
  petition_liege.0101.bribe_gold.construct_temple: "Financiareis un anexo, ¿verdad?"
  petition_liege.0101.bribe_gold.development: "Por supuesto, pero hará falta una compensación mínima."
@@ -142,7 +145,7 @@
  petition_liege.0101.refusal.development: "Ay, algunas tierras son más bendecidas que otras."
  #Council
  petition_liege.0101.council_second_occupied: "[second_councillor.GetTitledFirstNameNoTooltip|l] se apartará como [second_councillor.GetCouncilTitle]."
- petition_liege.0101.council_second: "He pensado en algo para vos."
+ petition_liege.0101.council_second: "Tengo algo pensado."
  #War Aid
  petition_liege.0101.war_aid_join: "Acabaremos con [second_party.GetFirstNameNoTooltip]."
  #Tooltips
@@ -259,14 +262,14 @@
  petition_liege.9001.county_convert: "Financie sacerdotes para ayudar a convertir condados en mi señorío."
  petition_liege.9001.county_opinion: "Haga una real visita para aumentar la opinión popular en mi señorío."
  petition_liege.9001.fortify_border: "Fortifique mis fronteras."
- petition_liege.9001.title_liege: "Me conceda uno de mis derechos."
+ petition_liege.9001.title_liege: "Conceder uno de mis derechos."
  petition_liege.9001.title_vassal: "Me traspase derechos."
  petition_liege.9001.construct_city: "Financie una nueva ciudad en mi señorío."
  petition_liege.9001.construct_temple: "Financie un nuevo templo en mi señorío."
  petition_liege.9001.development: "Reubique a algunos de sus súbditos en mi señorío."
  petition_liege.9001.fallback: "Llene mis arcas, simplemente."
  petition_liege.0101.accept.fallback: "Muy bien, vuestras arcas se llenarán."
- petition_liege_block_firing_councillor_effect_tt: "[petition_vassal.GetShortUIName|U] [Select_CString( petition_vassal.IsLocalPlayer, 'no podrás', 'no podrá' )] ser retirad[petition_vassal.Custom('ES_OA')] del [council|lE] durante 5 años"
+ petition_liege_block_firing_councillor_effect_tt: "No puede ser despedid[petition_vassal.Custom('ES_OA')] del [council|lE] durante 5 años"
  ### Modifiers ###
  #Control
  petition_liege_0101_county_control_effect_tt: "Todos los condados poseídos con menos de 66 de [control|lE]"
@@ -279,7 +282,7 @@
  petition_liege_county_convert_modifier_desc: "El titular de este condado ha solicitado a su señor que patrocine su conversión a la fe verdadera."
  petition_liege_county_convert_modifier_tt: "[convert_county|E] avanzará más rápidamente en condados con este modificador"
  #Opinion
- petition_liege_0101_county_opinion_effect_tt: "Todas las [holdings|lE] de [petition_vassal.LocalPlayerString( 'tu persona', petition_vassal.GetShortUIName )] con una [SCOPE.ScriptValue('petition_county_opinion_value')] de #negative_value #! o inferior"
+ petition_liege_0101_county_opinion_effect_tt: "Todas las [holdings|lE] de [petition_vassal.LocalPlayerString( 'tu persona', petition_vassal.GetShortUIName )] con una [county_opinion|lE] de [SCOPE.ScriptValue('petition_county_opinion_value')] #negative_value #! o inferior"
  petition_liege_county_opinion_modifier: "Visita real"
  petition_liege_county_opinion_modifier_desc: "El titular de este condado ha solicitado a su señor que les visite y dé un espectáculo al pueblo."
  #Fortify
@@ -293,5 +296,5 @@
  petition_liege_title_position: "[ROOT.Char.GetHeldCourtAndCouncilPositionsString]"
  petition_liege_title_landed: "[ROOT.Char.GetTitleAsNameNoTooltip]"
  petition_liege_title_courtier: "cortesano"
- petition_liege_second_if_tt: "#bold Si [TARGET_CHARACTER.GetTitledFirstName|l] acepta:#!"
+ petition_liege_second_if_tt: "#bold Si [TARGET_CHARACTER.Custom('ES_ElLa')] [TARGET_CHARACTER.GetTitledFirstNameRegnal|l] acepta:#!"
  petition_liege_costs_refunded: "$petition_liege_decision$ Costes reembolsados"

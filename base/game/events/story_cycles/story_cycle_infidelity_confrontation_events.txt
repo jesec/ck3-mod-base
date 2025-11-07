@@ -166,37 +166,24 @@ scripted_trigger infidelity_confrontation_infidelity_partner_apologetic_trigger 
 infidelity_confrontation.1000 = { #by Mathilda Bjarnehed
 	type = character_event
 	title = infidelity_confrontation.1000.t
-		desc = {
-			first_valid = {
-				########
-				# SPECIAL TEXT: CONFESSION
-				########
-				triggered_desc = {
-					trigger = {
-						scope:story = { has_variable = infidelity_confrontation_1000_confession_desc }
-					}
-					desc = {
-						first_valid = {
-							#Apologetic
-							triggered_desc = {
-								trigger = {
-									infidelity_confrontation_infidelity_partner_apologetic_trigger = yes
-								}
-								desc = {
-									desc = infidelity_confrontation.1000.confession.apologetic_start.desc
-									first_valid = {
-										triggered_desc = {
-											trigger = { scope:infidelity_partner = { is_close_or_extended_family_of = scope:infidelity_partners_lover } }
-											desc = infidelity_confrontation.1000.confession.my_lovername.desc
-										}
-										desc = infidelity_confrontation.1000.confession.your_lovername.desc
-									}
-									desc = infidelity_confrontation.1000.confession.apologetic_end.desc
-								}
+	desc = {
+		first_valid = {
+			########
+			# SPECIAL TEXT: CONFESSION
+			########
+			triggered_desc = {
+				trigger = {
+					scope:story = { has_variable = infidelity_confrontation_1000_confession_desc }
+				}
+				desc = {
+					first_valid = {
+						#Apologetic
+						triggered_desc = {
+							trigger = {
+								infidelity_confrontation_infidelity_partner_apologetic_trigger = yes
 							}
-							#Unapologetic
 							desc = {
-								desc = infidelity_confrontation.1000.confession.unapologetic_start.desc
+								desc = infidelity_confrontation.1000.confession.apologetic_start.desc
 								first_valid = {
 									triggered_desc = {
 										trigger = { scope:infidelity_partner = { is_close_or_extended_family_of = scope:infidelity_partners_lover } }
@@ -204,111 +191,132 @@ infidelity_confrontation.1000 = { #by Mathilda Bjarnehed
 									}
 									desc = infidelity_confrontation.1000.confession.your_lovername.desc
 								}
-								first_valid = {
-									triggered_desc = {
-										trigger = { sex_opposite_of = scope:infidelity_partners_lover }
-										desc = infidelity_confrontation.1000.confession.unapologetic_end_opposite_sex.desc
-									}
-									desc = infidelity_confrontation.1000.confession.unapologetic_end_same_sex.desc
-								}
+								desc = infidelity_confrontation.1000.confession.apologetic_end.desc
 							}
 						}
-					}
-				}
-				######
-				# REGULAR TEXT
-				######
-				desc = {
-					#Special optional starts to clarify source of information
-					first_valid = {
-						# If one of the lovers is the exposer
-						triggered_desc = {
-							trigger = {
-								exists = scope:exposer
-								scope:infidelity_partner = scope:exposer
-							}
-							desc = infidelity_controntation.1000.partner_exposed_intro.desc
-						}
-						triggered_desc = {
-							trigger = {
-								exists = scope:exposer
-								scope:infidelity_partners_lover = scope:exposer
-							}
-							desc = infidelity_controntation.1000.partners_lover_exposed_intro.desc
-						}
-						# If exposed
-						triggered_desc = {
-							trigger = {
-								exists = scope:exposer
-								NOT = { this = scope:exposer }
-							}
-							desc = infidelity_controntation.1000.exposed_intro.desc
-						}
-						# If found out through investigation
-						triggered_desc = {
-							trigger = {
-								scope:story = { has_variable = infidelity_confrontation_1000_investigation_desc }
-							}
-							desc = infidelity_controntation.1000.investigation_intro.desc
-						}
-					}
-					# Reaction
-					first_valid = {
-						# Secret exposed but I knew
-						triggered_desc = {
-							trigger = {
-								exists = scope:confronting_partner_knew
-								scope:confronting_partner_knew = yes
-							}
-							desc = infidelity_controntation.1000.exposed_knew.desc
-						}
-						# Incest
-						triggered_desc = {
-							trigger = {
-							scope:infidelity_partner = { relation_with_character_is_incestuous_in_faith_trigger = { CHARACTER = scope:infidelity_partners_lover FAITH = root.faith } }
-							has_negative_attitude_towards_trait_trigger = { TRAIT = incestuous GENDER_CHARACTER = scope:infidelity_partner }
-							}
-							desc = {
-								first_valid = {
-									triggered_desc = {
-										trigger = { is_spouse_of = scope:infidelity_partner }
-										desc = infidelity_controntation.1000.start_spouse.desc
-									}
-									triggered_desc = {
-										trigger = { has_relation_lover = scope:infidelity_partner }
-										desc = infidelity_controntation.1000.start_lover.desc
-									}
-								}
-								desc = infidelity_controntation.1000.incest.desc
-							}
-						}
-						# Sodomy
-						triggered_desc = {
-						trigger = {
-							scope:infidelity_partner = { relation_with_character_is_sodomy_in_faith_trigger = { CHARACTER = scope:infidelity_partners_lover FAITH = root.faith } }
-						}
+						#Unapologetic
 						desc = {
-								first_valid = {
-									triggered_desc = {
-										trigger = { is_spouse_of = scope:infidelity_partner }
-										desc = infidelity_controntation.1000.start_spouse.desc
-									}
-									triggered_desc = {
-										trigger = { has_relation_lover = scope:infidelity_partner }
-										desc = infidelity_controntation.1000.start_lover.desc
-									}
+							desc = infidelity_confrontation.1000.confession.unapologetic_start.desc
+							first_valid = {
+								triggered_desc = {
+									trigger = { scope:infidelity_partner = { is_close_or_extended_family_of = scope:infidelity_partners_lover } }
+									desc = infidelity_confrontation.1000.confession.my_lovername.desc
 								}
-								desc = infidelity_controntation.1000.sodomy.desc
+								desc = infidelity_confrontation.1000.confession.your_lovername.desc
 							}
-					}
-					# "Regular" lovers
-					desc = infidelity_controntation.1000.regular.desc
+							first_valid = {
+								triggered_desc = {
+									trigger = { sex_opposite_of = scope:infidelity_partners_lover }
+									desc = infidelity_confrontation.1000.confession.unapologetic_end_opposite_sex.desc
+								}
+								desc = infidelity_confrontation.1000.confession.unapologetic_end_same_sex.desc
+							}
+						}
 					}
 				}
 			}
+			######
+			# REGULAR TEXT
+			######
+			desc = {
+				#Special optional starts to clarify source of information
+				first_valid = {
+					# If one of the lovers is the exposer
+					triggered_desc = {
+						trigger = {
+							exists = scope:exposer
+							scope:infidelity_partner = scope:exposer
+						}
+						desc = infidelity_controntation.1000.partner_exposed_intro.desc
+					}
+					triggered_desc = {
+						trigger = {
+							exists = scope:exposer
+							scope:infidelity_partners_lover = scope:exposer
+						}
+						desc = infidelity_controntation.1000.partners_lover_exposed_intro.desc
+					}
+					# If exposed
+					triggered_desc = {
+						trigger = {
+							exists = scope:exposer
+							NOT = { this = scope:exposer }
+						}
+						desc = infidelity_controntation.1000.exposed_intro.desc
+					}
+					# If found out through investigation
+					triggered_desc = {
+						trigger = {
+							scope:story = { has_variable = infidelity_confrontation_1000_investigation_desc }
+						}
+						desc = infidelity_controntation.1000.investigation_intro.desc
+					}
+				}
+				# Reaction
+				first_valid = {
+					# Secret exposed but I knew
+					triggered_desc = {
+						trigger = {
+							exists = scope:confronting_partner_knew
+							scope:confronting_partner_knew = yes
+						}
+						desc = infidelity_controntation.1000.exposed_knew.desc
+					}
+					# Incest
+					triggered_desc = {
+						trigger = {
+						scope:infidelity_partner = { 
+							relation_with_character_is_incestuous_in_faith_trigger = { CHARACTER = scope:infidelity_partners_lover FAITH = root.faith } 
+						}
+						has_negative_attitude_towards_trait_trigger = { TRAIT = incestuous GENDER_CHARACTER = scope:infidelity_partner }
+						}
+						desc = {
+							first_valid = {
+								triggered_desc = {
+									trigger = { is_spouse_of = scope:infidelity_partner }
+									desc = infidelity_controntation.1000.start_spouse.desc
+								}
+								triggered_desc = {
+									trigger = { has_relation_lover = scope:infidelity_partner }
+									desc = infidelity_controntation.1000.start_lover.desc
+								}
+							}
+							desc = infidelity_controntation.1000.incest.desc
+						}
+					}
+					# Sodomy
+					triggered_desc = {
+					trigger = {
+						scope:infidelity_partner = { 
+							relation_with_character_is_sodomy_in_faith_trigger = { CHARACTER = scope:infidelity_partners_lover FAITH = root.faith } 
+						}
+					}
+					desc = {
+							first_valid = {
+								triggered_desc = {
+									trigger = { is_spouse_of = scope:infidelity_partner }
+									desc = infidelity_controntation.1000.start_spouse.desc
+								}
+								triggered_desc = {
+									trigger = { has_relation_lover = scope:infidelity_partner }
+									desc = infidelity_controntation.1000.start_lover.desc
+								}
+							}
+							desc = infidelity_controntation.1000.sodomy.desc
+						}
+					}
+					# "Regular" lovers
+					desc = infidelity_controntation.1000.regular.desc
+				}
+			}
+		}
 	}
 	theme = seduction
 	left_portrait = {
+		character = root
+		animation = disbelief
+	}
+	right_portrait = {
 		character = scope:infidelity_partner
 		triggered_animation = {
 			trigger = { infidelity_confrontation_infidelity_partner_apologetic_trigger = yes }
@@ -316,10 +324,7 @@ infidelity_confrontation.1000 = { #by Mathilda Bjarnehed
 		}
 		animation = disapproval
 	}
-	right_portrait = {
-		character = scope:infidelity_partners_lover
-		animation = flirtation
-	}
+	lower_right_portrait = scope:infidelity_partners_lover
 	lower_center_portrait = scope:exposer
 
 	immediate = {

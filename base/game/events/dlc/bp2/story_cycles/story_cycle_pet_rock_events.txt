@@ -474,6 +474,7 @@ pet_rock.0102 = {
 	trigger = {
 		is_available_healthy_adult = yes
 		stress > normal_baseline_stress
+		is_landed = yes
 	}
 
 	option = {
@@ -821,6 +822,7 @@ pet_rock.0106 = {
 
 	trigger = {
 		is_available_healthy_adult = yes
+		is_landed = yes
 	}
 
 	cooldown = { years = 15 }
@@ -969,7 +971,16 @@ pet_rock.0108 = {
 	type = character_event
 	content_source = dlc_009
 	title = pet_rock.0108.t
-	desc = pet_rock.0108.desc
+	desc = {
+		desc = pet_rock.0108.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = { is_landless_adventurer = yes }
+				desc = pet_rock.0108.adventurer
+			}
+			desc = pet_rock.0108.landed
+		}
+	}
 	theme = pet
 	left_portrait = {
 		character = root
@@ -994,7 +1005,14 @@ pet_rock.0108 = {
 
 	# I shall enshrine Rocky in my very home!
 	option = {
-		name = pet_rock.0108.a
+		name = {
+			text = pet_rock.0108.a
+			trigger = { is_landless_adventurer = no }
+		}
+		name = {
+			text = pet_rock.0108.a.adventurer
+			trigger = { is_landless_adventurer = yes }
+		}
 
 		custom_tooltip = pet_rock.0108.a.tt
 

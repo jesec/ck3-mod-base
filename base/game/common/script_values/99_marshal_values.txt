@@ -58,6 +58,25 @@ marshal_organize_levies_consulted_house_bonus = {
 	}
 }
 
+marshal_organize_levies_pandidakterion_bonus = {
+	if = {
+		limit = {
+			scope:councillor_liege = {
+				has_title = title:c_byzantion
+				title:c_byzantion = { has_county_modifier = pandidakterion_university_modifier }
+			}
+		}
+		add = {
+			value = marshal_organize_levies_base
+			add = marshal_organize_levies_skill_base
+			multiply = {
+				add = 10
+				divide = 100
+			}
+		}
+	}
+}
+
 # Final value
 marshal_organize_levies_modifier_total = {
 	add = marshal_organize_levies_base
@@ -65,6 +84,7 @@ marshal_organize_levies_modifier_total = {
 	add = marshal_organize_levies_erudition_bonus
 	add = marshal_organize_levies_family_business_bonus
 	add = marshal_organize_levies_consulted_house_bonus
+	add = marshal_organize_levies_pandidakterion_bonus
 }
 
 ### Army maintenance
@@ -122,6 +142,25 @@ marshal_organize_levies_maintenance_consulted_house_bonus = {
 	}
 }
 
+task_organize_levies_maintenance_pandidakterion_bonus = {
+	if = {
+		limit = {
+			scope:councillor_liege = {
+				has_title = title:c_byzantion
+				title:c_byzantion = { has_county_modifier = pandidakterion_university_modifier }
+			}
+		}
+		add = {
+			value = marshal_organize_levies_base
+			add = marshal_organize_levies_skill_base
+			multiply = {
+				add = 10
+				divide = 100
+			}
+		}
+	}
+}
+
 # Final value
 marshal_organize_levies_maintenance_total = {
 	add = marshal_organize_levies_maintenance_base
@@ -129,6 +168,7 @@ marshal_organize_levies_maintenance_total = {
 	add = marshal_organize_levies_maintenance_erudition_bonus
 	add = marshal_organize_levies_maintenance_family_business_bonus
 	add = marshal_organize_levies_maintenance_consulted_house_bonus
+	add = task_organize_levies_maintenance_pandidakterion_bonus
 }
 
 ########################
@@ -202,6 +242,13 @@ marshal_train_commanders_monthly_chance_consulted_house_bonus = {
 	divide = 100
 }
 
+# Master of Horse
+marshal_train_commanders_monthly_chance_master_of_horse_bonus = {
+	add = marshal_train_commanders_monthly_chance_value_base
+	multiply = 10
+	divide = 100
+}
+
 # Total value
 marshal_train_commanders_monthly_chance_value = {
 	value = marshal_train_commanders_monthly_chance_value_base
@@ -222,6 +269,17 @@ marshal_train_commanders_monthly_chance_value = {
 			councillor_liege_has_consulted_house_bonus = yes
 		}
 		add = marshal_train_commanders_monthly_chance_consulted_house_bonus
+	}
+	if = {
+		limit = {
+			scope:councillor_liege = {
+				OR = {
+					has_character_modifier = employer_booner_master_of_horse_2_modifier
+					has_character_modifier = employer_booner_master_of_horse_3_modifier
+				}
+			}
+		}
+		add = marshal_train_commanders_monthly_chance_master_of_horse_bonus
 	}
 }
 

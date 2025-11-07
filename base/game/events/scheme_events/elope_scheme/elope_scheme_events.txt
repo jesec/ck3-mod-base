@@ -36,7 +36,10 @@ elope.0001 = { #by Mathilda Bjarnehed
 		}
 	}
 	theme = love
-	left_portrait = scope:target
+	left_portrait = {
+		character = scope:target
+		animation = love
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -234,6 +237,7 @@ scripted_effect elope_1001_outcome_execution_or_tooltip_effect = {
 
 elope.1001 = { #by Mathilda Bjarnehed
 	type = character_event
+	window = scheme_successful_event
 	title = elope.1001.t
 	desc = {
 		first_valid = {
@@ -256,11 +260,12 @@ elope.1001 = { #by Mathilda Bjarnehed
 	}
 	left_portrait = {
 		character = scope:target
-		animation = admiration
+		animation = lantern
+		camera = camera_event_scheme_far_right
 	}
 	right_portrait = {
 		character = scope:target_liege
-		animation = anger
+		animation = celebrate_sword
 	}
 	lower_center_portrait = scope:spouse_1
 	lower_right_portrait = scope:spouse_2
@@ -368,6 +373,7 @@ scripted_trigger elope_1002_apologetic_target_trigger = {
 
 elope.1002 = { #by Mathilda Bjarnehed
 	type = character_event
+	window = scheme_successful_event
 	title = elope.1002.t
 	desc = {
 		desc = elope.1002.start.desc
@@ -459,6 +465,7 @@ elope.1002 = { #by Mathilda Bjarnehed
 #Success event for relatives of target and owner
 elope.1003 = {
 	type = letter_event
+	window = scheme_successful_event
 	opening = {
 		desc = elope.1003.opening
 	}
@@ -540,6 +547,7 @@ elope.1003 = {
 #Failure discovered event owner
 elope.1011 = { #by Mathilda Bjarnehed
 	type = character_event
+	window = scheme_failed_event
 	title = elope.1011.t
 	desc = {
 		first_valid = {
@@ -611,6 +619,7 @@ elope.1011 = { #by Mathilda Bjarnehed
 #Failure discovered for target liege
 elope.1012 = { #by Mathilda Bjarnehed
 	type = character_event
+	window = scheme_failed_event
 	title = elope.1012.t
 	desc = elope.1012.desc
 	theme = intrigue
@@ -751,6 +760,7 @@ elope.1012 = { #by Mathilda Bjarnehed
 #Failure undiscovered for owner
 elope.1021 = { #by Mathilda Bjarnehed
 	type = character_event
+	window = scheme_failed_event
 	title = elope.1011.t
 	desc = {
 		first_valid = {
@@ -830,6 +840,9 @@ elope.2000 = { #by Mathilda Bjarnehed
 		NOT = { scope:scheme = { has_variable = had_elope_2000_event } }
 		scope:target = { is_imprisoned = no }
 		exists = scope:target.host
+		scope:scheme = {
+			scheme_agent_charges >= 2
+		}
 	}
 
 	weight_multiplier = {
@@ -896,6 +909,7 @@ elope.2000 = { #by Mathilda Bjarnehed
 			add_scheme_modifier = {
 				type = intrigue_scheme_in_a_hurry_modifier
 			}
+			change_opportunities = -2
 		}
 
 		stress_impact = {

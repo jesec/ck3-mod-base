@@ -4,18 +4,8 @@
 	on_setup = {
 		story_owner = {
 			# Remove cooldowns on the other journal events if they exist
-			if = {
-				limit = {
-					exists = var:had_event_host_dinner_3130
-				}
-				remove_variable = had_event_host_dinner_3130
-			}
-			if = {
-				limit = {
-					exists = var:had_event_cultural_festival_9000
-				}
-				remove_variable = had_event_cultural_festival_9000
-			}
+			remove_variable ?= had_event_host_dinner_3130
+			remove_variable ?= had_event_cultural_festival_9000
 		}
 	}
 

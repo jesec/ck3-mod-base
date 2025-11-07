@@ -211,7 +211,7 @@ spymaster_task.0301 = {
 			}
 			else = { #For everyone else, send a feed message
 				send_interface_message = {
-					type = event_spymaster_task_good
+					type = msg_spymaster_task_good
 					title = spymaster_task.0311.notification
 					desc = {
 						triggered_desc = {
@@ -252,7 +252,7 @@ spymaster_task.0301 = {
 				}
 				else = { #For everyone else, send a feed message
 					send_interface_message = {
-						type = event_spymaster_task_good
+						type = msg_spymaster_task_good
 						title = spymaster_task.0311.notification
 						
 						left_icon = scope:secret_holder
@@ -372,7 +372,7 @@ spymaster_task.0302 = {
 			}
 			else = { #For everyone else, send a feed message
 				send_interface_message = {
-					type = event_spymaster_task_good
+					type = msg_spymaster_task_good
 					title = spymaster_task.0311.notification
 					desc = {
 						triggered_desc = {
@@ -424,7 +424,7 @@ spymaster_task.0302 = {
 				else = { #For everyone else, send a feed message
 					scope:councillor = {
 						send_interface_message = {
-							type = event_spymaster_task_good
+							type = msg_spymaster_task_good
 							title = spymaster_task.0311.notification
 
 							left_icon = scope:secret_holder
@@ -655,13 +655,13 @@ spymaster_task.0343 = {
 			limit = {
 				any_scheme = {
 					scheme_type = murder
-					scheme_target = scope:secret_holder
+					scheme_target_character = scope:secret_holder
 				}
 			}
 			random_scheme = {
 				limit = {
 					scheme_type = murder
-					scheme_target = scope:secret_holder
+					scheme_target_character = scope:secret_holder
 				}
 				save_scope_as = scheme
 			}
@@ -780,13 +780,13 @@ spymaster_task.0344 = {
 			limit = {
 				any_scheme = {
 					scheme_type = murder
-					scheme_target = scope:secret_holder
+					scheme_target_character = scope:secret_holder
 				}
 			}
 			random_scheme = {
 				limit = {
 					scheme_type = murder
-					scheme_target = scope:secret_holder
+					scheme_target_character = scope:secret_holder
 				}
 				save_scope_as = scheme
 			}
@@ -1685,27 +1685,6 @@ spymaster_task.0359 = {
 # Fabricate a Hook on a Courtier
 # by Petter Vilberg
 ################################
-scripted_trigger spymaster_task_courtier_valid_for_hook_fabrication_trigger = {
-	is_available_ai_adult = yes
-	save_temporary_scope_as = target_check
-	NOR = {
-		this = scope:councillor
-		root = {
-			has_hook = scope:target_check
-		}
-		root = {
-			any_scheme = {
-				scheme_target = scope:target_character
-				scheme_is_character_agent = scope:target_check
-			}
-		}
-		any_secret = { # Should prioritise actually finding Secrets
-			is_known_by = root
-		}
-	}
-}
-
-
 spymaster_task.0381 = {
 	type = letter_event
 	opening = spymaster_task.0381.opening
@@ -1737,7 +1716,7 @@ spymaster_task.0381 = {
 		modifier = {
 			add = 2
 			any_scheme = {
-				scheme_target = scope:target_character
+				scheme_target_character = scope:target_character
 				is_hostile = yes
 			}
 		}
@@ -2037,7 +2016,7 @@ spymaster_task.1001 = {
 				}
 			}
 			send_interface_message = {
-				type = event_spymaster_task_bad
+				type = msg_spymaster_task_bad
 				title = spymaster.1001.notification
 				
 				left_icon = scope:councillor
@@ -2167,7 +2146,7 @@ spymaster_task.1003 = {
 		}
 
 		send_interface_message = {
-			type = event_spymaster_task_bad
+			type = msg_spymaster_task_bad
 			title = spymaster_task.1003.notification
 
 			right_icon = scope:courtier
@@ -2271,7 +2250,6 @@ scripted_trigger spymaster_task_1101_scheme_trigger = {
 	hostile_scheme_trigger = yes
 	scheme_owner = { is_ai = yes }
 	scheme_progress >= 2
-	scheme_power_resistance_difference > 0
 }
 
 
@@ -2469,7 +2447,7 @@ spymaster_task.2002 = {
 		}
 
 		send_interface_message = {
-			type = event_spymaster_task_bad
+			type = msg_spymaster_task_bad
 			title = spymaster_task.2002.notification
 			desc = {
 				triggered_desc = {
@@ -2720,7 +2698,7 @@ spymaster_task.2103 = {
 			save_scope_as = active_councillor
 		}
 		send_interface_message = {
-			type = event_spymaster_task_good
+			type = msg_spymaster_task_good
 			title = spymaster_task.2103.notification
 			desc = {
 				triggered_desc = {
@@ -2893,7 +2871,7 @@ spymaster_task.2106 = {
 			save_scope_as = active_councillor
 		}
 		send_interface_message = {
-			type = event_spymaster_task_good
+			type = msg_spymaster_task_good
 			title = spymaster_task.2103.notification
 			desc = {
 				triggered_desc = {

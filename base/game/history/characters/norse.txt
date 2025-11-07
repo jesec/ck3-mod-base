@@ -20,7 +20,15 @@
 		trait = viking
 	}
 	867.1.1 = {
-		employer = 186004
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				set_employer = character:186004
+			}
+			add_character_flag = do_not_generate_starting_family
+		}
 	}
 	886.1.1 = {
 		add_spouse = 241
@@ -3957,12 +3965,15 @@
 	father = 163111 #Ivar the Boneless
 	mother = 306011 #Fictional wife of Ivar
 	trait = gregarious
-	trait = arrogant
-	trait = patient
-	trait = education_diplomacy_2
+	trait = charming
 	trait = beauty_good_1
 	858.1.1 = {
 		birth = yes
+	}
+	874.1.1 = {
+		effect = {
+			remove_trait = charming
+		}
 	}
 	881.1.1 = {
 		death = yes
@@ -3976,11 +3987,15 @@
 	culture = norse
 	father = 163111 #Ivar the Boneless
 	mother = 306011 #Fictional wife of Ivar
-	trait = wrathful
-	trait = brave
-	trait = honest
+	
+	trait = bossy
 	862.1.1 = {
 		birth = yes
+	}
+	878.1.1 = {
+		effect = {
+			remove_trait = bossy
+		}
 	}
 	888.1.1 = {
 		death = yes
@@ -3995,9 +4010,14 @@
 	father = 163111 #Ivar the Boneless
 	mother = 306011 #Fictional wife of Ivar
 	trait = beauty_good_2
-	trait = gregarious
+	trait = charming
 	864.1.1 = {
 		birth = yes
+	}
+	880.1.1 = {
+		effect = {
+			remove_trait = charming
+		}
 	}
 	896.1.1 = {
 		death = yes
@@ -4160,6 +4180,7 @@
 	
 	827.1.1 = {
 		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
 	}
 	866.11.1 = {
 		employer = 163112
@@ -4171,12 +4192,15 @@
 
 6811 = {
 	name = "Dyre" # Ruler of Kiev (Askold/Hoskuldr)
+	dna = "6811_dyre_kiev"
 	dynasty_house = house_oskyldr
 	religion = "norse_pagan"
 	culture = norse
-	martial = 9
 	diplomacy = 9
+	martial = 9
 	stewardship = 6
+	intrigue = 3
+	learning = 3
 	trait = cynical
 	trait = greedy
 	trait = gregarious
@@ -5134,6 +5158,7 @@
 1761 = {
 	name = "Eudokia"
 	# AKA: Eudocia
+	dna = 1761_eudokia
 	female = yes
 	dynasty = 1022158
 	martial = 4
@@ -6322,6 +6347,7 @@
 	mother = 168632
 	839.1.1 = {
 		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
 	}
 	881.1.1 = {
 		religion = "catholic"

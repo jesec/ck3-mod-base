@@ -122,7 +122,7 @@ councillor_spouse_intrigue.0001 = {
 		}
 
 		send_interface_message = {
-			type = event_spouse_task_good
+			type = msg_spouse_task_good
 			title = councillor_spouse_intrigue.0001.message
 			desc = {
 				triggered_desc = {
@@ -174,7 +174,7 @@ councillor_spouse_intrigue.0002 = {
 				scheme_owner = {
 					this = scope:councillor
 				}
-				any_scheme_agent = {
+				any_scheme_agent_character = {
 					this = scope:councillor
 				}
 			}
@@ -206,7 +206,7 @@ councillor_spouse_intrigue.0002 = {
 					scheme_owner = {
 						this = scope:councillor
 					}
-					any_scheme_agent = {
+					any_scheme_agent_character = {
 						this = scope:councillor
 					}
 				}
@@ -215,7 +215,7 @@ councillor_spouse_intrigue.0002 = {
 		}
 
 		send_interface_message = {
-			type = event_spouse_task_good
+			type = msg_spouse_task_good
 			title = councillor_spouse_intrigue.0002.message
 			desc = {
 				triggered_desc = {
@@ -390,7 +390,7 @@ councillor_spouse_intrigue.0003 = {
 				scope:secret = { NOT = { is_known_by = root } }
 			}
 			send_interface_message = {
-				type = event_spouse_task_good
+				type = msg_spouse_task_good
 				title = councillor_spouse_intrigue.0003.message
 				desc = {
 					triggered_desc = {
@@ -422,8 +422,7 @@ councillor_spouse_intrigue.0003 = {
 #Spouse adds progress to an Intrigue Scheme
 scripted_trigger councillor_spouse_intrigue_0004_trigger = {
 	scheme_skill = intrigue
-	NOT = { scheme_target = scope:councillor }
-	scheme_power_resistance_ratio > 0
+	NOT = { scheme_target_character = scope:councillor }
 }
 
 councillor_spouse_intrigue.0004 = {
@@ -502,13 +501,13 @@ councillor_spouse_intrigue.0004 = {
 				}
 			}
 			save_scope_as = scheme
-			scheme_target = {
+			scheme_target_character = {
 				save_scope_as = target
 			}
 		}
 
 		send_interface_message = {
-			type = event_spouse_task_good
+			type = msg_spouse_task_good
 			title = councillor_spouse_intrigue.0004.message
 			desc = {
 				triggered_desc = {
@@ -648,7 +647,7 @@ councillor_spouse_intrigue.0005 = {
 
 		#... and hook for liege
 		send_interface_message = {
-			type = event_spouse_task_good
+			type = msg_spouse_task_good
 			title = councillor_spouse_intrigue.0005.message
 			desc = {
 				triggered_desc = {
@@ -712,7 +711,7 @@ councillor_spouse_intrigue.0006 = {
 			save_scope_as = councillor
 		}
 		send_interface_message = {
-			type = event_spouse_task_good
+			type = msg_spouse_task_good
 			title = councillor_spouse_intrigue.0006.message
 			desc = {
 				triggered_desc = {
@@ -776,7 +775,7 @@ councillor_spouse_intrigue.0007 = {
 			save_scope_as = councillor
 		}
 		send_interface_message = {
-			type = event_spouse_task_good
+			type = msg_spouse_task_good
 			title = councillor_spouse_intrigue.0007.message
 			desc = {
 				triggered_desc = {
@@ -821,7 +820,7 @@ scripted_trigger councillor_spouse_intrigue_1001_scheme_trigger = {
 		}
 		AND = {
 			hostile_scheme_trigger = yes
-			any_scheme_agent = {
+			any_scheme_agent_character = {
 				this = root.cp:councillor_spymaster
 			}
 			is_scheme_agent_exposed = root.cp:councillor_spymaster
@@ -1076,9 +1075,8 @@ scripted_trigger councillor_spouse_intrigue_1003_scheme_trigger = {
 	}
 	is_scheme_exposed = yes
 	hostile_scheme_trigger = yes
-	scheme_power_resistance_ratio > 1
 	save_temporary_scope_as = scheme
-	any_scheme_agent = {
+	any_scheme_agent_character = {
 		councillor_spouse_intrigue_1003_scheme_agent_trigger = yes
 	}
 }
@@ -1132,21 +1130,21 @@ councillor_spouse_intrigue.1003 = {
 				base = 1
 				modifier = {
 					add = 5
-					any_scheme_agent = {
+					any_scheme_agent_character = {
 						councillor_spouse_intrigue_1003_scheme_agent_trigger = yes
 						is_vassal_of = root
 					}
 				}
 				modifier = {
 					add = 5
-					any_scheme_agent = {
+					any_scheme_agent_character = {
 						councillor_spouse_intrigue_1003_scheme_agent_trigger = yes
 						is_powerful_vassal_of = root
 					}
 				}
 			}
 			save_scope_as = scheme
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					councillor_spouse_intrigue_1003_scheme_agent_trigger = yes
 				}
@@ -1511,7 +1509,7 @@ scripted_trigger councillor_spouse_intrigue_1006_scheme_target_trigger = {
 scripted_trigger councillor_spouse_intrigue_1006_scheme_trigger = {
 	scheme_skill = intrigue
 	hostile_scheme_trigger = yes
-	scheme_target = {
+	scheme_target_character = {
 		councillor_spouse_intrigue_1006_scheme_target_trigger = yes
 	}
 }
@@ -1556,7 +1554,7 @@ councillor_spouse_intrigue.1006 = {
 			limit = {
 				councillor_spouse_intrigue_1006_scheme_trigger = yes
 			}
-			scheme_target = {
+			scheme_target_character = {
 				save_scope_as = target
 			}
 		}

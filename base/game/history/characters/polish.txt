@@ -57,14 +57,17 @@
 82235 = {
 	name = "Siemowit"	#Piast's son
 	#1st Piast "ruler"
+	dna = "82235_siemowit_wielkopolska"
 	dynasty = 699
-	martial = 6
 	diplomacy = 6
-	intrigue = 4
+	martial = 6
 	stewardship = 6
+	intrigue = 4
+	learning = 3
 	trait = education_martial_2
 	trait = brave
 	trait = honest
+	trait = diligent
 	religion = "slavic_pagan"
 	culture = "polish"
 	father = 82233		#Piast
@@ -321,7 +324,7 @@
 	mother = 757
 	990.1.2 = {
 		birth = "990.1.2"
-		#give_nickname = "nick_the_lazy"
+		give_nickname = nick_the_lazy
 	}
 	1013.1.2 = {
 		add_spouse = 427
@@ -473,9 +476,6 @@
 	1079.1.1 = {
 		trait = excommunicated
 	}
-	1079.5.1 = {
-		employer = 474
-	}
 	1081.3.22 = {
 		death = "1081.3.22"
 	}
@@ -578,13 +578,6 @@
 	}
 	1102.6.4 = {
 		add_pressed_claim = title:k_poland
-		employer = 8504
-	}
-	1107.5.1 = {
-		employer = 96011
-	}
-	1109.9.21 = {
-		employer = 212861
 	}
 	1112.1.2 = {
 		death = "1112.1.2"
@@ -671,7 +664,7 @@
 221531 = {
 	name = "WL_adysL_aw"	#Wladyslaw II the Exile
 	#12th ruler of Poland
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221515
@@ -691,6 +684,7 @@
 	}
 	1159.5.30 = {
 		death = "1159.5.30"
+		give_nickname = nick_the_exile
 	}
 }
 	
@@ -812,16 +806,29 @@
 	dynasty = 699
 	religion = "catholic"
 	culture = "polish"
+	trait = education_intrigue_2
 	father = 221515
 	mother = 221519
 	1126.1.2 = {
 		birth = "1126.1.2"
+		effect = { add_character_flag = do_not_generate_starting_family }
 	}
 	1144.1.2 = {
 		add_spouse = 219505
 	}
 	1155.1.1 = {
 		add_spouse = 222826
+	}
+	1177.1.1 = {
+		effect = {
+			set_relation_rival = { target = character:221561 reason = rival_historical } # his son Odon's rebellion
+			set_relation_rival = { target = character:221520 reason = rival_historical } # his brother, Casimir
+		}
+	}
+	1178.6.1 = {
+		effect = {
+			set_landless_government_effect = yes
+		}
 	}
 	1182.1.1 = {
 		give_nickname = "nick_the_old"
@@ -896,6 +903,7 @@
 
 221520 = {
 	name = "Kazimierz"	#Kazimierz II the Just
+	dna = 221520_kazimierz_of_poland
 	#15th ruler of Poland
 	dynasty = 699
 	martial = 7
@@ -903,6 +911,8 @@
 	intrigue = 8
 	stewardship = 7
 	trait = generous
+	trait = zealous
+	trait = just
 	trait = education_stewardship_2
 	religion = "catholic"
 	culture = "polish"
@@ -915,7 +925,6 @@
 		add_spouse = 221521
 	}
 	1177.1.1 = {
-		trait = just
 		give_nickname = "nick_the_just"
 	}
 	1194.5.5 = {
@@ -1097,7 +1106,7 @@
 221529 = {
 	name = "Richeza"
 	female = yes
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221531
@@ -1112,14 +1121,14 @@
 
 221530 = {
 	name = "BolesL_aw"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221531
 	mother = 212545
 	1127.1.2 = {
 		birth = "1127.1.2"
-		#give_nickname = "nick_the_tall"
+		give_nickname = nick_the_tall
 	}
 	1142.1.2 = {
 		add_spouse = 125068
@@ -1134,7 +1143,7 @@
 
 221532 = {
 	name = "JarosL_aw"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	trait = education_learning_2
@@ -1151,7 +1160,7 @@
 221533 = {
 	name = "Olga"
 	female = yes
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221530
@@ -1166,7 +1175,7 @@
 
 221534 = {
 	name = "Konrad"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221530
@@ -1181,7 +1190,7 @@
 
 221535 = {
 	name = "BolesL_aw"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221530
@@ -1196,7 +1205,7 @@
 
 221536 = {
 	name = "Jan"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221530
@@ -1211,7 +1220,7 @@
 
 221537 = {
 	name = "Henryk"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221530
@@ -1229,7 +1238,7 @@
 
 221538 = {
 	name = "WL_adysL_aw"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221530
@@ -1245,7 +1254,7 @@
 221539 = {
 	name = "Berta"
 	female = yes
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221530
@@ -1261,7 +1270,7 @@
 221540 = {
 	name = "Adelajda"
 	female = yes
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221530
@@ -1276,7 +1285,7 @@
 
 221550 = {
 	name = "Mieszko"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221531
@@ -1383,6 +1392,9 @@
 	1159.1.2 = {
 		birth = "1159.1.2"
 	}
+	1178.1.1 = {
+		employer = 221560 # Mieszko
+	}
 	1195.9.13 = {
 		death = "1195.9.13"
 	}
@@ -1397,6 +1409,9 @@
 	mother = 222826
 	1160.1.2 = {
 		birth = "1160.1.2"
+	}
+	1178.1.1 = {
+		employer = 221560 # Mieszko
 	}
 	1193.8.2 = {
 		death = "1193.8.2"
@@ -1460,6 +1475,9 @@
 	mother = 222826
 	1161.1.2 = {
 		birth = "1161.1.2"
+	}
+	1178.1.1 = {
+		employer = 221560 # Mieszko
 	}
 	1195.1.2 = {
 		add_spouse = 221732
@@ -3806,7 +3824,7 @@
 
 125943 = {
 	name = "Konrad"
-	dynasty = 699
+	dynasty_house = house_piast_silesia
 	religion = "catholic"
 	culture = "polish"
 	father = 221531
@@ -7524,5 +7542,31 @@
 	}
 	912.8.23 = {
 		death = 912.8.23
+	}
+}
+
+gryfita_1 = {
+	name = "Mikolaj"
+	dynasty = polish_gryfita
+	religion = catholic
+	culture = polish
+	1149.1.1 = {
+		birth = yes
+	}
+	1202.1.1 = {
+		death = yes
+	}
+}
+
+pala_1 = {
+	name = "Janusz"
+	dynasty = polish_pala
+	religion = catholic
+	culture = polish
+	1149.1.1 = {
+		birth = yes
+	}
+	1202.1.1 = {
+		death = yes
 	}
 }

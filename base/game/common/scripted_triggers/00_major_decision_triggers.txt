@@ -87,7 +87,7 @@ negotiate_the_danelaw_norse_side_trigger = {
 ### Does this character meet the basic eligibility requirements?
 negotiate_the_danelaw_basic_filter_trigger = {
 	# Standard filter checks.
-	is_landed = yes
+	is_playable_character = yes
 	exists = dynasty
 	OR = {
 		government_has_flag = government_is_tribal
@@ -190,5 +190,37 @@ favour_the_countryside_basques_rationale_hof_rivalry_trigger = {
 	AND = {
 		exists = faith.religious_head
 		has_relation_rival = faith.religious_head
+	}
+}
+
+##################################################
+# Rebuke Roman Revanchism Triggers
+
+rebuke_roman_revanchism_counties_controlled_trigger = {
+	holder = {
+		OR = {
+			this = root
+			top_liege = root
+		}
+	}
+}
+
+rebuke_roman_revanchism_counties_controlled_by_ere_trigger = {
+	exists = title:e_byzantium.holder
+	holder = {
+		OR = {
+			this = title:e_byzantium.holder
+			top_liege = title:e_byzantium.holder
+		}
+	}
+}
+
+rebuke_roman_revanchism_sicily_controls_unlisted_empire_trigger = {
+	highest_held_title_tier >= tier_empire
+	primary_title = {
+		NOR = {
+			this = title:e_italy
+			this = title:e_maghreb
+		}
 	}
 }

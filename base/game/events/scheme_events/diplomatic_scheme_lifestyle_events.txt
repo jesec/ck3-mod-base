@@ -32,7 +32,14 @@ diplomatic_scheme_lifestyle.1001 = {
 	title = diplomatic_scheme_lifestyle.1001.t
 	desc = diplomatic_scheme_lifestyle.1001.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = writing
+	}
+	right_portrait = {
+		character = scope:target
+		animation = marshal
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -42,6 +49,9 @@ diplomatic_scheme_lifestyle.1001 = {
 		NOT = { has_character_flag = had_warfare_letter_exchange_event }
 		has_lifestyle = martial_lifestyle
 		scope:target = { has_lifestyle = martial_lifestyle }
+		scope:scheme = {
+			scheme_agent_charges < opportunity_cap_value
+		}
 	}
 
 	immediate = {
@@ -73,7 +83,7 @@ diplomatic_scheme_lifestyle.1001 = {
 	option = { #Excitedly tell them everything you know
 		name = diplomatic_scheme_lifestyle.1001.b
 		scope:scheme = {
-			add_scheme_progress = scheme_progress_gain
+			change_opportunities = 2
 		}
 		stress_impact = {
 			shy = minor_stress_impact_gain
@@ -114,7 +124,14 @@ diplomatic_scheme_lifestyle.3001 = {
 	title = diplomatic_scheme_lifestyle.3001.t
 	desc = diplomatic_scheme_lifestyle.3001.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = boredom
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -123,6 +140,9 @@ diplomatic_scheme_lifestyle.3001 = {
 	trigger = {
 		NOT = { has_character_flag = had_event_diplomatic_scheme_lifestyle_3001 }
 		has_trait = schemer
+		scope:scheme = {
+			scheme_agent_charges < opportunity_cap_value
+		}
 	}
 
 	immediate = {
@@ -147,6 +167,9 @@ diplomatic_scheme_lifestyle.3001 = {
 	option = { #Nah
 		name = diplomatic_scheme_lifestyle.3001.b
 		custom_tooltip = diplomatic_scheme_lifestyle.3001.b.tt
+		scope:scheme = {
+			change_opportunities = 2
+		}
 	}
 }
 
@@ -177,6 +200,10 @@ diplomatic_scheme_lifestyle.3101 = {
 	}
 	theme = befriend_scheme
 	left_portrait = {
+		character = root
+		animation = schadenfreude
+	}
+	right_portrait = {
 		character = scope:target
 		triggered_animation = {
 			trigger = {
@@ -213,6 +240,9 @@ diplomatic_scheme_lifestyle.3101 = {
 	trigger = {
 		NOT = { has_character_flag = had_event_diplomatic_scheme_lifestyle_3101 }
 		has_trait = schemer
+		scope:scheme = {
+			scheme_agent_charges >= 2
+		}
 	}
 
 	immediate = {
@@ -233,7 +263,7 @@ diplomatic_scheme_lifestyle.3101 = {
 		custom_tooltip = diplomatic_scheme_lifestyle.3101.a.tt
 		trait = schemer
 		scope:scheme = {
-			add_scheme_progress = scheme_progress_loss
+			change_opportunities = -2
 		}
 		add_prestige = minor_prestige_gain
 		scope:target = {
@@ -280,20 +310,23 @@ diplomatic_scheme_lifestyle.3201 = {
 	desc = diplomatic_scheme_lifestyle.3201.desc
 	theme = befriend_scheme
 	left_portrait = {
+		character = root
+		animation = disappointed
+	}
+	right_portrait = {
 		character = scope:target
 		animation = anger
 	}
-	right_portrait = scope:sacrificial_agent
+	lower_right_portrait = scope:sacrificial_agent
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
 	}
-	orphan = yes # TODO [CD] - Figure out why
 	
 	trigger = {
 		NOT = { has_character_flag = had_event_diplomatic_scheme_lifestyle_3201 }
 		has_intrigue_lifestyle_trait_trigger = yes
-		scope:scheme = { any_scheme_agent = { count >= 1 } }
+		scope:scheme = { any_scheme_agent_character = { count >= 1 } }
 	}
 
 	weight_multiplier = {
@@ -312,7 +345,7 @@ diplomatic_scheme_lifestyle.3201 = {
 		modifier = { #more likely if target dislikes an agent
 			add = 1
 			scope:scheme = {
-				any_scheme_agent = {
+				any_scheme_agent_character = {
 					reverse_opinion = {
 						target = scope:target
 						value <= 0
@@ -328,7 +361,7 @@ diplomatic_scheme_lifestyle.3201 = {
 			days = 3650
 		}
 		scope:scheme = {
-			random_scheme_agent = {
+			random_scheme_agent_character = {
 				limit = {
 					is_scheming_against = { target = scope:target }
 					NOT = { is_agent_exposed_in_scheme = scope:scheme }

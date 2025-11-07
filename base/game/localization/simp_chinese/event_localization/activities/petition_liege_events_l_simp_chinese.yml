@@ -3,7 +3,7 @@
  petition_liege_header: "请愿："
  #Activity Start: Liege decides whether or not to hear petition
  petition_liege.0001.opening: "[petition_vassal.Custom2('AppropriateGreetingPositive', ROOT.Char )]"
- petition_liege.0001.desc: "经历舟车劳顿之后，我和我的随从刚刚抵达了[petition_liege.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip]。我有关乎[petition_vassal.GetPrimaryTitle.GetNameNoTier]福祉的重要事务必须和您商讨，请求您在方便时尽早在您的宫廷召见。"
+ petition_liege.0001.desc: "经历舟车劳顿之后，我和我的随从刚刚抵达了[petition_liege.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip]来与你会面。\n\n请求你在方便时尽早召见。"
  petition_liege.0001.a: "去迎接[petition_vassal.GetTitledFirstNameNoTooltip]，把[petition_vassal.GetHerHim]带来见我！"
  petition_liege.0001.a.tt: "你在[royal_court|E]内接见[petition_vassal.GetTitledFirstName]"
  petition_liege.0001.b: "我太忙了，现在没工夫应付[petition_vassal.GetHerHim]。"
@@ -16,6 +16,7 @@
  petition_liege.0009.a: "连句话都不#EMP 听#!？那个[petition_liege.GetWomanMan]真好意思！"
  #Liege hears petition, makes a decision
  #Title
+ petition_liege.0101.t.gold: "$petition_liege_header$金钱"
  petition_liege.0101.t.council_seat: "$petition_liege_header$内阁委任"
  petition_liege.0101.t.pay_debt: "$petition_liege_header$解决债务"
  petition_liege.0101.t.war_aid: "$petition_liege_header$军事援助"
@@ -33,6 +34,7 @@
  #Desc
  petition_liege.0101.desc: "终于被领进我的大殿后，[petition_vassal.GetTitledFirstName]没有浪费任何时间，立马走到我的御座前，深深鞠了一躬。\n\n“感谢您能接见我，大人。我今天来有一个紧急的请求——"
  petition_liege.0101.desc.council_seat: "求您了，[petition_liege.GetLadyLord]，让我进入内阁吧。”\n\n“我的才能被忽视了，那些不如我的人都能直达圣听；我想作为[petition_vassal.Custom('GetCouncilPositionRequest')]分担领地内的重担。”"
+ petition_liege.0101.desc.gold: "鉴于我的忠心耿耿，不知你能不能给我一些钱。”\n\n“我向你保证，这笔钱将用于促进领地的利益。”"
  petition_liege.0101.desc.pay_debt: "我遇到了一些……经济困难，因为某些我完全无法控制的事。”\n\n“为了领地的利益，您也许能帮我结清账目？”"
  petition_liege.0101.desc.war_aid: "[petition_war.GetName]不是很顺利；[second_party.GetTitledFirstNameNoTooltip]占据了上风。”\n\n“[petition_liege.GetLadyLord]，我的战败也是您的战败。请看在领地的份上，拉臣下一把。”"
  petition_liege.0101.desc.end_war: "[second_party.GetTitledFirstNameNoTooltip]向我和您在[petition_vassal.GetPrimaryTitle.GetName]的善良、忠诚的子民发动了战争！”\n\n“这种只会削弱我们所有人的内斗，一定应该停止吧？”"
@@ -49,6 +51,7 @@
  petition_liege.0101.desc.council_first_councillor: "\n\n所以，[petition_vassal.GetSheHe]觉得[petition_vassal.GetSheHe]能比[second_party.GetTitledFirstName]干得更好……"
  petition_liege.0101.desc.council_second_councillor: "或许我应该把[second_councillor.GetTitledFirstName]换掉。"
  #Accept
+ petition_liege.0101.accept.gold: "我能给你一些钱。"
  petition_liege.0101.accept.council_seat: "好吧，你会得到你的席位。"
  petition_liege.0101.accept.council_seat_occupied: "你会取代[second_party.GetTitledFirstNameNoTooltip]成为我的[second_party.GetCouncilTitle]"
  petition_liege.0101.accept.pay_debt: "好吧，你的债务我还了。"
@@ -142,7 +145,7 @@
  petition_liege.0101.refusal.development: "唉，某些土地比其他土地更蒙福。"
  #Council
  petition_liege.0101.council_second_occupied: "[second_councillor.GetTitledFirstNameNoTooltip]会从[second_councillor.GetCouncilTitle]一职上下台。"
- petition_liege.0101.council_second: "我有个别的职位很适合你。"
+ petition_liege.0101.council_second: "我有个想法。"
  #War Aid
  petition_liege.0101.war_aid_join: "我会将[second_party.GetFirstNameNoTooltip]打垮。"
  #Tooltips
@@ -266,7 +269,7 @@
  petition_liege.9001.development: "在我的领土里重新安置一些它们的臣民。"
  petition_liege.9001.fallback: "简单的补充国库。"
  petition_liege.0101.accept.fallback: "很好，你的库房将被填满。"
- petition_liege_block_firing_councillor_effect_tt: "[petition_vassal.GetShortUIName|U]5年内无法从[council|E]移除"
+ petition_liege_block_firing_councillor_effect_tt: "5年内无法从[council|E]移除"
  ### Modifiers ###
  #Control
  petition_liege_0101_county_control_effect_tt: "持有的所有[control|E]低于66的伯爵领"
@@ -293,5 +296,5 @@
  petition_liege_title_position: "[ROOT.Char.GetHeldCourtAndCouncilPositionsString]"
  petition_liege_title_landed: "[ROOT.Char.GetTitleAsNameNoTooltip]"
  petition_liege_title_courtier: "廷臣"
- petition_liege_second_if_tt: "#bold 如果[TARGET_CHARACTER.GetTitledFirstName]接受：#!"
+ petition_liege_second_if_tt: "#bold 如果[TARGET_CHARACTER.GetTitledFirstNameRegnal]接受：#!"
  petition_liege_costs_refunded: "$petition_liege_decision$花费退还"

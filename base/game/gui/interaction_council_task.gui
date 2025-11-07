@@ -135,7 +135,7 @@ window = {
 
 			blockoverride "scrollbox_content" {
 				vbox = {
-					margin = { 10 0 }
+					margin = { 5 5 }
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 
@@ -144,7 +144,8 @@ window = {
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
 						ignoreinvisible = yes
-						spacing = 2
+						spacing = 5
+						
 						item = {
 							select_council_position_button = {}
 						}
@@ -155,6 +156,26 @@ window = {
 
 		divider = {
 			layoutpolicy_horizontal = expanding
+		}
+		
+		hbox_character_interaction_acceptance = {
+			visible = "[CharacterInteractionConfirmationWindow.ShouldShowAnswer]"
+			layoutpolicy_horizontal = expanding
+		}
+		
+		text_multi_on_decline_summary = {}
+		
+		hbox = {
+			visible = "[CharacterInteractionConfirmationWindow.HasCost]"
+			tooltip = "[CharacterInteractionConfirmationWindow.GetCostTooltip]"
+
+			text_single = {
+				text = "INTERACTION_COST"
+			}
+
+			text_single = {
+				text = "[CharacterInteractionConfirmationWindow.GetCostDescription]"
+			}
 		}
 
 		hbox = {
@@ -180,20 +201,19 @@ window = {
 types CouncilPositionButton
 {
 	type select_council_position_button = button_standard_clean {
-		layoutpolicy_horizontal = expanding
 		datacontext = "[CouncilTaskInteractionItem.GetActiveCouncilTask]"
 		datacontext = "[ActiveCouncilTask.GetPositionType]"
 		datacontext = "[ActiveCouncilTask.GetCouncillor]"
 		datacontext = "[CouncilTaskInteractionWindow.GetSkillItemForPosition( CouncilPositionType.Self )]"
-
-
+		layoutpolicy_horizontal = expanding
+		
 		enabled = "[Not( ObjectsEqual( Character.Self, GetPlayer ) )]"
 		onclick = "[CouncilTaskInteractionItem.Select]"
 		down = "[ObjectsEqual( ActiveCouncilTask.Self, CouncilTaskInteractionWindow.GetSelectedTask )]"
 
 		vbox = {
 			name = "position"
-			margin = { 10 4 }
+			margin = { 10 0 }
 			spacing = 4
 			set_parent_size_to_minimum = yes
 
@@ -208,9 +228,9 @@ types CouncilPositionButton
 				hbox = {
 					layoutpolicy_horizontal = expanding
 
-
 					text_single = {
 						name = "position_label"
+						alwaystransparent = yes
 						text = "[ActiveCouncilTask.GetPositionName]"
 						using = Font_Size_Medium
 						align = nobaseline
@@ -221,8 +241,8 @@ types CouncilPositionButton
 							framesize = { 70 26 }
 							spriteType = CorneredTiled
 							spriteborder = { 40 20 }
-							margin = { 12 3 }
-							margin_right = 100
+							margin = { 15 5 }
+							margin_right = 350
 
 							block "bg"
 							{
@@ -250,12 +270,17 @@ types CouncilPositionButton
 					name = "no_councillor"
 					visible = "[Not( Character.IsValid )]"
 					layoutpolicy_horizontal = expanding
+					alwaystransparent = yes
+					
 					text = "COUNCIL_TASK_INTERACTION_VACANT"
 				}
+
 				text_single = {
 					name = "current"
 					visible = "[And( Character.IsValid, Not( ObjectsEqual( GetPlayer, Character.Self ) ) )]"
 					layoutpolicy_horizontal = expanding
+					alwaystransparent = yes
+					
 					text = "COUNCIL_TASK_INTERACTION_CURRENT"
 					align = nobaseline
 				}
@@ -264,6 +289,8 @@ types CouncilPositionButton
 					name = "current_you"
 					visible = "[ObjectsEqual( GetPlayer, Character.Self )]"
 					layoutpolicy_horizontal = expanding
+					alwaystransparent = yes
+					
 					text = "COUNCIL_TASK_INTERACTION_CURRENT_YOU"
 				}
 			}
@@ -273,11 +300,14 @@ types CouncilPositionButton
 			}
 
 			text_multi = {
-				text = "[CouncilPositionType.GetCouncillorModifierDescFor( GetPlayer )]"
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
+				alwaystransparent = yes
+				
+				text = "[CouncilPositionType.GetCouncillorModifierDescFor( GetPlayer )]"
 				autoresize = yes
-				margin = { 0 5 }
+				
+				margin_bottom = 10
 				margin_left = 20
 			}
 		}

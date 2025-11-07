@@ -574,7 +574,10 @@ bell_special_yearly.4000 = {
 	option = { # Get excited, put on a concert with the bell
 		name = bell_special_yearly.4000.a
 		custom_tooltip = bell_special_yearly.4000.a.tt
-		change_current_court_grandeur = medium_court_grandeur_gain
+		if = {
+			limit = { has_royal_court = yes has_dlc_feature = royal_court }
+			change_current_court_grandeur = medium_court_grandeur_gain
+		}
 		if = {
 			limit = { is_developer_testing_trigger = yes }
 			custom_tooltip = debug_generic_option_shortened_trigger_can_disable

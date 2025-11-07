@@ -808,7 +808,7 @@ graph={
 				link={
 					pin_id="factor2"
 					linked_node=64
-					linked_pin="output_id"
+					linked_pin="value"
 				}
 			}
 		}
@@ -841,19 +841,19 @@ graph={
 				}
 				link={
 					pin_id="term2"
-					linked_node=186
+					linked_node=59
 					linked_pin="value"
 				}
 			}
 		}
 		pdxns:cast:Int32ToFloat={
-			id=186
+			id=59
 			node={
 			}
 			inputs={
 				link={
 					pin_id="operand"
-					linked_node=188
+					linked_node=117
 					linked_pin="value"
 				}
 			}
@@ -876,7 +876,7 @@ graph={
 		pdxns:values:Float={
 			id=62
 			node={
-				value=150.000000
+				value=6150.000000
 			}
 			inputs={
 			}
@@ -884,24 +884,23 @@ graph={
 		pdxns:values:Float={
 			id=63
 			node={
-				value=6000.000000
+				value=5850.000000
 			}
 			inputs={
 			}
 		}
-		pdxns:common:compound={
+		pdxns:math:randomF={
 			id=64
 			node={
-				graph="Base with Variation"
 			}
 			inputs={
 				link={
-					pin_id="base_id"
+					pin_id="limit1"
 					linked_node=63
 					linked_pin="value"
 				}
 				link={
-					pin_id="variation_id"
+					pin_id="limit2"
 					linked_node=62
 					linked_pin="value"
 				}
@@ -1205,8 +1204,8 @@ graph={
 			inputs={
 				link={
 					pin_id="position"
-					linked_node=100
-					linked_pin="sum"
+					linked_node=199
+					linked_pin="value"
 				}
 				link={
 					pin_id="condition"
@@ -1591,7 +1590,7 @@ graph={
 			}
 		}
 		pdxns:math:FloorF={
-			id=188
+			id=117
 			node={
 			}
 			inputs={
@@ -1599,6 +1598,95 @@ graph={
 					pin_id="operand"
 					linked_node=61
 					linked_pin="age"
+				}
+			}
+		}
+		pdxns:values:Float={
+			id=196
+			node={
+				value=0.000000
+			}
+			inputs={
+			}
+		}
+		pdxns:math:GreaterThanEqualF={
+			id=190
+			node={
+			}
+			inputs={
+				link={
+					pin_id="op1"
+					linked_node=197
+					linked_pin="y"
+				}
+				link={
+					pin_id="op2"
+					linked_node=191
+					linked_pin="value"
+				}
+			}
+		}
+		pdxns:values:Float={
+			id=191
+			node={
+				value=0.000000
+			}
+			inputs={
+			}
+		}
+		pdxns:values:Vector3f={
+			id=199
+			node={
+			}
+			inputs={
+				link={
+					pin_id="x"
+					linked_node=197
+					linked_pin="x"
+				}
+				link={
+					pin_id="y"
+					linked_node=193
+					linked_pin="selected_value"
+				}
+				link={
+					pin_id="z"
+					linked_node=197
+					linked_pin="z"
+				}
+			}
+		}
+		pdxns:logic:SelectF={
+			id=193
+			node={
+			}
+			inputs={
+				link={
+					pin_id="select"
+					linked_node=190
+					linked_pin="value"
+				}
+				link={
+					pin_id="true_value"
+					linked_node=197
+					linked_pin="y"
+				}
+				link={
+					pin_id="false_value"
+					linked_node=196
+					linked_pin="value"
+				}
+			}
+		}
+		pdxns:values:BreakVector3f={
+			id=197
+			node={
+			}
+			inputs={
+				link={
+					pin_id="value"
+					linked_node=100
+					linked_pin="sum"
 				}
 			}
 		}

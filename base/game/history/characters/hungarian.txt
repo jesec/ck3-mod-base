@@ -986,7 +986,11 @@
 	stewardship = 7
 	religion = "catholic"
 	culture = "hungarian"
-	trait = education_stewardship_2
+	trait = education_stewardship_3
+	trait = diligent
+	trait = ambitious
+	trait = vengeful
+	trait = administrator
 	father = 219510
 	mother = 222573
 	1148.1.1 = {
@@ -1008,6 +1012,19 @@
 	1172.3.4 = {
 		remove_claim = title:k_hungary
 		remove_claim = title:k_croatia
+	}
+	1178.1.1 = {
+		effect = {
+			if = {
+				limit = { has_realm_law = crown_authority_0 }
+				add_realm_law = crown_authority_3
+			}
+			add_realm_law = high_partition_succession_law
+			imprison = {
+				target = character:219517 # his brother, Geza
+				type = house_arrest
+			}
+		}
 	}
 	1186.1.2 = {
 		add_spouse = 205515
@@ -1251,7 +1268,6 @@
 	stewardship = 5
 	religion = "catholic"
 	culture = "hungarian"
-	trait = inbred
 	trait = education_intrigue_2
 	father = 219510
 	mother = 222573
@@ -1343,7 +1359,7 @@
 	culture = "hungarian"
 	trait = deceitful
 	trait = cynical
-	trait = disfigured
+	trait = blind
 	trait = education_learning_3
 	father = 219531
 	mother = 219532
@@ -1358,6 +1374,7 @@
 	}
 	1141.2.13 = {
 		death = "1141.2.13"
+		give_nickname = nick_the_blind
 	}
 }
 
@@ -1480,7 +1497,7 @@
 }
 
 232553 = {
-	name = "Borisz-KonrA_d"
+	name = "Borisz"
 	# AKA: Borisz
 	dynasty = 708
 	martial = 5
@@ -1489,20 +1506,22 @@
 	stewardship = 5
 	religion = "catholic"
 	culture = "hungarian"
-	trait = bastard
+	trait = ambitious
 	trait = gregarious
 	trait = greedy
 	trait = education_martial_1
 	father = 480
 	mother = 98018
 	1113.1.2 = {
-		birth = "1113.1.2"
+		birth = yes
+		add_trait = disputed_heritage
+		add_trait = disinherited
 	}
 	1130.1.2 = {
 		add_spouse = 232554
 	}
 	1156.1.2 = {
-		death = "1156.1.2"
+		death = yes
 	}
 }
 
@@ -5540,6 +5559,7 @@
 
 476 = {
 	name = "Salamon"
+	dna = 476_salamon_of_hungary
 	dynasty = 708
 	martial = 6
 	diplomacy = 4
@@ -5556,6 +5576,21 @@
 	}
 	1063.1.1 = {
 		create_betrothal = character:1476
+		# Edward the Exile helped his father retake his throne, so we make Salamon a friend to the Wessex children.
+		effect = {
+			set_relation_friend = {
+				reason = friend_history_helped_fathers_campaigned_together
+				target = character:113
+			}
+			set_relation_friend = {
+				reason = friend_history_helped_fathers_campaigned_together
+				target = character:117
+			}
+			set_relation_friend = {
+				reason = friend_history_helped_fathers_campaigned_together
+				target = character:112
+			}
+		}
 	}
 	1087.1.1 = {
 		death = "1087.1.1"
@@ -6266,11 +6301,11 @@
 	culture = "hungarian"
 	father = 98000
 	mother = 221513
-	1147.1.2 = {
-		birth = "1147.1.2"
+	1146.1.2 = {
+		birth = yes
 	}
 	1183.1.2 = {
-		death = "1183.1.2"
+		death = yes
 	}
 }
 
@@ -9953,6 +9988,230 @@
 		birth = yes
 	}
 	890.1.1 = {
+		death = yes
+	}
+}
+
+ratot_1 = {
+	name = "Leustach"
+	dynasty = hungarian_ratot
+	religion = catholic
+	culture = hungarian
+	1146.1.1 = {
+		birth = yes
+	}
+	1196.1.1 = {
+		death = yes
+	}
+}
+
+ratot_2 = {
+	name = "Ratot"
+	dynasty = hungarian_ratot
+	religion = catholic
+	culture = hungarian
+	father = ratot_1
+	1176.1.1 = {
+		birth = yes
+	}
+	1229.1.1 = {
+		death = yes
+	}
+}
+
+ratot_3 = {
+	name = "Gyula"
+	dynasty = hungarian_ratot
+	religion = catholic
+	culture = hungarian
+	father = ratot_1
+	1178.1.1 = {
+		birth = yes
+	}
+	1239.1.1 = {
+		death = yes
+	}
+}
+
+esztergom_archbishop_1 = {
+	name = "LukA_cs"
+	religion = catholic
+	culture = hungarian
+	trait = education_learning_3
+	1123.1.1 = {
+		birth = yes
+	}
+	1181.1.1 = {
+		death = yes
+	}
+}
+
+bacs_ispan_1 = {
+	name = "DE_nes"
+	dynasty = hungarian_balog
+	religion = catholic
+	culture = hungarian
+	1125.1.1 = {
+		birth = yes
+	}
+	1199.1.1 = {
+		death = yes
+	}
+}
+
+bars_ispan_1 = {
+	name = "GyO_rgy"
+	dynasty = hungarian_kacsis
+	religion = catholic
+	culture = hungarian
+	1131.1.1 = {
+		birth = yes
+	}
+	1186.1.1 = {
+		death = yes
+	}
+}
+
+bihar_ispan_1 = {
+	name = "Ezsau"
+	dynasty = hungarian_osl
+	religion = catholic
+	culture = hungarian
+	1142.1.1 = {
+		birth = yes
+	}
+	1184.1.1 = {
+		death = yes
+	}
+}
+
+bodrog_ispan_1 = {
+	name = "Istvan"
+	dynasty = hungarian_turul
+	religion = catholic
+	culture = hungarian
+	1133.1.1 = {
+		birth = yes
+	}
+	1189.1.1 = {
+		death = yes
+	}
+}
+
+feher_ispan_1 = {
+	name = "Seza" # Ispan of Fejer, 1166
+	dynasty = hungarian_teteny
+	religion = catholic
+	culture = hungarian
+	1139.1.1 = {
+		birth = yes
+	}
+	1193.1.1 = {
+		death = yes
+	}
+}
+
+hont_ispan_1 = {
+	name = "German" # Ispan of Hont, 1156
+	dynasty = hungarian_kaplon
+	religion = catholic
+	culture = hungarian
+	1122.1.1 = {
+		birth = yes
+	}
+	1179.1.1 = {
+		death = yes
+	}
+}
+
+nyitra_ispan_1 = {
+	name = "Samodyn" # Ispan of Nyitra, 1183
+	dynasty = hungarian_rosd
+	religion = catholic
+	culture = hungarian
+	1148.1.1 = {
+		birth = yes
+	}
+	1188.1.1 = {
+		death = yes
+	}
+}
+
+nyitra_ispan_2 = {
+	name = "Benedek" # Benedek son of Samod
+	dynasty = hungarian_rosd
+	religion = catholic
+	culture = hungarian
+	father = nyitra_ispan_1
+	1169.1.1 = {
+		birth = yes
+	}
+	1234.1.1 = {
+		death = yes
+	}
+}
+
+sopron_ispan_1 = {
+	name = "LO_rinc" # Ispan of Sopron, 1171
+	dynasty = hungarian_szolnok
+	religion = catholic
+	culture = hungarian
+	1125.1.1 = {
+		birth = yes
+	}
+	1212.1.1 = {
+		death = yes
+	}
+}
+
+szatmar_ispan_1 = {
+	name = "MiklO_s" # Ispan of Szatmar, 1181
+	dynasty = hungarian_miskolc
+	religion = catholic
+	culture = hungarian
+	1151.1.1 = {
+		birth = yes
+	}
+	1203.1.1 = {
+		death = yes
+	}
+}
+
+temes_ispan_1 = {
+	name = "Pongrac" # Ispan of Temes, 1177
+	dynasty = hungarian_szemere
+	religion = catholic
+	culture = hungarian
+	1144.1.1 = {
+		birth = yes
+	}
+	1197.1.1 = {
+		death = yes
+	}
+}
+
+vas_ispan_1 = {
+	name = "Egyed" # Ispan of Vas, 1185 - 1192
+	dynasty = hungarian_bo
+	religion = catholic
+	culture = hungarian
+	1152.1.1 = {
+		birth = yes
+	}
+	1203.1.1 = {
+		death = yes
+	}
+}
+
+somogy_ispan_1 = {
+	name = "Pal" # Ispan of Somogy, 1142 - 1162
+	dynasty = hungarian_orsur
+	religion = catholic
+	culture = hungarian
+	1122.1.1 = {
+		birth = yes
+	}
+	1179.1.1 = {
 		death = yes
 	}
 }

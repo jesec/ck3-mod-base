@@ -373,7 +373,7 @@ types Animations
 
     ### current special event option look
     type animation_glow_event = icon {
-        size = { 95% 100% }
+        size = { 100% 100% }
         parentanchor = center
         frame = 2
         texture = "gfx/interface/buttons/button_mouseover_event.dds"
@@ -389,24 +389,30 @@ types Animations
             blend_mode = overlay
         }
 
-        # state = {
-        #     trigger_on_create = yes
-        #     name = a
-        #     next = b
+        modify_texture = {
+            name = "mask"
+            texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_thick.dds"
+            blend_mode = alphamultiply
+        }
 
-        #     using = Animation_Curve_Default
-        #     duration = 1
-        #     alpha = 1
-        # }
+        state = {
+            trigger_on_create = yes
+            name = a
+            next = b
 
-        # state = {
-        #     name = b
-        #     next = a
+            using = Animation_Curve_Default
+            duration = 2
+            alpha = 1
+        }
 
-        #     using = Animation_Curve_Default
-        #     duration = 1.4
-        #     alpha = 0.5
-        # }
+        state = {
+            name = b
+            next = a
+
+            using = Animation_Curve_Default
+            duration = 2.4
+            alpha = 0.5
+        }
     }
 
     # Use this to signal that an action means serious business, ie. on a button that starts a war

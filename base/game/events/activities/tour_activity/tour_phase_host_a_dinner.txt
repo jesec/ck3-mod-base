@@ -1094,6 +1094,7 @@ host_dinner_events.1006 = {
 			remove_default_outfit = no
 			outfit_tags = { no_clothes }
 		}
+		camera = camera_event_center_pointing_left
 	}
 	right_portrait = {
 		character = scope:stop_host_scope
@@ -3751,7 +3752,7 @@ scripted_effect 1060_liege_eat_heart_effect = {
 			50 = {
 				trigger = {
 					NOT = {
-						has_doctrine_parameter = cannibalism_legal
+						faith = { has_doctrine_parameter = cannibalism_legal }
 					}
 					is_cannibal_trigger = no
 				}
@@ -3889,7 +3890,6 @@ host_dinner_events.1060 = {
 		}
 		else = {
 			stress_impact = {
-				generous = minor_stress_impact_loss
 				generous = minor_stress_impact_loss
 				gluttonous = minor_stress_impact_gain
 			}
@@ -4160,7 +4160,7 @@ host_dinner_events.1070 = {
 					has_relation_friend = scope:visiting_liege
 					has_relation_lover = scope:visiting_liege
 					has_relation_soulmate = scope:visiting_liege
-					any_relation = { this = root }
+					has_any_scripted_relation = root
 				}
 				is_adult = yes
 				is_landed = no
@@ -4182,7 +4182,7 @@ host_dinner_events.1070 = {
 						has_relation_lover = scope:visiting_liege
 						has_relation_soulmate = scope:visiting_liege
 						# This should be someone you don't know well
-						any_relation = { this = root }
+						has_any_scripted_relation = root
 					}
 					is_adult = yes
 					is_landed = no
@@ -4609,7 +4609,6 @@ host_dinner_events.1081 = {
 			callous = minor_stress_impact_gain
 			compassionate = minor_stress_impact_loss
 			disloyal = minor_stress_impact_gain
-			forgiving = medium_stress_impact_loss
 			calm = minor_stress_impact_loss
 			arrogant = minor_stress_impact_gain
 		}
@@ -4660,7 +4659,7 @@ host_dinner_events.1090 = {
 		is_adult = yes
 		any_scheme = {
 			scheme_type = murder
-			scheme_target = scope:visiting_liege
+			scheme_target_character = scope:visiting_liege
 		}
 	}
 
@@ -4792,7 +4791,6 @@ host_dinner_events.1090 = {
 		name = host_dinner_events.1090.b
 		stress_impact = {
 			base = minor_stress_impact_gain
-			forgiving = minor_stress_impact_loss
 			content = minor_stress_impact_loss
 			humble = minor_stress_impact_loss
 			callous = minor_stress_impact_gain
@@ -6255,7 +6253,7 @@ host_dinner_events.3006 = {
 					has_relation_friend = scope:stop_host_scope
 					has_relation_lover = scope:stop_host_scope
 					has_relation_soulmate = scope:stop_host_scope
-					any_relation = { this = root }
+					has_any_scripted_relation = root
 				}
 				is_adult = yes
 				is_landed = no
@@ -6278,7 +6276,7 @@ host_dinner_events.3006 = {
 						has_relation_lover = scope:stop_host_scope
 						has_relation_soulmate = scope:stop_host_scope
 						# This should be someone you don't know well
-						any_relation = { this = root }
+						has_any_scripted_relation = root
 					}
 					is_adult = yes
 					is_landed = no
@@ -7955,8 +7953,8 @@ host_dinner_events.3041 = {
 				tags = { good }
 				character = scope:visiting_liege
 				target = scope:pie_eater_scope
-				give_deviant_secret_or_trait_effect	= yes
 				root = {
+					give_deviant_secret_or_trait_effect	= yes
 					if = {
 						limit = {
 							is_attracted_to_gender_of = scope:pie_eater_scope
@@ -8939,7 +8937,7 @@ host_dinner_events.3090 = {
 					#Someone you don't know
 					NOR = {
 						is_close_family_of = root
-						any_relation = { this = root }
+						has_any_scripted_relation = root
 					}
 				}
 			}
@@ -8962,7 +8960,7 @@ host_dinner_events.3090 = {
 						#Someone you don't know
 						NOR = {
 							is_close_family_of = root
-							any_relation = { this = root }
+							has_any_scripted_relation = root
 						}
 					}
 				}

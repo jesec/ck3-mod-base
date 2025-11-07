@@ -287,8 +287,6 @@ scripted_effect vizierate_0001_apply_mutual_opinion_effect = {
 }
 
 scripted_effect vizierate_0001_assign_best_relation_effect = {
-	# Save scope - we use this name so we can check opinions.
-	## SOONtm.
 	save_scope_as = opcalc_char
 	# Iterate over our other chars.
 	ordered_in_list = {
@@ -303,7 +301,7 @@ scripted_effect vizierate_0001_assign_best_relation_effect = {
 						value >= 1
 					}
 				}
-				add = calc_rough_opcalc_char_opinion_value
+				add = "opinion(scope:opcalc_char)"
 			}
 			## If we have a negative opinion, take that, then invert it.
 			else_if = {
@@ -314,7 +312,7 @@ scripted_effect vizierate_0001_assign_best_relation_effect = {
 					}
 				}
 				add = {
-					value = calc_rough_opcalc_char_opinion_value
+					value = "opinion(scope:opcalc_char)"
 					multiply = -1
 				}
 			}
@@ -1654,7 +1652,9 @@ scripted_effect vizierate_1001_duel_for_vizierate_effect = {
 						# Plus what path-specific effects do we need to run?
 						if = {
 							limit = { scope:plan = flag:diplomacy }
-							scope:vizier = { banish = yes }
+							scope:vizier = {
+								banish_effect = { BANISHER = scope:propositioner }
+							}
 						}
 						else_if = {
 							limit = { scope:plan = flag:stewardship }

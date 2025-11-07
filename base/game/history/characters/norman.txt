@@ -461,6 +461,7 @@
 		add_spouse = 10003
 		effect = {
 			give_nickname = nick_the_fox
+			add_prestige = 1000
 		}
 	}
 	1057.1.1 = {
@@ -870,14 +871,18 @@
 
 1152 = {
 	name = "Richard"
+	dna = "1152_richard_capua"
 	dynasty = 676
 	martial = 7
 	diplomacy = 4
 	intrigue = 6
 	stewardship = 5
+	learning = 3
 	religion = "catholic"
 	culture = "norman"
 	trait = cynical
+	trait = greedy
+	trait = ambitious
 	trait = education_stewardship_2
 	father = 1150
 	1022.1.1 = {
@@ -1049,8 +1054,8 @@
 				name = event_troop_default_name
 				levies = 800
 				men_at_arms = {
-					type = armored_footmen
-					stacks = 4
+					type = conrois
+					stacks = 2
 				}
 				men_at_arms = {
 					type = onager
@@ -1079,8 +1084,8 @@
 				name = event_troop_default_name
 				levies = 800
 				men_at_arms = {
-					type = armored_footmen
-					stacks = 4
+					type = conrois
+					stacks = 2
 				}
 				men_at_arms = {
 					type = onager
@@ -1111,11 +1116,6 @@
 	}
 	1066.9.14 = {
 		effect = {
-			# TODO_CD: Evaluate wether or not we need this - remove if we don't!
-			# set_global_variable = {
-			#	name = williams_invasion_of_england
-			#	value = yes
-			#}
 			add_gold = 600
 		}
 	}
@@ -1132,7 +1132,9 @@
 		give_nickname = nick_the_conqueror
 	}
 	1087.9.9 = {
-		death = yes
+		death = {
+			death_reason = death_horse_riding_accident
+		}
 	}
 }
 
@@ -1150,9 +1152,6 @@
 	mother = 367
 	1064.1.1 = {
 		birth = yes
-	}
-	1087.9.9 = {
-		add_pressed_claim = title:k_england
 	}
 	1074.1.1 = {
 		death = yes
@@ -1236,16 +1235,13 @@
 	father = 140
 	mother = 367
 	1055.1.1 = {
-		birth = "1055.1.1"
+		birth = yes
 	}
 	1066.1.1 = {
 		contract_disease_effect = { DISEASE = ill TREATMENT_EVENT = yes }
 	}
-	1087.9.9 = {
-		add_pressed_claim = title:k_england
-	}
-	1081.1.1 = {
-		death = "1081.1.1"
+	1075.1.1 = {
+		death = yes
 	}
 }
 
@@ -1280,7 +1276,9 @@
 		add_pressed_claim = title:k_england
 	}
 	1100.8.3 = {
-		death = "1100.8.3"
+		death = {
+			death_reason = death_hunting_mistakenly_shot
+		}
 	}
 }
 
@@ -1820,8 +1818,8 @@
 	stewardship = 7
 	religion = "catholic"
 	culture = "norman"
-	trait = honest
-	trait = education_learning_2
+	trait = vengeful #Attempted to hunt Hereward to avenge his brother
+	trait = education_martial_2
 	father = 174
 	1034.1.2 = {
 		birth = "1034.1.2"
@@ -1873,6 +1871,28 @@
 	}
 	1055.1.25 = {
 		death = "1055.1.25"
+	}
+}
+
+175 = { # Brother of William (172), was killed by Hereward the Wake
+	name = "Frederick"
+	dynasty = 748
+	martial = 8
+	diplomacy = 5
+	intrigue = 2
+	stewardship = 6
+	religion = "catholic"
+	culture = "norman"
+	trait = dull #Bit of a character assassination, but supposedly 'outwitted' by Hereward who was himself a bit of a himbo
+	trait = education_martial_1
+	trait = wrathful
+	trait = callous
+	father = 174
+	1045.1.1 = {
+		birth = "1045.1.1"
+	}
+	1150.1.1 = {
+		death = "1150.1.1"
 	}
 }
 
@@ -2157,7 +2177,7 @@
 
 204056 = {
 	name = "Gerald"
-	dynasty = 101905
+	dynasty = 4041 # FitzGerald
 	martial = 6
 	diplomacy = 7
 	intrigue = 7
@@ -2266,9 +2286,6 @@
 	1095.1.1 = {
 		birth = "1095.1.1"
 	}
-	1119.1.1 = {
-		employer = 73280
-	}
 	1127.7.1 = {
 		death = "1127.7.1"
 	}
@@ -2348,21 +2365,29 @@
 	name = "Roger"
 	# AKA: Roger Dagobertos
 	dynasty = 20066
-	martial = 4
-	diplomacy = 4
-	intrigue = 4
+	diplomacy = 6
+	martial = 5
 	stewardship = 4
+	intrigue = 5
+	learning = 4
 	religion = "catholic"
 	culture = "norman"
 	trait = gregarious
-	trait = wrathful
-	trait = education_diplomacy_2
+	trait = brave
+	trait = ambitious
+	trait = education_martial_2
 	father = 34605
-	1052.1.1 = {
-		birth = "1052.1.1"
+	1048.1.1 = {
+		birth = yes
+		effect = { add_character_flag = do_not_generate_starting_family }
+	}
+	1066.6.1 = {
+		effect = {
+			set_landless_government_effect = yes
+		}
 	}
 	1107.1.1 = {
-		death = "1107.1.1"
+		death = yes
 	}
 }
 
@@ -3259,7 +3284,9 @@
 		birth = "1079.1.1"
 	}
 	1100.8.1 = {
-		death = "1100.8.1"
+		death = {
+			death_reason = death_hunting_accident
+		}
 	}
 }
 
@@ -5777,7 +5804,7 @@
 
 32211 = {
 	name = "Henry" #count of Eu 1096 - 1140
-	dynasty = 752
+	dynasty_house = house_eu
 	religion = "catholic"
 	culture = "norman"
 	father = 6822
@@ -5792,7 +5819,7 @@
 }
 32212 = {
 	name = "Robert"
-	dynasty = 752
+	dynasty_house = house_eu
 	religion = "catholic"
 	culture = "norman"
 	father = 6822
@@ -5807,7 +5834,7 @@
 
 32213 = {
 	name = "William"
-	dynasty = 752
+	dynasty_house = house_eu
 	religion = "catholic"
 	culture = "norman"
 	father = 6822
@@ -6266,15 +6293,16 @@
 }
 
 129083 = {
-	name = "Ilbert" #Ilbert de Lacie
+	name = "Roger"
 	dynasty = 4037
 	religion = "catholic"
 	culture = "norman"
-	1045.1.1 = {
-		birth = "1045.1.1"
+	father = lacy_5
+	1055.1.1 = {
+		birth = yes
 	}
-	1093.1.1 = {
-		death = "1093.1.1"
+	1107.1.1 = {
+		death = yes
 	}
 }
 
@@ -6602,12 +6630,21 @@
 	dynasty = 20066
 	religion = "catholic"
 	culture = "norman"
+	diplomacy = 6
+	martial = 4
+	stewardship = 4
+	intrigue = 6
+	learning = 4
+	trait = stubborn
+	trait = diligent
+	trait = generous
+	trait = education_diplomacy_2
 	father = 34605
 	1045.1.1 = {
-		birth = "1045.1.1"
-	}	
+		birth = yes
+	}
 	1095.1.1 = {
-		death = "1095.1.1"
+		death = yes
 	}
 }
 
@@ -6702,16 +6739,31 @@
 }
 
 34220 = {
-	name = "Roussel"
-	dynasty = 7299
+	name = "Roussel" # Roussel de Bailleul 'Phrangopoulos'
+	dna = 34220_roussel_de_bailleul
+	dynasty = 7299 # Bailleul
 	religion = "catholic"
 	culture = "norman"
+
+	#Education
 	trait = education_martial_3
+	#Personality Traits
+	trait = brave
+	trait = ambitious
+	trait = gregarious
+
+	#Other Traits
+	trait = reaver
+	trait = lifestyle_traveler
+
 	1032.1.1 = {
-		birth = "1032.1.1"
+		birth = yes
+	}
+	1066.1.1 = {
+		employer = norman_crispin_06 # Robert Crispin
 	}
 	1082.1.1 = {
-		death = "1082.1.1"
+		death = yes
 	}
 }
 
@@ -7061,9 +7113,7 @@
 	mother = 168181
 	1090.1.1 = {
 		birth = "1090.1.1"
-		
 	}
-	
 	1171.6.30 = {
 		death = "1171.6.30"
 	}
@@ -7600,11 +7650,10 @@
 	religion = catholic
 	culture = norman
 	father = 144702
-	
-	1078.1.1 = {
+	1100.1.1 = {
 		birth = yes
 	}
-	1130.1.1 = {
+	1155.1.1 = {
 		death = yes
 	}
 }
@@ -7709,7 +7758,7 @@ norman0005 = {
 	1060.1.1 = {
 		employer = 1128
 	}
-	1185.1.1 = {
+	1085.1.1 = {
 		death = yes
 	}
 }
@@ -7742,7 +7791,7 @@ norman0007 = {
 	1086.1.1 = {
 		birth = yes
 	}
-	1110.1.1 = {
+	1126.1.1 = {
 		death = yes
 	}
 }
@@ -7786,10 +7835,8 @@ norman0010 = {
 	dynasty_house = house_marsico
 	religion = catholic
 	culture = norman
-
 	father = 1132
-	trait = bastard
-
+	trait = bastard_founder
 	1067.1.1 = {
 		birth = yes
 	}
@@ -7819,7 +7866,7 @@ norman0011 = {
 
 norman0012 = {
 	name = "Manfred" # Manfred di Paternò
-	dynasty_house = house_paterno
+	dynasty_house = house_vasto
 	religion = "catholic"
 	culture = "norman"
 
@@ -7836,7 +7883,7 @@ norman0012 = {
 
 norman0013 = {
 	name = "Jordan" # Jordan di Paternò
-	dynasty_house = house_paterno
+	dynasty_house = house_vasto
 	religion = "catholic"
 	culture = "norman"
 
@@ -7931,6 +7978,1731 @@ norman0018 = {
 		birth = yes
 	}
 	1088.4.14 = {
+		death = yes
+	}
+}
+
+# Crispins
+
+norman_crispin_01 = {
+	name = Gilbert # father of Robert Crispin
+	dynasty = norman_crispin # Crispin
+	culture = norman
+	religion = catholic
+	father = norman_crispin_07 # Crispin de Bec
+	995.1.1 = {
+		birth = yes
+	}
+	1035.1.1 = {
+		death = yes
+	}
+}
+
+norman_crispin_02 = {
+	name = Gilbert # II, brother of Robert Crispin
+	dynasty = norman_crispin # Crispin
+	culture = norman
+	religion = catholic
+	father = norman_crispin_01
+	1019.1.1 = {
+		birth = yes
+	}
+	1066.6.1 = {
+		employer = 20112 # Count Richard of Évreux
+	}
+	1068.1.1 = {
+		death = yes
+	}
+}
+
+norman_crispin_03 = {
+	name = Elysande # Hesilia, sister of Robert Crispin
+	female = yes
+	dynasty = norman_crispin # Crispin
+	culture = norman
+	religion = catholic
+	father = norman_crispin_01
+
+	1021.1.1 = {
+		birth = yes
+	}
+	1066.6.1 = {
+		employer = 20112 # Count Richard of Évreux
+	}
+	1088.1.1 = {
+		death = yes
+	}
+}
+
+norman_crispin_04 = {
+	name = William # I, brother of Robert Crispin
+	dynasty = norman_crispin # Crispin
+	culture = norman
+	religion = catholic
+	father = norman_crispin_01
+
+	1023.1.1 = {
+		birth = yes
+	}
+	1066.6.1 = {
+		employer = 20112 # Count Richard of Évreux
+	}
+	1074.1.8 = {
+		death = yes
+	}
+}
+
+norman_crispin_05 = {
+	name = Emma # sister of Robert Crispin
+	female = yes
+	dynasty = norman_crispin # Crispin
+	culture = norman
+	religion = catholic
+	father = norman_crispin_01
+
+	1025.1.1 = {
+		birth = yes
+	}
+	1066.6.1 = {
+		employer = 20112 # Count Richard of Évreux
+	}
+	1083.1.1 = {
+		death = yes
+	}
+}
+
+norman_crispin_06 = {
+	name = Robert # Robert Crispin 'Phrangopoulos'
+	dna = norman_crispin_06_robert_phrangopoulos
+	dynasty = norman_crispin # Crispin
+	culture = norman
+	religion = catholic
+	father = norman_crispin_01
+
+	# Education
+	trait = education_martial_3
+
+	# Personality Traits
+	trait = brave
+	trait = wrathful
+	trait = greedy
+
+	# Other Traits
+	trait = reaver
+	trait = lifestyle_traveler
+	trait = aggressive_attacker
+
+	disallow_random_traits = yes
+
+	1040.1.1 = {
+		birth = yes
+	}
+	1066.1.1 = {
+		effect = {
+			set_relation_best_friend = { reason = friend_generic_history target = character:34220 } # Roussel de Bailleul
+			give_nickname = nick_phrangopoulos
+			add_trait_xp = {
+				trait = lifestyle_traveler
+				track = travel
+				value = { 45 55 }
+			}
+			add_trait_xp = {
+				trait = lifestyle_traveler
+				track = danger
+				value = { 25 35 }
+			}
+			if = {
+				limit = {
+					has_dlc_feature = roads_to_power
+				}
+				change_government = landless_adventurer_government
+				create_maa_regiment = {
+					type = conrois
+					size = 3
+				}
+			}
+			add_character_flag = special_laamp_char
+			add_character_flag = do_not_generate_starting_family
+		}
+	}
+	1073.1.1 = {
+		death = yes
+	}
+}
+
+norman_crispin_07 = {
+	name = "Crispin" # grandfather of Robert Crispin
+	dynasty = norman_crispin # Crispin
+	culture = norman
+	religion = catholic
+	955.1.1 = {
+		birth = yes
+	}
+	1028.1.1 = {
+		death = yes
+	}
+}
+
+montgomery_1 = {
+	name = "Jean"
+	dynasty = 751 # Montgomery
+	religion = "catholic"
+	culture = "norman"
+	father = 168182
+	1121.1.1 = {
+		birth = yes
+	}
+	1191.2.24 = {
+		death = yes
+	}
+}
+
+sicilian0001 = {
+	name = "Adilasia" # Adelise de Hauteville, wife of Enrique di Montescaglioso
+	female = yes
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	trait = education_learning_3
+	father = 211502
+	trait = bastard
+	1150.1.1 = {
+		birth = yes
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0008 = {
+	name = "Valdrada" # Valdrada de Hauteville, wife of Jacopo Tiepolo, Doge of Venice
+	female = yes
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	trait = education_diplomacy_3
+	father = 211509
+	mother = 211510
+	1193.1.1 = {
+		birth = yes
+	}
+	1252.1.1 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+	}
+}
+
+30834 = {
+	name = "Robert" # Robert (II) Drengot, Duke of Capua (1127-1135)
+	dynasty = 676
+	religion = "catholic"
+	culture = "norman"
+	father = 30833
+	1090.1.1 = {
+		birth = yes
+	}
+	1156.1.1 = {
+		death = yes
+	}
+}
+
+30852 = {
+	name = "Jordan" # Jordan Drengot
+	dynasty = 676
+	religion = "catholic"
+	culture = "norman"
+	father = 30834
+	1125.1.1 = {
+		birth = yes
+	}
+	1170.1.1 = {
+		death = yes
+	}
+}
+
+30879 = {
+	name = "Nicholas" # Nicholas de Hauteville, Count of Salerno and Amalfi (1128-1141)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	father = 30881
+	1110.1.1 = {
+		birth = yes
+	}
+
+	1141.1.1 = {
+		death = yes
+	}
+}
+
+30880 = {
+	name = "William" # William (II) de Hauteville, Count of Salerno and Amalfi (1141-1160)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	father = 30881
+	1115.1.1 = {
+		birth = yes
+	}
+	1160.1.1 = {
+		death = yes
+	}
+}
+
+30881 = {
+	name = "William" # William (I) de Hauteville, Count of Salerno and Amalfi (1099-1128)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	father = 1136
+	mother = 30882
+	1091.1.1 = {
+		birth = yes
+	}
+	1128.1.1 = {
+		death = yes
+	}
+}
+
+30893 = {
+	name = "William" # William de Hauteville
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	trait = bastard
+	father = 30890
+	1105.1.1 = {
+		birth = yes
+	}
+	1170.1.1 = {
+		death = yes
+	}
+}
+
+30894 = {
+	name = "Clementia" # Clementia de Hauteville, wife of Hugh of Catanzaro
+	female = yes
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	father = 30891
+	mother = 30898 # Her mother is married to wrong brother
+	1106.1.1 = {
+		birth = yes
+	}
+	1167.7.28 = {
+		death = yes
+	}
+}
+
+30900 = {
+	name = "Robert" # Robert (II) de Bassonville, Count of Bari (1142-1161) and Foggia (1154-1166)
+	dynasty = 7192
+	religion = "catholic"
+	culture = "norman"
+	father = 30899
+	mother = 127067
+	1115.1.1 = {
+		birth = yes
+	}
+	1136.1.1 = {
+		add_spouse = 30902
+	}
+	1182.9.15 = {
+		death = yes
+	}
+}
+
+30901 = {
+	name = "William" # William de Bassonville
+	dynasty = 7192
+	religion = "catholic"
+	culture = "norman"
+	father = 30899
+	mother = 127067
+	1118.1.1 = {
+		birth = yes
+	}
+	1170.1.11 = {
+		death = yes
+	}
+}
+
+30902 = {
+	name = "Adilasia" # Adelisa de Hauteville, wife of Robert II de Bassonville
+	female = yes
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	father = 211502
+	mother = 207662
+	1114.1.1 = {
+		birth = yes
+	}
+	1186.1.1 = {
+		death = yes
+	}
+}
+
+73356 = {
+	name = "Robert" # Robert (III) de Hauteville, Duke of Capua (1154-1160)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+
+	father = 211501
+	mother = 206512
+
+	1153.1.1 = {
+		birth = yes
+	}
+	1160.2.1 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+	}
+}
+
+73357 = {
+	name = "Henry" # Henry de Hauteville, Duke of Capua (1160-1172)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+
+	father = 211501
+	mother = 206512
+
+	1160.1.1 = {
+		birth = yes
+	}
+	1172.6.16 = {
+		death = {
+			death_reason = death_ill
+		}
+	}
+}
+
+127063 = {
+	name = "William" # William de Hauteville
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+
+	trait = bastard
+	father = 211507
+	mother = 211508
+
+	1139.1.1 = {
+		birth = yes
+	}
+	1168.1.1 = {
+		death = yes
+	}
+}
+
+127067 = {
+	name = "Judith" # Judith de Hauteville, wife of Robert I de Bassonville
+	dynasty = 678
+	female = yes
+	religion = "catholic"
+	culture = "norman"
+
+	father = 1132
+	mother = 160380
+
+	1083.1.1 = {
+		birth = yes
+	}
+	1136.1.1 = {
+		death = yes
+	}
+}
+
+127071 = {
+	name = "Roger" # Roger (IV) de Hauteville, Duke of Apulia (1154-1161)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+
+	father = 211501
+	mother = 206512
+
+	1152.1.1 = {
+		birth = yes
+	}
+	1161.1.1 = {
+		death = {
+			death_reason = death_siege
+		}
+	}
+}
+
+127084 = {
+	name = "Tancred" # Tancred de Hauteville, Count of Bari and Camarda (1132-1138)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+
+	father = 211502
+	mother = 207662
+
+	1119.1.1 = {
+		birth = yes
+	}
+	1143.1.1 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+	}
+}
+
+127085 = {
+	name = "Alphonse" # Alphonse de Hauteville, Duke of Capua (1135-114)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+
+	father = 211502
+	mother = 207662
+
+	1121.1.1 = {
+		birth = yes
+	}
+	1144.10.10 = {
+		death = yes
+	}
+}
+
+127092 = {
+	name = "Bohemond" # Bohemond de Hauteville, Duke of Apulia (1183-1187)
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+
+	father = 211500
+	mother = 204513
+
+	1182.1.1 = {
+		birth = yes
+	}
+	1187.1.1 = {
+		death = yes
+	}
+}
+
+211500 = {
+	name = "William" # William (II) de Hauteville, King of Sicily (1166-1189)
+	dynasty = 678
+	martial = 4
+	diplomacy = 7
+	intrigue = 4
+	stewardship = 4
+	religion = "catholic"
+	culture = "norman"
+	trait = lazy
+	trait = lustful
+	trait = content
+	trait = education_stewardship_2
+	father = 211501
+	mother = 206512
+	1155.1.1 = {
+		birth = yes
+	}
+	1166.5.7 = {
+		capital = c_palermo
+		learn_language_of_culture = culture:egyptian
+	}
+	1177.2.13 = {
+		effect = {
+			create_betrothal = character:204513 # Joan Plantagenet
+		}
+	}
+	1189.11.11 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+	}
+}
+
+211501 = {
+	name = "William" # William (I) de Hauteville, King of Sicily (1145-1166), Duke of Apulia (1148-1154)
+	dynasty = 678
+	martial = 4
+	diplomacy = 4
+	intrigue = 8
+	stewardship = 8
+	religion = "catholic"
+	culture = "norman"
+	trait = lunatic_1
+	trait = wrathful
+	trait = education_martial_2
+	father = 211502
+	mother = 207662
+	1131.1.1 = {
+		birth = yes
+	}
+	1153.1.1 = {
+		add_spouse = 206512
+	}
+	1154.2.26 = {
+		capital = c_palermo
+	}
+	1166.5.7 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+		give_nickname = nick_the_wicked
+	}
+}
+
+211502 = {
+	name = "Roger" # Roger (II) de Hauteville, King of Sicily (1130-1154), Duke of Sicily (1105-1130) and Duke of Apulia (1124-1134)
+	dynasty = 678
+	martial = 4
+	diplomacy = 7
+	intrigue = 8
+	stewardship = 5
+	religion = "catholic"
+	culture = "norman"
+	trait = wrathful
+	trait = education_martial_2
+
+	father = 1132
+	mother = 70979
+
+	1095.12.22 = {
+		birth = yes
+	}
+	1117.1.1 = {
+		add_spouse = 207662
+	}
+	1130.12.25 = {
+		capital = c_palermo
+	}
+	1149.1.1 = {
+		add_spouse = 91087
+	}
+	1151.1.1 = {
+		add_spouse = 211503
+	}
+	1154.2.26 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+		give_nickname = nick_the_great
+	}
+}
+
+211507 = {
+	name = "Roger" # Roger (III) de Hauteville, Duke of Apulia and Count of Taranto (1134-1148)
+	dynasty = 678
+	martial = 4
+	diplomacy = 4
+	intrigue = 7
+	stewardship = 8
+	religion = "catholic"
+	culture = "norman"
+	trait = humble
+	trait = greedy
+	trait = education_martial_2
+
+	father = 211502
+	mother = 207662
+
+	1118.1.1 = {
+		birth = yes
+	}
+	1147.1.1 = {
+		add_spouse = 73288
+	}
+	1148.5.12 = {
+		death = yes
+	}
+}
+
+211508 = {
+	name = "Sibilia" # Sibilia di Lecce, lover of Roger III de Hauteville, mother of Tancred of Sicily.
+	female = yes
+	dynasty = 100345
+	religion = "catholic"
+	culture = "norman"
+	father = 73281
+	mother = 73282
+	1110.1.1 = {
+		birth = yes
+	}
+	1178.1.17 = {
+		death = yes
+	}
+}
+
+211509 = {
+	name = "Tancred" # Tancred de Hauteville, King of Sicily (1189-1194) and Duke of Apulia (1187-1189)
+	dynasty = 678
+	martial = 4
+	diplomacy = 7
+	intrigue = 7
+	stewardship = 5
+	religion = "catholic"
+	culture = "norman"
+	trait = ambitious
+	trait = arrogant
+	trait = brave
+	trait = bastard
+	trait = education_martial_3
+	trait = beauty_bad_1
+	father = 211507
+	mother = 211508
+	1138.1.1 = {
+		birth = yes
+	}
+	1175.1.1 = {
+		add_spouse = 211510
+	}
+	1178.1.1 = {
+		effect = {
+	 		learn_language_of_culture = culture:greek
+		} 
+	}
+	1189.11.11 = {
+		capital = c_palermo
+	}
+	1194.2.20 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+	}
+}
+
+211511 = {
+	name = "Roger" # Roger (V) de Hauteville, Duke of Apulia (1189-1193)
+	dynasty = 678
+	martial = 5
+	diplomacy = 5
+	intrigue = 4
+	stewardship = 5
+	religion = "catholic"
+	culture = "norman"
+	trait = lunatic_1
+	trait = education_martial_2
+
+	father = 211509
+	mother = 211510
+
+	1175.1.1 = {
+		birth = yes
+	}
+	1193.12.24 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+	}
+}
+
+211512 = {
+	name = "William" # William (III) de Hauteville, King of Sicily (1194), later Count of Lecce and Taranto (1194-1198)
+	dynasty = 678
+	martial = 6
+	diplomacy = 6
+	intrigue = 7
+	stewardship = 5
+	religion = "catholic"
+	culture = "norman"
+	trait = honest
+	trait = diligent
+
+	father = 211509
+	mother = 211510
+
+	1186.1.1 = {
+		birth = yes
+	}
+	1194.2.20  = {
+		capital = c_palermo
+	}
+	1198.1.1 = {
+		death =	{
+			death_reason = death_dungeon
+			killer = 212513
+		}
+	}
+}
+
+211513 = {
+	name = "Elvira" # Elvira de Hauteville, Countess of Lecce and Taranto (1198-1217), wife of Gauthier de Brienne
+	female = yes
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	father = 211509
+	mother = 211510
+	1189.1.1 = {
+		birth = yes
+	}
+	1217.1.1 = {
+		death = {
+			death_reason = death_natural_causes
+		}
+	}
+}
+
+211514 = {
+	name = "Medania" # Medania de Hauteville, Countess of Lecce and Taranto (1217-1243)
+	female = yes
+	dynasty = 678
+	martial = 7
+	diplomacy = 7
+	intrigue = 4
+	stewardship = 5
+	religion = "catholic"
+	culture = "norman"
+	trait = education_stewardship_2
+	father = 211509
+	mother = 211510
+	1188.1.1 = {
+		birth = yes
+	}
+	1243.1.1 = {
+		death = yes
+	}
+}
+
+211515 = {
+	name = "Constance" # Constance de Hauteville, wife of Pietro Ziani
+	female = yes
+	dynasty = 678
+	martial = 5
+	diplomacy = 5
+	intrigue = 4
+	stewardship = 5
+	religion = "catholic"
+	culture = "norman"
+	father = 211509
+	mother = 211510
+	1192.1.1 = {
+		birth = yes
+	}
+	1247.1.1 = {
+		death = yes
+	}
+}
+
+211516 = {
+	name = "Simon" # Simon de Hauteville, Count of Taranto (1144-1157), Girgento and Syracuse (1154-1202)
+	dynasty = 678
+	martial = 5
+	diplomacy = 5
+	intrigue = 7
+	stewardship = 7
+	religion = "catholic"
+	culture = "norman"
+	trait = arrogant
+	trait = chaste
+	trait = education_martial_2
+	trait = bastard
+	father = 211502
+	1142.1.1 = {
+		birth = yes
+	}
+	1161.1.1 = {
+		add_trait = disinherited # banished after failed coup
+	}
+	1180.1.1 = {
+		add_spouse = 211517
+	}
+	1202.1.1 = {
+		death = yes
+	}
+}
+
+211518 = {
+	name = "Roger" # Roger de Hauteville, Count of Girgento and Syracuse (1202-1232)
+	dynasty = 678
+	martial = 6
+	diplomacy = 6
+	intrigue = 7
+	stewardship = 7
+	religion = "catholic"
+	culture = "norman"
+	trait = education_martial_2
+	father = 211516
+	mother = 211517
+	1182.1.1 = {
+		birth = yes
+	}
+	1232.1.1 = {
+		death = yes
+	}
+}
+
+211530 = {
+	name = "Marie" # Marie de Hauteville, wife of Margaritone of Cephalonia
+	female = yes
+	dynasty = 678
+	religion = "catholic"
+	culture = "norman"
+	trait = education_learning_3
+	father = 211507
+	mother = 73288
+	1148.1.1 = {
+		birth = yes
+	}
+	1197.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0012 = {
+	name = "Roger" # Ruggerio de Sanseverino
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+	father = norman0006
+	1086.1.1 = {
+		birth = yes
+	}
+	1139.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0013 = {
+	name = "Robert" # Roberto de Sanseverino
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+	father = norman0007
+	1120.1.1 = {
+		birth = yes
+	}
+	1183.8.31 = {
+		death = yes
+	}
+}
+
+sicilian0014 = {
+	name = "Roger" # Ruggiero de Sanseverino
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+	father = sicilian0013
+	1135.1.1 = {
+		birth = yes
+	}
+	1189.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0015 = {
+	name = "Giacomo" # Giacomo de Sanseverino, married Elvira de Hauteville
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+
+	father = sicilian0014
+
+	1162.1.1 = {
+		birth = yes
+	}
+	1205.6.1 = {
+		add_spouse = 211513
+	}
+	1218.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0017 = {
+	name = "Adalita" # Adalita de Sanseverino
+	dynasty = 101843
+	female = yes
+	religion = catholic
+	culture = norman
+
+	father = sicilian0015
+	mother = 211513
+
+	1209.1.1 = {
+		birth = yes
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0018 = {
+	name = "Henry" # Enrico de Sanseverino
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+
+	father = norman0004
+	mother = lombard0035
+
+	1095.1.1 = {
+		birth = yes
+	}
+	1150.8.31 = {
+		death = yes
+	}
+}
+
+sicilian0019 = {
+	name = "William" # Guglielmo de Sanseverino
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+
+	father = sicilian0018
+
+	1136.1.1 = {
+		birth = yes
+	}
+	1154.1.1 = {
+		add_spouse = sicilian0040
+	}
+	1168.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0020 = {
+	name = "Henry" # Enrico de Sanseverino
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+
+	father = sicilian0019
+	mother = sicilian0040
+
+	1156.1.1 = {
+		birth = yes
+	}
+	1223.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0021 = {
+	name = "Thomas" # Tomasso de Sanseverino
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+
+	father = sicilian0019
+	mother = sicilian0040
+
+	1158.1.1 = {
+		birth = yes
+	}
+	1223.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0022 = {
+	name = "Marocta" # Marocta de Sanseverino, wife of Ruggiero d'Aquila
+	female = yes
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+	father = sicilian0018
+	1138.1.1 = {
+		birth = yes
+	}
+	1168.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0037 = {
+	name = "Silvester" # Silvestro di Marsico
+	dynasty_house = house_marsico
+	religion = catholic
+	culture = norman
+	father = norman0010
+	1103.1.1 = {
+		birth = yes
+	}
+	1166.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0038 = {
+	name = "William" # Guglielmo di Marsico
+	dynasty_house = house_marsico
+	religion = catholic
+	culture = norman
+	father = sicilian0037
+	1130.1.1 = {
+		birth = yes
+	}
+	1192.11.1 = {
+		death = yes
+	}
+}
+
+sicilian0039 = {
+	name = "Geoffrey" # Goffredo di Marsico
+	dynasty_house = house_marsico
+	religion = catholic
+	culture = norman
+	father = sicilian0037
+	1132.1.1 = {
+		birth = yes
+	}
+	1200.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0040 = {
+	name = "Isabella" # Isabella di Marsico, wife of Guglielmo di Sanseverino
+	dynasty_house = house_marsico
+	female = yes
+	religion = catholic
+	culture = norman
+
+	father = sicilian0037
+
+	1134.1.1 = {
+		birth = yes
+	}
+	1194.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0027 = {
+	name = "Roger" # Ruggiero di Aquila
+	dynasty_house = house_aquila
+	religion = catholic
+	culture = norman
+
+	father = sicilian0029
+	mother = sicilian0031
+
+	1147.1.1 = {
+		birth = yes
+	}
+	1163.1.1 = {
+		add_spouse = sicilian0022
+	}
+	1183.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0028 = {
+	name = "Perrona" # Perrona di Aquila
+	dynasty_house = house_aquila
+	female = yes
+	religion = catholic
+	culture = norman
+
+	father = sicilian0027
+	mother = sicilian0022
+
+	1162.1.1 = {
+		birth = yes
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0029 = {
+	name = "Richard" # Riccardo di Aquila
+	dynasty_house = house_aquila
+	religion = catholic
+	culture = norman
+
+	father = sicilian0032
+
+	1105.1.1 = {
+		birth = yes
+	}
+	1146.1.1 = {
+		add_spouse = sicilian0031
+	}
+	1152.9.24 = {
+		death = yes
+	}
+}
+
+sicilian0032 = {
+	name = "Geoffrey" # Goffredo di Aquila
+	dynasty_house = house_aquila
+	religion = catholic
+	culture = norman
+	father = 30839
+	1082.1.1 = {
+		birth = yes
+	}
+	1105.4.1 = {
+		death = yes
+	}
+}
+
+sicilian0033 = {
+	name = "Geoffrey" # Goffredo di Aquila
+	dynasty_house = house_aquila
+	religion = catholic
+	culture = norman
+	father = sicilian0032
+	1104.1.1 = {
+		birth = yes
+	}
+	1148.1.14 = {
+		death = yes
+	}
+}
+
+sicilian0034 = {
+	name = "Richard" # Riccardo di Aquila
+	dynasty_house = house_aquila
+	religion = catholic
+	culture = norman
+	father = sicilian0032
+	1105.1.1 = {
+		birth = yes
+	}
+	1154.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0035 = {
+	name = "Richard" # Riccardo di Aquila
+	dynasty_house = house_aquila
+	religion = catholic
+	culture = norman
+	father = sicilian0034
+	1129.1.1 = {
+		birth = yes
+	}
+	1179.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0036 = {
+	name = "Richard" # Riccardo di Aquila, descendence missing
+	dynasty_house = house_aquila
+	religion = catholic
+	culture = norman
+	father = sicilian0033
+	1123.1.1 = {
+		birth = yes
+	}
+	1177.2.1 = {
+		death = yes
+	}
+}
+
+30840 = {
+	name = "Richard" # Riccardo di Aquila
+	dynasty_house = house_aquila
+	religion = "catholic"
+	culture = "norman"
+	father = 30839
+	1080.1.1 = {
+		birth = yes
+	}
+	1111.1.1 = {
+		death = yes
+	}
+}
+
+30895 = {
+	name = "Hugh" # Hugh (I) de Catanzaro, Count of Catanzaro (1145-1168)
+	dynasty = norman_lupin
+	religion = "catholic"
+	culture = "norman"
+	1103.1.1 = {
+		birth = yes
+	}
+	1128.1.1 = {
+		add_spouse = 30894
+	}
+	1168.1.1 = {
+		death = yes
+	}
+}
+
+30896 = {
+	name = "Hugh" # Hugh (II) de Catanzaro, Count of Catanzaro (1168-1191)
+	dynasty = norman_lupin
+	religion = "catholic"
+	culture = "norman"
+
+	father = 30895
+	mother = 30894
+
+	1130.1.1 = {
+		birth = yes
+	}
+	1191.1.1 = {
+		death = yes
+	}
+}
+
+30897 = {
+	name = "Jordan" # Jordan de Catanzaro
+	dynasty = norman_lupin
+	religion = "catholic"
+	culture = "norman"
+
+	father = 30895
+	mother = 30894
+
+	1132.1.1 = {
+		birth = yes
+	}
+	1197.1.1 = {
+		death = yes
+	}
+}
+
+32546 = {
+	name = "Gohilda" # Gohilde de Catanzaro, wife of Giordano of Salerno
+	female = yes
+	dynasty = norman_lupin
+	religion = "catholic"
+	culture = "norman"
+	father = 32584
+	1211.1.1 = {
+		birth = yes
+	}
+	1262.1.1 = {
+		death = yes
+	}
+}
+
+32584 = {
+	name = "Hugh" # Hugh (III) de Catanzaro
+	dynasty = norman_lupin
+	religion = "catholic"
+	culture = "norman"
+	father = 30896
+	1170.1.1 = {
+		birth = yes
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+rupecanina_1 = {
+	name = "Andrew" # Andrew of Rupecanina
+	dynasty = 676
+	religion = catholic
+	culture = norman
+	father = 30843
+	1118.1.1 = {
+		birth = yes
+	}
+	1168.1.1 = {
+		death = yes
+	}
+}
+
+rupecanina_2 = {
+	name = "Roger" # Roger, count of Alife
+	dynasty = 676
+	religion = catholic
+	culture = norman
+	father = 30843
+	1123.1.1 = {
+		birth = yes
+	}
+	1180.1.1 = {
+		death = yes
+	}
+}
+
+sanseverino_1 = {
+	name = "William" # William de Sanseverino, count of Caserta
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+	father = sicilian0013
+	1133.1.1 = {
+		birth = yes
+	}
+	1189.1.1 = {
+		death = yes
+	}
+}
+
+sanseverino_2 = {
+	name = "Richard" # Richard de Sanseverino
+	dynasty = 101843
+	religion = catholic
+	culture = norman
+	father = sicilian0013
+	1137.1.1 = {
+		birth = yes
+	}
+	1182.1.1 = {
+		death = yes
+	}
+}
+
+mohac_1 = {
+	name = "Walter" # Walter de Mohac (Modica)
+	dynasty = norman_mohac
+	religion = catholic
+	culture = norman
+	1138.1.1 = {
+		birth = yes
+	}
+	1194.1.1 = {
+		death = yes
+	}
+}
+
+mohac_2 = {
+	name = "Arnold" # Arnaldo de Mohac, baron of Sortino
+	dynasty = norman_mohac
+	religion = catholic
+	culture = norman
+	1159.1.1 = {
+		birth = yes
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+sicilian0002 = {
+	name = "William" # Guglielmo di Montescaglioso
+	dynasty_house = house_jimena_navarra
+	religion = "catholic"
+	culture = "norman"
+	father = 71554
+	mother = sicilian0001
+	1176.1.1 = {
+		birth = yes
+	}
+	1226.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_1 = {
+	name = "Robert"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1136.1.1 = {
+		birth = yes
+	}
+	1204.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_2 = {
+	name = "Guillaume"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_3
+	1100.1.1 = {
+		birth = yes
+	}
+	1154.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_3 = {
+	name = "Robert"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_4
+	1040.1.1 = {
+		birth = yes
+	}
+	1118.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_4 = {
+	name = "Anquetil"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_5
+	1023.1.1 = {
+		birth = yes
+	}
+	1070.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_5 = {
+	name = "Turquetil"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_6
+	980.1.1 = {
+		birth = yes
+	}
+	1036.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_6 = {
+	name = "Torf"
+	dynasty = 5000 # de Harcourt
+	religion = catholic
+	culture = norman
+	939.1.1 = {
+		birth = yes
+	}
+	1002.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_7 = {
+	name = "Nicolas"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1138.1.1 = {
+		birth = yes
+	}
+	1186.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_8 = {
+	name = "Roger"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1140.1.1 = {
+		birth = yes
+	}
+	1163.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_9 = {
+	name = "Guillaume"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1142.1.1 = {
+		birth = yes
+	}
+	1205.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_10 = {
+	name = "Renaud"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1144.1.1 = {
+		birth = yes
+	}
+	1207.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_11 = {
+	name = "Alberede"
+	female = yes
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1146.1.1 = {
+		birth = yes
+	}
+	1209.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_12 = {
+	name = "Alix"
+	female = yes
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1148.1.1 = {
+		birth = yes
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_13 = {
+	name = "Eve"
+	female = yes
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1150.1.1 = {
+		birth = yes
+	}
+	1213.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_14 = {
+	name = "Beatrix"
+	female = yes
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1152.1.1 = {
+		birth = yes
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+harcourt_15 = {
+	name = "Yves"
+	dynasty = 5000 # d'Harcourt
+	religion = catholic
+	culture = norman
+	father = harcourt_2
+	1154.1.1 = {
+		birth = yes
+	}
+	1217.1.1 = {
+		death = yes
+	}
+}
+
+lacy_1 = {
+	name = "Robert"
+	dynasty = 4037
+	religion = "catholic"
+	culture = "norman"
+	father = 204021
+	mother = lacy_4
+	1173.1.1 = {
+		birth = yes
+	}
+	1188.1.1 = {
+		death = yes
+	}
+}
+
+lacy_2 = {
+	name = "Gilbert"
+	dynasty = 4037
+	religion = "catholic"
+	culture = "norman"
+	father = 204021
+	mother = lacy_4
+	1174.1.1 = {
+		birth = yes
+	}
+	1179.1.1 = {
+		death = yes
+	}
+}
+
+lacy_3 = {
+	name = "Alice"
+	female = yes
+	dynasty = 4037
+	religion = "catholic"
+	culture = "norman"
+	father = 204021
+	mother = lacy_4
+	1177.1.1 = {
+		birth = yes
+	}
+	1186.7.25 = {
+		death = yes
+	}
+}
+
+lacy_4 = {
+	name = "Rohese"
+	female = yes
+	culture = "norman"
+	religion = "catholic"
+	trait = ill
+	1140.1.1 = {
+		birth = yes
+	}
+	1179.1.1 = {
+		death = yes
+	}
+}
+
+lacy_5 = {
+	name = "Walter"
+	dynasty = 4037
+	religion = "catholic"
+	culture = "norman"
+	father = lacy_6
+	1028.1.1 = {
+		birth = yes
+	}
+	1085.3.27 = {
+		death = yes
+	}
+}
+
+lacy_6 = {
+	name = "Hugh"
+	dynasty = 4037
+	religion = "catholic"
+	culture = "norman"
+	999.1.1 = {
+		birth = yes
+	}
+	1048.1.1 = {
+		death = yes
+	}
+}
+
+lacy_7 = {
+	name = "Ilbert"
+	dynasty = 4037
+	religion = "catholic"
+	culture = "norman"
+	father = lacy_6
+	1045.1.1 = {
+		birth = yes
+	}
+	1093.1.1 = {
 		death = yes
 	}
 }

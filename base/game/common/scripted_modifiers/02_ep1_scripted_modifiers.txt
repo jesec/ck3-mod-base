@@ -110,3 +110,48 @@ ep1_chance_stealing_damaging_artifacts_modifier = {
 		}
 	}
 }
+
+employer_boon_child_ai_chance_modifier = {
+	modifier = {
+		$TARGET$ = { is_heir_of = root }
+		add = 50
+	}
+	modifier = {
+		$TARGET$ = { is_child_of = root }
+		add = 25
+	}
+	modifier = {
+		$TARGET$ = { is_grandchild_of = root }
+		add = 25
+	}
+	modifier = {
+		$TARGET$ = { is_sibling_of = root }
+		add = 10
+	}
+	modifier = {
+		$TARGET$ = { is_nibling_of = root }
+		add = 10
+	}
+	opinion_modifier = {
+		opinion_target = $TARGET$
+		multiplier = 0.25
+	}
+}
+
+employer_boon_treatment_ai_chance_modifier = {
+	opinion_modifier = {
+		opinion_target = $TARGET$
+		multiplier = 0.25
+	}
+	modifier = {
+		$TARGET$ = { is_healthy = no }
+		factor = 2
+	}
+}
+
+employer_boon_artifact_ai_chance_modifier = {
+	modifier = {
+		$TARGET$ = { is_unique = yes }
+		factor = 2
+	}
+}

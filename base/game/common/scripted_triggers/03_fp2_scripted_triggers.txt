@@ -70,7 +70,9 @@ is_toledo_ownership_valid_trigger = {
 			liege = root
 			top_liege = root
 		}
-		faith = { fp2_struggle_faith_is_mozarabic_trigger = yes }
+		faith = {
+			portrait_religious_faith_or_foundational_trigger = { FAITH = faith:mozarabic_church }
+		}
 	}
 }
 
@@ -226,9 +228,9 @@ fp2_struggle_contract_assistance_war_insufficient_trigger = {
 		limit = {
 			scope:recipient = { is_attacker_in_war = prev }
 		}
-		scope:actor.max_military_strength < war_defender_total_strength_divided_value
+		scope:actor.max_military_strength < war_defender_total_strength_tenth_value
 	}
-	trigger_else = { scope:actor.max_military_strength < war_attacker_total_strength_divided_value }
+	trigger_else = { scope:actor.max_military_strength < war_attacker_total_strength_tenth_value }
 }
 
 ##################################################
@@ -487,19 +489,6 @@ fp2_struggle_compromise_transfer_duchy_trigger = {
 	}
 }
 
-fp2_struggle_faith_is_mozarabic_trigger = {
-	OR = {
-		this = faith:mozarabic_church
-		# trigger_if = { # TODO: Find a way for dead characters to store data
-		# 	limit = { exists = founder }
-        #     founder = {
-        #     	has_variable = foundational_faith
-        #     	var:foundational_faith = faith:mozarabic_church
-        #     }
-		# }
-    }
-}
-
 fp2_struggle_council_toledo_attendee_trigger = {
 	OR = {
 		has_trait = education_learning_3
@@ -680,7 +669,7 @@ fp2_lyonese_monk_0000_out_of_realm_trigger = {
 			is_alive = no
 			is_imprisoned = yes
 			AND = {
-				is_landed = no
+				is_landed_or_landless_administrative = no
 				NOT = {
 					host = scope:acolyte_host
 					# Make an exception if you're in prison, since that should give a different event.
@@ -688,7 +677,7 @@ fp2_lyonese_monk_0000_out_of_realm_trigger = {
 				}
 			}
 			AND = {
-				is_landed = yes
+				is_landed_or_landless_administrative = yes
 				NOT = {
 					any_liege_or_above = { this = scope:acolyte_host }
 				}
@@ -720,7 +709,7 @@ fp2_does_this_player_care_about_the_fate_of_iberia = {
 				geographical_region = world_europe_south_italy
 			}
 		}
-		struggle:iberian_struggle = { is_culture_involved_in_struggle = culture }
+		struggle:iberian_struggle = { is_culture_involved_in_struggle = prev.culture }
 	}
 }
 

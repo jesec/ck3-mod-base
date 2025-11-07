@@ -11,7 +11,7 @@ scandinavian_elective = { #Thing
 		base = 0
 		modifier = { #Each voter is the "representative" of all the free men living in his domain. The larger the domain, the more voting power he has.
 			desc = tooltip_scandinavian_elective_development
-			is_landed = yes
+			is_landed_or_landless_administrative = yes
 			domain_size >= 1
 			any_held_title = {
 				tier = tier_county
@@ -46,7 +46,7 @@ scandinavian_elective = { #Thing
 		}
 		modifier = { #Further boost/reduction is given depending on capital county's opinion.
 			desc = tooltip_scandinavian_elective_capital_opinion
-			is_landed = yes
+			is_landed_or_landless_administrative = yes
 			exists = capital_county
 			OR = {
 				capital_county.county_opinion <= -5
@@ -67,7 +67,7 @@ scandinavian_elective = { #Thing
 			limit = {
 				target_is_liege_or_above = scope:holder #All de jure vassals, no matter the tier, sub-vassals included.
 				is_ruler = yes
-				is_landed = yes
+				is_landed_or_landless_administrative = yes
 				exists = capital_county
 				highest_held_title_tier > 1 #Barons excluded.
 				domain_size >= 1
@@ -100,6 +100,9 @@ scandinavian_elective = { #Thing
 
 		##########################	Elector voting patterns (opinion)	##########################
 		elector_voting_pattern_opinion_feudal_elective_modifier = yes
+
+		##########################	Elector voting patterns (misc)	##########################
+		elector_voting_pattern_circumstances_misc_elective_modifier = yes
 	}
 	
 	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.

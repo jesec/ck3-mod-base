@@ -14,8 +14,6 @@ can_be_councillor_basics_trigger = {
 	is_capable_adult = yes
 	is_imprisoned = no
 	is_at_war_with_liege = no
-	# A Caravan Master will travel around, which is not compatible with council tasks
-	NOT = { has_court_position = travel_leader_court_position }
 	trigger_if = {
 		limit = { has_variable = block_hire_councillor }
 		NOT = { var:block_hire_councillor = liege }
@@ -784,7 +782,7 @@ spymaster_find_secrets_secret_holder_is_interesting_to_me_trigger = {
 			is_courtier_of = scope:me
 			has_relation_rival = scope:me
 			has_relation_lover = scope:me
-			is_player_heir_of_trigger = { CHARACTER = scope:me }
+			is_player_heir_of = scope:me
 		}
 	}
 }
@@ -803,7 +801,7 @@ spymaster_find_secrets_secret_target_is_interesting_to_me_trigger = {
 				is_courtier_of = scope:me
 				has_relation_rival = scope:me
 				has_relation_lover = scope:me
-				is_player_heir_of_trigger = { CHARACTER = scope:me }
+				is_player_heir_of = scope:me
 			}
 		}
 	}

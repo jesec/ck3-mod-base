@@ -20,7 +20,15 @@ house_arrest_ongoing.0001 = {
 	theme = prison
 	left_portrait = {
 		character = root
-		animation = boredom
+		animation = prisonhouse
+		override_imprisonment_visuals = yes
+	}
+	lower_right_portrait = imprisoner
+	override_background = {
+		trigger = {
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
 	}
 	
 	trigger = {
@@ -40,6 +48,7 @@ house_arrest_ongoing.0001 = {
 		}
 		imprisoner = {
 			save_scope_as = prison_holder
+			save_scope_as = bg_override_char
 		}
 	}
 
@@ -99,11 +108,15 @@ house_arrest_ongoing.0002 = {
 	theme = prison
 	left_portrait = {
 		character = root
-		animation = anger
+		animation = prisonhouse
+		override_imprisonment_visuals = yes
 	}
-	right_portrait = {
-		character = scope:prison_holder
-		animation = dismissal
+	lower_right_portrait =  scope:prison_holder
+	override_background = {
+		trigger = {
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
 	}
 
 	trigger = {
@@ -123,6 +136,7 @@ house_arrest_ongoing.0002 = {
 		}
 		imprisoner = {
 			save_scope_as = prison_holder
+			save_scope_as = bg_override_char
 		}
 	}
 
@@ -172,11 +186,20 @@ house_arrest_ongoing.0003 = {
 	theme = prison
 	left_portrait = {
 		character = root
-		animation = admiration
+		animation = prisonhouse
+		override_imprisonment_visuals = yes
 	}
 	right_portrait = {
 		character = scope:friendly_prisoner
 		animation = happiness
+		override_imprisonment_visuals = yes
+	}
+	lower_right_portrait = scope:bg_override_char
+	override_background = {
+		trigger = {
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
 	}
 	
 	trigger = {
@@ -195,6 +218,7 @@ house_arrest_ongoing.0003 = {
 		}
 		imprisoner = {
 			save_scope_as = imprisoner_scope
+			save_scope_as = bg_override_char
 			random_prisoner = {
 				limit = {
 					OR = {
@@ -430,11 +454,18 @@ house_arrest_ongoing.0004 = {
 	theme = prison
 	left_portrait = {
 		character = root
-		animation = happiness
+		animation = prisonhouse
+		override_imprisonment_visuals = yes
 	}
 	right_portrait = {
 		character = scope:friend_at_court
 		animation = happiness
+	}
+	override_background = {
+		trigger = {
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
 	}
 
 	trigger = {
@@ -458,6 +489,7 @@ house_arrest_ongoing.0004 = {
 			days = 1000
 		}
 		imprisoner = {
+			save_scope_as = bg_override_char
 			random_courtier_or_guest = {
 				limit = {
 					is_available_healthy_ai_adult = yes
@@ -538,11 +570,18 @@ house_arrest_ongoing.0005 = {
 	theme = prison
 	left_portrait = {
 		character = root
-		animation = anger
+		animation = prisonhouse
+		override_imprisonment_visuals = yes
 	}
 	right_portrait = {
 		character = scope:rival_at_court
 		animation = schadenfreude
+	}
+	override_background = {
+		trigger = {
+			scope:bg_override_char = { is_landless_adventurer = no }
+		}
+		reference = relaxing_room
 	}
 
 	trigger = {
@@ -572,7 +611,8 @@ house_arrest_ongoing.0005 = {
 			days = 1000
 		}
 
-		imprisoner = {	
+		imprisoner = {
+			save_scope_as = bg_override_char
 			if = {
 				limit = {
 					is_available_healthy_ai_adult = yes

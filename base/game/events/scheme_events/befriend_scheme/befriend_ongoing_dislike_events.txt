@@ -20,8 +20,14 @@ befriend_ongoing_dislike.0001 = {
 	title = befriend_ongoing_dislike.0001.t
 	desc = befriend_ongoing_dislike.0001.desc
 	theme = befriend_scheme
-
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_rational
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_greedy
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -39,7 +45,7 @@ befriend_ongoing_dislike.0001 = {
 				value = yes
 				days = 365
 			}
-			scheme_target = {
+			scheme_target_character = {
 				save_scope_as = target
 			}
 		}
@@ -96,6 +102,9 @@ befriend_ongoing_dislike.0001 = {
 
 	option = { #No gift
 		name = befriend_ongoing_dislike.0001.c
+		scope:scheme = {
+			add_scheme_progress = scheme_progress_gain
+		}
 
 		ai_chance = {
 			base = 10
@@ -119,6 +128,10 @@ befriend_ongoing_dislike.0002 = {
 	theme = befriend_scheme
 
 	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	right_portrait = {
 		character = scope:target
 		animation = dismissal
 	}
@@ -128,7 +141,7 @@ befriend_ongoing_dislike.0002 = {
 	}
 
 	trigger = {
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			opinion = {
 				target = scope:owner
 				value < -50
@@ -163,6 +176,10 @@ befriend_ongoing_dislike.0003 = {
 	theme = befriend_scheme
 
 	left_portrait = {
+		character = root
+		animation = sadness
+	}
+	right_portrait = {
 		character = scope:target
 		animation = dismissal
 	}
@@ -172,7 +189,7 @@ befriend_ongoing_dislike.0003 = {
 	}
 
 	trigger = {
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			opinion = {
 				target = scope:owner
 				value < -30
@@ -207,7 +224,14 @@ befriend_ongoing_dislike.0004 = {
 	desc = befriend_ongoing_dislike.0004.desc
 	theme = befriend_scheme
 
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:target
+		animation = dismissal
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -215,7 +239,6 @@ befriend_ongoing_dislike.0004 = {
 
 	trigger = {
 		scope:scheme = {
-			scheme_progress > 5
 			NOT = {
 				exists = var:had_target_rebuffed_event
 			}
@@ -229,7 +252,7 @@ befriend_ongoing_dislike.0004 = {
 				value = yes
 				days = 1825
 			}
-			scheme_target = {
+			scheme_target_character = {
 				save_scope_as = target
 			}
 		}
@@ -237,10 +260,9 @@ befriend_ongoing_dislike.0004 = {
 	
 	option = {
 		name = befriend_ongoing_dislike.0004.b
-		trigger = {
-			diplomacy > 15
+		scope:scheme = {
+			add_scheme_progress = scheme_progress_gain
 		}
-		skill = diplomacy
 		ai_chance = {
 			base = 100
 		}
@@ -268,7 +290,14 @@ befriend_ongoing_dislike.0005 = {
 	title = befriend_ongoing_dislike.0005.t
 	desc = befriend_ongoing_dislike.0005.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:target
+		animation = admiration
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -276,7 +305,6 @@ befriend_ongoing_dislike.0005 = {
 
 	trigger = {
 		scope:scheme = {
-			scheme_progress > 1
 			NOT = {
 				exists = var:had_softening_disposition_event
 			}
@@ -287,7 +315,7 @@ befriend_ongoing_dislike.0005 = {
 		base = 1
 		modifier = {
 			factor = 0.3
-			scope:scheme.scheme_target = {
+			scope:scheme.scheme_target_character = {
 				has_opinion_modifier = {
 					target = scope:owner
 					modifier = softening_disposition_opinion
@@ -325,12 +353,19 @@ befriend_ongoing_dislike.0005 = {
 #####
 # A Gregarious target makes things uncomfortable...
 #####
-befriend_ongoing_dislike.2001 ={
+befriend_ongoing_dislike.2001 = {
 	type = character_event
 	title = befriend_ongoing_dislike.2001.t
 	desc = befriend_ongoing_dislike.2001.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = disbelief
+	}
+	right_portrait = {
+		character = scope:target
+		animation = toast
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -353,7 +388,7 @@ befriend_ongoing_dislike.2001 ={
 				value = yes
 				days = 365
 			}
-			scheme_target = {
+			scheme_target_character = {
 				save_scope_as = target
 			}
 		}
@@ -389,7 +424,7 @@ befriend_ongoing_dislike.2001 ={
 	option = { #I'll let it slide
 		name = befriend_ongoing_dislike.2001.b
 		scope:scheme = {
-			add_scheme_progress = scheme_progress_loss
+			add_scheme_progress = scheme_progress_gain
 		}
 		stress_impact = {
 			vengeful = medium_stress_impact_gain
@@ -417,7 +452,14 @@ befriend_ongoing_dislike.2002 = {
 	title = befriend_ongoing_dislike.2002.t
 	desc = befriend_ongoing_dislike.2002.desc
 	theme = befriend_scheme
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_callous
+	}
+	right_portrait = {
+		character = scope:target
+		animation = shame
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -426,9 +468,8 @@ befriend_ongoing_dislike.2002 = {
 	trigger = {
 		scope:scheme = {
 			NOT = { exists = var:had_shy_target_event }
-			scheme_progress > 1
 		}
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			has_trait = shy
 		}
 	}
@@ -510,7 +551,14 @@ befriend_ongoing_dislike.5001 = {
 	desc = befriend_ongoing_dislike.5001.desc
 	theme = befriend_scheme
 
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_zealous
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -520,7 +568,7 @@ befriend_ongoing_dislike.5001 = {
 		scope:scheme.scheme_owner = {
 			has_trait = cynical
 		}
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			has_trait = zealous
 		}
 		scope:scheme = {
@@ -533,13 +581,13 @@ befriend_ongoing_dislike.5001 = {
 		modifier = {
 			add = -0.5
 			scope:scheme = {
-				scheme_progress < 3
+				scheme_progress < 40
 			}
 		}
 		modifier = {
 			add = 0.5
 			scope:scheme = {
-				scheme_progress > 7
+				scheme_progress >= 40
 			}
 		}
 	}
@@ -587,7 +635,7 @@ befriend_ongoing_dislike.5001 = {
 	option = { #Sigh, this is too much
 		name = befriend_ongoing_dislike.5001.b
 		scope:scheme = {
-			add_scheme_progress = scheme_progress_loss
+			add_scheme_progress = scheme_progress_gain
 		}
 
 		stress_impact = {
@@ -626,7 +674,14 @@ befriend_ongoing_dislike.5002 = {
 	desc = befriend_ongoing_dislike.5002.desc
 	theme = befriend_scheme
 
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_compassionate
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_cynical
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -636,7 +691,7 @@ befriend_ongoing_dislike.5002 = {
 		scope:scheme.scheme_owner = {
 			has_trait = trusting
 		}
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			has_trait = cynical
 		}
 		scope:scheme = {
@@ -649,13 +704,13 @@ befriend_ongoing_dislike.5002 = {
 		modifier = {
 			add = -0.5
 			scope:scheme = {
-				scheme_progress < 3
+				scheme_progress < 40
 			}
 		}
 		modifier = {
 			add = 0.5
 			scope:scheme = {
-				scheme_progress > 7
+				scheme_progress >= 40
 			}
 		}
 	}
@@ -691,7 +746,7 @@ befriend_ongoing_dislike.5002 = {
 	option = { #Um, yes, maybe I am trying to gain something...
 		name = befriend_ongoing_dislike.5002.b
 		scope:scheme = {
-			add_scheme_progress = scheme_progress_loss
+			add_scheme_progress = scheme_progress_gain
 		}
 
 		stress_impact = {
@@ -724,7 +779,14 @@ befriend_ongoing_dislike.5003 = {
 	desc = befriend_ongoing_dislike.5003.desc
 	theme = befriend_scheme
 
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = toast
+	}
+	right_portrait = {
+		character = scope:target
+		animation = sadness
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -734,7 +796,7 @@ befriend_ongoing_dislike.5003 = {
 		scope:scheme.scheme_owner = {
 			has_trait = gregarious
 		}
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			has_trait = depressed
 		}
 		scope:scheme = {
@@ -747,13 +809,13 @@ befriend_ongoing_dislike.5003 = {
 		modifier = {
 			add = -0.5
 			scope:scheme = {
-				scheme_progress < 3
+				scheme_progress < 40
 			}
 		}
 		modifier = {
 			add = 0.5
 			scope:scheme = {
-				scheme_progress > 7
+				scheme_progress >= 40
 			}
 		}
 	}
@@ -819,7 +881,14 @@ befriend_ongoing_dislike.5004 = {
 	desc = befriend_ongoing_dislike.5004.desc
 	theme = befriend_scheme
 
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_content
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -829,7 +898,7 @@ befriend_ongoing_dislike.5004 = {
 		scope:scheme.scheme_owner = {
 			has_trait = gluttonous
 		}
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			has_trait = temperate
 		}
 		scope:scheme = {
@@ -842,13 +911,13 @@ befriend_ongoing_dislike.5004 = {
 		modifier = {
 			add = -0.5
 			scope:scheme = {
-				scheme_progress < 3
+				scheme_progress < 40
 			}
 		}
 		modifier = {
 			add = 0.5
 			scope:scheme = {
-				scheme_progress > 7
+				scheme_progress >= 40
 			}
 		}
 	}
@@ -898,8 +967,8 @@ befriend_ongoing_dislike.5004 = {
 
 	option = {
 		name = befriend_ongoing_dislike.5004.b
-		scope:scheme = {
-			add_scheme_progress = scheme_progress_loss
+		scope:scheme = {		
+			add_scheme_progress = scheme_progress_gain
 		}
 
 		stress_impact = {
@@ -927,7 +996,14 @@ befriend_ongoing_dislike.5005 = {
 	desc = befriend_ongoing_dislike.5005.desc
 	theme = befriend_scheme
 
-	left_portrait = scope:target
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:target
+		animation = personality_content
+	}
 	widget = {
 		gui = "event_window_widget_scheme"
 		container = "custom_widgets_container"
@@ -937,7 +1013,7 @@ befriend_ongoing_dislike.5005 = {
 		scope:scheme.scheme_owner = {
 			has_trait = ambitious
 		}
-		scope:scheme.scheme_target = {
+		scope:scheme.scheme_target_character = {
 			has_trait = content
 		}
 		scope:scheme = {
@@ -950,13 +1026,13 @@ befriend_ongoing_dislike.5005 = {
 		modifier = {
 			add = -0.5
 			scope:scheme = {
-				scheme_progress < 3
+				scheme_progress < 40
 			}
 		}
 		modifier = {
 			add = 0.5
 			scope:scheme = {
-				scheme_progress > 7
+				scheme_progress >= 40
 			}
 		}
 	}
@@ -968,7 +1044,7 @@ befriend_ongoing_dislike.5005 = {
 				value = yes
 				days = default_scheme_event_cooldown_duration_value
 			}
-			scheme_target = {
+			scheme_target_character = {
 				save_scope_as = target
 			}
 			scheme_owner = {
@@ -1012,7 +1088,7 @@ befriend_ongoing_dislike.5005 = {
 	option = {
 		name = befriend_ongoing_dislike.5005.b
 		scope:scheme = {
-			add_scheme_progress = scheme_progress_loss
+			add_scheme_progress = scheme_progress_gain
 		}
 
 		stress_impact = {
@@ -1035,7 +1111,7 @@ befriend_ongoing_dislike.5005 = {
 		}
 		trait = paranoid
 		scope:scheme = {
-			add_scheme_progress = scheme_progress_loss
+			add_scheme_progress = scheme_progress_gain
 		}
 		exclusive = yes
 	}

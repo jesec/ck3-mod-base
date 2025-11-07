@@ -1,4 +1,4 @@
-window = {
+﻿window = {
 	using = editor_window
 	name = "ai_war_coordinator_watch_window"
 	parentanchor = top|left
@@ -6,6 +6,50 @@ window = {
 	position = { 50% 50% }
 	widgetanchor = center
 	layer = top
+
+	margin_widget = {
+		size = { 100% 25 }
+		margin = { 4 4 }
+		widgetanchor = top
+
+		hbox = {
+			spacing = 4
+
+			button = {
+				using = editor_button
+				size = { 150 25 }
+				raw_text = "[SelectLocalization( AIWarCoordinatorWatchWindow.IsAllAttackersActive, 'Disable All Attackers', 'Enable All Attackers' )]"
+				align = center|nobaseline
+				onclick = "[AIWarCoordinatorWatchWindow.ToggleAllAttackers]"
+			}
+
+			button = {
+				using = editor_button
+				size = { 150 25 }
+				raw_text = "[SelectLocalization( AIWarCoordinatorWatchWindow.IsAllDefendersActive, 'Disable All Defenders', 'Enable All Defenders' )]"
+				align = center|nobaseline
+				onclick = "[AIWarCoordinatorWatchWindow.ToggleAllDefenders]"
+			}
+
+			button = {
+				using = editor_button
+				size = { 150 25 }
+				raw_text = "Reset All Shown Units"
+				align = center|nobaseline
+				onclick = "[AIWarCoordinatorWatchWindow.ResetAllShownUnits]"
+			}
+
+			button = {
+				using = editor_button
+				size = { 150 25 }
+				raw_text = "Rebuild List"
+				align = center|nobaseline
+				onclick = "[AIWarCoordinatorWatchWindow.RebuildWarInfos]"
+			}
+
+			expand = { }
+		}
+	}
 
 	button = {
 		using = editor_button
@@ -29,34 +73,6 @@ window = {
 		onclick = "[AIWarCoordinatorWatchWindow.Minimize]"
 	}
 
-
-	button = {
-		using = editor_button
-		size = { 150 25 }
-		position = { 10 30 }
-		raw_text = "[SelectLocalization( AIWarCoordinatorWatchWindow.IsAllAttackersActive, 'Disable All Attackers', 'Enable All Attackers' )]"
-		align = center|nobaseline
-		onclick = "[AIWarCoordinatorWatchWindow.ToggleAllAttackers]"
-	}
-
-	button = {
-		using = editor_button
-		size = { 150 25 }
-		position = { 170 30 }
-		raw_text = "[SelectLocalization( AIWarCoordinatorWatchWindow.IsAllDefendersActive, 'Disable All Defenders', 'Enable All Defenders' )]"
-		align = center|nobaseline
-		onclick = "[AIWarCoordinatorWatchWindow.ToggleAllDefenders]"
-	}
-
-	button = {
-		using = editor_button
-		size = { 150 25 }
-		position = { 340 30 }
-		raw_text = "Reset All Shown Units"
-		align = center|nobaseline
-		onclick = "[AIWarCoordinatorWatchWindow.ResetAllShownUnits]"
-	}
-
 	scrollarea = {
 		position = { 1% 60 }
 		size = { 98% 535 }
@@ -68,36 +84,62 @@ window = {
 		}
 
 		scrollwidget = {
-			fixedgridbox = {
+			vbox = {
 				name = "war_grid"
 				datamodel = "[AIWarCoordinatorWatchWindow.AccessWarInfoItems]"
-				size = { 100% 100% }
 				position = { 0 0 }
-				addcolumn = 100%
-				addrow = 115
-				maxhorizontalslots = 1
 
 				item = {
-					widget = {
-						size = { 100% 110 }
+					vbox = {
+						layoutpolicy_vertical = expanding
+						layoutpolicy_horizontal = expanding
+						spacing = 8
 
-						vbox = {
+						background = {
+							using = Background_Frame
+						}
+
+						hbox = {
 							layoutpolicy_vertical = expanding
-							layoutpolicy_horizontal = expanding						
+							layoutpolicy_horizontal = expanding
+							margin = { 12 12 }
 
-							hbox = {
-								layoutpolicy_vertical = expanding
-								layoutpolicy_horizontal = expanding	
-
-								textbox = {
-									fontsize = 14
-									align = left|top
-									autoresize = yes
-									text = "[WarInfo.GetWar.GetName]"
-								}
-
-								expand = {}
+							background = { 
+								using = Background_Area
 							}
+						
+							text_single = {
+								fontsize = 14
+								align = left|top
+								autoresize = yes
+								text = "[WarInfo.GetWar.GetName]"
+							}
+
+							expand = {}
+
+							button = {
+								size = { 60 24 }
+								raw_text = "Show"
+								onclick = "[WarInfo.ToggleCollapsed]"
+								visible = "[WarInfo.IsCollapsed]"
+
+								using = editor_button
+							}
+
+							button = {
+								size = { 60 24 }
+								raw_text = "Hide"
+								onclick = "[WarInfo.ToggleCollapsed]"
+								visible = "[Not( WarInfo.IsCollapsed )]"
+
+								using = editor_button
+							}
+						}
+
+						hbox = {
+							visible = "[Not( WarInfo.IsCollapsed )]"
+							margin_bottom = 12
+							spacing = 50
 
 							# Test info
 							war_coordinator_info = {
@@ -107,13 +149,16 @@ window = {
 								}
 							}
 
+							divider =  {
+								layoutpolicy_vertical = expanding
+							}
+
 							war_coordinator_info = {
 								datacontext = "[WarInfo.AccessGuiDefenderAiWarCoordinator]"
 								blockoverride "type" {
 									raw_text = "Defender:"
 								}
 							}
-							
 						}
 					}
 				}
@@ -175,46 +220,105 @@ window = {
 
 types WarCoordinatorWatchWindow
 {
-	type war_coordinator_info = hbox {
+	type war_coordinator_info = vbox {
 		layoutpolicy_vertical = expanding
 		layoutpolicy_horizontal = expanding	
 		spacing = 10
 
 		visible = "[GuiAIWarCoordinator.IsValid]"
 
-		textbox = {
-			fontsize = 14
-			align = left|top
-			autoresize = yes
-			block "type" {
+		hbox = {
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding	
+			spacing = 10
+
+			textbox = {
+				fontsize = 14
+				align = left|top
+				autoresize = yes
+				block "type" {
+				}
+			}
+
+			button = {
+				using = editor_button
+				size = { 80 25 }
+				raw_text = "[SelectLocalization( GuiAIWarCoordinator.IsActive, 'Disable', 'Enable' )]"
+				align = center|nobaseline
+				onclick = "[GuiAIWarCoordinator.ToggleActivity]"
+			}
+
+			button = {
+				using = editor_button
+				size = { 80 25 }
+				raw_text = "[SelectLocalization( GuiAIWarCoordinator.IsShown, 'Hide', 'Show' )]"
+				align = center|nobaseline
+				onclick = "[GuiAIWarCoordinator.ToggleVisibility]"
+			}
+
+			button = {
+				using = editor_button
+				size = { 80 25 }
+				raw_text = "Show Units"
+				align = center|nobaseline
+				visible = "[GuiAIWarCoordinator.IsShown]"
+				onclick = "[GuiAIWarCoordinator.ShowUnitsList]"
+			}
+
+			expand = {}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding	
+
+			text_single = {
+				layoutpolicy_horizontal = expanding	
+
+				align = left|top
+				raw_text = "AI War Stance: #bold [GuiAIWarCoordinator.GetStance]#!"
+				using = Font_Size_Tiny
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding	
+				
+				align = left|top
+				raw_text = "[SelectLocalization( GuiAIWarCoordinator.IsDesperate, 'Is Desperate', 'Is #bold NOT#! Desperate' )]"
+				using = Font_Size_Tiny
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding	
+
+				align = left|top
+				raw_text = "Strength (Current/Max): [GuiAIWarCoordinator.GetCurrentStrength]/[GuiAIWarCoordinator.GetMaxStrength]"
+				using = Font_Size_Tiny
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding	
+
+				align = left|top
+				raw_text = "Cached Strength (Allied/Enemy): [GuiAIWarCoordinator.GetCachedStrength]/[GuiAIWarCoordinator.GetCachedEnemyStrength]"
+				using = Font_Size_Tiny
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding	
+
+				align = left|top
+				raw_text = "Power (Current/Max): [GuiAIWarCoordinator.GetCurrentPower|0]/[GuiAIWarCoordinator.GetMaxPower|0]"
+				using = Font_Size_Tiny
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding	
+
+				align = left|top
+				raw_text = "Cached Power (Allied/Enemy): [GuiAIWarCoordinator.GetCachedPower|0]/[GuiAIWarCoordinator.GetCachedEnemyPower|0]"
+				using = Font_Size_Tiny
 			}
 		}
-
-		button = {
-			using = editor_button
-			size = { 80 25 }
-			raw_text = "[SelectLocalization( GuiAIWarCoordinator.IsActive, 'Disable', 'Enable' )]"
-			align = center|nobaseline
-			onclick = "[GuiAIWarCoordinator.ToggleActivity]"
-		}
-
-		button = {
-			using = editor_button
-			size = { 80 25 }
-			raw_text = "[SelectLocalization( GuiAIWarCoordinator.IsShown, 'Hide', 'Show' )]"
-			align = center|nobaseline
-			onclick = "[GuiAIWarCoordinator.ToggleVisibility]"
-		}
-
-		button = {
-			using = editor_button
-			size = { 80 25 }
-			raw_text = "Show Units"
-			align = center|nobaseline
-			visible = "[GuiAIWarCoordinator.IsShown]"
-			onclick = "[GuiAIWarCoordinator.ShowUnitsList]"
-		}
-		expand = {}
 	}
 }
 

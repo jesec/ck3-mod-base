@@ -2,9 +2,9 @@
  ### SETUP
  activity_pilgrimage: "Pilgerreise"
  activity_pilgrimage_desc: "$game_concept_pilgrimage_desc$"
- activity_pilgrimage_host_desc: "$BULLET_WITH_TAB$[prestige_i|E][prestige|E]-Zuwachs\n$BULLET_WITH_TAB$[legitimacy_i] [Concept('legitimacy', 'Legitimitätszuwachs')|E]\n$BULLET_WITH_TAB$[stress_loss_i] [Concept('stress', 'Anspannungsabbau')|E]\n[GetPlayer.Custom('GetPilgrimOrHajjiTrait')]"
- activity_pilgrimage_pilgrim_custom_host_desc: "$BULLET_WITH_TAB$[GetTrait('pilgrim').GetName(GetNullCharacter)]-[trait|E] / [GetTrait('pilgrim').GetName(GetNullCharacter)]-[trait_level_track_xp|E]"
- activity_pilgrimage_hajjaj_custom_host_desc: "$BULLET_WITH_TAB$[GetTrait('hajjaj').GetName(GetNullCharacter)]-[trait|E]"
+ activity_pilgrimage_host_desc: "$BULLET_WITH_TAB$[piety_i|E][piety|E]-Zuwachs\n$BULLET_WITH_TAB$[legitimacy_i] [Concept('legitimacy', 'Legitimitätszuwachs')|E]\n$BULLET_WITH_TAB$[stress_loss_i] [Concept('stress', 'Anspannungsabbau')|E]\n[GetPlayer.Custom('GetPilgrimOrHajjiTrait')]"
+ activity_pilgrimage_pilgrim_custom_host_desc: "$BULLET_WITH_TAB$@pilgrim_trait_icon! [trait|E] „[GetTrait('pilgrim').GetName(GetNullCharacter)]“ / „[GetTrait('pilgrim').GetName(GetNullCharacter)]“-[trait_level_track_xp|E]\n$BULLET_WITH_TAB$@gallowsbait_trait_icon! Verlust der [trait|E] „[GetTrait('gallowsbait').GetName(GetNullCharacter)]“ durch eine fromme [pilgrimage|E]"
+ activity_pilgrimage_hajjaj_custom_host_desc: "$BULLET_WITH_TAB$@hajjaj_trait_icon! [trait|E] „[GetTrait('hajjaj').GetName(GetNullCharacter)]“\n$BULLET_WITH_TAB$@gallowsbait_trait_icon! Verlust der [trait|E] „[GetTrait('gallowsbait').GetName(GetNullCharacter)]“ durch einen frommen [hajj|E]"
  activity_pilgrimage_selection_tooltip: "Eine [pilgrimage|E] unternehmen, um Eure Hingabe an Euren Glauben ([GetPlayer.GetFaith.PantheonTerm]) zu beweisen\n\nErwartete Belohnungen:\n$BULLET_WITH_TAB$[piety_i] [Concept('piety', 'Frömmigkeitszuwachs')|E]\n$BULLET_WITH_TAB$[legitimacy_i] [Concept('legitimacy', 'Legitimitätszuwachs')|E]\n$BULLET_WITH_TAB$[stress_loss_i] [Concept('stress', 'Anspannungsabbau')|E]"
  activity_pilgrimage_destination_selection: "Je weiter Euer Ziel von Eurem Hauptsitz entfernt ist, desto mehr beweist Ihr Eure Hingabe zu den höchsten Mächten ([GetPlayer.GetFaith.PantheonTerm]) und erhaltet zusätzliche [piety|E]."
  activity_pilgrimage_owner: "Pilger"
@@ -102,9 +102,9 @@
  ### OPTIONS
  #Type of Pilgrimage [Special Type] Option
  pilgrimage_type_pious: "Fromme Pilgerreise"
- pilgrimage_type_pious_desc: "$EFFECT_LIST_BULLET$ Manche Ereignisoptionen erlauben besonders fromme Handlungen\n$EFFECT_LIST_BULLET$ Unternehmt Ihr diese, erhaltet Ihr bei Abschluss zusätzliche [piety|E]\n\n#weak Der Zweck einer Pilgerreise ist es, dem Göttlichen eine Ehrerbietung zu erweisen, um wirklich mit der Essenz Eures Geistes in Verbindung zu treten.#!"
+ pilgrimage_type_pious_desc: "$EFFECT_LIST_BULLET$ Manche Ereignisauswahlen erlauben besonders fromme Handlungen\n$EFFECT_LIST_BULLET$ Unternehmt Ihr diese, erhaltet Ihr bei Abschluss zusätzliche [piety|E]\n\n#weak Der Zweck einer Pilgerreise ist es, dem Göttlichen eine Ehrerbietung zu erweisen, um wirklich mit der Essenz Eures Geistes in Verbindung zu treten.#!"
  pilgrimage_type_worldly: "Weltliche Pilgerreise"
- pilgrimage_type_worldly_desc: "$EFFECT_LIST_BULLET$ Manche Ereignisoptionen erlauben Besichtigungsaktionen\n$EFFECT_LIST_BULLET$ Unternehmt Ihr diese, erhaltet Ihr nach dem Abschluss einen gestaffelten multikulturellen Modifikator\n\n#weak Die süße Fremdartigkeit fremder Luft zu riechen, die seltsamen Eigenheiten fremder Zungen zu entschlüsseln – könnte es etwas Schöneres geben?#!"
+ pilgrimage_type_worldly_desc: "$EFFECT_LIST_BULLET$ Manche Ereignisauswahlen erlauben Besichtigungsaktionen\n$EFFECT_LIST_BULLET$ Unternehmt Ihr diese, erhaltet Ihr nach dem Abschluss einen gestaffelten multikulturellen Modifikator\n\n#weak Die süße Fremdartigkeit fremder Luft zu riechen, die seltsamen Eigenheiten fremder Zungen zu entschlüsseln – könnte es etwas Schöneres geben?#!"
  pilgrimage_type_hajj: "Hadsch"
  pilgrimage_type_hajj_desc: "$EFFECT_LIST_BULLET$ Alle fähigen Muslime müssen mindestens einmal den Hadsch vollziehen\n$EFFECT_LIST_BULLET$ Andere Arten werden verfügbar, nachdem man die [trait|E] „[GetTrait('hajjaj').GetName(GetNullCharacter)]“ erworben hat\n\n#weak Denkt daran: Der Hadsch ist keine Pflicht, sondern eine Gelegenheit. Zur Unterwerfung, zur Demut, zur Vergebung. In sha’Allah!#!"
  #Fidelity Option
@@ -734,7 +734,7 @@
  pilgrimage.6510.c: "Was soll’s? Das ist es mir nicht wert."
  #Time To Go Home Soon?
  pilgrimage.6520.t: "Es wird Zeit, bald nach Hause zu gehen?"
- pilgrimage.6520.desc: "[impatient_pilgrim.GetTitledFirstName] trottet mit unserer Pilgertruppe umher, seufzt laut und zieht die Füße lustlos über den Boden. „Es kommt mir vor, als wären wir schon seit Ewigkeiten hier. Ist es nicht an der Zeit, bald wieder nach Hause zurückzukehren?“, murmelt [impatient_pilgrim.Custom('DE_PRO_PER_S_3P_N')] ungeduldig.\n\nIch werfe [impatient_pilgrim.Custom('DE_PRO_PER_S_3P_D')] einen Seitenblick zu und"
+ pilgrimage.6520.desc: "[impatient_pilgrim.GetTitledFirstName|U] trottet mit unserer Pilgertruppe umher, seufzt laut und zieht die Füße lustlos über den Boden. „Es kommt mir vor, als wären wir schon seit Ewigkeiten hier. Ist es nicht an der Zeit, bald wieder nach Hause zurückzukehren?“, murmelt [impatient_pilgrim.Custom('DE_PRO_PER_S_3P_N')] ungeduldig.\n\nIch werfe [impatient_pilgrim.Custom('DE_PRO_PER_S_3P_D')] einen Seitenblick zu und"
  pilgrimage.6520.desc_forgiving: "fühle einen Hauch von Mitgefühl mit [impatient_pilgrim.Custom('DE_PRO_PER_S_3P_D')]. Es macht nie Spaß, irgendwohin mitgeschleppt zu werden."
  pilgrimage.6520.desc_nonforgiving: "kann es nicht glauben. Für wen #EMP hält#! [impatient_pilgrim.Custom('DE_PRO_PER_S_3P_N')] sich? Ich balle die Fäuste."
  pilgrimage.6520.a: "Wie #EMP könnt Ihr es wagen,#! so eine Unverschämtheit von Euch zu geben?!"
@@ -848,6 +848,7 @@
  pilgrimage.6780.c: "Eine Person ist nicht genug, um den Zorn von [current_employer.GetTitledFirstNameNoTooltip] zu riskieren."
  obligation_hook_salary: "Pflichtsalär"
  obligation_hook_tt: "Es ist günstiger, Personen mit einem #EMP Pflichtsalär#! zu beschäftigen"
+ generic_cp_discount: "Bande-Verringerung"
  #Meet local guru - trait flipping event
  pilgrimage.6790.t: "Ein spirituelles Erwachen in [ROOT.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTierNoTooltip]"
  pilgrimage.6790.desc: "„[spiritual_mentor.Custom('DE_PRO_PER_S_3P_N')|U] ist [Select_CString(spiritual_mentor.IsFemale, 'die beste Frau', 'der beste Mann')] auf der ganzen weiten Welt. [spiritual_mentor.Custom('DE_PRO_PER_S_3P_N')|U] verbringt jeden Tag damit, über die Heilige Stätte zu wachen, jede Nachtwache geht [spiritual_mentor.Custom('DE_PRO_PER_S_3P_N')] zurück in [spiritual_mentor.Custom('DE_PRO_POS_S_3P')] Lager, gleich außerhalb der Stadt, und betet, bis die Dämmerung kommt und der Mond verschwindet.“\n\nIch atme tief durch, bevor ich mich dem Lagerfeuer nähere, an dem [spiritual_mentor.Custom('DE_PRO_PER_S_3P_N')] ruht, nachdem ich von [spiritual_mentor.Custom('DE_PRO_POS_S_3P')]en Wundern gehört habe.\n\n„Ich habe auf Euch gewartet“, sagt [spiritual_mentor.Custom('DE_PRO_PER_S_3P_N')] und schaut mich unverwandt an. „Und die höchste Instanz ([spiritual_mentor.GetFaith.HighGodName]) ebenso. Seid Ihr bereit, Euer sündhaftes Treiben aufzugeben?“"
@@ -926,6 +927,7 @@
  pilgrimage.7000.a_hajj_cynical: "Obwohl ich anfangs meine Zweifel hatte war, #EMP war#! dies hier schon ziemlich grandios."
  pilgrimage.7000.a.tt: "Zeit, die Heimreise anzutreten"
  cultural_acceptance_gain_worldly_pilgrimage: "Eine weltliche Pilgerreise hat die Kulturakzeptanz geändert."
+ pilgrimage.7000.b: "Ich tue Buße!"
  ###Generic Pilgrimage Return Events
  #Nice spiritual journey
  pilgrimage.9001.t: "$pilgrimage_header$ Die Rückkehr"
@@ -942,13 +944,14 @@
  pilgrimage.9010.desc.relation_liked: "Wir kommen am späten Nachmittag in [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] an, und die Diener, #EMP meine#! Diener, beginnen sofort damit, die notwendigen Vorkehrungen zu treffen, damit [Select_CString(old_pilgrimage_host.IsFemale, 'meine liebe', 'mein lieber')] [old_pilgrimage_host.GetFirstName] zur letzten Ruhe gebettet werden kann.\n\n"
  pilgrimage.9010.desc.relation_neutral: "Wir kommen am späten Nachmittag in [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] an, und die Diener, #EMP meine#! Diener, beginnen sofort damit, die notwendigen Vorkehrungen zu treffen, um [old_pilgrimage_host.GetFirstName] zur letzten Ruhe zu betten.\n\n"
  pilgrimage.9010.desc.turned_back_liked: "Schweren Herzens beaufsichtige ich die Rituale und versuche, etwas Trost darin zu finden, dass die höchste Instanz ([ROOT.Char.GetFaith.HighGodName]) wirklich bei [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_D')] gewesen sein muss, als [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_N')] auf unserem Weg zur Heiligen Stätte von [previous_holy_site.GetNameNoTierNoTooltip] starb.\n\nDenn über wen sollten diese Mächte ([ROOT.Char.GetFaith.HighGodNameAlternate]) wachen, wenn nicht über Pilger?"
- pilgrimage.9010.desc.turned_back_neutral: "Während ich mich immer noch an mein neues Reich gewöhne, in dem Höflinge zu mir eilen, um mein Wohlwollen zu erlangen, trägt die Rückführung des Leichnams von [old_pilgrimage_host.GetTitledFirstName] dazu bei, die Tatsache zu festigen, dass [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_N')] nicht zurückkehren wird und dass #EMP ich#! von nun an hier herrsche."
+ pilgrimage.9010.desc.turned_back_neutral: "Während ich mich immer noch an [SelectLocalization(IsLandlessAdventurer(ROOT.Char), 'meinen neuen Wohnsitz', 'mein neues Reich')] gewöhne, in dem [ROOT.Char.Custom('GetCourtierPlural')] zu mir eilen, um mein Wohlwollen zu erlangen, trägt die Rückführung des Leichnams von [old_pilgrimage_host.GetTitledFirstName] dazu bei, die Tatsache zu festigen, dass [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_N')] nicht zurückkehren wird und dass #EMP ich#! von nun an [ROOT.Char.Custom('DE_ART_DEF_S_N')] neue [ROOT.Char.GetTitleAsNameNoTooltip] bin."
  pilgrimage.9010.desc.there_and_back_liked: "Obwohl ich [old_pilgrimage_host.Custom('DE_PRO_POS_S_3P')] Ableben betrauere, finde ich Trost in der Tatsache, dass ich [old_pilgrimage_host.Custom('DE_PRO_POS_S_3P')]e Wünsche erfüllt und unsere Pilgerreise nach [previous_holy_site.GetNameNoTierNoTooltip] abgeschlossen habe.\n\nWahrlich, [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_N')] muss zufrieden sein, wo immer [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_N')] nun ist, und das zaubert mir ein zaghaftes Lächeln aufs Gesicht."
- pilgrimage.9010.desc.there_and_back_neutral: "Die Reise nach [previous_holy_site.GetNameNoTierNoTooltip] und zurück, um den Wünschen von [old_pilgrimage_host.GetTitledFirstName] nachzukommen, hat mir Glaubwürdigkeit bei [old_pilgrimage_host.Custom('DE_PRO_POS_S_3P')]en Untertanen verschafft, #EMP meinen#! Untertanen, und ich beginne, mich daran zu gewöhnen, hier nun zu herrschen."
+ pilgrimage.9010.desc.there_and_back_neutral: "Die Reise nach [previous_holy_site.GetNameNoTierNoTooltip] und zurück, um den Wünschen von [old_pilgrimage_host.GetTitledFirstName] nachzukommen, hat mir Glaubwürdigkeit bei [old_pilgrimage_host.Custom('DE_PRO_POS_S_3P')]en [SelectLocalization(IsLandlessAdventurer(ROOT.Char), 'Anhängern', 'Höflingen')] verschafft, #EMP meinen#! [SelectLocalization(IsLandlessAdventurer(ROOT.Char), 'Anhängern', 'Höflingen')], und ich beginne, mich daran zu gewöhnen, [ROOT.Char.Custom('DE_ART_DEF_S_N')] neue [ROOT.Char.GetTitleAsNameNoTooltip] zu sein."
  pilgrimage.9010.desc.invalidated_pilgrimage_liked: "Ich trauere um [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_A')], denn es ist ein herber Verlust, und ich empfinde gewaltige Reue darüber, dass ich nicht in der Lage war, [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_A')] in [previous_holy_site.GetNameNoTierNoTooltip] zur letzten Ruhe zu betten."
  pilgrimage.9010.desc.invalidated_pilgrimage_neutral: "Ich bin etwas verärgert, dass ich nicht die Gelegenheit hatte, [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_A')] in [previous_holy_site.GetNameNoTierNoTooltip] zur letzten Ruhe zu betten, doch im Grunde hat [old_pilgrimage_host.Custom('DE_PRO_PER_S_3P_N')] nun so oder so Frieden gefunden."
  pilgrimage.9010.a: "[ROOT.Char.GetCurrentLocation.GetNameNoTooltip], ein Herz, ein Zuhause."
  pilgrimage.9010.a_interrupted: "Wenigstens sind wir zu Hause und in einem Stück."
+ pilgrimage.9010.a_adventurer: "Wenigstens sind wir zu Hause und in einem Stück."
  pilgrimage.9010.a.flavor: "$pilgrimage.4020.a.flavor$"
  #Follow-up to exotic wares event
  pilgrimage.9100.t: "$pilgrimage_header$ Exotische Waren"

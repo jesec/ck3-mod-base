@@ -60,7 +60,7 @@ progress_towards_friend_effect = {
 						character = prev
 						target = $CHARACTER$
 					}
-				} #TODO make all activities use this without creating duplicate entries
+				} # TODO_CD_EP2 make all activities use this without creating duplicate entries
 			}
 		}
 		else_if = {
@@ -143,7 +143,7 @@ progress_towards_friend_effect = {
 				exists = involved_activity
 				has_activity_intent = befriend_attendee_intent
 				intent_target ?= $CHARACTER$
-				intent_target.involved_activity ?= root.involved_activity
+				intent_target.involved_activity ?= this.involved_activity
 			}	
 			save_scope_as = intent_completer
 			send_interface_toast = {
@@ -159,11 +159,20 @@ progress_towards_friend_effect = {
 		if = {
 			limit = {
 				can_set_relation_potential_friend_trigger = { CHARACTER = $CHARACTER$ }
-				$CHARACTER$ = {
-					opinion = {
-						target = prev
-						value >= -25
+				trigger_if = {
+					limit = {
+						is_ai = yes
+						$CHARACTER$ = { is_ai = yes }
 					}
+					$CHARACTER$ = {
+						opinion = {
+							target = prev
+							value >= -25
+						}
+					}
+				}
+				trigger_else = {
+					always = yes
 				}
 			}
 			set_relation_potential_friend = $CHARACTER$
@@ -194,8 +203,85 @@ progress_towards_friend_effect = {
 
 #Sets potential rival + opinion or upgrades potential rival to full rival
 progress_towards_rival_effect = {
-	#If potential rival, set rival!
+	# Do we merit an actual rivalry?
 	if = {
+		limit = {
+			# We don't care between low-tier chars.
+			NOT = {
+				$CHARACTER$ = { highest_held_title_tier <= tier_barony }
+			}
+			# Are they low-tier themselves?
+			highest_held_title_tier <= tier_barony
+			# If they are then they must...
+			NOR = {
+				# ... be related to the target...
+				is_close_or_extended_family_of = $CHARACTER$
+				is_consort_of = $CHARACTER$
+				# ... or be heir to someone within social spitting distance of the target.
+				any_heir_title = {
+					tier >= {
+						value = $CHARACTER$.highest_held_title_tier
+						# So if they're feuding with an emperor, then they must be heir to at least a duchy.
+						subtract = 2
+					}
+				}
+			}
+		}
+		# Now, set grudge if we could already set it.
+		if = {
+			limit = {
+				NOT = { has_relation_grudge = $CHARACTER$ }
+			}
+			if = {
+				limit = {
+					exists = scope:relationship_reason_involved_character
+					exists = scope:relationship_reason_province
+				}
+				set_relation_grudge = {
+					reason = $REASON$
+					target = $CHARACTER$
+					involved_character = scope:relationship_reason_involved_character
+					province = scope:relationship_reason_province
+				}
+			}
+			else_if = {
+				limit = {
+					exists = scope:relationship_reason_province
+				}
+				set_relation_grudge = {
+					reason = $REASON$
+					target = $CHARACTER$
+					province = scope:relationship_reason_province
+				}
+			}
+			else_if = {
+				limit = {
+					exists = scope:relationship_reason_involved_character
+				}
+				set_relation_grudge = {
+					reason = $REASON$
+					target = $CHARACTER$
+					involved_character = scope:relationship_reason_involved_character
+				}
+			}
+			else = {
+				set_relation_grudge = {
+					reason = $REASON$
+					target = $CHARACTER$
+				}
+			}
+		}
+		# Otherwise, increment raw opinion.
+		else = {
+			add_opinion = {
+				target = $CHARACTER$
+				modifier = grudge_opinion
+				opinion = -20
+			}
+		}
+	}
+	#If potential rival, set rival!
+	else_if = {
 		limit = {
 			has_relation_potential_rival = $CHARACTER$
 			can_set_relation_rival_trigger = { CHARACTER = $CHARACTER$ }
@@ -318,18 +404,75 @@ progress_towards_rival_effect = {
 		}
 		if = {
 			limit = { NOT = { scope:rival_opinion = 0 } }
-			reverse_add_opinion = {
-				target = $CHARACTER$
-				modifier = hate_opinion
-				opinion = scope:rival_opinion
-			}
-			hidden_effect = {
-				add_opinion = {
+			if = {
+				limit = {
+					$CHARACTER$ = { is_ai = yes }
+				}
+				reverse_add_opinion = {
 					target = $CHARACTER$
 					modifier = hate_opinion
 					opinion = scope:rival_opinion
 				}
 			}
+			add_opinion = {
+				target = $CHARACTER$
+				modifier = hate_opinion
+				opinion = scope:rival_opinion
+			}
+		}
+	}
+}
+# Please use this one with care: players should never auto-upgrade to nemesis if we can help it, this is mostly for the AI.
+progress_towards_nemesis_effect = {
+	if = {
+		limit = {
+			has_relation_rival = $CHARACTER$
+			can_set_relation_nemesis_trigger = { CHARACTER = $CHARACTER$ }
+		}
+		if = {
+			limit = {
+				exists = scope:relationship_reason_involved_character
+				exists = scope:relationship_reason_province
+			}
+			set_relation_nemesis = {
+				reason = $REASON$ 
+				target = $CHARACTER$ 
+				involved_character = scope:relationship_reason_involved_character 
+				province = scope:relationship_reason_province 
+			}
+		}
+		else_if = {
+			limit = {
+				exists = scope:relationship_reason_province
+			}
+			set_relation_nemesis = {
+				reason = $REASON$ 
+				target = $CHARACTER$ 
+				province = scope:relationship_reason_province 
+			}
+		}
+		else_if = {
+			limit = {
+				exists = scope:relationship_reason_involved_character
+			}
+			set_relation_nemesis = {
+				reason = $REASON$ 
+				target = $CHARACTER$ 
+				involved_character = scope:relationship_reason_involved_character 
+			}
+		}
+		else = {
+			set_relation_nemesis = {
+				reason = $REASON$ 
+				target = $CHARACTER$ 
+			}
+		}
+	}
+	else = {
+		progress_towards_rival_effect = {
+			CHARACTER = $CHARACTER$
+			REASON = $REASON$
+			OPINION = $OPINION$
 		}
 	}
 }
@@ -386,7 +529,7 @@ progress_towards_lover_effect = {
 				exists = involved_activity
 				has_activity_intent = woo_attendee_intent
 				intent_target ?= $CHARACTER$
-				intent_target.involved_activity ?= root.involved_activity
+				intent_target.involved_activity ?= this.involved_activity
 			}
 			save_scope_as = intent_completer
 			send_interface_toast = {
@@ -897,7 +1040,7 @@ set_random_friendship_reason = { # Use for adults, primarily
 
 set_random_rivalry_reason = { # Use for adults, primarily
 	show_as_tooltip = {
-		set_relation_rival = $TARGET$
+		set_relation_$RELATION$ = $TARGET$
 	}
 	hidden_effect = {
 		random_list = {
@@ -906,73 +1049,73 @@ set_random_rivalry_reason = { # Use for adults, primarily
 					exists = location
 					NOT = { exists = liege }
 				}
-				set_relation_rival = { reason = rival_random_1 target = $TARGET$ province = location }
+				set_relation_$RELATION$ = { reason = rival_random_1 target = $TARGET$ province = location }
 			}
 			10 = {
 				trigger = {
 					exists = location
 					NOT = { exists = liege }
 				}
-				set_relation_rival = { reason = rival_random_2 target = $TARGET$ province = location }
+				set_relation_$RELATION$ = { reason = rival_random_2 target = $TARGET$ province = location }
 			}
 			10 = {
 				trigger = {
 					exists = location
 					NOT = { exists = liege }
 				}
-				set_relation_rival = { reason = rival_random_3 target = $TARGET$ province = location }
+				set_relation_$RELATION$ = { reason = rival_random_3 target = $TARGET$ province = location }
 			}
 			10 = {
 				trigger = {
 					exists = location
 					NOT = { exists = liege }
 				}
-				set_relation_rival = { reason = rival_random_4 target = $TARGET$ province = location }
+				set_relation_$RELATION$ = { reason = rival_random_4 target = $TARGET$ province = location }
 			}
 			10 = {
 				trigger = {
 					exists = location
 					NOT = { exists = liege }
 				}
-				set_relation_rival = { reason = rival_random_5 target = $TARGET$ province = location }
+				set_relation_$RELATION$ = { reason = rival_random_5 target = $TARGET$ province = location }
 			}
 			10 = {
 				trigger = {
 					exists = liege
 				}
-				set_relation_rival = { reason = rival_random_6 target = $TARGET$ involved_character = liege }
+				set_relation_$RELATION$ = { reason = rival_random_6 target = $TARGET$ involved_character = liege }
 			}
 			10 = {
 				trigger = {
 					exists = liege
 				}
-				set_relation_rival = { reason = rival_random_7 target = $TARGET$ involved_character = liege }
+				set_relation_$RELATION$ = { reason = rival_random_7 target = $TARGET$ involved_character = liege }
 			}
 			10 = {
 				trigger = {
 					exists = liege
 				}
-				set_relation_rival = { reason = rival_random_8 target = $TARGET$ involved_character = liege }
+				set_relation_$RELATION$ = { reason = rival_random_8 target = $TARGET$ involved_character = liege }
 			}
 			10 = {
 				trigger = {
 					exists = liege
 					exists = liege.capital_province
 				}
-				set_relation_rival = { reason = rival_random_9 target = $TARGET$ involved_character = liege province = liege.capital_province }
+				set_relation_$RELATION$ = { reason = rival_random_9 target = $TARGET$ involved_character = liege province = liege.capital_province }
 			}
 			10 = {
 				trigger = {
 					exists = liege
 					exists = liege.capital_province
 				}
-				set_relation_rival = { reason = rival_random_10 target = $TARGET$ involved_character = liege province = liege.capital_province }
+				set_relation_$RELATION$ = { reason = rival_random_10 target = $TARGET$ involved_character = liege province = liege.capital_province }
 			}
 			10 = {
 				trigger = {
 					exists = liege
 				}
-				set_relation_rival = { reason = rivalry_at_court target = $TARGET$ involved_character = liege }
+				set_relation_$RELATION$ = { reason = rivalry_at_court target = $TARGET$ involved_character = liege }
 			}
 			10 = {
 				trigger = {
@@ -981,7 +1124,7 @@ set_random_rivalry_reason = { # Use for adults, primarily
 						exists = liege
 					}
 				}
-				set_relation_rival = { reason = rival_random_fallback target = $TARGET$ }
+				set_relation_$RELATION$ = { reason = rival_random_fallback target = $TARGET$ }
 			}
 		}
 	}
@@ -1178,6 +1321,21 @@ progress_towards_intent_effect = {
 			modifier = kindness_opinion
 			target = $CHARACTER$
 			opinion = default_friend_opinion
+		}
+	}
+}
+
+clear_grudges_effect = {
+	$CHAR_1$ = {
+		if = {
+			limit = { has_relation_grudge = $CHAR_2$ }
+			remove_relation_grudge = $CHAR_2$
+		}
+	}
+	$CHAR_2$ = {
+		if = {
+			limit = { has_relation_grudge = $CHAR_1$ }
+			remove_relation_grudge = $CHAR_1$
 		}
 	}
 }

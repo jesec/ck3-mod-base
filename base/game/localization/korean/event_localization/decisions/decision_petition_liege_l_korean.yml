@@ -1,6 +1,6 @@
 ﻿l_korean:
  #Decision Menu Localization
- petition_liege_decision: "주군 탄원"
+ petition_liege_decision: "[ROOT.Char.GetTopLiege.GetTitleAsNameNoTooltip] 탄원"
  petition_liege_decision_desc: "주군에게 탄원을 올려 직면한 난관을 극복하는 데 도움을 받는 것도 한 방법이다. 봉역을 위한 진솔한 요청은 받아들여지는 경우가 훨씬 많으니."
  petition_liege_decision_tooltip: "[liege|E]에게 [petition_liege|E]을 올려 선물 또는 지원 요청"
  petition_liege_decision_effects: "[THIS.Char.GetLiege.GetTitledFirstNamePossessive] 궁정을 방문해 탄원 전달"
@@ -15,15 +15,18 @@
  petition_liege_council_seat_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_council_seat_me_tt: "#X 이미 [liege|E]의 [council|E]에 속해 있습니다.#!"
  petition_liege_council_seat_liege_tt: "#X 현재 [liege|E]이 [council|E]를 변경할 수 없는 상태입니다.#!"
- council_appointment_toast_desc_liege: "[petition_vassal.GetTitledFirstNameNoTooltip](은)는 이제 당신의 [petition_vassal.GetCouncilTitle]입니다."
- council_appointment_toast_desc_vassal: "당신은 이제 [petition_liege.GetTitledFirstNamePossessiveNoTooltip] [petition_vassal.GetCouncilTitle]입니다."
+ council_appointment_toast_desc_liege: "[THIS.Char.GetShortUIName](은)는 이제 당신의 [THIS.Char.GetCouncilTitle]입니다."
+ council_appointment_toast_desc_vassal: "[THIS.Char.GetShortUIName](이)가 [petition_liege.GetTitledFirstNamePossessiveNoTooltip] [THIS.Char.GetCouncilTitle](이)가 됨"
  council_appointment_toast_desc_replaced: "[petition_liege.GetTitledFirstNameNoTooltip](이)가 자문위원인 당신을 [petition_vassal.GetTitledFirstNameNoTooltip](으)로 교체하였습니다."
  petition_liege_decision_effects_council_seat: "[liege|E]이 일정 확률로 당신에게 [council|E] 자리를 부여합니다."
+ #Court Position
+ court_position_toast_desc_liege: "[THIS.Char.GetShortUIName](은)는 이제 당신의 [THIS.Char.GetCouncilTitle]임"
+ court_position_toast_desc_vassal: "[THIS.Char.GetShortUIName](이)가 [petition_liege.GetTitledFirstNamePossessiveNoTooltip] [THIS.Char.GetHeldCourtPositionsString](이)가 됨"
  #Debt
  petition_liege_decision_option_pay_debt: "부채 청산\n#low [debt|E]를 탕감합니다.#!"
  petition_liege_pay_debt_desc: "[ROOT.Char.GetLiege.GetTitledFirstName]에게 현재 [debt|E]를 청산해 달라고 요청합니다."
  petition_liege_pay_debt_tooltip: "$petition_liege_decision_second_tooltip$"
- petition_liege_pay_debt_me_tt: "#X [debt|E]이 최소 -100 금화가 아님"
+ petition_liege_pay_debt_me_tt: "#X [debt|E]가 최소 -100 [gold_i|E]가 아님"
  petition_liege_pay_debt_liege_tt: "#X [liege|E]에게 당신의 [debt|E]를 탕감할 여력이 없습니다.#!"
  petition_liege_decision_effects_pay_debt: "[liege|E]이 일정 확률로 당신의 [debt|E]를 탕감합니다."
  #War Aid
@@ -55,7 +58,7 @@
  petition_liege_county_control_desc: "[ROOT.Char.GetLiege.GetTitledFirstName]에게 어지러운 [Concept( 'counties', '영지' )|E]의 [control|E]을 복원하는 데 지원을 해달라고 요청합니다."
  petition_liege_county_control_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_county_control_tt: "#X [Concept( 'counties', '영지' )|E] 중 [control|E]이 낮은 곳이 없습니다.#!"
- petition_liege_decision_effects_county_control: "[liege|E]이 일정 확률로 [Concept( 'counties', '영지' )|E]를 복속시키는 데 도움을 줍니다."
+ petition_liege_decision_effects_county_control: "[THIS.Char.GetLiege.GetSheHe|U]가 일정 확률로 [Concept( 'counties', '영지' )|E]를 [Concept( 'control', '장악' )|E]하는 데 도움을 줍니다."
  #Convert
  petition_liege_decision_option_county_convert: "사제 후원\n#low [Concept( 'counties', '영지' )|E]의 개종을 돕습니다.#!"
  petition_liege_county_convert_desc: "[ROOT.Char.GetLiege.GetTitledFirstName]에게 진정한 [faith|E]으로 [Concept( 'counties', '영지' )|E]를 개종하는 데 지원을 해달라고 요청합니다."
@@ -75,14 +78,14 @@
  petition_liege_fortify_border_tt: "#X 당신의 [Concept( 'counties', '영지' )|E]와 국경을 맞댄 [realm|E] 중 [liege|E]과 [alliance|E]을 맺지 않은 곳이 없습니다.#!"
  petition_liege_decision_effects_fortify_border: "[liege|E]이 일정 확률로 국경 [Concept( 'counties', '영지' )|E]를 요새화하는 데 도움을 줍니다."
  #Title Liege
- petition_liege_decision_option_title_liege: "명분 부여\n#low [title|E] 명분을 얻습니다.#!"
- petition_liege_title_liege_desc: "[ROOT.Char.GetLiege.GetTitledFirstName]에게 [title|E] 명분을 하사해 달라고 요청합니다."
+ petition_liege_decision_option_title_liege: "명분 부여\n#low [title|E] [claimed|E]을 얻습니다.#!"
+ petition_liege_title_liege_desc: "[ROOT.Char.GetLiege.GetTitledFirstName]에게 [title|E] [claimed|E]을 하사해 달라고 요청합니다."
  petition_liege_title_liege_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_title_liege_tt: "#X 보유 [claims|E] 중 당신의 [liege|E]이 보유한 명분이 없습니다. 혹은 [title|E]를 하사할 여력이 없습니다.#!"
  petition_liege_decision_effects_title_liege: "[liege|E]이 일정 확률로 당신에게 [title|E] 명분을 양도합니다."
  #Title Vassal
- petition_liege_decision_option_title_vassal: "명분 이전\n#low [vassal|E]의 [title|E] 명분을 이전시킵니다."
- petition_liege_title_vassal_desc: "[ROOT.Char.GetLiege.GetTitledFirstName]에게 다른 [vassal|E]의 [title|E] 명분을 이전시켜 달라고 요청합니다."
+ petition_liege_decision_option_title_vassal: "명분 이전\n#low [vassal|E]의 [title|E] [claimed|E]을 이전시킵니다."
+ petition_liege_title_vassal_desc: "[ROOT.Char.GetLiege.GetTitledFirstName]에게 다른 [vassal|E]의 [title|E] [claimed|E]을 이전시켜 달라고 요청합니다."
  petition_liege_title_vassal_tooltip: "$petition_liege_decision_second_tooltip$"
  petition_liege_title_vassal_liege_tt: "#X [liege|E]의 [crown_authority|E]가 [titles|E] [revocation|E]를 허용하지 않습니다.#!"
  petition_liege_title_vassal_claim_tt: "#X [liege|E]의 [vassals|E]이 보유한 [claims|E]이 없거나 [title|E]를 내놓을 수 없는 상태입니다.#!"

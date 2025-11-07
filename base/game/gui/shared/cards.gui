@@ -8,6 +8,7 @@
 
 		hbox = {
 			name = "header"
+			
 			block "header_properties" 
 			{
 				using = GenericObjectCardDefaultHeaderProperites
@@ -31,11 +32,12 @@
 
 			vbox = { 
 				name = "header_contents"
-				layoutpolicy_vertical = expanding
-				layoutpolicy_horizontal = expanding
-				margin_left = 8
-				spacing = -8
-
+				
+				block "header_contents_properties"
+				{
+					using = GenericObjectCardDefaultHeaderContentsProperties
+				}
+				
 				margin_widget = { 
 					name = "upper_line"
 
@@ -75,6 +77,12 @@
 
 			block "card_visible" {}
 			block "card_contents" {}
+		}
+	}
+
+	type button_clickable_object_card = button_standard_clean {
+		vbox_generic_object_card = {
+			resizeparent = yes
 		}
 	}
 }
@@ -126,6 +134,14 @@ template GenericObjectCardHeaderBackground
 		blend_mode = alphamultiply
 		alpha = 0.2
 	}
+}
+
+template GenericObjectCardDefaultHeaderContentsProperties
+{
+	layoutpolicy_vertical = expanding
+	layoutpolicy_horizontal = expanding
+	margin_left = 8
+	spacing = -8
 }
 
 template GenericObjectCardDefaultHeaderTopProperties

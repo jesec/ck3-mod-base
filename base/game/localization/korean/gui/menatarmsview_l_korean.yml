@@ -6,6 +6,7 @@
  MAA_UNRAISED_MAINTENANCE_TEXT: "미소집 유지비"
  MAA_REINFORCEMENT: "[MenAtArmsView.GetFullStrengthText]\n최대 유지비 지출 중"
  MAA_REINFORCEMENT_COST_ENTRY: "[Select_CString( Or( Not(Regiment.IsAtFullStength), Regiment.IsRaised), '#high ' , '#weak ' )]$MAA_FULL_MAINTENANCE_TEXT$: [Regiment.CalcReinforcementCost]/달#!"
+ MAA_PROVISIONS_COST: "[traveled|E]한 [barony|E]당 [provision|E] 비용: @provisions_icon!$VALUE|=+0$"
  MAA_MAINTENANCE: "[Select_CString( And( Regiment.IsAtFullStength, Not(Regiment.IsRaised)), '#high ', '#weak ' )]$MAA_UNRAISED_MAINTENANCE_TEXT$: [Regiment.CalcUnraisedCost]/달#!"
  MAA_RAISED_MAINTENTANCE: "[MenAtArmsView.GetFullStrengthText]\n최대 유지비 지출 중"
  MAA_UNRAISED_MAINTENANCE: "[MenAtArmsView.GetFullStrengthText]\n미소집 유지비 지출 중"
@@ -27,7 +28,7 @@
  MAA_DECREASE_SIZE_TOOLTIP: "#T $MAA_DECREASE_SIZE$#!\n유지비 감소:\n[MenAtArmsType.GetReinforcementCostString( GetPlayer )]\n[MenAtArmsType.GetFullStrengthMaintenanceCostForPlayerString]"
  MAA_DESTROY_TOOLTIP: "#T 연대 파괴#!\n$MAA_FULL_MAINTENANCE_TEXT$: [Regiment.CalcReinforcementCost]/달\n$MAA_UNRAISED_MAINTENANCE_TEXT$[Regiment.CalcUnraisedCost]/달"
  MAA_AT_MAX_SIZE: "최대치 도달"
- MAA_SIZE_CHANGE: "@soldier_icon! +[Regiment.GetMAAType.GetStackSize]"
+ MAA_SIZE_CHANGE: "@[Regiment.GetMAAType.GetIconKey]_icon!+[Regiment.GetMAAType.GetStackSize]"
  MAA_REINFORCING: "충원 중"
  REGIMENT_CURRENT_SIZE: "규모 [Regiment.GetMAAChunkCount]/[Regiment.CalcMaxMAAChunkCount]"
  #Tooltip
@@ -45,4 +46,6 @@
  MAA_CHUNK_SIZE: "[soldiers|E]: $VALUE|V$"
  CREATE_MAA_HEADER: "#T [MEN_AT_ARMS_TYPE.GetNameNoTooltip|V] 연대 생성#!"
  CANT_CREATE_MAA_AT_CAP: "@warning_icon! #X [men_at_arms|E] 연대 한도에 도달했습니다.#!"
+ CANT_CREATE_MAA_MAX_REGIMENTS: "@warning_icon! #X [MEN_AT_ARMS_TYPE.GetNameNoTooltip|V](은)는 $LIMIT$보다 많이 보유할 수 없음#!"
+ CANT_CREATE_TTILE_MAA_WRONG_GOVERNMENT: "@warning_icon!#X [GovernmentType.GetNameWithIcon] 정부는 작위 [men_at_arms|E] 모집을 허용하지 않습니다.#!"
  CREATE_MAA_TOOLTIP: "#T 새로운 [men_at_arms|E] [regiment|E] 생성#!\n[MilitaryItem.GetMaACanBeCreatedTooltip]"

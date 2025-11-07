@@ -37,18 +37,14 @@ get_guardian_scope_effect = {
 			NOT = { exists = scope:guardian }
 			is_ruler = yes
 			any_parent = {
-				is_adult = yes
-				is_ai = yes
+				is_available_ai_adult = yes
 				is_in_the_same_court_as = root
-				is_available = yes
 			}
 		}
 		random_parent = {
 			limit = {
-				is_adult = yes
-				is_ai = yes
+				is_available_ai_adult = yes
 				is_in_the_same_court_as = root
-				is_available = yes
 			}
 			save_scope_as = guardian
 		}
@@ -58,16 +54,12 @@ get_guardian_scope_effect = {
 			NOT = { exists = scope:guardian }
 			is_ruler = yes
 			any_courtier_or_guest = {
-				is_adult = yes
-				is_ai = yes
-				is_available = yes
+				is_available_ai_adult = yes
 			}
 		}
 		random_courtier_or_guest = {
 			limit = {
-				is_adult = yes
-				is_ai = yes
-				is_available = yes
+				is_available_ai_adult = yes
 			}
 			save_scope_as = guardian
 		}
@@ -97,22 +89,16 @@ get_guardian_scope_effect = {
 		limit = {
 			NOT = { exists = scope:guardian }
 			any_sibling = {
-				is_ai = yes
-				is_adult = yes
-				is_available = yes
+				is_available_ai_adult = yes
 			}
 		}
 		random_sibling = {
 			limit = {
-				is_ai = yes
-				is_adult = yes
-				is_available = yes
-			}
-			limit = {
-				is_ai = yes
-				is_adult = yes
+				is_available_ai_adult = yes
 				is_in_the_same_court_as = root
-				is_available = yes			
+			}
+			alternative_limit = {
+				is_available_ai_adult = yes		
 			}
 			save_scope_as = guardian
 		}
@@ -123,18 +109,14 @@ get_guardian_scope_effect = {
 			exists = liege
 			liege = {
 				any_courtier_or_guest = {
-					is_ai = yes
-					is_adult = yes
-					is_available = yes
+					is_available_ai_adult = yes
 				}
 			}
 		}
 		liege = {
 			random_courtier_or_guest = {
 				limit = {
-					is_ai = yes
-					is_adult = yes
-					is_available = yes
+					is_available_ai_adult = yes
 				}
 				save_scope_as = guardian
 			}
@@ -145,9 +127,7 @@ get_guardian_scope_effect = {
 			NOT = { exists = scope:guardian }
 			exists = liege
 			liege = {
-				is_adult = yes
-				is_ai = yes
-				is_available = yes
+				is_available_ai_adult = yes
 			}
 		}
 		liege = {
@@ -233,7 +213,7 @@ save_good_character_effect = {
 	if = {
 		limit = {
 			NOT = { exists = scope:$RELATION$ }
-			is_landed = yes
+			is_playable_character = yes
 		}
 		every_vassal = {
 			if = {
@@ -258,7 +238,7 @@ save_good_character_effect = {
 	}
 	if = {
 		limit = {
-			is_landed = yes
+			is_playable_character = yes
 			NOT = { exists = scope:$RELATION$ }
 		}
 		every_courtier = {
@@ -270,7 +250,7 @@ save_good_character_effect = {
 	}
 	if = {
 		limit = {
-			is_landed = yes
+			is_playable_character = yes
 			NOT = { exists = scope:$RELATION$ }
 			exists = liege
 			NOT = { this = liege }
@@ -318,7 +298,7 @@ save_good_character_effect = {
 	}
 	if = {
 		limit = {
-			is_landed = no
+			is_playable_character = no
 			NOT = { exists = scope:$RELATION$ }
 			exists = liege
 			NOT = { this = liege }

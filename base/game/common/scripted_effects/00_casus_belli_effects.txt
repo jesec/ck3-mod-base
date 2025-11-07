@@ -19,6 +19,16 @@
 #																																																			#
 #############################################################################################################################################################################################################
 
+@maximum_prestige_winner = 1000
+@maximum_piety_winner = 1000
+@minimum_prestige_loser = -1000
+@minimum_piety_loser = -1000
+
+@maximum_prestige_winner_ally = 1000
+@maximum_piety_winner_ally = 1000
+@maximum_prestige_loser_ally = 1000
+@maximum_piety_loser_ally = 1000
+
 modify_all_participants_fame_values = {
 
 	# Give the winner the appropriate type & amount of 'fame' (prestige or piety).
@@ -36,6 +46,7 @@ modify_all_participants_fame_values = {
 				add_piety_experience = {
 					value = $FAME_BASE$
 					multiply = $WINNER_FAME_SCALE$
+					max = @maximum_piety_winner
 				}
 			}
 		}
@@ -45,6 +56,7 @@ modify_all_participants_fame_values = {
 				add_prestige_experience = {
 					value = $FAME_BASE$
 					multiply = $WINNER_FAME_SCALE$
+					max = @maximum_prestige_winner
 				}
 			}
 		}		
@@ -60,6 +72,7 @@ modify_all_participants_fame_values = {
 				add_piety = {
 					value = $FAME_BASE$
 					multiply = $WINNER_FAME_SCALE$
+					max = @maximum_piety_winner
 				}
 			}
 		}
@@ -69,6 +82,7 @@ modify_all_participants_fame_values = {
 				add_prestige = {
 					value = $FAME_BASE$
 					multiply = $WINNER_FAME_SCALE$
+					max = @maximum_prestige_winner
 				}
 			}
 		}
@@ -94,6 +108,7 @@ modify_all_participants_fame_values = {
 			add_piety = {
 				value = $FAME_BASE$
 				multiply = $LOSER_FAME_SCALE$
+				min = @minimum_piety_loser
 			}
 		}
 	}
@@ -103,7 +118,50 @@ modify_all_participants_fame_values = {
 			add_prestige = {
 				value = $FAME_BASE$
 				multiply = $LOSER_FAME_SCALE$
+				min = @minimum_prestige_loser
 			}
+		}
+	}
+}
+
+modify_all_participants_fame_values_crusading_claim = {
+
+	# Give the winner the appropriate type & amount of 'fame' (prestige or piety).
+	if = {
+		# If the attacker is the winner, we only award fame *experience* instead of actual fame currency.
+		limit = {
+			$WINNER$ = scope:attacker
+		}
+		scope:attacker = {
+			add_prestige_experience = {
+				value = $FAME_BASE$
+				multiply = $WINNER_FAME_SCALE$
+			}
+		}		
+	}
+	else = {
+		# Gain prestige for winning all other defensive wars.
+		scope:defender = {
+			add_prestige = {
+				value = $FAME_BASE$
+				multiply = $WINNER_FAME_SCALE$
+			}
+		}
+	}
+
+	# Award the appropriate type & amount of 'fame' to the allies of both primary participants.
+	modify_allies_of_participants_fame_values_crusading_claim = {
+		WINNER = $WINNER$
+		FAME_BASE = $FAME_BASE$
+		WINNER_ALLY_FAME_SCALE = $WINNER_ALLY_FAME_SCALE$
+		LOSER_ALLY_FAME_SCALE = $LOSER_ALLY_FAME_SCALE$
+	}
+
+	# All other war types cost  Prestige from the loser.
+	$LOSER$ = {
+		add_prestige = {
+			value = $FAME_BASE$
+			multiply = $LOSER_FAME_SCALE$
 		}
 	}
 }
@@ -142,6 +200,7 @@ modify_allies_of_participants_fame_values = {
 				piety = {
 					value = $FAME_BASE$
 					multiply = $WINNER_ALLY_FAME_SCALE$
+					max = @maximum_piety_winner_ally
 				}
 				opinion = {
 					modifier = contributed_in_war
@@ -152,6 +211,7 @@ modify_allies_of_participants_fame_values = {
 				piety = {
 					value = $FAME_BASE$
 					multiply = $LOSER_ALLY_FAME_SCALE$
+					max = @maximum_prestige_loser_ally
 				}
 				opinion = {
 					modifier = contributed_in_war
@@ -164,6 +224,7 @@ modify_allies_of_participants_fame_values = {
 				piety = {
 					value = $FAME_BASE$
 					multiply = $WINNER_ALLY_FAME_SCALE$
+					max = @maximum_piety_winner_ally
 				}
 				opinion = {
 					modifier = contributed_in_war
@@ -174,6 +235,7 @@ modify_allies_of_participants_fame_values = {
 				piety = {
 					value = $FAME_BASE$
 					multiply = $LOSER_ALLY_FAME_SCALE$
+					max = @maximum_prestige_loser_ally
 				}
 				opinion = {
 					modifier = contributed_in_war
@@ -192,6 +254,7 @@ modify_allies_of_participants_fame_values = {
 				prestige = {
 					value = $FAME_BASE$
 					multiply = $WINNER_ALLY_FAME_SCALE$
+					max = @maximum_prestige_winner_ally
 				}
 				opinion = {
 					modifier = contributed_in_war
@@ -202,6 +265,7 @@ modify_allies_of_participants_fame_values = {
 				prestige = {
 					value = $FAME_BASE$
 					multiply = $LOSER_ALLY_FAME_SCALE$
+					max = @maximum_prestige_loser_ally
 				}
 				opinion = {
 					modifier = contributed_in_war
@@ -214,6 +278,7 @@ modify_allies_of_participants_fame_values = {
 				prestige = {
 					value = $FAME_BASE$
 					multiply = $WINNER_ALLY_FAME_SCALE$
+					max = @maximum_prestige_winner_ally
 				}
 				opinion = {
 					modifier = contributed_in_war
@@ -224,10 +289,64 @@ modify_allies_of_participants_fame_values = {
 				prestige = {
 					value = $FAME_BASE$
 					multiply = $LOSER_ALLY_FAME_SCALE$
+					max = @maximum_prestige_loser_ally
 				}
 				opinion = {
 					modifier = contributed_in_war
 				}
+			}
+		}
+	}
+}
+
+modify_allies_of_participants_fame_values_crusading_claim = {
+	# Give the allies of both primary participants the appropriate type & amount of 'fame'.
+
+	if = {
+		# Award Prestige to the victorious attacker's allies.
+		limit = {
+			$WINNER$ = scope:attacker
+		}
+		add_from_contribution_attackers = {
+			prestige = {
+				value = $FAME_BASE$
+				multiply = $WINNER_ALLY_FAME_SCALE$
+			}
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+		# Award Prestige to the defeated defender's allies.
+		add_from_contribution_defenders = {
+			prestige = {
+				value = $FAME_BASE$
+				multiply = $LOSER_ALLY_FAME_SCALE$
+			}
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+	}
+	else = {
+		# Award Prestige to the victorious defender's allies.
+		add_from_contribution_defenders = {
+			prestige = {
+				value = $FAME_BASE$
+				multiply = $WINNER_ALLY_FAME_SCALE$
+			}
+			opinion = {
+				modifier = contributed_in_war
+			}
+		}
+		# Award Prestige to the defeated attacker's allies.
+		add_from_contribution_attackers = {
+			prestige = {
+				value = $FAME_BASE$
+				multiply = $LOSER_ALLY_FAME_SCALE$
+				multiply = -1
+			}
+			opinion = {
+				modifier = contributed_in_war
 			}
 		}
 	}

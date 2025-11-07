@@ -23,7 +23,7 @@ accolade.0001 = {
 				}
 			}
 			send_interface_message = {
-				type = event_generic_good_text
+				type = msg_accolade_gained_rank
 				title = accolade.0001.notification_high
 				desc = accolade_rank_unlock_notification_tooltip_high
 				left_icon = scope:acclaimed_knight
@@ -31,7 +31,7 @@ accolade.0001 = {
 		}
 		else = {
 			send_interface_message = {
-				type = event_generic_good_text
+				type = msg_accolade_gained_rank
 				title = accolade.0001.notification_low
 				desc = accolade_rank_unlock_notification_tooltip_low
 				left_icon = scope:acclaimed_knight
@@ -66,7 +66,7 @@ accolade.0002 = {
 					}
 				}
 				send_interface_message = {
-					type = event_generic_bad_text
+					type = msg_accolade_lost_rank
 					title = accolade.0002.notification_high
 					left_icon = scope:acclaimed_knight
 					desc = {
@@ -91,7 +91,7 @@ accolade.0002 = {
 					}
 				}
 				send_interface_message = {
-					type = event_generic_bad_text
+					type = msg_accolade_lost_rank
 					title = accolade.0002.notification_low
 					left_icon = scope:acclaimed_knight
 					desc = {
@@ -111,7 +111,7 @@ accolade.0002 = {
 			}
 			else = {
 				send_interface_message = {
-					type = event_generic_bad_text
+					type = msg_accolade_lost_rank
 					title = accolade.0002.notification_low
 					left_icon = scope:acclaimed_knight
 					desc = {
@@ -136,14 +136,14 @@ accolade.0002 = {
 				scope:changing_accolade = { accolade_rank >= 1 }
 			}
 			send_interface_message = {
-				type = event_generic_bad_text
+				type = msg_accolade_lost_rank
 				title = accolade.0002.notification_empty
 				desc = accolade_rank_loss_notification_tooltip_empty
 			}
 		}
 		else = {
 			send_interface_message = {
-				type = event_generic_bad_text
+				type = msg_accolade_lost_rank
 				title = accolade.0002.notification_low
 				desc = accolade_rank_loss_notification_tooltip_empty_no_rank
 			}
@@ -162,6 +162,7 @@ accolade.0003 = {
 
 	immediate = {
 		send_interface_toast = {
+			type = msg_accolade_active
 			title = accolade.0003.accolade_becomes_idle.tt
 			custom_tooltip = accolade.0003.accolade_becomes_idle_effects.tt
 		}
@@ -179,6 +180,7 @@ accolade.0004 = {
 
 	immediate = {
 		send_interface_toast = {
+			type = msg_accolade_succession
 			title = accolade.0004.new_acclaimed_knight.tt
 			left_icon = scope:new_acclaimed_knight
 			custom_tooltip = accolade.0004.new_acclaimed_knight_name.tt
@@ -198,6 +200,7 @@ accolade.0005 = {
 
 	immediate = {
 		send_interface_toast = {
+			type = msg_accolade_succession_toast
 			title = accolade.0005.new_acclaimed_knight_new_type.tt
 			left_icon = scope:new_acclaimed_knight
 			custom_tooltip = accolade.0005.new_accolade_type.tt
@@ -273,8 +276,44 @@ accolade.0006 = {
 			limit = {
 				NOT = { exists = scope:chosen_knight }
 			}
+			#if = { # Balance testing variables
+			#	limit = {
+			#		NOT = {
+			#			exists = global_var:accolade_fail
+			#		}
+			#	}
+			#	set_global_variable = {
+			#		name = accolade_fail
+			#		value = 1
+			#	}
+			#}
+			#else = {
+			#	change_global_variable = {
+			#		name = accolade_fail
+			#		add = 1
+			#	}
+			#}
 			accolade_character_creation_effect = yes
 		}
+		#else = { # Balance testing variables
+		#	if = {
+		#		limit = {
+		#			NOT = {
+		#				exists = global_var:accolade_success
+		#			}
+		#		}
+		#		set_global_variable = {
+		#			name = accolade_success
+		#			value = 1
+		#		}
+		#	}
+		#	else = {
+		#		change_global_variable = {
+		#			name = accolade_success
+		#			add = 1
+		#		}
+		#	}
+		#}
 
 		if = {
 			limit = {
@@ -313,6 +352,7 @@ accolade.0007 = {
 			
 			#SEND A TOAST NOTIFICATION
 			send_interface_toast = {
+				type = event_toast_effect_neutral
 				title = accolade.0007.notification
 				left_icon = scope:chosen_knight
 				custom_tooltip = accolade_call_acclaimed_knight_tooltip
@@ -329,7 +369,7 @@ accolade.0007 = {
 		}
 		else = {
 			send_interface_message = {
-				type = event_generic_bad_text
+				type = event_accolade_bad_text
 				title = accolade.0007.notification_fail
 				desc = accolade_find_successor_fail_notification_tooltip
 			}
@@ -789,6 +829,7 @@ accolade.0013 = {
 			
 			#SEND A TOAST NOTIFICATION
 			send_interface_toast = {
+				type = event_toast_effect_neutral
 				title = accolade.0013.notification
 				left_icon = scope:chosen_knight
 				custom_tooltip = accolade_call_acclaimed_knight_tooltip
@@ -819,7 +860,7 @@ accolade.0013 = {
 			
 			#SEND A FEED NOTIFICATION FOR NEXT KNIGHTS
 			send_interface_message = {
-				type = event_generic_good_text
+				type = event_accolade_good_with_text
 				title = accolade.0013.notification
 				desc = accolade_call_acclaimed_knight_tooltip
 				left_icon = scope:chosen_knight
@@ -835,7 +876,7 @@ accolade.0013 = {
 		}
 		else = {
 			send_interface_message = {
-				type = event_generic_bad_text
+				type = event_accolade_bad_text
 				title = accolade.0013.notification_fail
 				desc = accolade_call_acclaimed_knight_fail_notification_tooltip
 			}

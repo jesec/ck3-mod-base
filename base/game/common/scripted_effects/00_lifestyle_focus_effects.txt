@@ -573,7 +573,7 @@ blademaster_lifestyle_rank_up_effect = {
 		}
 		add_trait = lifestyle_blademaster
 	}
-	else = {
+	else_if = {
 		limit = {
 			has_trait_xp = {
 				trait = lifestyle_blademaster
@@ -866,5 +866,30 @@ remove_all_perk_lifestyle_traits_effect = {
 	}
 	hidden_effect = {
 		set_absolute_country_control = no
+	}
+}
+
+#This _can_ return nothing if you don't have a lifestyle focus
+##Takes the amount of _lifestyle_xp you want to hand out as an argument, from the scripted values
+add_focused_lifestyle_xp_effect = {
+	if = {
+		limit = { has_lifestyle = diplomacy_lifestyle }
+		add_diplomacy_lifestyle_xp = $AMOUNT$_lifestyle_xp
+	}
+	if = {
+		limit = { has_lifestyle = martial_lifestyle }
+		add_martial_lifestyle_xp = $AMOUNT$_lifestyle_xp
+	}
+	if = {
+		limit = { has_lifestyle = stewardship_lifestyle }
+		add_stewardship_lifestyle_xp = $AMOUNT$_lifestyle_xp
+	}
+	if = {
+		limit = { has_lifestyle = intrigue_lifestyle }
+		add_intrigue_lifestyle_xp = $AMOUNT$_lifestyle_xp
+	}
+	if = {
+		limit = { has_lifestyle = learning_lifestyle }
+		add_learning_lifestyle_xp = $AMOUNT$_lifestyle_xp
 	}
 }

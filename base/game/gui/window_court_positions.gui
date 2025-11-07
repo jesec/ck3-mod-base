@@ -1,4 +1,4 @@
-types CourtPositionTypes
+﻿types CourtPositionTypes
 {
 	type vbox_court_positions = vbox {
 		margin_bottom = 15
@@ -6,6 +6,40 @@ types CourtPositionTypes
 		state = {
 			name = _show
 			using = Expand_Court_Positions
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+			margin_top = 15
+			margin_bottom = 10
+
+			hbox = {
+				button_court = {
+					name = "recruit_court_position_decision"
+					datacontext = "[GetDecisionWithKey('recruit_court_position_decision')]"
+					visible = "[Decision.IsShownForPlayer]"
+
+					onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+					using = tooltip_se
+
+					size = { 500 42 }
+
+					blockoverride "size_illustration" {
+						size = { 500 40 }
+					}
+
+					blockoverride "vignette_size" {
+						size = { 496 38 }
+						position = { 0 1 }
+					}
+
+					blockoverride "deb_illustration" {
+						visible = no
+					}
+				}
+			}
+
 		}
 
 		data_model_view_filter_hbox = {
@@ -36,7 +70,7 @@ types CourtPositionTypes
 
 					using = Animation_Tab_Switch
 
-					hbox_expandable_toggle_field = {
+					button_expandable_toggle_field = {
 						layoutpolicy_horizontal = expanding
 
 						blockoverride "onclick"
@@ -88,12 +122,12 @@ types CourtPositionTypes
 				vbox = {
 					name = "your_court_positions"
 					layoutpolicy_horizontal = expanding
-					
+
 					datacontext = "[CourtPositionsWindow.EmployedPositions]"
-					
+
 					visible = "[DataModelHasItems( EmployedCourtPositionList.GetItems )]"
 
-					hbox_expandable_toggle_field = {
+					button_expandable_toggle_field = {
 						layoutpolicy_horizontal = expanding
 
 						blockoverride "onclick"
@@ -139,6 +173,7 @@ types CourtPositionTypes
 							{
 								vbox = {
 									datacontext = "[EmployedCourtPositionListItem.GetObject]"
+
 									widget_hired_court_position_item = {}
 								}
 							}
@@ -150,22 +185,26 @@ types CourtPositionTypes
 					name = "your_empty_court_positions"
 					layoutpolicy_horizontal = expanding
 
-					hbox_expandable_toggle_field = {
+					hbox = {
 						layoutpolicy_horizontal = expanding
 
-						blockoverride "onclick"
-						{
-							onclick = "[GetVariableSystem.Toggle( 'expand_empty_court_positions' )]"
-						}
+						button_expandable_toggle_field = {
+							layoutpolicy_horizontal = expanding
 
-						blockoverride "button_expand"
-						{
-							frame = "[Select_int32(GetVariableSystem.Exists( 'expand_empty_court_positions'), '(int32)2', '(int32)1')]"
-						}
+							blockoverride "onclick"
+							{
+								onclick = "[GetVariableSystem.Toggle( 'expand_empty_court_positions' )]"
+							}
 
-						blockoverride "text"
-						{
-							text = "COURT_POSITIONS_WINDOW_EMPTY_POSITION_HEADER"
+							blockoverride "button_expand"
+							{
+								frame = "[Select_int32(GetVariableSystem.Exists( 'expand_empty_court_positions'), '(int32)2', '(int32)1')]"
+							}
+
+							blockoverride "text"
+							{
+								text = "COURT_POSITIONS_WINDOW_EMPTY_POSITION_HEADER"
+							}
 						}
 					}
 
@@ -174,7 +213,7 @@ types CourtPositionTypes
 						name = "empty_positions_in_your_court"
 						layoutpolicy_horizontal = expanding
 						visible = "[GetVariableSystem.Exists( 'expand_empty_court_positions' )]"
-						
+
 						datacontext = "[CourtPositionsWindow.EmptyPositions]"
 
 						using = Animation_Tab_Switch
@@ -293,8 +332,8 @@ types CourtPositionTypes
 
 		using = Animation_Tab_Switch
 
-		margin = {8 8}
-		spacing = 4
+		margin = { 10 5 }
+		spacing = 5
 
 		item = {
 			block "cps_item"
