@@ -301,13 +301,36 @@ traveler_lifestyle_rank_up_check_effect = {
 traveler_danger_xp_effect = {
 	if = {
 		limit = { has_trait = lifestyle_traveler }
-		add_trait_xp = {
-			trait = lifestyle_traveler
-			track = danger
-			value = {
-				integer_range = {
-					min = $MIN$
-					max = $MAX$
+		if = {
+			limit = {
+				has_perk = journey_perk
+			}
+			add_trait_xp = {
+				trait = lifestyle_traveler
+				track = danger
+				value = {
+					integer_range = {
+						min = {
+							value = $MIN$
+							add = 2
+						}
+						max = {
+							value = $MAX$
+							add = 2
+						}
+					}
+				}
+			}
+		}
+		else = {
+			add_trait_xp = {
+				trait = lifestyle_traveler
+				track = danger
+				value = {
+					integer_range = {
+						min = $MIN$
+						max = $MAX$
+					}
 				}
 			}
 		}
@@ -317,13 +340,36 @@ traveler_danger_xp_effect = {
 traveler_travel_xp_effect = {
 	if = {
 		limit = { has_trait = lifestyle_traveler }
-		add_trait_xp = {
-			trait = lifestyle_traveler
-			track = travel
-			value = {
-				integer_range = {
-					min = $MIN$
-					max = $MAX$
+		if = {
+			limit = {
+				has_perk = journey_perk
+			}
+			add_trait_xp = {
+				trait = lifestyle_traveler
+				track = travel
+				value = {
+					integer_range = {
+						min = {
+							value = $MIN$
+							add = 2
+						}
+						max = {
+							value = $MAX$
+							add = 2
+						}
+					}
+				}
+			}
+		}
+		else = {
+			add_trait_xp = {
+				trait = lifestyle_traveler
+				track = travel
+				value = {
+					integer_range = {
+						min = $MIN$
+						max = $MAX$
+					}
 				}
 			}
 		}

@@ -864,6 +864,24 @@ remove_all_perk_lifestyle_traits_effect = {
 		}
 		remove_trait = theologian
 	}
+	if = {
+		limit = {
+			has_trait = lifestyle_surveyor
+		}
+		remove_trait = lifestyle_surveyor
+	}
+	if = {
+		limit = {
+			has_trait = lifestyle_wayfarer
+		}
+		remove_trait = lifestyle_wayfarer
+	}
+	if = {
+		limit = {
+			has_trait = lifestyle_voyager
+		}
+		remove_trait = lifestyle_voyager
+	}
 	hidden_effect = {
 		set_absolute_country_control = no
 	}
@@ -892,4 +910,141 @@ add_focused_lifestyle_xp_effect = {
 		limit = { has_lifestyle = learning_lifestyle }
 		add_learning_lifestyle_xp = $AMOUNT$_lifestyle_xp
 	}
+	if = {
+		limit = { has_lifestyle = wanderer_lifestyle }
+		add_wanderer_lifestyle_xp = $AMOUNT$_lifestyle_xp
+	}
 }
+
+ai_chance_to_switch_to_travel_focus_effect = {
+	if = {
+		limit = {
+			is_ai = yes
+			is_adult = yes
+			is_at_war = no
+			is_landed = yes
+			has_bp3_dlc_trigger = yes
+			gold >= minor_gold_value
+			highest_held_title_tier >= tier_county
+			has_completed_one_tree_in_current_lifestyle_trigger = yes
+			NOR = {
+				has_focus = wanderer_internal_affairs_focus
+				has_focus = wanderer_journey_focus
+				has_focus = wanderer_destination_focus
+				has_trait = reclusive
+				is_incapable = yes
+				has_character_modifier = isolating_modifier
+			}
+		}
+		random = {
+			chance = {
+				value = 5
+				if = {
+					limit = {
+						has_completed_current_lifestyle_trigger = yes # No good reason to stick with your lifestyle
+					}
+					add = 75
+				}
+				if = {
+					limit = {
+						has_trait_xp = {
+							trait = lifestyle_traveler
+							track = travel
+							value >= 25
+						}
+					}
+					add = 20
+				}
+				if = {
+					limit = {
+						has_trait_xp = {
+							trait = lifestyle_traveler
+							track = travel
+							value >= 50
+						}
+					}
+					add = 20
+				}
+				if = { # Busy doing.. other things
+					limit = {
+						has_focus = intrigue_temptation_focus
+					}
+					add = -20
+				}
+				if = { # Wants to get away
+					limit = {
+						has_trait = shy
+					}
+					add = {
+						value = root.perk_points_assigned
+						multiply = 3
+					}
+				}
+				if = { # Very stressed
+					limit = {
+						stress >= 150
+					}
+					add = {
+						value = root.perk_points_assigned
+						multiply = 3
+					}
+				}
+				if = { # Has an adventurous sort of personality
+					limit = {
+						ai_sociability >= 50
+						ai_boldness >= 0
+					}
+					add = {
+						value = root.perk_points_assigned
+						multiply = 3
+					}
+				}
+			}
+			random_list = {
+				1 = { # Stewards and realm-focused character
+					modifier = {
+						add = 99
+						OR = {
+							ai_has_economical_boom_personality = yes
+							has_focus_stewardship = yes
+							has_trait = greedy
+						}
+					}
+					set_focus = wanderer_internal_affairs_focus
+				}
+				1 = { # Stressed or asocial characters
+					modifier = {
+						add = 99
+						OR = {
+							stress >= 50
+							ai_sociability <= -25
+						}
+						NOT = {
+							has_trait = impatient
+						}
+					}
+					modifier = {
+						add = 100
+						stress >= 150
+						NOT = {
+							has_trait = impatient
+						}
+					}
+					set_focus = wanderer_journey_focus
+				}
+				1 = { # Learning focused self-improvement characters
+					modifier = {
+						add = 99
+						OR = {
+							has_focus_learning = yes
+							has_trait = impatient
+							has_trait = ambitious
+						}
+					}
+					set_focus = wanderer_destination_focus
+				}
+			}
+		}
+	}
+}
+

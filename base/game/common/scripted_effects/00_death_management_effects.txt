@@ -24,6 +24,29 @@ silent_disappearance_effect = {
 	}
 }
 
+silent_dissapear_ai_if_not_hired = {
+	hidden_effect = {
+		if = {
+			limit = {
+				is_alive = yes
+				root = { is_ai = yes }
+				NOT = { employer = root }
+			}
+
+			death = {
+		 		death_reason = death_disappearance
+		 	}
+		}
+		else_if = {
+			limit = {
+				is_alive = yes
+				NOT = { employer = root }
+			}
+			move_to_pool = yes
+		}
+	}
+}
+
 save_died_in_battle_variables_effect = {
 	set_variable = {
 		name = battle_death_enemy

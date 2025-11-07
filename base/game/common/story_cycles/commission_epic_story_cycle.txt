@@ -178,7 +178,17 @@
 			# Conclusion
 			triggered_effect = {
 				trigger = {
-					var:num_of_events >= 3
+					OR = {
+						var:num_of_events >= 6
+						calc_true_if = {
+							amount = 2
+							has_variable = opinion_artifact
+							has_variable = piety_artifact
+							has_variable = advantage_artifact
+							has_variable = scheme_artifact
+							has_variable = sway_artifact
+						}
+					}
 				}
 				effect = {
 					save_commission_epic_loc_variables = yes

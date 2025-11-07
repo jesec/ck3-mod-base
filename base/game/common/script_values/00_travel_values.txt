@@ -57,6 +57,7 @@ desert_high_danger_reduction = @[desert_danger_value * high_reduction_constant]
 desert_medium_danger_reduction = @[desert_danger_value * medium_reduction_constant +1]
 desert_low_danger_reduction = @[desert_danger_value * low_reduction_constant -2]
 
+
 desert_mountains_high_danger_reduction = @[desert_mountains_danger_value * high_reduction_constant]
 desert_mountains_medium_danger_reduction = @[desert_mountains_danger_value * medium_reduction_constant +1]
 desert_mountains_low_danger_reduction = @[desert_mountains_danger_value * low_reduction_constant -2]
@@ -111,14 +112,32 @@ very_low_travel_option_cost = {
 low_travel_option_cost = {
 	value = low_travel_option_base_cost
 	multiply = tier_multiplier
+	if = {
+		limit = {
+			has_perk = well_prepared_perk
+		}
+		multiply = 0.75
+	}
 }
 medium_travel_option_cost = {
 	value = medium_travel_option_base_cost
 	multiply = tier_multiplier
+	if = {
+		limit = {
+			has_perk = well_prepared_perk
+		}
+		multiply = 0.75
+	}
 }
 high_travel_option_cost = {
 	value = high_travel_option_base_cost
 	multiply = tier_multiplier
+	if = {
+		limit = {
+			has_perk = well_prepared_perk
+		}
+		multiply = 0.75
+	}
 }
 
 struggle_low_danger_impact = {
@@ -131,4 +150,15 @@ struggle_medium_danger_impact = {
 
 struggle_high_danger_impact = {
 	value = 50
+}
+
+food_poison_value = {
+	value = 15
+	subtract = health
+	if = {
+		limit = {
+			has_perk = iron_constitution_perk
+		}
+		add = -5
+	}
 }

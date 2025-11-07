@@ -122,48 +122,52 @@ send_child_to_clergy_effect = {
 			modifier = demanded_taking_vows
 			target = scope:actor
 		}
-		add_trait = devoted
-		add_piety_level = 1
-		if = {
-			limit = { is_ruler = yes }
-			depose = yes
+		simplified_clergy_effect = { RECIPIENT = scope:recipient }
+	}
+}
+
+simplified_clergy_effect = {
+	add_trait = devoted
+	add_piety_level = 1
+	if = {
+		limit = { is_ruler = yes }
+		depose = yes
+	}
+	if = {
+		limit = {
+			is_married = yes
 		}
+		every_spouse = {
+			divorce = $RECIPIENT$
+		}
+	}
+	if = {
+		limit = {
+			exists = betrothed
+		}
+		break_betrothal = betrothed
 		if = {
 			limit = {
-				is_married = yes
+				has_been_promised_grand_wedding = yes
 			}
-			every_spouse = {
-				divorce = scope:recipient
-			}
+			break_grand_wedding_betrothal_effect = yes
 		}
-		if = {
-			limit = {
-				exists = betrothed
-			}
-			break_betrothal = betrothed
-			if = {
-				limit = {
-					has_been_promised_grand_wedding = yes
-				}
-				break_grand_wedding_betrothal_effect = yes
-			}
+	}
+	if = {
+		limit = {
+			is_concubine = yes
 		}
-		if = {
-			limit = {
-				is_concubine = yes
-			}
-			this.concubinist = {
-				remove_concubine = scope:recipient
-			}
+		this.concubinist = {
+			remove_concubine = $RECIPIENT$
 		}
-		if = {
-			limit = {
-				number_of_concubines > 0
-			}
-			every_concubine = {
-				scope:recipient = {
-					remove_concubine = prev
-				}
+	}
+	if = {
+		limit = {
+			number_of_concubines > 0
+		}
+		every_concubine = {
+			$RECIPIENT$ = {
+				remove_concubine = prev
 			}
 		}
 	}

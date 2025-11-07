@@ -7,7 +7,10 @@
 	mutually_exclusive_titles = { always = yes }
 
 	allowed_for_character = {
-		government_allows = administrative
+		OR = {
+			government_allows = administrative
+			house ?= { has_house_modifier = bp3_bosporan_kingdom_modifier }
+		}
 		NOT = {
 			government_has_flag = government_is_landless_adventurer
 		}
@@ -62,6 +65,17 @@
 	}
 
 	valid_to_start = {
+		trigger_if = {
+			limit = {
+				scope:attacker = {
+					NOT = { government_allows = administrative }
+					house ?= { has_house_modifier = bp3_bosporan_kingdom_modifier }
+				}
+			}
+			scope:target.title_province = {
+				geographical_region = black_sea_coast_region
+			}
+		}
 	}
 
 	allowed_for_character_display_regardless = {
@@ -100,6 +114,14 @@
 				max = 75
 			}
 			multiply = common_cb_cost_multiplier
+			if = {
+				limit = {
+					scope:attacker = {
+						NOT = { government_has_flag = government_has_influence }
+					}
+				}
+				multiply = 0
+			}
 		}
 		prestige = {
 			add = {
@@ -767,7 +789,10 @@ naval_expansion_cb = {
 	mutually_exclusive_titles = { always = yes }
 
 	allowed_for_character = {
-		government_allows = administrative
+		OR = {
+			government_allows = administrative
+			house ?= { has_house_modifier = bp3_bosporan_kingdom_modifier }
+		}
 		any_sub_realm_county = {
 			is_coastal_county = yes
 		}
@@ -835,6 +860,17 @@ naval_expansion_cb = {
 				any_neighboring_county = { this = scope:target }
 			}
 		}
+		trigger_if = {
+			limit = {
+				scope:attacker = {
+					NOT = { government_allows = administrative }
+					house ?= { has_house_modifier = bp3_bosporan_kingdom_modifier }
+				}
+			}
+			scope:target.title_province = {
+				geographical_region = black_sea_coast_region
+			}
+		}
 	}
 
 	allowed_for_character_display_regardless = {
@@ -873,6 +909,14 @@ naval_expansion_cb = {
 				max = 75
 			}
 			multiply = common_cb_cost_multiplier
+			if = {
+				limit = {
+					scope:attacker = { 
+						NOT = { government_has_flag = government_has_influence }
+					}
+				}
+				multiply = 0
+			}
 		}
 		prestige = {
 			add = {
