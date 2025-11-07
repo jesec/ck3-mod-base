@@ -1190,6 +1190,9 @@ laamp_steal_artifact_contract = {
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
 				save_scope_as = task_contract
+				var:task_contract_object = {
+					save_scope_as = task_contract_object
+				}
 				task_contract_taker = {
 					send_interface_toast = {
 						title = laamp_transport_contract.success
@@ -1216,6 +1219,11 @@ laamp_steal_artifact_contract = {
 						TRACK = thief
 						XP_MIN = gallowsbait_xp_medium_gain
 						XP_MAX = gallowsbait_xp_medium_gain
+					}
+				}
+				hidden_effect = {
+					scope:task_contract_object = {
+						set_owner = scope:task_contract.task_contract_employer
 					}
 				}
 			}
@@ -3897,6 +3905,7 @@ laamp_help_faith_conversion_contract = {
 
 	on_create = {
 		scope:contract = {
+			save_scope_as = task_contract
 			task_contract_employer = { save_scope_as = task_contract_employer }
 			if = {
 				limit = {
@@ -4608,7 +4617,7 @@ laamp_help_train_commanders_contract = {
 				}
 			}
 		}
-		success_standard {
+		success_standard = {
 			effect = {
 				save_scope_value_as = { name = extra_reward value = flag:no }
 				save_scope_as = task_contract
@@ -4834,7 +4843,7 @@ laamp_help_find_secrets_contract = {
 	}
 
 	task_contract_reward = {
-		success_standard {
+		success_standard = {
 			effect = {
 				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
 				save_scope_value_as = { name = extra_reward value = flag:no }
@@ -5308,10 +5317,16 @@ laamp_help_increase_control_contract = {
 							name = corrupt_counties
 							target = prev
 						}
-						change_variable = {
-							name = num_of_corrupt_counties
-							add = 1
-						}
+					}
+				}
+			}
+			# We do this a bit later on because otherwise it was having some slight issues if only one county was valid.
+			set_variable = {
+				name = num_of_corrupt_counties
+				value = {
+					every_in_list = {
+						variable = corrupt_counties
+						add = 1
 					}
 				}
 			}
@@ -5421,6 +5436,7 @@ laamp_help_increase_control_contract = {
 		success_critical = {
 			effect = {
 				save_scope_value_as = { name = extra_reward value = flag:no }
+				save_scope_as = task_contract
 				set_variable = {
 					name = gold_success_critical
 					value = {
@@ -5459,6 +5475,7 @@ laamp_help_increase_control_contract = {
 		success_standard = {
 			effect = {
 				save_scope_value_as = { name = extra_reward value = flag:no }
+				save_scope_as = task_contract
 				set_variable = {
 					name = gold_success_critical
 					value = {
@@ -5498,6 +5515,7 @@ laamp_help_increase_control_contract = {
 			positive = no
 			effect = {
 				save_scope_value_as = { name = extra_reward value = flag:no }
+				save_scope_as = task_contract
 				# Standard Penalties.
 				laamp_rewards_disburse_ordinary_currency_effect = {
 					GOLD = 0

@@ -453,7 +453,15 @@ hasan_sabbah.1022 = {
 hasan_sabbah.1030 = {
 	type = character_event
 	title = hasan_sabbah.1030.t
-	desc = hasan_sabbah.1030.desc
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:new_ismaili_caliph }
+				desc = hasan_sabbah.1030.desc_caliph_heir
+			}
+			desc = hasan_sabbah.1030.desc_caliph_no_heir
+		}
+	}
 	theme = realm
 	override_background = { reference = throne_room }
 	left_portrait = {
@@ -570,6 +578,9 @@ hasan_sabbah.1030 = {
 	# Actually, the Ismaili candidate seems like a cool guy
 	option = {
 		name = hasan_sabbah.1030.b
+		trigger = {
+			exists = scope:new_ismaili_caliph
+		}
 		scope:story = {
 			set_variable = {
 				name = preferred_caliph
@@ -579,6 +590,24 @@ hasan_sabbah.1030 = {
 		set_relation_friend = {
 			target = scope:new_ismaili_caliph
 			reason = friend_supported_my_claim
+		}
+		if = {
+			limit = { NOT = { faith = faith:ismaili } }
+			set_character_faith = faith:ismaili
+		}
+		stress_impact = {
+			ambitious = medium_stress_impact_gain
+		}
+		ai_chance = {
+			base = 0
+		}
+	}
+
+	# Actually, the Ismaili are right, but have no heir
+	option = {
+		name = hasan_sabbah.1030.c
+		trigger = {
+			NOT = { exists = scope:new_ismaili_caliph }
 		}
 		if = {
 			limit = { NOT = { faith = faith:ismaili } }

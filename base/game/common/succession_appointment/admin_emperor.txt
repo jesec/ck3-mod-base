@@ -714,12 +714,16 @@
 					desc = imperial_guardian_desc
 				}
 			}
-
-			# All get to use their Family Rating
-			add = {
-				value = house.house_power_score
-				multiply = 0.5
-				desc = "[powerful_family_rating|E]"
+			if = {
+				limit = {
+					exists = house
+				}
+				# All get to use their Family Rating
+				add = {
+					value = house.house_power_score
+					multiply = 0.5
+					desc = "[powerful_family_rating|E]"
+				}
 			}
 
 			#CO-EMPEROR OF EMPEROR
@@ -817,6 +821,20 @@
 				add = {
 					value = promote_acclamation_score_value # Keep this balanced if more values are added!
 					desc = scheme_promoted_modifier
+				}
+			}
+			
+			# Renounced imperial aspriations (from decision)
+			if = {
+				limit = {
+					OR = {
+						has_character_modifier = ep3_admin_renounce_throne_personal
+						house ?= { has_house_modifier = ep3_admin_renounce_throne_house }
+					}
+				}
+				add = {
+					value = -1000
+					desc = admin_renounced_throne
 				}
 			}
 

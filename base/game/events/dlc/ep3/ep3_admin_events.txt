@@ -1,5 +1,6 @@
 ﻿namespace = ep3_admin_events
 
+# Event to notify you that your liege has changed government and is no longer admin
 ep3_admin_events.0001 = {
 	type = character_event
 	title = ep3_admin_events.0001.t
@@ -43,10 +44,6 @@ ep3_admin_events.0001 = {
 	
 	trigger = {
 		is_landed = yes
-	}
-	
-	on_trigger_fail = {
-		trigger_event = ep3_admin_events.0003
 	}
 
 	immediate = {
@@ -106,33 +103,8 @@ ep3_admin_events.0001 = {
 		scope:scribe = {
 			assign_quirk_effect = yes
 		}
-		if = {
-			limit = { exists = scope:tribal_gov }
-			change_government = tribal_government
-		}
-		else_if = {
-			limit = { exists = scope:feudal_gov }
-			change_government = feudal_government
-		}
-		else_if = {
-			limit = { exists = scope:clan_gov }
-			change_government = clan_government
-		}
 		
-		if = { # Destroy your family title if you have one
-			limit = {
-				any_held_title = {
-					is_noble_family_title = yes
-				}
-			}
-			every_held_title = {
-				limit = {
-					is_noble_family_title = yes
-				}
-				save_temporary_scope_as = family_title
-				prev = { destroy_title = scope:family_title }
-			}
-		}
+		admin_change_government_effect = yes
 	}
 
 	option = { # I love change
@@ -331,23 +303,96 @@ ep3_admin_events.0002 = {
 	}
 }
 
-# Event to make admin into adventurers
+# Your admin liege changed government, and you have to do so as well
 ep3_admin_events.0003 = {
 	hidden = yes
 
 	trigger = {
-		government_has_flag = government_is_administrative
-		is_landed = no
-		OR = {
-			liege = root
-			liege = {
-				NOT = { government_allows = administrative }
-			}
-		}
+		government_allows = administrative
 	}
 
 	immediate = {
-		if = {
+		# Let's evaluate and see which event you should get
+		if = { # If you are still landed and remain a vassal
+			limit = {
+				is_landed = yes
+				liege != root
+			}
+			trigger_event = ep3_admin_events.0001
+		}
+		else_if = { # You are still landed and become independent
+			limit = {
+				is_landed = yes
+				liege = root
+			}
+			trigger_event = ep3_admin_events.0005
+		}
+		else_if = { # You became unlanded - Let's go on an adventure!
+			limit = { # Assuming you are a player
+				is_landed = no
+			}
+			trigger_event = ep3_admin_events.0004
+		}
+	}
+}
+
+# Event to make admin into adventurers
+ep3_admin_events.0004 = {
+	type = character_event
+	title = ep3_admin_events.0004.t
+	desc = {
+		desc = ep3_admin_events.0004.desc
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:reacting_spouse
+					scope:reacting_spouse = {
+						OR = {
+							has_trait = gluttonous
+							has_trait = greedy
+						}
+					}
+				}
+				desc = ep3_admin_events.0004.desc_spouse_very_upset
+			}
+			triggered_desc = {
+				trigger = { exists = scope:reacting_spouse }
+				desc = ep3_admin_events.0004.desc_spouse_upset
+			}
+		}
+	}
+	theme = landless_adventurer
+	override_background = { reference = ep3_mediterranean_estate }
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				OR = {
+					has_trait = eccentric
+					has_trait = brave
+				}
+			}
+			#animation = delirium
+			animation = disappointed
+		}
+		animation = disbelief
+	}
+	right_portrait = {
+		character = scope:reacting_spouse
+		triggered_animation = {
+			trigger = {
+				OR = {
+					has_trait = gluttonous
+					has_trait = greedy
+				}
+			}
+			animation = crying
+		}
+		animation = worry
+	}
+
+	immediate = {
+		if = { # Destroy your noble family title if you have one
 			limit = {
 				any_held_title = {
 					is_noble_family_title = yes
@@ -361,10 +406,10 @@ ep3_admin_events.0003 = {
 				prev = { destroy_title = scope:family_title }
 			}
 		}
-		if = {
+		if = { # Become an adventurer
 			limit = { is_ai = no }
 			create_landless_adventurer_title_effect = {
-				REASON = flag:exile
+				REASON = flag:runaway_allowed
 				FLAVOR_CHAR = root
 			}
 			hidden_effect = {
@@ -373,5 +418,144 @@ ep3_admin_events.0003 = {
 				}
 			}
 		}
+		if = { # If you are married, let's save your spouse as a scope for some added flavor
+			limit = {
+				is_married = yes
+				any_spouse = {
+					employer = root
+				}
+			}
+			random_spouse = {
+				limit = { employer = root }
+				save_scope_as = reacting_spouse
+			}
+		}
+	}
+	
+	option = {
+		name = {
+			trigger = {
+				exists = scope:reacting_spouse
+				scope:reacting_spouse = {
+					OR = {
+						has_trait = gluttonous
+						has_trait = greedy
+					}
+				}
+			}
+			text = ep3_admin_events.0004.a
+		}
+		name = {
+			trigger = {
+				exists = scope:reacting_spouse
+				scope:reacting_spouse = {
+					NOR = {
+						has_trait = gluttonous
+						has_trait = greedy
+					}
+				}
+			}
+			text = ep3_admin_events.0004.b
+		}
+		name = {
+			trigger = {
+				NOT = { exists = scope:reacting_spouse }
+			}
+			text = ep3_admin_events.0004.c
+		}
+	}
+}
+
+# Notification event that you became independent
+ep3_admin_events.0005 = {
+	type = character_event
+	title = ep3_admin_events.0005.t
+	desc = {
+		desc = ep3_admin_events.0005.intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:still_admin }
+				desc = ep3_admin_events.0005.desc_still_admin
+			}
+			desc = ep3_admin_events.0005.desc_lost_admin
+		}
+	}
+	theme = administrative
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				OR = {
+					has_trait = fickle
+					has_trait = lazy
+					has_trait = paranoid
+				}
+			}
+			animation = stress
+		}
+		animation = interested
+	}
+	right_portrait = {
+		character = scope:messenger
+		animation = chancellor
+	}
+	lower_right_portrait = scope:gov_liege
+
+	immediate = {
+		# Let's find a character to bring us these news
+		if = {
+			limit = {
+				exists = cp:councillor_chancellor
+				cp:councillor_chancellor = { is_available_healthy_ai_adult = yes }
+			}
+			cp:councillor_chancellor = { save_scope_as = messenger }
+		}
+		else_if = {
+			limit = {
+				any_courtier = { is_available_healthy_ai_adult = yes }
+			}
+			ordered_courtier = {
+				limit = {
+					is_available_healthy_ai_adult = yes
+				}
+				order_by = diplomacy
+				save_scope_as = messenger
+			}
+		}
+		else = {
+			create_character = {
+				location = root.capital_province
+				template = diplomacy_foreign_affairs_focus_friend_template
+				faith = root.capital_county.faith
+				culture = root.capital_county.culture
+				save_scope_as = messenger
+			}
+		}
+		
+		# Show this to make it clear to the player that you became independent
+		show_as_tooltip = {
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			becomes_independent = { change = scope:change }
+			resolve_title_and_vassal_change = scope:change
+		}
+		if = { # You are allowed to keep admin as your government
+			limit = {
+				highest_held_title_tier >= tier_kingdom
+				culture ?= { has_cultural_parameter = can_adopt_administrative_government_as_kingdom_tier }
+			}
+			save_scope_as = still_admin
+		}
+		else = { # You change your government
+			admin_change_government_effect = yes
+		}
+	}
+	
+	option = {
+		name = ep3_admin_events.0005.a
+		# We handle everything in the immediate
 	}
 }

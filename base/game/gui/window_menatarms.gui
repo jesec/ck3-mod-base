@@ -314,8 +314,14 @@ window = {
 					layoutpolicy_horizontal = expanding
 
 					text_single = {
-						visible = "[Not(Regiment.IsAtFullStength)]"
+						visible = "[And( Not(Regiment.IsAtFullStength), Not( GetPlayer.GetGovernment.HasRule( 'conditional_maa_refill' )))]"
 						text = "MAA_REINFORCING"
+						align = left
+					}
+
+					text_single = {
+						visible = "[GetPlayer.GetGovernment.HasRule( 'conditional_maa_refill' )]"
+						text = "CONDITIONAL_MAINTENANCE_INFO"
 						align = left
 					}
 
@@ -341,7 +347,7 @@ window = {
 				hbox = {
 					spacing = 10
 					layoutpolicy_horizontal = expanding
-
+					visible = "[Not( GetPlayer.GetGovernment.HasRule( 'conditional_maa_refill' ))]"
 					divider_light = {
 						layoutpolicy_vertical = expanding
 					}

@@ -404,10 +404,10 @@ on_game_start = {
 
 		### UNIVERSITIES ###
 		title:b_fes.title_province = { add_special_building_slot = generic_university }
-		title:b_bologna.title_province = { add_special_building_slot = generic_university }
+		#title:b_bologna.title_province = { add_special_building_slot = generic_university } # Added in province history
 		title:b_salamanca.title_province = { add_special_building_slot = generic_university }
 		title:b_madrid.title_province = { add_special_building_slot = generic_university }
-		title:b_oxford.title_province = { add_special_building_slot = generic_university }
+		#title:b_oxford.title_province = { add_special_building_slot = generic_university } # Added in province history
 		title:b_cambridge.title_province = { add_special_building_slot = generic_university }
 		title:b_padua.title_province = { add_special_building_slot = generic_university }
 		title:b_coimbra.title_province = { add_special_building_slot = generic_university }
@@ -3364,90 +3364,23 @@ on_game_start_after_lobby = {
 			every_domicile = {
 				if = {
 					limit = {
-						owner ?= { is_alive = yes }
 						is_domicile_type = estate
 					}
-					add_domicile_building = estate_main_02
-					random_list = {
-						10 = {
-							add_domicile_building = temple_small_01
+					if = {
+						limit = {
+							NOT = { has_domicile_building_or_higher = estate_main_02 }
+							owner.culture ?= { has_innovation = innovation_city_planning }
 						}
-						10 = {
-							add_domicile_building = barracks_01
-						}
-						10 = {
-							add_domicile_building = watchtower_01
-						}
-						10 = {
-							add_domicile_building = vineyard_01
-						}
-						10 = {
-							add_domicile_building = guardhouse_01
-						}
-						10 = {
-							add_domicile_building = garden_01
-						}
+						add_domicile_building = estate_main_02
+						add_random_internal_estate_building = yes
 					}
-					random_list = {
-						10 = {
-							add_domicile_building = storage_01
-						}
-						10 = {
-							add_domicile_building = grain_field_01
-						}
-						10 = {
-							add_domicile_building = stable_01
-						}
-						10 = {
-							add_domicile_building = workshop_01
-						}
-						10 = {
-							add_domicile_building = market_01
-						}
-						10 = {
-							add_domicile_building = grazing_land_01
-						}
-						10 = {
-							add_domicile_building = olive_01
-						}
-					}
-					random_list = {
-						10 = {
-							add_domicile_building = living_quarters_01
-						}
-						10 = {
-							add_domicile_building = trophy_room_01
-						}
-						10 = {
-							add_domicile_building = office_01
-						}
-						10 = {
-							add_domicile_building = courtyard_01
-						}
-						10 = {
-							add_domicile_building = prison_01
-						}
-						10 = {
-							add_domicile_building = servants_quarters_01
-						}
-						10 = {
-							add_domicile_building = library_01
-						}
-						10 = {
-							add_domicile_building = bath_01
-						}
-						10 = {
-							add_domicile_building = guest_room_01
-						}
-						10 = {
-							add_domicile_building = wine_cellar_01
-						}
-					}
+					
+					fill_external_estate_building_effect = yes
 				}
 			}
 		}
 		# 1178 Buildings
-		if = {
+		else_if = {
 			limit = {
 				game_start_date >= 1178.10.1
 			}
@@ -3638,112 +3571,28 @@ on_game_start_after_lobby = {
 					limit = {
 						is_domicile_type = estate
 					}
-					add_domicile_building = estate_main_02
-					add_domicile_building = estate_main_03
-					random_list = {
-						10 = {
-							add_domicile_building = temple_small_01
-							add_domicile_building = temple_small_02
+					if = {
+						limit = {
+							NOT = { has_domicile_building_or_higher = estate_main_02 }
+							owner.culture ?= { has_innovation = innovation_city_planning }
 						}
-						10 = {
-							add_domicile_building = barracks_01
-							add_domicile_building = barracks_02
+						add_domicile_building = estate_main_02
+						add_random_internal_estate_building = yes
+					}
+					if = {
+						limit = {
+							has_domicile_building = estate_main_02
+							NOT = { has_domicile_building_or_higher = estate_main_03 }
+							owner.culture ?= { has_innovation = innovation_manorialism }
 						}
-						10 = {
-							add_domicile_building = watchtower_01
-							add_domicile_building = watchtower_02
-						}
-						10 = {
-							add_domicile_building = vineyard_01
-							add_domicile_building = vineyard_02
+						add_domicile_building = estate_main_03
+						while = {
+							count = 2
+							add_random_internal_estate_building = yes
 						}
 					}
-					random_list = {
-						10 = {
-							add_domicile_building = guardhouse_01
-							add_domicile_building = guardhouse_02
-						}
-						10 = {
-							add_domicile_building = garden_01
-							add_domicile_building = garden_02
-						}
-						10 = {
-							add_domicile_building = storage_01
-							add_domicile_building = storage_02
-						}
-						10 = {
-							add_domicile_building = grain_field_01
-							add_domicile_building = grain_field_02
-						}
-					}
-					random_list = {
-						10 = {
-							add_domicile_building = stable_01
-							add_domicile_building = stable_02
-						}
-						10 = {
-							add_domicile_building = workshop_01
-							add_domicile_building = workshop_02
-						}
-						10 = {
-							add_domicile_building = market_01
-							add_domicile_building = market_02
-						}
-						10 = {
-							add_domicile_building = grazing_land_01
-							add_domicile_building = grazing_land_02
-						}
-						10 = {
-							add_domicile_building = olive_01
-							add_domicile_building = olive_02
-						}
-					}
-					random_list = {
-						10 = {
-							add_domicile_building = living_quarters_01
-							add_domicile_building = living_quarters_02
-						}
-						10 = {
-							add_domicile_building = trophy_room_01
-							add_domicile_building = trophy_room_02
-						}
-						10 = {
-							add_domicile_building = office_01
-							add_domicile_building = office_02
-						}
-					}
-					random_list = {
-						10 = {
-							add_domicile_building = servants_quarters_01
-							add_domicile_building = servants_quarters_02
-						}
-						10 = {
-							add_domicile_building = library_01
-							add_domicile_building = library_02
-						}
-						10 = {
-							add_domicile_building = bath_01
-							add_domicile_building = bath_02
-						}
-					}
-					random_list = {
-						10 = {
-							add_domicile_building = guest_room_01
-							add_domicile_building = guest_room_02
-						}
-						10 = {
-							add_domicile_building = wine_cellar_01
-							add_domicile_building = wine_cellar_02
-						}
-						10 = {
-							add_domicile_building = courtyard_01
-							add_domicile_building = courtyard_02
-						}
-						10 = {
-							add_domicile_building = prison_01
-							add_domicile_building = prison_02
-						}
-					}
+					
+					fill_external_estate_building_effect = yes
 				}
 			}
 		}
@@ -3824,3 +3673,4 @@ on_game_start_after_lobby = {
 #				desc = $DESC$
 #			}
 #		}
+

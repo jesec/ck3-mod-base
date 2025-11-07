@@ -6,35 +6,39 @@ vbox = {
 	layoutpolicy_vertical = expanding
 	ignoreinvisible = yes
 
-	margin_top = 10
-	spacing = 10
+	text_multi = {
+		name = "description"
+		minimumsize = { 515 -1 }
+		maximumsize = { 515 -1 }
+		margin = { 15 15 }
+		autoresize = yes
+		text = "[DecisionDetailView.GetDescription]"
+		using = Font_Size_Small
+	}
 
 	text_label_center = {
 		text = "SELECT_VALID_OPTION"
 	}
 
-	hbox = {
+	scrollbox = {
 		layoutpolicy_horizontal = expanding
 		layoutpolicy_vertical = expanding
 
-		scrollbox = {
-			layoutpolicy_horizontal = expanding
-			layoutpolicy_vertical = expanding
+		blockoverride "scrollbox_content" {
+			vbox = {
+				margin_top = 10
+				datamodel = "[DecisionViewWidgetOptionList.GetEntries]"
+				spacing = 6
 
-			blockoverride "scrollbox_content" {
-				vbox = {
-					datamodel = "[DecisionViewWidgetOptionList.GetEntries]"
-					spacing = 6
-
-					item = {
-						DecisionOptionItem = {}
-					}
+				item = {
+					DecisionOptionItem = {}
 				}
 			}
-
-			blockoverride "scrollbox_background_fade" {}
 		}
+
+		blockoverride "scrollbox_background_fade" {}
 	}
+	
 }
 
 types DecisionOptionTypes

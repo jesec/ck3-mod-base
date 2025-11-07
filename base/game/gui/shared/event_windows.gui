@@ -449,6 +449,13 @@ types Events
 								tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_HAVE_MASTER_THIEF"
 							}
 							icon = {
+								name = "have_head_porter_icon"
+								visible = "[ReasonItem.IsFlag( 'have_head_porter' )]"
+								size = { 34 34 }
+								texture = "gfx/interface/icons/court_position_types/head_porter_camp_officer.dds"
+								tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_HAVE_HEAD_PORTER"
+							}
+							icon = {
 								name = "have_head_groom_icon"
 								visible = "[ReasonItem.IsFlag( 'have_head_groom' )]"
 								size = { 34 34 }
@@ -461,6 +468,20 @@ types Events
 								size = { 34 34 }
 								texture = "gfx/interface/icons/court_position_types/huntperson_camp_officer.dds"
 								tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_HAVE_HUNTPERSON"
+							}
+							icon = {
+								name = "have_kennelperson_icon"
+								visible = "[ReasonItem.IsFlag( 'have_kennelperson' )]"
+								size = { 34 34 }
+								texture = "gfx/interface/icons/court_position_types/kennelperson_camp_officer.dds"
+								tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_HAVE_KENNELPERSON"
+							}
+							icon = {
+								name = "have_chief_engineer_icon"
+								visible = "[ReasonItem.IsFlag( 'have_chief_engineer' )]"
+								size = { 34 34 }
+								texture = "gfx/interface/icons/court_position_types/chief_engineer_camp_officer.dds"
+								tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_HAVE_CHIEF_ENGINEER"
 							}
 							icon = {
 								name = "have_witness_icon"
@@ -819,7 +840,7 @@ types Events
 								tooltip = "EVENT_WINDOW_OPTION_AVAILABLE_VISIT_SETTLEMENT_CITY_HOLDING_JEWELER"
 							}
 							#Quartermaster already covered by "have_quartermaster_icon"
-							
+
 							icon = {
 								name = "estate_building_wine_cellar_icon"
 								visible = "[ReasonItem.IsFlag( 'estate_building_wine_cellar' )]"
@@ -1099,27 +1120,31 @@ types Events
 			}
 		}
 
-		icon = {
+		widget = {
 			name = "event_picture"
 			visible = "[Not( Or( EventWindowBackgroundData.HasVideo, EventWindowBackgroundData.HasVideoMask) )]"
-			texture = "[EventWindowBackgroundData.GetTexture]"
 			size = { 100% 100% }
+			
+			background = {
+				texture = "[EventWindowBackgroundData.GetTexture]"
+				fittype = centercrop
 
-			block "event_mask" {
-				modify_texture = {
-					name = mask
-					texture = "gfx/interface/window_event/mask_event_image_large.dds"
-					blend_mode = alphamultiply
+				block "event_mask" {
+					modify_texture = {
+						name = mask
+						texture = "gfx/interface/window_event/mask_event_image_large.dds"
+						blend_mode = alphamultiply
 
-					block "event_mask_properties"
-					{
-						loop = no
+						block "event_mask_properties"
+						{
+							loop = no
+						}
 					}
 				}
-			}
 
-			block "event_picture_properties"
-			{
+				block "event_picture_properties"
+				{
+				}
 			}
 		}
 

@@ -26,9 +26,8 @@
 		}
 
 		vbox = {
-			block "contestants_attributes" {}
-			spacing = 1
 			layoutpolicy_horizontal = expanding
+			block "contestants_attributes" {}
 
 			item = {
 				button_tertiary = {
@@ -53,7 +52,7 @@
 								align = nobaseline
 								default_format = "#high"
 								using = Font_Size_Small
-								
+
 								text = "[Character.MakeScope.Var('current_place_in_race').GetValue|0]"
 							}
 
@@ -61,16 +60,17 @@
 								name = "character_name"
 								layoutpolicy_horizontal = expanding
 								alwaystransparent = yes
-								
+
 								using = Font_Size_Small
 								default_format = "#high"
 								fontsize_min = 10
 								align = nobaseline
-								
+
 								text = "[Character.GetTitledFirstNameNoTooltip]"
-								
+
 								tooltip = "[Character.GetUINameNotMeNoTooltip]"
 								using = tooltip_se
+
 								tooltipwidget = {
 									cooltip_type = {}
 								}
@@ -89,6 +89,7 @@
 									tooltip = chariot_wager_tooltip
 									using = tooltip_se
 								}
+
 								icon = {
 									visible = "[Character.IsEmployedInPositionBy( GetPlayer, GetCourtPositionType( 'charioteer_court_position' ) )]"
 									size = { 20 20 }
@@ -108,6 +109,7 @@
 									raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
 									using = tooltip_se
 								}
+
 								icon = {
 									visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_green') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'greens' ) ) )]"
 									size = { 20 20 }
@@ -116,6 +118,7 @@
 									raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
 									using = tooltip_se
 								}
+
 								icon = {
 									visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_white') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'whites' ) ) )]"
 									size = { 20 20 }
@@ -124,6 +127,7 @@
 									raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
 									using = tooltip_se
 								}
+
 								icon = {
 									visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_red') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'reds' ) ) )]"
 									size = { 20 20 }
@@ -168,6 +172,7 @@
 								alpha = 0.5
 							}
 						}
+
 						background = {
 							visible = "[Character.HasTrait( GetTrait( 'charioteer_green' ) )]"
 							tintcolor = { 0.8 0.9 0.5 0.6 }
@@ -180,6 +185,7 @@
 								alpha = 0.5
 							}
 						}
+
 						background = {
 							visible = "[Character.HasTrait( GetTrait( 'charioteer_white' ) )]"
 							tintcolor = { 0.6 0.6 0.6 0.7 }
@@ -192,6 +198,7 @@
 								alpha = 0.5
 							}
 						}
+
 						background = {
 							visible = "[Character.HasTrait( GetTrait( 'charioteer_red' ) )]"
 							tintcolor = { 0.9 0.7 0.8 0.6 }
@@ -204,6 +211,7 @@
 								alpha = 0.5
 							}
 						}
+
 						expand = {}
 					}
 				}
@@ -211,9 +219,10 @@
 		}
 
 		vbox = {
-			block "dead_contestants" {}
 			layoutpolicy_horizontal = expanding
 			spacing = 1
+
+			block "dead_contestants" {}
 
 			item = {
 				button_tertiary = {
@@ -243,16 +252,17 @@
 
 								using = Font_Size_Small
 								align = nobaseline
-								
+
 								tooltip = "[Character.GetUINameNotMeNoTooltip]"
 								using = tooltip_se
+
 								tooltipwidget = {
 									cooltip_type = {}
 								}
 							}
 
 							hbox = {
-								alwaystransparent = yes 
+								alwaystransparent = yes
 								margin_right = 10
 
 								icon = {
@@ -263,6 +273,7 @@
 									tooltip = chariot_wager_tooltip
 									using = tooltip_se
 								}
+
 								icon = {
 									visible = "[Character.IsEmployedInPositionBy( GetPlayer, GetCourtPositionType( 'charioteer_court_position' ) )]"
 									size = { 20 20 }
@@ -291,6 +302,7 @@
 									raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
 									using = tooltip_se
 								}
+
 								# GREENS
 								icon = {
 									visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_green') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'greens' ) ) )]"
@@ -300,6 +312,7 @@
 									raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
 									using = tooltip_se
 								}
+
 								# WHITES
 								icon = {
 									visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_white') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'whites' ) ) )]"
@@ -309,6 +322,7 @@
 									raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
 									using = tooltip_se
 								}
+
 								# REDS
 								icon = {
 									visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_red') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'reds' ) ) )]"
@@ -347,42 +361,49 @@
 							texture = "gfx/interface/colors/blue.dds"
 
 							using = Mask_Rough_Edges
+
 							modify_texture = {
 								texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
 								blend_mode = alphaMultiply
 								alpha = 0.5
 							}
 						}
+
 						background = {
 							visible = "[Character.HasTrait( GetTrait( 'charioteer_green' ) )]"
 							tintcolor = { 0.8 0.9 0.5 0.6 }
 							texture = "gfx/interface/colors/green.dds"
 
 							using = Mask_Rough_Edges
+
 							modify_texture = {
 								texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
 								blend_mode = alphaMultiply
 								alpha = 0.5
 							}
 						}
+
 						background = {
 							visible = "[Character.HasTrait( GetTrait( 'charioteer_white' ) )]"
 							tintcolor = { 0.6 0.6 0.6 0.7 }
 							texture = "gfx/interface/colors/white.dds"
 
 							using = Mask_Rough_Edges
+
 							modify_texture = {
 								texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
 								blend_mode = alphaMultiply
 								alpha = 0.5
 							}
 						}
+
 						background = {
 							visible = "[Character.HasTrait( GetTrait( 'charioteer_red' ) )]"
 							tintcolor = { 0.9 0.7 0.8 0.6 }
 							texture = "gfx/interface/colors/red.dds"
 
 							using = Mask_Rough_Edges
+
 							modify_texture = {
 								texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
 								blend_mode = alphaMultiply
@@ -400,245 +421,265 @@
 	}
 
 
-	type widget_charioteer_item = hbox {
+	type widget_charioteer_item = vbox {
 		layoutpolicy_horizontal = expanding
-		margin = { 5 5 }
 
-		vbox = {
+		spacing = 5
+
+		background = {
+			using = Background_Area_Dark
+			alpha = 0.5
+		}
+
+		# NAME AND PLACE
+		hbox = {
 			layoutpolicy_horizontal = expanding
-			# NAME AND PLACE
+			margin = { 0 5 }
+
 			hbox = {
 				layoutpolicy_horizontal = expanding
 
-				hbox = {
+				# PLACE
+				text_single = {
+					name = "place"
+					margin_left = 10
+					using = Font_Size_Medium
+					default_format = "#high"
+					align = nobaseline
+					visible = "[And( Or( EqualTo_string( ActivityPhase.GetKey, 'chariot_race_phase' ), EqualTo_string( ActivityPhase.GetKey, 'chariot_race_phase_ceremony' ) ), Not( Activity.IsComplete ) )]"
+					raw_text = "[Character.MakeScope.Var('current_place_in_race').GetValue|0)]"
+				}
+
+				# NAME
+				text_single = {
+					name = "name"
 					layoutpolicy_horizontal = expanding
-					# PLACE
-					text_single = {
-						name = "place"
-						margin_left = 10
-						using = Font_Size_Medium
-						default_format = "#high"
-						align = nobaseline
-						visible = "[And( Or( EqualTo_string( ActivityPhase.GetKey, 'chariot_race_phase' ), EqualTo_string( ActivityPhase.GetKey, 'chariot_race_phase_ceremony' ) ), Not( Activity.IsComplete ) )]"
-						raw_text = "[Character.MakeScope.Var('current_place_in_race').GetValue|0)]"
+					text = "[Character.GetTitledFirstNameNoTooltip]"
+					using = Font_Size_Medium
+					fontsize_min = 8
+					default_format = "#high"
+					autoresize = yes
+					align = nobaseline
+					margin_left = 10
+				}
+
+				hbox = {
+					margin_right = 15
+
+					icon = {
+						visible = "[ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, Character.Self )]"
+						size = { 20 20 }
+						texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
+
+						tooltip = chariot_wager_tooltip
+						using = tooltip_se
 					}
 
-					# NAME
-					text_single = {
-						name = "name"
-						layoutpolicy_horizontal = expanding
-						text = "[Character.GetTitledFirstNameNoTooltip]"
-						using = Font_Size_Medium
-						fontsize_min = 8
-						default_format = "#high"
-						autoresize = yes
-						align = nobaseline
-						margin_left = 10
+					icon = {
+						visible = "[Character.IsEmployedInPositionBy( GetPlayer, GetCourtPositionType( 'charioteer_court_position' ) )]"
+						size = { 20 20 }
+						texture = "gfx/interface/icons/court_position_types/charioteer_court_position.dds"
+
+						tooltip = YOUR_CHARIOTEER_TOOLTIP
+						using = tooltip_se
 					}
 
-					hbox = {
-						margin_right = 15
+					# Icons only visible when the player has placed a wager on a TEAM and NOT a specific CHARACTER
+					icon = {
+						visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_blue') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'blues' ) ) )]"
+						size = { 25 25 }
+						texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
 
-						icon = {
-							visible = "[ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, Character.Self )]"
-							size = { 20 20 }
-							texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
-
-							tooltip = chariot_wager_tooltip
-							using = tooltip_se
-						}
-						icon = {
-							visible = "[Character.IsEmployedInPositionBy( GetPlayer, GetCourtPositionType( 'charioteer_court_position' ) )]"
-							size = { 20 20 }
-							texture = "gfx/interface/icons/court_position_types/charioteer_court_position.dds"
-
-							tooltip = YOUR_CHARIOTEER_TOOLTIP
-							using = tooltip_se
-						}
-
-						# Icons only visible when the player has placed a wager on a TEAM and NOT a specific CHARACTER
-						icon = {
-							visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_blue') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'blues' ) ) )]"
-							size = { 25 25 }
-							texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
-
-							raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
-							using = tooltip_se
-						}
-						icon = {
-							visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_green') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'greens' ) ) )]"
-							size = { 25 25 }
-							texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
-
-							raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
-							using = tooltip_se
-						}
-						icon = {
-							visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_white') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'whites' ) ) )]"
-							size = { 25 25 }
-							texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
-
-							raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
-							using = tooltip_se
-						}
-						icon = {
-							visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_red') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'reds' ) ) )]"
-							size = { 25 25 }
-							texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
-
-							raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
-							using = tooltip_se
-						}
+						raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
+						using = tooltip_se
 					}
 
-					background = {
-						using = Mask_Rough_Edges
-						alpha = 0.8
-						margin = { 2 2 }
+					icon = {
+						visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_green') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'greens' ) ) )]"
+						size = { 25 25 }
+						texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
 
-						texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
-						spriteType = Corneredtiled
-						spriteborder = { 40 8 }
-						texture_density = 2
+						raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
+						using = tooltip_se
+					}
 
-						modify_texture = {
-							name = "mask"
-							texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
-							spriteType = Corneredstretched
-							spriteborder = { 0 0 }
-							blend_mode = alphamultiply
-							mirror = horizontal
-						}
+					icon = {
+						visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_white') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'whites' ) ) )]"
+						size = { 25 25 }
+						texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
+
+						raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
+						using = tooltip_se
+					}
+
+					icon = {
+						visible = "[And( ObjectsEqual( GetPlayer.MakeScope.Var('wager_target').Char, GetPlayer.Self ), And( Character.HasTrait( GetTrait('charioteer_red') ), ObjectsEqual( GetPlayer.MakeScope.Var('wager_team').GetFlagName, 'reds' ) ) )]"
+						size = { 25 25 }
+						texture = "gfx/interface/icons/court_position_types/bookmaker_court_position.dds"
+
+						raw_tooltip = "[GetPlayer.Custom('BuildChariotRaceWagerTooltip')]"
+						using = tooltip_se
 					}
 				}
 
 				background = {
-					visible = "[Character.HasTrait( GetTrait( 'charioteer_blue' ) )]"
-					tintcolor = { 0.7 0.8 1 0.8 }
-					texture = "gfx/interface/colors/blue.dds"
-
 					using = Mask_Rough_Edges
-					modify_texture = {
-						texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
-						blend_mode = alphaMultiply
-						alpha = 0.5
-					}
-					margin = { 0 2 }
-				}
-				background = {
-					visible = "[Character.HasTrait( GetTrait( 'charioteer_green' ) )]"
-					tintcolor = { 0.8 0.9 0.5 0.6 }
-					texture = "gfx/interface/colors/green.dds"
+					alpha = 0.8
+					margin = { 2 5 }
 
-					using = Mask_Rough_Edges
-					modify_texture = {
-						texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
-						blend_mode = alphaMultiply
-						alpha = 0.5
-					}
-					margin = { 0 2 }
-				}
-				background = {
-					visible = "[Character.HasTrait( GetTrait( 'charioteer_white' ) )]"
-					tintcolor = { 0.6 0.6 0.6 0.7 }
-					texture = "gfx/interface/colors/white.dds"
+					texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+					spriteType = Corneredtiled
+					spriteborder = { 40 8 }
+					texture_density = 2
 
-					using = Mask_Rough_Edges
 					modify_texture = {
-						texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
-						blend_mode = alphaMultiply
-						alpha = 0.5
+						name = "mask"
+						texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+						spriteType = Corneredstretched
+						spriteborder = { 0 0 }
+						blend_mode = alphamultiply
+						mirror = horizontal
 					}
-					margin = { 0 2 }
-				}
-				background = {
-					visible = "[Character.HasTrait( GetTrait( 'charioteer_red' ) )]"
-					tintcolor = { 0.9 0.7 0.8 0.6 }
-					texture = "gfx/interface/colors/red.dds"
-
-					using = Mask_Rough_Edges
-					modify_texture = {
-						texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
-						blend_mode = alphaMultiply
-						alpha = 0.5
-					}
-					margin = { 0 2 }
 				}
 			}
 
-			hbox = {
-				portrait_head_small = {}
+			background = {
+				visible = "[Character.HasTrait( GetTrait( 'charioteer_blue' ) )]"
+				tintcolor = { 0.7 0.8 1 0.8 }
+				texture = "gfx/interface/colors/blue.dds"
 
-				spacer = {
-					size = { 5 5 }
-				}
+				using = Mask_Rough_Edges
 
-				# CHARIOTEER TRAIT
-				icon_trait = {
-					datacontext = "[GetTrait( 'charioteer_blue' )]"
-					visible = "[Character.HasTrait( GetTrait( 'charioteer_blue' ) )]"
-					blockoverride "icon_size"
-					{
-						size = { 50 50 }
-					}
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+					blend_mode = alphaMultiply
+					alpha = 0.5
 				}
-				icon_trait = {
-					datacontext = "[GetTrait( 'charioteer_green' )]"
-					visible = "[Character.HasTrait( GetTrait( 'charioteer_green' ) )]"
-					blockoverride "icon_size"
-					{
-						size = { 50 50 }
-					}
-				}
-				icon_trait = {
-					datacontext = "[GetTrait( 'charioteer_white' )]"
-					visible = "[Character.HasTrait( GetTrait( 'charioteer_white' ) )]"
-					blockoverride "icon_size"
-					{
-						size = { 50 50 }
-					}
-				}
-				icon_trait = {
-					datacontext = "[GetTrait( 'charioteer_red' )]"
-					visible = "[Character.HasTrait( GetTrait( 'charioteer_red' ) )]"
-					blockoverride "icon_size"
-					{
-						size = { 50 50 }
-					}
-				}
+			}
 
-				# APTITUDE
-				vbox = {
-					text_single = {
-						raw_text = "[aptitude|E]:"
-					}
-					
-					text_single = {
-						name = "aptitude"
-						align = nobaseline
-						margin_left = 10
-						text = "[Character.GetCourtPositionAptitude( GetCourtPositionType( 'charioteer_court_position' ) )]"
+			background = {
+				visible = "[Character.HasTrait( GetTrait( 'charioteer_green' ) )]"
+				tintcolor = { 0.8 0.9 0.5 0.6 }
+				texture = "gfx/interface/colors/green.dds"
 
-						tooltip = CHARIOTEER_APTITUDE_GUI_TOOLTIP
-					}
+				margin = { 0 2 }
+
+				using = Mask_Rough_Edges
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+					blend_mode = alphaMultiply
+					alpha = 0.5
 				}
-				
-				spacer = {
-					size = { 7 7 }
+			}
+
+			background = {
+				visible = "[Character.HasTrait( GetTrait( 'charioteer_white' ) )]"
+				tintcolor = { 0.6 0.6 0.6 0.7 }
+				texture = "gfx/interface/colors/white.dds"
+
+				margin = { 0 2 }
+
+				using = Mask_Rough_Edges
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+					blend_mode = alphaMultiply
+					alpha = 0.5
 				}
-				
-				background = {
-					using = Background_Area_Dark
-					margin = { 3 3 }
+			}
+
+			background = {
+				visible = "[Character.HasTrait( GetTrait( 'charioteer_red' ) )]"
+				tintcolor = { 0.9 0.7 0.8 0.6 }
+				texture = "gfx/interface/colors/red.dds"
+
+				margin = { 0 2 }
+
+				using = Mask_Rough_Edges
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+					blend_mode = alphaMultiply
 					alpha = 0.5
 				}
 			}
 		}
 
-		background = {
-			using = Background_Area
-			margin_right = 7
-			margin_left = 5
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			margin_bottom = 5
+
+			portrait_head_small = {}
+
+			expand = {}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				# APTITUDE
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "[aptitude|E]: [Character.GetCourtPositionAptitude( GetCourtPositionType( 'charioteer_court_position' ) )]"
+					align = nobaseline
+					max_width = 160
+					margin_right = 5
+
+					tooltip = CHARIOTEER_APTITUDE_GUI_TOOLTIP
+				}
+
+				expand = {}
+
+				# CHARIOTEER TRAIT
+				hbox = {
+					layoutpolicy_horizontal = expanding
+
+					icon_trait = {
+						datacontext = "[GetTrait( 'charioteer_blue' )]"
+						visible = "[Character.HasTrait( GetTrait( 'charioteer_blue' ) )]"
+
+						blockoverride "icon_size"
+						{
+							size = { 50 50 }
+						}
+					}
+
+					icon_trait = {
+						datacontext = "[GetTrait( 'charioteer_green' )]"
+						visible = "[Character.HasTrait( GetTrait( 'charioteer_green' ) )]"
+
+						blockoverride "icon_size"
+						{
+							size = { 50 50 }
+						}
+					}
+
+					icon_trait = {
+						datacontext = "[GetTrait( 'charioteer_white' )]"
+						visible = "[Character.HasTrait( GetTrait( 'charioteer_white' ) )]"
+
+						blockoverride "icon_size"
+						{
+							size = { 50 50 }
+						}
+					}
+
+					icon_trait = {
+						datacontext = "[GetTrait( 'charioteer_red' )]"
+						visible = "[Character.HasTrait( GetTrait( 'charioteer_red' ) )]"
+
+						blockoverride "icon_size"
+						{
+							size = { 50 50 }
+						}
+					}
+
+					expand = {}
+				}
+
+				expand = {}
+			}
 		}
 	}
 
@@ -667,7 +708,7 @@
 				next = transition_still
 			}
 		}
-		
+
 		blockoverride "event_transition_video_properties"
 		{
 			parentanchor = center

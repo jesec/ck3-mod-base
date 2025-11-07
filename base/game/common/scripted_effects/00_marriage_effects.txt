@@ -79,3 +79,32 @@ marry_spouse_1_dominant = {
 		$SPOUSE_1$ = { marry_matrilineal = $SPOUSE_2$ }
 	}
 }
+
+vassals_dislike_marry_lowborn_effect = {
+	$RULER$ = {
+		if = {
+			limit = {
+				is_lowborn = no
+				$SPOUSE$ = { is_lowborn = yes }
+			}
+			every_vassal_or_below = {
+				limit = { has_vassal_stance = courtly }
+				custom = every_courtly_vassal
+				add_opinion = {
+					modifier = married_lowborn_opinion
+					target = $RULER$
+					opinion = -50
+				}
+			}
+			every_vassal_or_below = {
+				limit = { has_vassal_stance = glory_hound }
+				custom = every_glory_hound_vassal
+				add_opinion = {
+					modifier = married_lowborn_opinion
+					target = $RULER$
+					opinion = -30
+				}
+			}			
+		}
+	}
+}

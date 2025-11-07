@@ -45,6 +45,15 @@
 				text = "[PlayerMessageItem.GetTitle]"
 			}
 
+			blockoverride "extra_buttons"
+			{
+				button_menu = {
+					onclick = "[ToggleGameViewData('message_settings', PlayerMessageItem.GetType)]"
+					tooltip = "MESSAGE_SETTINGS_WINDOW_SHORTCUT_TT"
+					using = tooltip_se
+				}
+			}
+
 			blockoverride "button_close"
 			{
 				onclick = "[MessagePopup.Close]"
@@ -112,7 +121,7 @@
 
 						text_single = {
 							name = "date"
-							text = "[PlayerMessageItem.GetDate.GetStringLong]"
+							text = "[PlayerMessageItem.GetArrivalDate.GetStringLong]"
 							default_format = "#weak"
 							align = nobaseline
 

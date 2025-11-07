@@ -582,6 +582,7 @@
 		vbox = {
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
+			datacontext = "[DomicileWindow.GetDomicile]"
 
 			using = Window_Margins
 
@@ -876,8 +877,8 @@
 						blockoverride "scrollbox_content"
 						{
 							vbox = {
+								margin_bottom = 20
 								layoutpolicy_horizontal = expanding
-								spacing = 2
 
 								datamodel = "[DomicileWindow.GetOverviewBuildings]"
 
@@ -888,12 +889,9 @@
 
 								item = {
 									hbox = {
-										datacontext = "[DomicileOverviewBuildingItem.GetBuilding]"
-										margin_left = "[Select_float( DomicileBuilding.IsInternal, '(float)50.0', '(float)0.0' )]"
-
 										layoutpolicy_horizontal = expanding
 
-										hbox_domicile_building_overview_item = {}
+										vbox_domicile_building_overview_group_foldout = {}
 
 										expand = {}
 									}
@@ -3042,18 +3040,75 @@ types DomicileWindowTypes {
 		}
 	}
 
+	type vbox_domicile_building_overview_group_foldout = vbox {
+		datacontext = "[DomicileOverviewBuildingItem.GetBuilding]"
+		datacontext = "[DomicileBuilding.GetAsset( DomicileWindow.GetDomicile.Self )]"
+		spacing = 4
+
+		layoutpolicy_horizontal = expanding
+
+		oncreate = "[BindFoldOutContext]"
+		oncreate = "[PdxGuiFoldOut.Unfold]"
+
+		button_expandable_toggle_field = {
+			visible = "[Not( IsDataModelEmpty( DomicileOverviewBuildingItem.GetInternalOverviewBuildings ) )]"
+			min_height = 68
+
+			hbox_domicile_building_overview_item = {}
+		}
+		button_expandable_toggle_field = {
+			visible = "[IsDataModelEmpty( DomicileOverviewBuildingItem.GetInternalOverviewBuildings )]"
+			min_height = 68
+
+			hbox_domicile_building_overview_item = {}
+
+			blockoverride "foldout_button" {
+				visible = no
+			}
+		}
+
+		vbox = {
+			visible = "[And( PdxGuiFoldOut.IsUnfolded, Not( IsDataModelEmpty( DomicileOverviewBuildingItem.GetInternalOverviewBuildings ) ) )]"
+
+			layoutpolicy_horizontal = expanding
+
+			fixedgridbox = {
+				name = "internal_building_items"
+
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				addcolumn = 195
+				addrow = 68
+
+				datamodel = "[DomicileOverviewBuildingItem.GetInternalOverviewBuildings]"
+				item = {
+					vbox = {
+						layoutpolicy_horizontal = expanding
+
+						hbox_domicile_building_overview_item = {}
+						expand = {}
+					}
+				}
+			}
+		}
+	}
+
 	type hbox_domicile_building_overview_item = hbox {
 		datacontext = "[DomicileOverviewBuildingItem.GetBuilding]"
 		datacontext = "[DomicileBuilding.GetAsset( DomicileWindow.GetDomicile.Self )]"
+		margin_left = "[Select_float( DomicileBuilding.IsInternal, '(float)90.0', '(float)40.0' )]"
+		margin_right = 20
 		spacing = 5
 
 		layoutpolicy_horizontal = expanding
 
 		background = {
-			using = Background_Area
-
+			visible = "[DomicileBuilding.IsInternal]"
 			margin = { -0 -10 }
-			margin_left = -30
+			margin_left = -88
+
+			using = Background_Area
 
 			modify_texture = {
 				texture = "gfx/interface/component_masks/mask_fade_horizontal_right.dds"

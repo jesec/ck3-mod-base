@@ -4759,21 +4759,14 @@ laamp_base_4001 = {
 	}
 
 	on_create = {
-		random_task_contract = {
-			limit = {
-				has_task_contract_type = laamp_base_4001
-				NOT = { has_variable = task_contract_employer }
-			}
+		scope:contract = {
 			save_scope_as = task_contract
-		}
-		scope:task_contract = {
 			set_variable = {
 				name = task_contract_employer
 				value = scope:task_contract.task_contract_employer
 			}
 			# Make our gold rewards static.
 			grab_gold_fuzz_number_effect = yes
-			save_scope_as = task_contract
 			set_variable = {
 				name = gold_success_qualified
 				value = task_contract_taker.task_contract_success_gold_gain_half_value
@@ -6088,14 +6081,8 @@ laamp_base_4100 = {
 	}
 
 	on_create = {
-		random_task_contract = {
-			limit = {
-				has_task_contract_type = laamp_base_4100
-				NOT = { has_variable = task_contract_target }
-			}
+		scope:contract = {
 			save_scope_as = task_contract
-		}
-		scope:task_contract = {
 			task_contract_employer = {
 				random_courtier = {
 					limit = {
@@ -7081,13 +7068,13 @@ laamp_base_1021 = {
 		save_scope_as = task_contract
 		# Then we start the scheme.
 		task_contract_taker ?= {
-			start_scheme = {
-				type = laamp_base_1021_contract_scheme
-				contract = root
-				target_character = root.task_contract_employer
-			}
+			#start_scheme = {
+			#	type = laamp_base_1021_contract_scheme
+			#	contract = root
+			#	target_character = root.task_contract_employer
+			#}
 			# Make a note of what the scheme even is; we'll need this for the event too.
-			scope:task_contract.scheme = { save_scope_as = scheme }
+			#scope:task_contract.scheme = { save_scope_as = scheme }
 			trigger_event = laamp_base_contract_schemes.1021
 		}
 	}
@@ -7270,13 +7257,13 @@ laamp_base_1031 = {
 		save_scope_as = task_contract
 		# Then we start the scheme.
 		task_contract_taker ?= {
-			start_scheme = {
-				type = laamp_base_1031_contract_scheme
-				contract = root
-				target_character = root.task_contract_employer
-			}
+			#start_scheme = {
+			#	type = laamp_base_1031_contract_scheme
+			#	contract = root
+			#	target_character = root.task_contract_employer
+			#}
 			# Make a note of what the scheme even is; we'll need this for the event too.
-			scope:task_contract.scheme = { save_scope_as = scheme }
+			#scope:task_contract.scheme = { save_scope_as = scheme }
 			trigger_event = laamp_base_contract_schemes.1031
 		}
 	}
@@ -7469,13 +7456,13 @@ laamp_base_5001 = {
 		save_scope_as = task_contract
 		# Then we start the scheme.
 		task_contract_taker ?= {
-			start_scheme = {
-				type = laamp_base_5001_contract_scheme
-				contract = root
-				target_character = root.task_contract_employer
-			}
+			#start_scheme = {
+			#	type = laamp_base_5001_contract_scheme
+			#	contract = root
+			#	target_character = root.task_contract_employer
+			#}
 			# Make a note of what the scheme even is; we'll need this for the event too.
-			scope:task_contract.scheme = { save_scope_as = scheme }
+			#scope:task_contract.scheme = { save_scope_as = scheme }
 			trigger_event = laamp_base_contract_schemes.5001
 		}
 	}
@@ -7651,13 +7638,13 @@ laamp_base_5011 = {
 		save_scope_as = task_contract
 		# Then we start the scheme.
 		task_contract_taker ?= {
-			start_scheme = {
-				type = laamp_base_5011_contract_scheme
-				contract = root
-				target_character = root.task_contract_employer
-			}
+			#start_scheme = {
+			#	type = laamp_base_5011_contract_scheme
+			#	contract = root
+			#	target_character = root.task_contract_employer
+			#}
 			# Make a note of what the scheme even is; we'll need this for the event too.
-			scope:task_contract.scheme = { save_scope_as = scheme }
+			#scope:task_contract.scheme = { save_scope_as = scheme }
 			trigger_event = laamp_base_contract_schemes.5011
 		}
 	}
@@ -7863,13 +7850,13 @@ laamp_base_5021 = {
 		save_scope_as = task_contract
 		# Then we start the scheme.
 		task_contract_taker ?= {
-			start_scheme = {
-				type = laamp_base_5021_contract_scheme
-				contract = root
-				target_character = root.task_contract_employer
-			}
+			#start_scheme = {
+			#	type = laamp_base_5021_contract_scheme
+			#	contract = root
+			#	target_character = root.task_contract_employer
+			#}
 			# Make a note of what the scheme even is; we'll need this for the event too.
-			scope:task_contract.scheme = { save_scope_as = scheme }
+			#scope:task_contract.scheme = { save_scope_as = scheme }
 			trigger_event = laamp_base_contract_schemes.5021
 		}
 	}
@@ -7994,13 +7981,13 @@ laamp_base_5041 = {
 		save_scope_as = task_contract
 		# Then we start the scheme.
 		task_contract_taker ?= {
-			start_scheme = {
-				type = laamp_base_5041_contract_scheme
-				contract = root
-				target_character = root.task_contract_employer
-			}
+			#start_scheme = {
+			#	type = laamp_base_5041_contract_scheme
+			#	contract = root
+			#	target_character = root.task_contract_employer
+			#}
 			# Make a note of what the scheme even is; we'll need this for the event too.
-			scope:task_contract.scheme = { save_scope_as = scheme }
+			#scope:task_contract.scheme = { save_scope_as = scheme }
 			trigger_event = laamp_base_contract_schemes.5041
 		}
 	}

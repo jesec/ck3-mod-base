@@ -3,11 +3,6 @@
 	type vbox_court_positions = vbox {
 		margin_bottom = 15
 
-		state = {
-			name = _show
-			using = Expand_Court_Positions
-		}
-
 		vbox = {
 			layoutpolicy_horizontal = expanding
 			spacing = 10
@@ -45,7 +40,7 @@
 		data_model_view_filter_hbox = {
 			name = "filter_options"
 			margin = { 30 5 }
-			datacontext = "[CourtPositionsWindow.EmptyPositions.AccessBase]"
+			datacontext = "[CourtPositionsWindow.AllPositions.AccessBase]"
 		}
 
 		scrollbox = {
@@ -70,19 +65,8 @@
 
 					using = Animation_Tab_Switch
 
+					using = Create_Resetting_Fold_Out
 					button_expandable_toggle_field = {
-						layoutpolicy_horizontal = expanding
-
-						blockoverride "onclick"
-						{
-							onclick = "[GetVariableSystem.Toggle( 'expand_held_court_positions' )]"
-						}
-
-						blockoverride "button_expand"
-						{
-							frame = "[Select_int32(GetVariableSystem.Exists( 'expand_held_court_positions'), '(int32)2', '(int32)1')]"
-						}
-
 						blockoverride "text"
 						{
 							text = "COURT_POSITIONS_your_positions_in_liege_court"
@@ -92,7 +76,7 @@
 					### Your titles
 					vbox = {
 						name = "your_court_positions"
-						visible = "[GetVariableSystem.Exists( 'expand_held_court_positions' )]"
+						visible = "[PdxGuiFoldOut.IsUnfolded]"
 						layoutpolicy_horizontal = expanding
 
 						using = Animation_Tab_Switch
@@ -108,7 +92,7 @@
 							blockoverride "cps_root"
 							{
 								datamodel = "[CourtPositionsWindow.HeldPositions]"
-								visible = "[Not(IsDataModelEmpty( CourtPositionsWindow.HeldPositions ))]"
+								visible = "[Not( IsDataModelEmpty( CourtPositionsWindow.HeldPositions ) )]"
 								layoutpolicy_horizontal = expanding
 							}
 							blockoverride "cps_item"
@@ -123,23 +107,10 @@
 					name = "your_court_positions"
 					layoutpolicy_horizontal = expanding
 
-					datacontext = "[CourtPositionsWindow.EmployedPositions]"
+					datacontext = "[CourtPositionsWindow.AllPositions]"
 
-					visible = "[DataModelHasItems( EmployedCourtPositionList.GetItems )]"
-
+					using = Create_Resetting_Fold_Out
 					button_expandable_toggle_field = {
-						layoutpolicy_horizontal = expanding
-
-						blockoverride "onclick"
-						{
-							onclick = "[GetVariableSystem.Toggle( 'expand_active_court_positions' )]"
-						}
-
-						blockoverride "button_expand"
-						{
-							frame = "[Select_int32(GetVariableSystem.Exists( 'expand_active_court_positions'), '(int32)2', '(int32)1')]"
-						}
-
 						blockoverride "text"
 						{
 							text = "COURT_POSITIONS_COURT_VIEW_positions_in_your_court"
@@ -149,35 +120,32 @@
 					### Titles in your court
 					vbox = {
 						name = "active_positions_in_your_court"
-						visible = "[GetVariableSystem.Exists( 'expand_active_court_positions' )]"
+						visible = "[PdxGuiFoldOut.IsUnfolded]"
 						layoutpolicy_horizontal = expanding
 
 						using = Animation_Tab_Switch
 
 						text_single = {
-							visible = "[IsDataModelEmpty( EmployedCourtPositionList.GetItems )]"
+							visible = "[Not( CourtPositionsWindow.HasEmployedPositions )]"
 							text = "COURT_POSITIONS_no_positions_in_your_court"
 							default_format = "#weak"
 							margin = { 0 10 }
 						}
 
-						vbox_court_positions_sublist = {
-							blockoverride "cps_root"
-							{
-								visible = "[DataModelHasItems( EmployedCourtPositionList.GetItems )]"
-								datamodel = "[EmployedCourtPositionList.GetItems]"
-								layoutpolicy_horizontal = expanding
-							}
+						vbox = {
+							visible = "[CourtPositionsWindow.HasEmployedPositions]"
+							ignoreinvisible = yes
+							
+							datamodel = "[CourtPositionsWindow.AllPositions.GetItems]"
 
-							blockoverride "cps_item"
-							{
+                            item = {
 								vbox = {
-									datacontext = "[EmployedCourtPositionListItem.GetObject]"
+									visible = "[CourtPositionListItem.GetObject.IsEmployedPosition]"
 
 									widget_hired_court_position_item = {}
 								}
 							}
-						}
+                        }
 					}
 				}
 
@@ -185,62 +153,43 @@
 					name = "your_empty_court_positions"
 					layoutpolicy_horizontal = expanding
 
-					hbox = {
-						layoutpolicy_horizontal = expanding
-
-						button_expandable_toggle_field = {
-							layoutpolicy_horizontal = expanding
-
-							blockoverride "onclick"
-							{
-								onclick = "[GetVariableSystem.Toggle( 'expand_empty_court_positions' )]"
-							}
-
-							blockoverride "button_expand"
-							{
-								frame = "[Select_int32(GetVariableSystem.Exists( 'expand_empty_court_positions'), '(int32)2', '(int32)1')]"
-							}
-
-							blockoverride "text"
-							{
-								text = "COURT_POSITIONS_WINDOW_EMPTY_POSITION_HEADER"
-							}
+					using = Create_Resetting_Fold_Out
+					button_expandable_toggle_field = {
+						blockoverride "text"
+						{
+							text = "COURT_POSITIONS_WINDOW_EMPTY_POSITION_HEADER"
 						}
 					}
 
 					### Empty positions in your court
 					vbox = {
 						name = "empty_positions_in_your_court"
+						visible = "[PdxGuiFoldOut.IsUnfolded]"
 						layoutpolicy_horizontal = expanding
-						visible = "[GetVariableSystem.Exists( 'expand_empty_court_positions' )]"
-
-						datacontext = "[CourtPositionsWindow.EmptyPositions]"
 
 						using = Animation_Tab_Switch
 
 						text_single = {
-							visible = "[IsDataModelEmpty( EmptyCourtPositionList.GetItems )]"
-							text = "COURT_POSITIONS_no_positions_in_your_court"
+							visible = "[Not( CourtPositionsWindow.HasEmptyPositions )]"
+							text = "COURT_POSITIONS_cannot_hire_more_positions_in_category"
 							default_format = "#weak"
 							margin = { 0 10 }
 						}
 
-						vbox_court_positions_sublist = {
-							blockoverride "cps_root"
-							{
-								datamodel = "[CourtPositionsWindow.EmptyPositions.GetItems]"
-								visible = "[DataModelHasItems( EmptyCourtPositionList.GetItems )]"
-								layoutpolicy_horizontal = expanding
-							}
-							blockoverride "cps_item"
-							{
+						vbox = {
+							visible = "[CourtPositionsWindow.HasEmptyPositions]"
+							ignoreinvisible = yes
+							
+							datamodel = "[CourtPositionsWindow.AllPositions.GetItems]"	
+
+                            item = {
 								vbox = {
-									datacontext = "[EmptyCourtPositionListItem.GetObject]"
-									visible = "[EmptyCourtPosition.CanShow]"
-									widget_empty_court_position_item = {}
+									visible = "[Not( CourtPositionListItem.GetObject.IsEmployedPosition )]"
+
+									widget_empty_court_position_item = { }
 								}
 							}
-						}
+                        }
 					}
 				}
 			}
@@ -354,10 +303,4 @@
 			block "hire_available_text" { }
 		}
 	}
-}
-
-template Expand_Court_Positions {
-	on_start = "[GetVariableSystem.Set( 'expand_held_court_positions', 'true' )]"
-	on_start = "[GetVariableSystem.Set( 'expand_active_court_positions', 'true' )]"
-	on_start = "[GetVariableSystem.Set( 'expand_empty_court_positions', 'true' )]"
 }
