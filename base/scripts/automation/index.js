@@ -182,7 +182,12 @@ async function download(version, outputDir) {
   }
 
   try {
-    execFileSync('DepotDownloader', ['-no-mobile', '-app', CK3_APP_ID, '-dir', downloadDir], {
+    execFileSync('DepotDownloader', [
+      '-no-mobile',
+      '-app', CK3_APP_ID,
+      '-os', 'windows',
+      '-dir', downloadDir
+    ], {
       stdio: 'inherit',
       env
     });
@@ -750,7 +755,7 @@ Commands:
       Exits with code 0 if versions match, 1 if different or update available
 
   download <version> <output-dir>
-      Download CK3 files using DepotDownloader
+      Download CK3 files using DepotDownloader (Windows version)
       Requires environment variables:
         - STEAM_USERNAME: Steam account username
         - STEAM_PASSWORD: Steam account password
@@ -766,8 +771,9 @@ Commands:
       Extract files from CK3 installation (blacklist approach)
       Copies all files except binary formats, creating .meta placeholders with hash/size
       Exclude extensions: comma-separated list (default: images, audio, video, etc.)
-      Example: extract /tmp/ck3-download ../game
-      Example: extract /tmp/ck3-download ../game .dds,.wav  # Custom exclusions
+      Note: Input should be the game/ subdirectory, not the full download (to exclude launcher/)
+      Example: extract /tmp/ck3-download/game ../game
+      Example: extract /tmp/ck3-download/game ../game .dds,.wav  # Custom exclusions
 
 Examples:
   node index.js check                           # Print latest version
@@ -778,7 +784,7 @@ Examples:
     node index.js download 1.18.0.2 /tmp/ck3-download
 
   node index.js parse /tmp/ck3-download .. ../release-notes
-  node index.js extract /tmp/ck3-download ../game
+  node index.js extract /tmp/ck3-download/game ../game
 `);
     process.exit(0);
   }

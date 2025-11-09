@@ -218,14 +218,22 @@ jobs:
           set -e
           VERSION="${{ steps.latest.outputs.version }}"
           DOWNLOAD_DIR="/tmp/ck3-download"
+          AUTOMATION_DIR="$GITHUB_WORKSPACE/base/scripts/automation"
 
-          echo "📥 Downloading CK3 $VERSION..."
+          echo "📥 Downloading CK3 $VERSION (Windows version)..."
           echo "   Using password + TOTP authentication"
+          echo "   Download directory: $DOWNLOAD_DIR"
           echo "   Note: DepotDownloader always fetches latest live version"
+
+          # Validate automation directory exists
+          if [ ! -d "$AUTOMATION_DIR" ]; then
+            echo "❌ Error: Automation directory not found: $AUTOMATION_DIR"
+            exit 1
+          fi
 
           # Credentials are passed via environment variables
           # Note: VERSION param is informational - DepotDownloader fetches latest
-          cd base/scripts/automation
+          cd "$AUTOMATION_DIR"
           node index.js download "$VERSION" "$DOWNLOAD_DIR"
 
           if [ ! -d "$DOWNLOAD_DIR" ]; then
@@ -233,42 +241,80 @@ jobs:
             exit 1
           fi
 
+          echo "✅ Download successful"
+
       - name: Parse downloaded files
         if: steps.needs_update.outputs.needed == 'true'
         run: |
           set -e
           DOWNLOAD_DIR="/tmp/ck3-download"
+          AUTOMATION_DIR="$GITHUB_WORKSPACE/base/scripts/automation"
+          BASE_DIR="$GITHUB_WORKSPACE/base"
+          RELEASE_NOTES_DIR="$BASE_DIR/release-notes"
 
           echo "📊 Parsing CK3 installation..."
-          node index.js parse "$DOWNLOAD_DIR" .. ../release-notes
+          echo "   Download directory: $DOWNLOAD_DIR"
+          echo "   Base directory: $BASE_DIR"
+          echo "   Release notes directory: $RELEASE_NOTES_DIR"
 
-          if [ ! -f ../.ck3-version.json ]; then
-            echo "❌ Parse failed - ../.ck3-version.json not created"
+          # Validate directories
+          if [ ! -d "$DOWNLOAD_DIR" ]; then
+            echo "❌ Error: Download directory not found: $DOWNLOAD_DIR"
+            exit 1
+          fi
+          if [ ! -d "$AUTOMATION_DIR" ]; then
+            echo "❌ Error: Automation directory not found: $AUTOMATION_DIR"
+            exit 1
+          fi
+
+          cd "$AUTOMATION_DIR"
+          node index.js parse "$DOWNLOAD_DIR" "$BASE_DIR" "$RELEASE_NOTES_DIR"
+
+          if [ ! -f "$BASE_DIR/.ck3-version.json" ]; then
+            echo "❌ Parse failed - $BASE_DIR/.ck3-version.json not created"
             exit 1
           fi
 
           echo "✅ Parse complete"
-          echo "   Metadata: base/.ck3-version.json"
-          echo "   Release notes saved to: base/release-notes/"
-        working-directory: base/scripts/automation
+          echo "   Metadata: $BASE_DIR/.ck3-version.json"
+          echo "   Release notes: $RELEASE_NOTES_DIR/"
 
       - name: Extract game files
         if: steps.needs_update.outputs.needed == 'true'
         run: |
           set -e
           DOWNLOAD_DIR="/tmp/ck3-download"
-          OUTPUT_DIR="../game"
+          DOWNLOAD_GAME_DIR="$DOWNLOAD_DIR/game"
+          AUTOMATION_DIR="$GITHUB_WORKSPACE/base/scripts/automation"
+          GAME_DIR="$GITHUB_WORKSPACE/base/game"
 
           echo "📂 Extracting game files..."
-          node index.js extract "$DOWNLOAD_DIR" "$OUTPUT_DIR"
+          echo "   Source: $DOWNLOAD_GAME_DIR"
+          echo "   Destination: $GAME_DIR"
 
-          if [ ! -d "$OUTPUT_DIR" ]; then
-            echo "❌ Extraction failed - game directory not created"
+          # Validate directories
+          if [ ! -d "$DOWNLOAD_GAME_DIR" ]; then
+            echo "❌ Error: Downloaded game directory not found: $DOWNLOAD_GAME_DIR"
+            echo "Available directories in download:"
+            ls -la "$DOWNLOAD_DIR" || true
+            exit 1
+          fi
+          if [ ! -d "$AUTOMATION_DIR" ]; then
+            echo "❌ Error: Automation directory not found: $AUTOMATION_DIR"
+            exit 1
+          fi
+
+          cd "$AUTOMATION_DIR"
+          # Extract from game/ subdirectory only, not launcher/ or other dirs
+          node index.js extract "$DOWNLOAD_GAME_DIR" "$GAME_DIR"
+
+          if [ ! -d "$GAME_DIR" ]; then
+            echo "❌ Extraction failed - game directory not created: $GAME_DIR"
             exit 1
           fi
 
           echo "✅ Extraction complete"
-        working-directory: base/scripts/automation
+          echo "   Game files extracted to: $GAME_DIR/"
 
       - name: Check for changes
         if: steps.needs_update.outputs.needed == 'true'
