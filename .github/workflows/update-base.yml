@@ -191,6 +191,23 @@ jobs:
             echo "needed=false" >> $GITHUB_OUTPUT
           fi
 
+      - name: Free up disk space
+        if: steps.needs_update.outputs.needed == 'true'
+        run: |
+          echo "🧹 Freeing up disk space..."
+          echo "📊 Disk space before cleanup:"
+          df -h
+
+          # Remove large pre-installed packages to free up ~10-15GB
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo docker image prune --all --force
+
+          echo "📊 Disk space after cleanup:"
+          df -h
+
       - name: Download CK3 files
         if: steps.needs_update.outputs.needed == 'true'
         env:
