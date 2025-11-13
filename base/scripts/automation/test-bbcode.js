@@ -33,9 +33,13 @@ for (const testCase of testCases) {
   console.log(`\n=== ${testCase.name} ===`);
   console.log("Input:", testCase.input);
   
-  // Apply the normalization from index.js
+  // Apply the normalization from index.js (UPDATED)
   let normalizedBBCode = testCase.input
-    // Fix list items
+    // Unescape backslash-escaped BBCode markers (Steam escapes these)
+    .replace(/\\(\[|\])/g, '$1')
+    // Convert <*> markers to [*] (alternative BBCode list format)
+    .replace(/<\*>/g, '[*]')
+    // Fix list items with closing tags [*]...[/*] -> [*]...
     .replace(/\[\*\](.*?)\[\/\*\]/gs, '[*]$1')
     // Fix URL attributes: [url=link style=button] -> [url=link]
     .replace(/\[url=([^\s\]]+)\s+[^\]]*\]/gi, '[url=$1]')

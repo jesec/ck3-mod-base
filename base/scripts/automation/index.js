@@ -498,7 +498,16 @@ async function parse(inputDir, outputDir, releaseNotesDir) {
 
     // Normalize BBCode
     let normalizedBBCode = releaseEvent.announcement_body.body
-      // Fix list items
+      // Unescape backslash-escaped BBCode markers (Steam escapes these)
+      .replace(/\\(\[|\])/g, '$1')
+      // Convert <\*> (backslash-escaped) markers to [*]
+      .replace(/<\\\*>/g, '[*]')
+      // Convert <*> markers to [*] (alternative BBCode list format)
+      .replace(/<\*>/g, '[*]')
+      // Fix unclosed [list] tags by adding [/list] before next heading or [list]
+      // This handles malformed BBCode from Steam where lists aren't properly closed
+      .replace(/(\[list\](?:(?!\[\/list\]|\[list\]).)*?)(\n##?\s|\[list\]|$)/gs, '$1[/list]$2')
+      // Fix list items with closing tags [*]...[/*] -> [*]...
       .replace(/\[\*\](.*?)\[\/\*\]/gs, '[*]$1')
       // Fix URL attributes: [url=link style=button] -> [url=link]
       .replace(/\[url=([^\s\]]+)\s+[^\]]*\]/gi, '[url=$1]')
