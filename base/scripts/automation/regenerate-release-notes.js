@@ -23,6 +23,15 @@ function fetch(url) {
 
 // Fetch and regenerate a specific version's release notes
 async function regenerateReleaseNotes(version, outputDir) {
+  // Validate version format to prevent injection attacks
+  // Version must be in format: x.x or x.x.x or x.x.x.x where x is a number
+  const versionPattern = /^[0-9]+\.[0-9]+(\.[0-9]+)?(\.[0-9]+)?$/;
+  if (!versionPattern.test(version)) {
+    console.error(`   ❌ Invalid version format: ${version}`);
+    console.error(`      Version must match pattern: x.x or x.x.x or x.x.x.x (e.g., 1.18.1)`);
+    return false;
+  }
+  
   console.log(`\n🔍 Fetching release notes for version ${version} from Steam...`);
   
   // Search for this version in Steam announcements
@@ -48,7 +57,9 @@ async function regenerateReleaseNotes(version, outputDir) {
     }
     
     // Search for exact version match
-    const versionPattern = new RegExp(`\\b${version.replace(/\./g, '\\.')}(?!\\.[0-9])(?:[^0-9]|$)`, 'i');
+    // Escape special regex characters in version string to prevent regex injection
+    const escapedVersion = version.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const versionPattern = new RegExp(`\\b${escapedVersion}(?!\\.[0-9])(?:[^0-9]|$)`, 'i');
     
     releaseEvent = eventsData.events.find(event => {
       if (!event.event_name || !event.announcement_body?.body) return false;
