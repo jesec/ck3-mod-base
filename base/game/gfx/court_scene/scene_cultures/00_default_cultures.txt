@@ -279,9 +279,17 @@ chinese = {
 			}
 			primary_title ?= title:h_china
 		}
-		# Is a Ceremonial Liege or indepedent ruler
+		# Is a Japanese Ceremonial Liege or indepedent ruler
 		trigger_if = {
-			limit = { tgp_realm_has_ceremonial_liege_trigger = yes }
+			limit = {
+				tgp_realm_has_ceremonial_liege_trigger = yes
+				capital_county ?= {
+					OR = {
+						culture = { has_graphical_japanese_culture_group_trigger = yes }
+						title_province = { steppe_building_gfx_use_japanese_trigger = yes }
+					}
+				}
+			}
 			tgp_has_ceremonial_liege_title_trigger = yes
 		}
 	}
@@ -296,8 +304,6 @@ japanese = {
 			OR = {
 				culture = { has_graphical_japanese_culture_group_trigger = yes }
 				title_province = { steppe_building_gfx_use_japanese_trigger = yes }
-				# Also used for East Asian ceremonial regents
-				title_province = { geographical_region = world_asia }
 			}
 		}
 		# Is not Ceremonial Liege
