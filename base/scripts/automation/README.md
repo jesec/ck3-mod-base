@@ -37,6 +37,12 @@ node index.js check          # Print latest CK3 version
 node index.js check 1.18.0.2 # Compare against version
 ```
 
+The check command uses a two-tier approach for reliable version detection:
+1. **Primary method**: Queries Steam CDN API for depot manifest changes (most reliable)
+2. **Fallback method**: Parses Steam announcements and finds the highest version number
+
+This ensures version detection works even when announcements are missing, delayed, or out of order.
+
 ### 2. Download Game Files
 ```bash
 # Set credentials via environment variables

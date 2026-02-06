@@ -835,6 +835,7 @@ Usage:
 Commands:
   check [version]
       Print latest CK3 version, or compare against provided version
+      Uses depot manifest checking (reliable) with announcement parsing fallback
       Exits with code 0 if versions match, 1 if different or update available
 
   download <version> <output-dir>
