@@ -107,35 +107,100 @@ function parseManifest(manifestPath) {
 }
 
 // Command: check
+// Improved version detection with two methods:
+// 1. Check depot manifests (more reliable - detects changes even if announcements are missing)
+// 2. Parse announcements (fallback - now checks ALL announcements for highest version)
 async function checkUpdate(compareVersion) {
-  // Get latest release notes
-  const eventsUrl = `https://store.steampowered.com/events/ajaxgetpartnereventspageable?` +
-    `clan_accountid=0&appid=${CK3_APP_ID}&offset=0&count=10&l=english`;
+  let latestVersion = null;
 
-  let data;
-  try {
-    data = JSON.parse(await fetch(eventsUrl));
-  } catch (err) {
-    console.error('❌ Failed to parse Steam API response:', err.message);
-    process.exit(1);
+  // Method 1: Try to get version from existing .ck3-version.json depots
+  // This uses the depot manifest IDs which are more reliable than announcements
+  const versionJsonPath = path.join(__dirname, '..', '..', '.ck3-version.json');
+  if (fs.existsSync(versionJsonPath)) {
+    try {
+      const versionData = JSON.parse(fs.readFileSync(versionJsonPath, 'utf8'));
+      const currentDepots = versionData.depots || {};
+
+      // Query Steam CDN for current manifest IDs to detect changes
+      // Main depot 1158311 is the core game files for Windows
+      const mainDepotId = '1158311';
+      if (currentDepots[mainDepotId]) {
+        try {
+          // Use Steam's public API to check product info
+          // This is more reliable than parsing announcements
+          const productInfoUrl = `https://api.steamcmd.net/v1/info/${CK3_APP_ID}`;
+          const productInfo = JSON.parse(await fetch(productInfoUrl));
+
+          if (productInfo?.data?.[CK3_APP_ID]?.depots?.[mainDepotId]?.manifests?.public) {
+            const latestManifestId = productInfo.data[CK3_APP_ID].depots[mainDepotId].manifests.public;
+            const currentManifestId = currentDepots[mainDepotId].manifest;
+
+            // If manifests differ, we need to download to get the actual version
+            // For now, return the current version as we can't determine the new version without downloading
+            if (latestManifestId !== currentManifestId) {
+              // Manifest has changed, but we don't know the new version yet
+              // Fall through to announcement parsing method
+              console.error('⚠️  Depot manifest changed, falling back to announcement parsing');
+            } else {
+              // No change in manifest, current version is latest
+              latestVersion = versionData.version;
+            }
+          }
+        } catch (err) {
+          // Fall through to announcement parsing
+          console.error('⚠️  Could not check depot manifests:', err.message);
+        }
+      }
+    } catch (err) {
+      // Fall through to announcement parsing
+      console.error('⚠️  Could not read version file:', err.message);
+    }
   }
 
-  const latestPatch = data.events.find(event =>
-    /^(Update|Hotfix|Rollback for Update) [0-9]+\.[0-9]+/.test(event.event_name) &&
-    !event.event_name.includes('Available')
-  );
+  // Method 2: Fall back to parsing Steam announcements
+  // This is less reliable but works when depot method fails
+  if (!latestVersion) {
+    const eventsUrl = `https://store.steampowered.com/events/ajaxgetpartnereventspageable?` +
+      `clan_accountid=0&appid=${CK3_APP_ID}&offset=0&count=20&l=english`;
 
-  if (!latestPatch) {
-    console.error('❌ Could not find latest patch version');
-    process.exit(1);
-  }
+    let data;
+    try {
+      data = JSON.parse(await fetch(eventsUrl));
+    } catch (err) {
+      console.error('❌ Failed to parse Steam API response:', err.message);
+      process.exit(1);
+    }
 
-  const match = latestPatch.event_name.match(/([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?)/);
-  const latestVersion = match ? match[1] : null;
+    // Find the most recent patch announcement
+    // Look through announcements and find the one with the highest version number
+    const patchEvents = data.events.filter(event =>
+      /^(Update|Hotfix|Rollback for Update) [0-9]+\.[0-9]+/.test(event.event_name) &&
+      !event.event_name.includes('Available')
+    );
 
-  if (!latestVersion || !validateVersion(latestVersion)) {
-    console.error('❌ Could not parse valid version from:', latestPatch.event_name);
-    process.exit(1);
+    if (patchEvents.length === 0) {
+      console.error('❌ Could not find any patch version announcements');
+      process.exit(1);
+    }
+
+    // Extract versions from all patch events and find the highest one
+    let highestVersion = null;
+    for (const event of patchEvents) {
+      const match = event.event_name.match(/([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?)/);
+      if (match && validateVersion(match[1])) {
+        const eventVersion = match[1];
+        if (!highestVersion || compareVersions(eventVersion, highestVersion) > 0) {
+          highestVersion = eventVersion;
+        }
+      }
+    }
+
+    if (!highestVersion) {
+      console.error('❌ Could not parse valid version from any announcement');
+      process.exit(1);
+    }
+
+    latestVersion = highestVersion;
   }
 
   // If no version to compare, just print latest version (for CI/automation)
@@ -150,6 +215,24 @@ async function checkUpdate(compareVersion) {
   } else {
     process.exit(1);  // Update available
   }
+}
+
+// Compare two version strings (e.g., "1.18.3" vs "1.18.2")
+// Returns: 1 if v1 > v2, -1 if v1 < v2, 0 if equal
+function compareVersions(v1, v2) {
+  const parts1 = v1.split('.').map(n => parseInt(n) || 0);
+  const parts2 = v2.split('.').map(n => parseInt(n) || 0);
+
+  // Pad to same length
+  while (parts1.length < 4) parts1.push(0);
+  while (parts2.length < 4) parts2.push(0);
+
+  for (let i = 0; i < 4; i++) {
+    if (parts1[i] > parts2[i]) return 1;
+    if (parts1[i] < parts2[i]) return -1;
+  }
+
+  return 0;
 }
 
 // Command: download
