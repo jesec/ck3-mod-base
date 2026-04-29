@@ -697,12 +697,12 @@ ${markdown}
 
   // Reconcile the downloaded depot set against Steam's PICS public-branch
   // depot declaration for this app. Two things happen here:
-  //   1. Drop any downloaded depot that PICS doesn't list for the app.
-  //      DepotDownloader pulls shared Steamworks redist depots (e.g. 228981,
-  //      228988) alongside the app's own depots; these aren't CK3 content,
-  //      they're Steam-SDK runtime data, and they don't belong in stored —
-  //      keeping them there causes a persistent "changed (removed)" signal
-  //      every run because PICS never lists them.
+  //   1. Drop any downloaded depot that PICS doesn't list with a public
+  //      manifest. DepotDownloader pulls shared Steamworks redist depots
+  //      (e.g. 228981, 228988) alongside the app's own depots; these aren't
+  //      CK3 content, they're Steam-SDK runtime data. PICS may keep stub
+  //      entries for them (key present, no `.manifests.public.gid`) — the
+  //      filter must require an actual public manifest, not just the key.
   //   2. Compute known_unowned_depots = PICS live set − downloaded set. These
   //      are CK3 depots the workflow's Steam account doesn't own, or that
   //      DepotDownloader's -os/-language filters exclude. Recording them
@@ -711,9 +711,13 @@ ${markdown}
   try {
     console.log('🔍 Reconciling live depot list against what was downloaded...');
     const appinfo = await fetchPicsAppInfo(Number(CK3_APP_ID));
-    const liveDepotIds = new Set(Object.keys(appinfo.depots || {}).filter(k => /^\d+$/.test(k)));
+    const liveDepotIds = new Set(
+      Object.entries(appinfo.depots || {})
+        .filter(([k, v]) => /^\d+$/.test(k) && v?.manifests?.public?.gid)
+        .map(([k]) => k)
+    );
 
-    // Filter downloaded depots against PICS
+    // Filter downloaded depots against PICS-with-public-manifest
     const dropped = [];
     for (const id of Object.keys(depots)) {
       if (!liveDepotIds.has(id)) {
@@ -722,7 +726,7 @@ ${markdown}
       }
     }
     if (dropped.length > 0) {
-      console.log(`   Dropped ${dropped.length} downloaded depot(s) not in PICS (shared Steam SDK): ${dropped.join(', ')}`);
+      console.log(`   Dropped ${dropped.length} downloaded depot(s) not in PICS public set: ${dropped.join(', ')}`);
     }
 
     knownUnowned = Array.from(liveDepotIds)
