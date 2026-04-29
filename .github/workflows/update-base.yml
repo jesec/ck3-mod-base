@@ -275,16 +275,21 @@ jobs:
             COMMIT_MSG="Version $VERSION ($VERSION_NAME)"$'\n\n'"Released $RELEASE_DATE"$'\n\n'"See release notes for details."
             git commit -m "$COMMIT_MSG"
 
-            # Exact version tag: create once, never move. Track whether we
-            # created it so we know whether to push it. Force-update runs
-            # often re-emit a commit for the same version, where the tag
-            # already exists on origin and must NOT be re-pushed.
+            # Make sure we have ALL existing tag refs locally before deciding
+            # whether to create new ones. fetch-tags on the shallow checkout
+            # doesn't always populate annotated-tag objects for unreachable
+            # commits, so do an explicit fetch.
+            git fetch origin 'refs/tags/base/*:refs/tags/base/*' --quiet || true
+
+            # Exact version tag: create once, never move. We use "git tag -a"
+            # failure as the existence test — git rev-parse can lie on shallow
+            # clones, but tag creation will reliably fail if the ref exists.
             TAG_REFSPECS=()
-            if git rev-parse "base/$NORMALIZED_VERSION" >/dev/null 2>&1; then
-              echo "   base/$NORMALIZED_VERSION exists, skipping exact tag"
-            else
-              git tag -a "base/$NORMALIZED_VERSION" -m "CK3 $VERSION ($VERSION_NAME)"
+            if git tag -a "base/$NORMALIZED_VERSION" -m "CK3 $VERSION ($VERSION_NAME)" 2>/dev/null; then
+              echo "   ✓ Created new exact tag base/$NORMALIZED_VERSION"
               TAG_REFSPECS+=("refs/tags/base/$NORMALIZED_VERSION")
+            else
+              echo "   ○ base/$NORMALIZED_VERSION already exists — not creating, not pushing"
             fi
             # Floating series tags: force-update to point to this commit
             git tag -af "base/$MINOR_SERIES"   -m "CK3 $VERSION ($VERSION_NAME) - latest patch in $MINOR_SERIES series"
@@ -294,9 +299,11 @@ jobs:
             TAG_REFSPECS+=("+refs/tags/base/$MAJOR_SERIES")
             TAG_REFSPECS+=("+refs/tags/base/$REFRESH_SERIES")
 
-            # Push this iteration immediately — partial failures shouldn't cost re-downloads
+            # Push this iteration immediately — partial failures shouldn't cost re-downloads.
+            # push.followTags=false: we explicitly list the tags we want pushed; never auto-include
+            # reachable annotated tags (would re-push the exact tag we deliberately skipped).
             git pull --rebase origin "$CURRENT_BRANCH" || git pull --no-rebase origin "$CURRENT_BRANCH"
-            git push origin "$CURRENT_BRANCH" "${TAG_REFSPECS[@]}"
+            git -c push.followTags=false push origin "$CURRENT_BRANCH" "${TAG_REFSPECS[@]}"
 
             echo "✅ $VERSION ($LABEL) committed and pushed"
             rm -rf "$DOWNLOAD_DIR"
