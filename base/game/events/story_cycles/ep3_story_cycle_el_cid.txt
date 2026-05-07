@@ -1028,9 +1028,11 @@ cid.1040 = {
 	option = {
 		name = cid.1040.b
 		custom_tooltip = cid_loyalty_counter_positive
-		change_variable = {
-			name = cid_loyalty_counter
-			add = 1
+		scope:story = {
+			change_variable = {
+				name = cid_loyalty_counter
+				add = 1
+			}
 		}
 		ai_chance = {
 			base = 1000 # Historically determined
@@ -1045,9 +1047,11 @@ cid.1040 = {
 			modifier = cid_own_prayer
 			years = 15
 		}
-		change_variable = {
-			name = cid_loyalty_counter
-			add = -1
+		scope:story = {
+			change_variable = {
+				name = cid_loyalty_counter
+				add = -1
+			}
 		}
 		ai_chance = {
 			base = 0
@@ -1155,9 +1159,11 @@ cid.2000 = {
 		flavor = cid.2000.a.flavor
 		custom_tooltip = cid_loyalty_counter_negative
 		custom_tooltip = cid.2001.a.tt
-		change_variable = {
-			name = cid_loyalty_counter
-			add = -1
+		scope:story = {
+			change_variable = {
+				name = cid_loyalty_counter
+				add = -1
+			}
 		}
 		add_gold = medium_gold_value
 		
@@ -1191,9 +1197,11 @@ cid.2000 = {
 		name = cid.2000.b
 		flavor = cid.2000.b.flavor
 		custom_tooltip = cid_loyalty_counter_positive
-		change_variable = {
-			name = cid_loyalty_counter
-			add = 1
+		scope:story = {
+			change_variable = {
+				name = cid_loyalty_counter
+				add = 1
+			}
 		}
 		scope:liege = {
 			add_treasury_or_gold = medium_treasury_or_gold_value
@@ -1303,9 +1311,11 @@ cid.2001 = {
 		flavor = cid.2001.a.flavor
 		custom_tooltip = cid_loyalty_counter_negative
 		custom_tooltip = cid.2001.a.tt
-		change_variable = {
-			name = cid_loyalty_counter
-			add = -1
+		scope:story = {
+			change_variable = {
+				name = cid_loyalty_counter
+				add = -1
+			}
 		}
 		add_gold = medium_gold_value
 		
@@ -1337,9 +1347,11 @@ cid.2001 = {
 	option = {
 		name = cid.2001.b
 		custom_tooltip = cid_loyalty_counter_positive
-		change_variable = {
-			name = cid_loyalty_counter
-			add = 1
+		scope:story = {
+			change_variable = {
+				name = cid_loyalty_counter
+				add = 1
+			}
 		}
 		scope:liege = {
 			add_treasury_or_gold = medium_treasury_or_gold_value
@@ -1570,9 +1582,11 @@ cid.2010 = {
 		flavor = cid.2010.a.flavor
 		custom_tooltip = cid_loyalty_counter_very_positive
 		scope:child = { create_betrothal = scope:proposed_spouse }
-		change_variable = {
-			name = cid_loyalty_counter
-			add = 2
+		scope:story = {
+			change_variable = {
+				name = cid_loyalty_counter
+				add = 2
+			}
 		}
 		ai_chance = {
 			base = 1000 # Historically determined
@@ -1587,9 +1601,11 @@ cid.2010 = {
 			modifier = cid_refused_betrothal
 			years = 10
 		}
-		change_variable = {
-			name = cid_loyalty_counter
-			add = -2
+		scope:story = {
+			change_variable = {
+				name = cid_loyalty_counter
+				add = -2
+			}
 		}
 		ai_chance = {
 			base = 0 # Historically determined
@@ -1627,10 +1643,10 @@ cid.2020 = {
 		#triggered through the story cycle
 		scope:story.var:cid_liege.primary_title = {
 			any_de_jure_county = {
-				holder = root.var:cid_liege
+				holder = scope:story.var:cid_liege
 				NOR = {
-					root.var:cid_liege.capital_county ?= this
-					root.var:cid_liege.primary_title ?= this
+					scope:story.var:cid_liege.capital_county ?= this
+					scope:story.var:cid_liege.primary_title ?= this
 				}
 			}
 		}
@@ -1678,7 +1694,7 @@ cid.2020 = {
 		cid_2020_loyal_effect = yes
 		# Resolve title, liege, government changes
 		ep3_become_landed_save_liege_effect = {
-			TITLE_GIVER = root.var:cid_liege
+			TITLE_GIVER = scope:liege
 			ALWAYS_INDEPENDENT = no
 			TITLE_LIST = granted_title
 		}

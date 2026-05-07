@@ -3698,7 +3698,40 @@ e_byzantium = {
 	20.1.1 = {
 		change_development_level = 6
 	}
-	
+	866.1.1 = {
+		government = administrative_government
+		succession_laws = {
+			acclamation_succession_law
+		}
+		effect = {
+			if = {
+				limit = {
+					exists = holder
+					holder = { has_government = administrative_government }
+				}
+				set_state_faith = faith:orthodox
+			}
+			if = {
+				limit = {
+					exists = holder
+					has_dlc_feature = royal_court
+				}
+				holder = {
+					set_court_type = court_intrigue
+				}
+			}
+			if = {
+				limit = {
+					exists = holder
+					NOT = { has_dlc_feature = roads_to_power }
+				}
+				holder = {
+					change_government = feudal_government
+					add_realm_law_skip_effects = single_heir_succession_law
+				}
+			}
+		}
+	}
 	1000.1.1 = {
 		change_development_level = 10
 	}
@@ -4038,68 +4071,6 @@ e_byzantium = {
 	}
 	866.9.24 = {
 		holder = 1700
-		effect = {
-			if = {
-				limit = {
-					has_dlc_feature = roads_to_power
-				}
-				holder = {
-					if = {
-						limit = {
-							NOT = { has_government = administrative_government }
-						}
-						change_government = administrative_government
-					}
-				}
-				if = {
-					limit = {
-						NOT = { has_title_law = acclamation_succession_law }
-					}
-					add_title_law = acclamation_succession_law
-				}
-				if = {
-					limit = {
-						exists = holder
-						holder = { has_government = administrative_government }
-					}
-					set_state_faith = faith:orthodox
-				}
-			}
-			else = {
-				holder = {
-					empty_treasury_when_abandoning_landed_life_effect = yes
-					change_government = feudal_government
-					if = {
-						limit = {
-							NOT = { has_realm_law = single_heir_succession_law }
-						}
-						add_realm_law_skip_effects = single_heir_succession_law
-					}
-				}
-				if = {
-					limit = {
-						has_title_law = acclamation_succession_law
-					}
-					remove_title_law = acclamation_succession_law
-				}
-				# Partition-style laws are realm-only for inheritance; title needs single_heir (add_title_law requires can_title_have).
-				if = {
-					limit = {
-						NOT = { has_title_law = single_heir_succession_law }
-					}
-					add_title_law = single_heir_succession_law
-				}
-			}
-			if = {
-				limit = {
-					exists = holder
-					has_dlc_feature = royal_court
-				}
-				holder = {
-					set_court_type = court_intrigue
-				}
-			}
-		}
 	}
 	#867.9.24 = { # The historical date, but we want the Macedonian dynasty in place at the bookmark start
 	#	holder = 1700

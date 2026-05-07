@@ -4,11 +4,8 @@
 # Empire
 
 e_japan = { # Kampaku/Shogun
-	# Feudal + primogeniture-style title succession for bookmark load when TGP/AuH is off or incomplete.
-	# All Under Heaven: on_game_start upgrades the Kampaku back to Ritsuryō + regency realm law.
 	500.1.1 = {
-		government = feudal_government
-		succession_laws = { single_heir_succession_law }
+		government = japan_administrative_government
 	}
 	593.1.1 = { holder = japanese_yamato_200 } # Emperor Shotoku
 	622.1.1 = { holder = 0 }
@@ -2101,13 +2098,7 @@ k_chrysanthemum_throne = { # Ceremonial Emperor/Ten'nō
 	858.10.7 = { holder = japanese_yamato_30 } # Seiwa (Korehito)
 	867.1.1 = {
 		effect = {
-			if = {
-				limit = {
-					has_dlc_feature = all_under_heaven
-					NOT = { has_title_law = single_heir_succession_law }
-				}
-				add_title_law = single_heir_succession_law # Regency inherited separately (AuH only; avoids duplicate-law errors when title is destroyed without AuH)
-			}
+			add_title_law = single_heir_succession_law # Regency inherited separately
 			destroy_landless_title_no_tgp_dlc_effect = { DATE = 867.1.1 }
 		}
 	}
