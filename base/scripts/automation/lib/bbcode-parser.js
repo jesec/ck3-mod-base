@@ -482,6 +482,16 @@ function convertInlineFormatting(text) {
   // Strip color tags
   result = result.replace(/\[color=[^\]]+\]/gi, '').replace(/\[\/color\]/gi, '');
 
+  // Collapse paragraph tags. convertInlineFormatting runs on INLINE contexts
+  // (list items, table cells, headings) where a [p] must NOT introduce a
+  // block-level break. If these tags survive to the standalone [p] handler
+  // (Step 16), each [/p] becomes "\n\n", which injects blank lines between
+  // list items and turns every list loose (double-blank-line bullets).
+  // Instead, join adjacent paragraphs with a hard break and drop the wrappers,
+  // keeping the item/cell content on a single logical block (tight lists).
+  result = result.replace(/\[\/p\]\s*\[p(?:\s[^\]]*)?\]/gi, '<br>');
+  result = result.replace(/\[p(?:\s[^\]]*)?\]/gi, '').replace(/\[\/p\]/gi, '');
+
   // Collapse double italic tags before processing
   result = result.replace(/\[i\]\[i\](.*?)\[\/i\]\[\/i\]/gis, '[i]$1[/i]');
 
@@ -589,7 +599,16 @@ function processLists(text) {
         listItemContent.push(processedLine);
       }
     } else {
-      // Not in a list item (either outside list or between list markers)
+      // Not in a list item (either outside list or between list markers).
+      // While still inside an enclosing list (listStack not empty), a blank line
+      // is structural noise sitting between a nested sub-list and the following
+      // sibling item. Emitting it would make the OUTER list loose (blank-line
+      // gaps between every bullet). Drop it to keep the list tight. Blank lines
+      // OUTSIDE any list (listStack empty) are preserved so that paragraphs and
+      // separate sibling lists stay correctly spaced.
+      if (listStack.length > 0 && !line.trim()) {
+        continue;
+      }
       // Pass through as regular content
       result.push(line);
     }

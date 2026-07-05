@@ -528,7 +528,20 @@ export const testCases = [
   {
     name: 'Validation Issue: Numbered list with paragraphs',
     bbcode: '[list=1][*][p]Item one[/p][/*][*][p]Item two[/p][/*][/list]',
-    expected: '1.  Item one\n\n\n2.  Item two' // Paragraph tags add extra newlines
+    expected: '1.  Item one\n2.  Item two' // Paragraph-wrapped items stay tight (no blank-line loosening)
+  },
+  {
+    // Regression for issue #1 (1_18_1_0 release notes): every changelog bullet
+    // is wrapped in [p]...[/p]. These must render as one tight bullet list, not
+    // a loose list with blank lines between every item.
+    name: 'Regression: Multi-item list with paragraph-wrapped items stays tight',
+    bbcode: '[list][*][p]First[/p][/*][*][p]Second[/p][/*][*][p]Third[/p][/*][/list]',
+    expected: '-   First\n-   Second\n-   Third'
+  },
+  {
+    name: 'Regression: Nested list with paragraph-wrapped items stays tight',
+    bbcode: '[list][*][p]Parent[/p][list][*][p]Child A[/p][/*][*][p]Child B[/p][/*][/list][/*][/list]',
+    expected: '-   Parent\n    -   Child A\n    -   Child B'
   },
 
   // Issue: Expand/collapse tags
