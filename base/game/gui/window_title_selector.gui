@@ -1,0 +1,99 @@
+﻿window = {
+	name = "window_title_selector"
+	parentanchor = top|right
+	position = { -15 90 }
+	size = { 550 940 }
+	movable = no
+	layer = windows_layer
+
+	using = Window_Background
+	using = Window_Decoration_Spike
+
+	vbox = {
+		using = Window_Margins
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+			
+			blockoverride "header_text"
+			{
+				text = "[TitleSelectorWindow.GetWindowTitle]"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[TitleSelectorWindow.Close]"
+			}
+		}
+
+		scrollbox = {
+			name = "titles_scroll_area"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "scrollbox_empty"
+			{
+				text = "TITLE_SELECTOR_NO_TITLES"
+				visible = "[IsDataModelEmpty( TitleSelectorWindow.GetTitles )]"
+			}
+
+			blockoverride "scrollbox_content"
+			{
+				vbox = {
+					name = "titles_grid"
+					layoutpolicy_horizontal = expanding
+					spacing = 5
+
+					datamodel = "[TitleSelectorWindow.GetTitles]"
+					item = {
+						button_standard_list = {
+							name = "title_button"
+							layoutpolicy_horizontal = expanding
+							size = { 0 58 }
+
+							onclick = "[TitleSelectorWindow.SelectTitle( Title.Self )]"
+							down = "[TitleSelectorWindow.IsSelected( Title.Self )]"
+							using = tooltip_es
+
+							hbox = {
+								margin = { 10 0 }
+								spacing = 10
+
+								coa_title_tiny_crown = {}
+
+								text_single = {
+									name = "text"
+									layoutpolicy_horizontal = expanding
+
+									text = "[Title.GetBaseName]"
+									default_format = "#high"
+									using = Font_Size_Medium
+									alwaystransparent = yes
+								}
+
+								highlight_icon = {
+									visible = "[TitleSelectorWindow.IsSelected( Title.Self )]"
+									size = { 30 30 }
+
+									texture = "gfx/interface/icons/symbols/icon_check.dds"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		hbox = {
+			margin = { 0 15 }
+
+			### SEND OFFER BUTTON
+			button_primary_big = {
+				name = "confirm_button"
+
+				text = "TITLE_SELECTOR_CONFIRM"
+				onclick = "[TitleSelectorWindow.OnConfirm]"
+			}
+		}
+	}
+}

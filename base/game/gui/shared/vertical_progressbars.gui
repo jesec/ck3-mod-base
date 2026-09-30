@@ -1,0 +1,452 @@
+﻿types VerticalComplexBars
+{
+	type vbox_complex_bar_progress = vbox {
+		allow_outside = yes
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetCurrentRightWidth]"
+			allow_outside = yes
+
+			block "empty" {
+				background = {
+					block "texture_empty" {
+						texture = "gfx/interface/progressbars/progress_black.dds"
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetCurrentFilledWidth]"
+			allow_outside = yes
+
+			block "filled" {
+				background = {
+					visible = "[GreaterThan_CFixedPoint( ComplexBar.GetCurrentValue, ComplexBar.GetNeutralValue )]"
+					block "texture_positive" {
+						texture = "gfx/interface/progressbars/progress_standard_vertical.dds"
+					}
+				}
+				background = {
+					visible = "[LessThan_CFixedPoint( ComplexBar.GetCurrentValue, ComplexBar.GetNeutralValue )]"
+					block "texture_negative" {
+						texture = "gfx/interface/progressbars/progress_red_vertical.dds"
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetCurrentLeftWidth]"
+			allow_outside = yes
+
+			block "empty" {
+				background = {
+					block "texture_empty" {
+						texture = "gfx/interface/progressbars/progress_black.dds"
+					}
+				}
+			}
+		}
+	}
+
+	type vbox_complex_bar_progress_next = vbox {
+		allow_outside = yes
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetLeftEmptyWidth]"
+			allow_outside = yes
+
+
+			block "empty" {
+				background = {
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_empty" {
+						texture = "gfx/interface/progressbars/progress_black.dds"
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNextWidth]"
+			visible = "[GreaterThanOrEqualTo_CFixedPoint( ComplexBar.GetNeutralValue, ComplexBar.GetNextValue )]"
+			allow_outside = yes
+
+			block "next" {
+				background = {
+					visible = "[ComplexBar.IsIncreasing]"
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_increase" {
+						texture = "gfx/interface/progressbars/progress_green.dds"
+					}
+				}
+
+				background = {
+					visible = "[ComplexBar.IsDecreasing]"
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_decrease" {
+						texture = "gfx/interface/progressbars/progress_red.dds"
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetFilledWidth]"
+			allow_outside = yes
+
+			block "filled" {
+				background = {
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_filled" {
+						texture = "gfx/interface/progressbars/progress_standard.dds"
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNextWidth]"
+			visible = "[GreaterThan_CFixedPoint( ComplexBar.GetNextValue, ComplexBar.GetNeutralValue )]"
+			allow_outside = yes
+
+			block "next" {
+				background = {
+					visible = "[ComplexBar.IsIncreasing]"
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_increase" {
+						texture = "gfx/interface/progressbars/progress_green.dds"
+					}
+				}
+
+				background = {
+					visible = "[ComplexBar.IsDecreasing]"
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_decrease" {
+						texture = "gfx/interface/progressbars/progress_red.dds"
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetRightEmptyWidth]"
+			allow_outside = yes
+
+			block "empty" {
+				background = {
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_empty" {
+						texture = "gfx/interface/progressbars/progress_black.dds"
+					}
+				}
+			}
+		}
+	}
+
+	type vbox_complex_bar_neutral_marker = vbox {
+		allow_outside = yes
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNeutralMarkerLeftWidth]"
+		}
+
+		vbox = {
+			allow_outside = yes
+
+			widget = {
+				allow_outside = yes
+
+				block "marker" {
+					debug_square = {
+						size = { 20 20 }
+						parentanchor = center
+						widgetanchor = center
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNeutralMarkerRightWidth]"
+		}
+	}
+
+	type vbox_complex_bar_current_marker = vbox {
+		allow_outside = yes
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetCurrentRightWidth]"
+		}
+
+		vbox = {
+			visible = "[GreaterThan_CFixedPoint( ComplexBar.GetCurrentValue, ComplexBar.GetNeutralValue )]"
+			allow_outside = yes
+			
+			widget = {
+				allow_outside = yes
+				
+				block "marker" {
+					debug_square = {
+						size = { 20 20 }
+						parentanchor = center
+						widgetanchor = center
+					}
+				}
+			}
+		}
+		
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetCurrentFilledWidth]"
+		}
+
+		vbox = {
+			visible = "[GreaterThanOrEqualTo_CFixedPoint( ComplexBar.GetNeutralValue, ComplexBar.GetCurrentValue )]"
+			allow_outside = yes
+
+			widget = {
+				allow_outside = yes
+
+				block "marker" {
+					debug_square = {
+						size = { 20 20 }
+						parentanchor = center
+						widgetanchor = center
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetCurrentLeftWidth]"
+		}
+	}
+
+	type vbox_complex_bar_next_marker = vbox {
+		allow_outside = yes
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNextMarkerLeftWidth]"
+		}
+
+		vbox = {
+			allow_outside = yes
+			visible = "[ComplexBar.IsDecreasing]"
+
+			widget = {
+				allow_outside = yes
+
+				block "decreasing_marker" {
+					block "marker" {
+						debug_square = {
+							size = { 20 20 }
+							parentanchor = center
+							widgetanchor = center
+						}
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNextWidth]"
+		}
+
+		vbox = {
+			allow_outside = yes
+			visible = "[ComplexBar.IsIncreasing]"
+
+			widget = {
+				allow_outside = yes
+
+				block "increasing_marker" {
+					block "marker" {
+						debug_square = {
+							size = { 20 20 }
+							parentanchor = center
+							widgetanchor = center
+						}
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNextMarkerRightWidth]"
+		}
+	}
+
+	type vbox_complex_bar_equlibrium_marker = vbox {
+		allow_outside = yes
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNextMarkerLeftWidth]"
+		}
+
+		vbox = {
+			allow_outside = yes
+			visible = "[ComplexBar.IsEquilibrium]"
+
+			widget = {
+				allow_outside = yes
+
+				block "equilibrium_marker" {
+					debug_square = {
+						size = { 20 20 }
+						parentanchor = center
+						widgetanchor = center
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetNextMarkerRightWidth]"
+		}
+	}
+
+	type vbox_complex_bar_levels = vbox {
+		allow_outside = yes
+		layoutpolicy_vertical = expanding
+
+		vbox = {
+			allow_outside = yes
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetLeftMargin]"
+		}
+
+		vbox = {
+			allow_outside = yes
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetDataWidth]"
+			
+			datamodel = "[ComplexBar.GetItems]"
+			item = {
+				vbox = {
+					allow_outside = yes
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					layoutstretchfactor_vertical = "[ComplexBarItem.GetWidth]"
+
+					block "widget" {
+						widget = {
+							allow_outside = yes
+							visible = "[ComplexBarItem.IsVisible]"
+
+							block "marker" {
+								debug_square = {
+									size = { 20 20 }
+									parentanchor = center
+									widgetanchor = center
+								}
+							}
+						}
+
+						expand = {}
+					}
+				}
+			}
+		}
+
+		vbox = {
+			allow_outside = yes
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			layoutstretchfactor_vertical = "[ComplexBar.GetRightMargin]"
+		}
+	}
+
+	type vbox_complex_bar_levels_with_edges = vbox {
+		allow_outside = yes
+		layoutpolicy_vertical = expanding
+
+		vbox = {
+			layoutstretchfactor_vertical = "[ComplexBar.GetLeftMargin]"
+			allow_outside = yes
+
+			block "empty" {
+				background = {
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_empty" {
+						texture = "gfx/interface/progressbars/progress_black.dds"
+					}
+				}
+			}
+		}
+
+		vbox_complex_bar_levels = {
+			layoutstretchfactor_vertical = "[ComplexBar.GetDataWidth]"
+		}
+
+		vbox = {
+			layoutstretchfactor_vertical = "[ComplexBar.GetRightMargin]"
+			allow_outside = yes
+
+			block "empty" {
+				background = {
+					spriteType = Corneredstretched
+					spriteborder = { 6 6 }
+
+					block "texture_empty" {
+						texture = "gfx/interface/progressbars/progress_black.dds"
+					}
+				}
+			}
+		}
+	}
+}

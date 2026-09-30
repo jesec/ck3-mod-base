@@ -107,6 +107,11 @@
  message_filter_dynasty_child_of_age_desc: "你[dynasty|E]的一名[child|E]在你的[court|E]里成年"
  message_filter_child_of_age: "@child_icon!你的孩子成年"
  message_filter_child_of_age_desc: "你的一个[Concept('children', '孩子')|E]成年了"
+ #INTERACTION
+ message_filter_interaction_consequence: "@catch_all_icon!互动结果"
+ message_filter_interaction_consequence_desc: "互动的结果"
+ message_filter_ransom_result: "@prison_icon!要求赎金结果"
+ message_filter_ransom_result_desc: "要求赎金的结果"
  #DEATH
  message_filter_death_family: "@death_icon!至亲死亡"
  message_filter_death_family_desc: "一位[close_family|E]死亡了"
@@ -239,9 +244,9 @@
  message_filter_war_troops_gained: "@soldier_icon!获得士兵"
  message_filter_war_troops_gained_desc: "你获得了[special_troops|E]"
  message_filter_war_troops_dismissed: "@soldier_icon!士兵解散"
- message_filter_war_troops_dismissed_desc: "你的[special_troops|E]，雇佣的[mercenary_company|E]或雇佣的[holy_order|E]解散"
+ message_filter_war_troops_dismissed_desc: "你的[special_troops|E]，雇佣的[mercenary_company|E]或雇佣的[military_holy_order|E]解散"
  message_filter_war_enemy_troops: "@soldier_icon!敌方获得士兵"
- message_filter_war_enemy_troops_desc: "一个敌人获得了[special_troops|E]或者招募了[mercenary_company|E]或[holy_order|E]"
+ message_filter_war_enemy_troops_desc: "一个敌人获得了[special_troops|E]或者招募了[mercenary_company|E]或[military_holy_order|E]"
  #ARTIFACT
  message_filter_artifact_claim: "@artifact_icon!宝物宣称"
  message_filter_artifact_claim_desc: "你获得或失去了一个[artifact_claim|E]"
@@ -255,6 +260,8 @@
  message_filter_faith_excommunication_desc: "你[faith|E]的一名[ruler|E]被[excommunicated|E]"
  message_filter_head_of_faith_changed: "@religious_icon!新信仰领袖"
  message_filter_head_of_faith_changed_desc: "你的[head_of_faith|E]改变了"
+ message_filter_rite_updated: "@religious_icon!礼仪变化"
+ message_filter_rite_updated_desc: "你的[rite|E]或[mainline_rite|E]的一项或多项[core_tenet|E]或[doctrine|E]改变"
  message_filter_realm_priest_endorsement: "@bishop_icon!领地祭司拥护情况"
  message_filter_realm_priest_endorsement_desc: "你的[realm_priest_possessive|E]对你的拥护情况改变了"
  message_filter_liege_converting_holding: "@conversion_icon!领主改信伯爵领"
@@ -302,7 +309,9 @@
  message_filter_accolade_eligibility: "@accolade_icon!骑士适格[accolade_type|E]"
  message_filter_accolade_eligibility_desc: "一名[knight|E]可以被授予新[accolade_type|E]的[accolade|E]"
  message_filter_squire_training: "@accolade_icon![acclaimed_knight|E]训练了扈从"
- message_filter_squire_training_desc: "一名[courtier|E]的能力由于[accolade|E]的[accolade_squires|E]资质提高"
+ message_filter_squire_training_desc: "一名[courtier|E]的能力由于[accolade|E]的[accolade_squires|E]提高"
+ message_filter_accolade_mercenary: "@accolade_icon!前[acclaimed_knight|E][adventurer|E]"
+ message_filter_accolade_mercenary_desc: "你的前[acclaimed_knight|E]成为雇佣兵[adventurer|E]与你互动"
  #ACTIVITY
  message_filter_tournament_arrival: "@tournament_icon!统治者抵达"
  message_filter_tournament_arrival_desc: "一位重要[ruler|E]作为[activity_guest|E]抵达你的[GetActivityType( 'activity_tournament' ).GetName]"
@@ -314,7 +323,7 @@
  message_filter_tournament_qualification_champion_desc: "你的勇士的[GetActivityType( 'activity_tournament' ).GetName][contest|E][contest_qualification|E]改变了"
  message_filter_tournament_qualification_knight: "@tournament_icon!骑士参赛资格"
  message_filter_tournament_qualification_knight_desc: "你的[knights_possessive|E]的[GetActivityType( 'activity_tournament' ).GetName][contest|E][contest_qualification|E]改变了"
- #HOLY ORDER
+ #Military Order
  message_filter_holy_order_founded: "@holy_order_icon!信仰骑士团建立"
  message_filter_holy_order_founded_desc: "一支你[faith|E]的[holy_order|E]建立了"
  message_filter_holy_order_founded_enemy: "@holy_order_icon!邻近骑士团建立"
@@ -322,7 +331,7 @@
  message_filter_holy_order_destroyed: "@holy_order_icon!信仰骑士团解散"
  message_filter_holy_order_destroyed_desc: "一支你[faith|E]的[holy_order|E]解散了"
  message_filter_holy_order_hired: "@holy_order_icon! 骑士团受雇佣"
- message_filter_holy_order_hired_desc: "一支你是[holy_order_patron|E]的[holy_order|E]被雇佣了"
+ message_filter_holy_order_hired_desc: "一支你是[military_holy_order_patron|E]的[military_holy_order|E]被雇佣了"
  message_filter_holy_order_patronage: "@holy_order_icon!骑士团赞助"
  message_filter_holy_order_patronage_desc: "一支你是[holy_order_patron|E]的[holy_order|E]的状态改变了"
  #LAAMP
@@ -359,15 +368,15 @@
  message_filter_governance_contracts: "@catch_all_icon!治理问题出现"
  message_filter_governance_contracts_desc: "一项[governance_issue|E]出现在你管理的土地内"
  message_filter_governor_notification: "@governor_efficiency!总督通知"
- message_filter_governor_notification_desc: "在[administrative|E][realm|E]担任[governor|E]时的各种通知"
+ message_filter_governor_notification_desc: "在[government_bureaucratic_type|E][realm|E]担任[governor|E]时的各种通知"
  message_filter_admin_border_change: "@governor_efficiency!行政边界"
- message_filter_admin_border_change_desc: "你的[administrative|E][top_realm|E]内的[governorship|E]辖区边界改变了"
+ message_filter_admin_border_change_desc: "你的[government_bureaucratic_type|E][top_realm|E]内的[governorship|E]辖区边界改变了"
  message_filter_appointment_candidacy: "@titles_icon!任命候选资格"
  message_filter_appointment_candidacy_desc: "你对于拥有欢呼[succession_law|E]的[title|E]的任命候选资格发生变化"
  message_filter_candidate_title_gained: "@titles_icon!候选人获得头衔"
- message_filter_candidate_title_gained_desc: "支持或反对的候选人获得[administrative|E][title|E]"
+ message_filter_candidate_title_gained_desc: "支持或反对的候选人获得[government_bureaucratic_type|E][title|E]"
  message_filter_candidate_title_lost: "@titles_icon!候选人失去头衔"
- message_filter_candidate_title_lost_desc: "任命得到支持或反对的[ruler|E]失去[administrative|E][title|E]"
+ message_filter_candidate_title_lost_desc: "任命得到支持或反对的[ruler|E]失去[government_bureaucratic_type|E][title|E]"
  message_filter_provincial_army_assignment: "@titles_icon!省份军队部署"
  message_filter_provincial_army_assignment_desc: "[provincial|E][army|E]部署"
  message_filter_admin_provincial_army_requests: "@soldier_icon!请求省份军队"
@@ -397,6 +406,8 @@
  #GREAT PROJECT
  message_filter_great_project: "@great_project_icon!大型工程升级"
  message_filter_great_project_desc: "一项你可能感兴趣的[great_project|E]规划、完成或取消"
+ message_filter_great_project_contribution: "@great_project_icon!大型工程贡献"
+ message_filter_great_project_contribution_desc: "你可能感兴趣的某个[great_projects|E][great_project_contribution|E]收到投资，或者其奖励在完成后已发放。"
  #REQUIRED
  message_filter_event_outcome: "@catch_all_icon!事件结果"
  message_filter_event_outcome_desc: "收到的事件结果和采取的行动"
@@ -406,3 +417,25 @@
  #TRIBUTARY
  message_filter_tributary: "@tributary_icon!$CONTRACT_VASSAL_SIGNATURE_TRIBUTARY_TYPE$"
  message_filter_tributary_desc: "与你的[tributaries|E]有关的变化和发展"
+ #PAM - Saints
+ message_filter_character_becomes_saint: "@religious_icon!角色成为圣人"
+ message_filter_character_becomes_saint_desc: "你的[faith|E]的一名角色被封圣"
+ #SF change
+ message_filter_spiritual_fulfillment_changed: "@religious_icon!灵性满足变动"
+ message_filter_spiritual_fulfillment_changed_desc: "你的[spiritual_fulfillment|E]变化"
+ message_filter_liege_ceded_title: "领主移交头衔"
+ message_filter_liege_ceded_title_desc: "你的[liege|E]或更高同意将[realm|E][title|E]或[vassal|E]移交给另一名独立统治者。"
+ message_filter_clergy_title_transfer: "移交圣职头衔"
+ message_filter_clergy_title_transfer_desc: "你的批准要么允许[title|E]在世俗[rulers|E]之间和平转移，要么被忽视。"
+ message_filter_holy_site_changed: "圣地变化"
+ message_filter_holy_site_changed_desc: "你的[faith|E]获得、失去、升级或降级了一处[holy_site|E]"
+ message_filter_clerical_region: "@religious_icon!圣职区变动"
+ message_filter_clerical_region_desc: "相关[clerical_region|E]的地位已改变"
+ #PAM - Ecumenical Councils
+ message_filter_ecumenical_council_ruling: "@religious_icon!大公会议裁决"
+ message_filter_ecumenical_council_ruling_desc: "一场[ecumenical_council|E]解决了你的[faith|E]的问题"
+ #PAM - Great Schism
+ message_filter_great_schism_progress: "@religious_icon!大分裂进度"
+ message_filter_great_schism_progress_desc: "基督教世界走向[Concept( 'schism', '大分裂')|E]"
+ message_filter_order_espousing_beliefs: "@religious_icon!隐修修会扩大"
+ message_filter_order_espousing_beliefs_desc: "一个[monastic_holy_order|E]正在提升其[tenet|E]的[tenet_popularity|E]，可能在你的[faith|E]内部传播某一[rite|E]，也可能从另一个修会手中获得一处修道院[lease|E]。"

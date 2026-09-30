@@ -74,6 +74,11 @@
  activity_system.0320.t: "Conclusion inattendue"
  activity_system.0320.desc: "Notre hôt[host.Custom('FR_EEsse')], [host.Custom('FR_le_Char_Pi')][host.GetTitledFirstName], a perdu des terres. Notre [activity_type.GetNameNoTooltip()|l] a donc pris fin prématurément.\n\nCe n’est certainement pas l’issue que j’envisageais, après toute la fanfare des invitations et des préparatifs. Je suppose que ma suite et moi n’avons plus qu’à rentrer chez nous, en [ROOT.Char.GetCapitalLocation.GetNameNoTooltip]."
  activity_system.0320.a: "Ce qui est fait est fait."
+ activity_system.0321.t: "$activity_system.0320.t$"
+ activity_system.0321.desc.intro: "Notre [Select_CString(host.IsFemale,'hôtesse','hôte')], [host.Custom('FR_le_Char_Pi')][host.GetTitledFirstName],"
+ activity_system.0321.desc.no_christian: "a révélé, à la surprise de tous, s’être détourné[host.Custom('FR_E')] du culte [ROOT.Char.GetFaith.GetAdherentName] pour embrasser la foi [host.GetFaith.GetAdjective]."
+ activity_system.0321.desc.no_hof: "n’est plus le chef de l’Église [ROOT.Char.GetFaith.GetAdjective].\n\nAlors que cette révélation choquante parvient aux invités, on nous exhorte instamment à rentrer chez nous."
+ activity_system.0321.a: "Je n’arrive pas à y croire !"
  #If you have gained the incapable trait
  activity_system.0330.t: "Incapable"
  activity_system.0330.desc.intro: "On m’a jugé[ROOT.Char.Custom('FR_E')] incapable et je suis considéré[ROOT.Char.Custom('FR_E')] entièrement inapte à gérer mes propres affaires, y compris mon [activity_type.GetNameNoTooltip()] !\n\n"
@@ -83,6 +88,11 @@
  activity_system.0331.t: "Incapable"
  activity_system.0331.desc: "Notre hôt[host.Custom('FR_EEsse')], [host.Custom('FR_le_Char_Pi')][host.GetTitledFirstName], a été jugé[host.Custom('FR_E')] inapte par son entourage et totalement incapable de gérer ses propres affaires, dont l’activité de [activity_type.GetNameNoTooltip()|l] !\n\nHélas ! Nous devons retourner chez nous les mains vides. "
  activity_system.0331.a: "Quel dommage !"
+ #If someone necessary deccide isolate
+ activity_system.0340.t: "$isolating_modifier$"
+ activity_system.0340.desc.host: "Pour une raison imprévue ([host.Custom('GetIsolationReason')|l]), l’activité programmée en [location.GetName] – [activity_type.GetNameNoTooltip()|l] – ne peut plus se dérouler en toute sécurité. Dans l’intérêt des participants, je me vois contraint[host.Custom('FR_E')] de l’annuler."
+ activity_system.0340.desc.guest: "Pour une raison imprévue ([host.Custom('GetIsolationReason')|l]), l’activité programmée en [location.GetName] – [activity_type.GetNameNoTooltip()|l] – ne peut plus se dérouler en toute sécurité. Dans l’intérêt des participants, [host.Custom('FR_le_Char_Pi')][host.GetTitledFirstName] a été contraint[host.Custom('FR_E')] de l’annuler."
+ activity_system.0340.a: "Il faut aller dans un endroit sûr !"
  #Late to the activity
  activity_system.0400.t: "En retard sur le calendrier"
  activity_system.0400.desc_leader: "Quand je vois le regard dépité [travel_leader.Custom2('FR_du_MyCharacterIntroductionNoComma', ROOT.Char)], je comprends qu’[travel_leader.Custom('FR_IlElle')] ne m’apporte pas de bonnes nouvelles.\n\n« J’ai le regret de vous annoncer que nous sommes en retard sur le calendrier d’environ [GetTimeBetweenDates(ROOT.Char.GetInvolvedActivity.GetActiveStartDate.Self, ROOT.Char.GetTravelPlan.GetData.GetNextDestination.GetEstimatedArrivalDate)], [ROOT.Char.Custom('FR_MonseigneurMadame')|U], et nous risquons de ne pas arriver à destination à temps. »"
@@ -130,3 +140,9 @@
  activity_system.0554.opening: "[host.Custom2('AppropriateGreeting', ROOT.Char)]"
  activity_system.0554.a: "Je dois accepter ce défi."
  activity_system.0554.b: "Je vais réfléchir à une bonne excuse."
+ has_activity_intent_global: "[CHARACTER.Custom('FR_le_Char_U_Pi')|U][CHARACTER.GetShortUIName|U] doit avoir l’[intent|El] [ACTIVITY_INTENT.GetName]"
+ has_activity_intent_global_not: "[CHARACTER.Custom('FR_le_Char_U_Pi')|U][CHARACTER.GetShortUIName|U] ne peut pas avoir l’[intent|El] [ACTIVITY_INTENT.GetName]"
+ has_activity_intent_first: "$has_activity_intent_global$"
+ has_activity_intent_first_not: "$has_activity_intent_global_not$"
+ has_activity_intent_third: "$has_activity_intent_global$"
+ has_activity_intent_third_not: "$has_activity_intent_global_not$"

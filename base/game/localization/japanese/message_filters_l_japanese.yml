@@ -107,6 +107,11 @@
  message_filter_dynasty_child_of_age_desc: "あなたの[dynasty|E]の[child|E]があなたの[court|E]で成人を迎える"
  message_filter_child_of_age: "@child_icon! あなたの子供が成人する"
  message_filter_child_of_age_desc: "あなたの[children|E]の一人が成人する"
+ #INTERACTION
+ message_filter_interaction_consequence: "@catch_all_icon! 行動の結果"
+ message_filter_interaction_consequence_desc: "実施された行動の結果"
+ message_filter_ransom_result: "@prison_icon! 身代金の結果"
+ message_filter_ransom_result_desc: "身代金を受け取った結果"
  #DEATH
  message_filter_death_family: "@death_icon! 近親者"
  message_filter_death_family_desc: "[close_family|E]者が死亡する"
@@ -239,9 +244,9 @@
  message_filter_war_troops_gained: "@soldier_icon! 兵士獲得"
  message_filter_war_troops_gained_desc: "あなたが[special_troops|E]を得る"
  message_filter_war_troops_dismissed: "@soldier_icon! 兵士解散"
- message_filter_war_troops_dismissed_desc: "あなたの[special_troops|E]、[mercenary_company|E]、雇われの[holy_order|E]が解隊される"
+ message_filter_war_troops_dismissed_desc: "あなたの[special_troops|E]、雇った[mercenary_company|E]、または雇った[military_holy_order|E]が解散する"
  message_filter_war_enemy_troops: "@soldier_icon! 敵が兵士獲得"
- message_filter_war_enemy_troops_desc: "敵が[special_troops|E]を得るか、[mercenary_company|E]または[holy_order|E]を入隊させる"
+ message_filter_war_enemy_troops_desc: "敵が[special_troops|E]を得るか、[mercenary_company|E]または[military_holy_order|E]を雇う"
  #ARTIFACT
  message_filter_artifact_claim: "@artifact_icon! 宝物の請求権"
  message_filter_artifact_claim_desc: "あなたが[artifact_claim|E]を得るか、失う"
@@ -255,6 +260,8 @@
  message_filter_faith_excommunication_desc: "あなたの[faith|E]の[ruler|E]が[excommunicated|E]される"
  message_filter_head_of_faith_changed: "@religious_icon! 新しい宗教指導者"
  message_filter_head_of_faith_changed_desc: "あなたの[head_of_faith|E]が変わる"
+ message_filter_rite_updated: "@religious_icon! 流派の変更"
+ message_filter_rite_updated_desc: "あなたの[rite|E]か[mainline_rite|E]の[core_tenet|E]または[doctrine|E]が1つ以上変化する"
  message_filter_realm_priest_endorsement: "@bishop_icon! 領国祭司の支持"
  message_filter_realm_priest_endorsement_desc: "あなたに対する[realm_priest_possessive|E]の支持が変わる"
  message_filter_liege_converting_holding: "@conversion_icon! 主君が伯爵領を改宗"
@@ -302,7 +309,9 @@
  message_filter_accolade_eligibility: "@accolade_icon! [accolade_type|E]を得る資格を持つ騎士"
  message_filter_accolade_eligibility_desc: "[knight|E]に新たな[accolade_type|E]の[accolade|E]を授与できる"
  message_filter_squire_training: "@accolade_icon! [acclaimed_knight|E]が従者を訓練した"
- message_filter_squire_training_desc: "[accolade|E]の[accolade_squires|E]適性により、[courtier|E]の能力が向上する"
+ message_filter_squire_training_desc: "[accolade|E]の[accolade_squires|E]により、[courtier|E]の能力が向上する"
+ message_filter_accolade_mercenary: "@accolade_icon! 元[acclaimed_knight|E]の[adventurer|E]"
+ message_filter_accolade_mercenary_desc: "あなたの元[acclaimed_knight|E]であり、傭兵となった[adventurer|E]があなたに接触する"
  #ACTIVITY
  message_filter_tournament_arrival: "@tournament_icon! 統治者到着"
  message_filter_tournament_arrival_desc: "著名な[ruler|E]が[activity_guest|E]としてあなたの[GetActivityType( 'activity_tournament' ).GetName]に到着する"
@@ -314,7 +323,7 @@
  message_filter_tournament_qualification_champion_desc: "[GetActivityType( 'activity_tournament' ).GetName][contest|E]へのあなたの代闘士の[contest_qualification|E]が変わる"
  message_filter_tournament_qualification_knight: "@tournament_icon! 騎士の参加資格"
  message_filter_tournament_qualification_knight_desc: "[GetActivityType( 'activity_tournament' ).GetName][contest|E]へのあなたの[knights_possessive|E]の[contest_qualification|E]が変わる"
- #HOLY ORDER
+ #Military Order
  message_filter_holy_order_founded: "@holy_order_icon! 宗教騎士団創設"
  message_filter_holy_order_founded_desc: "あなたの[faith|E]の[holy_order|E]が創設される"
  message_filter_holy_order_founded_enemy: "@holy_order_icon! 近くで宗教騎士団創設"
@@ -322,7 +331,7 @@
  message_filter_holy_order_destroyed: "@holy_order_icon! 宗教騎士団解隊"
  message_filter_holy_order_destroyed_desc: "あなたの[faith|E]の[holy_order|E]が解隊される"
  message_filter_holy_order_hired: "@holy_order_icon! 騎士団雇用"
- message_filter_holy_order_hired_desc: "あなたが[holy_order_patron|E]である[holy_order|E]が雇用される"
+ message_filter_holy_order_hired_desc: "あなたが[military_holy_order_patron|E]を務める[military_holy_order|E]が雇用される"
  message_filter_holy_order_patronage: "@holy_order_icon! 後援者"
  message_filter_holy_order_patronage_desc: "あなたが[holy_order_patron|E]である[holy_order|E]の地位が変わる"
  #LAAMP
@@ -359,15 +368,15 @@
  message_filter_governance_contracts: "@catch_all_icon! 統治問題出現"
  message_filter_governance_contracts_desc: "あなたが統治する領土で[governance_issue|E]が発生する"
  message_filter_governor_notification: "@governor_efficiency! 属州総督通知"
- message_filter_governor_notification_desc: "[administrative|E][realm|E]で[governor|E]としてプレイしている際のさまざまなタイプの通知"
+ message_filter_governor_notification_desc: "[government_bureaucratic_type|E]の[realm|E]で[governor|E]としてプレイしている際のさまざまなタイプの通知"
  message_filter_admin_border_change: "@governor_efficiency! 官僚制境界"
- message_filter_admin_border_change_desc: "あなたの[administrative|E][top_realm|E]内の[governorship|E]領の境界が変わる"
+ message_filter_admin_border_change_desc: "あなたの[government_bureaucratic_type|E][top_realm|E]内の[governorship|E]領の境界が変わる"
  message_filter_appointment_candidacy: "@titles_icon! 指名立候補者"
  message_filter_appointment_candidacy_desc: "[succession_law|E]「発声投票」を持つ[title|E]へのあなたの指名立候補者が変わる"
  message_filter_candidate_title_gained: "@titles_icon! 候補者が称号獲得"
- message_filter_candidate_title_gained_desc: "支持されている、または反対されている候補者が[administrative|E][title|E]を得る"
+ message_filter_candidate_title_gained_desc: "支持されている、または反対されている候補者が[government_bureaucratic_type|E][title|E]を得る"
  message_filter_candidate_title_lost: "@titles_icon! 候補者が称号喪失"
- message_filter_candidate_title_lost_desc: "任命を支持または反対されている[ruler|E]が[administrative|E][title|E]を失う"
+ message_filter_candidate_title_lost_desc: "任命を支持または反対されている[ruler|E]が[government_bureaucratic_type|E][title|E]を失う"
  message_filter_provincial_army_assignment: "@titles_icon! 州軍の割り当て"
  message_filter_provincial_army_assignment_desc: "[provincial|E][army|E]が割り当てられる"
  message_filter_admin_provincial_army_requests: "@soldier_icon! 州軍を要請"
@@ -397,6 +406,8 @@
  #GREAT PROJECT
  message_filter_great_project: "@great_project_icon! 大事業の状況が変化"
  message_filter_great_project_desc: "あなたの興味を引きそうな[great_project|E]が計画、完成、または中止された"
+ message_filter_great_project_contribution: "@great_project_icon! 大事業への寄付"
+ message_filter_great_project_contribution_desc: "関心のある[great_projects|E]に[great_project_contribution|E]が行われたとき、または完成後に報酬が分配されたときに通知される"
  #REQUIRED
  message_filter_event_outcome: "@catch_all_icon! イベントの結果"
  message_filter_event_outcome_desc: "イベントの結果が出て、アクションが実行される"
@@ -406,3 +417,25 @@
  #TRIBUTARY
  message_filter_tributary: "@tributary_icon! $CONTRACT_VASSAL_SIGNATURE_TRIBUTARY_TYPE$"
  message_filter_tributary_desc: "あなたの[tributaries|E]に関連する変化と発展"
+ #PAM - Saints
+ message_filter_character_becomes_saint: "@religious_icon! キャラクターが列聖"
+ message_filter_character_becomes_saint_desc: "あなたの[faith|E]のキャラクターが列聖された"
+ #SF change
+ message_filter_spiritual_fulfillment_changed: "@religious_icon! 霊的充足度の変化"
+ message_filter_spiritual_fulfillment_changed_desc: "あなたの[spiritual_fulfillment|E]の変化"
+ message_filter_liege_ceded_title: "主君が称号を移譲"
+ message_filter_liege_ceded_title_desc: "あなたの[liege|E]以上の人物が、[realm|E]の[title|E]または[vassal|E]をほかの独立した統治者に譲ることに同意した。"
+ message_filter_clergy_title_transfer: "聖職称号の移譲"
+ message_filter_clergy_title_transfer_desc: "あなたの承認により、世俗[rulers|E]間で[title|E]が平和的に移譲されたか、あるいは承認が無視された。"
+ message_filter_holy_site_changed: "聖地の変更"
+ message_filter_holy_site_changed_desc: "あなたの[faith|E]が[holy_site|E]を得る、失う、格上げする、または格下げする"
+ message_filter_clerical_region: "@religious_icon! 聖職管区の変更"
+ message_filter_clerical_region_desc: "関連する[clerical_region|E]の状況が変化した"
+ #PAM - Ecumenical Councils
+ message_filter_ecumenical_council_ruling: "@religious_icon! 公会議の決定"
+ message_filter_ecumenical_council_ruling_desc: "[ecumenical_council|E]があなたの[faith|E]に関する問題を調停した"
+ #PAM - Great Schism
+ message_filter_great_schism_progress: "@religious_icon! 大分裂の進行"
+ message_filter_great_schism_progress_desc: "キリスト教世界が[Concept( 'schism', '大分裂')|E]に向かって進行する"
+ message_filter_order_espousing_beliefs: "@religious_icon! 修道会の拡大"
+ message_filter_order_espousing_beliefs_desc: "[monastic_holy_order|E]の[tenet|E]の[tenet_popularity|E]が高まっている。あなたの[faith|E]の[rite|E]を広めたり、あるいは別の修道会から修道院の[lease|E]を獲得している可能性がある。"

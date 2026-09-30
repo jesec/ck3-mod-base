@@ -1,0 +1,863 @@
+﻿@main_light_radius = 160
+@main_light_height = 260
+@main_light_angle = 20
+@main_cubemap_intensity = 0.4
+#########################################################################
+#########################################################################
+#																		#
+#							MAIN ENVIRONMENTS							#
+#																		#
+#########################################################################
+
+environment_pam_frontend_papal_main = {
+	cubemap = "gfx/portraits/environments/pam_romanesque_church_interior.dds"
+	cubemap_intensity = .25
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "point_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.12 .65 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 180 @main_light_height 155 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff = 200
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 25
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.07 .6 4 }
+			position = cylindrical	{ 55 15 -15 }
+			position_node = {
+				default = bn_h_head
+			}
+
+			look_at = {	0.0 18.0 0.0 }
+
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = bn_h_head
+			}
+
+			# For spot lights and point lights
+			radius = 130
+			falloff = 90
+
+			# For spot lights
+			outer_cone_angle = 400
+			inner_cone_angle = 200
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.07 1 0.35 }
+			position = cylindrical{ 90 175 90 }
+
+			look_at = { 0 18 0 }
+
+			# For spot lights and directional lights
+			look_at = { 0  0 }
+			look_at_node = {
+				default = bn_h_head
+			}
+
+			# For spot lights and point lights
+			radius = 100
+			falloff = 10
+
+			# For spot lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { @main_light_radius @main_light_height -15 }
+		look_at = { 0 18 0 }
+		look_at_node = {
+			default = bn_h_head
+		}
+		fov = 50
+		camera_near_far = { 10 650 }
+	}
+}
+
+environment_pam_frontend_papal_secondary = {
+	cubemap = "gfx/portraits/environments/pam_romanesque_church_interior.dds"
+	cubemap_intensity = .25
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "point_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.12 .65 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 180 @main_light_height 155 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff = 200
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 25
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.07 .6 4 }
+			position = cylindrical	{ 55 15 -15 }
+			position_node = {
+				default = bn_h_head
+			}
+
+			look_at = {	0.0 18.0 0.0 }
+
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = bn_h_head
+			}
+
+			# For spot lights and point lights
+			radius = 130
+			falloff = 90
+
+			# For spot lights
+			outer_cone_angle = 400
+			inner_cone_angle = 200
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.07 1 0.35 }
+			position = cylindrical{ 90 175 90 }
+
+			look_at = { 0 18 0 }
+
+			# For spot lights and directional lights
+			look_at = { 0  0 }
+			look_at_node = {
+				default = bn_h_head
+			}
+
+			# For spot lights and point lights
+			radius = 100
+			falloff = 10
+
+			# For spot lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { @main_light_radius @main_light_height -15 }
+		look_at = { 0 18 0 }
+		look_at_node = {
+			default = bn_h_head
+		}
+		fov = 50
+		camera_near_far = { 10 650 }
+	}
+}
+
+environment_pam_frontend_papal_heir = {
+	cubemap = "gfx/portraits/environments/pam_romanesque_church_interior.dds"
+	cubemap_intensity = .25
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "point_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.12 .65 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 180 @main_light_height 155 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff = 200
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 25
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.07 .6 4 }
+			position = cylindrical	{ 55 15 -15 }
+			position_node = {
+				default = bn_h_head
+			}
+
+			look_at = {	0.0 18.0 0.0 }
+
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = bn_h_head
+			}
+
+			# For spot lights and point lights
+			radius = 130
+			falloff = 90
+
+			# For spot lights
+			outer_cone_angle = 400
+			inner_cone_angle = 200
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.07 1 0.35 }
+			position = cylindrical{ 90 175 90 }
+
+			look_at = { 0 18 0 }
+
+			# For spot lights and directional lights
+			look_at = { 0  0 }
+			look_at_node = {
+				default = bn_h_head
+			}
+
+			# For spot lights and point lights
+			radius = 100
+			falloff = 10
+
+			# For spot lights
+			outer_cone_angle = 65
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { @main_light_radius @main_light_height -15 }
+		look_at = { 0 18 0 }
+		look_at_node = {
+			default = bn_h_head
+		}
+		fov = 50
+		camera_near_far = { 10 650 }
+	}
+}
+
+
+environment_pam_preromanesque_church_exterior = {
+	cubemap = "gfx/portraits/environments/pam_preromanesque_church_exterior.dds"
+	cubemap_intensity = 1.25
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .06 .5 5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 400 -65 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 450
+			falloff = 15
+
+			# For point lights
+			outer_cone_angle = 35
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 .6 1.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 0 600 0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 500
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .06 .5 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { -100 300 45 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 300
+			falloff =10
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 400 -65 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 5
+		camera_near_far = { 50 800 }
+	}
+}
+
+environment_pam_cathedral_construction = {
+	cubemap = "gfx/portraits/environments/pam_cathedral_construction.dds"
+	cubemap_intensity = 5
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .6 3.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 325 350 85 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 1000
+			falloff = 85
+
+			# For point lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 .5 2 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { -450 1000 -90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 1000
+			falloff = 45
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .06 .4 1.25 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 400 225 -50 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 45
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 325 350 85 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 5
+		camera_near_far = { 10 1000 }
+	}
+}
+
+environment_pam_gothic_cathedral_interior = {
+	cubemap = "gfx/portraits/environments/pam_gothic_cathedral_interior.dds"
+	cubemap_intensity = 1.75
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .5 4 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 150 500 70 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 505
+			falloff = 95
+
+			# For point lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .06 .6 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 500 1000 0 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 1000
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .7 .3 .5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 500 150 95 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 1600
+			falloff = 15
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 150 500 70 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 5
+		camera_near_far = { 50 800 }
+	}
+}
+
+environment_pam_romanesque_church_exterior = {
+	cubemap = "gfx/portraits/environments/pam_romanesque_church_exterior.dds"
+	cubemap_intensity = 2
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .08 .5 3 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 105 300 15 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 255
+			falloff = 30
+
+			# For point lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .6 .4 1 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 500 600 -50 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 1000
+			falloff = 45
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .4 .3 .75 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 250 250 95 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 400
+			falloff = 55
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 105 300 15 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 5
+		camera_near_far = { 50 800 }
+	}
+}
+
+environment_pam_romanesque_church_interior = {
+	cubemap = "gfx/portraits/environments/pam_romanesque_church_interior.dds"
+	cubemap_intensity = .8
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .5 .1 2.25 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 300 200 90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 1000
+			falloff = 15
+
+			# For point lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .4 1.5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 695 295 -80 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 695
+			falloff = 10
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .3 .5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 700 400 -90 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 800
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 300 200 90 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 5
+		camera_near_far = { 50 800 }
+	}
+}
+
+environment_pam_simple_church_western_interior = {
+	cubemap = "gfx/portraits/environments/pam_simple_church_western_interior.dds"
+	cubemap_intensity = 2.5
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ .6 .2 1.75 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 535 305 60 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 600
+			falloff = 60
+
+			# For point lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .5 .35 5 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 695 290 -70 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 695
+			falloff = 55
+
+			# For point lights
+			outer_cone_angle = 25
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = no
+
+			color = hsv{ .1 .3 .35 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical { 500 500 -95 }	# Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 800
+			falloff = 5
+
+			# For point lights
+			outer_cone_angle = 100
+			inner_cone_angle = 50
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 535 300 60 }	# Radius, height, angle
+		look_at = { 0 0	0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 5
+		camera_near_far = { 50 800 }
+	}
+}

@@ -120,12 +120,15 @@ PixelShader =
 		}
 
 		// This is a high-level convencience function that can be used if no overlay shader customization is required
-		void GetProvinceOverlayAndBlend( in float2 NormalizedCoordinate, out float3 ProvinceOverlayColor, out float PreLightingBlend, out float PostLightingBlend )
+		void GetProvinceOverlayAndBlend( in float2 NormalizedCoordinate, out float3 ProvinceOverlayColor, out float PreLightingBlend, out float PostLightingBlend, in float SkipSecondaryProvinceOverlay )
 		{
 			float DistanceFieldValue = CalcDistanceFieldValue( NormalizedCoordinate );
 			float4 ProvinceOverlayColorWithAlpha = CalcPrimaryProvinceOverlay( NormalizedCoordinate, DistanceFieldValue );
 
-			ApplySecondaryProvinceOverlay( NormalizedCoordinate, DistanceFieldValue, ProvinceOverlayColorWithAlpha );
+			if ( SkipSecondaryProvinceOverlay < 0.00001f )
+			{
+				ApplySecondaryProvinceOverlay( NormalizedCoordinate, DistanceFieldValue, ProvinceOverlayColorWithAlpha );
+			}
 			ApplyAlternateProvinceOverlay( NormalizedCoordinate, ProvinceOverlayColorWithAlpha );
 
 			GetGradiantBorderBlendValues( ProvinceOverlayColorWithAlpha, PreLightingBlend, PostLightingBlend );

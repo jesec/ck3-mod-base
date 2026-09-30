@@ -70,7 +70,7 @@ sway_ongoing.1001 = {
 			chance = 40
 			add_prestige = minor_prestige_loss
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			arrogant = minor_stress_impact_gain
 		}
 		ai_chance = {
@@ -514,7 +514,10 @@ sway_ongoing.1003 = {
 			}
 		}
 		scope:scheme ?= {
-			add_scheme_progress = scheme_progress_gain
+			if = {
+				limit = { exists = scheme_owner }
+				add_scheme_progress = scheme_progress_gain
+			}
 		}
 	}
 
@@ -618,7 +621,7 @@ sway_ongoing.1004 = {
 #		name = sway_ongoing.1005.b
 #		add_prestige = minor_prestige_gain
 #
-#		stress_impact = {
+#		stress_and_fulfillment_impact = {
 #			arrogant = minor_stress_impact_loss
 #		}
 #		ai_chance = {
@@ -2111,7 +2114,8 @@ sway_ongoing.5011 = {
 			is_landed = yes
 		}
 		OR = {
-			liege ?= scope:target
+			liege ?= scope:target
+
 			AND = {
 				exists = scope:target.liege
 				scope:target.liege = scope:owner
@@ -2170,11 +2174,11 @@ sway_ongoing.5013 = {
 		first_valid = {
 			triggered_desc = {
 				trigger = {
-					NOR = {
-						has_character_flag = block_option_expansion
-						has_character_flag = block_option_library
-						has_character_flag = block_option_gold
-						has_character_flag = block_option_steal
+					has_none_of_variables = {
+						name = block_option_expansion
+						name = block_option_library
+						name = block_option_gold
+						name = block_option_steal
 					}
 				}
 				desc = sway_ongoing.5013.desc_opening
@@ -2226,21 +2230,21 @@ sway_ongoing.5013 = {
 					first_valid = {
 						triggered_desc = { #Nothing more to do
 							trigger = {
-								AND = {
-									has_character_flag = block_option_expansion
-									has_character_flag = block_option_library
-									has_character_flag = block_option_gold
+								has_all_variables = {
+									name = block_option_expansion
+									name = block_option_library
+									name = block_option_gold
 								}
 							}
 							desc = {
 								first_valid = {
 									triggered_desc = {
 										trigger = {
-											OR = {
-												has_character_flag = expansion_success_first_round
-												has_character_flag = library_success_first_round
-												has_character_flag = gold_success_first_round
-												has_character_flag = steal_success_first_round
+											has_variable = {
+												name = expansion_success_first_round
+												name = library_success_first_round
+												name = gold_success_first_round
+												name = steal_success_first_round
 											}
 										}
 										desc = sway_ongoing.5013.desc_end_good
@@ -2253,11 +2257,11 @@ sway_ongoing.5013 = {
 							first_valid = {
 								triggered_desc = {
 									trigger = {
-										OR = {
-											has_character_flag = expansion_success_first_round
-											has_character_flag = library_success_first_round
-											has_character_flag = gold_success_first_round
-											has_character_flag = steal_success_first_round
+										has_variable = {
+											name = expansion_success_first_round
+											name = library_success_first_round
+											name = gold_success_first_round
+											name = steal_success_first_round
 										}
 									}
 									desc = sway_ongoing.5013.desc_good
@@ -2387,13 +2391,13 @@ sway_ongoing.5013 = {
 		}
 	}
 
-	option = { #Tidy up the library - You're a scholar!
+	option = { #Tidy up the library - You're an erudite!
 		name = sway_ongoing.5012.b_trait
 		trigger = {
 			NOT = { has_character_flag = block_option_library }
-			has_trait = scholar
+			has_trait = erudite
 		}
-		trait = scholar
+		trait = erudite
 
 		change_variable = {
 			name = rating
@@ -2413,7 +2417,7 @@ sway_ongoing.5013 = {
 		trigger = {
 			NOR = {
 				has_character_flag = block_option_library
-				has_trait = scholar
+				has_trait = erudite
 			}
 		}
 		flavor = sway_ongoing.5012.b.tt
@@ -2503,9 +2507,9 @@ sway_ongoing.5013 = {
 		trigger = {
 			intrigue >= decent_skill_rating
 			NOT = { has_character_flag = block_option_steal }
-			AND = {
-				has_character_flag = block_option_gold
-				has_character_flag = gold_failure_first_round
+			has_all_variables = {
+				name = block_option_gold
+				name = gold_failure_first_round
 			}
 		}
 		skill = intrigue
@@ -2525,11 +2529,11 @@ sway_ongoing.5013 = {
 	option = { #Head off to bed after doing at least one things
 		name = sway_ongoing.5013.d
 		trigger = {
-			OR = {
-				has_character_flag = block_option_expansion
-				has_character_flag = block_option_library
-				has_character_flag = block_option_gold
-				has_character_flag = block_option_steal
+			has_variable = {
+				name = block_option_expansion
+				name = block_option_library
+				name = block_option_gold
+				name = block_option_steal
 			}
 		}
 		flavor = sway_ongoing.5011.b.tt
@@ -2542,11 +2546,11 @@ sway_ongoing.5013 = {
 	option = { #Head off to bed without doing anything
 		name = sway_ongoing.5012.d
 		trigger = {
-			NOR = {
-				has_character_flag = block_option_expansion
-				has_character_flag = block_option_library
-				has_character_flag = block_option_gold
-				has_character_flag = block_option_steal
+			has_none_of_variables = {
+				name = block_option_expansion
+				name = block_option_library
+				name = block_option_gold
+				name = block_option_steal
 			}
 		}
 		flavor = sway_ongoing.5011.b.tt

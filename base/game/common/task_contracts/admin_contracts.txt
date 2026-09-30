@@ -1073,7 +1073,12 @@ inept_mayor = {
 					increase_governance_effect = { VALUE = 4 }
 					add_dread = minor_dread_gain
 				}
-				task_contract_employer = { depose = yes } # depose_effect unnecessary for AI mayor
+				task_contract_employer = { # depose_effect unnecessary for AI mayor
+					if = {
+						limit = { is_ruler = yes }
+						depose = yes
+					}
+				}
 				task_contract_location.county = { remove_county_modifier = ep3_mismanaged_administration_modifier }
 			}
 		}

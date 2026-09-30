@@ -92,30 +92,30 @@
 
  nomad_vassal_modify_vassal_contract_interaction: "Request Contract Change"
  nomad_vassal_modify_vassal_contract_interaction_send: "Request Change"
- nomad_vassal_modify_vassal_contract_interaction_desc: "Renegotiate your [vassal_contract|E] with [secondary_recipient.GetShortUINameNoTooltip]"
+ nomad_vassal_modify_vassal_contract_interaction_desc: "Renegotiate [puppet_or_actor.GetShortUINamePossessive] [vassal_contract|E] with [secondary_recipient.GetShortUINameNoTooltip]"
  nomad_vassal_modify_vassal_contract_interaction_extra_icon: "$hook_extra_icon$"
  nomad_liege_modify_vassal_contract_interaction: "Modify $game_concept_vassal_contract$"
  nomad_liege_modify_vassal_contract_interaction_desc: "Renegotiate [recipient.GetShortUINamePossessiveNoTooltip] [vassal_contract|E]"
  nomad_liege_modify_vassal_contract_interaction_extra_icon: "$hook_extra_icon$"
 
- nomad_contract_request_remove_war_obligation_without_hook_desc: "You can #bold not#! rescind Tributary War Support obligation without a [hook|E], or without also rescinding your [suzerain_possessive|E] Guarantee"
- nomad_contract_request_add_guarantee_without_hook_desc: "You can #bold not#! gain your [suzerain_possessive|E] Guarantee without a [hook|E], or without also taking on a Tributary War Support obligation"
+ nomad_contract_request_remove_war_obligation_without_hook_desc: "[puppet_or_actor.GetShortUIName|U] can #bold not#! rescind Tributary War Support obligation without a [hook|E], or without also rescinding [puppet_or_actor.GetShortUINamePossessive] [suzerain_possessive|E] Guarantee"
+ nomad_contract_request_add_guarantee_without_hook_desc: "[puppet_or_actor.GetShortUIName|U] can #bold not#! gain [puppet_or_actor.GetShortUINamePossessive] [suzerain_possessive|E] Guarantee without a [hook|E], or without also taking on a Tributary War Support obligation"
 
  nomad_vassal_force_obligation_change_desc: "[recipient.GetShortUIName] is forced to accept"
 
  subject_modify_tributary_contract_interaction: "Request Contract Change"
  subject_modify_tributary_contract_interaction_send: "Request Change"
- subject_modify_tributary_contract_interaction_desc: "Renegotiate your [tributary_contract|E] with [recipient.GetShortUINameNoTooltip]"
+ subject_modify_tributary_contract_interaction_desc: "Renegotiate [puppet_or_actor.GetShortUINamePossessive] [tributary_contract|E] with [recipient.GetShortUINameNoTooltip]"
  suzerain_modify_tributary_contract_interaction: "Impose Contract Change"
  suzerain_modify_tributary_contract_interaction_send: "Impose Change"
- suzerain_modify_tributary_contract_interaction_desc: "Revise your [tributary_contract|E] with [recipient.GetShortUINameNoTooltip]"
+ suzerain_modify_tributary_contract_interaction_desc: "Revise [puppet_or_actor.GetShortUINamePossessive] [tributary_contract|E] with [recipient.GetShortUINameNoTooltip]"
  suzerain_modify_tributary_contract_interaction_extra_icon: "$hook_extra_icon$"
  nomad_tributary_force_obligation_change_desc: "[recipient.GetShortUIName] is forced to accept"
 
 
  vassal_modify_contract_cooldown_desc: "The [vassal_contract|E] can only be changed once every [EmptyScope.ScriptValue('vassal_modify_contract_cooldown_value')|V0] years - Can be changed again after [GetCurrentDateWithDiff( GetVarTimeRemaining( recipient.MakeScope, 'vassal_modify_contract_cooldown') )|V]"
  tributary_modify_contract_cooldown_desc: "The [tributary_contract|E] can only be changed once every [EmptyScope.ScriptValue('vassal_modify_contract_cooldown_value')|V0] years - Can be changed again after [GetCurrentDateWithDiff( GetVarTimeRemaining( recipient.MakeScope, 'vassal_modify_contract_cooldown') )|V]"
- nomad_contract_request_cooldown_desc: "You can #bold not#! make another request until [GetCurrentDateWithDiff( GetVarTimeRemaining( actor.MakeScope, 'nomad_contract_request_cooldown') )|V]"
+ nomad_contract_request_cooldown_desc: "[puppet_or_actor.GetShortUIName|U] can #bold not#! make another request until [GetCurrentDateWithDiff( GetVarTimeRemaining( puppet_or_actor.MakeScope, 'nomad_contract_request_cooldown') )|V]"
  
  tributary_settled: "Settled Tributary"
  tributary_settled_desc: "A settled [tributary|E] provides their [suzerain|E] with [gold|E], [levies|E], and [prestige|E] on a regular basis.\n\n$tributary_common_desc$"
@@ -129,12 +129,14 @@
 
  mpo_interaction_grant_paiza: "Grant Paiza"
  mpo_interaction_grant_paiza_desc: "Grant [recipient.GetShortUIName] a Paiza [artifact|E] and make [recipient.GetHerHim] [obedient|E] to you, if possible"
+ mpo_interaction_grant_paiza_notification: "You have ridden well beneath my banner, and the steppe should know it. Carry this paiza as a token of my favor, and let any who bar your path fear the hand that struck it."
  mpo_character_interaction_gurkhan: "You are #bold not#! the [gurkhan|E]"
  mpo_character_interaction_obedient: "[recipient.GetShortUIName] is already [obedient|E] to you"
  mpo_character_interaction_established_paiza_system: "You have #bold not#! taken the $mpo_establish_paiza_system_decision$ [decision|E]"
 
  mpo_interaction_ask_for_paiza: "Ask for Paiza"
  mpo_interaction_ask_for_paiza_desc: "Makes you [obedient|E] and grants you a Paiza artifact"
+ mpo_interaction_ask_for_paiza_notification: "I ask to ride beneath your protection. Grant me a paiza struck by your hand, and I shall owe you obedience — my herds, my riders, and my word."
 
  mpo_interaction_leverage_khan_authority: "Leverage Khan Authority"
  mpo_interaction_leverage_khan_authority_desc: "Take [herd|E] and [gold|E] from [recipient.GetShortUIName], and make [recipient.GetHerHim] [obedient|E], if possible.\n@alert_icon! The [gurkhan|E] might react to this abuse of authority."
@@ -256,6 +258,7 @@
  obedience_value_herder: "[herder|E]"
  obedience_value_herd_size: "Has a larger [herd|E]"
  obedience_value_military_might: "Has a stronger [army|E]"
+ obedience_value_loyal_soldiers: "From [traditions|E]"
 
  cease_tribute_higher_dominance_reason: "Higher [dominance|E] than [ROOT.Char.GetSuzerain.GetShortUIName|U]: $VALUE|=+0$"
  cease_tribute_showed_weakness_in_war_reason: "[overlord|E] showed weakness in [war|E]: $VALUE|=+0$"
@@ -460,25 +463,24 @@
  mpo_feudalize_nomadic_land_modifier: "Nomadic Land"
  mpo_feudalize_nomadic_land_modifier_desc: "This land has only recently been settled, and is still struggling with its nomadic legacy."
 
- action_upgrade_nomadic_holding_type_combined_group_label: "@building_icon! Should Feudalize Nomadic Holdings"
+ action_upgrade_nomadic_holding_type_combined_group_label: "@building_icon! Should [GetPlayer.Custom('GetTribalizeFeudalize')] Nomadic Holdings"
  action_upgrade_nomadic_holding_type_combined_label: "[landed_title.Custom('GetTierIcon')] [landed_title.GetNameNoTooltip]"
- action_upgrade_nomadic_holding_type: "@building_icon! Should Feudalize [nomadic_holding|E]"
- action_upgrade_nomadic_holding_type_combined_group_name: "@building_icon! Should Feudalize [nomadic_holdings|E]"
+ action_upgrade_nomadic_holding_type: "@building_icon! Should [GetPlayer.Custom('GetTribalizeFeudalize')] [nomadic_holding|E]"
+ action_upgrade_nomadic_holding_type_combined_group_name: "@building_icon! Should [GetPlayer.Custom('GetTribalizeFeudalize')] [nomadic_holdings|E]"
  action_upgrade_nomadic_holding_type_combined_group_description: "As a non-[GetGovernment( 'nomad_government' ).GetName] [character|E], [nomadic_holdings|E] give you neither [levies|E] nor [taxes|E]. You should reform the $game_concept_holding$, making it a [castle|E].$action_upgrade_nomadic_holding_type_HELP$"
- action_upgrade_nomadic_holding_type_label: "@building_icon! You should feudalize [landed_title.Custom('GetTierIcon')][landed_title.GetDefinitiveNameNoTooltip]"
+ action_upgrade_nomadic_holding_type_label: "@building_icon! You should [GetPlayer.Custom('GetTribalizeFeudalize')] [landed_title.Custom('GetTierIcon')][landed_title.GetDefinitiveNameNoTooltip]"
  action_upgrade_nomadic_holding_type_desc: "$action_upgrade_nomadic_holding_type_combined_group_description$"
  action_upgrade_nomadic_holding_type_click: "#I Click to select the $game_concept_holding$#!"
  action_upgrade_nomadic_holding_type_HELP: "\n\n#help #!"
 
- action_upgrade_herder_holding_type_combined_group_label: "@building_icon! Should Feudalize Herder Holdings"
+ action_upgrade_herder_holding_type_combined_group_label: "@building_icon! Should [GetPlayer.Custom('GetTribalizeFeudalize')] Herder Holdings"
  action_upgrade_herder_holding_type_combined_label: "[landed_title.Custom('GetTierIcon')] [landed_title.GetNameNoTooltip]"
- action_upgrade_herder_holding_type: "@building_icon! Should Feudalize [herder|E] [holding|E]"
- action_upgrade_herder_holding_type_combined_group_name: "@building_icon! Should Feudalize [herder|E] [holdings|E]"
- action_upgrade_herder_holding_type_combined_group_description: "As a non-[herder|E] [character|E], [herder|E] [holdings|E] give you neither [levies|E] nor [taxes|E]. You should reform the $game_concept_holding$, making it a [castle|E].$action_upgrade_herder_holding_type_HELP$"
- action_upgrade_herder_holding_type_label: "@building_icon! You should feudalize [landed_title.Custom('GetTierIcon')][landed_title.GetDefinitiveNameNoTooltip]"
+ action_upgrade_herder_holding_type: "@building_icon! Should [GetPlayer.Custom('GetTribalizeFeudalize')] [herder|E] [holding|E]"
+ action_upgrade_herder_holding_type_combined_group_name: "@building_icon! Should [GetPlayer.Custom('GetTribalizeFeudalize')] [herder|E] [holdings|E]"
+ action_upgrade_herder_holding_type_combined_group_description: "As a non-[herder|E] [character|E], [herder|E] [holdings|E] give you neither [levies|E] nor [taxes|E]. You should reform the $game_concept_holding$, making it a [castle|E]."
+ action_upgrade_herder_holding_type_label: "@building_icon! You should [GetPlayer.Custom('GetTribalizeFeudalize')] [landed_title.Custom('GetTierIcon')][landed_title.GetDefinitiveNameNoTooltip]"
  action_upgrade_herder_holding_type_desc: "$action_upgrade_herder_holding_type_combined_group_description$"
  action_upgrade_herder_holding_type_click: "#I Click to select the $game_concept_holding$#!"
- action_upgrade_herder_holding_type_HELP: "\n\n#help #!" #TODO MPO
 
  action_losing_tributaries_label: "@tributary_icon! Losing Tributaries"
  action_losing_tributaries: "$action_losing_tributaries_label$"
@@ -492,8 +494,10 @@
  # Switch from Vassal to Tributary
  mpo_vassal_to_tributary_interaction: "Pledge Tribute"
  mpo_vassal_to_tributary_interaction_desc: "Become a [tributary|E] of [recipient.GetShortUIName]"
+ mpo_vassal_to_tributary_interaction_notification: "I do not ask to leave your shadow, only to stand a little freer in it. Let me ride as your tributary: my tribute will reach you all the same, but my people will answer to me."
  VASSAL_TO_TRIBUTARY_HIGHER_OBLIGATIONS: "Offer a bigger @tributary_icon![Concept('tributary','tribute')|E]"
  AI_HIGHER_OBLIGATIONS_REASON: "[actor.GetShortUIName|U] promised higher [obligations|E]: $VALUE|=+0$"
+ IS_NOMADIC_RERRECIPIENT_IS_NOMADIC_RERASONASON: "[recipient.GetShortUIName|U] is a [GetGovernment( 'nomad_government' ).GetName] [ruler|E]: $VALUE|=+0$"
  
  action_switch_to_tributary: "$action_switch_to_tributary_label$"
  action_switch_to_tributary_label: "Vassals Cannot [migrate|E]"

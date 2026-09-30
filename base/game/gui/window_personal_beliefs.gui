@@ -1,0 +1,1134 @@
+﻿window = {
+	name = "window_personal_beliefs"
+	widgetid = "window_personal_beliefs"
+	datacontext = "[PersonalBeliefsWindow.GetRite]"
+	datacontext = "[Rite.GetFaith]"
+	size = { 1110 910 }
+	position = { 610 70 }
+
+	allow_outside = yes
+	layer = middle
+	movable = yes
+
+	using = Window_Size_MainTab
+	using = Window_Background
+	using = Window_Decoration_Spike
+
+	state = {
+		name = default_tab
+		trigger_on_create = yes
+		on_start = "[PersonalBeliefsWindow.SetActiveTab( 'tab_tenets' )]"
+	}
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+	}
+
+	margin_widget = {
+		layoutpolicy_horizontal = expanding
+		size = { 100% 100% }
+
+		widget = {
+			size = { 100% 100% }
+
+			vbox = {
+				using = Window_Margins
+
+				header_pattern = {
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "header_text"
+					{
+						text = "PERSONAL_BELIEFS_VIEW_TITLE"
+					}
+
+					blockoverride "button_close"
+					{
+						onclick = "[PersonalBeliefsWindow.Close]"
+					}
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						### LEFT SIDE
+						vbox = {
+							minimumsize = {	582 0 }
+							layoutpolicy_vertical = expanding
+							### RITE & FAITH
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								margin_bottom = 15
+
+								background = {
+									margin_top = 10
+									margin_bottom = 10
+									margin_left = 5
+
+									using = Background_Area
+
+									modify_texture = {
+										texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+										blend_mode = alphamultiply
+										alpha = 1
+										rotate_uv = 90
+										mirror = vertical
+									}
+								}
+
+								### RITE ICON
+								icon = {
+									size = { 60 60 }
+									tooltipwidget = { rite_tooltip = {} }
+									using = tooltip_se
+
+									texture = "[Rite.GetIcon]"
+								}
+
+								### RITE & FAITH TEXT
+								vbox = {
+									layoutpolicy_horizontal = expanding
+
+									text_single = {
+										layoutpolicy_horizontal = expanding
+
+										text = "PERSONAL_BELIEFS_VIEW_FOLLOWING"
+										align = nobaseline
+									}
+
+									text_single = {
+										layoutpolicy_horizontal = expanding
+
+										text = "PERSONAL_BELIEFS_VIEW_PARENT_FAITH"
+										align = nobaseline
+									}
+								}
+
+								expand = {}
+							}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								margin_left = 15
+								margin_right = 10
+								spacing = 10
+
+								background = {
+									texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+									spriteType = Corneredtiled
+									margin = { 0 5 }
+
+									spriteborder = { 40 8 }
+									texture_density = 2
+
+									modify_texture = {
+										name = "mask"
+										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+										spriteType = Corneredstretched
+										spriteborder = { 0 0 }
+										blend_mode = alphamultiply
+										mirror = horizontal
+									}
+								}
+
+								text_single = {
+									layoutpolicy_horizontal = expanding
+									autoresize = no
+
+									text = "PERSONAL_BELIEFS_PERSONAL_TENETS_HEADING"
+									using = tooltip_ne
+									using = Font_Size_Medium
+								}
+
+								expand = {}
+
+								text_single = {
+									margin_bottom = 2
+
+									text = "[PersonalBeliefsWindow.GetPersonalTenetsTitle]"
+									tooltip = "[PersonalBeliefsWindow.GetCharacter.GetPersonalTenetSlotsBreakdown]"
+									using = tooltip_ne
+									using = Font_Size_Medium
+								}
+							}
+
+							
+							### PERSONAL TENETS
+							vbox = {
+								name = "personal_tenets_tutorial_uses_this"
+								margin = { 5 5 }
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+
+								background = {
+									using = Background_Area
+								}
+
+								scrollbox = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+
+									blockoverride "scrollbox_content"
+									{
+										vbox = {
+											datacontext = "[PersonalBeliefsWindow.GetCharacter]"
+											layoutpolicy_horizontal = expanding
+											spacing = 3
+
+											datamodel = "[PersonalBeliefsWindow.GetPersonalTenets]"
+											item = {
+												hbox_personal_tenet_slot = {}
+											}
+										}
+									}
+								}
+							}
+
+							### SINOMETER
+							widget = {
+								name = "spiritual_fulfillment_tutorial_uses_this"
+								layoutpolicy_horizontal = expanding
+								size = { 0 250 }
+								scissor = yes
+
+								proportional_icon = {
+									parentanchor = top|hcenter
+									size = { 100% 500 }
+									texture = "gfx/interface/window_faith/pam_spiritual_fulfillment_background.dds"
+
+									using = Mask_Rough_Edges
+									alpha = 0.5
+									modify_texture = {
+										texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_inverse.dds"
+										blend_mode = alphaMultiply
+										spriteborder = { 100 100 }
+										alpha = 0.5
+									}
+								}
+
+								vbox = {
+									layoutpolicy_vertical = expanding
+									expand = {}
+
+									vbox = {
+										datacontext = "[PersonalBeliefsWindow.GetCharacter]"
+										margin_top = 20
+										spacing = 20
+
+										hbox = {
+											margin_top = 5
+											margin_bottom = 10
+
+											background = {
+												texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+												spriteType = Corneredtiled
+												spriteborder = { 40 8 }
+												texture_density = 2
+
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_horizontal_middle.dds"
+													spriteType = Corneredstretched
+													spriteborder = { 0 0 }
+													blend_mode = alphamultiply
+												}
+											}
+
+											highlight_icon = {
+												datacontext = "[PersonalBeliefsWindow.GetCharacter.GetSpiritualFulfillmentLevel]"
+												texture = "[SpiritualFulfillmentLevel.GetIcon]"
+												size = { 45 45 }
+											}
+
+											vbox = {
+												margin_left = 8
+												text_single = {
+													layoutpolicy_horizontal = expanding
+													text = "PERSONAL_BELIEFS_VIEW_FULFILLMENT_METER_VALUE"
+													using = Font_Size_Medium
+												}
+
+												text_single = {
+													layoutpolicy_horizontal = expanding
+
+													datacontext = "[PersonalBeliefsWindow.GetCharacter.GetSpiritualFulfillmentLevel]"
+
+													text = "PERSONAL_BELIEFS_VIEW_FULFILLMENT_METER_LEVEL"
+
+													tooltipwidget = {
+														using = fulfillment_tooltip
+													}
+												}
+											}
+											expand = {}
+										}
+										expand = {}
+
+										widget_fulfillment_bar_horizontal = {}
+										expand = {}
+
+									}
+								}
+
+							}
+						}
+
+						### RIGHT SIDE
+						vbox = {
+							name = "personal_beliefs_right_side_tutorial_uses_this"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+
+							### TABS HEADER (NOT PICKING)
+							hbox = {
+								name = "tabs"
+								visible = "[And( Not( PersonalBeliefsWindow.IsAddingPersonalTenet ), Not( PersonalBeliefsWindow.IsSwappingPersonalTenet ) )]"
+								layoutpolicy_horizontal = expanding
+
+								button_tab = {
+									shortcut = "tab_1"
+									onclick = "[PersonalBeliefsWindow.SetActiveTab( 'tab_tenets' )]"
+									down = "[PersonalBeliefsWindow.IsActiveTab( 'tab_tenets' )]"
+
+									alwaystransparent = "[PersonalBeliefsWindow.IsActiveTab( 'tab_tenets' )]"
+
+									blockoverride "tab_label"
+									{
+										text = "PERSONAL_BELIEFS_VIEW_TAB_TENETS"
+										max_width = 220
+									}
+
+									blockoverride "icon_visible" {}
+
+									blockoverride "tab_icon"
+									{
+										texture = "gfx/interface/icons/flat_icons/tenets.dds"
+										down = "[PersonalBeliefsWindow.IsActiveTab( 'tab_tenets' )]"
+									}
+								}
+
+								button_tab = {
+									shortcut = "tab_2"
+									onclick = "[PersonalBeliefsWindow.SetActiveTab( 'tab_doctrines' )]"
+									down = "[PersonalBeliefsWindow.IsActiveTab( 'tab_doctrines' )]"
+
+									alwaystransparent = "[PersonalBeliefsWindow.IsActiveTab( 'tab_doctrines' )]"
+
+									blockoverride "tab_label"
+									{
+										text = "PERSONAL_BELIEFS_VIEW_TAB_DOCTRINES"
+										max_width = 220
+									}
+
+									blockoverride "icon_visible" {}
+
+									blockoverride "tab_icon"
+									{
+										texture = "gfx/interface/icons/flat_icons/doctrines.dds"
+										down = "[PersonalBeliefsWindow.IsActiveTab( 'tab_doctrines' )]"
+									}
+								}
+							}
+
+							### HEADER (IN PICKING MODE)
+							widget = {
+								visible = "[Or( PersonalBeliefsWindow.IsAddingPersonalTenet, PersonalBeliefsWindow.IsSwappingPersonalTenet )]"
+								size = { 330 42 }
+								layoutpolicy_horizontal = expanding
+
+								background = {
+									using = Background_Area
+								}
+
+								hbox = {
+									spacing = 5
+									margin_left = 35
+									margin_right = 5
+
+									text_single = {
+										visible = "[PersonalBeliefsWindow.IsAddingPersonalTenet]"
+										layoutpolicy_horizontal = expanding
+										autoresize = no
+
+										text = "PERSONAL_BELIEFS_VIEW_PICKING_HEADER_ADD"
+										align = nobaseline|center
+									}
+
+									text_single = {
+										visible = "[PersonalBeliefsWindow.IsSwappingPersonalTenet]"
+										layoutpolicy_horizontal = expanding
+										autoresize = no
+
+										text = "PERSONAL_BELIEFS_VIEW_PICKING_HEADER_SWAP"
+										align = nobaseline|center
+									}
+
+									button_cancel = {
+										onclick = "[PersonalBeliefsWindow.StopPickingTenet]"
+										tooltip = "PERSONAL_BELIEFS_VIEW_PICKING_HEADER_CANCEL_TT"
+										using = tooltip_es
+									}
+								}
+							}
+
+							### TAB TENETS
+							vbox = {
+								visible = "[PersonalBeliefsWindow.IsActiveTab( 'tab_tenets' )]"
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+
+								hbox_sort_tenets = {
+									datacontext = "[PersonalBeliefsWindow.GetTenetSortController]"
+								}
+
+								scrollbox = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+
+									state = {
+										name = _show
+										using = Animation_FadeIn_Quick
+									}
+
+									state = {
+										name = _hide
+										alpha = 0
+									}
+
+									blockoverride "scrollbox_content"
+									{
+										vbox = {
+											layoutpolicy_horizontal = expanding
+
+											datamodel = "[PersonalBeliefsWindow.GetTenetGroupItems]"
+											item = {
+												vbox_personal_tenet_group_foldout = {
+													datacontext = "[PersonalBeliefsWindow.GetCharacter]"
+												}
+											}
+										}
+									}
+								}
+							}
+
+							### TAB DOCTRINES
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								visible = "[PersonalBeliefsWindow.IsActiveTab( 'tab_doctrines' )]"
+								datacontext = "[GetPlayer.GetRite]"
+								
+								state = {
+									name = _show
+									using = Animation_FadeIn_Quick
+								}
+
+								state = {
+									name = _hide
+									alpha = 0
+								}
+
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										margin = { 18 10 }
+										spacing = 10
+
+										background = {
+											using = Background_Area
+										}
+
+										button_rite_icon = {
+											size = { 40 40 }
+										}
+
+										text_single = {
+											layoutpolicy_horizontal = expanding
+											autoresize = no
+											text = "FAITH_VIEW_SUB_WINDOW_DOCTRINES_HEADER"
+										}
+
+										divider_light = {
+											layoutpolicy_vertical = expanding
+										}
+
+										text_single = {
+											layoutpolicy_horizontal = expanding
+											autoresize = no
+											text = "FAITH_VIEW_YOUR_KNOWLEDGE"
+											align = right
+										}
+									}
+
+									scrollbox = {
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+
+										blockoverride "scrollbox_content"
+										{
+											spacing = 5
+											vbox = {
+												layoutpolicy_horizontal = expanding
+												spacing = 5
+
+												datamodel = "[PersonalBeliefsWindow.GetDoctrines]"
+												item = {
+													vbox_expanded_doctrine_category = {
+														visible = "[And( Or( DoctrineCategoryType.HasTag( 'main' ), DoctrineCategoryType.HasTag( 'special' ) ), DoctrineCategoryType.IsVisible )]"
+													}
+												}
+											}
+											vbox = {
+												layoutpolicy_horizontal = expanding
+												spacing = 5
+
+												datamodel = "[PersonalBeliefsWindow.GetDoctrines]"
+												item = {
+													vbox_expanded_doctrine_category = {
+														visible = "[And( Nor( DoctrineCategoryType.HasTag( 'main' ), DoctrineCategoryType.HasTag( 'special' ) ), DoctrineCategoryType.IsVisible )]"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				expand = {}
+			}
+		}
+	}
+}
+
+types PersonalBeliefsWindowTypes
+{
+	type button_personal_beliefs = button_normal {
+		name = "personal_beliefs_button"
+		datacontext = "[Character.GetSpiritualFulfillmentType]"
+		datacontext = "[Character.GetSpiritualFulfillmentLevel]"
+		size = { 54 54 }
+
+		onclick = "[ToggleGameViewData( 'personal_beliefs_window', GetPlayer.Self )]"
+		tooltipwidget = {
+			hud_personal_beliefs_tooltip_container = {
+				blockoverride "fulfillment_bar_datacontext" {}
+				blockoverride "fulfillment_meter" {}
+			}
+		}
+		using = tooltip_ne
+
+		icon_round_button_base = {}
+
+		icon = {
+			name = "progress_frame"
+			texture = "gfx/interface/progressbars/action_progress_frame.dds"
+			size = { 100% 100% }
+		}
+
+		icon = {
+			parentanchor = center
+			size = { 36 36 }
+
+			texture = "[SpiritualFulfillmentLevel.GetIcon]"
+		}
+
+		progresspie = {
+			name = "progress"
+			size = { 42 42 }
+
+			texture = "gfx/interface/progressbars/action_progress_thin_blue.dds"
+			framesize = { 128 128 }
+			frame = 2
+			value = "[Character.GetSpiritualFulfillmentProgress]"
+			parentanchor = center
+		}
+	}
+
+	type widget_browse_tenet_banner = widget {
+		datacontext = "[TenetItem.GetTenet]"
+		size = { 72 100 }
+
+		### Banner
+		highlight_icon = {
+			size = { 72 88 }
+			parentanchor = top|hcenter
+			position = { 0 6 }
+
+			texture = "[Faith.GetTenetBackgroundSmallIcon( Rite.Self, TenetType.Self )]"
+				
+			### Sprite
+			proportional_icon = {
+				size = { 95% 95% }
+				parentanchor = top|hcenter
+
+				texture = "[TenetItem.GetIcon]"
+				alpha = 0.85
+			}
+		}
+
+		text_single = {
+			alwaystransparent = yes
+
+			parentanchor = top|right
+			margin_top = 2
+			margin_right = -5
+
+			text = "FAITH_TENET_ITEM_POPULARITY"
+			align = nobaseline
+			tooltip = "FAITH_TENET_ITEM_POPULARITY_TT"
+		}
+
+		block "banner_overlay" {}
+	}
+
+	type hbox_browse_personal_tenet_item = hbox {
+		datacontext = "[TenetItem.GetTenet]"
+		datacontext = "[TenetItem.GetFaith]"
+		datacontext = "[TenetItem.GetRite]"
+		margin_left = 5
+		layoutpolicy_horizontal = expanding
+
+		background = {
+			using = Background_Area
+		}
+		
+		vbox = {
+			layoutpolicy_vertical = expanding
+
+			widget_browse_tenet_banner = {
+				blockoverride "banner_overlay"
+				{
+					text_single = {
+						alwaystransparent = yes
+
+						parentanchor = bottom|hcenter
+
+						background = {
+							margin = { 15 2 }
+
+							texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+							spriteType = Corneredtiled
+							spriteborder = { 40 8 }
+							texture_density = 2
+
+							modify_texture = {
+								name = "mask"
+								texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_thick.dds"
+								spriteType = Corneredstretched
+								spriteborder = { 0 0 }
+								blend_mode = alphamultiply
+							}
+						}
+						text = "PERSONAL_TENET_BANNER_FULFILLMENT"
+						align = center|nobaseline
+					}
+				}
+			}
+
+			expand = {}
+		}
+
+		vbox = {
+			max_width = 335
+			margin_top = 10
+			margin_bottom = 5
+			margin_left = 5
+			margin_right = 10
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+
+				vbox = {
+					layoutpolicy_vertical = expanding
+					
+					text_single = {
+						alwaystransparent = yes
+
+						layoutpolicy_horizontal = expanding
+
+						text = "[TenetType.GetNameNoTooltip( Rite.Self )]"
+						align = nobaseline
+						default_format = "#high"
+						using = Font_Size_Medium
+					}
+
+					text_multi = {
+						alwaystransparent = yes
+						align = top|left
+
+						max_width = 320
+						min_width = 320
+						min_height = 70
+						margin_bottom = 5
+
+						layoutpolicy_horizontal = expanding
+
+						text = "[TenetType.GetPersonalTenetDescriptionShort( Character.Self )]"
+						autoresize = yes
+					}
+					expand = {}
+				}
+
+				expand = {}
+			}
+
+			expand = {}
+		}
+
+		expand = {}
+	}
+
+	type hbox_personal_tenet_slot = hbox {
+		datacontext = "[TenetItem.GetTenet]"
+		datacontext = "[TenetItem.GetFaith]"
+		datacontext = "[TenetItem.GetRite]"
+		layoutpolicy_horizontal = expanding
+
+		background = {
+			visible = "[Not(TenetItem.IsEmpty)]"
+			using = Background_Area
+		}
+
+		background = {
+			visible = "[Not(TenetItem.IsEmpty)]"
+			using = Background_Frame
+		}
+
+		background = {
+			visible = "[And( PersonalBeliefsWindow.IsSwappingPersonalTenet, ObjectsEqual( PersonalBeliefsWindow.GetTenetBeingSwapped, TenetType.Self ) )]"
+			texture = "gfx/interface/component_effects/innovation_glow.dds"
+			margin = { 6 6 }
+			spriteType = Corneredstretched
+			spriteborder = { 30 30 }
+			tintcolor = { 1 0.8 0.6 0.4 }
+
+			state = {
+				trigger_on_create = yes
+				name = max_glow
+				next = min_glow
+				duration = 1
+				alpha = 0.5
+			}
+
+			state = {                          
+				name = min_glow  
+				next = max_glow  
+				duration = 1.6  
+				alpha = 0.3 
+			}
+		}
+
+		### ADOPTED TENET
+		hbox = {
+			margin_left = 7
+			visible = "[Not( TenetItem.IsEmpty )]"
+			layoutpolicy_horizontal = expanding
+			using = tooltip_ws
+
+			tooltipwidget = {
+				personal_tenet_tooltip = {
+					datacontext = "[TenetItem.GetRite]"
+					datacontext = "[TenetItem.GetTenet]"
+					datacontext = "[TenetItem.GetFaith]"
+				}
+			}
+
+			vbox = {
+				layoutpolicy_vertical = expanding
+
+				widget_browse_tenet_banner = {}
+
+				expand = {}
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				margin = { 10 10 }
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+
+					text = "[TenetType.GetNameNoTooltip( Rite.Self )]"
+					align = nobaseline
+					default_format = "#high"
+					using = Font_Size_Medium
+				}
+				
+				text_multi = {
+					margin_top = 10
+					margin_bottom = 10
+					max_width = 390
+					layoutpolicy_horizontal = expanding
+
+					text = "[TenetType.GetPersonalTenetDescriptionShort( Character.Self )]"
+					align = nobaseline
+					autoresize = yes
+				}
+
+				expand = {}
+			}
+
+			expand = {}
+
+			### REMOVE / SWAP
+			vbox = {
+				layoutpolicy_vertical = expanding
+				datacontext = "[PersonalBeliefsWindow.GetCharacter]"
+				margin = { 10 10 }
+				spacing = 5
+
+				button_cancel = {
+					enabled = "[Not( Character.IsPersonalTenetChangeOnCooldown )]"
+					onclick = "[PersonalBeliefsWindow.RemovePersonalTenet( TenetType.Self )]"
+					onclick = "[PersonalBeliefsWindow.StopPickingTenet]"
+					tooltip = "PERSONAL_BELIEFS_VIEW_TENETS_REMOVE_TT"
+					using = tooltip_nw
+				}
+
+				button_change = {
+					visible = "[Not( ObjectsEqual( PersonalBeliefsWindow.GetTenetBeingSwapped.Self, TenetType.Self ) )]"
+					enabled = "[Not( Character.IsPersonalTenetChangeOnCooldown )]"
+					onclick = "[PersonalBeliefsWindow.StartSwapPersonalTenet( TenetType.Self )]"
+					tooltip = "PERSONAL_BELIEFS_VIEW_TENETS_SWAP_TT"
+					using = tooltip_nw
+				}
+
+				button_change = {
+					visible = "[ObjectsEqual( PersonalBeliefsWindow.GetTenetBeingSwapped.Self, TenetType.Self )]"
+					onclick = "[PersonalBeliefsWindow.StopPickingTenet]"
+					shortcut = close_window
+					tooltip = "PERSONAL_BELIEFS_VIEW_PICKING_HEADER_CANCEL_TT"
+					using = tooltip_nw
+				}
+
+				expand = {}
+			}
+		}
+
+		### EMPTY SLOT
+		button_standard = {
+			visible = "[TenetItem.IsEmpty]"
+			layoutpolicy_horizontal = expanding
+			tooltip = "PERSONAL_BELIEFS_VIEW_TENETS_ADD_TT"
+			using = tooltip_ws
+			onclick = "[PersonalBeliefsWindow.StartAddPersonalTenet]"
+			text = "PERSONAL_BELIEFS_VIEW_TENETS_ADD_LABEL"
+
+			size = { 0 80 }
+		}
+
+		expand = {}
+	}
+
+	type vbox_personal_tenet_group_foldout = vbox {
+		visible = "[Or( TenetGroupItem.CanPick, Not( Or( PersonalBeliefsWindow.IsAddingPersonalTenet, PersonalBeliefsWindow.IsSwappingPersonalTenet) ) )]"
+		spacing = 4
+
+		layoutpolicy_horizontal = expanding
+
+		oncreate = "[BindFoldOutContext]"
+		oncreate = "[PdxGuiFoldOut.Unfold]"
+
+		button_expandable_toggle_field = {
+			blockoverride "text"
+			{
+				text = "[TenetGroupItem.GetGroupTitle]"
+				default_format = "#clickable"
+			}
+		}
+
+		vbox = {
+			visible = "[PdxGuiFoldOut.IsUnfolded]"
+			layoutpolicy_horizontal = expanding
+			spacing = 5
+
+			datamodel = "[TenetGroupItem.GetTenets]"
+			item = {
+				widget = {
+					datacontext = "[PersonalBeliefsWindow.GetCharacter]"
+					datacontext = "[TenetItem.GetTenet]"
+					layoutpolicy_horizontal = expanding
+					using = tooltip_es
+
+					tooltipwidget = {
+						personal_tenet_tooltip = {
+							datacontext = "[TenetItem.GetRite]"
+							datacontext = "[TenetItem.GetTenet]"
+							datacontext = "[TenetItem.GetFaith]"
+
+							blockoverride "tenet_tooltip_footer"
+							{
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									margin_top = 5
+
+									text_multi = {
+										visible = "[PersonalBeliefsWindow.IsAddingPersonalTenet]"
+										layoutpolicy_horizontal = expanding
+										max_width = 400
+
+										text = "PERSONAL_BELIEFS_VIEW_TENETS_BROWSE_ADD_FOOTER"
+										align = nobaseline
+										autoresize = yes
+									}
+
+									text_multi = {
+										visible = "[PersonalBeliefsWindow.IsSwappingPersonalTenet]"
+										layoutpolicy_horizontal = expanding
+										max_width = 400
+
+										text = "PERSONAL_BELIEFS_VIEW_TENETS_BROWSE_SWAP_FOOTER"
+										align = nobaseline
+										autoresize = yes
+									}
+								}
+							}
+						}
+					}
+
+					button_standard = {
+						visible = "[And( Not( TenetItem.IsEmpty ), PersonalBeliefsWindow.IsAddingPersonalTenet )]"
+						size = { 100% 100% }
+
+						enabled = "[And( Not( TenetItem.IsPersonalTenet ), Character.CanPickAsPersonalTenet( TenetType.Self ) )]"
+						onclick = "[PersonalBeliefsWindow.SelectNewPersonalTenet( TenetItem.GetTenet.Self )]"
+					}
+
+					button_standard = {
+						visible = "[And( Not( TenetItem.IsEmpty ), PersonalBeliefsWindow.IsSwappingPersonalTenet )]"
+						size = { 100% 100% }
+
+						enabled = "[And( Not( TenetItem.IsPersonalTenet ), Character.CanPickAsPersonalTenet( TenetType.Self ) )]"
+						onclick = "[PersonalBeliefsWindow.SelectNewPersonalTenet( TenetItem.GetTenet.Self )]"
+					}
+
+					hbox_browse_personal_tenet_item = {
+						set_parent_size_to_minimum = yes
+					}
+				}
+			}
+		}
+	}
+
+	type widget_fulfillment_bar_horizontal = widget_spiritual_fulfillment_bar_horizontal {
+		blockoverride "fulfillment_datacontext"
+		{
+			datacontext = "[PersonalBeliefsWindow.GetCharacter]"
+			datacontext = "[PersonalBeliefsWindow.GetComplexBar]"
+		}
+
+		blockoverride "fulfillment_filled"
+		{
+			background = {
+				visible = "[GreaterThanOrEqualTo_CFixedPoint( ComplexBar.GetCurrentValue, ComplexBar.GetNeutralValue )]"
+				texture = "gfx/interface/progressbars/progress_standard.dds"
+			}
+
+			background = {
+				visible = "[LessThan_CFixedPoint( ComplexBar.GetCurrentValue, ComplexBar.GetNeutralValue )]"
+				texture = "gfx/interface/progressbars/progress_red.dds"
+			}
+		}
+	}
+
+	type personal_tenet_tooltip = object_tooltip_pop_out
+	{
+		widget = {
+			size = { 65 100 }
+			position = { 10 -10 }
+
+			header_icon = {
+				blockoverride "header_texture"
+				{
+					# Raw size = 260x400 (25%)
+					size = { 65 100 }
+					texture = "[TenetType.GetIcon( Faith.Self )]"
+				}
+			}
+		}
+		blockoverride "header_additions"
+		{
+		}
+
+		blockoverride "title_text"
+		{
+			margin_top = 10
+			margin_left = 55
+			text = "PERSONAL_TENET_COOLTIP_HEADER"
+		}
+
+		blockoverride "subtitle_text"
+		{
+			margin_bottom = 10
+			margin_left = 55
+			text = "[personal_tenet|E]"
+		}
+
+		blockoverride "concept_link" {}
+
+		blockoverride "main_description"
+		{
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				text_multi = {
+					max_width = 400
+					min_width = 300
+					layoutpolicy_horizontal = expanding
+
+					text = "[TenetItem.GetTenetStatus]"
+					align = nobaseline
+					autoresize = yes
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					text_single = {
+						text = "PERSONAL_TENET_COOLTIP_RITE_TENET_EFFECTS"
+						align = nobaseline
+						autoresize = yes
+
+						tooltipwidget = {
+							using = tenet_type_tooltip
+
+							blockoverride "divergent_tenet" {
+								visible = no
+							}
+						}
+						using = tooltip_es
+					}
+					expand = {}
+				}
+
+				text_multi = {
+					max_width = 400
+					min_width = 300
+					layoutpolicy_horizontal = expanding
+
+					text = "PERSONAL_TENET_COOLTIP_DESCRIPTION"
+					align = nobaseline
+					autoresize = yes
+				}
+
+				block "tenet_tooltip_footer" {}
+			}
+		}
+	}
+
+	type hbox_personal_doctrine_item = hbox {
+		datacontext = "[DoctrineItem.GetDoctrine]"
+		margin = { 10 5 }
+		layoutpolicy_horizontal = expanding
+
+		background = {
+			using = Background_Area_Dark
+		}
+
+		text_single = {
+			layoutpolicy_horizontal = expanding
+
+			text = "[DoctrineType.GetNameNoTooltip( Faith.Self )]"
+			align = nobaseline
+		}
+
+		expand = {}
+	}
+
+	type vbox_personal_doctrine_group_item = vbox {
+		layoutpolicy_horizontal = expanding
+
+		### DoctrineGroupType Header
+		hbox = {
+			margin = { 8 8 }
+			layoutpolicy_horizontal = expanding
+
+			background = {
+				using = Background_Frame
+			}
+
+			hbox = {
+				datacontext = "[DoctrineGroupItem.GetGroupType]"
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+
+				icon_doctrine = {
+					size = { 40 40 }
+
+					block "doctrine_icon_texture"
+					{
+						texture = "[DoctrineGroupType.GetIcon]"
+					}
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+
+					text = "[DoctrineGroupType.GetName( Faith.Self )]"
+					align = nobaseline
+				}
+
+				expand = {}
+			}
+		}
+
+		### DoctrineTypes within Group
+		vbox = {
+			layoutpolicy_horizontal = expanding
+
+			datamodel = "[DoctrineGroupItem.GetDoctrineItems]"
+			item = {
+				hbox_personal_doctrine_item = {}
+			}
+		}
+	}
+
+	type vbox_personal_doctrine_category_foldout = vbox {
+		layoutpolicy_horizontal = expanding
+
+		oncreate = "[BindFoldOutContext]"
+		oncreate = "[PdxGuiFoldOut.Unfold]"
+
+		button_expandable_toggle_field = {
+			blockoverride "text"
+			{
+				datacontext = "[DoctrineCategoryItem.GetCategoryType]"
+
+				text = "[DoctrineCategoryType.GetName]"
+				default_format = "#clickable"
+			}
+		}
+
+		vbox = {
+			visible = "[PdxGuiFoldOut.IsUnfolded]"
+			layoutpolicy_horizontal = expanding
+			spacing = 5
+
+			datamodel = "[DoctrineCategoryItem.GetDoctrineGroupItems]"
+			item = {
+				vbox_personal_doctrine_group_item = {}
+			}
+		}
+	}
+}

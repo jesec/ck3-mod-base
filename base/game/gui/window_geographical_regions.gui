@@ -1,0 +1,140 @@
+window = {
+	name = "geographical_regions_window"
+	parentanchor = top|right
+	layer = windows_layer
+	movable = no
+
+	using = Window_Size_MainTab
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin_top = 30
+		margin_bottom = 25
+		margin_right = 13
+
+		vbox = {
+			using = Window_Margins
+			margin_bottom = 100
+			margin_right = 50
+
+			header_standard = {
+				layoutpolicy_horizontal = expanding
+				size = { 0 55 }
+
+				blockoverride "size" {
+					size = { 100% 55 }
+				}
+
+				blockoverride "header_text" {
+					raw_text = "Geographical Regions"
+				}
+
+				blockoverride "illustration_texture" {
+					texture = "gfx/interface/skinned/illustrations/header_illustrations/header_military.dds"
+				}
+
+				blockoverride "illustration_mask" {
+					modify_texture = {
+						texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+						blend_mode = alphamultiply
+						mirror = vertical
+						alpha = 0.8
+					}
+				}
+
+				blockoverride "button_close" {
+					onclick = "[GeographicalRegionsWindow.Close]"
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					layoutstretchfactor_horizontal = 1
+
+					button_standard = {
+						raw_text = "Clear Selection"
+						onclick = "[GeographicalRegionsWindow.ClearSelection]"
+						size = { 150 30 }
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						blockoverride "scrollbox_content" {
+							fixedgridbox = {
+								datamodel = "[GeographicalRegionsWindow.GetSelectedRegions]"
+
+								addcolumn = 250
+								addrow = 33
+
+								item = {
+									button_standard = {
+										size = { 250 33 }
+										text = "[GeographicalRegion.GetKey]"
+										tooltip = "[GeographicalRegion.GetNameNoTooltip]"
+										onclick = "[GeographicalRegionsWindow.ToggleRegion( GeographicalRegion.Self )]"
+									}
+								}
+							}
+						}
+					}
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					layoutstretchfactor_horizontal = 1
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+
+						editbox_search_field = {
+							layoutpolicy_horizontal = expanding
+
+							blockoverride "editbox_properties"
+							{
+								ontextedited = "[GeographicalRegionsWindow.OnFilterUpdate]"
+							}
+						}
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						blockoverride "scrollbox_content" {
+							fixedgridbox = {
+								datamodel = "[GeographicalRegionsWindow.GetAllRegions]"
+
+								addcolumn = 250
+								addrow = 33
+
+								item = {
+									button_standard = {
+										size = { 250 33 }
+										text = "[GeographicalRegion.GetKey]"
+										tooltip = "[GeographicalRegion.GetNameNoTooltip]"
+										onclick = "[GeographicalRegionsWindow.ToggleRegion( GeographicalRegion.Self )]"
+
+										icon = {
+											size = { 33 33 }
+											visible = "[GeographicalRegionsWindow.IsSelected( GeographicalRegion.Self )]"
+											parentanchor = right
+											texture = "gfx/interface/icons/symbols/icon_check.dds"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

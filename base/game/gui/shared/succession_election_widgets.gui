@@ -1,0 +1,212 @@
+﻿types SuccessionElectionWidgets
+{
+	type vote_strength_icon = icon_flat_standard
+	{
+		texture = "gfx/interface/icons/flat_icons/election_vote_strength.dds"
+		size = { 35 35 }
+	}
+
+	type vote_chance_icon = icon_flat_standard
+	{
+		texture = "gfx/interface/icons/flat_icons/election_preference_over_my_candidate.dds"
+		size = { 35 35 }
+	}
+
+	# Datacontext: SuccessionElectionElector (Character = the elector)
+	# Shared across title election and cardinals windows
+	type hbox_election_vote_reason = hbox {
+		spacing = 5
+
+		tooltipwidget = {
+			using = vote_reason_tooltip
+		}
+
+		vote_chance_icon = {}
+
+		text_single = {
+			visible = "[Not( SuccessionElectionElector.GetTitle.GetPlayerNominee.IsValid )]"
+			text = "[SuccessionElectionElector.GetElectorCandidate.GetScore]"
+			align = nobaseline
+		}
+
+		text_single = {
+			visible = "[SuccessionElectionElector.GetTitle.GetPlayerNominee.IsValid]"
+			text = "[SuccessionElectionElector.GetScoreDiff|+]"
+			align = nobaseline
+		}
+	}
+
+	# Datacontext: SuccessionElectionElector
+	type hbox_election_vote_strength = hbox {
+		spacing = 5
+		tooltip = "[SuccessionElectionElector.GetVoteStrengthBreakdown]"
+
+		vote_strength_icon = {}
+
+		text_single = {
+			text = "[SuccessionElectionElector.GetVoteStrength|V]"
+			align = nobaseline
+		}
+	}
+
+	type flow_vote_reason = flowcontainer {
+		margin = { 12 0 }
+		margin_bottom = 10
+		direction = vertical
+
+		background = {
+			using = Background_Area
+		}
+
+		flowcontainer = {
+			ignoreinvisible = yes
+
+			text_multi = {
+				autoresize = yes
+				minimumsize = { 250 60 }
+				maximumsize = { 250 -1 }
+				multiline = yes
+				align = nobaseline
+				block "nominee" {}
+				fonttintcolor = "[TooltipInfo.GetTintColor]"
+			}
+		}
+
+		divider_light = {
+			size = { 90% 3 }
+		}
+
+		spacer = {
+			size = { 0 12 }
+		}
+
+		text_multi = {
+			autoresize = yes
+			minimumsize = { 250 -1 }
+			maximumsize = { 250 -1 }
+			multiline = yes
+			fonttintcolor = "[TooltipInfo.GetTintColor]"
+			block "vote_reason" {}
+		}
+	}
+}
+
+template vote_reason_tooltip
+{
+	container = {
+		alwaystransparent = no
+
+		widget = {
+			name = "background"
+			using = Background_Tooltip
+			size = { 100% 100% }
+			alwaystransparent = no
+		}
+
+		flowcontainer = {
+			direction = vertical
+			ignoreinvisible = yes
+
+			container = {
+				visible = "[SuccessionElectionElector.GetTitle.CanCharacterControlVote( Character.Self )]"
+
+				flowcontainer = {
+					visible = "[Not(Character.IsPlayer)]"
+
+					direction = vertical
+					margin = { 10 10 }
+					ignoreinvisible = yes
+
+					flowcontainer = {
+						direction = horizontal
+						ignoreinvisible = yes
+
+						flow_vote_reason = {
+							blockoverride "nominee" {
+								text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_NOMINEE_TT"
+							}
+							blockoverride "vote_reason" {
+								text = "[SuccessionElectionElector.GetElectorCandidateVoteReasonBreakdown]"
+							}
+						}
+
+						flowcontainer = {
+							visible = "[And( SuccessionElectionElector.GetTitle.GetPlayerNominee.IsValid, Not( SuccessionElectionElector.IsVoteForPlayer ) )]"
+							ignoreinvisible = yes
+
+							widget = {
+								size = { 5 0 }
+							}
+
+							flow_vote_reason = {
+								blockoverride "nominee" {
+									text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_PLAYER_NOMINEE"
+								}
+								blockoverride "vote_reason" {
+									text = "[SuccessionElectionElector.GetPlayerCandidateVoteReasonBreakdown]"
+								}
+							}
+						}
+					}
+
+					text_multi = {
+						visible = "[SuccessionElectionElector.CouldVoteForPlayerCandidateInstead]"
+						margin = { 10 5 }
+
+						text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_PLAYER_NOMINEE_INFO"
+						autoresize = yes
+						max_width = 520
+						size = { 100% -1 }
+						fonttintcolor = "[TooltipInfo.GetTintColor]"
+					}
+				}
+
+				text_multi = {
+					visible = "[Character.IsOtherPlayer]"
+
+					margin = { 10 5 }
+					align = left|nobaseline
+					autoresize = yes
+					minimumsize = { 270 -1 }
+					maximumsize = { 270 -1 }
+
+					text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_IS_OTHER_PLAYER"
+					fonttintcolor = "[TooltipInfo.GetTintColor]"
+				}
+
+				text_multi = {
+					visible = "[Character.IsLocalPlayer]"
+
+					margin = { 10 5 }
+					align = left|nobaseline
+					autoresize = yes
+					minimumsize = { 270 -1 }
+					maximumsize = { 270 -1 }
+					text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_IS_LOCAL_PLAYER"
+					fonttintcolor = "[TooltipInfo.GetTintColor]"
+				}
+			}
+
+			text_multi = {
+				visible = "[Not( SuccessionElectionElector.GetTitle.CanCharacterControlVote( Character.Self ) )]"
+
+				margin = { 20 20 }
+				align = left|nobaseline
+				autoresize = yes
+				minimumsize = { 270 -1 }
+				maximumsize = { 270 -1 }
+				text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_FORCED_VOTE"
+				fonttintcolor = "[TooltipInfo.GetTintColor]"
+			}
+
+			text_multi = {
+				visible = "[And( Not( SuccessionElectionElector.GetTitle.GetPlayerNominee.IsValid ), SuccessionElectionElector.GetTitle.IsPlayerElector )]"
+				margin = { 20 20 }
+				autoresize = yes
+				minimumsize = { 270 -1 }
+				maximumsize = { 270 -1 }
+				text = "SUCCESSION_ELECTION_WINDOW_NO_PLAYER_NOMINEE"
+			}
+		}
+	}
+}

@@ -45,10 +45,7 @@ hair_situational = {
 			}
 			modifier = {
 				add = 200
-				OR = {
-					has_trait = eunuch_1
-					has_trait = beardless_eunuch
-				}
+				is_eunuch_trigger = yes
 			}
 			modifier = {
 				add = 10000
@@ -177,6 +174,27 @@ hair_situational = {
 			}
 		}		  	
 	}
-	
+
+	random_beard = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = beards
+				template = all_beards
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		} 
+		weight = {
+			base = 0
+			modifier = { 
+				add = {
+					value = 1000
+				}
+				trigger = {
+					has_character_flag = random_beard
+				}
+			}
+		}		  	
+	}
 }
 

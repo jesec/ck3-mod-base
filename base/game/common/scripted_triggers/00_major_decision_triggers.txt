@@ -170,7 +170,7 @@ favour_the_countryside_basques_rationale_sinful_traits_trigger = {
 favour_the_countryside_basques_rationale_virtuous_basque_pagan_traits_trigger = {
 	num_virtuous_traits = {
 		value >= favour_the_countryside_basques_decision_basque_pagan_virtues_tally_value
-		target = faith:basque_pagan
+		target = faith:basque_pagan.main_rite
 	}
 }
 
@@ -239,6 +239,26 @@ restore_roman_empire_decision_religion_culture_trigger = {
 					has_cultural_pillar = heritage_latin
 					has_cultural_pillar = heritage_byzantine
 				}
+			}
+		}
+	}
+}
+
+hre_valid_prince_elector_trigger = {
+	is_landed = yes
+	faith = root.faith
+	OR = { # must be de-jure vassal of empire
+		AND = {
+			capital_province.kingdom.holder ?= root
+			capital_province.empire != title:e_italy
+		}
+		capital_province.empire.holder ?= root
+	}
+	NOT = { # not already selected
+		any_held_title = {
+			is_target_in_global_variable_list = {
+				name = hre_elector_list
+				target = this
 			}
 		}
 	}

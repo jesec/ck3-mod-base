@@ -1,0 +1,111 @@
+﻿l_polish:
+ # Activity: The Investiture Council
+ activity_investiture_council: "Sobór w sprawie inwestytury"
+ activity_investiture_council_desc: "Kiedy [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName|l] dobiega końca, zbiera się rada, która raz na zawsze ma rozstrzygnąć, kto powinien mianować członków duchowieństwa – Kościół czy korona."
+ activity_investiture_council_province_desc: "Urządźmy sobór w sprawie inwestytury tutaj."
+ activity_investiture_council_host_desc: "Zwołaj sobór w sprawie inwestytury, aby ustalić, kto ma mianować członków duchowieństwa."
+ activity_investiture_council_guest_desc: "Weź udział w soborze w sprawie inwestytury i wyraź swoją opinię w sprawie mianowania duchownych."
+ # Travel plan name (engine looks up TRAVEL_NAME_FOR_<activity key>); without it the raw key showed on travellers.
+ TRAVEL_NAME_FOR_activity_investiture_council: "[Character.GetFirstNameNoTooltip] i wyprawa na sobór w sprawie inwestytury"
+ # Reason shown on the guest invite-acceptance for the clergy summoned to the council.
+ pam_investiture_council_summons_clergy_value: "Wezwano na sobór w sprawie inwestytury"
+ pam_investiture_council_start_log_title: "Zwołano sobór w sprawie inwestytury"
+ pam_investiture_council_start_log: "[CHARACTER.GetTitledFirstName] otwiera sobór w sprawie mianowania członków duchowieństwa."
+ # Conclusion-page log entries; their nested effect renders as the activity's "Effects from ..." section
+ pam_investiture_council_concluded_spiritual_log_title: "Kościół triumfuje"
+ pam_investiture_council_concluded_spiritual_log: "[CHARACTER.GetTitledFirstName] ogłasza uchwałę soboru: duchowni są mianowani wyłącznie przez Kościół i żadna korona nie może ich pozbawić stanowiska."
+ pam_investiture_council_concluded_temporal_log_title: "Korona triumfuje"
+ pam_investiture_council_concluded_temporal_log: "[CHARACTER.GetTitledFirstName] ogłasza uchwałę soboru: Kościół mianuje duchowieństwo, lecz świecki władca wciąż może pozbawić stanowiska prałata, który go zawiedzie."
+ pam_investiture_council_conclusion.intro: "Sobór w sprawie inwestytury dobiegł końca."
+ pam_investiture_council_conclusion.spiritual: "Zgromadzeni ojcowie utrzymali wyłączne prawo Kościoła do mianowania członków duchowieństwa i uniemożliwili jakiejkolwiek koronie ingerowanie w tę sprawę: raz wyświęcony prałat pełni swoją funkcję dożywotnio.\n\nCiągnące się od dłuższego czasu [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName|l] dobiegły końca. Kościół wychodzi z tej sytuacji zwycięsko i natychmiast zabiera się za wewnętrzne reformy."
+ pam_investiture_council_conclusion.temporal: "Zgromadzeni ojcowie pozostawili prawo do mianowania członków duchowieństwa Kościołowi, lecz zachowali dla świeckich władców możliwość pozbawienia stanowiska każdego prałata, który ich zawiedzie. Ciągnące się od dłuższego czasu [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName|l] dobiegły końca, ale autorytet Kościoła został zachwiany, a jego jedność osłabła."
+ # Activity window character labels (one key per window_characters slot)
+ activity_window_character_prelate_guest_arrived: "Prałat\n[Character.GetShortUINameNotMeNoTooltip]"
+ activity_window_character_secular_guest_arrived: "[activity_guest_short|E]\n[Character.GetShortUINameNotMeNoTooltip]"
+ activity_window_character_conclusion_church_rep: "Konserwatysta\n[Character.GetShortUINameNotMeNoTooltip]"
+ activity_window_character_conclusion_crown_rep: "Innowator\n[Character.GetShortUINameNotMeNoTooltip]"
+ # The ruling as a single line under the conclusion page's "Effects from ..." readout
+ pam_investiture_resolution_spiritual_tt: "[Concept('doctrine', 'Doktrynę')|E] mianowania duchownych „[GetDoctrineType('doctrine_clerical_succession_conditional').GetBaseName]” zastąpiono doktryną „[GetDoctrineType('doctrine_clerical_succession_spiritual_fixed_appointment').GetBaseName]”"
+ pam_investiture_resolution_temporal_tt: "[Concept('doctrine', 'Doktrynę')|E] mianowania duchownych „[GetDoctrineType('doctrine_clerical_succession_conditional').GetBaseName]” zastąpiono doktryną „[GetDoctrineType('doctrine_clerical_succession_spiritual_appointment').GetBaseName]”"
+ # Activity phase names + descriptions
+ investiture_council_phase_summons: "Wezwania"
+ investiture_council_phase_summons_desc: "Wierni gromadzą się, gdy rozchodzi się wieść o zbliżającym się rozliczeniu w sprawie mianowania duchownych."
+ investiture_council_phase_debate: "Debata"
+ investiture_council_phase_debate_desc: "Sobór debatuje na temat tego, kto powinien mianować duchownych – Kościół czy korona – i poddaje to pod głosowanie."
+ # Arrival flavour (guest) - the host welcomes me
+ pam_investiture_council_events.0001.t: "Przybycie"
+ pam_investiture_council_events.0001.desc: "[arrival_host.GetTitledFirstName] przyjmuje mnie ciepło u progu. W sali za [arrival_host.Custom('PL_jego_jej')] plecami już krzątają się prałaci i książęta wiary. Niedługo ważne pytanie o mianowanie duchowieństwa zostanie przedłożone zgromadzeniu."
+ pam_investiture_council_events.0001.a: "Mam zaszczyt być wśród nich."
+ pam_investiture_council_events.0001.a.tt: "Debata rozpocznie się, kiedy przybędą pozostali goście."
+ # The council convenes (host)
+ pam_investiture_council_events.0002.t: "Czas rozliczenia Kościoła"
+ pam_investiture_council_events.0002.desc: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] dobiegają końca. Teraz zebrani wierni muszą zdecydować, jak w przyszłości mianowani będą członkowie duchowieństwa, a ja zamierzam dopilnować, aby Kościół zachował swój autorytet."
+ pam_investiture_council_events.0002.a: "Niech tak będzie."
+ # Pre-debate flavour (guest)
+ pam_investiture_council_events.0003.t: "Debata się rozpoczyna"
+ pam_investiture_council_events.0003.desc: "Szmery wśród zgromadzenia cichną, kiedy rada zaczyna debatę w sprawie, która zwróciła Kościół przeciwko koronie – kto powinien mianować członków duchowieństwa? Każda przedstawiona tutaj opinia pomoże o tym zdecydować."
+ pam_investiture_council_events.0003.a: "Już czas."
+ # Post-choice persuasion (clergy voter): a single duel to sway the assembly
+ pam_investiture_council_events.0032.t: "Słówko do właściwego ucha"
+ pam_investiture_council_events.0032.desc: "Wynik głosowania nie jest jeszcze przesądzony. Przekonujące słowo powiedziane do właściwego ucha może skłonić niezdecydowanych opozycjonistów do poparcia mojej sprawy, choć nieudolna próba mogłaby mnie drogo kosztować."
+ pam_investiture_council_events.0032.a: "Przekonam radę do poparcia mojej sprawy."
+ pam_investiture_council_events.0032.b: "Niech będzie, co ma być."
+ # Post-choice persuasion (secular attendee): back either side by bribe or conviction
+ pam_investiture_council_events.0033.t: "Ciężar korony"
+ pam_investiture_council_events.0033.desc: "Nie mam prawa głosu na zgromadzeniu duchownych, ale świecki władca nie jest bezradny. Gruba sakiewka rozluźnia sumienia, a dobra argumentacja ma szansę przekonać niezdecydowanych. Mogę poprzeć roszczenia Kościoła bądź korony albo po prostu milczeć."
+ pam_investiture_council_events.0033.a: "Spróbuję przekupić ludzi, aby opowiedzieli się za Kościołem."
+ pam_investiture_council_events.0033.b: "Spróbuję przekonać ludzi, aby opowiedzieli się za Kościołem."
+ pam_investiture_council_events.0033.c: "Spróbuję przekupić ludzi, aby opowiedzieli się za świeckimi władcami."
+ pam_investiture_council_events.0033.d: "Spróbuję przekonać ludzi, aby opowiedzieli się za świeckimi władcami."
+ pam_investiture_council_events.0033.e: "Nie mieszaj się do tego."
+ # Persuasion feedback toast: simple header, outcome in the tooltip (numbers coloured)
+ pam_investiture_persuade_toast_title: "Zgromadzenie odpowiada"
+ pam_investiture_persuade_toast_swayed_tt: "Udaje ci się przekonać następującą liczbę głosujących: #P [investiture_persuader.MakeScope.Var('investiture_swayed_count').GetValue|0]#!."
+ pam_investiture_persuade_toast_backfired_tt: "Twoje nieudolne próby przekonania sprawiają, że następująca liczba głosujących: #N [investiture_persuader.MakeScope.Var('investiture_swayed_count').GetValue|0]#! opowiada się za sprawą opozycji."
+ # Secular sway per-side availability (grays the option when there is no one left to win to that side)
+ pam_investiture_persuade_target_spiritual_tt: "Są jeszcze głosujący, których można przekonać do opowiedzenia się za Kościołem"
+ pam_investiture_persuade_target_temporal_tt: "Są jeszcze głosujący, których można przekonać do opowiedzenia się za koroną"
+ # Persuasion duel outcome tooltips (shared by 0032 clergy / 0033 secular). Side-specific (the key names the
+ # destination camp) so both perspectives read naturally; only numbers coloured; counts must match the duel tiers.
+ pam_investiture_persuade_tt_great_innovator: "Przekonaj do #P 10#! głosujących do poparcia Kościoła."
+ pam_investiture_persuade_tt_great_conservative: "Przekonaj do #P 10#! głosujących do poparcia korony."
+ pam_investiture_persuade_tt_good_innovator: "Przekonaj do #P 5#! głosujących do poparcia Kościoła."
+ pam_investiture_persuade_tt_good_conservative: "Przekonaj do #P 5#! głosujących do poparcia korony."
+ pam_investiture_persuade_tt_modest_innovator: "Przekonaj do #P 3#! głosujących do poparcia Kościoła."
+ pam_investiture_persuade_tt_modest_conservative: "Przekonaj do #P 3#! głosujących do poparcia korony."
+ pam_investiture_persuade_tt_backfire_innovator: "Nieudolna próba przekonania przeciąga #N 5#! głosujących na stronę Kościoła."
+ pam_investiture_persuade_tt_backfire_conservative: "Nieudolna próba przekonania przeciąga #N 5#! głosujących na stronę korony."
+ # Player interrupt: busy/travelling when the council convenes
+ pam_investiture_council_events.0004.t: "Sobór cię wzywa"
+ pam_investiture_council_events.0004.desc: "Dotarła do mnie wiadomość, że zwołano sobór w sprawie inwestytury, by ustalić, kto będzie mianował członków duchowieństwa. Jestem jednak daleko od miejsca obrad. Mogę porzucić obecne zajęcia i pośpieszyć tam konno, aby zabrać głos, albo pozwolić, by sprawa została rozstrzygnięta beze mnie."
+ pam_investiture_council_events.0004.a: "Porzuć wszystko i jedź, aby wziąć udział w soborze."
+ pam_investiture_council_events.0004.b: "Niech zdecydują beze mnie."
+ pam_investiture_council_haste_modifier: "Pilny wyjazd na sobór"
+ pam_investiture_council_haste_modifier_desc: "Ten [ruler|El] rzucił wszystko, by dotrzeć na sobór w sprawie inwestytury, zanim rozstrzygnie on kwestię mianowania [Concept('clergy', 'duchowieństwa')|E]."
+ # The debate opens (host)
+ pam_investiture_council_events.0010.t: "Prawo Kościoła"
+ pam_investiture_council_events.0010.desc: "Przedkładam sprawę soborowi: prawo do mianowania duchownych przysługuje Kościołowi i żadna korona nie może unieważnić tego, co Kościół ustanowił. Niech zgromadzenie zabierze głos i podejmie wiążącą decyzję."
+ pam_investiture_council_events.0010.a: "Opowiedz się za autorytetem Kościoła."
+ # The debate: guest picks a side
+ pam_investiture_council_events.0031.t: "Po której jesteś stronie?"
+ pam_investiture_council_events.0031.desc: "Głowa wiary domaga się wyłącznego prawa Kościoła do mianowania duchownych bez możliwości unieważnienia jego decyzji przez jakąkolwiek koronę. Władcy świeccy chcieliby zachować dla siebie prawo do pozbawiania stanowiska prałata, który ich zawiedzie. Sobór oczekuje twojego głosu w sprawie."
+ pam_investiture_council_events.0031.a: "Poprzyj Kościół: mianowanie przez Kościół i sprawowanie funkcji dożywotnio."
+ pam_investiture_council_events.0031.b: "Poprzyj koronę: mianowanie przez Kościół, ale z możliwością odwołania przez władców."
+ # Letter from the host to a non-attending player Head of Faith with the decided outcome
+ pam_investiture_council_events.0060.opening: "Najświętszy Ojcze!"
+ pam_investiture_council_events.0060.desc.spiritual: "Sobór zakończył naradę i jako że nie było Cię wśród nas, natychmiast przesyłam wnioski na tym pergaminie. Zgromadzeni ojcowie zatwierdzili wyłączne prawo Kościoła do mianowania członków duchowieństwa i uniemożliwili jakiejkolwiek koronie ingerowanie w tę sprawę: raz wyświęcony dostojnik pełni swoją funkcję dożywotnio. [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] dobiegły końca."
+ pam_investiture_council_events.0060.desc.temporal: "Sobór zakończył naradę i jako że nie było Cię wśród nas, natychmiast przesyłam wnioski na tym pergaminie. Ze smutkiem muszę przyznać, że zgromadzeni ojcowie, choć to nam zostawili prawo do mianowania członków duchowieństwa, dali władcom świeckim możliwość pozbawiania stanowiska prałata, który ich zawiedzie. [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] dobiegły końca."
+ pam_investiture_council_events.0060.a: "Przeczytaj dekret."
+ # Letter from the court chaplain to a non-attending secular player relaying the council's outcome
+ pam_investiture_council_events.0061.opening: "Mój Panie!"
+ pam_investiture_council_events.0061.desc.spiritual: "Do twojej kaplicy dotarła wiadomość z wielkiego soboru. Zgromadzeni ojcowie zatwierdzili wyłączne prawo Kościoła do mianowania członków duchowieństwa, a raz wybrani dostojnicy nie mogą zostać pozbawieni stanowiska. Ciągnące się od dłuższego czasu [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName|l] dobiegły końca, a pastorał zachowa to, czego pragnęła korona."
+ pam_investiture_council_events.0061.desc.temporal: "Do twojej kaplicy dotarła wiadomość z wielkiego soboru. Zgromadzeni ojcowie zostawili prawo do mianowania członków duchowieństwa Kościołowi, lecz prałata, który cię zawiedzie, możesz pozbawić stanowiska. Ciągnące się od dłuższego czasu [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName|l] dobiegły końca, a korona odniosła zwycięstwo nad pastorałem."
+ pam_investiture_council_events.0061.a: "A zatem postanowiono."
+ # Informs a player Head of Faith that an archbishop will host in their stead
+ pam_investiture_council_events.0050.t: "Zbiera się sobór"
+ pam_investiture_council_events.0050.desc.named: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] dobiegają końca, a rada rozstrzygnie sprawę mianowania członków duchowieństwa.\n\n[investiture_nominee_host.GetTitledFirstName] podejmuje się roli gospodarza zgromadzenia. Oczekuje się od ciebie – jako od głowy wiary – obecności i wyrażenia opinii odnośnie podejmowanej decyzji, jednakże otrzymasz informację o ustaleniach soboru nawet jeśli nie weźmiesz w nim udziału."
+ pam_investiture_council_events.0050.desc: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] dobiegają końca, a rada musi rozstrzygnąć sprawę mianowania członków duchowieństwa. Jako że nie pełnisz roli gospodarza zgromadzenia, zadanie to przejmie w twoim imieniu starszy arcybiskup. Możesz jednak wziąć w nim udział i wyrazić swoją opinię."
+ pam_investiture_council_events.0050.a: "Niech będzie."
+ # Deterministic backstop: the crisis lapses in the Church's favour if no council convenes
+ pam_investiture_crisis_lapsed_toast: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] dobiegają końca"
+ pam_investiture_crisis_lapsed_tt: "Z powodu niezwołania soboru [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName|l] zostają rozstrzygnięte na korzyść Kościoła: odtąd duchowni będą mianowani przez Kościół i będą pełnić swoje funkcje dożywotnio."

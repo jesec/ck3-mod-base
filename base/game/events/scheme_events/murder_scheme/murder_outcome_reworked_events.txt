@@ -2356,8 +2356,6 @@ murder_outcome_reworked.0052 = {
 	immediate = {
 		# Toggleable for loc testing.
 		debug_sort_scheme_scopes_for_testing_effect = yes
-		# Process target murder effects.
-		murder_success_kill_effect = { REASON = death_disappearance }
  		if = {
  			limit = {
  				NOT = { exists = scope:home_province }
@@ -2374,6 +2372,8 @@ murder_outcome_reworked.0052 = {
 	 			location = { save_scope_as = home_province }
 	 		}
 	 	}
+		# Process target murder effects.
+		murder_success_kill_effect = { REASON = death_disappearance }
 	}
 
 	option = { name = murder_outcome_reworked.0000.successful_scheme_target.adult }
@@ -3388,11 +3388,12 @@ murder_outcome_reworked.4001 = {
 			location = scope:target.location
 			culture = scope:target.location.culture
 			faith = scope:target.location.faith
+			rite = scope:target.location.rite
 			save_scope_as = assassin
 		}
 		# General owner success effects.
 		scheme_owner_pov_murder_success_effect = { REASON = death_mysterious }
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_gain
 			compassionate = major_stress_impact_gain
 		}
@@ -3757,6 +3758,7 @@ murder_outcome_reworked.4011 = {
 			location = scope:target.location
 			culture = scope:target.location.culture
 			faith = scope:target.location.faith
+			rite = scope:target.location.rite
 			save_scope_as = assassin
 		}
 		# General owner success effects.

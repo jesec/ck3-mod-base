@@ -48,8 +48,8 @@
  debug_gui.activity_weight.stress.more_than_low:0 "I am [stressed|E]: $VALUE|+0$"
  ## Faith
  ### Tenets
- debug_gui.activity_weight.faith.tenet_ritual_celebrations:0 "My [faith|E] has [GetFaithDoctrine('tenet_ritual_celebrations').GetBaseName]: $VALUE|+0$"
- debug_gui.activity_weight.faith.tenet_hedonistic:0 "My [faith|E] has [GetFaithDoctrine('tenet_hedonistic').GetBaseName]: $VALUE|+0$"
+ debug_gui.activity_weight.faith.tenet_ritual_celebrations: "My [faith|E] has [GetTenetType('tenet_ritual_celebrations').GetBaseName]: $VALUE|+0$"
+ debug_gui.activity_weight.faith.tenet_hedonistic: "My [faith|E] has [GetTenetType('tenet_hedonistic').GetBaseName]: $VALUE|+0$"
  ## Gold
  debug_gui.activity_weight.gold.prefers_cheapness:0 "I don't have much [gold|E] to spare: $VALUE|+0$"
  debug_gui.activity_weight.gold.prefers_middling:0 "I've got enough [gold|E] for something decent: $VALUE|+0$"
@@ -63,7 +63,7 @@
  #Feast
  activity_feast:0 "Feast"
  feast_activity_cost_desc:0 "Base Cost"
- activity_feast_name:0 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U] Feast"
+ activity_feast_name:0 "[ACTIVITY.GetHost.GetNamePossessiveOrMy|U] Feast"
  murder_feast_activity_cost_desc:0 "$feast_type_murder$"
  bloody_wedding_activity_cost_desc:0 "$wedding_type_bloody$"
  activity_feast_desc:0 "Strengthen bonds of loyalty by inviting vassals and neighbors into your halls to eat, drink, and be merry!\n\nWell-timed feasts will keep your realm stable by appeasing subjects and forging friendships."
@@ -110,6 +110,7 @@
  feast_cost_discount_citadel_of_aleppo:0 "Location has $building_citadel_of_aleppo_02$"
  feast_cost_discount_theodosian_walls:0 "Location has $building_theodosian_walls_01$"
  feast_cost_discount_hall_of_heroes:0 "Location has $building_type_hall_of_heroes_01$"
+ feast_cost_discount_transubstantiation: "[personal_tenet|E]: $tenet_transubstantiation_default_name$"
  activity_feast_province_desc_theodosian_walls:1 "#P +++ $building_type_theodosian_walls_01$#!\n"
  activity_feast_province_desc_hall_of_heroes:0 "#P +++ $building_type_hall_of_heroes_01$#!\n"
  activity_feast_province_desc_citadel_of_aleppo:1 "#P +++ $building_type_citadel_of_aleppo_01$#!\n"
@@ -140,6 +141,8 @@
  food_good_reward_tt:0 "The dish complexity has greatly impressed the guests"
  food_bad_reward_tt_title:0 "$final_reward_tt$"
  food_bad_reward_tt:0 "The dish complexity has disappointed the guests"
+ court_musician_increased_opinion_tt_title: "$court_musician_increased_opinion_tt$"
+ court_musician_increased_opinion_tt: "[first.GetShortUINameNoTooltip] plays instruments to entertain attendees."
  not_poor_health_tt:1 "[health|E] is #V Poor#! or lower"
  activity_feast_guest_help_text:1 "Any invited [activity_guests|E] will have an opportunity to get involved with other participants and increase their [opinion|E].\n\nFeasts are also the perfect occasion to just sit back and lose some [stress|E]."
  murder_feast_failed_tt_title:0 "Failed Murder"
@@ -159,30 +162,30 @@
  #Hunt
  activity_hunt:0 "Hunt"
  hunt_phase_desc:0 "Pursue your quarry, and decide how you will fell it"
- activity_hunt_name:0 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U] Hunt"
+ activity_hunt_name:0 "[ACTIVITY.GetHost.GetNamePossessiveOrMy|U] Hunt"
  activity_hunt_desc: "[GetPlayer.Custom('GetHuntDesc')|U]"
  activity_hunt_desc_regular: "The chase provides thrills and dangers in abundance, and serves to provide a firm grounding in riding and archery.\n\nHunts are overseen by the [GetCourtPositionType('master_of_hunt_court_position').GetName()], who will announce [hunt_sightings_no_prefix|E] of beasts common, rare, and fierce."
  activity_hunt_desc_adventurer: "The chase provides thrills and dangers in abundance, and serves to provide a firm grounding in riding and archery.\n\nAs an [GetGovernment('landless_adventurer_government').GetName] hunting gives less [prestige_i][prestige|E] but provide [provisions_i][provisions|E]. Hunts are overseen by the [GetCourtPositionType('huntperson_camp_officer').GetName()].\n\nAt the start of a hunt you will get an opportunity to purchase hunting rights for [gold_i][gold|E], else you will get [GetTrait('gallowsbait').GetName( GetNullCharacter )] [GetTrait( 'gallowsbait' ).GetTraitTrackByKey( 'poacher' ).GetName] [trait_level_track_xp|E]."
  activity_hunt_owner:0 "Hunter"
  #Meditation
  activity_meditation:0 "Secluded Meditation"
- activity_meditation_name:0 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U] Secluded Meditation"
- activity_meditation_desc:0 "[ACTIVITY.GetOwner.GetTitledFirstName] has retreated into seclusion so that they may meditate in peace."
+ activity_meditation_name:0 "[ACTIVITY.GetHost.GetNamePossessiveOrMy|U] Secluded Meditation"
+ activity_meditation_desc:0 "[ACTIVITY.GetHost.GetTitledFirstName] has retreated into seclusion so that they may meditate in peace."
  activity_meditation_owner:0 "Meditant"
  #Hold Court
  activity_hold_court:0 "Hold Court"
- activity_hold_court_name:1 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U] Court Audience"
- activity_hold_court_desc:0 "[ACTIVITY.GetOwner.GetTitledFirstName] has invited all of their subjects to bring any and all matters which need [ACTIVITY.GetOwner.GetHerHis] attention before [ACTIVITY.GetOwner.GetHerHim]."
+ activity_hold_court_name:1 "[ACTIVITY.GetHost.GetNamePossessiveOrMy|U] Court Audience"
+ activity_hold_court_desc:0 "[ACTIVITY.GetHost.GetTitledFirstName] has invited all of their subjects to bring any and all matters which need [ACTIVITY.GetHost.GetHerHis] attention before [ACTIVITY.GetHost.GetHerHim]."
  activity_petition_liege:0 "Petition Liege"
- activity_petition_liege_name:0 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U] Petition"
- activity_petition_liege_desc:0 "[ACTIVITY.GetOwner.GetTitledFirstName] has petitioned [ACTIVITY.GetOwner.GetHerHis] liege, [ACTIVITY.GetOwner.GetLiege.GetTitledFirstName], for relief in certain matters."
+ activity_petition_liege_name:0 "[ACTIVITY.GetHost.GetNamePossessiveOrMy|U] Petition"
+ activity_petition_liege_desc:0 "[ACTIVITY.GetHost.GetTitledFirstName] has petitioned [ACTIVITY.GetHost.GetHerHis] liege, [ACTIVITY.GetHost.GetLiege.GetTitledFirstName], for relief in certain matters."
  #Seer
  visit_seer:0 "Visit a Seer"
  visit_seer_desc:0 "Might have some good tips'n'tricks for surviving in the Middle Ages."
 
  #Adventure
  activity_adventure_name:0 "Adventure"
- activity_adventure_desc:0 "[ACTIVITY.GetOwner.GetTitledFirstName] is adventuring in the area."
+ activity_adventure_desc:0 "[ACTIVITY.GetHost.GetTitledFirstName] is adventuring in the area."
  activity_adventure_owner:0 "Adventurer"
  
  #Gruesome Festival (Blót)
@@ -205,8 +208,8 @@
  GOTO_PLAYER_ACTIVITY:0 "#T [GetPlayer.GetCurrentActivity.GetType.GetName] in [GetPlayer.GetCurrentActivity.GetLocation.GetName]#! \n#I Click to select#!"
  #Pay Homage
  activity_pay_homage:0 "Homage"
- activity_pay_homage_name:0 "[ACTIVITY.GetOwner.GetNamePossessiveOrMy|U] Homage"
- activity_pay_homage_desc:0 "[ACTIVITY.GetOwner.GetTitledFirstName] wishes to pay formal homage to [ACTIVITY.GetOwner.GetHerHis] liege, [ACTIVITY.GetOwner.GetLiege.GetTitledFirstName]."
+ activity_pay_homage_name:0 "[ACTIVITY.GetHost.GetNamePossessiveOrMy|U] Homage"
+ activity_pay_homage_desc:0 "[ACTIVITY.GetHost.GetTitledFirstName] wishes to pay formal homage to [ACTIVITY.GetHost.GetHerHis] liege, [ACTIVITY.GetHost.GetLiege.GetTitledFirstName]."
 
  activity_invite_rule_friends:0 "Friends"
  activity_invite_rule_potential_friends: "Potential Friends"
@@ -249,18 +252,20 @@
  activity_invite_spouses_extended_family:0 "Spouses' Extended Family"
  activity_invite_mp:0 "Other Players"
  activity_invite_rule_councillors: "Councillors"
+ activity_invite_rule_clergy: "Clergy"
 
  ##### PILGRIMAGE #####
  activity_pilgrimage.is_location_valid.hajj_mecca:0 "The Hajj can only go to Mecca"
- activity_pilgrimage.is_location_valid.recently_visited:0 "You have recently visited this [holy_site|E]"
+ activity_pilgrimage.is_location_valid.recently_visited:0 "You have recently visited this [holy_site|E]."
+ pilgrimage_holy_site_cooldown_until_tt:0 "#warning You can visit this [holy_site|E] again on [GetCurrentDateWithDiff( GetVarTimeRemaining( pilgrimage_holy_site_cooldown_memory.MakeScope, 'pilgrimage_holy_site_cooldown') )].#!"
  activity_pilgrimage.serving_diarch:0 "You are the official [diarch|E] and expected to remain within the [realm|E]"
  activity_pilgrimage.is_activity_available.all_holy_sites_on_cooldown:0 "All of your available [holy_sites|E] are currently on cooldown"
- activity_pilgrimage.is_valid.islam.must_complete_hajj_first:0 "As a Muslim with the [GetFaithDoctrine('doctrine_pilgrimage_mandatory_hajj').GetBaseName] pilgrimage [doctrine|E], you must complete the Hajj before any other type of pilgrimage"
- activity_pilgrimage.is_location_valid.capital_is_holy_site:0 "This is your capital and thus not a valid pilgrimage [holy_site|E]"
- activity_pilgrimage.is_location_valid.capital_is_mecca:0 "You cannot undertake the Hajj pilgrimage as your capital is Mecca"
+ activity_pilgrimage.is_valid.islam.must_complete_hajj_first: "As a Muslim with the [GetDoctrineType('doctrine_pilgrimage_mandatory_hajj').GetBaseName] pilgrimage [doctrine|E], you must complete the Hajj before any other type of pilgrimage"
+ activity_pilgrimage.is_location_valid.capital_is_holy_site: "This is your capital and thus not a valid pilgrimage [holy_site|E]"
+ activity_pilgrimage.is_location_valid.capital_is_mecca: "You cannot undertake the Hajj pilgrimage as your capital is Mecca"
  
- activity_pilgrimage.is_valid.islam.mandatory_or_impatient:0 "At least one of these:\n$EFFECT_LIST_BULLET$ Your [faith|E] has the [GetFaithDoctrine('doctrine_pilgrimage_mandatory_hajj').GetBaseName] pilgrimage [doctrine|E]\n$EFFECT_LIST_BULLET$ You are [GetTrait('impatient').GetName(GetNullCharacter)]"
- activity_pilgrimage.is_valid.other.mandatory_or_impatient:0 "At least one of these:\n$EFFECT_LIST_BULLET$ Your [faith|E] has the [GetFaithDoctrine('doctrine_pilgrimage_mandatory').GetBaseName] pilgrimage [doctrine|E]\n$EFFECT_LIST_BULLET$ You are [GetTrait('impatient').GetName(GetNullCharacter)]"
+ activity_pilgrimage.is_valid.islam.mandatory_or_impatient: "At least one of these:\n$EFFECT_LIST_BULLET$ Your [faith|E] has the [GetDoctrineType('doctrine_pilgrimage_mandatory_hajj').GetBaseName] pilgrimage [doctrine|E]\n$EFFECT_LIST_BULLET$ You are [GetTrait('impatient').GetName(GetNullCharacter)]"
+ activity_pilgrimage.is_valid.other.mandatory_or_impatient: "At least one of these:\n$EFFECT_LIST_BULLET$ Your [faith|E] has the [GetDoctrineType('doctrine_pilgrimage_mandatory').GetBaseName] pilgrimage [doctrine|E]\n$EFFECT_LIST_BULLET$ You are [GetTrait('impatient').GetName(GetNullCharacter)]"
  
  activity_pilgrimage.is_valid.pilgrim_or_patient:0 "At least one of these:\n$EFFECT_LIST_BULLET$ You are [GetTrait('patient').GetName(GetNullCharacter)]\n$EFFECT_LIST_BULLET$ You have the [GetTrait('pilgrim').GetName(GetNullCharacter)] [trait|E]\n$EFFECT_LIST_BULLET$ You have the [GetTrait('hajjaj').GetName(GetNullCharacter)] [trait|E]"
 
@@ -271,7 +276,6 @@
 
  is_healthy_tt:0 "Is healthy"
 
- hunt_rampage_bodyguard_log_title:0 "#D TODO_CD: hunt_rampage_bodyguard_log_title#!"
  level_5_reward_tt_title:0 "End of Tour"
  level_4_reward_tt_title:0 "$level_5_reward_tt_title$"
  level_3_reward_tt_title:0 "$level_5_reward_tt_title$"

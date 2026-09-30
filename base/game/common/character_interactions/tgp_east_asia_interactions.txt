@@ -35,12 +35,24 @@ start_disbelieve_mandala_interaction = {
 		hegemony = 12
 	}
 
+	is_available = {
+		government_has_flag = government_is_mandala
+		trigger_if = {
+			limit = { is_ai = yes }
+			house ?= { has_house_head_parameter = unlock_disbelieve_mandala_scheme }
+			is_house_head = yes
+			primary_title.tier >= tier_county
+			NOT = {
+				any_scheme = { is_scheme_category = hostile }
+			}
+		}
+	}
+
 	is_shown = {
 		scope:actor = {
 			this != scope:recipient
-			government_has_flag = government_is_mandala	
 		}
-		scope:recipient = { 
+		scope:recipient = {
 			government_has_flag = government_is_mandala
 		}
 	}
@@ -65,7 +77,7 @@ start_disbelieve_mandala_interaction = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = disbelieve_mandala_interaction_notification
-				left_icon = scope:actor					
+				left_icon = scope:actor
 				right_icon = scope:recipient
 				begin_scheme_basic_effect = {
 					SCHEME_TYPE = disbelieve_mandala
@@ -75,21 +87,12 @@ start_disbelieve_mandala_interaction = {
 			}
 		}
 	}
-	
-	ai_potential = {
-		house ?= { has_house_head_parameter = unlock_disbelieve_mandala_scheme }
-		is_house_head = yes
-		primary_title.tier >= tier_county
-		NOT = {
-			any_scheme = { is_scheme_category = hostile }
-		}
-	}
-	
+
 	auto_accept = yes
-	
+
 	ai_will_do = {
 		base = 10
-		
+
 		# Relationships
 			modifier = {
 				add = 25
@@ -172,7 +175,7 @@ start_disbelieve_mandala_interaction = {
 				factor = 2
 				scope:recipient = {
 					number_of_tributaries > 0
-					is_a_faction_leader = yes 
+					is_a_faction_leader = yes
 					is_vassal_of = scope:actor
 				}
 			}
@@ -225,12 +228,22 @@ start_coerce_tributary_interaction = {
 		hegemony = 12
 	}
 
+	is_available = {
+		government_has_flag = government_is_mandala
+		trigger_if = {
+			limit = { is_ai = yes }
+			primary_title.tier >= tier_county
+			NOT = {
+				any_scheme = { is_scheme_category = personal }
+			}
+		}
+	}
+
 	is_shown = {
 		scope:actor = {
 			this != scope:recipient
-			government_has_flag = government_is_mandala
 		}
-		scope:recipient = { 
+		scope:recipient = {
 			is_independent_ruler = yes
 			is_landed = yes
 			is_ai = yes
@@ -256,7 +269,7 @@ start_coerce_tributary_interaction = {
 			}
 			trigger_else = {
 				primary_title = { tier >= scope:recipient.primary_title.tier }
-			}	
+			}
 		}
 		trigger_if = {
 			limit = {
@@ -287,7 +300,7 @@ start_coerce_tributary_interaction = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = coerce_tributary_interaction_notification
-				left_icon = scope:actor					
+				left_icon = scope:actor
 				right_icon = scope:recipient
 				begin_scheme_basic_effect = {
 					SCHEME_TYPE = coerce_tributary
@@ -297,20 +310,12 @@ start_coerce_tributary_interaction = {
 			}
 		}
 	}
-	
-	ai_potential = {
-		government_has_flag = government_is_mandala
-		primary_title.tier >= tier_county
-		NOT = {
-			any_scheme = { is_scheme_category = personal }
-		}
-	}
-	
+
 	auto_accept = yes
-	
+
 	ai_will_do = {
 		base = 10
-		
+
 		# Relationships
 			modifier = {
 				add = 25
@@ -385,16 +390,16 @@ start_coerce_tributary_interaction = {
 start_coerce_contribution_interaction = {
 	icon = icon_scheme_coerce_contribution
 	category = interaction_category_vassal
-	common_interaction = yes	
+	common_interaction = yes
 
-	send_name = START_SCHEME 
+	send_name = START_SCHEME
 
 	interface_priority = 50
 
 	scheme = coerce_contribution
-	ignores_pending_interaction_block = yes 
+	ignores_pending_interaction_block = yes
 
-	ai_targets = { 
+	ai_targets = {
 		ai_recipients = vassals
 		ai_recipients = tributaries
 	}
@@ -408,7 +413,8 @@ start_coerce_contribution_interaction = {
 	}
 
 	target_type = title
-	target_filter = actor_realm_titles
+	target_source= actor
+	target_filter = realm_counties
 
 	can_be_picked_title = {
 		scope:actor = {
@@ -432,10 +438,21 @@ start_coerce_contribution_interaction = {
 
 	desc = scheme_interaction_tt_coerce_contribution
 
+	is_available = {
+		government_has_flag = government_is_mandala
+		trigger_if = {
+			limit = { is_ai = yes }
+			has_unfunded_contribution_in_planned_mandala_capital_trigger = yes
+			piety > mandala_scheme_minor_piety_cost_value
+			NOT = {
+				any_scheme = { is_scheme_category = political }
+			}
+		}
+	}
+
 	is_shown = {
 		scope:actor = {
 			this = scope:recipient
-			government_has_flag = government_is_mandala
 		}
 	}
 
@@ -468,7 +485,7 @@ start_coerce_contribution_interaction = {
 							NOT = { has_variable = coerce_contribution_cooldown }
 						}
 					}
-				}	
+				}
 			}
 			trigger_if = {
 				limit = {
@@ -514,7 +531,7 @@ start_coerce_contribution_interaction = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = coerce_contribution_interaction_notification
-				left_icon = scope:recipient					
+				left_icon = scope:recipient
 				right_icon = scope:target
 				scope:actor = {
 					# Success.
@@ -567,7 +584,7 @@ start_coerce_contribution_interaction = {
 			save_scope_as = target
 			holder ?= {
 				if = {
-					limit = { 
+					limit = {
 						this != scope:actor
 						is_ai = yes
 					}
@@ -577,19 +594,10 @@ start_coerce_contribution_interaction = {
 						opinion = -10
 					}
 				}
-			}	
+			}
 		}
 	}
 
-	ai_potential = {
-		government_has_flag = government_is_mandala
-		has_unfunded_contribution_in_planned_mandala_capital_trigger = yes
-		piety > mandala_scheme_minor_piety_cost_value
-		NOT = {
-			any_scheme = { is_scheme_category = political }
-		}
-	}
-	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -630,15 +638,15 @@ start_leverage_contribution_interaction = {
 	icon = icon_scheme_leverage_contribution
 	category = interaction_category_vassal
 	common_interaction = yes
-	
-	send_name = START_SCHEME 
+
+	send_name = START_SCHEME
 
 	interface_priority = 50
 
 	scheme = leverage_contribution
-	ignores_pending_interaction_block = yes 
+	ignores_pending_interaction_block = yes
 
-	ai_targets = { 
+	ai_targets = {
 		ai_recipients = vassals
 		ai_recipients = tributaries
 	}
@@ -653,12 +661,23 @@ start_leverage_contribution_interaction = {
 
 	desc = scheme_interaction_tt_leverage_contribution
 
+	is_available = {
+		government_has_flag = government_is_mandala
+		trigger_if = {
+			limit = { is_ai = yes }
+			has_unfunded_contribution_in_planned_mandala_capital_trigger = yes
+			piety > mandala_scheme_minor_piety_cost_value
+			NOT = {
+				any_scheme = { is_scheme_category = political }
+			}
+		}
+	}
+
 	is_shown = {
 		scope:actor = {
 			this != scope:recipient
-			government_has_flag = government_is_mandala
 		}
-		scope:recipient = { 
+		scope:recipient = {
 			is_landed = yes
 			is_ai = yes
 		}
@@ -690,11 +709,11 @@ start_leverage_contribution_interaction = {
 							}
 							great_project_construction_phase_is = planned
 							any_contribution = { contribution_is_funded = no }
-						}			
+						}
 					}
 					trigger_if = {
 						limit = {
-							any_great_project = { 
+							any_great_project = {
 								great_project_owner = scope:actor
 								great_project_type = mandala_capital_05
 							}
@@ -727,7 +746,7 @@ start_leverage_contribution_interaction = {
 						}
 					}
 				}
-			}		
+			}
 		}
 		scope:recipient = {
 			in_diplomatic_range = scope:actor
@@ -754,7 +773,7 @@ start_leverage_contribution_interaction = {
 			send_interface_toast = {
 				type = event_toast_effect_neutral
 				title = leverage_contribution_interaction_notification
-				left_icon = scope:recipient					
+				left_icon = scope:recipient
 				right_icon = scope:target
 				scope:actor = {
 					# Success.
@@ -793,15 +812,6 @@ start_leverage_contribution_interaction = {
 		}
 	}
 
-	ai_potential = {
-		government_has_flag = government_is_mandala
-		has_unfunded_contribution_in_planned_mandala_capital_trigger = yes
-		piety > mandala_scheme_minor_piety_cost_value
-		NOT = {
-			any_scheme = { is_scheme_category = political }
-		}
-	}
-	
 	auto_accept = yes
 
 	ai_will_do = {
@@ -841,7 +851,7 @@ start_leverage_contribution_interaction = {
 decommission_mandala_temple_interaction = {
 	icon = icon_decommission_mandala_temple
 	category = interaction_category_vassal
-	
+
 	ai_maybe = yes
 	ai_min_reply_days = 4
 	ai_max_reply_days = 9
@@ -855,17 +865,25 @@ decommission_mandala_temple_interaction = {
 	greeting = positive
 	notification_text = DECOMMISSION_MANDALA_TEMPLE_INTERACTION_NOTIFICATION
 
+	is_available = {
+		government_has_flag = government_is_mandala
+		trigger_if = {
+			limit = { is_ai = yes }
+			top_overlord ?= this
+			is_at_war = no
+		}
+	}
+
 	is_shown = {
 		scope:actor = {
-			government_has_flag = government_is_mandala
 			capital_county.kingdom = {
 				any_in_de_jure_hierarchy = {
-					tier = tier_barony
-					holder = scope:recipient
-					title_province = {
+					title_province ?= {
 						has_building_with_flag = mandala_capital_building
 						has_ruined_great_building = no
 					}
+					tier = tier_barony
+					holder ?= scope:recipient
 				}
 			}
 		}
@@ -879,7 +897,7 @@ decommission_mandala_temple_interaction = {
 	}
 
 	is_valid_showing_failures_only = {
-		scope:recipient = { 
+		scope:recipient = {
 			is_physically_able = yes
 			is_at_war = no
 		}
@@ -933,7 +951,7 @@ decommission_mandala_temple_interaction = {
 					limit = { scope:actor = { has_variable = mandala_godking } }
 					multiply = 0
 				}
-			}	
+			}
 		}
 	}
 
@@ -963,7 +981,7 @@ decommission_mandala_temple_interaction = {
 			}
 			desc = actor_positive_mandala_radiance
 		}
-		
+
 		#Legitimacy
 			modifier = {
 				desc = "LOW_LEGITIMACY_REASON"
@@ -1015,7 +1033,7 @@ decommission_mandala_temple_interaction = {
 					has_legitimacy_flag = extra_increased_tributarization_acceptance
 				}
 			}
-		
+
 		# OPINION INFLUENCE
 		opinion_modifier = { # Compare Opinion modifier.
 			who = scope:recipient
@@ -1033,11 +1051,6 @@ decommission_mandala_temple_interaction = {
 	}
 
 	# AI will do
-
-	ai_potential = {
-		top_overlord = this
-		is_at_war = no
-	}
 
 	ai_targets = {
 		ai_recipients = vassals
@@ -1057,7 +1070,7 @@ decommission_mandala_temple_interaction = {
 		base = 0
 
 		modifier = {
-			scope:recipient = { 
+			scope:recipient = {
 				is_vassal_of = scope:actor
 				current_military_strength >= scope:actor.current_military_strength
 			}

@@ -16,17 +16,17 @@
 
 is_close_family_of_root_trigger = {
 	OR = {
-		any_parent = { this = root }
-		any_sibling = { this = root }
-		any_child = { this = root }
+		any_parent = { even_if_dead = yes this = root }
+		any_sibling = { even_if_dead = yes this = root }
+		any_child = { even_if_dead = yes this = root }
 	}
 }
 
 is_close_family_or_spouse_of_root_trigger = {
 	OR = {
-		any_parent = { this = root }
-		any_sibling = { this = root }
-		any_child = { this = root }
+		any_parent = { even_if_dead = yes this = root }
+		any_sibling = { even_if_dead = yes this = root }
+		any_child = { even_if_dead = yes this = root }
 		any_spouse = { this = root }
 	}
 }
@@ -35,6 +35,7 @@ is_sibling_child_of_root_trigger = {
 	any_parent = {
 		even_if_dead = yes
 		any_sibling = {
+			even_if_dead = yes
 			this = root
 		}
 	}
@@ -44,6 +45,7 @@ is_parent_sibling_of_root_trigger = {
 	any_sibling = {
 		even_if_dead = yes
 		any_child = {
+			even_if_dead = yes
 			this = root
 		}
 	}
@@ -55,6 +57,7 @@ is_cousin_of_root_trigger = {
 		any_sibling = {
 			even_if_dead = yes
 			any_child = {
+				even_if_dead = yes
 				this = root
 			}
 		}
@@ -125,31 +128,35 @@ is_nibling_in_law_of_root_trigger = {
 
 is_any_family_relation_or_spouse_of_root_trigger = {
 	OR = {
-		any_parent = { this = root }
-		any_sibling = { this = root }
-		any_child = { this = root }
+		any_parent = { even_if_dead = yes this = root }
+		any_sibling = { even_if_dead = yes this = root }
+		any_child = { even_if_dead = yes this = root }
 		any_spouse = { this = root }
 		any_parent = {
 			even_if_dead = yes
 			any_sibling = {
+				even_if_dead = yes
 				this = root
 			}
 		}
 		any_sibling = {
 			even_if_dead = yes
 			any_child = {
+				even_if_dead = yes
 				this = root
 			}
 		}
 		AND = {
 			NOT = {
 				any_sibling = {
+					even_if_dead = yes
 					this = root
 				}
 			}
 			any_parent = {
 				even_if_dead = yes
 				any_child = {
+					even_if_dead = yes
 					this = root
 				}
 			}
@@ -168,6 +175,7 @@ is_father_of_compare_character_trigger = {
 is_sibling_of_compare_character_trigger = {
 	scope:compare_character = {
 		any_sibling = {
+			even_if_dead = yes
 			this = prev
 		}
 	}
@@ -176,6 +184,7 @@ is_sibling_of_compare_character_trigger = {
 is_child_of_compare_character_trigger = {
 	scope:compare_character = {
 		any_child = {
+			even_if_dead = yes
 			this = prev
 		}
 	}
@@ -186,6 +195,7 @@ is_close_family_of_compare_character_trigger = {
 		this = scope:compare_character.mother
 		this = scope:compare_character.father	
 		any_sibling = {
+			even_if_dead = yes
 			this = scope:compare_character
 		}
 		father = scope:compare_character
@@ -199,8 +209,8 @@ is_allowed_to_legitimize_children_trigger = {
 	is_ruler = yes
 	custom_description = {
 		text = faith_allows_legitimization_of_bastards
-		faith = {
-			has_doctrine_parameter = bastards_legitimize
+		rite = {
+			rite_has_parameter = bastards_legitimize
 		}
 	}
 }
@@ -212,17 +222,17 @@ is_allowed_to_legitimize_children_trigger = {
 ##############################################
 is_close_family_trigger = {
 	OR = {
-		any_parent = { this = $CHARACTER$ }
-		any_sibling = { this = $CHARACTER$ }
-		any_child = { this = $CHARACTER$ }
+		any_parent = { even_if_dead = yes this = $CHARACTER$ }
+		any_sibling = { even_if_dead = yes this = $CHARACTER$ }
+		any_child = { even_if_dead = yes this = $CHARACTER$ }
 	}
 }
 
 is_close_family_or_spouse_trigger = {
 	OR = {
-		any_parent = { this = $CHARACTER$ }
-		any_sibling = { this = $CHARACTER$ }
-		any_child = { this = $CHARACTER$ }
+		any_parent = { even_if_dead = yes this = $CHARACTER$ }
+		any_sibling = { even_if_dead = yes this = $CHARACTER$ }
+		any_child = { even_if_dead = yes this = $CHARACTER$ }
 		any_spouse = { this = $CHARACTER$ }
 	}
 }
@@ -230,13 +240,14 @@ is_close_family_or_spouse_trigger = {
 is_any_family_relation_or_spouse_trigger = {
 	save_temporary_scope_as = root_character
 	OR = {
-		any_parent = { this = $CHARACTER$ }
-		any_sibling = { this = $CHARACTER$ }
-		any_child = { this = $CHARACTER$ }
+		any_parent = { even_if_dead = yes this = $CHARACTER$ }
+		any_sibling = { even_if_dead = yes this = $CHARACTER$ }
+		any_child = { even_if_dead = yes this = $CHARACTER$ }
 		any_spouse = { this = $CHARACTER$ }
 		any_parent = {
 			even_if_dead = yes
 			any_sibling = {
+				even_if_dead = yes
 				this = $CHARACTER$
 			}
 		}
@@ -245,6 +256,7 @@ is_any_family_relation_or_spouse_trigger = {
 			any_sibling = {
 				even_if_dead = yes
 				any_child = {
+					even_if_dead = yes
 					this = $CHARACTER$
 				}
 			}
@@ -252,18 +264,21 @@ is_any_family_relation_or_spouse_trigger = {
 		any_sibling = {
 			even_if_dead = yes
 			any_child = {
+				even_if_dead = yes
 				this = $CHARACTER$
 			}
 		}
 		AND = {
 			NOT = {
 				any_sibling = {
+					even_if_dead = yes
 					this = $CHARACTER$
 				}
 			}
 			any_parent = {
 				even_if_dead = yes
 				any_child = {
+					even_if_dead = yes
 					this = $CHARACTER$
 				}
 			}

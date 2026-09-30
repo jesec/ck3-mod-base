@@ -107,6 +107,11 @@
  message_filter_dynasty_child_of_age_desc: "당신 [dynasty|E]의 한 [child|E]가 당신의 [court|E]에서 성년이 됨"
  message_filter_child_of_age: "@child_icon! 성년이 된 당신의 자녀"
  message_filter_child_of_age_desc: "당신의 [children|E] 중 하나가 성년이 됨"
+ #INTERACTION
+ message_filter_interaction_consequence: "@catch_all_icon! 상호작용 결과"
+ message_filter_interaction_consequence_desc: "수행한 상호작용의 결과입니다"
+ message_filter_ransom_result: "@prison_icon! 몸값 결과"
+ message_filter_ransom_result_desc: "받은 몸값의 결과입니다"
  #DEATH
  message_filter_death_family: "@death_icon! 식구"
  message_filter_death_family_desc: "[close_family|E] 구성원이 사망함"
@@ -239,9 +244,9 @@
  message_filter_war_troops_gained: "@soldier_icon! 병사 획득"
  message_filter_war_troops_gained_desc: "[special_troops|E] 획득"
  message_filter_war_troops_dismissed: "@soldier_icon! 병사 해산"
- message_filter_war_troops_dismissed_desc: "당신의 [special_troops|E], 고용한 [mercenary_company|E] 또는 고용한 [holy_order|E]이 해산함"
+ message_filter_war_troops_dismissed_desc: "당신의 [special_troops|E], 고용한 [mercenary_company|E] 또는 고용한 [military_holy_order|E]이 해산함"
  message_filter_war_enemy_troops: "@soldier_icon! 적 병사 획득"
- message_filter_war_enemy_troops_desc: "적이 [special_troops|E] 또는 [mercenary_company|E], [holy_order|E]을 영입함"
+ message_filter_war_enemy_troops_desc: "적이 [special_troops|E] 또는 [mercenary_company|E], [military_holy_order|E]을 영입함"
  #ARTIFACT
  message_filter_artifact_claim: "@artifact_icon! 유물 명분"
  message_filter_artifact_claim_desc: "[artifact_claim|E]을 획득 또는 상실함"
@@ -255,6 +260,8 @@
  message_filter_faith_excommunication_desc: "당신의 [faith|E]에 속한 [ruler|E]가 [excommunicated|E]당함"
  message_filter_head_of_faith_changed: "@religious_icon! 새로운 교계 지도자"
  message_filter_head_of_faith_changed_desc: "당신의 [head_of_faith|E]가 변경됨"
+ message_filter_rite_updated: "@religious_icon! 교파 변경"
+ message_filter_rite_updated_desc: "당신의 [rite|E] 또는 [mainline_rite|E]의 [core_tenet|E] 또는 [doctrine|E] 중 하나가 변경됩니다"
  message_filter_realm_priest_endorsement: "@bishop_icon! 봉역 사제 지지"
  message_filter_realm_priest_endorsement_desc: "당신을 향한 [realm_priest_possessive|E] 지지가 변경됨"
  message_filter_liege_converting_holding: "@conversion_icon! 주군 영지 개종"
@@ -302,7 +309,9 @@
  message_filter_accolade_eligibility: "@accolade_icon! [accolade_type|E]에 적합한 기사"
  message_filter_accolade_eligibility_desc: "[knight|E]가 새로운 [accolade_type|E]의 [accolade|E]을 받을 수 있습니다."
  message_filter_squire_training: "@accolade_icon! [acclaimed_knight|E]가 종자를 훈련"
- message_filter_squire_training_desc: "[courtier|E]의 능력이 [accolade|E]의 [accolade_squires|E] 적성으로 인해 개선됩니다."
+ message_filter_squire_training_desc: "[courtier|E]의 능력이 [accolade|E]의 [accolade_squires|E]로 인해 개선됩니다"
+ message_filter_accolade_mercenary: "@accolade_icon! 전임 [acclaimed_knight|E] [adventurer|E]"
+ message_filter_accolade_mercenary_desc: "용병 [adventurer|E]가 된 당신의 전임 [acclaimed_knight|E]가 당신과 교류함"
  #ACTIVITY
  message_filter_tournament_arrival: "@tournament_icon! 영주 도착"
  message_filter_tournament_arrival_desc: "저명한 [ruler|E]이 [activity_guest|E]으로서 당신의 [GetActivityType( 'activity_tournament' ).GetName]에 도착함"
@@ -314,7 +323,7 @@
  message_filter_tournament_qualification_champion_desc: "당신의 투사의 [GetActivityType( 'activity_tournament' ).GetName] [contest|E] [contest_qualification|E] 상태가 변경됨"
  message_filter_tournament_qualification_knight: "@tournament_icon! 기사 본선 진출"
  message_filter_tournament_qualification_knight_desc: "당신의 [knights_possessive|E] [GetActivityType( 'activity_tournament' ).GetName] [contest|E] [contest_qualification|E] 상태가 변경됨"
- #HOLY ORDER
+ #Military Order
  message_filter_holy_order_founded: "@holy_order_icon! 신앙 설립"
  message_filter_holy_order_founded_desc: "당신의 [faith|E]에 속한 [holy_order|E]이 창설됨"
  message_filter_holy_order_founded_enemy: "@holy_order_icon! 인근 설립"
@@ -322,7 +331,7 @@
  message_filter_holy_order_destroyed: "@holy_order_icon! 신앙 해산"
  message_filter_holy_order_destroyed_desc: "당신의 [faith|E]에 속한 [holy_order|E]이 해산함"
  message_filter_holy_order_hired: "@holy_order_icon! 기사단 고용"
- message_filter_holy_order_hired_desc: "당신이 [holy_order_patron|E]인 [holy_order|E]이 고용됨"
+ message_filter_holy_order_hired_desc: "당신이 [military_holy_order_patron|E]인 [military_holy_order|E]이 고용됨"
  message_filter_holy_order_patronage: "@holy_order_icon! 후원"
  message_filter_holy_order_patronage_desc: "당신이 [holy_order_patron|E]인 [holy_order|E]의 상태가 변경됨"
  #LAAMP
@@ -359,15 +368,15 @@
  message_filter_governance_contracts: "@catch_all_icon!국정 문제 발생"
  message_filter_governance_contracts_desc: "당신의 관할지에 [governance_issue|E]이 나타남"
  message_filter_governor_notification: "@governor_efficiency! 총독 알림"
- message_filter_governor_notification_desc: "[administrative|E] [realm|E]에서 [governor|E]으로 플레이할 때 다양한 유형의 알림이 나타납니다"
+ message_filter_governor_notification_desc: "[government_bureaucratic_type|E] [realm|E]에서 [governor|E]으로 플레이할 때 다양한 유형의 알림이 나타납니다"
  message_filter_admin_border_change: "@governor_efficiency! 행정제 국경"
- message_filter_admin_border_change_desc: "당신의 [administrative|E] [top_realm|E] 내의 [governorship|E] 국경이 변경됨"
+ message_filter_admin_border_change_desc: "당신의 [government_bureaucratic_type|E] [top_realm|E] 내의 [governorship|E] 국경이 변경됨"
  message_filter_appointment_candidacy: "@titles_icon! 임명직 입후보"
  message_filter_appointment_candidacy_desc: "추대 [succession_law|E]가 적용되는 임명직 [title|E]에 대한 당신의 입후보에 변화가 생김"
  message_filter_candidate_title_gained: "@titles_icon! 후보가 작위를 획득"
- message_filter_candidate_title_gained_desc: "지지 또는 반대한 후보가 [administrative|E] [title|E]를 획득함"
+ message_filter_candidate_title_gained_desc: "지지 또는 반대한 후보가 [government_bureaucratic_type|E] [title|E]를 획득함"
  message_filter_candidate_title_lost: "@titles_icon! 후보가 작위 상실"
- message_filter_candidate_title_lost_desc: "임명에 대하여 지지 또는 반대를 받았던 [ruler|E]가 [administrative|E] [title|E]를 상실함"
+ message_filter_candidate_title_lost_desc: "임명에 대하여 지지 또는 반대를 받았던 [ruler|E]가 [government_bureaucratic_type|E] [title|E]를 상실함"
  message_filter_provincial_army_assignment: "@titles_icon! 속주 부대 배정"
  message_filter_provincial_army_assignment_desc: "[provincial|E] [army|E] 배정"
  message_filter_admin_provincial_army_requests: "@soldier_icon! 속주 부대 요청"
@@ -397,6 +406,8 @@
  #GREAT PROJECT
  message_filter_great_project: "@great_project_icon! 대규모 사업 갱신"
  message_filter_great_project_desc: "당신이 관심을 가질 만한 [great_project|E]이 계획 중이거나, 완료되거나, 또는 취소됩니다"
+ message_filter_great_project_contribution: "@great_project_icon! 대규모 사업 기여"
+ message_filter_great_project_contribution_desc: "당신이 관심을 가질 만한 [great_projects|E]의 [great_project_contribution|E]에 투자가 이루어지거나, 완료 후 보상이 분배되었습니다"
  #REQUIRED
  message_filter_event_outcome: "@catch_all_icon! 이벤트 결과"
  message_filter_event_outcome_desc: "이벤트 결과를 확인하였고 조처를 취함"
@@ -406,3 +417,25 @@
  #TRIBUTARY
  message_filter_tributary: "@tributary_icon! $CONTRACT_VASSAL_SIGNATURE_TRIBUTARY_TYPE$"
  message_filter_tributary_desc: "당신의 [tributaries|E] 관련 변화 및 개발"
+ #PAM - Saints
+ message_filter_character_becomes_saint: "@religious_icon! 인물이 성인으로 추대됨"
+ message_filter_character_becomes_saint_desc: "당신의 [faith|E]에 속한 인물이 성인으로 시성되었습니다"
+ #SF change
+ message_filter_spiritual_fulfillment_changed: "@religious_icon! 영적 충만 변화"
+ message_filter_spiritual_fulfillment_changed_desc: "당신의 [spiritual_fulfillment|E] 변화"
+ message_filter_liege_ceded_title: "주군이 작위를 양도함"
+ message_filter_liege_ceded_title_desc: "당신의 [liege|E] 또는 그 상위 주군이 [realm|E] [title|E] 또는 [vassal|E]을 다른 독립 영주에게 넘기기로 합의했습니다."
+ message_filter_clergy_title_transfer: "성직 작위 이전"
+ message_filter_clergy_title_transfer_desc: "당신의 승인을 통해 [title|E]가 세속 [rulers|E] 사이에서 평화롭게 이전되었거나, 혹은 그 승인이 무시되었습니다."
+ message_filter_holy_site_changed: "성지 변경"
+ message_filter_holy_site_changed_desc: "당신의 [faith|E]이 [holy_site|E]를 획득, 상실, 승격 또는 강등합니다"
+ message_filter_clerical_region: "@religious_icon! 성직 지역 변경"
+ message_filter_clerical_region_desc: "관련 [clerical_region|E]의 상태가 변경됩니다"
+ #PAM - Ecumenical Councils
+ message_filter_ecumenical_council_ruling: "@religious_icon! 보편 공의회 결정"
+ message_filter_ecumenical_council_ruling_desc: "[ecumenical_council|E]가 당신의 [faith|E] 관련 사안에 결론을 내립니다"
+ #PAM - Great Schism
+ message_filter_great_schism_progress: "@religious_icon! 대분열 진행도"
+ message_filter_great_schism_progress_desc: "기독교 세계가 [Concept( 'schism', '대분열')|E] 방향으로 진행합니다"
+ message_filter_order_espousing_beliefs: "@religious_icon! 수도회 확장"
+ message_filter_order_espousing_beliefs_desc: "[monastic_holy_order|E]가 자신의 [tenet|E]의 [tenet_popularity|E]를 높이고 있으며, 당신의 [faith|E] 내에서 [rite|E]를 확산시키거나 다른 수도회로부터 수도원 [lease|E]를 얻을 수도 있습니다"

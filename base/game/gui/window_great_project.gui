@@ -32,7 +32,7 @@
 
 			blockoverride "header_text"
 			{
-				text = "[GreatProject.GetName]"
+				text = "[GreatProject.GetNameNoTooltip]"
 			}
 
 			blockoverride "button_close"
@@ -446,13 +446,14 @@ types Project
 		{
 			button_checkbox = {
 				visible = "[Not( ContributionItem.GetContributor.IsValid )]"
-				enabled = "[ContributionItem.IsContributionFundable( GetPlayer )]"
 				size = { 30 30 }
+
+				enabled = "[ContributionItem.IsContributionFundable( GetPlayer )]"
 				checked = "[ContributionItem.IsSelected]"
 				onclick = "[ContributionItem.ToggleSelection]"
 
-				tooltip = "GREAT_PROJECT_CONTRIBUTION_UNAVAILABLE_TT"
-				tooltip_visible = "[Not( ContributionItem.IsContributionFundable( GetPlayer ) )]"
+				tooltip = "[SelectLocalization( ContributionItem.IsContributionFundable( GetPlayer ), ContributionItem.GetPreviewTooltip,'GREAT_PROJECT_CONTRIBUTION_UNAVAILABLE_TT')]"
+				tooltip_offset = { 5 0 }
 			}
 		}
 
@@ -508,13 +509,14 @@ types Project
 		{
 			button_checkbox = {
 				visible = "[And( Not( ContributionItem.GetContributor.IsValid ), GreatProject.CanFundOptionalContributions )]"
-				enabled = "[ContributionItem.IsContributionFundable( GetPlayer )]"
 				size = { 30 30 }
+
+				enabled = "[ContributionItem.IsContributionFundable( GetPlayer )]"
 				checked = "[ContributionItem.IsSelected]"
 				onclick = "[ContributionItem.ToggleSelection]"
 
-				tooltip = "GREAT_PROJECT_CONTRIBUTION_UNAVAILABLE_TT"
-				tooltip_visible = "[Not( ContributionItem.IsContributionFundable( GetPlayer ) )]"
+				tooltip = "[SelectLocalization( ContributionItem.IsContributionFundable( GetPlayer ), ContributionItem.GetPreviewTooltip,'GREAT_PROJECT_CONTRIBUTION_UNAVAILABLE_TT')]"
+				tooltip_offset = { 5 0 }
 			}
 		}
 

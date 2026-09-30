@@ -8,15 +8,18 @@
  fp1_tbc.0001.desc.recipient_has_champion: "[recipient.GetTitledFirstName] не может сражаться самостоятельно, и [champion.GetFirstNameNoTooltip] будет биться за н[SCOPE.sC('recipient').GetHerHis]."
  fp1_tbc.0001.desc.outro: "\n\nПодготовка не занимает много времени. Мы знаем, зачем собрались, а время разговоров давно прошло. Берем оружие, и сопровождающие отступают на безопасное расстояние."
  fp1_tbc.0001.trigger_failure.actor: "Мой [Concept( 'trial_by_combat', 'суд поединком' )|E] против персонажа [recipient.GetFirstNameNoTooltip] отменен"
+ fp1_tbc.0001.trigger_failure.actor_puppeteer: "[Concept('trial_by_combat_trial', 'Суд поединком')|E] между персонажами [puppet_or_actor.GetShortUIName] и [recipient.GetFirstNameNoTooltip] отменён"
  fp1_tbc.0001.trigger_failure.recipient: "Мой [Concept( 'trial_by_combat', 'суд поединком' )|E] против персонажа [actor.GetFirstNameNoTooltip] отменен"
  fp1_tbc.0001.a: "Пусть победит сильнейший."
  fp1_tbc.0001.a.tt: "[trial_by_combat|E] начинается!"
  #TbC has invalidated.
  fp1_tbc.0021.trigger_failure.actor: "$fp1_tbc.0001.trigger_failure.actor$"
+ fp1_tbc.0021.trigger_failure.actor_puppeteer: "$fp1_tbc.0001.trigger_failure.actor_puppeteer$"
  fp1_tbc.0021.trigger_failure.recipient: "$fp1_tbc.0001.trigger_failure.recipient$"
  fp1_tbc.0031.opening: "[recipient.Custom2('AppropriateGreeting',actor)]"
  fp1_tbc.0031.desc: "Драться с #EMP тобой#!? Пожалуй, тебе пора сменить деятельность и стать шутом. Даже [recipient.GetFaith.NegativeAfterLife] смеется над тобой.\n\nПродолжай веселье, [recipient.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip] с нетерпением ждет твоих посланий."
  fp1_tbc.0031.a: "[recipient.Custom2('InsultAdjective', SCOPE.sC('actor'))|U][Select_CString(recipient.IsFemale, 'ая', 'ый' )] [recipient.Custom2('InsultNoun', SCOPE.sC('actor'))]!"
+ fp1_tbc.0031.toast_puppeteer: "[recipient.GetShortUIName] [Select_CString(recipient.IsLocalPlayer, 'отказались', Select_CString(recipient.IsFemale, 'отказалась', 'отказался' ))] от суда поединком с персонажем [puppet_or_actor.GetShortUIName]"
  #Scope:actor won a TbC.
  fp1_tbc.0041.t: "$fp1_tbc.0000.t$: победа!"
  fp1_tbc.0041.desc.intro: "Вот и [actor.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip]. Я отдыхаю, наслаждаясь победой, [actor.Custom('signature_weapon')] лежит на колене.\n\n"
@@ -28,6 +31,7 @@
  fp1_tbc.0041.desc.reward.humiliation: "\n\nДолгое, вымученное извинение, ползание на брюхе перед оравой наемных поэтов... просто #EMP великолепно#!. Пройдут годы, прежде чем [recipient.GetFirstNameNoTooltip] оправится от такого унижения."
  fp1_tbc.0041.desc.outro: "\n\nСо вчерашнего дня о нашей ссоре знает [actor.GetFaith.PantheonTerm], и [actor.GetFaith.PantheonTerm] выносит мудрое решение."
  fp1_tbc.0041.a: "Справедливость восторжествовала."
+ fp1_tbc.0041.toast_puppeteer: "[puppet_or_actor.GetShortUIName] [Select_CString(puppet_or_actor.IsLocalPlayer, 'одержали', Select_CString(puppet_or_actor.IsFemale, 'одержала', 'одержал' ))] победу в суде поединком против [Select_CString(recipient.IsLocalPlayer, 'вас', Concatenate('персонажа ',recipient.GetShortUIName))]"
  #Scope:actor lost a TbC.
  fp1_tbc.0051.t: "$fp1_tbc.0000.t$: поражение!"
  fp1_tbc.0051.desc.intro: "Как такое могло произойти? Когда [actor.GetFaith.PantheonTerm] обещает #EMP торжество справедливости#!, разве должны меня постигнуть такие унижения и боль?! Впереди [actor.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip], но я всю дорогу храню абсолютное молчание.\n\n"
@@ -35,6 +39,7 @@
  fp1_tbc.0051.desc.opponent_lives.recipient_has_champion: "#EMP Ясное дело,#! в честном бою [recipient.GetFirstName] ни за что не [Select_CString(recipient.IsFemale, 'одержала', 'одержал' )] бы победу! Будь ты [Select_CString(champion.IsFemale, 'проклята', 'проклят' )], [champion.GetTitledFirstName], и будь прокляты замшелые традиции!"
  fp1_tbc.0051.desc.outro: "\n\nТеперь все считают, что наш спор решен, а справедливость восторжествовала."
  fp1_tbc.0051.a: "Тьфу, нет здесь никакой справедливости."
+ fp1_tbc.0051.toast_puppeteer: "[puppet_or_actor.GetShortUIName] [Select_CString(puppet_or_actor.IsFemale, 'проиграла', 'проиграл' )] в суде поединком против [Select_CString(recipient.IsLocalPlayer, 'вас', Concatenate('персонажа ',recipient.GetShortUIName))]"
  #Scope:recipient must designate a champion to fight for them.
  fp1_tbc.0101.t: "$fp1_tbc.0000.t$: выбор защитника"
  fp1_tbc.0101.desc: "Когда [actor.GetTitledFirstName] предлагает $game_concept_trial_by_combat$, я соглашаюсь, но сражаться лично было бы недостойно.\n\nОбычай требует от меня найти защитника моих интересов, но кто это будет?"

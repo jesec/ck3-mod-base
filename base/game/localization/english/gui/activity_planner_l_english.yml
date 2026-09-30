@@ -1,5 +1,5 @@
 ﻿l_english:
- INVALID_ACTIVITY_TYPE:0 "@warning_icon! #X Invalid [activity|E] type#!"
+ INVALID_ACTIVITY_TYPE: "@warning_icon! #X Invalid [activity|E] type#!"
  INVALID_ACTIVITY_HOST:1 "@warning_icon! #X Invalid [activity_host_short|E]#!"
  INVALID_ACTIVITY_HOST_INTENT:0 "@warning_icon! #X Invalid [intent|E]#!"
  INVALID_ACTIVITY_HOST_INTENT_NO_TARGET:0 "@warning_icon! #X [intent|E] needs a target.#!"
@@ -18,6 +18,7 @@
  INVALID_ACTIVITY_MISSING_FEATURE_FLAG:0 "@warning_icon! #X Missing DLC feature flag '$FEATURE_FLAG$'#!"
  INVALID_ACTIVITY_NO_INVITED_CHARACTERS:0 "@warning_icon! #X No invited [activity_guests|E]#!"
  INVALID_ACTIVITY_NO_ATTENDING_CHARACTERS:0 "@warning_icon! #X No attending [activity_guests|E]#!"
+ INVALID_ACTIVITY_NO_TENETS_OR_DOCTRINES: "@warning_icon! #X You need to select the [core_tenets|E] and [doctrines|E] for the debate#!"
  ACTIVITY_PLANNER_PHASE_PROVINCE_TOOLTIP:3 "#T [Province.GetBaronyNameExplicitlyNoTooltip]#!\n$ACTIVITY_PROVINCE_DESCRIPTION$\n\n#I Click to select destination#!"
  ACTIVITY_PLANNER_PHASE_PROVINCE_BLOCKED_TOOLTIP:2 "#T [Province.GetBaronyNameExplicitlyNoTooltip]#!\nYou can #bold not#! hold a [ActivityType.GetNameNoTooltip] here because:\n$BLOCK_REASON$"
  ACTIVITY_PLANNER_CAN_PROGRESS_ALL_HAVE_LOCATION:0 "@warning_icon! #X Must pick a destination location#!"
@@ -39,7 +40,7 @@
  activity_filter_domicile: "[domicile|E]"
  activity_filter_domicile_domain: "[domicile|E] [domain|E]"
  activity_filter_domicile_realm: "[domicile|E] [realm|E]"
- activity_filter_holy_sites_realm: "[holy_sites|E] [realm|E]"
+ activity_filter_anointment_candidates: "[holy_sites|E], [realm|E], or the [head_of_rite|E]'s location"
 
  GOVERNMENT_ADJECTIVE: "[Character.GetGovernment.GetAdjective]"
  GOVERNMENT_ADJECTIVE_ICON: "[Character.Custom('GetGovernmentIcon')] [Character.GetGovernment.GetAdjective] [realm|E]"
@@ -57,7 +58,7 @@
  activity_filter_domicile_blocker: "@warning_icon! #X [Province.GetBaronyNameExplicitlyNoTooltip] is #bold not#! in your [domicile|E]#!"
  activity_filter_domicile_domain_blocker: "@warning_icon! #X [Province.GetBaronyNameExplicitlyNoTooltip] is #bold not#! in your [domicile|E] or [domain|E]#!"
  activity_filter_domicile_realm_blocker: "@warning_icon! #X [Province.GetBaronyNameExplicitlyNoTooltip] is #bold not#! in your [domicile|E] or [realm|E]#!"
- activity_filter_holy_sites_realm_blocker: "@warning_icon! #X [Province.GetBaronyNameExplicitlyNoTooltip] is #bold not#! in your [realm|E] or a [holy_site|E]#!"
+ activity_filter_anointment_candidates_blocker: "@warning_icon! #X [Province.GetBaronyNameExplicitlyNoTooltip] is #bold not#! in your [realm|E], a [holy_site|E], or the [head_of_rite|E]'s location#!"
 
  ACTIVITY_PLANNER_SUMMARY_HEADER:0 "Planning Summary:"
  ACTIVITY_DESTINATION_SELECTION_HEADER:0 "Destination Selection"
@@ -96,4 +97,22 @@
  CREATE_ACTIVITY_CONFIRMATION_DESC:0 "Are you sure you want to start your [ActivityType.GetNameNoTooltip]?\n\nThe following $ACTIVITY_SPECIAL_GUESTS$ will not join:\n$DECLINING_GUESTS$"
  CREATE_ACTIVITY_CONFIRMATION_CONFIRM:0 "$START$"
 
- ACTIVITY_PLANNER_PHASE_REPLACE_TOOLTIP:0 "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, PlannedActivityPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddTextIf( Not( ActivityPlanner.CanPlanMorePhasesOfType( ActivityPhase.Self ) ), AddLine( '$ACTIVITY_PLANNER_CANNOT_PICK_MORE_OF_PHASE|q$' ) )][AddLine( ActivityPhase.GetDescription )]"
+ ACTIVITY_PLANNER_PHASE_REPLACE_TOOLTIP:0 "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, PlannedActivityPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddTextIf( Not( ActivityPlanner.CanPlanMorePhasesOfType( ActivityPhase.Self ) ), AddLine( '$ACTIVITY_PLANNER_CANNOT_PICK_MORE_OF_PHASE|q$' ) )][AddLine( ActivityPhase.GetDescription( Activity.Self ) )]"
+
+ activity_planner_clear_selected_tenet: "#I Click to clear selected [core_tenet|E]#!"
+ activity_planner_clear_selected_doctrine: "#I Click to clear selected [doctrine|E]#!"
+ activity_planner_tenet_window_title: "Choose a Tenet"
+ activity_planner_doctrine_window_title: "Choose a Doctrine"
+ activity_planner_tenets_doctrines: "[core_tenets|E] and [doctrines|E]"
+
+ ecumenical_council_planner_debate_change: "\n\n#I Click to change debate topic#!"
+ ecumenical_council_planner_debate_empty_tenet: "#I Click to select [core_tenet|E] debate topic#!"
+ ecumenical_council_planner_debate_empty_doctrine: "#I Click to select [doctrine|E] debate topic#!"
+ ecumenical_council_planner_debate_topic_tenet: "$ORDINAL$ [TenetType.GetName( GetPlayer.GetRite )|V] [core_tenet|E] $ecumenical_council_planner_debate_change$"
+ ecumenical_council_planner_debate_topic_doctrine: "$ORDINAL$ [DoctrineType.GetGroup.GetName( GetPlayer.GetFaith )|V] [doctrine|E] $ecumenical_council_planner_debate_change$"
+ ecumenical_council_planner_debate_first: "The first debate will discuss"
+ ecumenical_council_planner_debate_second: "The second debate will discuss"
+ ecumenical_council_planner_debate_third: "The third debate will discuss"
+ ecumenical_council_planner_debate_fourth: "The fourth debate will discuss"
+ ecumenical_council_planner_debate_fifth: "The fifth debate will discuss"
+ ecumenical_council_planner_debate_sixth: "The sixth debate will discuss"

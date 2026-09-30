@@ -1,0 +1,593 @@
+﻿types ActivityPlannerTenetDoctrineWidgets
+{
+	type widget_activity_tenet_item = widget {
+		size = { 74 90 }
+		allow_outside = yes
+
+		state = {
+			name = _mouse_hierarchy_enter
+			on_start = "[GetVariableSystem.Toggle( TenetItem.GetItemId )]"
+		}
+
+		state = {
+			name = _mouse_hierarchy_leave
+			on_finish = "[GetVariableSystem.Clear( TenetItem.GetItemId )]"
+		}
+
+		### TENET PICKED
+		button = {
+			visible = "[Not( TenetItem.IsEmpty )]"
+			size = { 74 90 }
+			parentanchor = center
+
+			widget = {
+				datacontext = "[GetPlayer]"
+				datacontext = "[TenetItem.GetTenet]"
+				datacontext = "[TenetItem.GetFaith]"
+				datacontext = "[TenetItem.GetRite]"
+				size = { 100% 100% }
+				parentanchor = center
+
+				highlight_icon = {
+					name = "tenet_bg"
+					size = { 74 90 }
+					parentanchor = center
+
+					texture = "[Faith.GetTenetBackgroundSmallIcon( Rite.Self, TenetType.Self )]"
+				}
+
+				highlight_icon = {
+					name = "tenet_icon"
+					size = { 130 200 }
+					parentanchor = center
+
+					alpha = 0.85
+					scale = 0.55
+					texture = "[TenetType.GetIcon( Faith.Self )]"
+				}
+			}
+
+			button_tenet_small = {
+				name = "activity_tenet_item_filled"
+				size = { 74 90 }
+				parentanchor = center
+
+				block "activity_tenet_item_onclick"
+				{
+				}
+				block "activity_tenet_item_tooltip"
+				{
+					tooltip = "ecumenical_council_planner_debate_empty_tenet"
+				}
+				using = tooltip_ne
+			}
+		}
+
+		### TENET EMPTY
+		button = {
+			name = "activity_tenet_item_empty"
+			visible = "[TenetItem.IsEmpty]"
+			size = { 100% 100% }
+
+			block "activity_tenet_item_onclick"
+			{
+			}
+
+			block "activity_tenet_item_tooltip"
+			{
+				tooltip = "ecumenical_council_planner_debate_empty_tenet"
+			}
+			using = tooltip_ne
+
+			highlight_icon = {
+				parentanchor = center
+				size = { 74 90 }
+				texture = "gfx/interface/icons/faith_tenets/tenet_banner_known_neutral.dds"
+
+				button_round = {
+					parentanchor = center
+					alwaystransparent = yes
+
+					button_plus = {
+						parentanchor = center
+						alwaystransparent = yes
+					}
+				}
+			}
+		}
+
+		### CLEAR TENET BUTTON
+		widget = {
+			visible = "[And( Not( TenetItem.IsEmpty ), GetVariableSystem.Exists( TenetItem.GetItemId ) )]"
+			visible_at_creation = no
+			position = { 50 -10 }
+
+			allow_outside = yes
+
+			state = {
+				name = _show
+				using = Animation_FadeIn_Standard
+			}
+
+			state = {
+				name = _hide
+				using = Animation_FadeOut_Standard
+			}
+
+			### REMOVE
+			button_round = {
+				size = { 30 30 }
+
+				block "activity_tenet_item_clear_onclick"
+				{
+					onclick = "[ActivityPlanner.ClearTenet( '(int32)-1' )]"
+				}
+				tooltip = "activity_planner_clear_selected_tenet"
+				using = tooltip_ne
+
+				button_cancel = {
+					size = { 24 24 }
+					parentanchor = center
+					alwaystransparent = yes
+				}
+			}
+		}
+
+		widget_alert_prohibited_tenet = {
+			visible = "[TenetItem.IsProhibited]"
+			position = { -8 -8 }
+		}
+	}
+
+	type widget_activity_doctrine_item = widget {
+		size = { 70 70 }
+
+		state = {
+			name = _mouse_hierarchy_enter
+			on_start = "[GetVariableSystem.Toggle( DoctrineItem.GetItemId )]"
+		}
+
+		state = {
+			name = _mouse_hierarchy_leave
+			on_finish = "[GetVariableSystem.Clear( DoctrineItem.GetItemId )]"
+		}
+
+		button = {
+			size = { 70 70 }
+			parentanchor = center
+
+			widget = {
+				size = { 100% 100% }
+				parentanchor = center
+
+				highlight_icon = {
+					size = { 52 64 }
+					parentanchor = center
+
+					### Doctrine Banner
+					texture = "gfx/interface/icons/faith_doctrines/doctrine_banner.dds"
+
+					### Selected Doctrine Icon
+					vbox = {
+						visible = "[Not( DoctrineItem.IsEmpty )]"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						icon_doctrine = {
+							datacontext = "[DoctrineType.GetGroup.GetCategory]"
+							visible = "[DoctrineCategoryType.HasTag( 'main' )]"
+							size = { 40 40 }
+							texture = "[DoctrineType.GetIcon]"
+						}
+
+						icon_doctrine = {
+							datacontext = "[DoctrineType.GetGroup.GetCategory]"
+							visible = "[Not( DoctrineCategoryType.HasTag( 'main' ) )]"
+							size = { 40 40 }
+							texture = "[DoctrineType.GetGroup.GetIcon]"
+						}
+					}
+
+					### Empty Doctrine Icon
+					button_round = {
+						visible = "[DoctrineItem.IsEmpty]"
+						parentanchor = center
+						size = { 30 30 }
+						alwaystransparent = yes
+
+						button_plus = {
+							size = { 20 20 }
+							parentanchor = center
+							alwaystransparent = yes
+						}
+					}
+				}
+			}
+
+			block "activity_doctrine_item_onclick"
+			{
+				onclick = "[ActivityPlanner.OpenSelectionForDoctrineIndex( '(int32)-1' )]"
+			}
+
+			block "activity_doctrine_item_tooltip"
+			{
+				tooltip = "ecumenical_council_planner_debate_empty_doctrine"
+			}
+			using = tooltip_ne
+		}
+
+		### CLEAR DOCTRINE BUTTON
+		widget = {
+			visible = "[And( Not( DoctrineItem.IsEmpty ), GetVariableSystem.Exists( DoctrineItem.GetItemId ) )]"
+			visible_at_creation = no
+			position = { 40 0 }
+
+			allow_outside = yes
+
+			state = {
+				name = _show
+				using = Animation_FadeIn_Standard
+			}
+
+			state = {
+				name = _hide
+				using = Animation_FadeOut_Standard
+			}
+
+			### REMOVE
+			button_round = {
+				size = { 30 30 }
+
+				button_cancel = {
+					size = { 24 24 }
+					parentanchor = center
+
+					block "activity_doctrine_item_clear_onclick"
+					{
+						onclick = "[ActivityPlanner.ClearDoctrine( '(int32)-1' )]"
+					}
+					tooltip = "activity_planner_clear_selected_doctrine"
+					using = tooltip_ne
+				}
+			}
+		}
+	}
+
+	type widget_activity_conclusion_tenet = widget {
+		datacontext = "[GetPlayer]"
+		datacontext = "[Character.GetFaith]"
+		datacontext = "[Character.GetRite]"
+		size = { 74 105 }
+
+		widget = {
+			size = { 74 90 }
+			allow_outside = yes
+
+			tooltipwidget = {
+				using = tenet_type_tooltip
+			}
+			using = tooltip_es
+
+			highlight_icon = {
+				name = "tenet_bg"
+				size = { 74 90 }
+				parentanchor = center
+
+				texture = "[Faith.GetTenetBackgroundSmallIcon( Rite.Self, TenetType.Self )]"
+			}
+
+			highlight_icon = {
+				name = "tenet_icon"
+				size = { 130 200 }
+				parentanchor = center
+
+				alpha = 0.85
+				scale = 0.55
+				texture = "[TenetType.GetIcon( Faith.Self )]"
+			}
+		}
+
+		text_single = {
+			parentanchor = hcenter|bottom
+
+			block "conlcusion_text" {}
+		}
+	}
+
+	type widget_activity_conclusion_doctrine = widget {
+		size = { 52 105 }
+
+		widget = {
+			size = { 52 64 }
+			parentanchor = center
+
+			tooltipwidget = {
+				using = doctrine_type_tooltip
+			}
+			using = tooltip_es
+
+			highlight_icon = {
+				size = { 52 64 }
+
+				### Doctrine Banner
+				texture = "gfx/interface/icons/faith_doctrines/doctrine_banner.dds"
+
+				### Selected Doctrine Icon
+				icon_doctrine = {
+					datacontext = "[DoctrineType.GetGroup.GetCategory]"
+					visible = "[DoctrineCategoryType.HasTag( 'main' )]"
+					size = { 40 40 }
+					parentanchor = center
+
+					texture = "[DoctrineType.GetIcon]"
+				}
+
+				icon_doctrine = {
+					datacontext = "[DoctrineType.GetGroup.GetCategory]"
+					visible = "[Not( DoctrineCategoryType.HasTag( 'main' ) )]"
+					size = { 40 40 }
+					parentanchor = center
+
+					texture = "[DoctrineType.GetGroup.GetIcon]"
+				}
+			}
+		}
+
+		text_single = {
+			parentanchor = hcenter|bottom
+
+			block "conlcusion_text" {}
+		}
+	}
+
+	type window_activity_tenet_list = window {
+		name = "activity_plan_tenet_selection"
+		size = { 500 800 }
+
+		using = Window_Background_Subwindow
+		alwaystransparent = no
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			position = { 1200 100 }
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			position = { 1200 115 }
+		}
+
+		vbox = {
+			margin = { 4 5 }
+			layoutpolicy_vertical = expanding
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "activity_planner_tenet_window_title"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[ActivityPlanner.OpenSelectionForTenetIndex( '(int32)-1' )]"
+				}
+			}
+
+			hbox_sort_tenets = {
+				datacontext = "[ActivityPlanner.GetTenetSortController]"
+			}
+
+			scrollbox = {
+				name = "contents"
+				layoutpolicy_horizontal = expanding
+				min_height = 690
+				max_width = 490
+
+				blockoverride "scrollbox_content"
+				{
+					fixedgridbox = {
+						addcolumn = 160
+						addrow = 200
+
+						flipdirection = yes
+						datamodel_wrap = 3
+
+						datamodel = "[ActivityPlanner.SelectableTenets]"
+						item = {
+							button_tenet = {
+								datacontext = "[TenetItem.GetTenet]"
+								datacontext = "[TenetItem.GetFaith]"
+								datacontext = "[TenetItem.GetRite]"
+								size = { 132 202 }
+
+								onclick = "[ActivityPlanner.PickTenet( TenetItem.GetTenet )]"
+								enabled = "[Not( GetPlayer.GetFaith.GetMainRite.HasTenet( TenetType.Self ) )]"
+
+								widget_tenet_item = {
+									alwaystransparent = yes
+									parentanchor = center
+
+									blockoverride "tenet_enabled" {}
+
+									blockoverride "divergence_visibility" {
+										visible = no
+									}
+
+									blockoverride "divergence_text" {}
+
+									blockoverride "tenet_badges_layout" {
+										size = { 70 50 }
+										position = { 0 10 }
+									}
+
+									blockoverride "prohibited_warning"
+									{
+										widget_alert_prohibited_tenet = {
+											visible = "[TenetItem.IsProhibited]"
+											position = { 12 15 }
+										}
+									}
+
+									blockoverride "scrolltip_footer" {
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											margin = { 30 16 }
+											spacing = 5
+
+											widget_alert_prohibited_tenet = {
+												visible = "[TenetItem.IsProhibited]"
+											}
+
+											text_single = {
+												visible = "[Not( GetPlayer.GetFaith.GetMainRite.HasTenet( TenetType.Self ) )]"
+												layoutpolicy_horizontal = expanding
+												text = "ECUMENICAL_COUNCIL_PLANNER_TENET_SELECT_TOOLTIP"
+											}
+
+											text_single = {
+												visible = "[GetPlayer.GetFaith.GetMainRite.HasTenet( TenetType.Self )]"
+												layoutpolicy_horizontal = expanding
+												text = "ECUMENICAL_COUNCIL_PLANNER_TENET_DISABLED_TOOLTIP"
+											}
+										}
+									}
+								}
+
+								icon = {
+									name = "vignette"
+									size = { 98% 98% }
+									parentanchor = center
+									alpha = 0.5
+									texture = "gfx/interface/buttons/button_tenet_vignette.dds"
+									color = { 0.15 0.15 0.15 1 }
+								}
+							}
+						}
+					}
+				}
+			}
+			expand = {}
+		}
+	}
+
+	type window_activity_doctrine_list = window {
+		name = "activity_plan_doctrine_selection"
+		allow_outside = yes
+		size = { 400 800 }
+
+		using = Window_Background_Subwindow
+		alwaystransparent = no
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			position = { 1400 100 }
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			position = { 1400 140 }
+		}
+
+		vbox = {
+			margin = { 4 4 }
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "activity_planner_doctrine_window_title"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[ActivityPlanner.OpenSelectionForDoctrineIndex( '(int32)-1' )]"
+				}
+			}
+
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				blockoverride "scrollbox_content"
+				{
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						spacing = 5
+
+						datamodel = "[ActivityPlanner.SelectableDoctrines]"
+						datacontext = "[GetPlayer.GetFaith]"
+						datacontext = "[GetPlayer.GetRite]"
+
+						item = {
+							button_standard = {
+								visible = "[And5( Faith.HasDoctrine( DoctrineType.Self ), Not( DoctrineType.GetGroup.GetCategory.HasTag( 'special' ) ), DoctrineType.GetGroup.GetCategory.IsVisible, Not( EqualTo_string( DoctrineType.GetKey, 'special_doctrine_ecumenical_christian' ) ), Not( EqualTo_string( DoctrineType.GetKey, 'doctrine_clerical_succession_conditional' ) ) )]"
+								datacontext = "[DoctrineItem.GetDoctrine]"
+								layoutpolicy_horizontal = expanding
+								size = { 0 50 }
+
+								onclick = "[ActivityPlanner.PickDoctrine( DoctrineType.Self )]"
+
+								tooltip = "ECUMENICAL_COUNCIL_PLANNER_DOCTRINE_SELECT_TOOLTIP"
+
+								hbox = {
+									datacontext = "[DoctrineType.GetGroup.GetCategory]"
+									layoutpolicy_horizontal = expanding
+									margin = { 5 0 }
+									spacing = 5
+
+									icon_doctrine = {
+										name = "doctrine_icon_main"
+										visible = "[DoctrineCategoryType.HasTag( 'main' )]"
+										texture = "[DoctrineType.GetIcon]"
+										size = { 40 40 }
+									}
+
+									icon_doctrine = {
+										name = "doctrine_icon_other"
+										visible = "[And( Not( DoctrineCategoryType.HasTag( 'main' ) ), Not( DoctrineCategoryType.HasTag( 'special' ) ) )]"
+										texture = "[DoctrineType.GetGroup.GetIcon]"
+										size = { 40 40 }
+									}
+
+									icon_doctrine = {
+										name = "doctrine_icon_special"
+										visible = "[DoctrineCategoryType.HasTag( 'special' )]"
+										texture = "[DoctrineType.GetIcon]"
+										size = { 40 40 }
+									}
+
+									text_single = {
+										text = "ECUMENICAL_COUNCIL_PLANNER_DOCTRINE_SELECT_NAME"
+										align = nobaseline
+									}
+
+									expand = {}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type widget_alert_prohibited_tenet = widget {
+		size = { 25 25 }
+
+		icon = {
+			size = { 25 25 }
+
+			texture = "gfx/interface/icons/symbols/icon_alert.dds"
+			tooltip = "ECUMENICAL_COUNCIL_PLANNER_ALERT_PROHIBITED_TT"
+			using = tooltip_ne
+		}
+	}
+}

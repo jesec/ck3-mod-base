@@ -1,0 +1,47 @@
+﻿macro = {
+	description = "Will creating the selected empire apply the tier 1 contested legitimacy modifier?"
+	definition = "EmpireFaithGateWillGainContestedLegitimacyTier1(TargetCharacter)"
+	replace_with = "GetScriptedGui( 'empire_faith_gate_contested_warning_1' ).IsValid( GuiScope.SetRoot( TargetCharacter.MakeScope ).AddScope( 'landed_title', TITLE.MakeScope ).End )"
+}
+
+macro = {
+	description = "Will creating a specific title apply the tier 1 contested legitimacy modifier?"
+	definition = "EmpireFaithGateWillGainContestedLegitimacyTier1OnTitle(TargetCharacter,TargetTitle)"
+	replace_with = "GetScriptedGui( 'empire_faith_gate_contested_warning_1' ).IsValid( GuiScope.SetRoot( TargetCharacter.MakeScope ).AddScope( 'landed_title', TargetTitle.MakeScope ).End )"
+}
+
+macro = {
+	description = "Will creating the selected empire apply the tier 2 contested legitimacy modifier?"
+	definition = "EmpireFaithGateWillGainContestedLegitimacyTier2(TargetCharacter)"
+	replace_with = "GetScriptedGui( 'empire_faith_gate_contested_warning_2' ).IsValid( GuiScope.SetRoot( TargetCharacter.MakeScope ).AddScope( 'landed_title', TITLE.MakeScope ).End )"
+}
+
+macro = {
+	description = "Will creating a specific title apply the tier 2 contested legitimacy modifier?"
+	definition = "EmpireFaithGateWillGainContestedLegitimacyTier2OnTitle(TargetCharacter,TargetTitle)"
+	replace_with = "GetScriptedGui( 'empire_faith_gate_contested_warning_2' ).IsValid( GuiScope.SetRoot( TargetCharacter.MakeScope ).AddScope( 'landed_title', TargetTitle.MakeScope ).End )"
+}
+
+macro = {
+	description = "Will creating the selected empire apply the tier 3 contested legitimacy modifier?"
+	definition = "EmpireFaithGateWillGainContestedLegitimacyTier3(TargetCharacter)"
+	replace_with = "GetScriptedGui( 'empire_faith_gate_contested_warning_3' ).IsValid( GuiScope.SetRoot( TargetCharacter.MakeScope ).AddScope( 'landed_title', TITLE.MakeScope ).End )"
+}
+
+macro = {
+	description = "Will creating a specific title apply the tier 3 contested legitimacy modifier?"
+	definition = "EmpireFaithGateWillGainContestedLegitimacyTier3OnTitle(TargetCharacter,TargetTitle)"
+	replace_with = "GetScriptedGui( 'empire_faith_gate_contested_warning_3' ).IsValid( GuiScope.SetRoot( TargetCharacter.MakeScope ).AddScope( 'landed_title', TargetTitle.MakeScope ).End )"
+}
+
+macro = {
+	description = "Returns the inline contested-legitimacy warning for creating the selected title."
+	definition = "EmpireFaithGateContestedLegitimacyWarning(TargetCharacter)"
+	replace_with = "SelectLocalization( EmpireFaithGateWillGainContestedLegitimacyTier3(TargetCharacter), 'empire_faith_gate_create_title_contested_warning_3_inline', SelectLocalization( EmpireFaithGateWillGainContestedLegitimacyTier2(TargetCharacter), 'empire_faith_gate_create_title_contested_warning_2_inline', SelectLocalization( EmpireFaithGateWillGainContestedLegitimacyTier1(TargetCharacter), 'empire_faith_gate_create_title_contested_warning_1_inline', '' ) ) )"
+}
+
+macro = {
+	description = "Returns the inline contested-legitimacy warning for creating a specific title."
+	definition = "EmpireFaithGateContestedLegitimacyWarningOnTitle(TargetCharacter,TargetTitle)"
+	replace_with = "SelectLocalization( EmpireFaithGateWillGainContestedLegitimacyTier3OnTitle(TargetCharacter,TargetTitle), 'empire_faith_gate_create_title_contested_warning_3_inline', SelectLocalization( EmpireFaithGateWillGainContestedLegitimacyTier2OnTitle(TargetCharacter,TargetTitle), 'empire_faith_gate_create_title_contested_warning_2_inline', SelectLocalization( EmpireFaithGateWillGainContestedLegitimacyTier1OnTitle(TargetCharacter,TargetTitle), 'empire_faith_gate_create_title_contested_warning_1_inline', '' ) ) )"
+}

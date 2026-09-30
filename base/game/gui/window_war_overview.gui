@@ -572,7 +572,41 @@
 							}
 						}
 
-						expand = {}
+						# interactions
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							margin_top = 10
+							spacing = 6
+
+							hbox = {
+								visible = "[And( ObjectsEqual( WarOverviewWindow.GetRightSideLeaderItem.GetCharacter.GetFaith, GetPlayer.GetFaith ), WarOverviewWindow.GetLeftSideLeaderItem.GetCharacter.IsLocalPlayer )]"
+								layoutpolicy_horizontal = expanding
+								spacing = 6
+
+								blockoverride "interaction_size" {
+									size = { 46 46 }
+								}
+
+								expand = {}
+
+								container_single_interaction = {
+									blockoverride "interaction_name" {
+										name = "request_white_peace_interaction"
+									}
+								}
+
+								container_single_interaction = {
+									blockoverride "interaction_name" {
+										name = "request_victory_interaction"
+									}
+									blockoverride = "icon_position" {
+										position = { 0 1 }
+									}
+								}
+							}
+
+						}
 					}
 				}
 			}

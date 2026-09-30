@@ -1,0 +1,62 @@
+﻿macro = {
+	description = "Can this dead Faith be researched by the character?"
+	definition = "KnowsDeadFaith(ScopeCharacter,Faith)"
+	replace_with = "GetScriptedGui( 'pam_knows_dead_faith' ).IsValid( GuiScope.SetRoot( ScopeCharacter.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )"
+}
+
+macro = {
+	description = "Is this Faith using tenet popularity?"
+	definition = "IsUsingTenetPopularity(Faith)"
+	replace_with = "GetScriptedGui( 'using_tenet_popularity_gui' ).IsValid( GuiScope.SetRoot( Faith.MakeScope ).End )"
+}
+
+macro = {
+	description = "Is this Tenet popularity very popular?"
+	definition = "TenetPopularityIsVeryPopular(TenetType,Faith)"
+	replace_with = "GetScriptedGui( 'tenet_popularity_gui_very_popular' ).IsValid( GuiScope.SetRoot( TenetType.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )"
+}
+macro = {
+	description = "Is this Tenet popularity very popular?"
+	definition = "TenetPopularityIsPopular(TenetType,Faith)"
+	replace_with = "GetScriptedGui( 'tenet_popularity_gui_popular' ).IsValid( GuiScope.SetRoot( TenetType.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )"
+}
+macro = {
+	description = "Is this Tenet popularity very popular?"
+	definition = "TenetPopularityIsNeutral(TenetType,Faith)"
+	replace_with = "GetScriptedGui( 'tenet_popularity_gui_neutral' ).IsValid( GuiScope.SetRoot( TenetType.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )"
+}
+macro = {
+	description = "Is this Tenet popularity very popular?"
+	definition = "TenetPopularityIsUnpopular(TenetType,Faith)"
+	replace_with = "GetScriptedGui( 'tenet_popularity_gui_unpopular' ).IsValid( GuiScope.SetRoot( TenetType.MakeScope ).AddScope( 'faith', Faith.MakeScope ).End )"
+}
+
+macro = {
+	description = "Is faith window in compact mode?"
+	definition = "IsCompactFaith"
+	replace_with = "GetVariableSystem.Exists( 'compact_faith_window' )"
+}
+
+macro = {
+	description = "Is Character head of Faith?"
+	definition = "IsHoF(CHARACTER)"
+	replace_with = "ObjectsEqual( CHARACTER.Self, Faith.GetReligiousHead.Self )"
+}
+
+macro = {
+	description = "Is Character head of Rite?"
+	definition = "IsHoR(CHARACTER)"
+	replace_with = "ObjectsEqual( CHARACTER.Self, Rite.GetHeadOfRite.Self )"
+}
+
+macro = {
+	description = "Is this player rite?"
+	definition = "IsPlayerRite"
+	replace_with = "ObjectsEqual( GetPlayer.GetRite.Self, Rite.Self )"
+}
+
+macro = {
+	description = "Is this interaction Incite Holy War?"
+	definition = "IsInciteHolyWar"
+	replace_with = "Or( ObjectsEqual( CharacterInteractionConfirmationWindow.GetInteraction.Self, GetCharacterInteraction( 'ecclesiastic_incite_holy_war_interaction' ).Self ), ObjectsEqual( CharacterInteractionConfirmationWindow.GetInteraction.Self, GetCharacterInteraction( 'ecclesiastic_incite_claim_war_interaction' ).Self ) )"
+}

@@ -59,7 +59,6 @@ types LoadGameTypes
 						{
 							text = "LOAD_GAME"
 						}
-
 						blockoverride "button_close" {
 							visible = no
 						}
@@ -90,9 +89,10 @@ types LoadGameTypes
 
 					vbox = {
 						margin = { 0 10 }
-						spacing = 10
+						spacing = 20
 
-						hbox = {
+						vbox = {
+
 							spacing = 5
 
 							button_checkbox_label = {
@@ -116,13 +116,34 @@ types LoadGameTypes
 								}
 							}
 						}
+						hbox = {
+							spacing = 10
+							button_standard_back = {
+								shortcut = "close_window"
 
-						button_standard_back = {
-							shortcut = "close_window"
+								block "button_back"
+								{
+									onclick = "[FrontEndLoadView.OnBack]"
+								}
+							}
+							button_tertiary = {
+								name = "delete_all"
+								text = "DELETE_ALL"
 
-							block "button_back"
-							{
-								onclick = "[FrontEndLoadView.OnBack]"
+								block "button_delete_all_saves"
+								{
+									onclick = "[FrontEndLoadView.OnDeleteAll]"
+								}
+
+								button_normal = {
+									name = "button_close"
+									position = { 5 5 }
+									size = { 25 25 }
+
+									alwaystransparent = yes
+
+									texture = "gfx/interface/icons/symbols/icon_warning.dds"
+								}
 							}
 						}
 					}

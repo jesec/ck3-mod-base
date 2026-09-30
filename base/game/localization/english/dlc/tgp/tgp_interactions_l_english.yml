@@ -9,6 +9,7 @@
  celestial_give_treasury_interaction: "Send Treasury"
  celestial_give_treasury_interaction_desc: "Aid [recipient.GetShortUIName] and [recipient.GetHerHis] [recipient.Custom('GetProvinceConcept')] by providing much needed [treasury|E]"
  celestial_give_treasury_interaction_send_name: "$celestial_give_treasury_interaction$"
+ celestial_give_treasury_interaction_recipient_desc: "I am told your treasury is bare, and an empty treasury serves the [actor.GetTopLiege.GetPrimaryTitle.GetTierAsNameNoTooltip] ill. Take this silver from my stores. Use it wisely, and do not forget whose gift it was."
  HIGHLIGHTED_GIVE_TREASURY: "#weak [recipient.GetShortUINameNoTooltip] [treasury] is very low and aid is likely to be greatly appreciated#!"
  ALREADY_SENT_TREASURY_WARNING: "@warning_icon! #X You have already sent [treasury|E] to [recipient.GetShortUIName], sending more will #underline override#! the existing [opinion|E] modifier!#!"
  
@@ -19,6 +20,7 @@
  request_mentoring_interaction_mentee: "Request Mentee"
  request_mentoring_interaction_desc: "Ask [recipient.GetShortUIName] to become a mentor and teach a topic they are skilled in"
  request_mentoring_interaction_mentee_desc: "Ask another [character|E] to be your mentee and teach a topic you are skilled in"
+ request_mentoring_interaction_notification: "Mastery such as yours should not die with its keeper. Take a student and share what you know — the honor of it will grace us both."
  mentoring_interaction_notification: "$mentoring$"
  mentoring_no_option_selected: "Must pick a topic to study"
  recipient_secondary_request_mentoring_interaction: "Mentee"
@@ -117,6 +119,7 @@
  
  celestial_request_commander_interaction: "Request Commander"
  celestial_request_commander_interaction_desc: "Formally request [recipient.GetShortUIName] to send a capable [commander|E] to your [court|E]"
+ celestial_request_commander_interaction_notification: "The border does not forgive hesitation, and I have need of tested hands. Send me a commander schooled in campaign, and the Ministry of War will have shown its worth where it matters most."
  recipient_secondary_celestial_request_commander_interaction: "[commander|E]"
  celestial_request_commander_interaction_extra_icon: "$hook_extra_icon$"
  recipient_no_commanders_available_desc: "[recipient.GetShortUIName|U] [CharHaveHas( recipient )] no [commanders|E] available"
@@ -131,6 +134,7 @@
  
  celestial_request_examination_support_interaction: "Request Examination Support"
  celestial_request_examination_support_interaction_desc: "Ask [recipient.GetShortUIName] to help organize and pay for hosting the [GetActivityType('activity_local_examination').GetTextIcon][GetActivityType( 'activity_local_examination').GetName] [activity|E]"
+ celestial_request_examination_support_interaction_notification: "Talent sleeps unfound in my lands for want of examinations. Lend the Ministry's sanction and silver to host them here, and the Empire grows richer with every scholar we raise."
  celestial_request_examination_support_interaction_extra_icon: "$hook_extra_icon$"
  celestial_request_examination_support_interaction_accepted_t: "Examination Support Granted"
  celestial_request_examination_support_interaction_declined_t: "Examination Support Refused"
@@ -147,6 +151,7 @@
  recipient_above_retirement_age_value_desc: "[recipient.GetShortUIName] is above the official Retirement Age: $VALUE|=+0$"
  is_above_retirement_age_desc: "Age #weak (above the Retirement Age)#!"
  old_age_desc: "Age #weak (old and experienced)#!"
+ too_old_age_desc: "Age #weak (too old)#!"
  young_age_desc: "Age #weak (young and inexperienced)#!"
  
  influence_meritorious_career_interaction: "Influence Career"
@@ -313,6 +318,7 @@
 
  grant_house_bloc_leadership_interaction: "Acknowledge Bloc Leadership"
  grant_house_bloc_leadership_interaction_desc: "Accept another [house|E] as leader of the [recipient.GetShortUINamePossessive] [bloc|E]"
+ grant_house_bloc_leadership_interaction_notification: "Our houses have long stood together, and yours has earned the place at the head of the column. Take up the leadership of our bloc — I yield it freely, and will stand behind you as you once stood behind me."
  grant_house_bloc_leadership_liege_tt: "[lieges|E] cannot grant [house_bloc_leadership|E] to their [vassals|E] or below"
  has_to_have_negative_house_relations_tt: "[house_relations|E] must be below $default_house_relation_level_neutral$"
  house_relation_perk_interaction_quarrel_effect: "[house_relations|E] with the [recipient.GetHouse.GetBaseName] will improve by [actor.MakeScope.ScriptValue('improve_house_relation_calculated_value')|+^] (current relation: $default_house_relation_level_quarrel$)"
@@ -388,13 +394,13 @@
  
  base_contribution_desire: "Interest in #weak [great_project_contribution.GetName]#! Contribution: $VALUE|+=0$"
 
- CONTRIBUTOR_ALREADY_CONSIDERING:0 "#Z Considering our offer#!"
- CONTRIBUTOR_WILL_ACCEPT:0 "#P Will contribute ($ACCEPTANCE|=0$)#!"
- CONTRIBUTOR_MAY_ACCEPT:0 "#Z Can be convinced ($ACCEPTANCE|=0$)#!"
- CONTRIBUTOR_WONT_ACCEPT:0 "#N Refuses ($ACCEPTANCE|=0$)#!"
- CONTRIBUTOR_WONT_ACCEPT_DESC:0 "#T Will not contribute#!"
- CONTRIBUTOR_WILL_ACCEPT_DESC:0 "#T Will contribute#!"
- CONTRIBUTOR_MAY_ACCEPT_DESC:0 "#T Can be swayed to contribute#!"
+ CONTRIBUTOR_ALREADY_CONSIDERING: "#Z Considering our offer#!"
+ CONTRIBUTOR_WILL_ACCEPT: "#P Will contribute ($ACCEPTANCE|=0$)#!"
+ CONTRIBUTOR_MAY_ACCEPT: "#Z Can be convinced ($ACCEPTANCE|=0$)#!"
+ CONTRIBUTOR_WONT_ACCEPT: "#N Refuses ($ACCEPTANCE|=0$)#!"
+ CONTRIBUTOR_WONT_ACCEPT_DESC: "#T Will not contribute#!"
+ CONTRIBUTOR_WILL_ACCEPT_DESC: "#T Will contribute#!"
+ CONTRIBUTOR_MAY_ACCEPT_DESC: "#T Can be swayed to contribute#!"
 
  OFFER_INFLUENCE: "[influence_i] Offer [influence|E]"
 
@@ -492,9 +498,15 @@
  
  pay_treasury_debt_interaction: "Debt Relief"
  pay_treasury_debt_interaction_desc: "Clear [recipient.GetShortUINamePossessive] [treasury_debt|E] #weak ([treasury_i]#V [recipient.GetTreasury|0]#!)#!"
+ pay_treasury_debt_interaction_notification: "Debt breeds disorder, and disorder I will not suffer. I shall settle what your treasury owes from my own stores — see that such generosity is remembered, and never needed twice."
  MINISTER_OF_REVENUE_REASON: "You are the [minister_of_revenue|E]: $VALUE|=+0$"
  MINISTER_OF_WAR_REASON: "You are the [minister_of_war|E]: $VALUE|=+0$"
  TOP_LIEGE_REASON: "You are the [top_liege|E] of [recipient.GetShortUIName]: $VALUE|=+0$"
+ pay_treasury_debt_interaction_request_strong_hook: "Request a [hook_i][strong_hook|E]"
+ pay_treasury_debt_interaction_request_weak_hook: "Request a [hook_i][weak_hook|E]"
+ pay_treasury_debt_interaction_request_kindness: "Request nothing at all"
+ ASKING_FOR_STRONG_HOOK_ACCEPTANCE_TT: "Asking for a [hook_i][strong_hook|E]: $VALUE|=+0$"
+ ASKING_FOR_WEAK_HOOK_ACCEPTANCE_TT: "Asking for a [hook_i][weak_hook|E]: $VALUE|=+0$"
 
  demand_conversion_minister_rites_interaction: "Compel Conversion"
  compel_conversion_interaction_desc: "Attempt to compel [recipient.GetShortUINameNoTooltip] to convert to another [faith|E]"

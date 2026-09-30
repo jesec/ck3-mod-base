@@ -343,49 +343,49 @@ window = {
 					}
 				}
 			}
-			
+
 			hbox = {
 				layoutpolicy_horizontal = expanding
 				margin = { 10 0 }
 				spacing = 5
-				
+
 				button = {
 					shortcut = "knight_permissions"
 					onclick = "[GetVariableSystem.Toggle('knight_permissions')]"
 					enabled = "[GetPlayer.IsValid]"
 					tooltip = "KNIGHT_PERMISSIONS_TT"
-					
+
 					flowcontainer = {
 						spacing = 5
 						resizeparent = yes
 						parentanchor = bottom
 						ignoreinvisible = yes
-						
+
 						background = {
 							using = Background_Area_Dark
 							alpha = 0.6
 							margin_left = 5
 							margin_right = 40
-							
+
 							modify_texture = {
 								texture = "gfx/interface/component_masks/mask_fade_horizontal_extended.dds"
 								blend_mode = alphamultiply
 							}
 						}
-						
+
 						button_icon = {
 							texture = "gfx/interface/icons/flat_icons/knight.dds"
 							down = "[And(GetVariableSystem.Exists('knight_permissions'), GetPlayer.IsValid)]"
 							alwaystransparent = yes
 						}
-						
+
 						text_single = {
 							visible = "[Not( KnightsView.GetKnightPermissions.IsDefault )]"
 							raw_text = "@warning_icon!"
 							margin_left = -4
 							margin_top = 2
 						}
-						
+
 						text_single = {
 							default_format = "#clickable"
 							text = "KNIGHT_PERMISSIONS_SHORT"
@@ -393,29 +393,29 @@ window = {
 							max_width = 180
 							margin_top = 5
 							align = nobaseline
-						}						
+						}
 					}
 				}
-				
+
 				expand = {}
-				
+
 				text_label_center = {
 					text = "[MilitaryView.GetCharacter.Custom('GetValidKnightsHeader')]"
 					max_width = 220
 					min_height = 25
 				}
-				
+
 				hbox = {
 					margin_right = 5
 					margin_bottom = 5 # text_label has it
-					
+
 					text_single = {
 						min_width = 25 # so it doesn't shift around
 						max_width = 35
 						align = right
 						text = "[GetDataModelSize(MilitaryView.GetKnights)]"
 					}
-				}				
+				}
 			}
 
 			scrollbox = {
@@ -639,51 +639,51 @@ window = {
 
 		expand = {}
 	}
-	
+
 	@label = 130
-	
+
 	window = {
 		name = "knight_permissions"
 		size = { 420 740 }
 		using = Window_Background_Subwindow
 		parentanchor = right|bottom
 		position = { -540 0 }
-		
+
 		visible = "[And(GetVariableSystem.Exists('knight_permissions'), GetPlayer.IsValid)]"
-	
+
 		state = {
 			name = _show
 			using = Animation_FadeIn_Quick
-	
+
 			position = { -540 0 }
 		}
-	
+
 		state = {
 			name = _hide
 			using = Animation_FadeOut_Quick
-	
+
 			position_x = -550
 		}
-		
+
 		vbox = {
 			layoutpolicy_horizontal = expanding
 			margin = { 4 4 }
-			
+
 			header_pattern = {
 				layoutpolicy_horizontal = expanding
-				
+
 				blockoverride "header_text"
 				{
 					text = "KNIGHT_PERMISSIONS_TITLE"
 					margin = { 30 0 }
 				}
-				
+
 				blockoverride "button_close"
 				{
 					onclick = "[GetVariableSystem.Clear('knight_permissions')]"
 				}
 			}
-			
+
 			scrollbox = {
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
@@ -693,10 +693,10 @@ window = {
 					margin = { 15 0 }
 					margin_bottom = 5
 				}
-				
+
 				blockoverride "scrollbox_content" {
 					spacing = 10
-					
+
 					text_multi = {
 						layoutpolicy_horizontal = expanding
 						margin = { 0 10 }
@@ -706,7 +706,7 @@ window = {
 						text = "YOUR_KNIGHT_PERMISSIONS"
 						default_format = "#weak"
 					}
-					
+
 					widget_permission_header = {
 						blockoverride "text" {
 							text = "MINIMUM_PROWESS"
@@ -715,7 +715,7 @@ window = {
 						blockoverride "extra" {
 							hbox = {
 								spacing = 5
-								
+
 								button_round = {
 									size = { 28 28 }
 									button_ignore = none
@@ -759,7 +759,7 @@ window = {
 							}
 						}
 					}
-									
+
 					text_multi = {
 						layoutpolicy_horizontal = expanding
 						text = "KP_CULTURE_MINIMUM_PROWESS"
@@ -767,7 +767,7 @@ window = {
 						max_width = 380
 						visible = "[GetScriptedGui('kp_culture_minimum_prowess').IsShown( GuiScope.SetRoot( GetPlayer.GetCulture.MakeScope ).End )]"
 					}
-					
+
 					text_multi = {
 						layoutpolicy_horizontal = expanding
 						text = "KP_CULTURE_HIGH_PROWESS"
@@ -775,7 +775,7 @@ window = {
 						max_width = 380
 						visible = "[GetScriptedGui('kp_culture_high_prowess').IsShown( GuiScope.SetRoot( GetPlayer.GetCulture.MakeScope ).End )]"
 					}
-					
+
 					widget_permission_header = {
 						blockoverride "text" {
 							text = "DYNASTY_HOUSE"
@@ -806,7 +806,7 @@ window = {
 							}
 						}
 					}
-					
+
 					widget_permission_header = {
 						blockoverride "text" {
 							text = "game_concept_vassals"
@@ -837,26 +837,26 @@ window = {
 							}
 						}
 					}
-					
+
 					widget_permission_header = {
 						blockoverride "text" {
 							text = "FAMILY_RELATIONS_KP"
 						}
 					}
-					
+
 					vbox = {
 						layoutpolicy_horizontal = expanding
 						spacing = 5
 						margin_bottom = -5
-						
+
 						vbox = {
 							layoutpolicy_horizontal = expanding
 							spacing = 5
-							
+
 							hbox = {
 								layoutpolicy_horizontal = expanding
 								spacing = 15
-								
+
 								button_checkbox_label = {
 									layoutpolicy_horizontal = expanding
 									onclick = "[KnightsView.GetKnightPermissions.ToggleAllowPlayerHeir]"
@@ -869,7 +869,7 @@ window = {
 										min_width = @label
 									}
 								}
-								
+
 								button_checkbox_label = {
 									layoutpolicy_horizontal = expanding
 									onclick = "[KnightsView.GetKnightPermissions.ToggleAllowSpouses]"
@@ -883,11 +883,11 @@ window = {
 									}
 								}
 							}
-							
+
 							hbox = {
 								layoutpolicy_horizontal = expanding
 								spacing = 15
-								
+
 								button_checkbox_label = {
 									layoutpolicy_horizontal = expanding
 									onclick = "[KnightsView.GetKnightPermissions.ToggleAllowOtherChildren]"
@@ -900,7 +900,7 @@ window = {
 										min_width = @label
 									}
 								}
-								
+
 								button_checkbox_label = {
 									layoutpolicy_horizontal = expanding
 									onclick = "[KnightsView.GetKnightPermissions.ToggleAllowConcubines]"
@@ -914,11 +914,11 @@ window = {
 									}
 								}
 							}
-							
+
 							hbox = {
 								layoutpolicy_horizontal = expanding
 								spacing = 15
-								
+
 								button_checkbox_label = {
 									layoutpolicy_horizontal = expanding
 									onclick = "[KnightsView.GetKnightPermissions.ToggleAllowSpousesOfChildren]"
@@ -930,100 +930,86 @@ window = {
 										max_width = 300
 									}
 								}
-								
-								#TODO CTD on toggling the filter on!
-								button_checkbox_label = {
-									visible = no
-									layoutpolicy_horizontal = expanding
-									onclick = "[KnightsView.GetKnightPermissions.ToggleAllowLovers]"
-									blockoverride "checkbox" {
-										checked = "[KnightsView.GetKnightPermissions.GetAllowLovers]"
-									}
-									blockoverride "text" {
-										text = "LOVERS_LABEL"
-										max_width = @label
-										min_width = @label
-									}
-								}
-								
+
 								expand = {}
 							}
 						}
-						
+
 						# culture
 						hbox = {
 							layoutpolicy_horizontal = expanding
-						
+
 							hbox = {
 								name = "martial"
 								datacontext = "[GetPlayer.GetCulture]"
 								datacontext = "[Culture.GetMartial]"
-								
+
 								# Only show Martial if culture affects martial customs,
 								# which is only the case if we are able to modify
 								# the culture pillars.
 								visible = "[HasDlcFeature( 'diverge_culture' )]"
-								
+
 								tooltipwidget = {
 									using = culture_pillar_tooltip
 								}
 								spacing = 5
-								
-								icon_doctrine = {
+
+								icon_flat_standard = {
 									size = { 40 40 }
 									texture = "[CulturePillar.GetIcon]"
 								}
-								
+
 								vbox = {
 									layoutpolicy_horizontal = expanding
-									
+
 									hbox = {
 										layoutpolicy_horizontal = expanding
-										
-										spacing = 5										
-										
+
+										spacing = 5
+
 										text_single = {
 											text = "[Culture.GetNameNoTooltip]"
 											align = nobaseline
 											max_width = 150
 										}
-										
+
 										text_single = {
 											text = "CULTURE_VIEW_MARTIAL_CUSTOM_TEXT"
 											align = nobaseline
 											max_width = 150
 										}
-										
+
 										expand = {}
 									}
 								}
 							}
-						
+
 							expand = {}
 						}
-						
+
 						# faith
 						hbox = {
 							layoutpolicy_horizontal = expanding
-							
+
 							datacontext = "[GetPlayer.GetFaith]"
+							datacontext = "[GetPlayer.GetRite]"
 							visible = "[Not(HasDlcFeature( 'diverge_culture' ))]"
-							
+
 							hbox_doctrine_faith = {
-								datacontext = "[GetFaithDoctrine('doctrine_gender_male_dominated')]"
+								datacontext = "[GetDoctrineType('doctrine_gender_male_dominated')]"
 							}
-							
+
 							hbox_doctrine_faith = {
-								datacontext = "[GetFaithDoctrine('doctrine_gender_equal')]"
+								datacontext = "[GetDoctrineType('doctrine_gender_equal')]"
 							}
-							
+
 							hbox_doctrine_faith = {
-								datacontext = "[GetFaithDoctrine('doctrine_gender_female_dominated')]"
+								datacontext = "[GetDoctrineType('doctrine_gender_female_dominated')]"
 							}
-						
+
 							expand = {}
 						}
-						
+
 						text_multi = {
 							layoutpolicy_horizontal = expanding
 							text = "KP_CULTURE_ADMIN_FAMILY_KNIGHTS"
@@ -1032,26 +1018,26 @@ window = {
 							visible = "[GetScriptedGui('kp_culture_admin_family_knights').IsShown( GuiScope.SetRoot( GetPlayer.GetCulture.MakeScope ).End )]"
 						}
 					}
-					
+
 					widget_permission_header = {
 						blockoverride "text" {
 							text = "game_concept_court"
 						}
 					}
-					
+
 					vbox = {
 						layoutpolicy_horizontal = expanding
 						spacing = 5
-						
+
 						hbox = {
 							layoutpolicy_horizontal = expanding
 							spacing = 15
-							
+
 							button_checkbox_label = {
 								layoutpolicy_horizontal = expanding
 								onclick = "[KnightsView.GetKnightPermissions.ToggleAllowCouncillors]"
 								blockoverride "checkbox" {
-								checked = "[KnightsView.GetKnightPermissions.GetAllowCouncillors]"
+									checked = "[KnightsView.GetKnightPermissions.GetAllowCouncillors]"
 								}
 								blockoverride "text" {
 									raw_text = "game_concept_councillors"
@@ -1059,12 +1045,12 @@ window = {
 									min_width = @label
 								}
 							}
-							
+
 							button_checkbox_label = {
 								layoutpolicy_horizontal = expanding
 								onclick = "[KnightsView.GetKnightPermissions.ToggleAllowInspiredCourtiers]"
 								blockoverride "checkbox" {
-								checked = "[KnightsView.GetKnightPermissions.GetAllowInspiredCourtiers]"
+									checked = "[KnightsView.GetKnightPermissions.GetAllowInspiredCourtiers]"
 								}
 								blockoverride "text" {
 									text = "game_concept_inspired"
@@ -1073,15 +1059,15 @@ window = {
 								}
 							}
 						}
-						
+
 						hbox = {
 							layoutpolicy_horizontal = expanding
-						
+
 							button_checkbox_label = {
 								layoutpolicy_horizontal = expanding
 								onclick = "[KnightsView.GetKnightPermissions.ToggleAllowNonCombatCourtPositions]"
 								blockoverride "checkbox" {
-								checked = "[KnightsView.GetKnightPermissions.GetAllowNonCombatCourtPositions]"
+									checked = "[KnightsView.GetKnightPermissions.GetAllowNonCombatCourtPositions]"
 								}
 								blockoverride "text" {
 									text = "COURT_POSITIONS_KP"
@@ -1090,26 +1076,26 @@ window = {
 									min_width = 300
 								}
 							}
-						
+
 							expand = {}
 						}
 					}
-					
+
 					widget_permission_header = {
 						blockoverride "text" {
 							text = "WITH_TRAITS_KP"
 						}
 					}
-					
+
 					hbox = {
 						layoutpolicy_horizontal = expanding
 						spacing = 15
-						
+
 						button_checkbox_label = {
 							layoutpolicy_horizontal = expanding
 							onclick = "[KnightsView.GetKnightPermissions.ToggleAllowWithTraitWounded]"
 							blockoverride "checkbox" {
-							checked = "[KnightsView.GetKnightPermissions.GetAllowWithTraitWounded]"
+								checked = "[KnightsView.GetKnightPermissions.GetAllowWithTraitWounded]"
 							}
 							blockoverride "text" {
 								raw_text = "trait_wounded_1"
@@ -1117,12 +1103,12 @@ window = {
 								min_width = @label
 							}
 						}
-						
+
 						button_checkbox_label = {
 							layoutpolicy_horizontal = expanding
 							onclick = "[KnightsView.GetKnightPermissions.ToggleAllowPregnant]"
 							blockoverride "checkbox" {
-							checked = "[KnightsView.GetKnightPermissions.GetAllowPregnant]"
+								checked = "[KnightsView.GetKnightPermissions.GetAllowPregnant]"
 							}
 							blockoverride "text" {
 								raw_text = "trait_pregnant"
@@ -1131,39 +1117,39 @@ window = {
 							}
 						}
 					}
-					
+
 					vbox = {
 						layoutpolicy_horizontal = expanding
-						
+
 						using = Knight_Permissions_Mod
-					}					
+					}
 				}
 			}
-			
+
 			expand = {}
-			
+
 			vbox = {
 				layoutpolicy_horizontal = expanding
 				margin = { 10 0 }
 				margin_bottom = 10
 				spacing = 10
-				
+
 				hbox = {
 					layoutpolicy_horizontal = expanding
-					
+
 					margin = { 15 0 }
 					margin_bottom = 5
-					
+
 					text_single = {
 						raw_text = "KNIGHT_RESTRICTIONS"
 						default_format = "#e"
 						tooltip = "KNIGHT_RESTRICTIONS_TT"
 						max_width = 350
 					}
-					
+
 					expand = {}
 				}
-				
+
 				button_standard = {
 					layoutpolicy_horizontal = expanding
 					text = "CHARACTER_RESET_FILTERS"
@@ -1179,27 +1165,27 @@ types Knights {
 	type widget_permission_header = widget {
 		size = { 0 30 }
 		layoutpolicy_horizontal = expanding
-		
+
 		background = {
 			using = Background_Area_Dark
 			alpha = 0.7
 			margin_left = 16
 			margin_right = 10
-			
+
 			modify_texture = {
 				texture = "gfx/interface/component_masks/mask_fade_horizontal_extended.dds"
 				blend_mode = alphamultiply
 			}
 		}
-		
+
 		hbox = {
 			layoutpolicy_horizontal = expanding
 			# spacing = 15
-			
+
 			hbox = {
 				layoutpolicy_horizontal = expanding
 				spacing = 10
-				
+
 				text_single = {
 					max_width = 300
 					block "text" {
@@ -1209,32 +1195,47 @@ types Knights {
 				}
 				expand = {}
 			}
-			
+
 			expand = {}
-			
+
 			block "extra" {}
 		}
 	}
-	
+
 	type hbox_doctrine_faith = hbox {
-		visible = "[And(FaithDoctrine.IsVisible, Faith.HasDoctrine( FaithDoctrine.Self ))]"
+		visible = "[And(DoctrineType.IsVisible, Faith.HasDoctrine( DoctrineType.Self ))]"
 		layoutpolicy_vertical = expanding
 		using = tooltip_se
 		spacing = 5
-		
+
 		tooltip = "HBOX_DOCTRINE_FAITH_TT"
 
 		icon_doctrine = {
-			name = "doctrine_group_icon"
+			name = "doctrine_icon_main"
+			visible = "[DoctrineCategoryType.HasTag( 'main' )]"
 			size = { 40 40 }
-			texture = "[FaithDoctrine.GetIcon]"
+			texture = "[DoctrineType.GetIcon]"
+		}
+
+		icon_doctrine = {
+			name = "doctrine_icon_other"
+			visible = "[And( Not( DoctrineCategoryType.HasTag( 'main' ) ), Not( DoctrineCategoryType.HasTag( 'special' ) ) )]"
+			size = { 40 40 }
+			texture = "[DoctrineType.GetGroup.GetIcon]"
+		}
+
+		icon_doctrine = {
+			name = "doctrine_icon_special"
+			visible = "[DoctrineCategoryType.HasTag( 'special' )]"
+			size = { 40 40 }
+			texture = "[DoctrineType.GetIcon]"
 		}
 
 		text_single = {
 			name = "doctrine_name"
 			align = nobaseline
-			text = "[FaithDoctrine.GetNameNoTooltip( Faith.Self )]"
-			max_width = 300									
+			text = "[DoctrineType.GetNameNoTooltip( Faith.Self )]"
+			max_width = 300
 		}
 
 		expand = {}

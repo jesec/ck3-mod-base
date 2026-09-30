@@ -26,7 +26,7 @@
  #Default Imperial tiers
  #Default Nomadic Clan tiers
  #Default Mercenary tiers
- #Default Holy Order tiers
+ #Default Military Order tiers
  #Default Viceroyalty tiers
  #Default Feudal tiers
  baron_feudal_male: "남작"
@@ -113,7 +113,7 @@
  emperor_tribal_male: "고왕"
  emperor_tribal_female: "여고왕"
  empire_tribal: "고왕국"
- county_herder: "[Character.GetPrimaryTitle.GetProvince.GetTerrain.GetNameNoTooltip]"
+ county_herder: "[Character.GetCapitalLocation.GetTerrain.GetNameNoTooltip]"
  #Default Mercenary tiers
  baron_mercenary_male: "부관"
  baron_mercenary_female: "부관"
@@ -130,13 +130,15 @@
  emperor_mercenary_male: "대장군"
  emperor_mercenary_female: "대장군"
  empire_mercenary: "무적 군단"
- #Default Holy Order tiers
+ #Default Military Order tiers
  baron_holy_order_male: "지파장"
  baron_holy_order_female: "지파장"
  barony_holy_order: "기사단 지파"
  count_holy_order_male: "분파장"
  count_holy_order_female: "분파장"
  county_holy_order: "기사단 분파"
+ duke_holy_order_monastic_male: "총수도원장"
+ duke_holy_order_monastic_female: "총수녀원장"
  duke_holy_order_male: "기사총감"
  duke_holy_order_female: "기사총감"
  duchy_holy_order: "기사단"
@@ -146,6 +148,38 @@
  emperor_holy_order_male: "대기사단장"
  emperor_holy_order_female: "대기사단장"
  empire_holy_order: "가장 성스러운 기사단"
+ muslim_holy_order_male: "가지"
+ muslim_holy_order_female: "가지아"
+ byzantine_holy_order_male: "카테파노"
+ byzantine_holy_order_female: "카테파니사"
+ #Default Monastic Order tiers
+ #Christian/Buddhist monastic order tiers
+ baron_monastic_order_abbot_type_male: "수도원장"
+ baron_monastic_order_abbot_type_female: "수녀원장"
+ barony_monastic_order: "수도원"
+ count_monastic_order_abbot_type_male: "수도원장"
+ count_monastic_order_abbot_type_female: "수녀원장"
+ county_monastic_order: "대수도원"
+ duke_monastic_order_abbot_type_male: "수도원장"
+ duke_monastic_order_abbot_type_female: "수녀원장"
+ duchy_monastic_order: "수도회"
+ king_monastic_order_abbot_type_male: "대수도원장"
+ king_monastic_order_abbot_type_female: "대수녀원장"
+ kingdom_monastic_order: "신성 수도회"
+ emperor_monastic_order_abbot_type_male: "총수도원장"
+ emperor_monastic_order_abbot_type_female: "총수녀원장"
+ empire_monastic_order: "최고 신성 수도회"
+ #default monastic order tiers
+ baron_monastic_order_male: "지부장"
+ baron_monastic_order_female: "지부장"
+ count_monastic_order_male: "지부장"
+ count_monastic_order_female: "지부장"
+ duke_monastic_order_male: "현자"
+ duke_monastic_order_female: "현자"
+ king_monastic_order_male: "현자"
+ king_monastic_order_female: "현자"
+ emperor_monastic_order_male: "대현자"
+ emperor_monastic_order_female: "대현자"
  #Default Faction Leader
  faction_leader_male: "지도자"
  faction_leader_female: "지도자"
@@ -199,17 +233,49 @@
  king_theocracy_female_buddhism_religion: "승려"
  #Christianity
  baron_theocracy_male_christianity_religion: "주교"
- baron_theocracy_female_christianity_religion: "주교"
+ baron_theocracy_female_christianity_religion: "여주교"
  barony_theocracy_christianity_religion: "주교구"
- count_theocracy_male_christianity_religion: "주교후"
- count_theocracy_female_christianity_religion: "주교후"
+ count_theocracy_male_christianity_religion: "[CHARACTER.Custom('GetActualCountTheocracyTitle')]"
+ count_theocracy_female_christianity_religion: "[CHARACTER.Custom('GetActualCountTheocracyTitle')]"
+ count_theocracy_male_christianity_religion_default: "주교후"
+ count_theocracy_female_christianity_religion_default: "주교후"
+ count_theocracy_male_christianity_religion_archbishop_holder: "대주교후"
+ count_theocracy_female_christianity_religion_archbishop_holder: "대주교후"
+ count_theocracy_male_christianity_religion_archbishop_holder_possessive: "대주교후의"
+ count_theocracy_female_christianity_religion_archbishop_holder_possessive: "대주교후의"
+ count_theocracy_male_christianity_religion_cardinal: "추기경"
+ count_theocracy_female_christianity_religion_cardinal: "추기경"
  county_theocracy_christianity_religion: "주교후령"
- duke_theocracy_male_christianity_religion: "대주교후"
- duke_theocracy_female_christianity_religion: "대주교후"
- duchy_theocracy_christianity_religion: "대주교후령"
+ duke_theocracy_male_christianity_religion_cardinal: "추기경"
+ duke_theocracy_female_christianity_religion_cardinal: "추기경"
+ duke_theocracy_male_christianity_religion_archbishop_cardinal: "추기경"
+ duke_theocracy_female_christianity_religion_archbishop_cardinal: "추기경"
+ duke_theocracy_male_christianity_religion: "[CHARACTER.Custom('GetActualDukeTheocracyTitle')]"
+ duke_theocracy_female_christianity_religion: "[CHARACTER.Custom('GetActualDukeTheocracyTitle')]"
+ duke_theocracy_male_christianity_religion_default: "주교공"
+ duke_theocracy_female_christianity_religion_default: "주교공"
+ duke_theocracy_male_christianity_religion_archbishop_holder: "대주교공"
+ duke_theocracy_female_christianity_religion_archbishop_holder: "대주교공"
+ duke_theocracy_male_christianity_religion_archbishop_holder_possessive: "대주교공의"
+ duke_theocracy_female_christianity_religion_archbishop_holder_possessive: "대주교공의"
+ duke_theocracy_male_christianity_religion_archbishop: "대주교후"
+ duke_theocracy_female_christianity_religion_archbishop: "대주교후"
+ duke_theocracy_male_christianity_religion_clerical_region: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_female_christianity_religion_clerical_region: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_male_catholic_clerical_region_archbishop: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_female_catholic_clerical_region_archbishop: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_male_christian_faith_clerical_region: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_female_christian_faith_clerical_region: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_male_orthodox_clerical_region_metropolitan: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_female_orthodox_clerical_region_metropolitan: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duchy_theocracy_christianity_religion: "주교공령"
+ king_theocracy_male_christianity_religion_cardinal: "추기경왕"
+ king_theocracy_female_christianity_religion_cardinal: "추기경여왕"
  king_theocracy_male_christianity_religion: "주교왕"
  king_theocracy_female_christianity_religion: "주교여왕"
  kingdom_theocracy_christianity_religion: "도유 왕국"
+ emperor_theocracy_male_christianity_religion_cardinal: "추기경 황제"
+ emperor_theocracy_female_christianity_religion_cardinal: "추기경 여제"
  emperor_theocracy_male_christianity_religion: "주교 황제"
  emperor_theocracy_female_christianity_religion: "주교 여제"
  empire_theocracy_christianity_religion: "교회 제국"
@@ -923,6 +989,8 @@
  #Special titles
  ecumenical_patriarch: "세계 총대주교"
  ecumenical_matriarch: "세계 총대주교"
+ pope_male: "$christianity_religious_head_title$"
+ pope_female: "$christianity_religious_head_title_female$"
  caliph: "칼리프"
  archduke: "대공"
  archduchess: "대공부인"
@@ -968,7 +1036,7 @@
  realm_priest_male: "[CHARACTER.GetCouncilTitle]"
  realm_priest_female: "[CHARACTER.GetCouncilTitle]"
  head_of_faith_male: "[CHARACTER.GetFaith.ReligiousHeadName|U]"
- head_of_faith_female: "[CHARACTER.GetFaith.ReligiousHeadName|U]"
+ head_of_faith_female: "[CHARACTER.GetFaith.ReligiousHeadNameFemale|U]"
  ### Berber ###
  #Feudal / Clan
  baron_feudal_male_berber_group: "나이브"
@@ -1197,6 +1265,9 @@
  ### Estates
  spouse_estate_holder_male: "영주"
  spouse_estate_holder_female: "여사"
+ ### Ecclesiastical
+ spouse_theocracy_female: "부인"
+ spouse_theocracy_male: "부군"
  ### Easter Eggs
  lady_in_shadows: "암중 여인"
  ### Additional Flavor Titles
@@ -1302,3 +1373,20 @@
  emperor_celestial_female_chinese_independent: "$hegemon_celestial_male_chinese$"
  spouse_emperor_celestial_male_chinese_independent: "황부" #皇夫
  spouse_emperor_celestial_female_chinese_independent: "황후" #皇后
+ clerical_elector_duchy_cardinalate: "추기경직"
+ christian_saint: "성"
+ christian_female_saint: "성"
+ muslim_saint: "왈리"
+ muslim_female_saint: "왈리야"
+ hellenic_saint: "디부스"
+ hellenic_female_saint: "디바"
+ jain_saint: "싯다"
+ shinto_saint: "카미"
+ confucian_saint: "선유" #先儒
+ buddhist_saint: "아리아"
+ taoist_saint: "진인" #真人
+ jewish_saint: "차디크"
+ jewish_female_saint: "차데케트"
+ venerated_ancestor: "공경받는 조상"
+ cardinal_male: "추기경"
+ cardinal_female: "추기경"

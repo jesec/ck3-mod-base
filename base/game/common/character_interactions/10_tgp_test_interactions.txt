@@ -69,18 +69,18 @@ debug_impact_house_relation_interaction = {
 			custom_tooltip = {
 				text = action_in_debt_click
 				NOT = {
-					house_has_feud_relation_with_trigger = { TARGET = scope:recipient }
+					scope:actor = { house_has_feud_relation_with_trigger = { TARGET = scope:recipient } }
 				}
 			}
 		}
 	}
 
 	can_send = {
-	house_relation_is_valid_to_start_trigger = {
-		HOUSE = scope:actor.house
-		OTHER_HOUSE = scope:recipient.house
+		house_relation_is_valid_to_start_trigger = {
+			HOUSE = scope:actor.house
+			OTHER_HOUSE = scope:recipient.house
+		}
 	}
-}
 	on_accept = {
 		if = {
 			limit = { scope:clear_relation = yes }

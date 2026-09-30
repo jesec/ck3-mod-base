@@ -1,0 +1,196 @@
+﻿# Event window widget to show situation info about specifically The Christian Church
+# Required controller: situation_info
+
+vbox = {
+	name = "event_window_widget_situation_info_christian_church"
+	EventWindowWidget = {
+		blockoverride "situation_info_content"
+		{
+			hbox = {
+				datacontext = "[EventWindowCustomWidgetSituationInfo.GetSituation]"
+				datacontext = "[Situation.GetTopSubRegion.GetCurrentPhase]"
+				datacontext = "[SituationPhase.GetType]"
+				datacontext = "[GetPlayer]"
+
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = fixed
+				spacing = 15
+
+				### Current Phase "Chapter"
+				SituationInfo = {
+					blockoverride "situation_tooltip"
+					{
+						tooltipwidget = {
+							using = situation_phase_type_tooltip
+						}
+						using = tooltip_ne
+					}
+
+					blockoverride "situation_icon"
+					{
+						texture = "[SituationPhaseType.GetIcon]"
+					}
+
+					blockoverride "situation_text"
+					{
+						text = "CHRISTIAN_CHURCH_EVENT_CURRENT_CHAPTER"
+					}
+				}
+
+				### Below: All Participant Groups get one icon each, where only one will be visible at a time
+
+				SituationInfo = {
+					datacontext = "[Situation.GetTopParticipantGroupByKey( 'christian_clerical_main_power_rulers' )]"
+					datacontext = "[SituationParticipantGroup.GetType]"
+					visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), SituationParticipantGroup.Self )]"
+					
+					blockoverride "situation_tooltip"
+					{
+						tooltipwidget = {
+							using = situation_participant_group_type_tooltip
+						}
+						using = tooltip_ne
+					}
+
+					blockoverride "situation_icon"
+					{
+						texture = "[SituationParticipantGroup.GetType.GetIcon]"
+						using = Master_Button_Modify_Texture
+					}
+
+					blockoverride "situation_text"
+					{
+						text = "[Character.Custom('GetMyChurchPowerNoTooltip')]"
+					}
+				}
+
+				SituationInfo = {
+					datacontext = "[Situation.GetTopParticipantGroupByKey( 'christian_regular_main_power_rulers' )]"
+					datacontext = "[SituationParticipantGroup.GetType]"
+					visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), SituationParticipantGroup.Self )]"
+					
+					blockoverride "situation_tooltip"
+					{
+						tooltipwidget = {
+							using = situation_participant_group_type_tooltip
+						}
+						using = tooltip_ne
+					}
+
+					blockoverride "situation_icon"
+					{
+						texture = "[SituationParticipantGroup.GetType.GetIcon]"
+						using = Master_Button_Modify_Texture
+					}
+
+					blockoverride "situation_text"
+					{
+						text = "[Character.Custom('GetMyChurchPowerNoTooltip')]"
+					}
+				}
+
+				SituationInfo = {
+					datacontext = "[Situation.GetTopParticipantGroupByKey( 'christian_clerical_secondary_powers_rulers' )]"
+					datacontext = "[SituationParticipantGroup.GetType]"
+					visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), SituationParticipantGroup.Self )]"
+					
+					blockoverride "situation_tooltip"
+					{
+						tooltipwidget = {
+							using = situation_participant_group_type_tooltip
+						}
+						using = tooltip_ne
+					}
+
+					blockoverride "situation_icon"
+					{
+						texture = "[SituationParticipantGroup.GetType.GetIcon]"
+						using = Master_Button_Modify_Texture
+					}
+
+					blockoverride "situation_text"
+					{
+						text = "[Character.Custom('GetMyChurchPowerNoTooltip')]"
+					}
+				}
+
+				SituationInfo = {
+					datacontext = "[Situation.GetTopParticipantGroupByKey( 'christian_regular_secondary_powers_rulers' )]"
+					datacontext = "[SituationParticipantGroup.GetType]"
+					visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), SituationParticipantGroup.Self )]"
+					
+					blockoverride "situation_tooltip"
+					{
+						tooltipwidget = {
+							using = situation_participant_group_type_tooltip
+						}
+						using = tooltip_ne
+					}
+
+					blockoverride "situation_icon"
+					{
+						texture = "[SituationParticipantGroup.GetType.GetIcon]"
+						using = Master_Button_Modify_Texture
+					}
+
+					blockoverride "situation_text"
+					{
+						text = "[Character.Custom('GetMyChurchPowerNoTooltip')]"
+					}
+				}
+
+				SituationInfo = {
+					datacontext = "[Situation.GetTopParticipantGroupByKey( 'christian_clerical_heretic_rulers' )]"
+					datacontext = "[SituationParticipantGroup.GetType]"
+					visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), SituationParticipantGroup.Self )]"
+					
+					blockoverride "situation_tooltip"
+					{
+						tooltipwidget = {
+							using = situation_participant_group_type_tooltip
+						}
+						using = tooltip_ne
+					}
+
+					blockoverride "situation_icon"
+					{
+						texture = "[SituationParticipantGroup.GetType.GetIcon]"
+						using = Master_Button_Modify_Texture
+					}
+
+					blockoverride "situation_text"
+					{
+						text = "[Character.Custom('GetMyChurchPowerNoTooltip')]"
+					}
+				}
+
+				SituationInfo = {
+					datacontext = "[Situation.GetTopParticipantGroupByKey( 'christian_regular_heretic_rulers' )]"
+					datacontext = "[SituationParticipantGroup.GetType]"
+					visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), SituationParticipantGroup.Self )]"
+					
+					blockoverride "situation_tooltip"
+					{
+						tooltipwidget = {
+							using = situation_participant_group_type_tooltip
+						}
+						using = tooltip_ne
+					}
+
+					blockoverride "situation_icon"
+					{
+						texture = "[SituationParticipantGroup.GetType.GetIcon]"
+						using = Master_Button_Modify_Texture
+					}
+
+					blockoverride "situation_text"
+					{
+						text = "[Character.Custom('GetMyChurchPowerNoTooltip')]"
+					}
+				}
+
+				expand = {}
+			}
+		}
+	}
+}

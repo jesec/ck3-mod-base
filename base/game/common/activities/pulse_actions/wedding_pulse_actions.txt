@@ -259,7 +259,7 @@ marriage_reflection = {
 			character = scope:first
 			
 			scope:first = {
-				stress_impact = {
+				stress_and_fulfillment_impact = {
 					base = minor_stress_impact_loss
 				}
 			}
@@ -318,7 +318,7 @@ royal_gift = {
 					}
 					is_physically_able_ai_adult = yes
 					location = scope:province
-					highest_held_title_tier = tier_empire
+					highest_held_title_tier >= tier_empire
 					gold > minor_gold_value
 				}
 			}
@@ -334,7 +334,7 @@ royal_gift = {
 					}
 					is_physically_able_ai_adult = yes
 					location = scope:province
-					highest_held_title_tier = tier_empire
+					highest_held_title_tier >= tier_empire
 					gold > minor_gold_value
 				}
 			}
@@ -356,7 +356,7 @@ royal_gift = {
 				}
 				is_physically_able_ai_adult = yes
 				location = scope:province
-				highest_held_title_tier = tier_empire
+				highest_held_title_tier >= tier_empire
 				gold > minor_gold_value
 			}
 			alternative_limit = {
@@ -642,7 +642,14 @@ wedding_gift = {
 			}
 			is_physically_able_ai_adult = yes
 			location = scope:province
-			has_any_unequipped_artifact = yes
+			# Unequipped is not enough, a spouse must be able to receive it, matching the effect
+			any_character_artifact = {
+				is_equipped = no
+				OR = {
+					artifact_can_be_gift_to_trigger = { RECIPIENT = scope:activity.special_guest:spouse_1 }
+					artifact_can_be_gift_to_trigger = { RECIPIENT = scope:activity.special_guest:spouse_2 }
+				}
+			}
 			OR = {
 				opinion = {
 					target = scope:activity.special_guest:spouse_1
@@ -683,9 +690,13 @@ wedding_gift = {
 				}
 				is_physically_able_ai_adult = yes
 				location = scope:province
+				# scope:second is not picked until after this search, so test both spouses
 				any_character_artifact = {
-					artifact_can_be_gift_to_trigger = { RECIPIENT = scope:second }
 					is_equipped = no
+					OR = {
+						artifact_can_be_gift_to_trigger = { RECIPIENT = scope:activity.special_guest:spouse_1 }
+						artifact_can_be_gift_to_trigger = { RECIPIENT = scope:activity.special_guest:spouse_2 }
+					}
 				}
 				OR = {
 					opinion = {
@@ -707,12 +718,29 @@ wedding_gift = {
 						target = scope:activity.special_guest:spouse_1
 						value >= 20
 					}
+					# Only pick the spouse we can actually hand something to, so the gift below finds an artifact
+					any_character_artifact = {
+						is_equipped = no
+						artifact_can_be_gift_to_trigger = { RECIPIENT = scope:activity.special_guest:spouse_1 }
+					}
 				}
 			}
 			scope:activity.special_guest:spouse_1 = { save_scope_as = second }
 		}
-		else = {
+		else_if = {
+			limit = {
+				scope:first = {
+					any_character_artifact = {
+						is_equipped = no
+						artifact_can_be_gift_to_trigger = { RECIPIENT = scope:activity.special_guest:spouse_2 }
+					}
+				}
+			}
 			scope:activity.special_guest:spouse_2 = { save_scope_as = second }
+		}
+		else = {
+			# One of the two can always receive something, so if it is not spouse_2 it is spouse_1
+			scope:activity.special_guest:spouse_1 = { save_scope_as = second }
 		}
 
 		add_activity_log_entry = {
@@ -1284,7 +1312,7 @@ admired_venue = {
 			character = scope:first
 			
 			scope:first = {
-				stress_impact = {
+				stress_and_fulfillment_impact = {
 					base = minor_stress_impact_loss
 				}
 			}
@@ -1386,7 +1414,7 @@ mischievous_joke = {
 			character = scope:first
 			
 			scope:first = {
-				stress_impact = {
+				stress_and_fulfillment_impact = {
 					base = minor_stress_impact_loss
 				}
 			}

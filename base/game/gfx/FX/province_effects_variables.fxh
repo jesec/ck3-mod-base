@@ -5,10 +5,12 @@ PixelShader = {
 		static const int FLOOD_INDEX = 2;
 		static const int SUMMER_INDEX = 3;
 		static const int SNOW_INDEX = 4;
+		static const int DIVERGENT_RITES_INDEX = 5;
 
 		// General
 		#define OpacityLowImpactValue				0.1f
 		#define OpacityHighImpactValue				1.0f
+		#define LuminanceDotValue					float3( 0.299f, 0.587f, 0.114f )
 
 		// Drought
 		#define DroughtBlendWeight					1.00f
@@ -94,6 +96,19 @@ PixelShader = {
 
 		#define SummerGrassMaskContrastFrom			0.455f
 		#define SummerGrassMaskContrastTo			0.905f
-		#define SummerOverlayTree					float3( 0.4196f, 0.6941f, 0.4078f) 
+		#define SummerOverlayTree					float3( 0.4196f, 0.6941f, 0.4078f )
+
+		// Divergent Rites
+		#define DivergentRitesDiagonalStripesAngle	0.0f
+		#define DivergentRitesZigZagFrequency		60.0f
+		#define DivergentRitesZigZagAmplitude		0.005f
+		#define DivergentRitesAnimationStrength		4.0f
+		#define DivergentRitesAnimationSpeed		1.75f
+		#define DivergentRitesColorScale			0.35f
+
+		// Burning
+		#define BurningSlopeMin						0.2f
+		#define BurningEdgeWidth					0.42f
+		#define BurningNoiseUVTiling				50.0f
 	]]
 }

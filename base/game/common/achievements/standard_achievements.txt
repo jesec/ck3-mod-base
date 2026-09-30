@@ -25,7 +25,7 @@ way_of_life_achievement = {
 			}
 			AND = {
 				has_perk = whole_of_body_perk
-				has_perk = scholar_perk
+				has_perk = erudite_perk
 				has_perk = theologian_perk
 			}
 			AND = {
@@ -56,7 +56,7 @@ way_of_life_achievement = {
 				}
 				AND = {
 					has_perk = whole_of_body_perk
-					has_perk = scholar_perk
+					has_perk = erudite_perk
 					has_perk = theologian_perk
 				}
 				AND = {
@@ -76,7 +76,7 @@ way_of_life_achievement = {
 
 a_legacy_to_last_the_ages_achievement = {
 	possible = {
-		dynasty = {
+		dynasty ?= {
 			NOR = {
 				has_dynasty_perk = blood_legacy_5
 				has_dynasty_perk = warfare_legacy_5
@@ -240,7 +240,7 @@ prolific_achievement = {
 	happened = {
 		custom_description = {
 			text = prolific_achievement_trigger
-			dynasty = {
+			dynasty ?= {
 				any_dynasty_member = {
 					count >= 100
 					is_alive = yes
@@ -257,7 +257,7 @@ a_name_known_throughout_the_world_achievement = {
 	happened = {
 		custom_description = {
 			text = a_name_known_throughout_the_world_achievement_trigger
-			dynasty = {
+			dynasty ?= {
 				dynasty_prestige_level >= max_dynasty_prestige_level
 			}
 		}
@@ -342,13 +342,7 @@ frankokratia_achievement = {
 			NOR = {
 				is_roman_emperor_trigger = yes
 				any_liege_or_above = {
-					has_title = title:e_byzantium
-				}
-				any_liege_or_above = {
-					has_title = title:h_roman_empire
-				}
-				any_liege_or_above = {
-					has_title = title:h_eastern_roman_empire
+					is_roman_emperor_trigger = yes
 				}
 			}
 		}
@@ -442,7 +436,7 @@ what_nepotism_achievement = {
 	happened = {
 		custom_description = {
 			text = what_nepotism_achievement_trigger
-			dynasty = {
+			dynasty ?= {
 				any_dynasty_member = {
 					count >= 10
 					highest_held_title_tier >= tier_kingdom
@@ -484,7 +478,7 @@ from_rags_to_riches_achievement = {
 	happened = {
 		custom_description = {
 			text = from_rags_to_riches_achievement_trigger
-			highest_held_title_tier = tier_empire
+			highest_held_title_tier >= tier_empire
 		}
 	}
 }
@@ -885,7 +879,7 @@ a_perfect_circle_achievement = {
 
 carolingian_consolidation_achievement = {
 	possible = {
-		root.dynasty = {
+		root.dynasty ?= {
 			this = dynasty:25061
 		}
 	}

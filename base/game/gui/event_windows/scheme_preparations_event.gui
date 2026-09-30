@@ -83,6 +83,7 @@ window = {
 
 		### RIGHT CHARACTER ###
 		scheme_preparations_right_portrait_widget = {
+			name = "right_portrait_root_widget" # Used by code to re-order character portrait stacking
 			parentanchor = bottom|right
 			position = { 30 0 }
 			size = { 330 558 }
@@ -101,6 +102,7 @@ window = {
 
 		### CENTER CHARACTER ###
 		scheme_preparations_center_portrait_widget = {
+			name = "center_portrait_root_widget" # Used by code to re-order character portrait stacking
 			parentanchor = bottom|hcenter
 			position = { 0 0 }
 			size = { 330 558 }
@@ -119,6 +121,7 @@ window = {
 
 		### LEFT CHARACTER ###
 		scheme_preparations_left_portrait_widget = {
+			name = "left_portrait_root_widget" # Used by code to re-order character portrait stacking
 			parentanchor = bottom|left
 			position = { 70 0 }
 			size = { 330 558 }
@@ -912,31 +915,7 @@ types Events
 							}
 						}
 
-						container = {
-							visible = "[OptionEffectItem.IsStress]"
-							alwaystransparent = yes
-
-							icon = {
-								visible = "[And(OptionEffectItem.IsGain,Not(OptionEffectItem.IsCritical))]"
-								texture = "gfx/interface/icons/stress/icon_stress_gain.dds"
-								name = "stress_gain"
-								size = { 34 34 }
-							}
-
-							icon = {
-								visible = "[OptionEffectItem.IsLoss]"
-								texture = "gfx/interface/icons/stress/icon_stress_loss.dds"
-								name = "stress_loss"
-								size = { 34 34 }
-							}
-
-							icon = {
-								visible = "[OptionEffectItem.IsCritical]"
-								texture = "gfx/interface/icons/stress/icon_stress_gain_critical.dds"
-								name = "stress_critical"
-								size = { 34 34 }
-							}
-						}
+						option_event_item_stress_fulfillment_container = {}
 
 						icon = {
 							name = "death"

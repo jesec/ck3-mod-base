@@ -6,7 +6,7 @@
 	diplomacy = 6
 	intrigue = 6
 	stewardship = 6
-	religion = "orthodox"
+	rite = byzantine_rite
 	culture = "roman"
 	trait = zealous
 	trait = greedy
@@ -30,7 +30,7 @@
 	diplomacy = 4
 	intrigue = 4
 	stewardship = 4
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = humble
 	trait = shy
@@ -53,7 +53,7 @@
 	diplomacy = 4
 	intrigue = 7
 	stewardship = 5
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = greedy
 	trait = wrathful
@@ -76,7 +76,7 @@
 	diplomacy = 6
 	intrigue = 5
 	stewardship = 7
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = honest
 	trait = calm
@@ -99,7 +99,7 @@
 	diplomacy = 5
 	intrigue = 3
 	stewardship = 5
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	sexuality = homosexual
 	trait = deceitful
@@ -122,7 +122,7 @@
 	diplomacy = 8
 	intrigue = 9
 	stewardship = 7
-	religion = "catholic"
+	rite = byzantine_rite #not using Roman rite here, so he won't be treated as a saint by Catholic in 1066 and 1178
 	culture = "roman"
 	trait = zealous
 	trait = intellect_good_3
@@ -135,6 +135,26 @@
 	337.5.22 = {
 		give_nickname = nick_the_great
 		death = "337.5.22"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = root
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:496 #Constantinople, church of the holy apostles
+				PRESET = yes
+			}
+			religion:christianity_religion = {
+				every_faith = {
+					limit = {
+						main_rite = {
+							is_rite_enabled = yes
+							NOT = { rite_has_doctrine = special_doctrine_is_western_christian_faith }
+						}
+						NOT = { has_saint_character = root }	
+					}
+					add_saint = { character = root }
+				}
+			}
+		}
 	}
 }
 
@@ -146,7 +166,7 @@
 	diplomacy = 4
 	intrigue = 5
 	stewardship = 7
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = honest
 	trait = trusting
@@ -164,7 +184,7 @@
 	name = "Philip"
 	# Marcus Iulius Severus Philippus
 	dynasty = 1022210
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	father = 70526
 	
@@ -184,7 +204,7 @@
 	diplomacy = 4
 	intrigue = 7
 	stewardship = 5
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = lifestyle_reveler
 	trait = ambitious
@@ -207,7 +227,7 @@
 	diplomacy = 7
 	intrigue = 7
 	stewardship = 6
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = celibate
 	trait = lazy
@@ -230,7 +250,7 @@
 	diplomacy = 7
 	intrigue = 5
 	stewardship = 6
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = honest
 	trait = gregarious
@@ -256,7 +276,7 @@
 	diplomacy = 5
 	intrigue = 6
 	stewardship = 7
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = arbitrary
 	trait = gregarious
@@ -273,7 +293,7 @@
 	name = "Tiberius"
 	# Tiberius Iulius Caesar Augustus
 	dynasty = 1022232
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = callous
 	trait = lustful
@@ -294,7 +314,7 @@
 	name = "Honorius"
 	# Flavius Honorius Augustus
 	dynasty = 1022191
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = arbitrary
 	trait = lazy
@@ -312,7 +332,7 @@
 	name = "Constantius"
 	# Flavius Constantius Augustus
 	dynasty = 1022192
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = honest
 	trait = humble
@@ -329,7 +349,7 @@
 	name = "Valentinian"
 	# Flavius Placidius Valentinianus
 	dynasty = 1022192
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = lazy
 	trait = craven
@@ -347,7 +367,7 @@
 	name = "Gratian"
 	# Gratianus the Elder
 	dynasty = 1022193
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = education_martial_3
 	285.1.1 = {
@@ -362,7 +382,7 @@
 	name = "Valentinian"
 	# Flavius Valentinianus Augustus
 	dynasty = 1022193
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = brave
@@ -380,7 +400,8 @@
 	name = "Valens"
 	# Flavius Iulius Valens Augustus
 	dynasty = 1022193
-	religion = "orthodox" # Arian
+	# Arian
+	rite = roman_rite
 	culture = "roman"
 	trait = paranoid
 	trait = education_martial_1
@@ -397,7 +418,7 @@
 	name = "Gratian"
 	# Flavius Gratianus Augustus
 	dynasty = 1022193
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = education_martial_2
 	father = 145231
@@ -413,7 +434,8 @@
 	name = "Valentinian"
 	# Flavius Valentinianus Invictus Augustus
 	dynasty = 1022193
-	religion = "catholic" # Arian
+	# Arian
+	rite = roman_rite
 	culture = "roman"
 	trait = trusting
 	trait = education_stewardship_1
@@ -430,7 +452,7 @@
 	name = "Jovian"
 	# Caesar Flavius Iovianus Augustus
 	dynasty = 1022194
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = education_martial_2
 	331.1.1 = {
@@ -445,7 +467,7 @@
 	name = "Constantius"
 	# Iulius Constantius
 	dynasty = 1022195
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = education_diplomacy_3
 	father = 70524
@@ -461,9 +483,9 @@
 	name = "Julian"
 	# Caesar Flavius Claudius Iulianus Augustus
 	dynasty = 1022195
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
-	trait = scholar
+	trait = erudite
 	trait = intellect_good_1
 	trait = education_martial_3
 	father = 145236
@@ -479,7 +501,7 @@
 	name = "Licinius"
 	# Caesar Gaius Valerius Licinianus Licinius Augustus
 	dynasty = 1022196
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = just
 	trait = diligent
@@ -498,7 +520,7 @@
 	name = "Maximinus"
 	# Caesar Galerius Valerius Maximinus Augustus
 	dynasty = 1022197
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = drunkard
 	trait = lustful
@@ -515,7 +537,7 @@
 	name = "Galerius"
 	# Caesar Galerius Valerius Maximianus Augustus
 	dynasty = 1022198
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = cynical
 	trait = education_martial_2
@@ -531,7 +553,7 @@
 	name = "Diocletian"
 	# Caesar Gaius Aurelius Valerius Diocletianus Augustus
 	dynasty = 1022199
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = brave
 	trait = diligent
@@ -545,6 +567,14 @@
 	}
 	311.12.3 = {
 		death = "311.12.3"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = root #yes, himself, lol
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:467 #Spalatum, Mausoleum of Diocletian, Split in game
+				PRESET = yes
+			}
+		}
 	}
 }
 
@@ -552,7 +582,7 @@
 	name = "Carus"
 	# Caesar Marcus Aurelius Carus Augustus
 	dynasty = 1022200
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_diplomacy_3
 	224.1.1 = {
@@ -567,7 +597,7 @@
 	name = "Numerian"
 	# Caesar Marcus Aurelius Numerius Numerianus Augustus
 	dynasty = 1022200
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_martial_2
 	father = 145242
@@ -583,7 +613,7 @@
 	name = "Carinus"
 	# Caesar Marcus Aurelius Carinus Augustus
 	dynasty = 1022200
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = lustful
 	trait = education_diplomacy_1
@@ -600,7 +630,7 @@
 	name = "Probus"
 	# Caesar Marcus Aurelius Probus Augustus
 	dynasty = 1022201
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_diplomacy_1
 	232.8.19 = {
@@ -615,7 +645,7 @@
 	name = "Claudia"
 	dynasty = 1022202
 	female = yes
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_diplomacy_2
 	182.8.19 = {
@@ -630,7 +660,7 @@
 	name = "Tacitus"
 	# Caesar Marcus Claudius Tacitus Augustus
 	dynasty = 1022202
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_intrigue_2
 	mother = 145246
@@ -646,7 +676,7 @@
 	name = "Florian"
 	# Caesar Marcus Annius Florianus Augustus
 	dynasty = 1022202
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_diplomacy_2
 	mother = 145246
@@ -663,7 +693,7 @@
 	# Ulpia Severina Augusta
 	dynasty = 1022203
 	female = yes
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_diplomacy_3
 	235.1.2 = {
@@ -678,7 +708,7 @@
 	name = "Aurelian"
 	# Caesar Lucius Domitius Aurelianus Augustus
 	dynasty = 1022204
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = intellect_good_1
 	trait = diligent
@@ -691,13 +721,21 @@
 	}
 	275.7.1 = {
 		death = "275.7.1"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = character:145249 #SPQR Acutally
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:3761 #Caenophrurium, near Selymbria in game
+				PRESET = yes
+			}
+		}
 	}
 }
 
 145251 = {
 	name = "Valerius"
 	dynasty = 1022205
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_martial_2
 	190.1.1 = {
@@ -712,7 +750,7 @@
 	name = "Claudius"
 	# Caesar Marcus Aurelius Claudius Augustus
 	dynasty = 1022205
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_martial_3
 	father = 145251
@@ -728,7 +766,7 @@
 	name = "Quintillus"
 	# Caesar Marcus Aurelius Claudius Quintillus Augustus
 	dynasty = 1022205
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_stewardship_3
 	father = 145251
@@ -744,7 +782,7 @@
 	name = "Valerian"
 	# Caesar Publius Licinius Valerianus Augustus
 	dynasty = 1022206
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_martial_2
 	198.1.1 = {
@@ -759,7 +797,7 @@
 	name = "Gallienus"
 	# Caesar Publius Licinius Egnatius Gallienus Augustus
 	dynasty = 1022206
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_martial_2
 	father = 145254
@@ -775,7 +813,7 @@
 	name = "Aemilian"
 	# Caesar Marcus Aemilius Aemilianus Augustus
 	dynasty = 1022207
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_martial_2
 	218.1.1 = {
@@ -790,7 +828,7 @@
 	name = "Gallus"
 	# Caesar Gaius Vibius Trebonianus Gallus Augustus
 	dynasty = 1022208
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = strong
 	trait = education_martial_2
@@ -806,7 +844,7 @@
 	name = "Decius"
 	# Caesar Gaius Messius Quintus Traianus Decius Augustus
 	dynasty = 1022209
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = zealous
 	trait = education_diplomacy_3
@@ -822,7 +860,7 @@
 	name = "Gordian"
 	# Caesar Marcus Antonius Gordianus Sempronianus Africanus Augustus
 	dynasty = 1022211
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_stewardship_3
 	159.1.1 = {
@@ -837,7 +875,7 @@
 	name = "Gordian"
 	# Caesar Marcus Antonius Gordianus Sempronianus Romanus Africanus Augustus
 	dynasty = 1022211
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_stewardship_2
 	father = 145259
@@ -854,7 +892,7 @@
 	# Antonia Gordiana
 	dynasty = 1022211
 	female = yes
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_intrigue_3
 	father = 145259
@@ -870,7 +908,7 @@
 	name = "Gordian"
 	# Caesar Marcus Antonius Gordianus Augustus
 	dynasty = 1022211
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_stewardship_2
 	mother = 145261
@@ -886,7 +924,7 @@
 	name = "Balbinus"
 	# Caesar Decimus Caelius Calvinus Balbinus Pius Augustus
 	dynasty = 1022212
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_stewardship_3
 	165.1.1 = {
@@ -901,7 +939,7 @@
 	name = "Pupienus"
 	# Caesar Marcus Clodius Pupienus Maximus Augustus
 	dynasty = 1022213
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_martial_2
 	170.1.1 = {
@@ -916,7 +954,7 @@
 	name = "Maximinus"
 	# Caesar Gaius Julius Verus Maximinus Augustus
 	dynasty = 1022214
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = strong
 	trait = callous
@@ -934,7 +972,7 @@
 	name = "Alexander"
 	# Caesar Marcus Aurelius Severus Alexander Augustus
 	dynasty = 1022215
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = honest
 	trait = humble
@@ -951,7 +989,7 @@
 	name = "Heliogabalus"
 	# Marcus Aurelius Antoninus Augustus
 	dynasty = 1022216
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	female = yes
 	sexuality = bisexual
@@ -973,7 +1011,7 @@
 	name = "Macrinus"
 	# Marcus Opellius Severus Macrinus Augustus Pius Felix
 	dynasty = 1022217
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = honest
 	trait = education_diplomacy_2
@@ -989,7 +1027,7 @@
 	name = "Septimius"
 	# Caesar Lucius Septimius Severus Pertinax Augustus
 	dynasty = 1022218
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = generous
 	trait = diligent
@@ -1007,7 +1045,7 @@
 	name = "Caracalla"
 	# Caesar Marcus Aurelius Severus Antoninus Pius Augustus
 	dynasty = 1022218
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = diligent
 	trait = callous
@@ -1030,7 +1068,7 @@
 	name = "Geta"
 	# Caesar Publius Septimius Geta Augustus
 	dynasty = 1022218
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = trusting
 	trait = education_diplomacy_2
@@ -1047,7 +1085,7 @@
 	name = "Julian"
 	# Caesar Marcus Didius Severus Iulianus Augustus
 	dynasty = 1022219
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = greedy
 	trait = ambitious
@@ -1065,7 +1103,7 @@
 	name = "Pertinax"
 	# Caesar Publius Helvius Pertinax Augustus
 	dynasty = 1022220
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = honest
 	trait = temperate
@@ -1082,9 +1120,9 @@
 	name = "Marcus"
 	# Caesar Marcus Aurelius Antoninus Augustus
 	dynasty = 1022221
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
-	trait = scholar
+	trait = erudite
 	trait = honest
 	trait = temperate
 	trait = generous
@@ -1096,6 +1134,14 @@
 	}
 	180.3.17 = {
 		death = "180.3.17"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = character:145275 #SPQR Acutally
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:2571 #Actually Roma, in the Mausoleum of Hadrian
+				PRESET = yes
+			}
+		}
 	}
 }
 
@@ -1103,7 +1149,7 @@
 	name = "Commodus"
 	# Caesar Marcus Aurelius Commodus Antoninus Augustus
 	dynasty = 1022221
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = beauty_good_1
 	trait = lustful
@@ -1124,9 +1170,9 @@
 	name = "Lucius"
 	# Caesar Lucius Aurelius Verus Augustus
 	dynasty = 1022222
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
-	trait = scholar
+	trait = erudite
 	trait = diligent
 	trait = gregarious
 	trait = lustful
@@ -1143,7 +1189,7 @@
 	name = "Antoninus"
 	# Caesar Titus Aelius Hadrianus Antoninus Augustus Pius
 	dynasty = 1022223
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = temperate
 	trait = gregarious
@@ -1156,6 +1202,14 @@
 	}
 	161.3.7 = {
 		death = "161.3.7"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = character:145274 #SPQR Acutally
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:2589 #Actually Roma, in the Mausoleum of Hadrian
+				PRESET = yes
+			}
+		}
 	}
 }
 
@@ -1163,9 +1217,9 @@
 	name = "Hadrian"
 	# Caesar Publius Aelius Traianus Hadrianus Augustus
 	dynasty = 1022224
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
-	trait = scholar
+	trait = erudite
 	trait = honest
 	trait = gregarious
 	trait = generous
@@ -1177,6 +1231,14 @@
 	}
 	138.7.10 = {
 		death = "138.7.10"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = character:145277 #SPQR Acutally
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:2573 #Actually Roma, in the Mausoleum of Hadrian
+				PRESET = yes
+			}
+		}
 	}
 }
 
@@ -1184,7 +1246,7 @@
 	name = "Trajan"
 	# Caesar Marcus Ulpius Nerva Traianus Augustus
 	dynasty = 1022225
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = honest
 	trait = brave
@@ -1199,6 +1261,14 @@
 	}
 	117.8.9 = {
 		death = "117.8.9"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = character:145278 #SPQR Acutally
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:2579 #Actually Roma, in the Trajan's Column
+				PRESET = yes
+			}
+		}
 	}
 }
 
@@ -1206,7 +1276,7 @@
 	name = "Nerva"
 	# Marcus Cocceius Nerva Caesar Augustus
 	dynasty = 1022226
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = honest
 	trait = temperate
@@ -1218,6 +1288,14 @@
 	}
 	98.1.27 = {
 		death = "98.1.27"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = character:145279 #SPQR Acutally
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:2572 #Actually Roma, also in Mausoleum of Augustus
+				PRESET = yes
+			}
+		}
 	}
 }
 
@@ -1225,7 +1303,7 @@
 	name = "Vespasian"
 	# Titus Flavius Caesar Vespasianus Augustus
 	dynasty = 1022227
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = honest
 	trait = generous
@@ -1243,7 +1321,7 @@
 	name = "Titus"
 	# Titus Flavius Caesar Vespasianus Augustus
 	dynasty = 1022227
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = generous
 	trait = lustful
@@ -1263,7 +1341,7 @@
 	name = "Domitian"
 	# Titus Flavius Caesar Domitianus Augustus
 	dynasty = 1022227
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = lustful
 	trait = callous
@@ -1284,7 +1362,7 @@
 	name = "Vitellius"
 	# Aulus Vitellius Germanicus Augustus
 	dynasty = 1022228
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = lustful
 	trait = gluttonous
@@ -1303,7 +1381,7 @@
 	name = "Otho"
 	# Marcus Salvius Otho Caesar Augustus
 	dynasty = 1022229
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	sexuality = homosexual
 	trait = craven
@@ -1323,7 +1401,7 @@
 	name = "Galba"
 	# Servius Sulpicius Galba Caesar Augustus
 	dynasty = 1022230
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = greedy
 	trait = honest
@@ -1343,7 +1421,7 @@
 	name = "Nero"
 	# Nero Claudius Caesar Augustus Germanicus
 	dynasty = 1022232
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	sexuality = homosexual
 	trait = arbitrary
@@ -1366,9 +1444,9 @@
 	name = "Claudius"
 	# Tiberius Claudius Caesar Augustus Germanicus
 	dynasty = 1022232
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
-	trait = scholar
+	trait = erudite
 	trait = clubfooted
 	trait = stuttering
 	trait = wrathful
@@ -1386,7 +1464,7 @@
 	name = "Caligula"
 	# Gaius Iulius Caesar Augustus Germanicus
 	dynasty = 1022232
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = lifestyle_reveler
 	trait = lustful
@@ -1407,7 +1485,7 @@
 	# Gaius Iulius Caesar Octavianus Divi Filius Augustus
 	# death date moved 10 years later in order not to be portrayed as a child
 	dynasty = 8648
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = just
 	trait = brave
@@ -1421,12 +1499,20 @@
 	}
 	24.8.19 = {
 		death = "24.8.19"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = character:145075 #SPQR Acutally
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:2575 #Roma, both Temple of Divus Augustus and Mausoleum of Augustus
+				PRESET = yes
+			}
+		}
 	}
 }
 
 7600 = {
 	name = "Pontianus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1436,7 +1522,7 @@
 		birth = "170.1.1"
 	}
 	230.1.1 = {
-		name = "Pontianus"
+		name = "Pontianus_regnal"
 	# AKA: Pontianus
 	}
 	235.9.29 = {
@@ -1446,7 +1532,7 @@
 
 7601 = {
 	name = "Severus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1466,7 +1552,7 @@
 
 7602 = {
 	name = "Callistus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1476,7 +1562,7 @@
 		birth = "160.1.1"
 	}
 	217.12.20 = {
-		name = "Callistus"
+		name = "Callistus_regnal"
 	# AKA: Callistus
 	}
 	222.10.14 = {
@@ -1486,7 +1572,7 @@
 
 7603 = {
 	name = "Zephyrinus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1496,7 +1582,7 @@
 		birth = "150.1.1"
 	}
 	199.1.1 = {
-		name = "Zephyrinus"
+		name = "Zephyrinus_regnal"
 	# AKA: Logos
 	}
 	217.12.20 = {
@@ -1506,7 +1592,7 @@
 
 7604 = {
 	name = "Victor"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1516,7 +1602,7 @@
 		birth = "140.1.1"
 	}
 	189.1.1 = {
-		name = "Victor"
+		name = "Victor_regnal"
 	# AKA: Jerome
 	}
 	199.1.1 = {
@@ -1526,7 +1612,7 @@
 
 7759 = {
 	name = "Gordianus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1546,7 +1632,7 @@
 
 7760 = {
 	name = "Mercurius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1556,7 +1642,7 @@
 		birth = "470.1.1"
 	}
 	532.1.1 = {
-		name = "Ioannes"
+		name = "Ioannes_regnal"
 	# AKA: Mercurius
 	}
 	535.5.13 = {
@@ -1566,7 +1652,7 @@
 
 7762 = {
 	name = "Castorius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1576,7 +1662,7 @@
 		birth = "470.1.1"
 	}
 	526.5.18 = {
-		name = "Felix"
+		name = "Felix_regnal"
 	# AKA: Castorius
 	}
 	530.1.1 = {
@@ -1586,7 +1672,7 @@
 
 7763 = {
 	name = "Castorius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1596,7 +1682,7 @@
 		birth = "470.1.1"
 	}
 	523.8.6 = {
-		name = "Ioannes"
+		name = "Ioannes_regnal"
 	# AKA: Castorius
 	}
 	526.5.18 = {
@@ -1607,7 +1693,7 @@
 7764 = {
 	name = "Gordanius"
 	# AKA: Gordainus
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1628,7 +1714,7 @@
 
 7765 = {
 	name = "Johannes"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1648,7 +1734,7 @@
 
 7766 = {
 	name = "Fortunatus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1668,7 +1754,7 @@
 
 7767 = {
 	name = "Acacius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1678,7 +1764,7 @@
 		birth = "450.1.1"
 	}
 	496.11.21 = {
-		name = "Anastasius"
+		name = "Anastasius_regnal"
 	# AKA: Acacius
 	}
 	498.11.19 = {
@@ -1688,7 +1774,7 @@
 
 7768 = {
 	name = "Acacius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1708,7 +1794,7 @@
 
 7769 = {
 	name = "Acacius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1718,7 +1804,7 @@
 		birth = "420.1.1"
 	}
 	483.3.10 = {
-		name = "Felix"
+		name = "Felix_regnal"
 	# AKA: Acacius
 	}
 	492.1.1 = {
@@ -1728,7 +1814,7 @@
 
 7770 = {
 	name = "Castinus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1748,7 +1834,7 @@
 
 7771 = {
 	name = "Hilary"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1768,7 +1854,7 @@
 
 7772 = {
 	name = "Hilary"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1778,17 +1864,37 @@
 		birth = "400.1.1"
 	}
 	440.8.18 = {
-		name = "Leo"
+		name = "Leo_regnal"
 	# AKA: Hilary
 	}
 	461.11.10 = {
 		death = "461.11.10"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = root
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:2588 #Actually Roma
+				PRESET = yes
+			}
+			religion:christianity_religion = {
+				every_faith = {
+					limit = {
+						is_non_chalcedonianism_christian_faith = no
+						main_rite = {
+							is_rite_enabled = yes
+						}
+						NOT = { has_saint_character = root }
+					}
+					add_saint = { character = root }
+				}
+			}
+		}
 	}
 }
 
 7773 = {
 	name = "Hilary"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1808,7 +1914,7 @@
 
 7774 = {
 	name = "Priscus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1828,7 +1934,7 @@
 
 7775 = {
 	name = "Eulalius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1838,7 +1944,7 @@
 		birth = "360.1.1"
 	}
 	418.12.26 = {
-		name = "Bonifatius"
+		name = "Bonifatius_regnal"
 	# AKA: Eulalius
 	}
 	422.9.4 = {
@@ -1848,7 +1954,7 @@
 
 7776 = {
 	name = "Eulalius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1868,7 +1974,7 @@
 
 7777 = {
 	name = "Maximus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1889,7 +1995,7 @@
 
 7778 = {
 	name = "Maximus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1899,7 +2005,7 @@
 		birth = "330.1.1"
 	}
 	399.11.26 = {
-		name = "Anastasius"
+		name = "Anastasius_regnal"
 	# AKA: Maximus
 	}
 	401.11.27 = {
@@ -1909,7 +2015,7 @@
 
 7779 = {
 	name = "Maximus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1929,7 +2035,7 @@
 
 7780 = {
 	name = "Maximus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1949,7 +2055,7 @@
 
 7781 = {
 	name = "Maximus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1969,7 +2075,7 @@
 
 7782 = {
 	name = "Maximus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1989,7 +2095,7 @@
 
 7783 = {
 	name = "Marcus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -1999,7 +2105,7 @@
 		birth = "280.1.1"
 	}
 	335.12.31 = {
-		name = "Marcus"
+		name = "Marcus_regnal"
 	}
 	336.10.7 = {
 		death = "336.10.7"
@@ -2008,7 +2114,7 @@
 
 7784 = {
 	name = "Marcus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2018,7 +2124,7 @@
 		birth = "270.1.1"
 	}
 	314.1.10 = {
-		name = "Silvester"
+		name = "Silvester_regnal"
 	# AKA: Marcus
 	}
 	335.12.31 = {
@@ -2028,7 +2134,7 @@
 
 7785 = {
 	name = "Marcus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2048,7 +2154,7 @@
 
 7787 = {
 	name = "Marcus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2068,7 +2174,7 @@
 
 7789 = {
 	name = "Marcus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2078,7 +2184,7 @@
 		birth = "240.1.1"
 	}
 	296.4.22 = {
-		name = "Marcellinus"
+		name = "Marcellinus_regnal"
 	# AKA: Marcus
 	}
 	304.4.1 = {
@@ -2088,7 +2194,7 @@
 
 7790 = {
 	name = "Gaius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2108,7 +2214,7 @@
 
 7791 = {
 	name = "Gaius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2128,7 +2234,7 @@
 
 7792 = {
 	name = "Gaius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2138,7 +2244,7 @@
 		birth = "220.1.1"
 	}
 	268.12.26 = {
-		name = "Felix"
+		name = "Felix_regnal"
 	# AKA: Gaius
 	}
 	274.12.30 = {
@@ -2148,7 +2254,7 @@
 
 7795 = {
 	name = "Stephanus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2158,7 +2264,7 @@
 		birth = "210.1.1"
 	}
 	254.3.5 = {
-		name = "Stephanus"
+		name = "Stephanus_regnal"
 	}
 	257.8.2 = {
 		death = "257.8.2"
@@ -2167,7 +2273,7 @@
 
 7796 = {
 	name = "Porphyrianus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2177,7 +2283,7 @@
 		birth = "210.1.1"
 	}
 	253.6.1 = {
-		name = "Lucius"
+		name = "Lucius_regnal"
 	# AKA: Porphyrianus
 	}
 	254.3.5 = {
@@ -2187,7 +2293,7 @@
 
 7797 = {
 	name = "Decius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2207,7 +2313,7 @@
 
 7798 = {
 	name = "Fabianus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2217,7 +2323,7 @@
 		birth = "200.1.1"
 	}
 	236.1.3 = {
-		name = "Fabianus"
+		name = "Fabianus_regnal"
 	}
 	250.1.20 = {
 		death = "250.1.20"
@@ -2227,7 +2333,7 @@
 
 7868 = {
 	name = "Gregorius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2237,7 +2343,7 @@
 		birth = yes
 	}
 	715.4.9 = {
-		name = "Gregorius"
+		name = "Gregorius_regnal"
 		# AKA: St Gregory II
 	}
 	731.2.11 = {
@@ -2247,7 +2353,7 @@
 
 7876 = {
 	name = "Benedictus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2257,7 +2363,7 @@
 		birth = yes
 	}
 	683.7.3 = {
-		name = "Benedictus"
+		name = "Benedictus_regnal"
 		# AKA: St Benedict II
 	}
 	685.5.8 = {
@@ -2267,7 +2373,7 @@
 
 7877 = {
 	name = "Leo"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2277,7 +2383,7 @@
 		birth = yes
 	}
 	681.1.10 = {
-		name = "Leo"
+		name = "Leo_regnal"
 		# AKA: St Leo II
 	}
 	683.7.3 = {
@@ -2287,7 +2393,7 @@
 
 7880 = {
 	name = "Adeodatus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2297,7 +2403,7 @@
 		birth = yes
 	}
 	672.1.27 = {
-		name = "Adeodatus"
+		name = "Adeodatus_regnal"
 		# AKA: Adeodatus II
 	}
 	676.6.17 = {
@@ -2307,7 +2413,7 @@
 
 7881 = {
 	name = "Anastasius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2327,7 +2433,7 @@
 
 7882 = {
 	name = "Rufinianus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2337,7 +2443,7 @@
 		birth = yes
 	}
 	653.7.17 = {
-		name = "Eugenius"
+		name = "Eugenius_regnal"
 		# AKA: St Eugene I
 	}
 	657.6.1 = {
@@ -2347,7 +2453,7 @@
 
 7883 = {
 	name = "Rufinianus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2357,17 +2463,39 @@
 		birth = yes
 	}
 	649.5.14 = {
-		name = "Martinus"
+		name = "Martinus_regnal"
 		# AKA: St Martin I, or Martin the Confessor
 	}
 	653.7.17 = { # Was arrested 653.7.17 by Emperor Constans II, but actually died in 655.9.16
+		give_nickname = nick_the_confessor
 		death = yes
+		
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = root
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:560 #Chersonesus, Rome is too crowded
+				PRESET = yes
+			}
+			religion:christianity_religion = {
+				every_faith = {
+					limit = {
+						is_non_chalcedonianism_christian_faith = no
+						main_rite = {
+							is_rite_enabled = yes
+						}
+						NOT = { has_saint_character = root }
+					}
+					add_saint = { character = root }
+				}
+			}
+		}
 	}
 }
 
 7885 = {
 	name = "Venantius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2377,7 +2505,7 @@
 		birth = yes
 	}
 	640.8.2 = {
-		name = "Ioannes"
+		name = "Ioannes_regnal"
 		# AKA: John IV
 	}
 	642.10.12 = {
@@ -2387,7 +2515,7 @@
 
 7886 = {
 	name = "Avienus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2407,7 +2535,7 @@
 
 7887 = {
 	name = "Petronius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2417,7 +2545,7 @@
 		birth = "560.1.1"
 	}
 	625.10.25 = {
-		name = "Honorius"
+		name = "Honorius_regnal"
 	# AKA: Petronius
 	}
 	638.10.12 = {
@@ -2427,7 +2555,7 @@
 
 7888 = {
 	name = "Petronius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2437,7 +2565,7 @@
 		birth = "560.1.1"
 	}
 	618.11.8 = {
-		name = "Bonifatius"
+		name = "Bonifatius_regnal"
 	# AKA: Petronius
 	}
 	625.10.25 = {
@@ -2447,7 +2575,7 @@
 
 7889 = {
 	name = "Deodatus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2457,7 +2585,7 @@
 		birth = "550.1.1"
 	}
 	615.5.25 = {
-		name = "Adeodatus"
+		name = "Adeodatus_regnal"
 	# AKA: Deodatus
 	}
 	618.11.8 = {
@@ -2466,8 +2594,8 @@
 }
 
 7890 = {
-	name = "Johannes"
-	religion = "catholic"
+	name = "Ioannes"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2477,7 +2605,7 @@
 		birth = "550.1.1"
 	}
 	607.11.12 = {
-		name = "Bonifatius"
+		name = "Bonifatius_regnal"
 	# AKA: Johannes
 	}
 	615.5.25 = {
@@ -2487,7 +2615,7 @@
 
 7892 = {
 	name = "John"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2507,7 +2635,7 @@
 
 7893 = {
 	name = "Gordanius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2517,18 +2645,38 @@
 		birth = "540.1.1"
 	}
 	590.1.1 = {
-		name = "Gregorius"
+		name = "Gregorius_regnal"
 		# AKA: Gordanius
 		give_nickname = nick_the_great
 	}
 	604.3.15 = {
 		death = "604.3.15"
+		effect_even_if_dead = {
+			pam_canonize_saint_effect = {	
+				CANONIZER = root
+				CANDIDATE = root
+				CONSECRATION_PROVINCE = province:2586 #Actually Roma
+				PRESET = yes
+			}
+			religion:christianity_religion = {
+				every_faith = {
+					limit = {
+						is_non_chalcedonianism_christian_faith = no
+						main_rite = {
+							is_rite_enabled = yes
+						}
+						NOT = { has_saint_character = root }
+					}
+					add_saint = { character = root }
+				}
+			}
+		}
 	}
 }
 
 7896 = {
 	name = "Gordanius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2538,7 +2686,7 @@
 		birth = "520.1.1"
 	}
 	579.7.20 = {
-		name = "Pelagius"
+		name = "Pelagius_regnal"
 	# AKA: Gordanius
 	}
 	590.1.1 = {
@@ -2548,7 +2696,7 @@
 
 7897 = {
 	name = "Bonifacius"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2558,7 +2706,7 @@
 		birth = "520.1.1"
 	}
 	574.7.13 = {
-		name = "Benedictus"
+		name = "Benedictus_regnal"
 	# AKA: Bonifacius
 	}
 	579.7.20 = {
@@ -2568,7 +2716,7 @@
 
 7898 = {
 	name = "Catelinus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2578,7 +2726,7 @@
 		birth = "520.1.1"
 	}
 	561.3.4 = {
-		name = "Ioannes"
+		name = "Ioannes_regnal"
 	# AKA: Catelinus
 	}
 	574.7.13 = {
@@ -2588,7 +2736,7 @@
 
 7899 = {
 	name = "Benedictus"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2598,7 +2746,7 @@
 		birth = "510.1.1"
 	}
 	555.6.7 = {
-		name = "Pelagius"
+		name = "Sixtus"
 	# AKA: Benedictus
 	}
 	561.3.4 = {
@@ -2608,7 +2756,7 @@
 
 7900 = {
 	name = "Johannes"
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	trait = diligent
 	trait = calm
@@ -2630,7 +2778,7 @@
 	name = "Maximian"
 	# Caesar Gaius Aurelius Valerius Maximianus Herculius Augustus
 	dynasty = 1022233
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = education_martial_3
 	250.1.1 = {
@@ -2645,7 +2793,7 @@
 	name = "Maxentius"
 	# Marcus Aurelius Valerius Maxentius Augustus
 	dynasty = 1022233
-	religion = "hellenic_pagan"
+	rite = "hellenic_pagan"
 	culture = "roman"
 	trait = arbitrary
 	trait = education_intrigue_2
@@ -2666,7 +2814,7 @@
 	diplomacy = 9
 	intrigue = 7
 	stewardship = 9
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = just
 	trait = intellect_good_3
@@ -2688,7 +2836,7 @@
 	diplomacy = 4
 	intrigue = 7
 	stewardship = 5
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = intellect_good_1
 	trait = ambitious
@@ -2710,10 +2858,10 @@
 	diplomacy = 6
 	intrigue = 8
 	stewardship = 6
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = ambitious
-	trait = scholar
+	trait = erudite
 	trait = education_intrigue_3
 	mother = 70528
 	485.1.1 = {
@@ -2732,7 +2880,7 @@
 	diplomacy = 4
 	intrigue = 5
 	stewardship = 6
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = temperate
 	trait = honest
@@ -2753,7 +2901,7 @@
 	diplomacy = 3
 	intrigue = 4
 	stewardship = 3
-	religion = "orthodox"
+	rite = roman_rite
 	culture = "roman"
 	trait = arrogant
 	trait = brave
@@ -2769,7 +2917,7 @@
 	name = "Eudoxia"
 	female = yes
 	dynasty = 1022192
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 	father = 145229
 	438.1.1 = {
@@ -2782,7 +2930,7 @@
 190199 = {
 	name = "Tassia" #Tassia, wife of Ratchis of Italy
 	female = yes
-	religion = "catholic"
+	rite = roman_rite
 	culture = "roman"
 
 	710.1.1 = {

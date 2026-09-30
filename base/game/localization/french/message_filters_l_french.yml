@@ -107,6 +107,11 @@
  message_filter_dynasty_child_of_age_desc: "Un [child|El] de votre [dynasty|El] et à votre [court|E] est désormais adulte"
  message_filter_child_of_age: "@child_icon! Votre enfant désormais adulte"
  message_filter_child_of_age_desc: "Un de vos [children|El] est désormais adulte"
+ #INTERACTION
+ message_filter_interaction_consequence: "@catch_all_icon! Conséquences des interactions"
+ message_filter_interaction_consequence_desc: "Conséquences des interactions qui ont eu lieu"
+ message_filter_ransom_result: "@prison_icon! Issue du rançonnement"
+ message_filter_ransom_result_desc: "Issue du rançonnement"
  #DEATH
  message_filter_death_family: "@death_icon! Proche famille"
  message_filter_death_family_desc: "Un membre de votre [close_family|El] meurt"
@@ -239,9 +244,9 @@
  message_filter_war_troops_gained: "@soldier_icon! Soldats gagnés"
  message_filter_war_troops_gained_desc: "Vous gagnez des [special_troops|El]"
  message_filter_war_troops_dismissed: "@soldier_icon! Soldats dissous"
- message_filter_war_troops_dismissed_desc: "Vos [special_troops|El], une [mercenary_company|El] embauchée ou un [holy_order|El] embauché se dispersent"
+ message_filter_war_troops_dismissed_desc: "Vos [special_troops|El], une [mercenary_company|El] embauchée ou un [military_holy_order|El] embauché se dispersent"
  message_filter_war_enemy_troops: "@soldier_icon! Soldats obtenus par l’ennemi"
- message_filter_war_enemy_troops_desc: "Un ennemi obtient des [special_troops|El] ou enrôle une [mercenary_company|El] ou un [holy_order|El]"
+ message_filter_war_enemy_troops_desc: "Un ennemi obtient des [special_troops|El] ou enrôle une [mercenary_company|El] ou un [military_holy_order|El]"
  #ARTIFACT
  message_filter_artifact_claim: "@artifact_icon! Revendications d’artefacts"
  message_filter_artifact_claim_desc: "Vous gagnez ou perdez une [artifact_claim|El]"
@@ -255,6 +260,8 @@
  message_filter_faith_excommunication_desc: "Un [ruler|El] de votre [faith|El] est [excommunicated|El]"
  message_filter_head_of_faith_changed: "@religious_icon! Nouveau chef de la foi"
  message_filter_head_of_faith_changed_desc: "Votre [head_of_faith|El] change"
+ message_filter_rite_updated: "@religious_icon! Rite modifié"
+ message_filter_rite_updated_desc: "Au moins un [core_tenet|El] ou une [doctrine|El] de votre [rite|El] ou du [mainline_rite|El] change"
  message_filter_realm_priest_endorsement: "@bishop_icon! Approbation du prêtre du pays"
  message_filter_realm_priest_endorsement_desc: "L’approbation du [realm_priest|El] vous concernant change"
  message_filter_liege_converting_holding: "@conversion_icon! Conversion comtale par le seigneur lige"
@@ -302,7 +309,9 @@
  message_filter_accolade_eligibility: "@accolade_icon! Chevalier éligible à l’[accolade_type|El]"
  message_filter_accolade_eligibility_desc: "Un [knight|El] peut recevoir une [accolade|El] avec un nouvel [Concept('accolade_type', 'attribut')|E]"
  message_filter_squire_training: "@accolade_icon! Un [acclaimed_knight|El] a formé un écuyer"
- message_filter_squire_training_desc: "Les aptitudes d’un [courtier|El] sont améliorées en raison de la compétence des [accolade_squires|El] d’une [accolade|El]"
+ message_filter_squire_training_desc: "Les aptitudes d’un [courtier|El] sont améliorées en raison des [accolade_squires|El] d’une [accolade|El]"
+ message_filter_accolade_mercenary: "@accolade_icon! Ancien [acclaimed_knight|El] désormais [adventurer|El]"
+ message_filter_accolade_mercenary_desc: "Votre [acclaimed_knight|El], devenu [adventurer|El] mercenaire, interagit avec vous"
  #ACTIVITY
  message_filter_tournament_arrival: "@tournament_icon! Arrivée d’un dirigeant"
  message_filter_tournament_arrival_desc: "Un [ruler|El] notable arrive en tant qu’[Concept('activity_guest','invité')|E] à votre [GetActivityType( 'activity_tournament' ).GetName|l]"
@@ -314,7 +323,7 @@
  message_filter_tournament_qualification_champion_desc: "La [contest_qualification|El] de votre champion à une [contest|El] de [GetActivityType( 'activity_tournament' ).GetName|l] change"
  message_filter_tournament_qualification_knight: "@tournament_icon! Qualification du chevalier"
  message_filter_tournament_qualification_knight_desc: "La [contest_qualification|El] de votre [knights|El] à une [contest|El] de [GetActivityType( 'activity_tournament' ).GetName|l] change"
- #HOLY ORDER
+ #Military Order
  message_filter_holy_order_founded: "@holy_order_icon! Fondation de la foi"
  message_filter_holy_order_founded_desc: "Un [holy_order|El] de votre [faith|El] est fondé"
  message_filter_holy_order_founded_enemy: "@holy_order_icon! Fondation voisine"
@@ -322,7 +331,7 @@
  message_filter_holy_order_destroyed: "@holy_order_icon! Dissolution de la foi"
  message_filter_holy_order_destroyed_desc: "Un [holy_order|El] de votre [faith|El] est dissous"
  message_filter_holy_order_hired: "@holy_order_icon! Ordre engagé"
- message_filter_holy_order_hired_desc: "Un [holy_order|El] dont vous êtes le [holy_order_patron|El] est recruté"
+ message_filter_holy_order_hired_desc: "Un [military_holy_order|El] dont vous êtes le [Concept('military_holy_order_patron', 'patron')|El] est recruté"
  message_filter_holy_order_patronage: "@holy_order_icon! Mécénat"
  message_filter_holy_order_patronage_desc: "Le statut d’un [holy_order|El] dont vous êtes le [holy_order_patron|El] change"
  #LAAMP
@@ -359,15 +368,15 @@
  message_filter_governance_contracts: "@catch_all_icon!Problème de gouvernance"
  message_filter_governance_contracts_desc: "Un [governance_issue|El] apparaît dans les terres que vous gouvernez"
  message_filter_governor_notification: "@governor_efficiency! Notifications du gouverneur"
- message_filter_governor_notification_desc: "Les notifications lorsque vous jouez en tant que [governor|El] dans un [realm|El] [administrative|El]"
+ message_filter_governor_notification_desc: "Les notifications lorsque vous jouez en tant que [governor|El] dans un [realm|El] [government_bureaucratic_type|El]"
  message_filter_admin_border_change: "@governor_efficiency! Frontières administratives"
- message_filter_admin_border_change_desc: "Les frontières du [governorship|El] dans votre [top_realm|El] [administrative|El] changent"
+ message_filter_admin_border_change_desc: "Les frontières du [governorship|El] dans votre [top_realm|El] [government_bureaucratic_type|El] changent"
  message_filter_appointment_candidacy: "@titles_icon! Candidature à une nomination"
  message_filter_appointment_candidacy_desc: "Votre candidature à une nomination pour un [title|El] avec la [succession_law|El] par acclamation change"
  message_filter_candidate_title_gained: "@titles_icon! Obtention du titre par un candidat"
- message_filter_candidate_title_gained_desc: "Un candidat soutenu ou adverse obtient un [title|El] [administrative|El]"
+ message_filter_candidate_title_gained_desc: "Un candidat soutenu ou adverse obtient un [title|El] [government_bureaucratic_type|El]"
  message_filter_candidate_title_lost: "@titles_icon! Perte du titre par un candidat"
- message_filter_candidate_title_lost_desc: "Un [ruler|El] dont la nomination a été soutenue ou opposée perd un [title|El] [administrative|El]"
+ message_filter_candidate_title_lost_desc: "Un [ruler|El] dont la nomination a été soutenue ou opposée perd un [title|El] [government_bureaucratic_type|El]"
  message_filter_provincial_army_assignment: "@titles_icon! Affectation de l’armée provinciale"
  message_filter_provincial_army_assignment_desc: "Affectation de l’[army|El] [Concept('provincial','provinciale')|E]"
  message_filter_admin_provincial_army_requests: "@soldier_icon! Requête d’armée provinciale"
@@ -397,6 +406,8 @@
  #GREAT PROJECT
  message_filter_great_project: "@great_project_icon! Évolution d’un grand projet"
  message_filter_great_project_desc: "Un [great_project|El] qui pourrait vous intéresser est planifié, terminé ou annulé"
+ message_filter_great_project_contribution: "@great_project_icon! Contribution à un grand projet"
+ message_filter_great_project_contribution_desc: "Une [great_project_contribution|El] à de [great_projects|El] qui pourrait vous intéresser a bénéficié d’un investissement ou a permis de répartir les gains à l’issue du projet"
  #REQUIRED
  message_filter_event_outcome: "@catch_all_icon! Résultats d’événement"
  message_filter_event_outcome_desc: "Résultats des événements reçus et mesures prises"
@@ -406,3 +417,25 @@
  #TRIBUTARY
  message_filter_tributary: "@tributary_icon! $CONTRACT_VASSAL_SIGNATURE_TRIBUTARY_TYPE$"
  message_filter_tributary_desc: "Évolutions concernant vos [tributaries|El]"
+ #PAM - Saints
+ message_filter_character_becomes_saint: "@religious_icon! Le personnage devient un saint"
+ message_filter_character_becomes_saint_desc: "Un personnage de votre [faith|El] a été canonisé comme saint"
+ #SF change
+ message_filter_spiritual_fulfillment_changed: "@religious_icon! Changement d’épanouissement spirituel"
+ message_filter_spiritual_fulfillment_changed_desc: "Modifications de votre [spiritual_fulfillment|El]"
+ message_filter_liege_ceded_title: "Titre cédé par le seigneur lige"
+ message_filter_liege_ceded_title_desc: "Votre [liege|El] ou supérieur a accepté de transférer un [title|El] ou [vassal|El] du [realm|El] à un dirigeant indépendant."
+ message_filter_clergy_title_transfer: "Transfert de titre clérical"
+ message_filter_clergy_title_transfer_desc: "Votre approbation a permis à un [title|El] d’être transféré pacifiquement entre [rulers|El] laïcs, ou a été ignorée."
+ message_filter_holy_site_changed: "Changement de lieu saint"
+ message_filter_holy_site_changed_desc: "Votre [faith|El] gagne, perd, promeut ou rétrograde un [holy_site|El]"
+ message_filter_clerical_region: "@religious_icon! Changement de région cléricale"
+ message_filter_clerical_region_desc: "Le statut d’une [clerical_region|El] pertinente a changé"
+ #PAM - Ecumenical Councils
+ message_filter_ecumenical_council_ruling: "@religious_icon! Décisions du Concile œcuménique"
+ message_filter_ecumenical_council_ruling_desc: "Un [ecumenical_council|El] a statué sur une question de votre [faith|El]"
+ #PAM - Great Schism
+ message_filter_great_schism_progress: "@religious_icon! Progression du Grand Schisme"
+ message_filter_great_schism_progress_desc: "La chrétienté avance vers le [Concept( 'schism', 'Grand Schisme')|E]"
+ message_filter_order_espousing_beliefs: "@religious_icon! Expansion de l’ordre monastique"
+ message_filter_order_espousing_beliefs_desc: "Un [monastic_holy_order|El] renforce la [tenet_popularity|El] de son [tenet|El], peut-être en diffusant un [rite|El] au sein de votre [faith|El], ou encore en obtenant le [leasing|El] d’un monastère auprès d’un autre ordre."

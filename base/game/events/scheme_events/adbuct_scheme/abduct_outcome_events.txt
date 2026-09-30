@@ -133,7 +133,7 @@ abduct_outcome.1001 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = medium_stress_impact_gain
 			stubborn = medium_stress_impact_gain
 		}
@@ -207,7 +207,7 @@ abduct_outcome.1002 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = medium_stress_impact_gain
 			stubborn = medium_stress_impact_gain
 		}
@@ -275,7 +275,7 @@ abduct_outcome.1003 = {
 		ai_chance = {
 			base = 0
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			impatient = medium_stress_impact_gain
 			stubborn = medium_stress_impact_gain
 		}
@@ -296,6 +296,9 @@ abduct_outcome.2001 = {
 	title = abduct_outcome.1001.t
 	desc = abduct_outcome.2001.desc
 	theme = intrigue
+	override_background = {
+		reference = dungeon
+	}
 	left_portrait = {
 		character = scope:target
 		animation = fear
@@ -327,6 +330,12 @@ abduct_outcome.2001 = {
 			}
 		}
 		abduct_success_effect = yes
+		notify_puppeteer_of_scheme_outcome_effect = {
+			OWNER = scope:owner
+			TARGET = scope:target
+			TYPE = event_toast_effect_good
+			TITLE = scheme_outcome_abduct_success_puppeteer
+		}
 	}
 
 	option = {
@@ -345,6 +354,9 @@ abduct_outcome.2002 = {
 	title = abduct_outcome.1002.t
 	desc = abduct_outcome.2002.desc
 	theme = intrigue
+	override_background = {
+		reference = dungeon
+	}
 	center_portrait = {
 		character = root
 		animation = scheme
@@ -364,6 +376,12 @@ abduct_outcome.2002 = {
 
 	immediate = {
 		abduct_success_effect = yes
+		notify_puppeteer_of_scheme_outcome_effect = {
+			OWNER = scope:owner
+			TARGET = scope:target
+			TYPE = event_toast_effect_good
+			TITLE = scheme_outcome_abduct_success_puppeteer
+		}
 	}
 
 	option = {
@@ -382,6 +400,9 @@ abduct_outcome.2003 = {
 	title = abduct_outcome.1003.t
 	desc = abduct_outcome.2003.desc
 	theme = intrigue
+	override_background = {
+		reference = dungeon
+	}
 	left_portrait = {
 		character = scope:target
 		animation = fear
@@ -397,6 +418,12 @@ abduct_outcome.2003 = {
 
 	immediate = {
 		abduct_success_effect = yes
+		notify_puppeteer_of_scheme_outcome_effect = {
+			OWNER = scope:owner
+			TARGET = scope:target
+			TYPE = event_toast_effect_good
+			TITLE = scheme_outcome_abduct_success_puppeteer
+		}
 	}
 
 	option = {
@@ -442,6 +469,23 @@ abduct_outcome.4001 = {
 
 	immediate = {
 		abduct_failure_effect = yes
+		if = {
+			limit = { exists = scope:scheme_discovered }
+			notify_puppeteer_of_scheme_outcome_effect = {
+				OWNER = scope:owner
+				TARGET = scope:target
+				TYPE = event_toast_effect_bad
+				TITLE = scheme_outcome_abduct_discovered_puppeteer
+			}
+		}
+		else = {
+			notify_puppeteer_of_scheme_outcome_effect = {
+				OWNER = scope:owner
+				TARGET = scope:target
+				TYPE = event_toast_effect_bad
+				TITLE = scheme_outcome_abduct_failure_puppeteer
+			}
+		}
 	}
 
 	option = { # Abandon scheme
@@ -449,7 +493,7 @@ abduct_outcome.4001 = {
 		scope:scheme = {
 			end_scheme = yes
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			stubborn = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -509,6 +553,23 @@ abduct_outcome.4002 = {
 
 	immediate = {
 		abduct_failure_effect = yes
+		if = {
+			limit = { exists = scope:scheme_discovered }
+			notify_puppeteer_of_scheme_outcome_effect = {
+				OWNER = scope:owner
+				TARGET = scope:target
+				TYPE = event_toast_effect_bad
+				TITLE = scheme_outcome_abduct_discovered_puppeteer
+			}
+		}
+		else = {
+			notify_puppeteer_of_scheme_outcome_effect = {
+				OWNER = scope:owner
+				TARGET = scope:target
+				TYPE = event_toast_effect_bad
+				TITLE = scheme_outcome_abduct_failure_puppeteer
+			}
+		}
 	}
 
 	option = { # Abandon scheme
@@ -516,7 +577,7 @@ abduct_outcome.4002 = {
 		scope:scheme = {
 			end_scheme = yes
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			stubborn = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -576,6 +637,23 @@ abduct_outcome.4003 = {
 
 	immediate = {
 		abduct_failure_effect = yes
+		if = {
+			limit = { exists = scope:scheme_discovered }
+			notify_puppeteer_of_scheme_outcome_effect = {
+				OWNER = scope:owner
+				TARGET = scope:target
+				TYPE = event_toast_effect_bad
+				TITLE = scheme_outcome_abduct_discovered_puppeteer
+			}
+		}
+		else = {
+			notify_puppeteer_of_scheme_outcome_effect = {
+				OWNER = scope:owner
+				TARGET = scope:target
+				TYPE = event_toast_effect_bad
+				TITLE = scheme_outcome_abduct_failure_puppeteer
+			}
+		}
 	}
 
 	option = { # Abandon scheme
@@ -583,7 +661,7 @@ abduct_outcome.4003 = {
 		scope:scheme = {
 			end_scheme = yes
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			stubborn = medium_stress_impact_gain
 		}
 		ai_chance = {
@@ -650,6 +728,12 @@ abduct_outcome.5001 = {
 	}
 
 	immediate = {
+		if = {
+			limit = {
+				is_ai = no
+			}
+			abduction_rivalry_progress_effect = yes
+		}
 		show_as_tooltip = {
 			hard_imprison_character_effect = {
 				TARGET = scope:target

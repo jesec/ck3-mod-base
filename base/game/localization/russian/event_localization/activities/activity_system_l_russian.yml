@@ -74,6 +74,11 @@
  activity_system.0320.t: "Неожиданный исход"
  activity_system.0320.desc: "Наш устроитель [host.GetName] [Select_CString(host.IsFemale, 'утратила', 'утратил' )] контроль над землями, так что [activity_type.GetNameNoTooltip()] отменяется.\n\nКонечно, никто не ожидал такого развития событий — после таких-то помпезных обещаний и приготовлений… Что ж, придется мне со свитой возвращаться домой. Открывай ворота, [ROOT.Char.GetCapitalLocation.GetNameNoTooltip]…"
  activity_system.0320.a: "Что сделано, то сделано"
+ activity_system.0321.t: "$activity_system.0320.t$"
+ activity_system.0321.desc.intro: "Наш устроитель [host.GetName]"
+ activity_system.0321.desc.no_christian: "[Select_CString(host.IsFemale, 'объявила', 'объявил' )] — во всеуслышание и к удивлению каждого присутствующего, — что отрекается от #L [ROOT.Char.GetFaith.GetName|l]ой#! веры, поскольку теперь [Select_CString(host.IsFemale, 'ее', 'его' )] влечет #L [host.GetFaith.GetAdjective|l]#!."
+ activity_system.0321.desc.no_hof: "больше не возглавляет #L [ROOT.Char.GetFaith.GetName|l]ую#! церковь.\n\nПосле того как осознание случившегося дошло до каждого, нас начали разгонять."
+ activity_system.0321.a: "Даже не верится."
  #If you have gained the incapable trait
  activity_system.0330.t: "Недееспособность"
  activity_system.0330.desc.intro: "Меня признали [Select_CString(ROOT.Char.IsFemale, 'недееспособной', 'недееспособным' )] и отстранили от принятия любых решений! Ни [activity_type.GetNameNoTooltip()], ни другие дела — ничего этого у меня больше не будет…\n\n"
@@ -83,6 +88,11 @@
  activity_system.0331.t: "Недееспособность"
  activity_system.0331.desc: "Кажется, [activity_type.GetNameNoTooltip()] отменяется. Наш устроитель, [host.GetName], [Select_CString(host.IsFemale, 'объявлена недееспособной', 'объявлен недееспособным' )] и [Select_CString(host.IsFemale, 'отстранена', 'отстранен' )] от дел своим окружением.\n\nМы возвращаемся домой несолоно хлебавши. "
  activity_system.0331.a: "Какая досада."
+ #If someone necessary deccide isolate
+ activity_system.0340.t: "$isolating_modifier$"
+ activity_system.0340.desc.host: "[host.Custom('GetIsolationReason')] рушит все наши планы, и теперь [activity_type.GetNameNoTooltip()|l] в городе [location.GetName] уже не кажется такой хорошей затеей. Не желая подвергать гостей опасности, мне пришлось принять непростое решение: [activity_type.GetNameNoTooltip()|l] отменяется."
+ activity_system.0340.desc.guest: "[host.Custom('GetIsolationReason')] рушит все наши планы, и теперь [activity_type.GetNameNoTooltip()|l] в городе [location.GetName] уже не кажется такой хорошей затеей. Не желая подвергать гостей опасности, [host.GetTitledFirstName|l] [Select_CString(host.IsFemale, 'приняла', 'принял' )] непростое решение: [activity_type.GetNameNoTooltip()|l] отменяется."
+ activity_system.0340.a: "Главное — безопасность!"
  #Late to the activity
  activity_system.0400.t: "Опоздание"
  activity_system.0400.desc_leader: "Когда [travel_leader.Custom2('MyCharacterIntroduction', ROOT.Char)] подходит ко мне со смесью стыда и тревоги на лице, я понимаю, меня ждут дурные вести.\n\n«С прискорбием сообщаю, что мы опаздываем примерно на [GetTimeBetweenDates(ROOT.Char.GetInvolvedActivity.GetActiveStartDate.Self, ROOT.Char.GetTravelPlan.GetData.GetNextDestination.GetEstimatedArrivalDate)], [Select_CString(ROOT.Char.IsFemale, 'моя', 'мой' )] [ROOT.Char.GetTitleAsNameNoTooltip|l], и, возможно, мы не сумеем достичь цели вовремя»."
@@ -130,3 +140,9 @@
  activity_system.0554.opening: "[host.Custom2('AppropriateGreeting', ROOT.Char)]"
  activity_system.0554.a: "Я не могу не принять этот вызов."
  activity_system.0554.b: "Я поищу убедительное оправдание."
+ has_activity_intent_global: "Возможно, [ACTIVITY_INTENT.GetName] — это то, чем [Select_CString(CHARACTER.IsLocalPlayer, 'вам', Concatenate('персонажу ', CHARACTER.GetShortUIName|U))] хочется [Concept('intent', 'заняться')|E]"
+ has_activity_intent_global_not: "[ACTIVITY_INTENT.GetName] — это то, чем [Select_CString(CHARACTER.IsLocalPlayer, 'вам', Concatenate('персонажу ', CHARACTER.GetShortUIName|U))] точно не хочется [Concept('intent', 'заниматься')|E]"
+ has_activity_intent_first: "$has_activity_intent_global$"
+ has_activity_intent_first_not: "$has_activity_intent_global_not$"
+ has_activity_intent_third: "$has_activity_intent_global$"
+ has_activity_intent_third_not: "$has_activity_intent_global_not$"

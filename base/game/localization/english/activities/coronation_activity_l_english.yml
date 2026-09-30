@@ -6,11 +6,11 @@
  activity_coronation_desc: "Invite the great and powerful of the realm to witness your ascension to the throne. This will forge the foundations for a long and successful rule."
  activity_coronation_conclusion_desc: "The [GetActivityType( 'activity_coronation' ).GetName] has concluded."
  activity_coronation_selection_tooltip: "Invite the great and powerful of the realm to witness your ascension to the throne. This will forge the foundations for a long and successful rule.\n\nAnticipated Rewards:\n$activity_coronation_host_desc$"
- activity_coronation_destination_selection: "\nA [coronation|E] usually have to be held in the [realm|E] of the [host|E], with the exception of [anointments|E] which may have to be held in the lands of the [head_of_faith|E] if they hold any fitting [holy_sites|E]."
+ activity_coronation_destination_selection: "\nA [coronation|E] usually has to be held in the [realm|E] of the [host|E], with the exception of [anointments|E]. An anointment may be held in the lands of the anointing [head_of_faith|E], or those of the [head_of_rite|E] if they are a [clergy|E] member and there is no [head_of_faith|E]."
  activity_coronation_guest_help_text: "A Coronation is a great opportunity to build bonds, and to impress both [vassals|E] and other [rulers|E] alike.\n\nAny guest taking part in the Coronation will have opportunities to increase the [opinion|E] of fellow guests, and may get special opportunities to interact with the [host|E] of the [activity|E]."
  invite_to_activity_flavor_coronation: "You are cordially invited to join me and the rest of the realm at [ROOT.Char.GetCurrentLocation.Custom('GetCoronationSitePrefix')][ROOT.Char.GetCurrentLocation.Custom('GetCoronationSite')] for my upcoming coronation."
  activity_coronation_underage_tt: "You are #bold not#! at least #V 12#! years old\n#flavor The crown slips right off your little head#!"
- activity_coronation_not_approved_anointment: "[GetPlayer.GetFaith.GetReligiousHead.GetTitledFirstName] has not approved of this [anointment|E], seek [GetPlayer.GetFaith.GetReligiousHead.GetHerHis] approval with the [request_anointment|E] [interaction|E]"
+ activity_coronation_not_approved_anointment: "[GetPlayer.Custom('pam_anointment_authority_name_loc')] has not approved of this [anointment|E]; seek their approval with the [request_anointment|E] [interaction|E]"
 
  # Province Desc
  activity_coronation_province_desc: "The Coronation will be held in [ROOT.Province.GetName]"
@@ -22,8 +22,9 @@
 
  # Location Triggers
  coronation_location_owned: "Not in the [realm|E]"
- coronation_location_hof_owned: "[THIS.Province.GetName] is #bol not#! a [holy_site|E] in the [realm|E] of your [head_of_faith|E]"
-  coronation_location_holy_site_host: "[THIS.Province.GetName] is #bol not#! a [holy_site|E] in your [realm|E] (your [head_of_faith|E] possesses no [holy_site|E])"
+ coronation_location_hof_owned: "[THIS.Province.GetName] is #bol not#! a [holy_site|E] in the [realm|E] of [GetPlayer.Custom('pam_anointment_authority_name_loc')]"
+  coronation_location_holy_site_host: "[THIS.Province.GetName] is #bol not#! a [holy_site|E] in your [realm|E] ([GetPlayer.Custom('pam_anointment_authority_name_loc')] possesses no [holy_site|E])"
+ coronation_location_authority_capital: "[THIS.Province.GetName] is #bol not#! the location of [GetPlayer.Custom('pam_anointment_authority_name_loc')]"
  coronation_location_neither_capital_nor_holy_site: "[THIS.Province.GetName] is #bol not#! a [county_capital|E] or a [holy_site|E]"
 
  # Phases
@@ -40,7 +41,7 @@
  coronation_type_normal_flavor: "A stately ceremony shall prove the rightfulness of your rule, and the majesty of the realm shall be your sovereign vestment."
  coronation_type_tributaries: "and [tributaries|E]"
  coronation_type_anointment: "Anointment"
- coronation_type_anointment_desc: "$BULLET_WITH_TAB$Prove your [legitimacy_i][legitimacy|E] beyond doubt\n$BULLET_WITH_TAB$Gain [piety_i][piety|E], @fervor_icon![fervor|E] and the favor of [GetVassalStance( 'zealot' ).GetTextIcon][GetVassalStance( 'zealot' ).GetName|U] [vassals|E]\n$BULLET_WITH_TAB$Swear an [oath|E] and pledge the course of your reign\n$BULLET_WITH_TAB$Gain [opinion_i][opinion|E] with [vassals|E]\n$BULLET_WITH_TAB$Gain [opinion_i][opinion|E] with other [rulers|E]\n$BULLET_WITH_TAB$[vassals|E] may leave @faction_icon![factions|E]\n$BULLET_WITH_TAB$@alert_icon! #alert_trial Must be held in a [holy_site|E] of your [faith|E]#!\n\n#weak $coronation_type_anointment_flavor$#!"
+ coronation_type_anointment_desc: "$BULLET_WITH_TAB$Prove your [legitimacy_i][legitimacy|E] beyond doubt\n$BULLET_WITH_TAB$Gain [piety_i][piety|E], @fervor_icon![fervor|E] and the favor of [GetVassalStance( 'zealot' ).GetTextIcon][GetVassalStance( 'zealot' ).GetName|U] [vassals|E]\n$BULLET_WITH_TAB$Swear an [oath|E] and pledge the course of your reign\n$BULLET_WITH_TAB$Gain [opinion_i][opinion|E] with [vassals|E]\n$BULLET_WITH_TAB$Gain [opinion_i][opinion|E] with other [rulers|E]\n$BULLET_WITH_TAB$[vassals|E] may leave @faction_icon![factions|E]\n$BULLET_WITH_TAB$@alert_icon! #alert_trial Must be held in a [holy_site|E] of your [faith|E], or at the [head_of_rite|E]'s location#!\n\n#weak $coronation_type_anointment_flavor$#!"
  coronation_type_anointment_flavor: "A true sovereign must be enshrouded in holy purpose, and instated by divine favor. Worldly strength is no substitute."
 
  # Options
@@ -70,22 +71,29 @@ mandala_coronation_low_feast_modifier: "Spurned Subjects"
 mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_desc$"
 
  # Special Guests
- coronation_hof_guest: "Head of Faith"
+ coronation_hof_guest: "Religious Authority"
  coronation_hof_guest_desc: "$coronation_hof_guest_desc_for_host$"
- coronation_hof_guest_for_host: "Head of Faith"
- coronation_hof_guest_desc_for_host: "In an [anointment|E], the [head_of_faith|E] must be a [activity_guest|E] for it to be considered [legitimate|E].\n\nSecure the support of the Head of Faith with the [anointment_request|E] [interaction|E]."
+ coronation_hof_guest_for_host: "[GetPlayer.Custom('pam_anointment_authority_title_loc')]"
+ coronation_hof_guest_desc_for_host: "In an [anointment|E], your [head_of_faith|E], or your clergy [head_of_rite|E] when there is none, must be an [activity_guest|E] for it to be considered [legitimate|E].\n\nSecure their support with the [anointment_request|E] [interaction|E]."
+ pam_anointment_authority_name_challenger: "[ROOT.Char.GetReligiousHeadOrChallenger.GetTitledFirstName]"
+ pam_anointment_authority_name_hof: "[ROOT.Char.GetFaith.GetReligiousHead.GetTitledFirstName]"
+ pam_anointment_authority_name_hor: "[ROOT.Char.GetRite.GetHeadOfRite.GetTitledFirstName]"
+ pam_anointment_authority_title_challenger: "[challenger_hof|E]"
+ pam_anointment_authority_title_hof: "[ROOT.Char.GetFaith.ReligiousHeadTitleName]"
+ pam_anointment_authority_title_hor: "Head of Rite"
+ pam_anointment_authority_fallback: "Religious Authority"
 
  # Doctrines related to Coronations
  doctrine_coronation_name: "Coronation Tradition"
  doctrine_no_anointment_name: "No Anointment"
  doctrine_no_anointment_desc: "In this faith, no sacred oil touches the brow of rulers — theirs is a path to power without anointing or divine rite."
  doctrine_anointment_permitted_name: "Anointment Permitted"
- doctrine_anointment_permitted_desc: "Even Emperors bow to no single ritual — though the Head of Faith may preside, the choice of crowning lies with the throne itself."
+ doctrine_anointment_permitted_desc: "Even Emperors bow to no single ritual — though their highest religious authority may preside, the choice of crowning lies with the throne itself."
  doctrine_imperial_anointment_name: "Imperial Anointment"
- doctrine_imperial_anointment_desc: "To rule as an Emperor beyond all doubt, one must kneel — for only the Head of Faith can bestow that final, unquestioned authority."
+ doctrine_imperial_anointment_desc: "To rule as an Emperor beyond all doubt, one must kneel — for only the highest authority of their church can bestow that final, unquestioned legitimacy."
  doctrine_parameter_no_anointment: "[characters|E] do not have access to the [coronation_anointment|E] [activity_option|E]"
  doctrine_parameter_theocratic_coronation: "[characters|E] have access to the [coronation_anointment|E] [activity_option|E]"
- doctrine_parameter_imperial_anointment: "[characters|E] of [empire|E] [title_tier|E] or higher must use the [coronation_anointment|E] [activity_option|E] to receive the [GetLaw('crowned_emperor').GetName] [law|E]"
+ doctrine_parameter_imperial_anointment: "[characters|E] of [empire|E] [title_tier|E] or higher must use the [coronation_anointment|E] [activity_option|E] to receive the [GetLaw('crowned_emperor').GetName] [law|E], so long as their [rite|E] has a [head_of_faith|E] or clergy [head_of_rite|E]"
  doctrine_parameter_coronation_artifact: "[characters|E] of this [faith|E] must have a [FAITH.Custom('CoronationRequiresArtifact')] [artifact|E] to access additional [activity_options|E]"
  coronation_custom_crown_artifact: "Crown"
  coronation_custom_regalia_artifact: "Regalia"
@@ -104,7 +112,7 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  coronation_liege_value: "[vassal|E]'s coronation: $VALUE|=+0$"
  coronation_suzerain_value: "[tributary|E]'s coronation: $VALUE|=+0$"
  coronation_tributary_value: "[suzerain|E]'s coronation: $VALUE|=+0$"
- coronation_hof_supported_anointment: "[head_of_faith|E] Supports [anointment|E]: $VALUE|=+0$"
+ coronation_hof_supported_anointment: "Religious Authority Supports [anointment|E]: $VALUE|=+0$"
 
  # Laws for Coronation
  crowned_laws: "Coronation Laws"
@@ -206,7 +214,7 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  GetHeirPreparationOathText: "Prepare the Heir"
  GetInstallClaimantsOathText: "Install Claimants"
  GetMendTheFractureOathText: "Mend the Fracture"
- GetProvideForTheWarriorsOathText: "Support My [ROOT.Char.Custom('KnightCulturePluralNoTooltip')]"
+ GetProvideForTheWarriorsOathText: "Support My [GetPlayer.Custom('KnightCulturePluralNoTooltip')]"
  GetProvideForTheFaithfulOathText: "Provide for the Faithful"
  GetProvideForThePoorOathText: "Provide for the Poor"
  GetRepentOathText: "Repent"
@@ -375,16 +383,16 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  ## Provide for the Poor
  coronation_events.0110.desc.provide_for_the_poor_oath: "#emp \"The poor of [activity.GetHost.GetPrimaryTitle.GetNameNoTier] are the salt of the earth, the light of the world. They silently toil for the benefit of all. I will ensure even the poorest in my realm can live with dignity and hope.\"#!"
  ## Repent
- coronation_events.0110.desc.repent_oath: "#emp \"What can change the nature of a [activity.GetHost.GetWomanMan]? Is my will enough? Can I convince other [activity.GetHost.GetFaith.GetAdherentNamePlural], can I convice [activity.GetHost.GetFaith.HighGodName] that I truly repent for my sins? It might be a foolishness to try, but it would be the gravest sin not to.\"#!"
+ coronation_events.0110.desc.repent_oath: "#emp \"What can change the nature of a [activity.GetHost.GetWomanMan]? Is my will enough? Can I convince other [activity.GetHost.GetFaith.GetAdherentNamePlural], can I convince [activity.GetHost.GetFaith.HighGodName] that I truly repent for my sins? It might be a foolishness to try, but it would be the gravest sin not to.\"#!"
 
  ## Other
  coronation_events.0110.desc.fallback_compassionate: "#emp \"I swear to observe all just laws and customs of the [activity.GetHost.GetPrimaryTitle.GetAdjective] people; to rule with gentle wisdom, and judge with merciful grace.\"#!"
  coronation_events.0110.desc.fallback_honorable: "#emp \"I swear to maintain the peace and concord of [activity.GetHost.GetFaith.HighGodNamePossessive] [activity.GetHost.GetFaith.AltPriestTermPlural] in [activity.GetHost.GetPrimaryTitle.GetNameNoTier], and keep by my honor the liberties and rights of my people.\"#!"
- coronation_events.0110.desc.fallback_feckless: "#emp \"I... uh... swear the proper oaths of [activity.GetHost.GetPrimaryTitle.GetNameNoTierPossessive] [activity.GetHost.GetTierAsName]... shall henceforth do as the [activity.GetHost.GetFaith.AltPriestTermPlural] require, and answer when the realm cries out for its [activity.GetHost.GetTierAsNameNoTooltip], and so on...\"#!"
+ coronation_events.0110.desc.fallback_feckless: "#emp \"I... uh... swear the proper oaths of [activity.GetHost.GetPrimaryTitle.GetNameNoTierPossessive] [activity.GetHost.GetPrimaryTitle.GetTierAsName]... shall henceforth do as the [activity.GetHost.GetFaith.AltPriestTermPlural] require, and answer when the realm cries out for its [activity.GetHost.GetPrimaryTitle.GetTierAsNameNoTooltip], and so on...\"#!"
  coronation_events.0110.desc.fallback: "#emp \"I swear, by my rule, fortune to [activity.GetHost.GetPrimaryTitle.GetNameNoTier], deference to its peoples' customs, and glory to the [activity.GetHost.GetPrimaryTitle.GetTierAsNameNoTooltip].\"#!"
+ coronation_events.0110.desc.outro: ""
  coronation_events.0110.regular: "We will see if [activity.GetHost.GetSheHe] can live up to these words..."
  coronation_events.0110.no_oath: "The words of ceremony, not of history."
- coronation_events.0110.desc.outro: ""
 
 
  coronation_events.0150.t: "Broken Oath: [SCOPE.Custom('GetOathSpecific')|V]"
@@ -413,7 +421,7 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
  ## Intrigue
 
  ## Learning
- learning_oath_1_tooltip: "I swear an [oath|E] to #V Foster Enlightenment#!:[SelectLocalization( GreaterThan_CFixedPoint( GetPlayer.MakeScope.Var('learning_oath_1_university_exists').GetValue, '(CFixedPoint)0' ), 'learning_oath_1_tooltip_need_university', 'learning_oath_1_tooltip_need_development' )]\n\t$EFFECT_LIST_BULLET$Need to have at least #V [learning_oath_temp_cost]#! [gold_i][gold|E]\n\t$EFFECT_LIST_BULLET$Need to fulfill #V 1#! of the following requirements:\n\t\t\t$EFFECT_LIST_BULLET$Have a fifth level [education_trait|E]\n\t\t\t$EFFECT_LIST_BULLET$Each [councillor|E] has a skill of #V 20#! or higher for their role\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 50 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], and [SelectLocalization( GreaterThan_CFixedPoint( GetPlayer.MakeScope.Var('learning_oath_1_university_exists').GetValue, '(CFixedPoint)0' ), 'learning_oath_1_tooltip_university', 'learning_oath_1_tooltip_no_university' )]"
+ learning_oath_1_tooltip: "I swear an [oath|E] to #V Foster Enlightenment#!:\n\t$EFFECT_LIST_BULLET$Need to have at least #V [learning_oath_temp_cost]#! [gold_i][gold|E]\n\t$EFFECT_LIST_BULLET$Need to fulfill #V 1#! of the following requirements:\n\t\t\t$EFFECT_LIST_BULLET$Have a fifth level [education_trait|E]\n\t\t\t$EFFECT_LIST_BULLET$Each [councillor|E] has a skill of #V 20#! or higher for their role\n\t$EFFECT_LIST_BULLET$Needs to be completed within #V 50 Years#!\n\t$EFFECT_LIST_BULLET$Rewards: [legitimacy_i][legitimacy|E], [prestige_i][prestige|E], and [SelectLocalization( GreaterThan_CFixedPoint( GetPlayer.MakeScope.Var('learning_oath_1_university_exists').GetValue, '(CFixedPoint)0' ), 'learning_oath_1_tooltip_university', 'learning_oath_1_tooltip_no_university' )]"
  learning_oath_1_tooltip_university: "[GetModifier('oath_university_county').GetNameWithTooltip]"
  learning_oath_1_tooltip_no_university: "a [GetBuilding('generic_university').GetName]"
  learning_oath_1_tooltip_need_university: "\n\t$EFFECT_LIST_BULLET$Need a [county|E] with a [GetBuilding('generic_university').GetName] and a [development_i][development|E] of #V 30#! or higher"
@@ -786,9 +794,9 @@ mandala_coronation_low_feast_modifier_desc: "$ach_coronation_low_feast_modifier_
 # Artifacts
 
 ach_spawned_crown_name: "Crown of [crown_title.GetDefinitiveNameNoTooltip]"
-ach_spawned_crown_desc: "[SCOPE.Custom('ArtifactArticleWealth')] crown of [SCOPE.Custom('ArtifactQuality')] craftsmanship. The crown is forged from [newly_created_artifact.GetFeatureText( 'decoration_material_wire' )]. [title_founder.GetTitledFirstName] was the first to wear it as a symbol of [title_founder.GetHerHis] [title_founder.Custom('trait_greedy_adjective')] rule. Every [title_founder.GetTitleAsNameNoTooltip] of [crown_title.GetNameNoTier] has worn it since."
+ach_spawned_crown_desc: "[SCOPE.Custom('ArtifactArticleWealth')] crown of [SCOPE.Custom('ArtifactQuality')] craftsmanship. The crown is forged from [newly_created_artifact.GetFeatureText( 'decoration_material_wire' )]. [title_founder.GetTitledFirstName] was the first to wear it as a symbol of [title_founder.GetHerHis] [title_founder.Custom('trait_greedy_adjective')] rule. Every [title_holder_reference.GetTitleAsNameNoTooltip] of [crown_title.GetNameNoTier] has worn it since."
 ach_spawned_regalia_name: "Regalia of [crown_title.GetDefinitiveNameNoTooltip]"
-ach_spawned_regalia_desc: "[SCOPE.Custom('ArtifactArticleWealth')] regalia set of [SCOPE.Custom('ArtifactQuality')] craftsmanship. [title_founder.GetTitledFirstName] was the first to hold it as a symbol of [title_founder.GetHerHis] [title_founder.Custom('trait_greedy_adjective')] rule. Every [title_founder.GetTitleAsNameNoTooltip] of [crown_title.GetNameNoTier] has held it since."
+ach_spawned_regalia_desc: "[SCOPE.Custom('ArtifactArticleWealth')] regalia set of [SCOPE.Custom('ArtifactQuality')] craftsmanship. [title_founder.GetTitledFirstName] was the first to hold it as a symbol of [title_founder.GetHerHis] [title_founder.Custom('trait_greedy_adjective')] rule. Every [title_holder_reference.GetTitleAsNameNoTooltip] of [crown_title.GetNameNoTier] has held it since."
 
 
 # Host activity rewards
@@ -877,9 +885,9 @@ coronation_nomadic_herd_reward: "You are given [herd_i] [TopScope.GetValue('coro
 coronation_events.0312.t: "Celebration's End"
 coronation_events.0312.desc.high_magnificence: "The magnificent coronation is finished. The guests depart, all profoundly impressed by the splendid ceremonies."
 coronation_events.0312.desc.mid_magnificence: "The coronation is finished. The guests depart, mildly impressed by the ceremonies."
-coronation_events.0312.desc.low_magnificence: "The meager coronation is finished. [host.GetName] might be a poor host, but a [ROOT.Char.GetTitleAsNameNoTooltip] nonetheless."
+coronation_events.0312.desc.low_magnificence: "The meager coronation is finished. [host.GetName] might be a poor host, but a [host.GetTitleAsNameNoTooltip] nonetheless."
 coronation_events.0312.a: "The reign of [host.GetTitledFirstNameNoTooltip] has begun."
-coronation_events.0312.cultural_acceptance: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Impress Attendees#! [intent|E] the [cultural_acceptance|E] between [ROOT.Char.GetCulture.GetName] and [host.GetCulture.GetName] has incresed."
+coronation_events.0312.cultural_acceptance: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Impress Attendees#! [intent|E] the [cultural_acceptance|E] between [ROOT.Char.GetCulture.GetName] and [host.GetCulture.GetName] has increased."
 coronation_events.0312.better_councillors: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Embrace Supporters#! [intent|E], you have gained [GetModifier('ach_intent_better_councillors_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
 coronation_events.0312.vassal_development_boost: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Embrace Supporters#! [intent|E] you have gained [GetModifier('ach_intent_vassal_development_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
 coronation_events.0312.vassal_defensive_boost: "Thanks to [host.GetTitledFirstNamePossessiveNoTooltip] #V Embrace Supporters#! [intent|E] you have gained [GetModifier('ach_intent_vassal_defensive_boost_modifier').GetNameWithTooltip] [modifier|E] for 20 years."
@@ -933,13 +941,15 @@ ach_maintenance_events.0002.opinion_reward: "[opinion|E] gained with [culture_he
 coronation_anointment_request: "$game_concept_anointment_request$"
 coronation_anointment_request_desc: "Secure the support of [recipient.GetTitledFirstName] to hold an [anointment|E]."
 coronation_anointment_request_extra_icon: "$hook_extra_icon$"
-anoinment_request_accepted_tt: "[recipient.GetShortUIName] will accept an invitation to your [coronation_i][anointment|E], if available"
+anoinment_request_accepted_tt: "[recipient.GetShortUIName|U] will accept a future invitation to the [coronation_i][anointment|E]"
 already_using_hook: "Already using a [hook_i][hook|E]"
 coronation_request_return_land_trigger: "You do not hold any of [recipient.GetTitledFirstNamePossessive] [de_jure|E] [land|E]"
 TRADE_LAND_FOR_BETTER_AI_ACCEPTANCE: "Return [title_i][de_jure|E] [land|E]"
 TRADE_LAND_ACCEPTANCE_SEND_OPTION: "Returning [de_jure] [land|E]: $VALUE|=+0$"
 CORONATION_ANOINTMENT_REQUEST_INTERACTION_NOTIFICATION: "With utmost reverence, I seek your blessing and support for my rightful and auspicious ascension to the throne."
 anointment_request_already_supported: "[recipient.GetTitledFirstName] has already agreed to support your [anointment|E]"
+anointment_request_no_holy_site: "No [holy_site|E] is available for the [anointment|E]"
+activity_coronation_hof_no_anointment_situation: "[GetPlayer.Custom('pam_anointment_authority_name_loc')] will not host an [coronation_anointment|E] or support one while [GetSituation('the_christian_church').GetName] is in this [situation_phase|E]"
 coronation_realm_size_desc: "$CB_REALM_SIZE_COST$"
 coronation_empire_req: "[empire|E] [title_tier|E] or Above"
 activity_coronation_predicted_cost: "The cost of a [GetActivityType( 'activity_coronation' ).GetNameNoTooltip] is primarily affected by [activity_type|E] the [activity_options|E] you select."
@@ -947,7 +957,6 @@ coronation_tribal_reg: "[GetGovernment('tribal_government').GetNameNoTooltip] or
 coronation_nomadic_reg: "[GetGovernment('nomad_government').GetNameNoTooltip]"
 coronation_tribal_nomadic_reg: "[GetGovernment('tribal_government').GetNameNoTooltip], [GetGovernment('wanua_government').GetNameNoTooltip] or [GetGovernment('nomad_government').GetNameNoTooltip]"
 coronation_discount_reg: "From Event"
-HOF_is_ai_tt: "[head_of_faith|E] $IS_LOCAL_PLAYER_TRIGGER|l$"
 coronation_conclusion_summary_desc_crown: "[host.GetTitledFirstNameNicknamedRegnal] is now crowned as [host.GetPrimaryTitle.GetNameNoTierPossessive] rightful [host.GetTitleAsNameNoTooltip], and charged with the safekeeping of the realm."
 coronation_conclusion_summary_desc: "[host.GetTitledFirstNameNicknamedRegnal] is now enthroned as [host.GetPrimaryTitle.GetNameNoTierPossessive] rightful [host.GetTitleAsNameNoTooltip], and entrusted with the welfare of the realm."
 coronation_supporters_pledge_total: "\n\n[activity.MakeScope.Var('supporters_pledge_var').GetValue|0V] [vassals|E] ([coronation_supporters|E]) swore loyalty with true conviction"

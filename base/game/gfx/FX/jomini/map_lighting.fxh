@@ -95,13 +95,13 @@ PixelShader =
 		#define WATER_SUNNY_GLOSS_SCALE                20.0f
 		#define WATER_SUNNY_SPECULAR_FACTOR            0.1f
 		#define WATER_SUNNY_SUN_INTENSITY_MULTIPLIER   1.0f
-		#define WATER_SUNNY_IBL_SCALE                  0.1f
+		#define WATER_SUNNY_IBL_SCALE                  0.4f
 
 		// Water shadow scenario lighting parameters
 		#define WATER_OVERCAST_GLOSS_SCALE               5.0f
 		#define WATER_OVERCAST_SPECULAR_FACTOR           0.1f
 		#define WATER_OVERCAST_SUN_INTENSITY_MULTIPLIER  0.3f
-		#define WATER_OVERCAST_IBL_SCALE                 1.0f
+		#define WATER_OVERCAST_IBL_SCALE                 0.15f
 
 		//-------------------------------
 		// Core lighting functions ------
@@ -152,6 +152,12 @@ PixelShader =
 				LightingProps._ToLightDir = ToTerrainSunnySunDir;
 				LightingProps._LightIntensity = TERRAIN_SUNNY_SUN_COLOR * TERRAIN_SUNNY_SUN_INTENSITY;
 				LightingProps._CubemapIntensity = CubemapIntensity * TERRAIN_SUNNY_IBL_SCALE;
+			#endif
+			#ifdef SHADOW_LIFT
+				LightingProps._ShadowTerm = lerp( LightingProps._ShadowTerm , 1.0f, 0.2f );
+				float NdotL = ( dot( MaterialProps._Normal, LightingProps._ToLightDir ) + 1.0f );
+				float DarkMask = smoothstep( 0.5f, 1.0f, 2.0f - NdotL ) * 0.3f;				
+				MaterialProps._Normal = lerp( MaterialProps._Normal, LightingProps._ToLightDir, DarkMask );
 			#endif
 			#if defined( PDX_OSX ) && defined( PDX_OPENGL )
 				return CalculateMapLighting( LightingProps, MaterialProps, EnvironmentMap, TERRAIN_SUNNY_SPECULAR_FACTOR );

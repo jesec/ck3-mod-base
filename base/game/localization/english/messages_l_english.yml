@@ -1,4 +1,4 @@
-﻿l_english: 
+﻿l_english:
  MESSAGE_CLICK_TOOLTIP: "[SelectLocalization(FeedMessageItem.IsExpanded,'MESSAGE_CLICK_TO_HIDE','MESSAGE_CLICK_TO_SHOW')]\n$MESSAGE_CLICK_TO_DISMISS$"
  MESSAGE_CLICK_TO_HIDE: "#I Click to hide.#!"
  MESSAGE_CLICK_TO_SHOW: "#I Click to show.#!"
@@ -118,7 +118,7 @@
  msg_war_declared_on_liege_desc:1 "Your [liege|E], [LEFT_CHARACTER.GetShortUIName|U], is being attacked by [RIGHT_CHARACTER.GetShortUIName]"
  msg_war_declared_by_liege:0 "Liege Goes to War!"
  msg_war_declared_by_liege_desc:1 "Your [liege|E], [LEFT_CHARACTER.GetShortUIName|U], has declared [war|E] on [RIGHT_CHARACTER.GetShortUIName]"
- msg_war_declared_on_me:0 "War Declared!" 
+ msg_war_declared_on_me:0 "War Declared!"
  msg_war_declared_on_me_desc:0 "[LEFT_CHARACTER.GetShortUIName|U] has declared [war|E] on you!"
  msg_liege_war_ended_attacker_win:0 "Liege's War Ends"
  msg_liege_war_ended_defender_win:0 "Liege's War Ends"
@@ -245,6 +245,26 @@
  msg_i_not_head_of_faith_anymore_desc:0 "[LEFT_CHARACTER.GetShortUIName|U] replaced you as the [FAITH.ReligiousHeadName] of [FAITH.GetName]"
  msg_i_not_head_of_multiple_faiths_anymore:0 "$msg_i_not_head_of_faith_anymore$"
  msg_i_not_head_of_multiple_faiths_anymore_desc:0 "$msg_i_not_head_of_faith_anymore_desc$ and $NUM_OTHER_FAITHS|V$ other faiths"
+ msg_holy_site_created: "New Holy Site"
+ msg_holy_site_created_desc: "[changed_holy_site.GetName] has been consecrated as a [holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_created_by_character: "$msg_holy_site_created$"
+ msg_holy_site_created_by_character_desc: "[holy_site_actor.GetShortUIName|U] [Select_CString( holy_site_actor.IsLocalPlayer, 'have', 'has' )] consecrated [changed_holy_site.GetName] as a [holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_adopted: "Holy Site Adopted"
+ msg_holy_site_adopted_desc: "[changed_holy_site.GetName] has been adopted as a [holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_adopted_by_character: "$msg_holy_site_adopted$"
+ msg_holy_site_adopted_by_character_desc: "[holy_site_actor.GetShortUIName|U] [Select_CString( holy_site_actor.IsLocalPlayer, 'have', 'has' )] adopted [changed_holy_site.GetName] as a [holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_elevated: "Holy Site Elevated"
+ msg_holy_site_elevated_desc: "[changed_holy_site.GetName] has been elevated to an [eminent_holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_elevated_by_character: "$msg_holy_site_elevated$"
+ msg_holy_site_elevated_by_character_desc: "[holy_site_actor.GetShortUIName|U] [Select_CString( holy_site_actor.IsLocalPlayer, 'have', 'has' )] elevated [changed_holy_site.GetName] to an [eminent_holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_demoted: "Holy Site Demoted"
+ msg_holy_site_demoted_desc: "[changed_holy_site.GetName] is no longer an [eminent_holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_demoted_by_character: "$msg_holy_site_demoted$"
+ msg_holy_site_demoted_by_character_desc: "[holy_site_actor.GetShortUIName|U] [Select_CString( holy_site_actor.IsLocalPlayer, 'have', 'has' )] demoted [changed_holy_site.GetName]; it is no longer an [eminent_holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_abandoned: "Holy Site Abandoned"
+ msg_holy_site_abandoned_desc: "[changed_holy_site.GetName] is no longer a [holy_site|E] of [notified_faith.GetName]"
+ msg_holy_site_abandoned_by_character: "$msg_holy_site_abandoned$"
+ msg_holy_site_abandoned_by_character_desc: "[holy_site_actor.GetShortUIName|U] [Select_CString( holy_site_actor.IsLocalPlayer, 'have', 'has' )] abandoned [changed_holy_site.GetName]; it is no longer a [holy_site|E] of [notified_faith.GetName]"
  msg_new_fascination_selected:0 "New [cultural_fascination|E]"
  msg_new_fascination_selected_desc:2 "Your [culture|E] is now [Concept( 'fascination', 'Fascinated' )|E] by the $NAME|V$ [innovation|E]"
  msg_innovation_discovered:0 "Innovation Discovered"
@@ -264,8 +284,10 @@
  msg_new_theocracy_lesee_disapprove_desc:1 "Your [realm_priest|E], [LEFT_CHARACTER.GetShortUIName|U], does not endorse you #weak ([church_property|E])#!"
  msg_mercenary_company_dismissed:0 "Mercenaries Dismissed"
  msg_mercenary_company_dismissed_desc:0 "Your contract with the [LEFT_TITLE.GetNameNoTooltip] [mercenary_company|E] has run out, and the soldiers have been dismissed"
- msg_holy_order_dismissed:0 "Holy Order Dismissed"
- msg_holy_order_dismissed_desc:0 "The [LEFT_TITLE.GetNameNoTooltip] [holy_order|E] has been dismissed"
+ msg_holy_order_dismissed: "Military Order Dismissed"
+ msg_holy_order_dismissed_desc: "The [LEFT_TITLE.GetNameNoTooltip] [military_holy_order|E] has been dismissed"
+ msg_rite_updated: "Rite Changed"
+ msg_rite_updated_desc: "The [rite|E] has been changed" # should not appear actually
  msg_fired_from_council:0 "Fired From Council"
  msg_fired_from_council_desc:0 "[LEFT_CHARACTER.GetShortUIName|U] has fired you from [LEFT_CHARACTER.GetHerHis] [council|E]"
  msg_council_swap_position:0 "New Council Position"
@@ -359,16 +381,16 @@
  stress_level_reduced.message:1 "Reduced [stress_level|E]"
  stress_level_reduced.text:0 "You are no longer as overwhelmed by [stress|E]"
  msg_holy_order_patronage_lost:0 "Holy Order Patronage Lost"
- msg_holy_order_patronage_lost_desc:0 "You have lost the patronage of the [LEFT_TITLE.GetName] [holy_order|E]"
+ msg_holy_order_patronage_lost_desc:0 "You have lost the patronage of [LEFT_TITLE.GetName] [holy_order|E]"
  msg_holy_order_patronage_gained:0 "Holy Order Patronage Gained"
- msg_holy_order_patronage_gained_desc:0 "You have gained the patronage of the [LEFT_TITLE.GetName] [holy_order|E]"
+ msg_holy_order_patronage_gained_desc:0 "You have gained the patronage of [LEFT_TITLE.GetName] [holy_order|E]"
  msg_murder_scheme_agent_join_title:0 "Agent joined Murder Scheme"
  msg_murder_scheme_agent_join_message:1 "[agent.GetTitledFirstName] joined your scheme to kill [target.GetTitledFirstName]."
  msg_murder_scheme_agent_leave_title:0 "Agent left Murder Scheme"
  msg_murder_scheme_agent_leave_message:1 "[agent.GetTitledFirstName] left your scheme to kill [target.GetTitledFirstName]."
 
  mongols_sieged_county.t:0 "[county.GetName] Razed by the Horde"
- 
+
  msg_vassal_contract_level_invalidated:0 "Obligation Invalidated"
  msg_vassal_contract_level_invalidated_desc:0 "[LEFT_CHARACTER.GetUINameNoTooltip|U] and $message_consolidation_others_obligations$ have had some of their [obligations|E] invalidated"
  message_consolidation_others_obligations: "#tooltip:message_consolidation_names #L Other Vassals#!#!"
@@ -399,17 +421,17 @@
  msg_concubine_offered_invalidated_betrothed: "[secondary_recipient.GetTitledFirstName] is betrothed to [spouse.GetShortUIName] and therefore cannot become [recipient.GetShortUINamePossessive] concubine"
  msg_concubine_offer_rejected_title: "Concubine Rejected"
  msg_concubine_offer_rejected: "[recipient.GetTitledFirstName] rejected [secondary_recipient.GetTitledFirstName] as [recipient.GetHerHis] concubine"
- msg_close_family_member_taken_as_concubine_title: "[secondary_recipient.GetTitledFirstName] Taken as Concubine"
- msg_close_family_member_offered_as_concubine_title: "[secondary_actor.GetTitledFirstName] Taken as Concubine"
+ msg_close_family_member_taken_as_concubine_title: "[concubine_victim.GetTitledFirstName] Taken as Concubine"
+ msg_close_family_member_offered_as_concubine_title: "[concubine_victim.GetTitledFirstName] Taken as Concubine"
 
  msg_move_prisoner_to_dungeon:0 "Prisoner moved to Dungeon"
  msg_move_prisoner_to_house_arrest:0 "Prisoner moved to House Arrest"
  msg_execute_prisoner:0 "Prisoner Executed"
  msg_execute_prisoner_desc:0 "[recipient.GetTitledFirstName] [recipient.GetDeathReason]"
- 
+
  msg_artifact_gained_title:0 "Inheritance: [artifact_inherited.GetNameNoTooltip]"
  msg_artifact_gained_desc:0 "You inherited [artifact_inherited.GetNameNoTooltip] from [old_owner.GetUIName]!"
- 
+
  msg_rival_dethroned:0 "Rival Lost Title"
  msg_rival_dethroned_desc:0 "Your [rival|E] [actor.GetTitledFirstName] lost the [title.GetBaseName]"
 
@@ -466,7 +488,7 @@
  msg_struggle_phase_transitioned:1 "Phase Transitioned"
  msg_struggle_phase_transitioned_desc:0 "The $STRUGGLE_NAME$ [struggle|E] has transitioned to the @$STRUGGLE_PHASE_ICON$! $STRUGGLE_PHASE$ [struggle_phase_phase|E]."
  msg_struggle_phase_transitioned_tt:0 "$msg_struggle_phase_transitioned_desc$"
- 
+
  msg_set_relation_friend_title:1 "@friend_icon! Made a Friend"
  msg_set_relation_friend_desc:0 "[GetRelation( 'friend' ).GetReasonFor( LEFT_CHARACTER.Self, RIGHT_CHARACTER.Self )]"
  msg_set_relation_best_friend_title:1 "@best_friend_icon! Became Best Friends"
@@ -495,8 +517,8 @@
  msg_house_unity_change_stage: "House Unity Level Changed"
  msg_house_unity_change_stage_desc: "Your [house_unity|E] has changed Level to $HOUSE_UNITY_STAGE_NAME|U$"
  msg_house_unity_change_stage_tt: "$msg_house_unity_change_stage_desc$"
- 
- 
+
+
  msg_start_diarchy_title:0 "[LEFT_CHARACTER.GetDiarchyTypeNameNoTooltip] Begins"
  msg_start_diarchy_effect:0 "I began [sharing_power|E] in [LEFT_CHARACTER.GetDiarchy.GetDiarch.Custom('GetDiarchyArticle')] [LEFT_CHARACTER.GetDiarchyTypeName] with my [LEFT_CHARACTER.Custom2('RelationToMeShort', RIGHT_CHARACTER.Self)], [RIGHT_CHARACTER.GetShortUIName]"
  msg_inherit_diarchy_title:0 "[LEFT_CHARACTER.GetDiarchy.GetDiarch.Custom('GetDiarchyArticle')|U] [LEFT_CHARACTER.GetDiarchyTypeNameNoTooltip] Inherited"
@@ -512,7 +534,7 @@
  msg_end_diarchy_effect:0 "I'm no longer [sharing_power|E] with my [LEFT_CHARACTER.Custom2('RelationToMeShort', RIGHT_CHARACTER.Self)], [RIGHT_CHARACTER.GetShortUIName]"
  on_left_diarchy.notification.vassal.t:0 "Liege's $game_concept_diarchy$ Ended"
  on_left_diarchy.notification.vassal.desc:0 "[ROOT.Char.GetShortUIName|U] is no longer [sharing_power|E] with [ROOT.Char.GetHerHisMy] [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('old_diarch'))], [old_diarch.GetShortUIName]"
- 
+
  msg_change_diarchy_type_title:0 "My $game_concept_diarchy$ Type Changed"
  msg_change_diarchy_type_effect:0 "My $OLD_TYPE$ changed into $NEW_TYPE$"
 
@@ -587,7 +609,7 @@
  msg_great_project_completed_desc: "[GreatProject.GetName] has been successfully completed in [GreatProject.GetLocation.GetName]"
 
  msg_known_pregnancy: "[LEFT_CHARACTER.GetTitledFirstNameNoTooltip] Falls Pregnant"
- 
+
  msg_government_changed: "Government Changed"
 
  msg_poem_sold_title: "Muwashshah Poem Sold"
@@ -609,15 +631,15 @@
  msg_admin_title_gained_investor.tt: "Supported Candidate Gains Appointment"
  msg_admin_title_gained_foe.tt: "Opposed Candidate Gains Appointment"
  msg_admin_title_gained.desc: "Your [GetPlayer.Custom2('RelationToMeShort', SCOPE.sC('title_gainer'))], [title_gainer.GetShortUIName|U], now governs the [title.GetName]"
- 
+
  msg_admin_title_lost_house.tt: "House Member Lost Appointment"
  msg_admin_title_lost_investor.tt: "Supported Holder Lost Appointment"
  msg_admin_title_lost_foe.tt: "Opposed Holder Lost Appointment"
  msg_admin_title_lost.desc: "Your [GetPlayer.Custom2('RelationToMeShort', SCOPE.sC('title_loser'))], [title_loser.GetShortUIName|U], no longer governs the [title.GetName]"
- 
+
  msg_estate_damaged.title: "$game_concept_estate$ Damaged"
  msg_estate_damaged.desc: "Your [estate|E] was damaged and one or more [estate_buildings|E] lost a level or was destroyed.\n\nThe [estate|E] was relocated to [new_estate_location.GetName]."
- 
+
  msg_admin_provincial_army_request_accepted.title: "Request for Troops Accepted"
  msg_admin_provincial_army_request_denied.title: "Request for Troops Denied"
  msg_admin_provincial_army_request_denied.desc: "[recipient.GetShortUIName|U] denied your request for troops"
@@ -634,7 +656,34 @@
  #msg_mandala_temple_completed_02up.desc: "The $building_type_mandala_capital_01$ [great_project|E] in [province.GetName] has been expanded"
 
  msg_appointed_to_title: "Appointed to Title"
- msg_appointed_to_title_desc: "As the top Candidate, you have been appointed as [governor|E] of [RIGHT_TITLE.GetDefinitiveName]"
+ msg_appointed_to_title_desc: "As the top Candidate, you have been appointed the title of [RIGHT_TITLE.GetDefinitiveName]"
 
  msg_tributary_invalidated_title: "Tributary Invalidated"
  msg_tributary_invalidated_desc: "The tributary contract between [LEFT_CHARACTER.GetName] and [RIGHT_CHARACTER.GetName] is no longer valid."
+
+ monastic_founder_beatified_t: "Order's Founder Beatified"
+ monastic_founder_beatified_desc: "[ROOT.Char.GetName] has died, and [ROOT.Char.GetHerHis] sainthood has begun to be recognized."
+
+ msg_spiritual_fulfillment_changed_title: "Spiritual Fulfillment changed"
+ msg_spiritual_fulfillment_changed_desc: "Your [spiritual_fulfillment|E] changed by $VALUE|0+$."
+ msg_spiritual_fulfillment_changed_tenet_added_desc: "Your [spiritual_fulfillment|E] changed by $VALUE|0+$ after adopting [RIGHT_TENET.GetName( GetPlayer.GetRite )] as [personal_tenet|E]."
+ msg_spiritual_fulfillment_changed_tenet_removed_desc: "Your [spiritual_fulfillment|E] changed by $VALUE|0+$ after renouncing [RIGHT_TENET.GetName( GetPlayer.GetRite )] as [personal_tenet|E]."
+
+ msg_clerical_region_liege_change_title: "[LEFT_CHARACTER.GetTitleAsNameNoTooltip] Liege Changed"
+ msg_clerical_region_liege_change_desc: "[LEFT_CHARACTER.GetShortUIName], holder of [TITLE.GetDefinitiveName] [clerical_title|E], became [RIGHT_CHARACTER.GetShortUINamePossessive] [vassal|E]"
+ msg_clerical_region_independence_title: "[LEFT_CHARACTER.GetTitleAsNameNoTooltip] Became Independent"
+ msg_clerical_region_independence_desc: "[LEFT_CHARACTER.GetShortUIName], holder of [TITLE.GetDefinitiveName] [clerical_title|E], became [independent|E]"
+ msg_pam_new_archbishop_title: "[RIGHT_TITLE.GetNameNoTooltip] Has a New Archbishop"
+ msg_pam_new_archbishop_desc: "[LEFT_CHARACTER.GetShortUIName] now holds [RIGHT_TITLE.GetDefinitiveName], the [clerical_region|E] your [realm_capital|E] answers to"
+
+ msg_faith_main_rite_changed.title: "New $game_concept_mainline_rite$"
+ msg_faith_main_rite_changed.desc: "[new_main_rite.GetName] became [mainline_rite|E] of [new_main_rite.GetFaith.Name] due to number of follower [counties|E] and [holy_sites|E] controlled"
+
+ msg_cleric_support_title_gain: "Clerical Support Vindicated"
+ msg_cleric_support_title_gain_desc: "[LEFT_CHARACTER.GetFirstName] [LEFT_CHARACTER.GetHouse.GetName] has gained [RIGHT_TITLE.GetName]"
+
+ msg_clerical_region_conversion_started_title: "[RIGHT_TITLE.GetNameNoTooltip] converts County"
+ msg_clerical_region_conversion_started_desc: "[LEFT_TITLE.GetDefinitiveName|U] is being converted to [RITE.GetName] under the influence of [RIGHT_TITLE.GetDefinitiveName]"
+ msg_clerical_region_conversion_ended_title: "[RIGHT_TITLE.GetNameNoTooltip] converts County"
+ msg_clerical_region_conversion_ended_desc: "[LEFT_TITLE.GetDefinitiveName|U] has been converted to [RITE.GetName] under the influence of [RIGHT_TITLE.GetDefinitiveName]"
+

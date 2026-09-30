@@ -233,15 +233,15 @@ marriage_interaction.0007 = {
 		OR = {
 			AND = {
 				is_clergy = yes
-				faith = {
-					NOT = { has_doctrine_parameter = clergy_can_marry }
+				rite = {
+					NOT = { rite_has_parameter = clergy_can_marry }
 				}
 			}
 			betrothed = {
 				AND = {
 					is_clergy = yes
-					faith = {
-						NOT = { has_doctrine_parameter = clergy_can_marry }
+					rite = {
+						NOT = { rite_has_parameter = clergy_can_marry }
 					}
 				}
 			}
@@ -255,8 +255,8 @@ marriage_interaction.0007 = {
 		if = {
 			limit = {
 				is_clergy = yes
-				faith = {
-					NOT = { has_doctrine_parameter = clergy_can_marry }
+				rite = {
+					NOT = { rite_has_parameter = clergy_can_marry }
 				}
 			}
 			save_scope_as = betrothed_clergy
@@ -706,18 +706,18 @@ marriage_interaction.0010 = {
 						scope:secondary_actor = {
 							OR = {
 								num_sinful_traits >= 3
-								has_any_shunned_or_criminal_trait_in_faith_trigger = {
+								has_any_shunned_or_criminal_trait_in_rite_trigger = {
 									CHARACTER = scope:secondary_actor
-									FAITH = scope:recipient.faith
+									RITE = scope:recipient.rite
 								}
 							}
 						}
 						scope:secondary_recipient = {
 							OR = {
 								num_sinful_traits >= 3
-								has_any_shunned_or_criminal_trait_in_faith_trigger = {
+								has_any_shunned_or_criminal_trait_in_rite_trigger = {
 									CHARACTER = scope:secondary_recipient
-									FAITH = scope:recipient.faith
+									RITE = scope:recipient.rite
 								}
 							}
 						}
@@ -735,18 +735,18 @@ marriage_interaction.0010 = {
 						scope:secondary_actor = {
 							OR = {
 								num_sinful_traits >= 3
-								has_any_shunned_or_criminal_trait_in_faith_trigger = {
+								has_any_shunned_or_criminal_trait_in_rite_trigger = {
 									CHARACTER = scope:secondary_actor
-									FAITH = scope:recipient.faith
+									RITE = scope:recipient.rite
 								}
 							}
 						}
 						scope:secondary_recipient = {
 							OR = {
 								num_sinful_traits >= 3
-								has_any_shunned_or_criminal_trait_in_faith_trigger = {
+								has_any_shunned_or_criminal_trait_in_rite_trigger = {
 									CHARACTER = scope:secondary_recipient
-									FAITH = scope:recipient.faith
+									RITE = scope:recipient.rite
 								}
 							}
 						}
@@ -764,18 +764,18 @@ marriage_interaction.0010 = {
 						scope:secondary_actor = {
 							OR = {
 								num_sinful_traits >= 3
-								has_any_shunned_or_criminal_trait_in_faith_trigger = {
+								has_any_shunned_or_criminal_trait_in_rite_trigger = {
 									CHARACTER = scope:secondary_actor
-									FAITH = scope:recipient.faith
+									RITE = scope:recipient.rite
 								}
 							}
 						}
 						scope:secondary_recipient = {
 							OR = {
 								num_sinful_traits >= 3
-								has_any_shunned_or_criminal_trait_in_faith_trigger = {
+								has_any_shunned_or_criminal_trait_in_rite_trigger = {
 									CHARACTER = scope:secondary_recipient
-									FAITH = scope:recipient.faith
+									RITE = scope:recipient.rite
 								}
 							}
 						}
@@ -793,18 +793,18 @@ marriage_interaction.0010 = {
 						scope:secondary_actor = {
 							OR = {
 								num_sinful_traits >= 3
-								has_any_shunned_or_criminal_trait_in_faith_trigger = {
+								has_any_shunned_or_criminal_trait_in_rite_trigger = {
 									CHARACTER = scope:secondary_actor
-									FAITH = scope:recipient.faith
+									RITE = scope:recipient.rite
 								}
 							}
 						}
 						scope:secondary_recipient = {
 							OR = {
 								num_sinful_traits >= 3
-								has_any_shunned_or_criminal_trait_in_faith_trigger = {
+								has_any_shunned_or_criminal_trait_in_rite_trigger = {
 									CHARACTER = scope:secondary_recipient
-									FAITH = scope:recipient.faith
+									RITE = scope:recipient.rite
 								}
 							}
 						}
@@ -1121,7 +1121,7 @@ marriage_interaction.0030 = {
 	desc = marriage_interaction.0030.desc
 
 	sender = {
-		character = scope:actor
+		character = scope:puppet_or_actor
 		animation = dismissal
 	}
 
@@ -1130,9 +1130,9 @@ marriage_interaction.0030 = {
 			trigger = {
 				scope:recipient = {
 					OR = {
-						has_relation_lover = scope:actor
+						has_relation_lover = scope:puppet_or_actor
 						opinion = {
-							target = scope:actor
+							target = scope:puppet_or_actor
 							value > 25
 						}
 					}
@@ -1143,9 +1143,9 @@ marriage_interaction.0030 = {
 		name = {
 			trigger = {
 				scope:recipient = {
-					NOT = { has_relation_lover = scope:actor }
+					NOT = { has_relation_lover = scope:puppet_or_actor }
 					opinion = {
-						target = scope:actor
+						target = scope:puppet_or_actor
 						value <= 25
 					}
 				}

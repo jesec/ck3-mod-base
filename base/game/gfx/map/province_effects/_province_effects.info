@@ -4,11 +4,16 @@
 #
 # Configuration for per-province shader effects.
 # Each entry represents an effect that can be active on a map province.
-# If multiple province_effect entries apply to the same province, the entry with the higher effect_index is applied.
+# There can be two effects applied to a province: a primary and a secondary.
+#
+# If multiple province_effect entries apply to the same province (with same primary/secondary), the entry with the higher
+# effect_index is applied.
 #
 # See 'gfx/FX/province_effects.fxh' for the shader implementation.
 #
-# At this point in time, Situations are the only objects that can set province effects. See `_situations.info`
+# Systems using this:
+# - Situation - Can be different per phase type - see `_situations.info`
+# - Map modes - A few map modes apply special effects types
 #
 # Snow province data has been added to WinterTexture. If the effect displays snow, please set is_winter_effect = yes.
 #
@@ -19,5 +24,15 @@
 province_effect_key = {
 	# The number passed into the effect texture data, for the shader to identify this effect by
 	effect_index = int
-	is_winter_effect = bool
+
+	# This effect will add their province intensity to the general winter-system shader
+	is_winter_effect = yes/no
+
+	# If this effect is of the 'primary' (default) or secondary category. Effects of the same category will overwrite
+	# each other. Default: no
+	is_secondary = yes/no
+
+	# If effect should extend into impassable provinces next to the provinces
+	# Default: no
+	include_impassable_provinces = yes/no
 }

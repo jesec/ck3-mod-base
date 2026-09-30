@@ -48,13 +48,20 @@ sway_outcome.0001 = {
 					scope:owner = {
 						if = {
 							limit = {
-								faith = { has_doctrine_parameter = sway_scheme_piety }
+								rite = { rite_has_parameter = sway_scheme_piety }
 								OR = {
 									liege ?= scope:target
 									target_is_vassal_or_below = scope:target
 								}
 							}
 							add_piety = minor_piety_gain
+						}
+						if = {
+							limit = {
+								has_personal_tenet_flag = tenet_communal_identity_sway_piety
+								rite ?= scope:target.rite
+							}
+							add_piety = miniscule_piety_gain
 						}
 					}
 				}
@@ -74,7 +81,7 @@ sway_outcome.0002 = {
 			type = sway_bad_message
 			title = sway_sway_failed_message
 			left_icon = scope:target
-			stress_impact = {
+			stress_and_fulfillment_impact = {
 				gregarious = minor_stress_impact_gain
 			}
 			sway_end_effect = yes
@@ -164,7 +171,7 @@ sway_outcome.1001 = {
 						scope:owner = {
 							if = {
 								limit = {
-									faith = { has_doctrine_parameter = sway_scheme_piety }
+									rite = { rite_has_parameter = sway_scheme_piety }
 									OR = {
 										liege ?= scope:target
 										target_is_vassal_or_below = scope:target
@@ -205,7 +212,7 @@ sway_outcome.1001 = {
 		scope:owner = {
 			if = {
 				limit = {
-					faith = { has_doctrine_parameter = sway_scheme_piety }
+					rite = { rite_has_parameter = sway_scheme_piety }
 					OR = {
 						liege ?= scope:target
 						target_is_vassal_or_below = scope:target
@@ -315,7 +322,7 @@ sway_outcome.1002 = {
 						scope:owner = {
 							if = {
 								limit = {
-									faith = { has_doctrine_parameter = sway_scheme_piety }
+									rite = { rite_has_parameter = sway_scheme_piety }
 									OR = {
 										liege ?= scope:target
 										target_is_vassal_or_below = scope:target
@@ -358,7 +365,7 @@ sway_outcome.1002 = {
 		scope:owner = {
 			if = {
 				limit = {
-					faith = { has_doctrine_parameter = sway_scheme_piety }
+					rite = { rite_has_parameter = sway_scheme_piety }
 					OR = {
 						liege ?= scope:target
 						target_is_vassal_or_below = scope:target
@@ -430,7 +437,7 @@ sway_outcome.1003 = {
 			scope:owner = {
 				if = {
 					limit = {
-						faith = { has_doctrine_parameter = sway_scheme_piety }
+						rite = { rite_has_parameter = sway_scheme_piety }
 						OR = {
 							liege ?= scope:target
 							target_is_vassal_or_below = scope:target
@@ -763,7 +770,7 @@ sway_outcome.1004 = {
 		scope:owner = {
 			if = {
 				limit = {
-					faith = { has_doctrine_parameter = sway_scheme_piety }
+					rite = { rite_has_parameter = sway_scheme_piety }
 					OR = {
 						liege ?= scope:target
 						target_is_vassal_or_below = scope:target
@@ -889,7 +896,8 @@ sway_outcome.2001 = {
 			any_consort = {
 				this = scope:target
 			}
-			betrothed ?= scope:target
+			betrothed ?= scope:target
+
 		}
 	}
 

@@ -2,7 +2,8 @@
 	name = "coronation_supporter_detractor_widget"
 	datacontext = "[Activity.GetCurrentPhase]"
 	datacontext = "[Activity.GetCurrentPhase.GetPhase]"
-	visible = "[Or( DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'supporter' ) ), DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'detractor' ) ) )]"
+	# Visible for either the coronation-style (supporter/detractor) or the ecumenical-council-style (innovator/conservative) guest subsets.
+	visible = "[Or( Or( DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'supporter' ) ), DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'detractor' ) ) ), Or( DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'innovator' ) ), DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'conservative' ) ) ) )]"
 	visible_at_creation = no # required to make sure we trigger the '_show' state
 	size = { 275 700 }
 
@@ -36,6 +37,38 @@
 			}
 		}
 
+		### CORONATIONS
+		vbox = {
+			visible = "[Or( DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'supporter' ) ), DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'detractor' ) ) )]"
+			layoutpolicy_horizontal = expanding
+
+			vbox_coronations_supporter = {
+				visible = "[DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'supporter' ) )]"
+			}
+
+			expand = {}
+
+			vbox_coronations_detractor = {
+				visible = "[DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'detractor' ) )]"
+			}
+		}
+
+		### ECUMENICAL COUNCIL
+		vbox = {
+			visible = "[Or( DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'innovator' ) ), DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'conservative' ) ) )]"
+
+			widget_ecumenical_innovator = {}
+
+			widget_ecumenical_conservative = {}
+		}
+	}
+}
+
+types SupporterWidget
+{
+	type vbox_coronations_supporter = vbox {
+		layoutpolicy_horizontal = expanding
+
 		hbox = {
 			layoutpolicy_horizontal = expanding
 			margin = { 0 5 }
@@ -43,9 +76,8 @@
 			hbox = {
 				layoutpolicy_horizontal = expanding
 
-				# NAME
+				### TITLE SUPPORTERS
 				text_single = {
-					name = "name"
 					layoutpolicy_horizontal = expanding
 					text = "SUPPORTER_WINDOW_LABEL"
 					using = Font_Type_Flavor
@@ -53,7 +85,7 @@
 					fontsize_min = 16
 					default_format = "#high;glow_color:{0.1,0.1,0.1,1.0}"
 					autoresize = yes
-					align = center
+					align = nobaseline|hcenter
 					margin_left = 10
 					tooltip = "SUPPORTER_WINDOW_LABEL_HOVER"
 				}
@@ -199,8 +231,10 @@
 			fontsize_min = 10
 			tooltip = "SUPPORTER_WINDOW_OTHER_LABEL_HOVER"
 		}
+	}
 
-		expand = {}
+	type vbox_coronations_detractor = vbox {
+		layoutpolicy_horizontal = expanding
 
 		hbox = {
 			layoutpolicy_horizontal = expanding
@@ -209,9 +243,8 @@
 			hbox = {
 				layoutpolicy_horizontal = expanding
 
-				# NAME
+				### TITLE DETRACTORS
 				text_single = {
-					name = "name"
 					layoutpolicy_horizontal = expanding
 					text = "DETRACTOR_WINDOW_LABEL"
 					using = Font_Type_Flavor
@@ -219,7 +252,7 @@
 					fontsize_min = 16
 					default_format = "#high;glow_color:{0.1,0.1,0.1,1.0}"
 					autoresize = yes
-					align = center
+					align = nobaseline|hcenter
 					margin_left = 10
 					tooltip = "DETRACTOR_WINDOW_LABEL_HOVER"
 				}
@@ -364,6 +397,243 @@
 			fontsize = 14
 			fontsize_min = 10
 			tooltip = "DETRACTOR_WINDOW_OTHER_LABEL_HOVER"
+		}
+	}
+
+	type widget_ecumenical_innovator = widget {
+		size = { 275 350 }
+
+		state = {
+			name = _show
+			trigger_when = "[DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'innovator' ) )]"
+			on_start = "[ActivityWindow.SetAllPhasesGuestSubsetSortingDescending( 'innovator', 'ecumenical_council_innovator_sort_value' )]"
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 0 5 }
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+
+					### TITLE INNOVATORS
+					hbox = {
+						spacing = 5
+						tooltip = "INNOVATOR_WINDOW_LABEL_HOVER"
+
+						text_single = {
+							text = "INNOVATOR_WINDOW_LABEL"
+							align = nobaseline|hcenter
+							using = Font_Type_Flavor
+							fontsize_min = 16
+							fontsize = 22
+							default_format = "#high;glow_color:{0.1,0.1,0.1,1.0}"
+							autoresize = yes
+						}
+
+						text_single = {
+							text = "[ActivityWindow.GetCurrentPhaseSubsetSizeLabel( 'innovator' )]"
+							align = nobaseline|hcenter
+							fontsize_min = 16
+							fontsize = 22
+							autoresize = yes
+						}
+					}
+
+					background = {
+						using = Mask_Rough_Edges
+						alpha = 0.8
+						margin = { 2 5 }
+
+						texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+						spriteType = Corneredtiled
+						spriteborder = { 40 8 }
+						texture_density = 2
+
+						modify_texture = {
+							name = "mask"
+							texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+							spriteType = Corneredstretched
+							spriteborder = { 0 0 }
+							blend_mode = alphamultiply
+							mirror = horizontal
+						}
+					}
+				}
+
+				background = {
+					tintcolor = { 0.7 0.8 1 0.8 }
+					texture = "gfx/interface/colors/blue.dds"
+
+					using = Mask_Rough_Edges
+
+					modify_texture = {
+						texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+						blend_mode = alphaMultiply
+						alpha = 0.5
+					}
+				}
+			}
+
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				blockoverride "scrollbox_margins"
+				{
+					margin_top = 15
+					margin_bottom = 0
+					margin_left = 5
+					margin_right = 20
+				}
+
+				vbox = {
+					visible = "[IsDataModelEmpty( ActivityWindow.GetCurrentPhaseGuestSubset( 'innovator' ) )]"
+
+					text_single = {
+						text = "SUPPORT_WINDOW_EMPTY"
+						align = nobaseline
+					}
+				}
+
+				blockoverride "scrollbox_content"
+				{
+					vbox = {
+						fixedgridbox = {
+							addcolumn = 85
+							addrow = 100
+							flipdirection = yes
+							datamodel_wrap = 3
+
+							datamodel = "[ActivityWindow.GetCurrentPhaseGuestSubset( 'innovator' )]"
+							item = {
+								portrait_head_small = {}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type widget_ecumenical_conservative = widget {
+		size = { 275 350 }
+
+		state = {
+			name = _show
+			trigger_when = "[DataModelHasItems( ActivityWindow.GetCurrentPhaseGuestSubset( 'conservative' ) )]"
+			on_start = "[ActivityWindow.SetAllPhasesGuestSubsetSortingDescending( 'conservative', 'ecumenical_council_conservative_sort_value' )]"
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 0 5 }
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+
+					### TITLE CONSERVATIVES
+					hbox = {
+						spacing = 5
+						tooltip = "CONSERVATIVE_WINDOW_LABEL_HOVER"
+
+						text_single = {
+							text = "CONSERVATIVE_WINDOW_LABEL"
+							align = nobaseline|hcenter
+							using = Font_Type_Flavor
+							fontsize_min = 16
+							fontsize = 22
+							default_format = "#high;glow_color:{0.1,0.1,0.1,1.0}"
+							autoresize = yes
+						}
+
+						text_single = {
+							text = "[ActivityWindow.GetCurrentPhaseSubsetSizeLabel( 'conservative' )]"
+							align = nobaseline|hcenter
+							fontsize_min = 16
+							fontsize = 22
+							autoresize = yes
+						}
+					}
+
+					background = {
+						using = Mask_Rough_Edges
+						alpha = 0.8
+						margin = { 2 5 }
+
+						texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+						spriteType = Corneredtiled
+						spriteborder = { 40 8 }
+						texture_density = 2
+
+						modify_texture = {
+							name = "mask"
+							texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+							spriteType = Corneredstretched
+							spriteborder = { 0 0 }
+							blend_mode = alphamultiply
+							mirror = horizontal
+						}
+					}
+				}
+
+				background = {
+					tintcolor = { 0.7 0.8 1 0.8 }
+					texture = "gfx/interface/colors/red.dds"
+
+					using = Mask_Rough_Edges
+
+					modify_texture = {
+						texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+						blend_mode = alphaMultiply
+						alpha = 0.5
+					}
+				}
+			}
+
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				blockoverride "scrollbox_margins"
+				{
+					margin_top = 15
+					margin_bottom = 0
+					margin_left = 5
+					margin_right = 20
+				}
+
+				vbox = {
+					visible = "[IsDataModelEmpty( ActivityWindow.GetCurrentPhaseGuestSubset( 'conservative' ) )]"
+
+					text_single = {
+						text = "SUPPORT_WINDOW_EMPTY"
+						align = nobaseline
+					}
+				}
+
+				blockoverride "scrollbox_content" {
+					vbox = {
+						fixedgridbox = {
+							addcolumn = 85
+							addrow = 100
+							flipdirection = yes
+							datamodel_wrap = 3
+
+							datamodel = "[ActivityWindow.GetCurrentPhaseGuestSubset( 'conservative' )]"
+							item = {
+								portrait_head_small = {}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

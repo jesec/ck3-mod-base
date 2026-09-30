@@ -280,7 +280,7 @@
 		visible = "[Not( ActivityWindow.HasActiveEvent )]"
 		parentanchor = vcenter
 		position = { 22 -10 }
-		size = { 300 600 }
+		size = { 450 600 }
 
 		vbox_activity_conclusion = {
 			name = "activity_conclusion"
@@ -620,7 +620,33 @@
 							}
 						}
 
-						expand = {}
+						hbox = {
+							datacontext = "[Activity.GetCurrentPhase.GetPhase]"
+							visible = "[EqualTo_string( ActivityType.GetKey, 'activity_ecumenical_council' )]"
+							margin_right = 15
+							layoutpolicy_horizontal = expanding
+
+							text_single = {
+								name = "ecumenical_council_first_debate_topic_value"
+								text = "ecumenical_council_first_debate_topic_1"
+								visible = "[EqualTo_string( ActivityPhase.GetKey, 'ecumenical_council_phase_first_debate' )]"
+								align = left|nobaseline
+							}
+
+							text_single = {
+								name = "ecumenical_council_second_debate_topic_value"
+								text = "ecumenical_council_first_debate_topic_2"
+								visible = "[EqualTo_string( ActivityPhase.GetKey, 'ecumenical_council_phase_second_debate' )]"
+								align = left|nobaseline
+							}
+
+							text_single = {
+								name = "ecumenical_council_third_debate_topic_value"
+								text = "ecumenical_council_first_debate_topic_3"
+								visible = "[EqualTo_string( ActivityPhase.GetKey, 'ecumenical_council_phase_third_debate' )]"
+								align = left|nobaseline
+							}
+						}
 
 						hbox = {
 							margin_right = 15
@@ -1160,6 +1186,7 @@ types ActivityWindowTypes
 
 			### CENTER CHARACTER ###
 			widget = {
+				name = "center_portrait_root_widget" # Used by code to re-order character portrait stacking
 				parentanchor = bottom|hcenter
 				size = { 300 510 }
 
@@ -1214,6 +1241,7 @@ types ActivityWindowTypes
 
 			### RIGHT CHARACTER ###
 			widget = {
+				name = "right_portrait_root_widget" # Used by code to re-order character portrait stacking
 				parentanchor = bottom|hcenter
 				position = { 350 0 }
 				size = { 300 510 }
@@ -1271,6 +1299,7 @@ types ActivityWindowTypes
 
 			### LEFT CHARACTER ###
 			widget = {
+				name = "left_portrait_root_widget" # Used by code to re-order character portrait stacking
 				parentanchor = bottom|hcenter
 				position = { -345 0 }
 				size = { 300 510 }
@@ -1627,7 +1656,7 @@ types ActivityWindowTypes
 							fontsize = 16
 
 							margin = { 25 0 }
-							margin_bottom = 25
+							margin_bottom = 40
 
 							background = {
 								using = Background_Area_ExtraDark
@@ -2008,8 +2037,8 @@ types ActivityWindowTypes
 							duration = 0.5
 						}
 
-						### LEFT CHARACTER ###
 						hbox = {
+							### LEFT CHARACTER ###
 							widget = {
 								name = "portrait_left"
 								layoutpolicy_horizontal = expanding
@@ -2652,6 +2681,37 @@ types ActivityWindowTypes
 		}
 	}
 
+	type container_tenet_doctrine_conclusion = flowcontainer {
+		spacing = 20
+
+		widget_activity_conclusion_tenet = {
+			datacontext = "[Activity.GetSelectedTenet1]"
+
+			blockoverride "conlcusion_text"
+			{
+				text = "ecumenical_council_first_debate_resolution_flag"
+			}
+		}
+
+		widget_activity_conclusion_tenet = {
+			datacontext = "[Activity.GetSelectedTenet2]"
+
+			blockoverride "conlcusion_text"
+			{
+				text = "ecumenical_council_second_debate_resolution_flag"
+			}
+		}
+
+		widget_activity_conclusion_doctrine = {
+			datacontext = "[Activity.GetSelectedDoctrine1]"
+
+			blockoverride "conlcusion_text"
+			{
+				text = "ecumenical_council_third_debate_resolution_flag"
+			}
+		}
+	}
+
 	type vbox_activity_conclusion = vbox {
 		spacing = 16
 
@@ -2700,6 +2760,10 @@ types ActivityWindowTypes
 							alpha = 1
 							duration = 0.6
 						}
+					}
+
+					container_tenet_doctrine_conclusion = {
+						visible = "[Activity.IsTenetDoctrineBased]"
 					}
 				}
 			}

@@ -102,7 +102,7 @@
  house_aspiration_parameter_candidate_score_per_piety_level_2: "[candidate_score|E] per [piety_level|E] for [house|E] members: @appointment_score![EmptyScope.ScriptValue('candidate_score_per_piety_level_2_value')|=+0]"
  house_aspiration_parameter_candidate_score_per_piety_level_3: "[candidate_score|E] per [piety_level|E] for [house|E] members: @appointment_score![EmptyScope.ScriptValue('candidate_score_per_piety_level_3_value')|=+0]"
 
- members_in_realm_desc: "Living [house|E] Members in [realm|E]"
+ members_in_realm_desc: "Living [house|E] Members"
  house_head_influence_level_desc: "[house_heads_possessive|E] [influence_level|E]"
  house_members_on_council_desc: "[house|E] Members on [top_liege|E]'s [council|E]"
  estate_buildings_desc: "[estate_buildings|E]"
@@ -111,7 +111,7 @@
  house_title_holders_desc: "[landed|E] [house|E] Members"
  imperial_theme_type_desc: "[GetSubjectContractType( 'administrative_themes' ).GetObligationName( 'admin_theme_imperial' )]"
  house_power_ep3_administrative_legacy_3: "[GetDynastyPerk('ep3_administrative_legacy_3').GetName]"
- house_head_different_faith_powerful_family_rating: "[house_head|E] is not of [state_faith|E]"
+ house_head_different_faith_powerful_family_rating: "[house_head|E] is not of [state_rite|E]"
  imperial_house_desc: "Is the Imperial [house|E]"
  tgp_ceremonial_house_desc: "Is the [ceremonial_house|E]"
  house_is_lowborn_desc: "Is [lowborn|E]"
@@ -139,10 +139,10 @@
  republican_knowledge_4_desc: "[GetTrait('education_republican_knowledge_4').GetName( ROOT.Char )] [trait|E]"
  
  admin_contract_cooldown_desc: "[recipient.Custom('GetProvinceAdministrationConcept')] can only be changed once every [EmptyScope.ScriptValue('admin_contract_cooldown_value')|V0] years - Can be changed again after [GetCurrentDateWithDiff( GetVarTimeRemaining( recipient.MakeScope, 'admin_contract_cooldown') )|V]"
- admin_contract_cooldown_desc_vassal: "[actor.Custom('GetProvinceAdministrationConcept')] can only be changed once every [EmptyScope.ScriptValue('admin_contract_cooldown_value')|V0] years - Can be changed again after [GetCurrentDateWithDiff( GetVarTimeRemaining( actor.MakeScope, 'admin_contract_cooldown') )|V]"
- admin_contract_request_cooldown_desc: "You can #bold not#! make another request until [GetCurrentDateWithDiff( GetVarTimeRemaining( actor.MakeScope, 'admin_contract_request_cooldown') )|V]"
+ admin_contract_cooldown_desc_vassal: "[puppet_or_actor.Custom('GetProvinceAdministrationConcept')] can only be changed once every [EmptyScope.ScriptValue('admin_contract_cooldown_value')|V0] years - Can be changed again after [GetCurrentDateWithDiff( GetVarTimeRemaining( puppet_or_actor.MakeScope, 'admin_contract_cooldown') )|V]"
+ admin_contract_request_cooldown_desc: "[puppet_or_actor.GetShortUIName|U] can #bold not#! make another request until [GetCurrentDateWithDiff( GetVarTimeRemaining( puppet_or_actor.MakeScope, 'admin_contract_request_cooldown') )|V]"
  admin_vassal_force_obligation_change_desc: "[recipient.GetShortUIName] is forced to accept"
- admin_vassal_not_holding_a_theme_desc: "You do #bold not#! hold a [GetPlayer.Custom('GetProvinceConcept')]."
+ admin_vassal_not_holding_a_theme_desc: "[puppet_or_actor.GetShortUIName|U] [CharDoDoes(puppet_or_actor)] #bold not#! hold a [GetPlayer.Custom('GetProvinceConcept')]."
 
  msg_governor_duties_t: "Duties of a [GetPlayer.Custom('GetGovernorConceptNoTooltip')]"
  admin_construction_completed_desc: "Construction Complete"
@@ -186,7 +186,7 @@
  
  adopt_admin_government_tt: "You may choose to adopt [GetGovernment('administrative_government').GetName] [government|E]"
  
- has_admin_government: "You have the [GetGovernment('administrative_government').GetName] [government|E]"
+ has_admin_government: "You have the [government_bureaucratic_gov|E]"
  admin_renounce_throne_desc: "[secondary_recipient.GetShortUIName|U], or the [house_head|E] of [house|E] [secondary_recipient.GetHouse.GetName], renounced all aspirations for the throne and cannot be supported"
 
  ep3_admin_events.0001.t: "A Change of Direction"
@@ -239,4 +239,4 @@
  ep3_admin_events.0005.desc_lost_admin: "As circumstances would have it, our great realm has been lost. And with it, the bureaucracy that governed our way of life has been reduced to cinders. I have little choice other than to adapt my government to this new reality."
  ep3_admin_events.0005.a: "Let's put the past behind us and look to the future!"
  
- demand_admin_tribal: "[recipient.GetShortUIName|U] [CharAreIs(recipient)] [tribal|E] - Only settled [governments|E] can become [administrative|E]"
+ demand_admin_tribal: "[recipient.GetShortUIName|U] [CharAreIs(recipient)] [tribal|E] - Only settled [governments|E] can become [government_bureaucratic_type|E]"

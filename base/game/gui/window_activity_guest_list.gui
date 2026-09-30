@@ -1,4 +1,4 @@
-window = {
+﻿window = {
 	name = "activity_guest_list"
 	datacontext = "[ActivityGuestListWindow.AccessList]"
 
@@ -109,6 +109,9 @@ window = {
 										datacontext = "[OrderedActivityInviteRule.GetRule]"
 
 										layoutpolicy_horizontal = expanding
+										enabled = "[Not( ActivityGuestInviteRule.IsLocked )]"
+										tooltip_when_disabled = "ACTIVITY_GUEST_INVITE_RULE_LOCKED_TT"
+										tooltip = "ACTIVITY_GUEST_INVITE_RULE_UNLOCKED_TT"
 
 										onclick = "[ActivityGuestListWindow.ToggleInviteFromRules( OrderedActivityInviteRule.Self )]"
 										text = "[ActivityGuestInviteRule.GetName]"
@@ -235,7 +238,7 @@ window = {
 						}
 
 						text_single = {
-							text = "[Character.GetUINameNotMeNoTooltip]"
+							text = "CHARACTER_UI_NAME_NOT_ME"
 							align = nobaseline
 							max_width = 420
 						}

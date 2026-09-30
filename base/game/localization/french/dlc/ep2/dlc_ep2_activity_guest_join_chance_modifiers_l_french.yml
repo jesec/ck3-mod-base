@@ -75,9 +75,9 @@
  ACTIVITY_GUEST_MARTIAL_PROWESS_3_REASON: "[ROOT.Char.GetSheHe|U] est un [GetTrait('education_martial_prowess_3').GetName( ROOT.Char.Self )|l] : $VALUE|=+0$"
  ACTIVITY_GUEST_MARTIAL_PROWESS_4_REASON: "[ROOT.Char.GetSheHe|U] est un [GetTrait('education_martial_prowess_4').GetName( ROOT.Char.Self )|l] : $VALUE|=+0$"
  #TENETS
- ACTIVITY_GUEST_DHARMIC_PACIFISM_REASON: "[GetFaithDoctrine('tenet_dharmic_pacifism').GetBaseName] [ROOT.Char.GetFaith.GetAdjective] : $VALUE|=+0$"
- ACTIVITY_GUEST_ARMED_PILGRIMAGES_REASON: "[GetFaithDoctrine('tenet_armed_pilgrimages').GetBaseName] [ROOT.Char.GetFaith.GetAdherentNamePlural] : $VALUE|=+0$"
- ACTIVITY_GUEST_RITUAL_CELEBRATIONS_REASON: "[GetFaithDoctrine('tenet_ritual_celebrations').GetBaseName] : $VALUE|=+0$"
+ ACTIVITY_GUEST_DHARMIC_PACIFISM_REASON: "[GetTenetType('tenet_dharmic_pacifism').GetBaseName] [ROOT.Char.GetFaith.GetAdjective] : $VALUE|=+0$"
+ ACTIVITY_GUEST_ARMED_PILGRIMAGES_REASON: "[GetTenetType('tenet_armed_pilgrimages').GetBaseName] [ROOT.Char.GetFaith.GetAdherentNamePlural] : $VALUE|=+0$"
+ ACTIVITY_GUEST_RITUAL_CELEBRATIONS_REASON: "[GetTenetType('tenet_ritual_celebrations').GetBaseName] : $VALUE|=+0$"
  #TRADITIONS
  ACTIVITY_GUEST_CHANSON_DE_GESTE_REASON: "[GetCultureTradition('tradition_chanson_de_geste').GetName] [ROOT.Char.GetCulture.GetName] : $VALUE|=+0$"
  ACTIVITY_GUEST_PACIFISTS_REASON: "Les [ROOT.Char.GetCulture.GetCollectiveNoun] sont [GetCultureTradition('tradition_pacifism').GetName|l] : $VALUE|=+0$"
@@ -117,6 +117,18 @@
  ACTIVITY_GUEST_CHARIOTEER_REASON: "[ROOT.Char.GetSheHe|U] est un aurige : $VALUE|=+0$"
  ACTIVITY_GUEST_EUNUCH_REASON: "[ROOT.Char.GetSheHe|U] est un eunuque : $VALUE|=+0$"
  ACTIVITY_GUEST_BORN_IN_THE_PURPLE_REASON: "[ROOT.Char.GetSheHe|U] est [GetTrait('born_in_the_purple').GetName( ROOT.Char.Self )|l] : $VALUE|=+0$"
+ ACTIVITY_GUEST_HONORARY_GUEST_REASON: "C’est l’[honorary_guest|El] : $VALUE|=+0$"
+ #Clergy guests
+ ACTIVITY_GUEST_CLERGY_HOST_REASON: "[host.Custom('FR_le_Char_U_Pi')|U][host.GetShortUINameNoTooltip] [Select_CString(host.IsLocalPlayer,'êtes','est')] membre du [clergy|El] : $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_DEVOUT_HOST_REASON: "[host.Custom('FR_le_Char_U_Pi')|U][host.GetShortUINameNoTooltip] [Select_CString(host.IsLocalPlayer,'êtes','est')] réputé[host.Custom('FR_E')] pour [Select_CString(host.IsLocalPlayer,'votre','sa')] piété : $VALUE|=+0$"
+ ACTIVITY_GUEST_ARCHBISHOP_MINOR_HOST_REASON: "Un [archbishop|El] a peu de temps pour les [rulers|El] mineurs : $VALUE|=+0$"
+ ACTIVITY_GUEST_CARDINAL_DUTIES_REASON: "Un [cardinal|El] a des obligations ailleurs : $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_FRIVOLOUS_REASON: "Le [clergy|El] devrait s’abstenir de réjouissances mondaines : $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_SAECULUM_OBSCURUM_REASON: "Le [clergy|El] s’adonne aux excès pendant le [GetSituationType('the_christian_church').GetPhaseType('saeculum_obscurum').GetName] : $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_REFORM_REASON: "La discipline cléricale est imposée pendant la [GetSituationType('the_christian_church').GetPhaseType('reform_phase').GetName] : $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_CONCORD_REASON: "Le [clergy|El] se consacre à des tâches plus importantes pendant la [GetSituationType('the_christian_church').GetPhaseType('concord').GetName] : $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_HUNT_REASON: "Les sports sanglants sont indignes du [clergy|El] : $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_CEREMONY_REASON: "Officier des cérémonies relève des fonctions du [clergy|El] : $VALUE|=+0$"
  #Tournament Options
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_ACCOMMODATIONS_BAD: "$tournament_accommodations_bad$ : $VALUE|=+0$"
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_ACCOMMODATIONS_NORMAL: "$tournament_accommodations_normal$ : $VALUE|=+0$"
@@ -124,6 +136,8 @@
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_BAD: "$tournament_prizes_bad$ : $VALUE|=+0$"
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_NORMAL: "$tournament_prizes_normal$ : $VALUE|=+0$"
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_GOOD: "$tournament_prizes_good$ : $VALUE|=+0$"
+ ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_VERY_GOOD: "$tournament_prizes_very_good$ : $VALUE|=+0$"
+ ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_SPLENDID: "$tournament_prizes_splendid$ : $VALUE|=+0$"
  #Tour Options
  ACTIVITY_GUEST_OPTION_TOUR_LUXURIES_BAD: "$tour_luxuries_bad$ : $VALUE|=+0$"
  ACTIVITY_GUEST_OPTION_TOUR_LUXURIES_NORMAL: "$tour_luxuries_normal$ : $VALUE|=+0$"
@@ -161,3 +175,4 @@
  ACTIVITY_GUEST_NO_TRAVEL: "[ROOT.Char.GetSheHe|U] vit sur place : $VALUE|=+0$"
  ACTIVITY_GUEST_COURTIER: "Votre [courtier|El] : $VALUE|=+0$"
  ACTIVITY_GUEST_ACCLAIMED_KNIGHT_REASON: "[ROOT.Char.GetSheHe|U] est un [acclaimed_knight|El] : $VALUE|=+0$"
+ ACTIVITY_GUEST_CANNIBAL_HOST_REASON: "Les [host.GetFaith.GetAdherentNamePlural] pratiquent le [GetTenetType('tenet_ritual_cannibalism').GetBaseName|l] : $VALUE|=+0$"

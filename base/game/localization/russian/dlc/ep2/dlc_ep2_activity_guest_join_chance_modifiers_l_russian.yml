@@ -75,9 +75,9 @@
  ACTIVITY_GUEST_MARTIAL_PROWESS_3_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] обладает свойством «[GetTrait('education_martial_prowess_3').GetName( ROOT.Char.Self )]»: $VALUE|=+0$"
  ACTIVITY_GUEST_MARTIAL_PROWESS_4_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] обладает свойством «[GetTrait('education_martial_prowess_4').GetName( ROOT.Char.Self )]»: $VALUE|=+0$"
  #TENETS
- ACTIVITY_GUEST_DHARMIC_PACIFISM_REASON: "[ROOT.Char.GetFaith.GetAdjective] имеет доктрину «[GetFaithDoctrine('tenet_dharmic_pacifism').GetBaseName]»: $VALUE|=+0$"
- ACTIVITY_GUEST_ARMED_PILGRIMAGES_REASON: "[ROOT.Char.GetFaith.GetAdjective] имеет доктрину «[GetFaithDoctrine('tenet_armed_pilgrimages').GetBaseName]»: $VALUE|=+0$"
- ACTIVITY_GUEST_RITUAL_CELEBRATIONS_REASON: "[GetFaithDoctrine('tenet_ritual_celebrations').GetBaseName]: $VALUE|=+0$"
+ ACTIVITY_GUEST_DHARMIC_PACIFISM_REASON: "#L [ROOT.Char.GetFaith.GetName]ий#! [GetTenetType('tenet_dharmic_pacifism').GetBaseName|l]: $VALUE|=+0$"
+ ACTIVITY_GUEST_ARMED_PILGRIMAGES_REASON: "#L [ROOT.Char.GetFaith.GetName]ие#! [GetTenetType('tenet_armed_pilgrimages').GetBaseName|l]: $VALUE|=+0$"
+ ACTIVITY_GUEST_RITUAL_CELEBRATIONS_REASON: "[GetTenetType('tenet_ritual_celebrations').GetBaseName]: $VALUE|=+0$"
  #TRADITIONS
  ACTIVITY_GUEST_CHANSON_DE_GESTE_REASON: "#L [ROOT.Char.GetCulture.GetCollectiveNoun]ая#! традиция «[GetCultureTradition('tradition_chanson_de_geste').GetName]»: $VALUE|=+0$"
  ACTIVITY_GUEST_PACIFISTS_REASON: "#L [ROOT.Char.GetCulture.GetCollectiveNoun]ая#! традиция «[GetCultureTradition('tradition_pacifism').GetName]»: $VALUE|=+0$"
@@ -117,6 +117,18 @@
  ACTIVITY_GUEST_CHARIOTEER_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] колесничий: $VALUE|=+0$"
  ACTIVITY_GUEST_EUNUCH_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] евнух: $VALUE|=+0$"
  ACTIVITY_GUEST_BORN_IN_THE_PURPLE_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] обладает свойством «[GetTrait('born_in_the_purple').GetName( ROOT.Char.Self )]»: $VALUE|=+0$"
+ ACTIVITY_GUEST_HONORARY_GUEST_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] [Concept('honorary_guest', 'почетный гость')|E]: $VALUE|=+0$"
+ #Clergy guests
+ ACTIVITY_GUEST_CLERGY_HOST_REASON: "[host.GetShortUINameNoTooltip] — представитель [Concept('clergy', 'духовенства')|E]: $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_DEVOUT_HOST_REASON: "[host.GetShortUINameNoTooltip] [Select_CString(host.IsLocalPlayer, 'известны', Select_CString(host.IsFemale, 'известна', 'известен' ))] своем благочестием: $VALUE|=+0$"
+ ACTIVITY_GUEST_ARCHBISHOP_MINOR_HOST_REASON: "У [Concept('archbishop', 'архиепископа')|E] мало времени на мелких [Concept('rulers', 'правителей')|E]: $VALUE|=+0$"
+ ACTIVITY_GUEST_CARDINAL_DUTIES_REASON: "У [Concept('cardinal', 'кардинала')|E] есть дела в иных местах: $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_FRIVOLOUS_REASON: "[Concept('clergy', 'Духовенству')|E] стоит воздерживаться от мирских торжеств: $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_SAECULUM_OBSCURUM_REASON: "[Concept('clergy', 'Духовенство')|E] развлекается в эпоху «[GetSituationType('the_christian_church').GetPhaseType('saeculum_obscurum').GetName]»: $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_REFORM_REASON: "Дисциплина среди духовенства обязательна в эпоху «[GetSituationType('the_christian_church').GetPhaseType('reform_phase').GetName]»: $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_CONCORD_REASON: "[Concept('clergy', 'Духовенство')|E] посвящает себя высшим заботам в эпоху «[GetSituationType('the_christian_church').GetPhaseType('concord').GetName]»: $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_HUNT_REASON: "Кровавые забавы не к лицу [Concept('clergy', 'духовенству')|E]: $VALUE|=+0$"
+ ACTIVITY_GUEST_CLERGY_CEREMONY_REASON: "Проведение церемоний — долг [Concept('clergy', 'духовенства')|E]: $VALUE|=+0$"
  #Tournament Options
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_ACCOMMODATIONS_BAD: "$tournament_accommodations_bad$: $VALUE|=+0$"
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_ACCOMMODATIONS_NORMAL: "$tournament_accommodations_normal$: $VALUE|=+0$"
@@ -124,6 +136,8 @@
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_BAD: "$tournament_prizes_bad$: $VALUE|=+0$"
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_NORMAL: "$tournament_prizes_normal$: $VALUE|=+0$"
  ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_GOOD: "$tournament_prizes_good$: $VALUE|=+0$"
+ ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_VERY_GOOD: "$tournament_prizes_very_good$: $VALUE|=+0$"
+ ACTIVITY_GUEST_OPTIONS_TOURNAMENT_PRIZES_SPLENDID: "$tournament_prizes_splendid$: $VALUE|=+0$"
  #Tour Options
  ACTIVITY_GUEST_OPTION_TOUR_LUXURIES_BAD: "$tour_luxuries_bad$: $VALUE|=+0$"
  ACTIVITY_GUEST_OPTION_TOUR_LUXURIES_NORMAL: "$tour_luxuries_normal$: $VALUE|=+0$"
@@ -161,3 +175,4 @@
  ACTIVITY_GUEST_NO_TRAVEL: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] живет в районе: $VALUE|=+0$"
  ACTIVITY_GUEST_COURTIER: "Ваш [courtier|El]: $VALUE|=+0$"
  ACTIVITY_GUEST_ACCLAIMED_KNIGHT_REASON: "[Select_CString(ROOT.Char.IsFemale, 'Она', 'Он' )] [Concept('acclaimed_knight', 'именитый рыцарь')|E]: $VALUE|=+0$"
+ ACTIVITY_GUEST_CANNIBAL_HOST_REASON: "[host.GetFaith.GetAdherentNamePlural] практикуют догмат «[GetTenetType('tenet_ritual_cannibalism').GetBaseName]»: $VALUE|=+0$"

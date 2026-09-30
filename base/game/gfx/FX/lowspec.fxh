@@ -55,7 +55,7 @@ PixelShader = {
 			float3 SpecularLight;
 			CalculateLightingFromLightLowSpec( MaterialProps, LightingProps, DiffuseLight, SpecularLight );
 
-			const float MinDiffuse = MaterialProps._DiffuseColor * 0.1f;
+			const float MinDiffuse = MaterialProps._DiffuseColor.r * 0.1f;
 			DiffuseLight = lerp( MinDiffuse, 1.0f, DiffuseLight );
 			return DiffuseLight + SpecularLight;
 		}
@@ -71,7 +71,7 @@ PixelShader = {
 			float3 SpecularLight;
 			CalculateLightingFromLightLowSpec( MaterialProps, LightingProps, DiffuseLight, SpecularLight );
 
-			const float MinDiffuse =  MaterialProps._DiffuseColor * 0.3f;
+			const float MinDiffuse =  MaterialProps._DiffuseColor.r * 0.3f;
 			DiffuseLight = lerp( MinDiffuse, 1.0f, DiffuseLight );
 			return DiffuseLight + SpecularLight;
 		}

@@ -1,0 +1,177 @@
+﻿window = {
+	name = "window_puppet_selection"
+	position = { -640 110 }
+	parentanchor = right
+	allow_outside = yes
+	layer = middle
+
+	using = Window_Movable
+	using = Window_Background_Subwindow
+	using = Window_Size_CharacterList_Small
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	vbox = {
+		margin = { 5 5 }
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text" {
+				text = "puppet_selection_title"
+			}
+
+			blockoverride "button_close" {
+				onclick = "[SelectPuppetWindow.Close]"
+			}
+		}
+
+		vbox_character_list = {
+			datacontext = "[SelectPuppetWindow.GetListItems]"
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "item_size" {
+				size = { 480 110 }
+				layoutpolicy_horizontal = expanding
+			}
+
+			blockoverride "sort_buttons"
+			{
+				hbox_list_sort_buttons = {
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "margins" {
+						margin_left = 20
+						margin_right = 27
+						margin_top = 5
+						spacing = 5
+					}
+				}
+			}
+
+			blockoverride "container_implementation" {
+				fixedgridbox = {
+					name = "characters_grid"
+					datamodel = "[CharacterSelectionList.GetList]"
+					visible = "[Not( CharacterSelectionList.IsBuildingList )]"
+					addcolumn = 540
+					addrow = 110
+
+					item = {
+						widget_character_list_item = {
+							size = { 540 110 }
+							tooltip = "[CharacterListItem.GetText( 'acceptance_desc' )]"
+
+							datacontext = "[CharacterListItem.GetCharacter]"
+
+							blockoverride "button_content"
+							{
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+										margin = { 10 5 }
+
+										text_single = {
+											name = "name"
+											layoutpolicy_horizontal = expanding
+											text = "[Character.GetUINameNoTooltip]"
+											max_width = 220
+											using = Font_Size_Medium
+											alwaystransparent = yes
+										}
+
+										text_single = {
+											name = "character_relation"
+											layoutpolicy_horizontal = expanding
+											text = "[Character.GetRelationToString( GetPlayer )]"
+											default_format = "#low"
+											align = left
+											max_width = 220
+											alwaystransparent = yes
+
+											tooltip = "EXTENDED_RELATIONS_TOOLTIP"
+										}
+
+										expand = {}
+									}
+
+									vbox = {
+										datacontext = "[CharacterListItem.GetCharacter]"
+										layoutpolicy_vertical = expanding
+										layoutpolicy_horizontal = expanding
+
+										margin_top = 10
+										margin_bottom = 8
+										margin_right = 10
+
+										# Skills
+										hbox = {
+											name = "skills_grid"
+											layoutpolicy_horizontal = expanding
+
+											expand = {}
+
+											datamodel = "[CharacterListItem.GetSkillItems]"
+
+											item = {
+												widget_skill_item_no_icon = {}
+											}
+										}
+
+										expand = {}
+
+										### Acceptance
+										text_single = {
+											name = "acceptance"
+											layoutpolicy_horizontal = expanding
+
+											text = "[CharacterListItem.GetText( 'acceptance' )]"
+											align = nobaseline|right
+											alwaystransparent = yes
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+types PuppetTypes
+{
+	type puppet_action_flag_widget = widget
+	{
+		size = { 46 66 }
+
+		icon = {
+			texture = "gfx/interface/icons/banners/puppet_action_banner.dds"
+			size = { 46 66 }
+		}
+
+		icon = {
+			parentanchor = center
+			position = { 0 -3 }
+			size = { 30 30 }
+			texture = "gfx/interface/icons/puppet.dds"
+		}
+
+		tooltip = "puppet_action_banner_tt"
+		using = tooltip_nw
+	}
+}

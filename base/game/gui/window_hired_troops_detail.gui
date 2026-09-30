@@ -68,14 +68,18 @@
 				margin = { 5 0 }
 				spacing = 5
 
-				coa_realm_medium = {
-					datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
-					visible = "[Not( HiredTroopItem.IsAdministrativeArmy )]"
-				}
-				coa_title_medium_crown = {
+				vbox = {
 					datacontext = "[HiredTroopItem.GetTitle]"
-					visible = "[HiredTroopItem.IsAdministrativeArmy]"
-					scale = 0.9
+					datacontext = "[Title.GetHolder]"
+					visible = "[Character.IsValid]"
+
+					coa_realm_medium = {
+						visible = "[Not( HiredTroopItem.IsAdministrativeArmy )]"
+					}
+					coa_title_medium_crown = {
+						visible = "[HiredTroopItem.IsAdministrativeArmy]"
+						scale = 0.9
+					}
 				}
 
 				vbox = {
@@ -498,204 +502,207 @@
 				}
 			}
 
-			vbox = {
-				layoutpolicy_horizontal = expanding
-				margin = { 15 5 }
-				margin_bottom = 10
-				spacing = 5
-
-				background = {
-					using = Background_Area
-				}
-
-				vbox = {
-					name = "hire_area"
-					visible = "[Not( HiredTroopItem.IsHiredByPlayer )]"
-					spacing = 5
-
-					text_single = {
-						name = "mercenary_hire_info"
-						visible = "[HiredTroopItem.IsMercenaryCompany]"
-						text = "HIRED_TROOPS_VIEW_MC_HIRE_INFO"
-					}
-
-					text_single = {
-						visible = "[HiredTroopItem.IsHolyOrder]"
-						name = "holy_order_hire_info"
-						text = "HIRED_TROOPS_VIEW_HO_HIRE_INFO"
-					}
-
-					text_multi = {
-						visible = "[And( HiredTroopItem.IsHired, HiredTroopItem.GetHolyOrder.IsPlayerPatron )]"
-						text = "HIRED_TROOPS_HIRED_BY"
-						autoresize = yes
-						max_width = 280
-					}
-
-					text_single = {
-						name = "hireable_ruler_hire_info"
-						visible = "[HiredTroopItem.IsHireableRuler]"
-						text = "HIRED_TROOPS_VIEW_HR_COST_INFO"
-					}
-
-					text_single = {
-						name = "admin_cost_area"
-						visible = "[And( HiredTroopItem.IsAdministrativeArmy, And( GetPlayer.IsIndependentRuler, Not( HiredTroopItem.IsHiredByPlayer ) ) )]"
-						text = "HIRED_TROOPS_REASSIGN_COST"
-						tooltip = "[HiredTroopItem.GetAdminReassignCostTooltip]"
-					}
-
-					hbox = {
-						spacing = 5
-
-						button_primary = {
-							name = "hire_button_non_interaction"
-							visible = "[Not( Or( HiredTroopItem.IsHireableRuler, HiredTroopItem.IsAdministrativeArmy ) )]"
-							onclick = "[HiredTroopItem.Hire]"
-							enabled = "[HiredTroopItem.CanBeHired]"
-							text = "HIRED_TROOPS_VIEW_HIRE"
-
-							using = tooltip_ne
-							tooltip = "[HiredTroopItem.GetHireTooltip]"
-						}
-
-						button_primary = {
-							name = "hire_button_non_interaction_admin"
-							visible = "[And(HiredTroopItem.IsAdministrativeArmy, GetPlayer.IsIndependentRuler)]"
-							onclick = "[HiredTroopItem.Hire]"
-							enabled = "[HiredTroopItem.CanBeHired]"
-							text = "HIRED_TROOPS_REQUEST_AS_EMPEROR"
-
-							using = tooltip_ne
-							tooltip = "[HiredTroopItem.GetHireTooltip]"
-						}
-
-						button_primary = {
-							name = "hire_button_interaction"
-							visible = "[HiredTroopItem.IsHireableRuler]"
-							datacontext = "[HiredTroopItem.GetHireableRuler]"
-
-							onclick = "[Character.OpenPlayerInteraction( 'hire_laamp_mercenaries_interaction' )]"
-							enabled = "[Character.IsPlayerInteractionValid( 'hire_laamp_mercenaries_interaction' )]"
-							text = "HIRED_TROOPS_VIEW_HIRE"
-							tooltip = "[Character.GetPlayerInteractionTooltip( 'hire_laamp_mercenaries_interaction' )]"
-
-							using = tooltip_ne
-						}
-
-						button_standard = {
-							name = "reassign_button"
-							visible = "[HiredTroopItem.CanBeReassigned]"
-							onclick = "[HiredTroopDetailView.OpenTitleTroopAssignmentView]"
-							enabled = "[HiredTroopItem.CanBeHired]"
-							tooltip = "[HiredTroopItem.GetHireTooltip]"
-
-							text = "HIRED_TROOPS_VIEW_REASSIGN"
-						}
-
-						hbox = {
-							visible = "[HiredTroopItem.IsAdministrativeArmy]"
-							datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
-							spacing = 8
-
-							button_standard = {
-								name = "request_admin_troops_from_emperor"
-								visible = "[And( Not(Character.IsPlayer), Character.IsPlayerInteractionShown('request_emperor_title_troops_interaction') )]"
-								enabled = "[Character.IsPlayerInteractionValid('request_emperor_title_troops_interaction')]"
-								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_emperor_title_troops_interaction', HiredTroopItem.GetTitle)]"
-								tooltip = "[Character.GetPlayerInteractionTooltip('request_emperor_title_troops_interaction')]"
-
-								text = "HIRED_TROOPS_REQUEST_FROM_EMPEROR"
-								using = tooltip_se
-							}
-
-							button_standard = {
-								name = "hire_peer_admin_vassal"
-								visible = "[Character.IsPlayerInteractionShown('request_ally_title_troops_interaction')]"
-								enabled = "[Character.IsPlayerInteractionValid('request_ally_title_troops_interaction')]"
-								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_ally_title_troops_interaction', HiredTroopItem.GetTitle)]"
-								tooltip = "[Character.GetPlayerInteractionTooltip('request_ally_title_troops_interaction')]"
-
-								text = "HIRED_TROOPS_REQUEST_FROM_GOVERNOR"
-								using = tooltip_se
-							}
-						}
-					}
-				}
-
-				vbox = {
-					visible = "[And( HiredTroopItem.IsAdministrativeArmy, HiredTroopItem.IsHiredByPlayer )]"
-					margin_top = 10
-
-					button_primary = {
-						name = "return_button"
-						visible = "[HiredTroopItem.GetTitle.CanReturnTitleMaaToOwner]"
-						onclick = "[HiredTroopItem.GetTitle.ReturnTitleMaaToOwner]"
-
-						text = "HIRED_TROOPS_VIEW_RETURN"
-					}
-				}
-
-				button_primary = {
-					name = "take_back_button"
-					visible = "[Character.IsPlayerInteractionShown('request_title_troops_back_interaction')]"
-					datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
-
-					enabled = "[Character.IsPlayerInteractionValid('request_title_troops_back_interaction')]"
-					onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_title_troops_back_interaction', HiredTroopItem.GetTitle)]"
-					tooltip = "[Character.GetPlayerInteractionTooltip('request_title_troops_back_interaction')]"
-
-					text = "HIRED_TROOPS_VIEW_RECLAIM"
-				}
-
-				vbox = {
-					name = "extend_area"
-					visible = "[And( HiredTroopItem.IsMercenaryCompany, HiredTroopItem.IsHiredByPlayer )]"
-					spacing = 5
-
-					text_single = {
-						name = "time_left"
-						datacontext = "[HiredTroopItem.GetMercenaryCompany]"
-						text = "HIRED_TROOPS_VIEW_HIRED_BY_ME"
-						default_format = "#weak"
-					}
-
-					text_single = {
-						name = "hire_info"
-						text = "HIRED_TROOPS_VIEW_MC_HIRE_INFO"
-						align = nobaseline
-					}
-
-					hbox = {
-						spacing = 5
-
-						button_primary = {
-							datacontext = "[HiredTroopItem.GetMercenaryCompany]"
-							tooltip = "RAISE_HIRED_TROOP"
-							onclick = "[RaiseMercenaryCompany(MercenaryCompany.Self)]"
-							text = "RAISE_HIRED_TROOP"
-							enabled = "[And(MercenaryCompany.IsHiredByLocalPlayer, MercenaryCompany.CanBeRaised)]"
-						}
-
-						button_standard = {
-							name = "extend_button"
-							onclick = "[HiredTroopItem.Extend]"
-							enabled = "[HiredTroopItem.CanBeExtended]"
-							text = "HIRED_TROOPS_VIEW_MC_EXTEND"
-
-							using = tooltip_ne
-							tooltip = "[HiredTroopItem.GetExtendTooltip]"
-						}
-					}
-				}
+			vbox_hired_troops_hire_buttons = {
 			}
 		}
 	}
 }
 
-
 types HiredTroopHolyOrderDetails
 {
+	type vbox_hired_troops_hire_buttons = vbox
+	{
+		margin = { 15 5 }
+		margin_bottom = 10
+		layoutpolicy_horizontal = expanding
+		spacing = 5
+
+		background = {
+			using = Background_Area
+		}
+
+		vbox = {
+			name = "hire_area"
+			visible = "[Not( HiredTroopItem.IsHiredByPlayer )]"
+			spacing = 5
+
+			text_single = {
+				name = "mercenary_hire_info"
+				visible = "[HiredTroopItem.IsMercenaryCompany]"
+				text = "HIRED_TROOPS_VIEW_MC_HIRE_INFO"
+			}
+
+			text_single = {
+				visible = "[HiredTroopItem.IsHolyOrder]"
+				name = "holy_order_hire_info"
+				text = "HIRED_TROOPS_VIEW_HO_HIRE_INFO"
+			}
+
+			text_multi = {
+				visible = "[And( HiredTroopItem.IsHired, HiredTroopItem.GetHolyOrder.IsPlayerPatron )]"
+				text = "HIRED_TROOPS_HIRED_BY"
+				autoresize = yes
+				max_width = 280
+			}
+
+			text_single = {
+				name = "hireable_ruler_hire_info"
+				visible = "[HiredTroopItem.IsHireableRuler]"
+				text = "HIRED_TROOPS_VIEW_HR_COST_INFO"
+			}
+
+			text_single = {
+				name = "admin_cost_area"
+				visible = "[And( HiredTroopItem.IsAdministrativeArmy, And( GetPlayer.IsIndependentRuler, Not( HiredTroopItem.IsHiredByPlayer ) ) )]"
+				text = "HIRED_TROOPS_REASSIGN_COST"
+				tooltip = "[HiredTroopItem.GetAdminReassignCostTooltip]"
+			}
+
+			hbox = {
+				spacing = 5
+
+				button_primary = {
+					name = "hire_button_non_interaction"
+					visible = "[Not( Or( HiredTroopItem.IsHireableRuler, HiredTroopItem.IsAdministrativeArmy ) )]"
+					onclick = "[HiredTroopItem.Hire]"
+					enabled = "[HiredTroopItem.CanBeHired]"
+					text = "HIRED_TROOPS_VIEW_HIRE"
+
+					using = tooltip_ne
+					tooltip = "[HiredTroopItem.GetHireTooltip]"
+				}
+
+				button_primary = {
+					name = "hire_button_non_interaction_admin"
+					visible = "[And(HiredTroopItem.IsAdministrativeArmy, GetPlayer.IsIndependentRuler)]"
+					onclick = "[HiredTroopItem.Hire]"
+					enabled = "[HiredTroopItem.CanBeHired]"
+					text = "HIRED_TROOPS_REQUEST_AS_EMPEROR"
+
+					using = tooltip_ne
+					tooltip = "[HiredTroopItem.GetHireTooltip]"
+				}
+
+				button_primary = {
+					name = "hire_button_interaction"
+					visible = "[HiredTroopItem.IsHireableRuler]"
+					datacontext = "[HiredTroopItem.GetHireableRuler]"
+
+					onclick = "[Character.OpenPlayerInteraction( 'hire_laamp_mercenaries_interaction' )]"
+					enabled = "[Character.IsPlayerInteractionValid( 'hire_laamp_mercenaries_interaction' )]"
+					text = "HIRED_TROOPS_VIEW_HIRE"
+					tooltip = "[Character.GetPlayerInteractionTooltip( 'hire_laamp_mercenaries_interaction' )]"
+
+					using = tooltip_ne
+				}
+
+				button_standard = {
+					name = "reassign_button"
+					visible = "[HiredTroopItem.CanBeReassigned]"
+					onclick = "[HiredTroopDetailView.OpenTitleTroopAssignmentView]"
+					enabled = "[HiredTroopItem.CanBeHired]"
+					tooltip = "[HiredTroopItem.GetHireTooltip]"
+
+					text = "HIRED_TROOPS_VIEW_REASSIGN"
+				}
+
+				hbox = {
+					visible = "[HiredTroopItem.IsAdministrativeArmy]"
+					datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
+					spacing = 8
+
+					button_standard = {
+						name = "request_admin_troops_from_emperor"
+						visible = "[And( Not(Character.IsPlayer), Character.IsPlayerInteractionShown('request_emperor_title_troops_interaction') )]"
+						enabled = "[Character.IsPlayerInteractionValid('request_emperor_title_troops_interaction')]"
+						onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_emperor_title_troops_interaction', HiredTroopItem.GetTitle)]"
+						tooltip = "[Character.GetPlayerInteractionTooltip('request_emperor_title_troops_interaction')]"
+
+						text = "HIRED_TROOPS_REQUEST_FROM_EMPEROR"
+						using = tooltip_se
+					}
+
+					button_standard = {
+						name = "hire_peer_admin_vassal"
+						visible = "[Character.IsPlayerInteractionShown('request_ally_title_troops_interaction')]"
+						enabled = "[Character.IsPlayerInteractionValid('request_ally_title_troops_interaction')]"
+						onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_ally_title_troops_interaction', HiredTroopItem.GetTitle)]"
+						tooltip = "[Character.GetPlayerInteractionTooltip('request_ally_title_troops_interaction')]"
+
+						text = "HIRED_TROOPS_REQUEST_FROM_GOVERNOR"
+						using = tooltip_se
+					}
+				}
+			}
+		}
+
+		vbox = {
+			visible = "[And( HiredTroopItem.IsAdministrativeArmy, HiredTroopItem.IsHiredByPlayer )]"
+			margin_top = 10
+
+			button_primary = {
+				name = "return_button"
+				visible = "[HiredTroopItem.GetTitle.CanReturnTitleMaaToOwner]"
+				onclick = "[HiredTroopItem.GetTitle.ReturnTitleMaaToOwner]"
+
+				text = "HIRED_TROOPS_VIEW_RETURN"
+			}
+		}
+
+		button_primary = {
+			name = "take_back_button"
+			visible = "[Character.IsPlayerInteractionShown('request_title_troops_back_interaction')]"
+			datacontext = "[HiredTroopItem.GetTitle.GetHolder]"
+
+			enabled = "[Character.IsPlayerInteractionValid('request_title_troops_back_interaction')]"
+			onclick = "[Character.OpenPlayerInteractionWithTargetTitle('request_title_troops_back_interaction', HiredTroopItem.GetTitle)]"
+			tooltip = "[Character.GetPlayerInteractionTooltip('request_title_troops_back_interaction')]"
+
+			text = "HIRED_TROOPS_VIEW_RECLAIM"
+		}
+
+		vbox = {
+			name = "extend_area"
+			visible = "[And( HiredTroopItem.IsMercenaryCompany, HiredTroopItem.IsHiredByPlayer )]"
+			spacing = 5
+
+			text_single = {
+				name = "time_left"
+				datacontext = "[HiredTroopItem.GetMercenaryCompany]"
+				text = "HIRED_TROOPS_VIEW_HIRED_BY_ME"
+				default_format = "#weak"
+			}
+
+			text_single = {
+				name = "hire_info"
+				text = "HIRED_TROOPS_VIEW_MC_HIRE_INFO"
+				align = nobaseline
+			}
+
+			hbox = {
+				spacing = 5
+
+				button_primary = {
+					datacontext = "[HiredTroopItem.GetMercenaryCompany]"
+					tooltip = "RAISE_HIRED_TROOP"
+					onclick = "[RaiseMercenaryCompany(MercenaryCompany.Self)]"
+					text = "RAISE_HIRED_TROOP"
+					enabled = "[And(MercenaryCompany.IsHiredByLocalPlayer, MercenaryCompany.CanBeRaised)]"
+				}
+
+				button_standard = {
+					name = "extend_button"
+					onclick = "[HiredTroopItem.Extend]"
+					enabled = "[HiredTroopItem.CanBeExtended]"
+					text = "HIRED_TROOPS_VIEW_MC_EXTEND"
+
+					using = tooltip_ne
+					tooltip = "[HiredTroopItem.GetExtendTooltip]"
+				}
+			}
+		}
+	}
+
 	type vbox_holy_order_troop_header_details = vbox
 	{
 		visible = "[HiredTroopItem.IsHolyOrder]"

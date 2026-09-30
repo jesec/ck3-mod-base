@@ -2,7 +2,7 @@
 	name = "title_appointment"
 	movable = no
 	allow_outside = yes
-	layer = windows_layer
+	layer = middle
 
 	using = Window_Size_Sidebar
 	using = Window_Background_Sidebar
@@ -25,145 +25,28 @@
 
 	vbox = {
 		layoutpolicy_horizontal = expanding
+
 		using = Window_Margins_Sidebar
+
 		datacontext = "[SuccessionAppointmentWindow.GetTitle]"
 
-		hbox = {
+		hbox_appointment_title_info = {
 			layoutpolicy_horizontal = expanding
 			margin_bottom = 10
 			margin_left = 15
-
-			background = {
-				using = Background_Header
-			}
-
-			background = {
-				using = Background_Header_Pattern
-			}
-
-			coa_title_big_crown = {}
-
-			vbox = {
-				layoutpolicy_horizontal = expanding
-				layoutpolicy_vertical = expanding
-
-				hbox = {
-					layoutpolicy_horizontal = expanding
-					layoutpolicy_vertical = expanding
-
-					vbox = {
-						layoutpolicy_horizontal = expanding
-						layoutpolicy_vertical = expanding
-
-						margin_top = 20
-
-						text_single = {
-							layoutpolicy_horizontal = expanding
-							text = "[Title.GetHolder.GetTopLiege.GetPrimaryTitle.GetName|U]"
-							default_format = "#weak"
-							max_width = 350
-						}
-
-						text_single = {
-							layoutpolicy_horizontal = expanding
-							text = "TITLE_APPOINTMENT_HEADER"
-							max_width = 350
-						}
-
-						text_single = {
-							layoutpolicy_horizontal = expanding
-							text = "TITLE_APPOINTMENT_CURRENT_HOLDER"
-							max_width = 350
-						}
-
-						text_single = {
-							visible = "[SuccessionAppointmentWindow.HasMeritPoolData]"
-							layoutpolicy_horizontal = expanding
-
-							text = "[SuccessionAppointmentWindow.GetMeritPoolDescription]"
-						}
-
-						expand = {}
-					}
-
-					vbox = {
-						layoutpolicy_vertical = expanding
-
-						buttons_window_control = {
-							blockoverride "button_close"
-							{
-								onclick = "[SuccessionAppointmentWindow.Close]"
-							}
-
-							blockoverride "button_back"
-							{
-								visible = "[HasViewHistory]"
-								onclick = "[OpenFromViewHistory]"
-								tooltip = "[GetViewHistoryTooltip]"
-							}
-
-							blockoverride "button_me"
-							{
-								onclick = "[DefaultOnCharacterClick( GetPlayer.GetID )]"
-							}
-						}
-
-						expand = {}
-					}
-				}
-			}
 		}
 
-		hbox = {
+		hbox_appointment_succession_law_info = {
 			layoutpolicy_horizontal = expanding
-
-			hbox = {
-				datacontext = "[SuccessionAppointmentWindow.GetMeritPool]"
-				layoutpolicy_horizontal = expanding
-
-				### SUCCESSION LAW ###
-				vbox = {
-					layoutpolicy_horizontal = expanding
-					layoutpolicy_vertical = expanding
-
-					text_label_left = {
-						layoutpolicy_horizontal = expanding
-
-						text = "TITLE_APPOINTMENT_LAW"
-						max_width = 550
-					}
-
-					### MERIT REALM INFO ###
-					text_single = {
-						visible = "[SuccessionAppointmentWindow.HasMeritPoolData]"
-						max_width = 550
-
-						layoutpolicy_horizontal = expanding
-
-						text = "TITLE_APPOINTMENT_MERIT_CANDIDATE_DESC"
-						align = nobaseline
-					}
-
-					text_single = {
-						visible = "[SuccessionAppointmentWindow.HasMeritPoolData]"
-						max_width = 550
-
-						layoutpolicy_horizontal = expanding
-
-						text = "TITLE_APPOINTMENT_MERIT_CANDIDATE_RANK"
-						align = nobaseline
-					}
-				}
-			}
-
-			expand = {}
 		}
 
+		# List of candidates that could be appointed to the title.
 		vbox_character_list = {
-			datacontext = "[SuccessionAppointmentWindow.GetCandidateWindow]"
-			datacontext = "[SuccessionAppointmentWindow.GetCandidateCharacterList]"
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
+
+			datacontext = "[SuccessionAppointmentWindow.GetCandidateWindow]"
+			datacontext = "[SuccessionAppointmentWindow.GetCandidateCharacterList]"
 
 			blockoverride "skill_sort_buttons" {}
 
@@ -175,7 +58,7 @@
 					addrow = 125
 
 					item = {
-						widget_succession_candidate_item = {
+						widget_appointment_succession_candidate_item = {
 							datacontext = "[CharacterListItem.GetCharacter]"
 						}
 					}
@@ -184,6 +67,7 @@
 		}
 	}
 
+	## Separate candidate filtering window opened with the looking glass button.
 	window_character_filter = {
 		datacontext = "[SuccessionAppointmentWindow.GetCandidateWindow]"
 		datacontext = "[SuccessionAppointmentWindow.GetCandidateCharacterList]"
@@ -260,6 +144,164 @@
 
 types TitleAppointment
 {
+	## Overview of the title that is to have a holder appointed.
+	#
+	type hbox_appointment_title_info = hbox {
+		background = {
+			using = Background_Header
+		}
+
+		background = {
+			using = Background_Header_Pattern
+		}
+
+		coa_title_big_crown = {}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					margin_top = 20
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "[Title.GetHolder.GetTopLiege.GetPrimaryTitle.GetName|U]"
+						default_format = "#weak"
+						max_width = 350
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "TITLE_APPOINTMENT_HEADER"
+						max_width = 350
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "TITLE_APPOINTMENT_CURRENT_HOLDER"
+						max_width = 350
+					}
+
+					text_single = {
+						visible = "[SuccessionAppointmentWindow.HasMeritPoolData]"
+						layoutpolicy_horizontal = expanding
+
+						text = "[SuccessionAppointmentWindow.GetMeritPoolDescription]"
+					}
+					
+					hbox = {
+						datacontext = "[Title.GetHolder.GetRite]"
+						datacontext = "[Rite.GetFaith]"
+						visible = "[And( Title.HasClericalRegion, Title.GetHolder.IsValid )]"
+						layoutpolicy_horizontal = expanding
+						spacing = 6
+						margin_top = 10
+
+						button_rite_icon = {
+							size = { 50 50 }
+							texture = "[Rite.GetIcon]"
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							autoresize = no
+
+							text = "[Rite.GetNameNoTooltip]"
+							align = nobaseline
+							using = Font_Size_Medium
+							using = Font_Type_Flavor
+						}
+					}
+
+					expand = {}
+				}
+
+				vbox = {
+					layoutpolicy_vertical = expanding
+
+					buttons_window_control = {
+						blockoverride "button_close"
+						{
+							onclick = "[SuccessionAppointmentWindow.Close]"
+						}
+
+						blockoverride "button_back"
+						{
+							visible = "[HasViewHistory]"
+							onclick = "[OpenFromViewHistory]"
+							tooltip = "[GetViewHistoryTooltip]"
+						}
+
+						blockoverride "button_me"
+						{
+							onclick = "[DefaultOnCharacterClick( GetPlayer.GetID )]"
+						}
+					}
+
+					expand = {}
+				}
+			}
+		}
+	}
+
+
+	## Genera information on how the heir for this title is picked.
+	type hbox_appointment_succession_law_info = hbox {
+		layoutpolicy_horizontal = expanding
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			datacontext = "[SuccessionAppointmentWindow.GetMeritPool]"
+
+			### SUCCESSION LAW ###
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				text_label_left = {
+					layoutpolicy_horizontal = expanding
+
+					text = "TITLE_APPOINTMENT_LAW"
+					max_width = 550
+				}
+
+				### MERIT REALM INFO ###
+				text_single = {
+					visible = "[SuccessionAppointmentWindow.HasMeritPoolData]"
+					max_width = 550
+
+					layoutpolicy_horizontal = expanding
+
+					text = "TITLE_APPOINTMENT_MERIT_CANDIDATE_DESC"
+					align = nobaseline
+				}
+
+				text_single = {
+					visible = "[SuccessionAppointmentWindow.HasMeritPoolData]"
+					max_width = 550
+
+					layoutpolicy_horizontal = expanding
+
+					text = "TITLE_APPOINTMENT_MERIT_CANDIDATE_RANK"
+					align = nobaseline
+				}
+			}
+		}
+
+		expand = {}
+	}
+
+
+	## Normal size banner showing appointment rank
+	#
 	type widget_succession_candidate_banner = widget
 	{
 		size = { 85 32 }
@@ -285,7 +327,12 @@ types TitleAppointment
 		}
 	}
 
-	type widget_succession_candidate_banner_small = widget
+
+	## Small banner showing appointment rank
+	#
+	# Used in Administrative Government window.
+	#
+	type widget_appointment_succession_candidate_banner_small = widget
 	{
 		size = { 60 24 }
 
@@ -316,8 +363,31 @@ types TitleAppointment
 		}
 	}
 
-	type widget_succession_candidate_item = widget
+	type icon_appointment_score = icon
 	{
+		size = { 24 24 }
+
+		icon = {
+			visible = "[Title.GetHolder.GetGovernment.HasGovernmentFlag( 'government_is_theocracy' )]"
+			size = { 24 24 }
+			texture = "gfx/interface/icons/clerical_score.dds"
+		}
+
+		icon = {
+			visible = "[Not( Title.GetHolder.GetGovernment.HasGovernmentFlag( 'government_is_theocracy' ) )]"
+			size = { 24 24 }
+			texture = "gfx/interface/icons/appointment_score.dds"
+		}
+	}
+
+	## Info on a single candidate that could be appointed
+	#
+	# +---+ Person Name of Some Title  [§ -27%]
+	# |^_^| (personal relation to player)  +--+
+	# +---+                                |  |
+	# [###] @ 45                           \__/
+	#
+	type widget_appointment_succession_candidate_item = widget {
 		size = { 560 122 }
 
 		allow_outside = yes
@@ -394,6 +464,8 @@ types TitleAppointment
 							tooltip = "ADMIN_WINDOW_THEME_GOVERNOR_EFFICIENCY_TT"
 							using = tooltip_ne
 
+							visible = "[SuccessionAppointmentWindow.GetTitle.GetHolder.GetGovernment.HasMechanic( 'administrative' )]"
+
 							icon = {
 								name = "char_governor_efficiency_icon"
 								size = { 32 32 }
@@ -433,8 +505,30 @@ types TitleAppointment
 							expand = {}
 
 							hbox = {
+								datacontext = "[SuccessionAppointmentWindow.GetTitle]"
 								layoutpolicy_horizontal = expanding
 								spacing = 5
+								
+								hbox = {
+									visible = "[Title.HasClericalRegion]"
+									margin_left = 6
+									spacing = 3
+				
+									button_rite_icon = {
+										name = "rite_button"
+										datacontext = "[Character.GetRite]"
+										size = { 25 25 }
+						
+										onclick = "[OpenGameViewData( 'faith', Rite.Self )]"
+									}
+				
+									expand = {
+										margin = { 1 2 }
+										divider_light = {
+											layoutpolicy_vertical = expanding
+										}
+									}
+								}
 
 								### MERIT ###
 								hbox_merit_with_label = {
@@ -443,10 +537,16 @@ types TitleAppointment
 									blockoverride "hbox_merit_with_label_background" {}
 								}
 
-								### CANDIDATE SCORE ###
-								text_single = {
-									text = "TITLE_APPOINTMENT_SCORE"
-									align = nobaseline
+								hbox = {
+									spacing = 5
+
+									icon_appointment_score = {}
+
+									### CANDIDATE SCORE ###
+									text_single = {
+										text = "TITLE_APPOINTMENT_SCORE"
+										align = nobaseline
+									}
 
 									tooltipwidget = {
 										widget_value_breakdown_tooltip = {
@@ -464,17 +564,33 @@ types TitleAppointment
 								### INTERACTIONS ###
 								button_round = {
 									name = "support_candidacy"
-									visible = "[Character.IsPlayerInteractionShown('influence_candidacy_interaction')]"
+									visible = "[Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_candidacy_interaction', Title.Self )]"
 									size = { 32 32 }
 
 									onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_candidacy_interaction', Title.Self )]"
-									enabled = "[Character.IsPlayerInteractionValid( 'influence_candidacy_interaction' )]"
-
-									tooltip = "[Character.GetPlayerInteractionTooltip( 'influence_candidacy_interaction' )]"
+									enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_candidacy_interaction', Title.Self )]"
+									tooltip = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'influence_candidacy_interaction', Title.Self )]"
 
 									button_promote_candidate = {
-										parentanchor = center
 										size = { 24 24 }
+										parentanchor = center
+										alwaystransparent = yes
+									}
+								}
+
+								### CLERICAL INVESTMENT ###
+								button_round = {
+									name = "support_clerical"
+									visible = "[Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_clerical_candidacy_interaction', Title.Self )]"
+									size = { 32 32 }
+
+									onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_clerical_candidacy_interaction', Title.Self )]"
+									enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_clerical_candidacy_interaction', Title.Self )]"
+									tooltip = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'influence_clerical_candidacy_interaction', Title.Self )]"
+
+									button_promote_candidate = {
+										size = { 24 24 }
+										parentanchor = center
 										alwaystransparent = yes
 									}
 								}

@@ -88,3 +88,9 @@ macro = {
     replace_with = "ConcatIfNeitherEmpty(AddLocalizationIf(Condition, LocKey), Localize( 'DOUBLE_NEWLINE' ))"
 }
 
+macro = {
+    description = "Tests if a character uses the default character view portrait, i.e. neither the saint nor the herder variant applies"
+    definition = "UsesDefaultCharacterViewPortrait(CHARACTER)"
+    replace_with = "Nor( And( CHARACTER.HasTrait( GetTrait( 'saint' ) ), CHARACTER.GetFaith.HasDoctrineByKey( 'abrahamic_hostility_doctrine' ) ), And( CHARACTER.GetGovernment.IsType( 'herder_government' ), CHARACTER.HasLandedTitles ) )"
+}
+

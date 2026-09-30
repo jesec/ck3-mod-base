@@ -13,7 +13,7 @@
  tgp_japan_establish_house_fief_capital_domicile_trigger: "Ваше [Concept('domicile', 'имение')|E] НЕ должно находиться в [Concept('capital', 'столичном')|E] [Concept('county', 'графстве')|E] державы [THIS.Char.GetTopLiege.GetPrimaryTitle.GetNameNoTier] #weak ([THIS.Char.GetTopLiege.GetCapitalLocation.GetTitle.GetDeJureLiege.GetNameNoTier])#!"
  tgp_japan_establish_house_fief_centralization_trigger: "У вашего [Concept('top_liege', 'верховного сюзерена')|E] не должно быть [Concept('law', 'закона')|E] «[GetLaw('japanese_bureaucracy_3').GetName]»"
  tgp_japan_establish_house_fief_direct_descendent_position_trigger: "У вас не должно быть прямого потомка, являющегося [Concept('governor', 'губернатором')|E]"
- tgp_japan_establish_house_fief_found_house_effect: "Ваш [Concept('dynast', 'глава династии')|E] — [Concept('administrative', 'бюрократ')|E], поэтому вы создаете новую [Concept('dynasty', 'династию')|E]"
+ tgp_japan_establish_house_fief_found_house_effect: "Ваш [Concept('dynast', 'глава династии')|E] — [Concept('government_bureaucratic_type', 'бюрократ')|E], поэтому вы создаёте новую [Concept('dynasty', 'династию')|E]"
  tgp_japan_establish_house_fief_change_government_type_effect: "Вы принимаете [Concept('soryo_government', 'правительство сорё')|E]"
  tgp_japan_establish_house_fief_direct_descendents_effect: "Все прямые потомки станут членами вашего [Concept('house', 'дома')|E]"
  tgp_japan_establish_house_fief_kampaku_crime_effect: "@warning_icon! #X Этот поступок станет [crime_i|E][Concept('crime', 'преступлением')|E] в глазах [Concept('ceremonial_regent', 'церемониального регента')|E]-[Concept('ritsuryo', 'рицурё')|E]#!\n#HELP Вы можете получить разрешение посредством [Concept('petition_liege', 'обращения')|E] к сюзерену#!"
@@ -27,7 +27,7 @@
  tgp_japan_establish_soryo_manor_decision_desc: "$tgp_japan_establish_house_fief_decision_desc$"
  tgp_japan_establish_soryo_manor_decision_tooltip: "Оставить в прошлом былые порядки и основать [Concept('house', 'дом')|E] [Concept('soryo', 'сорё')|E]"
  tgp_japan_establish_soryo_manor_decision_confirm: "$tgp_japan_establish_house_fief_decision$"
- petition_liege_house_fief_allowed_flag_tt: "[Concept('titles', 'Титулы')|E] [Select_CString(recipient.IsLocalPlayer, 'вашего персонажа', Concatenate('разрешения персонажа ',recipient.GetShortUIName))] нельзя отнять в следующие #V 10 лет#! после основания лена с [Select_CString(actor.IsLocalPlayer, 'вашего разрешения', Concatenate('разрешения персонажа ',actor.GetShortUIName))], если только [Select_CString(recipient.IsLocalPlayer, 'вы не совершите', Select_CString(recipient.IsFemale, 'она не совершит', 'он не совершит'))] [Concept('criminal', 'преступление')|E] #weak (осталось [GetCurrentDateWithDiff( GetVarTimeRemaining( recipient.MakeScope, 'petition_liege_house_fief_allowed_flag') )])#!"
+ petition_liege_house_fief_allowed_flag_tt: "[Concept('titles', 'Титулы')|E] [Select_CString(recipient.IsLocalPlayer, 'вашего персонажа', Concatenate('разрешения персонажа ',recipient.GetShortUIName))] нельзя отнять в следующие #V 10 лет#! после основания лена с [Select_CString(puppet_or_actor.IsLocalPlayer, 'вашего разрешения', Concatenate('разрешения персонажа ', puppet_or_actor.GetShortUIName))], если только [Select_CString(recipient.IsLocalPlayer, 'вы не совершите', Select_CString(recipient.IsFemale, 'она не совершит', 'он не совершит'))] [Concept('criminal', 'преступление')|E] #weak (осталось [GetCurrentDateWithDiff( GetVarTimeRemaining( recipient.MakeScope, 'petition_liege_house_fief_allowed_flag') )])#!"
  # Establish Shogunate
  tgp_japan_become_shogun_decision_TUTORIAL: "Узаконить сёгунат [GetPlayer.GetHouse.GetNameNoTooltip]"
  tgp_japan_become_shogun_decision: "Узаконить сёгунат [ROOT.Char.GetHouse.GetNameNoTooltip]"
@@ -49,6 +49,7 @@
  tgp_japan_emperor_restoration_decision_tooltip: "Восстановить древнее правление тэнно"
  tgp_japan_emperor_restoration_decision_confirm: "Не как символ, но как властитель"
  tgp_japan_emperor_restoration_decision_faction_effect: "#X [Concept('vassals', 'Вассалы')|E] с большей вероятностью вступят во [Concept('faction', 'фракцию')|E] #V за установление церемониального регента#!"
+ disable_soryo_decision: "#X Навсегда запрещает [Concept('decision', 'решение')|E] «[GetDecisionWithKey('tgp_japan_establish_soryo_administration_decision').GetName]»#!"
  # Imperial Branch (Minamoto/Taira)
  tgp_japan_imperial_branch_decision: "Попросить предоставить хонсэй"
  tgp_japan_imperial_branch_decision_desc: "Хотя во мне течет кровь Аматэрасу, моя судьба лежит за пределами императорского дворца. Я отрекаюсь от своего царственного происхождения, чтобы имена [Glossary( 'Минамото', 'MINAMOTO_GLOSS' )] и [Glossary( 'Тайра', 'TAIRA_GLOSS' )] громче звучали в анналах этих островов."

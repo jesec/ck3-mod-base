@@ -1,0 +1,58 @@
+﻿types GenericTitleSelector {
+    type title_selector_flowcontainer = flowcontainer {
+        direction = vertical
+        minimumsize = { 514 -1 }
+        maximumsize = { 514 -1 }
+        ignoreinvisible = yes
+        margin_top = 15
+
+        flowcontainer = {
+            direction = horizontal
+            ignoreinvisible = yes
+            parentanchor = hcenter
+            spacing = 15
+
+            text_single = {
+                visible = "[DecisionViewWidgetSelectTitleOfTier.HasCurrentTitle]"
+                parentanchor = vcenter
+                fontsize_min = 14
+                default_format = "#high"
+                text = "[DecisionViewWidgetSelectTitleOfTier.GetCurrentTitle.GetNameNoTier]"
+            }
+
+            button_standard = {
+                name = "select_kingdom_title_button"
+                minimumsize = { 200 0 }
+
+                onclick = "[DecisionViewWidgetSelectTitleOfTier.OnSelectTitle]"
+                clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_select"
+                enabled = "[DecisionViewWidgetSelectTitleOfTier.HasValidTitles]"
+                tooltip = "TITLE_SELECTOR_TOOLTIP"
+
+                text_single = {
+                    text = "TITLE_SELECTOR_TEXT"
+                    parentanchor = left|vcenter
+                    align = nobaseline
+                    position = { 10 0 }
+                    fontsize_min = 14
+                }
+
+                button_change = {
+                    visible = "[DecisionViewWidgetSelectTitleOfTier.HasCurrentTitle]"
+                    parentanchor = right|vcenter
+                    position = { -5 0 }
+                    alwaystransparent = yes
+                    size = { 25 25 }
+                }
+
+                button_select_arrow = {
+                    visible = "[Not( DecisionViewWidgetSelectTitleOfTier.HasCurrentTitle )]"
+                    parentanchor = right|vcenter
+                    position = { -5 0 }
+                    alwaystransparent = yes
+                    size = { 25 25 }
+                }
+            }
+        }
+    }
+}

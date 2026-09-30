@@ -1,0 +1,111 @@
+﻿l_russian:
+ # Activity: The Investiture Council
+ activity_investiture_council: "Совет об инвеституре"
+ activity_investiture_council_desc: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] должна завершиться. Скоро соберётся совет, который раз и навсегда решит, кто будет назначать священнослужителей — церковь или корона."
+ activity_investiture_council_province_desc: "Совет об инвеституре пройдёт здесь."
+ activity_investiture_council_host_desc: "Созвать совет об инвеституре, который решит вопрос о назначении духовенства."
+ activity_investiture_council_guest_desc: "Участвовать в совете об инвеституре и проголосовать по вопросу о назначении духовенства."
+ # Travel plan name (engine looks up TRAVEL_NAME_FOR_<activity key>); without it the raw key showed on travellers.
+ TRAVEL_NAME_FOR_activity_investiture_council: "[Character.GetFirstNameNoTooltip] отправляется на совет об инвеституре"
+ # Reason shown on the guest invite-acceptance for the clergy summoned to the council.
+ pam_investiture_council_summons_clergy_value: "Вызов на совет об инвеституре"
+ pam_investiture_council_start_log_title: "Собирается совет об инвеституре"
+ pam_investiture_council_start_log: "[CHARACTER.GetTitledFirstName|U] [Select_CString(CHARACTER.IsFemale, 'открыла', 'открыл')] совет, который решит вопрос о назначении духовенства."
+ # Conclusion-page log entries; their nested effect renders as the activity's "Effects from ..." section
+ pam_investiture_council_concluded_spiritual_log_title: "Церковь одержала верх"
+ pam_investiture_council_concluded_spiritual_log: "[CHARACTER.GetTitledFirstName] [Select_CString(CHARACTER.IsFemale, 'огласила', 'огласил')] решение совета: духовенство вправе назначать только церковь, и ни один правитель не может его смещать."
+ pam_investiture_council_concluded_temporal_log_title: "Корона одержала верх"
+ pam_investiture_council_concluded_temporal_log: "[CHARACTER.GetTitledFirstName] [Select_CString(CHARACTER.IsFemale, 'огласила', 'огласил')] решение совета: церковь назначает духовенство, однако светский правитель вправе отстранить прелата за плохую службу."
+ pam_investiture_council_conclusion.intro: "Совет об инвеституре завершён."
+ pam_investiture_council_conclusion.spiritual: "Собравшиеся отцы церкви поддержали её единоличное право назначать духовенство и навсегда оградили его от посягательств светской власти: отныне, приняв посвящение, прелат сохраняет свою должность до конца жизни.\n\nДолгая [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] окончена. Победив в ней, церковь немедленно начала реформировать себя изнутри."
+ pam_investiture_council_conclusion.temporal: "Собравшиеся отцы церкви оставили назначение и отстранение духовенства в ведомстве церкви, но сохранили за светскими властителями право отстранять прелатов за плохую службу. Долгая [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] окончена, но авторитет церкви пострадал, а её единство стало хрупким."
+ # Activity window character labels (one key per window_characters slot)
+ activity_window_character_prelate_guest_arrived: "Прелат\n[Character.GetShortUINameNoTooltip|U]"
+ activity_window_character_secular_guest_arrived: "[Concept('activity_guest_short', 'Гость')|E]\n[Character.GetShortUINameNoTooltip|U]"
+ activity_window_character_conclusion_church_rep: "Консерватор\n[Character.GetShortUINameNoTooltip|U]"
+ activity_window_character_conclusion_crown_rep: "Инноватор\n[Character.GetShortUINameNoTooltip|U]"
+ # The ruling as a single line under the conclusion page's "Effects from ..." readout
+ pam_investiture_resolution_spiritual_tt: "[Concept('doctrine', 'Доктрина')|E] назначения духовенства «[GetDoctrineType('doctrine_clerical_succession_conditional').GetBaseName]» заменена на доктрину «[GetDoctrineType('doctrine_clerical_succession_spiritual_fixed_appointment').GetBaseName]»"
+ pam_investiture_resolution_temporal_tt: "[Concept('doctrine', 'Доктрина')|E] назначения духовенства «[GetDoctrineType('doctrine_clerical_succession_conditional').GetBaseName]» заменена на доктрину «[GetDoctrineType('doctrine_clerical_succession_spiritual_appointment').GetBaseName]»"
+ # Activity phase names + descriptions
+ investiture_council_phase_summons: "Собрание"
+ investiture_council_phase_summons_desc: "Верные собираются на совет. Повсюду говорят о том, что скоро вопрос о назначении духовенства наконец решится."
+ investiture_council_phase_debate: "Дебаты"
+ investiture_council_phase_debate_desc: "Совет проведет дебаты о том, кто вправе назначать духовенство. Окончательный выбор между церковью и короной будет сделан по итогам голосования."
+ # Arrival flavour (guest) - the host welcomes me
+ pam_investiture_council_events.0001.t: "Прибытие"
+ pam_investiture_council_events.0001.desc: "[arrival_host.GetTitledFirstName] тепло встречает меня на пороге, а в зале за [Select_CString(arrival_host.IsFemale, 'её', 'его' )] спиной уже собрались многочисленные прелаты и праведные князья. Скоро это благородное собрание приступит к обсуждению великого вопроса о назначении духовенства."
+ pam_investiture_council_events.0001.a: "Я горжусь тем, что меня приняли в него."
+ pam_investiture_council_events.0001.a.tt: "Дебаты начнутся после прибытия остальных гостей."
+ # The council convenes (host)
+ pam_investiture_council_events.0002.t: "Долг перед церковью"
+ pam_investiture_council_events.0002.desc: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] идёт своим чередом. Теперь собранию верующих предстоит определить порядок назначения священнослужителей. Я намереваюсь проследить, чтобы авторитет церкви не пострадал."
+ pam_investiture_council_events.0002.a: "Да будет так."
+ # Pre-debate flavour (guest)
+ pam_investiture_council_events.0003.t: "Дебаты начинаются"
+ pam_investiture_council_events.0003.desc: "Гул в зале затихает, когда совет поднимает вопрос, вызвавший противостояние церкви и короны. В его решении важен каждый голос."
+ pam_investiture_council_events.0003.a: "Время пришло."
+ # Post-choice persuasion (clergy voter): a single duel to sway the assembly
+ pam_investiture_council_events.0032.t: "Нужные слова в нужные уши"
+ pam_investiture_council_events.0032.desc: "Голосование ещё не завершилось. Несколько убедительных слов, сказанных нужным людям, могут переубедить колеблющихся, но неудачная попытка такого вмешательства может обойтись дорого."
+ pam_investiture_council_events.0032.a: "Я попробую переубедить колеблющихся."
+ pam_investiture_council_events.0032.b: "Оставим всё как есть."
+ # Post-choice persuasion (secular attendee): back either side by bribe or conviction
+ pam_investiture_council_events.0033.t: "Бремя короны"
+ pam_investiture_council_events.0033.desc: "Пусть я не обладаю богословским авторитетом, у светских владык есть свои методы убеждения. Такой веский аргумент, как туго набитый кошель, заставляет людей забыть о совести и может склонить неопределившихся в нужную мне сторону. Я могу укрепить позиции церкви, поддержать корону или вовсе остаться в стороне."
+ pam_investiture_council_events.0033.a: "Попробуем купить голоса в поддержку церкви."
+ pam_investiture_council_events.0033.b: "Попробуем убедить голосующих поддержать церковь."
+ pam_investiture_council_events.0033.c: "Я попытаюсь купить голоса в поддержку короны."
+ pam_investiture_council_events.0033.d: "Я попытаюсь убедить голосующих поддержать корону."
+ pam_investiture_council_events.0033.e: "Не стоит связываться."
+ # Persuasion feedback toast: simple header, outcome in the tooltip (numbers coloured)
+ pam_investiture_persuade_toast_title: "Реакция собрания"
+ pam_investiture_persuade_toast_swayed_tt: "Вы переубедили следующее число голосующих: #P [investiture_persuader.MakeScope.Var('investiture_swayed_count').GetValue|0]#!."
+ pam_investiture_persuade_toast_backfired_tt: "Следующее число голосующих изменило мнение из-за вашей ошибки: #N [investiture_persuader.MakeScope.Var('investiture_swayed_count').GetValue|0]#!."
+ # Secular sway per-side availability (grays the option when there is no one left to win to that side)
+ pam_investiture_persuade_target_spiritual_tt: "Ещё остались голосующие, которых можно убедить поддержать церковь"
+ pam_investiture_persuade_target_temporal_tt: "Ещё остались голосующие, которых можно убедить поддержать корону"
+ # Persuasion duel outcome tooltips (shared by 0032 clergy / 0033 secular). Side-specific (the key names the
+ # destination camp) so both perspectives read naturally; only numbers coloured; counts must match the duel tiers.
+ pam_investiture_persuade_tt_great_innovator: "Убедить до #P 10#! голосующих поддержать церковь."
+ pam_investiture_persuade_tt_great_conservative: "Убедить до #P 10#! голосующих поддержать корону."
+ pam_investiture_persuade_tt_good_innovator: "Убедить до #P 5#! голосующих поддержать церковь."
+ pam_investiture_persuade_tt_good_conservative: "Убедить до #P 5#! голосующих поддержать корону."
+ pam_investiture_persuade_tt_modest_innovator: "Убедить до #P 3#! голосующих поддержать церковь."
+ pam_investiture_persuade_tt_modest_conservative: "Убедить до #P 3#! голосующих поддержать корону."
+ pam_investiture_persuade_tt_backfire_innovator: "Ваш неверный шаг заставляет #N 5#! голосующих перейти на сторону церкви."
+ pam_investiture_persuade_tt_backfire_conservative: "Ваш неверный шаг заставляет #N 5#! голосующих перейти на сторону короны."
+ # Player interrupt: busy/travelling when the council convenes
+ pam_investiture_council_events.0004.t: "Вас вызывают на совет"
+ pam_investiture_council_events.0004.desc: "До меня дошла молва о совете, который будет решать вопрос о назначении духовенства, но этот совет пройдёт в далёком городе. Я могу либо бросить все дела и мчаться туда, чтобы отдать свой голос, либо остаться в стороне, позволив решить этот вопрос без моего участия."
+ pam_investiture_council_events.0004.a: "Бросаю всё и еду на совет."
+ pam_investiture_council_events.0004.b: "Пусть решают без меня."
+ pam_investiture_council_haste_modifier: "Срочная поездка на совет"
+ pam_investiture_council_haste_modifier_desc: "Этот [Concept('ruler', 'правитель')|E] бросил все прочие дела, чтобы поскорее прибыть на совет об инвеституре, пока он не вынес решение о назначении [Concept('clergy', 'духовенства')|E]."
+ # The debate opens (host)
+ pam_investiture_council_events.0010.t: "Право церкви"
+ pam_investiture_council_events.0010.desc: "Я излагаю суть вопроса: право назначать духовенство принадлежит церкви, и ни один правитель не вправе перечить её решению. Пусть собравшиеся обсудят этот вопрос и решат его путём голосования."
+ pam_investiture_council_events.0010.a: "Защитить авторитет церкви."
+ # The debate: guest picks a side
+ pam_investiture_council_events.0031.t: "На чьей вы стороне?"
+ pam_investiture_council_events.0031.desc: "Глава конфессии призывает наделить церковь единоличным правом назначать духовенство и запретить правителям оспаривать её решение. Светские властители хотят оставить за собой право отстранять прелатов за плохую службу. Совет ждёт вашего голоса."
+ pam_investiture_council_events.0031.a: "Поддержать церковь: духовенство назначают церковные власти пожизненно."
+ pam_investiture_council_events.0031.b: "Поддержать корону: духовенство назначают церковные власти, но отстранять могут их властители."
+ # Letter from the host to a non-attending player Head of Faith with the decided outcome
+ pam_investiture_council_events.0060.opening: "Ваше святейшество!"
+ pam_investiture_council_events.0060.desc.spiritual: "Совет окончен. Поскольку вы не смогли присутствовать на нём, я изложу его итоги на пергаменте. Собравшиеся отцы церкви поддержали её единоличное право назначать духовенство и навсегда оградили его от посягательств светской власти: отныне, приняв посвящение, прелат сохраняет свою должность до конца жизни. Долгая [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] окончена."
+ pam_investiture_council_events.0060.desc.temporal: "Совет окончен. Поскольку вы не смогли присутствовать на нём, я изложу его итоги на пергаменте. Мне горько об этом писать, но, хоть собравшиеся отцы церкви и оставили назначение духовенства за нами, они позволили светским правителям отстранять прелатов за плохую службу. Долгая [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] окончена."
+ pam_investiture_council_events.0060.a: "Прочесть указ."
+ # Letter from the court chaplain to a non-attending secular player relaying the council's outcome
+ pam_investiture_council_events.0061.opening: "Мой господин!"
+ pam_investiture_council_events.0061.desc.spiritual: "Мы получили известия об итогах великого совета. Собравшиеся отцы церкви отстояли её единоличное право назначать духовенство, и вы будете не вправе оспорить это решение. Долгая [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] окончена. Пастырский жезл не уступил короне свои права."
+ pam_investiture_council_events.0061.desc.temporal: "Мы получили известия об итогах великого совета. Собравшиеся отцы церкви оставили право назначать духовенство за церковью, однако вы будете вправе отстранить назначенного прелата за плохую службу. Долгая [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] окончена. Корона оказалась сильнее пастырского жезла."
+ pam_investiture_council_events.0061.a: "Значит, вопрос решён."
+ # Informs a player Head of Faith that an archbishop will host in their stead
+ pam_investiture_council_events.0050.t: "Совет собирается"
+ pam_investiture_council_events.0050.desc.named: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] близится к развязке: скоро пройдет совет, который утвердит правила назначения духовенства.\n\nЭтот совет собирает [investiture_nominee_host.GetTitledFirstName]. Поскольку вы являетесь главой конфессии, все ожидают, что вы примете в нём участие и выразите своё мнение по этому вопросу. Но даже если вы решите не участвовать, вам всё равно доложат о его итогах."
+ pam_investiture_council_events.0050.desc: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] близится к развязке: скоро пройдет совет, который утвердит правила назначения духовенства. Поскольку вы сами отказались его собирать, этим займётся старший архиепископ вашей конфессии. Но вы всё равно можете участвовать в этом совете и выразить своё мнение."
+ pam_investiture_council_events.0050.a: "Хорошо."
+ # Deterministic backstop: the crisis lapses in the Church's favour if no council convenes
+ pam_investiture_crisis_lapsed_toast: "[GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetNameNoTooltip|U] завершилась"
+ pam_investiture_crisis_lapsed_tt: "Поскольку совет так и не состоялся, [GetSituationType('the_christian_church').GetPhaseType('investiture_crisis').GetName] закончилась победой пастырского жезла: духовенство по-прежнему назначает церковь, и они сохраняют свою должность пожизненно."

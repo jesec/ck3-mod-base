@@ -74,6 +74,11 @@
  activity_system.0320.t: "Nieoczekiwane zakończenie"
  activity_system.0320.desc: "Nasz gospodarz, [host.GetName], traci kontrolę nad posiadłościami ziemskimi, dlatego należy przedwcześnie zakończyć wydarzenie znane jako [activity_type.GetNameNoTooltip].\n\nZ pewnością nie można było spodziewać się takiego zakończenia tej sprawy po wszystkich fanfarach związanych z zaproszeniami i przygotowaniami. Chyba nie pozostało nic innego, jak tylko zebrać swoją świtę i wrócić do domu w miejscu o nazwie [ROOT.Char.GetCapitalLocation.GetNameNoTooltip]…"
  activity_system.0320.a: "Co się stało, to się nie odstanie."
+ activity_system.0321.t: "$activity_system.0320.t$"
+ activity_system.0321.desc.intro: "Nasz gospodarz, [host.GetName],"
+ activity_system.0321.desc.no_christian: "oświadcza, że [host.Custom('PL_jego_jej')] wiara, czyli [ROOT.Char.GetFaith.GetName|l], wygasła. Ku zaskoczeniu wszystkich, ogłasza, że przechodzi na wiarę, którą jest [host.GetFaith.GetName|l]."
+ activity_system.0321.desc.no_hof: "przestaje być głową kościoła i opuszcza wiarę, którą jest [ROOT.Char.GetFaith.GetName|l].\n\nGdy te szokujące fakty dotarły do gości, nakazano nam wracać do domów."
+ activity_system.0321.a: "Nie mogę w to uwierzyć."
  #If you have gained the incapable trait
  activity_system.0330.t: "Nieudolność"
  activity_system.0330.desc.intro: "Uznano mnie za osobę nieudolną i całkowicie niezdolną do zarządzania własnymi sprawami, w tym wydarzeniem znanym jako [activity_type.GetNameNoTooltip]!\n\n"
@@ -83,6 +88,11 @@
  activity_system.0331.t: "Nieudolność"
  activity_system.0331.desc: "Nasz gospodarz, [host.GetName], został uznany przez ludzi w [host.Custom('PL_jego_jej')] otoczeniu za osobę nieudolną i całkowicie niezdolną do zarządzania własnymi sprawami, w tym wydarzeniem znanym jako [activity_type.GetNameNoTooltip]!\n\nMusimy niestety wrócić do domu z pustymi rękami."
  activity_system.0331.a: "Ogromna szkoda."
+ #If someone necessary deccide isolate
+ activity_system.0340.t: "$isolating_modifier$"
+ activity_system.0340.desc.host: "W wyniku nieoczekiwanej klęski żywiołowej, którą jest [host.Custom('GetIsolationReason')|l], aktywność o nazwie [activity_type.GetNameNoTooltip()|l] w miejscu znanym jako [location.GetName] stała się niebezpieczna. Dla bezpieczeństwa uczestników muszę ją odwołać."
+ activity_system.0340.desc.guest: "W wyniku nieoczekiwanej klęski żywiołowej, którą jest [host.Custom('GetIsolationReason')|l], aktywność o nazwie [activity_type.GetNameNoTooltip()|l] w miejscu znanym jako [location.GetName] stała się niebezpieczna. Dla bezpieczeństwa uczestników [host.GetTitledFirstName] odwołuje ją."
+ activity_system.0340.a: "Udaj się w jakieś bezpieczne miejsce!"
  #Late to the activity
  activity_system.0400.t: "Opóźnienie"
  activity_system.0400.desc_leader: "Gdy [travel_leader.Custom2('MyCharacterIntroduction', ROOT.Char)] przychodzi do mnie z mieszanką wstydu i zmartwienia wypisaną na twarzy, wiem, że przynosi  złe wieści.\n\n– Niech mnie [ROOT.Char.GetTitleAsNameNoTooltip] wysłucha. Z przykrością donoszę, że mamy opóźnienie o około [GetTimeBetweenDates(ROOT.Char.GetInvolvedActivity.GetActiveStartDate.Self, ROOT.Char.GetTravelPlan.GetData.GetNextDestination.GetEstimatedArrivalDate)], i nie dotrzemy na miejsce na czas."
@@ -130,3 +140,9 @@
  activity_system.0554.opening: "[host.Custom2('AppropriateGreeting', ROOT.Char)]"
  activity_system.0554.a: "Muszę przyjąć to wyzwanie."
  activity_system.0554.b: "Wymyślę odpowiednią wymówkę."
+ has_activity_intent_global: "[CHARACTER.GetShortUINameNotMe] musi mieć następujący [intent|El]: [ACTIVITY_INTENT.GetName]"
+ has_activity_intent_global_not: "[CHARACTER.GetShortUINameNotMe] nie może mieć następującego [Concept('intent', 'zamiaru')|E]: [ACTIVITY_INTENT.GetName]"
+ has_activity_intent_first: "$has_activity_intent_global$"
+ has_activity_intent_first_not: "$has_activity_intent_global_not$"
+ has_activity_intent_third: "$has_activity_intent_global$"
+ has_activity_intent_third_not: "$has_activity_intent_global_not$"

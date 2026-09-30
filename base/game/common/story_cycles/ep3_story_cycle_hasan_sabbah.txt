@@ -52,12 +52,12 @@
 					var:radical_points >= 5
 					story_owner = {
 						OR = {
-							faith = faith:ismaili
-							faith = faith:nizari
+							rite = rite:ismaili
+							rite = rite:nizari
 						}
-						NOR = {
-							has_character_flag = arrived_in_egypt
-							has_character_flag = had_hasan_sabah_20
+						has_none_of_variables = {
+							name = arrived_in_egypt
+							name = had_hasan_sabah_20
 						}
 					}
 				}
@@ -87,27 +87,14 @@
 					story_owner.domicile.domicile_location.county.holder ?= {
 						save_temporary_scope_as = county_holder
 					}
-					faith:ismaili = {
-						religious_head = {
-							save_temporary_scope_as = ismaili_hof
+				faith:shia = {
+					religious_head = {
+						save_temporary_scope_as = shia_hof
 							NOR = {
 								this = scope:county_holder
 								scope:county_holder = {
 									any_liege_or_above = {
-										this = scope:ismaili_hof
-									}
-								}
-							}
-						}
-					}
-					faith:nizari = {
-						religious_head = {
-							save_temporary_scope_as = nizari_hof
-							NOR = {
-								this = scope:county_holder
-								scope:county_holder = {
-									any_liege_or_above = {
-										this = scope:nizari_hof
+										this = scope:shia_hof
 									}
 								}
 							}
@@ -144,7 +131,7 @@
 						# Must be landless
 						NOT = { story_owner = { has_government = landless_adventurer_government } }
 						# Must not be Sunni
-						story_owner = { faith = { has_doctrine = muhammad_succession_sunni_doctrine } }
+						story_owner = { rite = { rite_has_doctrine = muhammad_succession_sunni_doctrine } }
 					}
 				}
 				effect = {

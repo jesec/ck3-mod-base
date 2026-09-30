@@ -26,7 +26,7 @@
  #Default Imperial tiers
  #Default Nomadic Clan tiers
  #Default Mercenary tiers
- #Default Holy Order tiers
+ #Default Military Order tiers
  #Default Viceroyalty tiers
  #Default Feudal tiers
  baron_feudal_male: "男爵"
@@ -113,7 +113,7 @@
  emperor_tribal_male: "至高王"
  emperor_tribal_female: "至高女王"
  empire_tribal: "至高王国"
- county_herder: "[Character.GetPrimaryTitle.GetProvince.GetTerrain.GetNameNoTooltip]"
+ county_herder: "[Character.GetCapitalLocation.GetTerrain.GetNameNoTooltip]"
  #Default Mercenary tiers
  baron_mercenary_male: "尉官"
  baron_mercenary_female: "尉官"
@@ -130,13 +130,15 @@
  emperor_mercenary_male: "大统领"
  emperor_mercenary_female: "女大统领"
  empire_mercenary: "无双兵团"
- #Default Holy Order tiers
+ #Default Military Order tiers
  baron_holy_order_male: "军士"
  baron_holy_order_female: "军士"
  barony_holy_order: "分部"
  count_holy_order_male: "团长"
  count_holy_order_female: "女团长"
  county_holy_order: "大队"
+ duke_holy_order_monastic_male: "总修院长"
+ duke_holy_order_monastic_female: "女总修院长"
  duke_holy_order_male: "大团长"
  duke_holy_order_female: "女大团长"
  duchy_holy_order: "教团"
@@ -146,6 +148,38 @@
  emperor_holy_order_male: "总团长"
  emperor_holy_order_female: "女总团长"
  empire_holy_order: "至圣教团"
+ muslim_holy_order_male: "加齐"
+ muslim_holy_order_female: "女加齐"
+ byzantine_holy_order_male: "督军"
+ byzantine_holy_order_female: "督军"
+ #Default Monastic Order tiers
+ #Christian/Buddhist monastic order tiers
+ baron_monastic_order_abbot_type_male: "修院长"
+ baron_monastic_order_abbot_type_female: "女修院长"
+ barony_monastic_order: "隐修院"
+ count_monastic_order_abbot_type_male: "修院长"
+ count_monastic_order_abbot_type_female: "女修院长"
+ county_monastic_order: "修道院"
+ duke_monastic_order_abbot_type_male: "修院长"
+ duke_monastic_order_abbot_type_female: "女修院长"
+ duchy_monastic_order: "教团"
+ king_monastic_order_abbot_type_male: "大修院长"
+ king_monastic_order_abbot_type_female: "女大修院长"
+ kingdom_monastic_order: "圣教团"
+ emperor_monastic_order_abbot_type_male: "总修院长"
+ emperor_monastic_order_abbot_type_female: "女总修院长"
+ empire_monastic_order: "至圣教团"
+ #default monastic order tiers
+ baron_monastic_order_male: "导师"
+ baron_monastic_order_female: "女导师"
+ count_monastic_order_male: "导师"
+ count_monastic_order_female: "女导师"
+ duke_monastic_order_male: "贤者"
+ duke_monastic_order_female: "贤者"
+ king_monastic_order_male: "贤者"
+ king_monastic_order_female: "贤者"
+ emperor_monastic_order_male: "大贤者"
+ emperor_monastic_order_female: "大贤者"
  #Default Faction Leader
  faction_leader_male: "领袖"
  faction_leader_female: "领袖"
@@ -199,17 +233,49 @@
  king_theocracy_female_buddhism_religion: "比丘"
  #Christianity
  baron_theocracy_male_christianity_religion: "主教"
- baron_theocracy_female_christianity_religion: "主教"
+ baron_theocracy_female_christianity_religion: "女主教"
  barony_theocracy_christianity_religion: "主教区"
- count_theocracy_male_christianity_religion: "采邑主教"
- count_theocracy_female_christianity_religion: "采邑女主教"
+ count_theocracy_male_christianity_religion: "[CHARACTER.Custom('GetActualCountTheocracyTitle')]"
+ count_theocracy_female_christianity_religion: "[CHARACTER.Custom('GetActualCountTheocracyTitle')]"
+ count_theocracy_male_christianity_religion_default: "采邑主教"
+ count_theocracy_female_christianity_religion_default: "采邑主教"
+ count_theocracy_male_christianity_religion_archbishop_holder: "采邑总主教"
+ count_theocracy_female_christianity_religion_archbishop_holder: "采邑总主教"
+ count_theocracy_male_christianity_religion_archbishop_holder_possessive: "采邑总主教"
+ count_theocracy_female_christianity_religion_archbishop_holder_possessive: "采邑总主教"
+ count_theocracy_male_christianity_religion_cardinal: "枢机主教"
+ count_theocracy_female_christianity_religion_cardinal: "枢机主教"
  county_theocracy_christianity_religion: "采邑主教区"
- duke_theocracy_male_christianity_religion: "采邑总主教"
- duke_theocracy_female_christianity_religion: "采邑女总主教"
- duchy_theocracy_christianity_religion: "采邑总主教区"
+ duke_theocracy_male_christianity_religion_cardinal: "枢机"
+ duke_theocracy_female_christianity_religion_cardinal: "枢机"
+ duke_theocracy_male_christianity_religion_archbishop_cardinal: "枢机主教"
+ duke_theocracy_female_christianity_religion_archbishop_cardinal: "枢机主教"
+ duke_theocracy_male_christianity_religion: "[CHARACTER.Custom('GetActualDukeTheocracyTitle')]"
+ duke_theocracy_female_christianity_religion: "[CHARACTER.Custom('GetActualDukeTheocracyTitle')]"
+ duke_theocracy_male_christianity_religion_default: "公爵主教"
+ duke_theocracy_female_christianity_religion_default: "女公爵主教"
+ duke_theocracy_male_christianity_religion_archbishop_holder: "公爵总主教"
+ duke_theocracy_female_christianity_religion_archbishop_holder: "女公爵总主教"
+ duke_theocracy_male_christianity_religion_archbishop_holder_possessive: "公爵总主教"
+ duke_theocracy_female_christianity_religion_archbishop_holder_possessive: "女公爵总主教"
+ duke_theocracy_male_christianity_religion_archbishop: "采邑总主教"
+ duke_theocracy_female_christianity_religion_archbishop: "采邑总主教"
+ duke_theocracy_male_christianity_religion_clerical_region: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_female_christianity_religion_clerical_region: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_male_catholic_clerical_region_archbishop: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_female_catholic_clerical_region_archbishop: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_male_christian_faith_clerical_region: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_female_christian_faith_clerical_region: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_male_orthodox_clerical_region_metropolitan: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duke_theocracy_female_orthodox_clerical_region_metropolitan: "[CHARACTER.Custom('GetActualBishopTitle')]"
+ duchy_theocracy_christianity_religion: "公爵主教区"
+ king_theocracy_male_christianity_religion_cardinal: "枢机国王"
+ king_theocracy_female_christianity_religion_cardinal: "枢机女王"
  king_theocracy_male_christianity_religion: "国王主教"
  king_theocracy_female_christianity_religion: "女王主教"
  kingdom_theocracy_christianity_religion: "受傅王国"
+ emperor_theocracy_male_christianity_religion_cardinal: "枢机皇帝"
+ emperor_theocracy_female_christianity_religion_cardinal: "枢机女皇"
  emperor_theocracy_male_christianity_religion: "帝皇主教"
  emperor_theocracy_female_christianity_religion: "女皇主教"
  empire_theocracy_christianity_religion: "帝国教会"
@@ -923,6 +989,8 @@
  #Special titles
  ecumenical_patriarch: "普世牧首"
  ecumenical_matriarch: "普世女牧首"
+ pope_male: "$christianity_religious_head_title$"
+ pope_female: "$christianity_religious_head_title_female$"
  caliph: "哈里发"
  archduke: "大公"
  archduchess: "女大公"
@@ -968,7 +1036,7 @@
  realm_priest_male: "[CHARACTER.GetCouncilTitle]"
  realm_priest_female: "[CHARACTER.GetCouncilTitle]"
  head_of_faith_male: "[CHARACTER.GetFaith.ReligiousHeadName|U]"
- head_of_faith_female: "[CHARACTER.GetFaith.ReligiousHeadName|U]"
+ head_of_faith_female: "[CHARACTER.GetFaith.ReligiousHeadNameFemale|U]"
  ### Berber ###
  #Feudal / Clan
  baron_feudal_male_berber_group: "纳伊卜"
@@ -1197,6 +1265,9 @@
  ### Estates
  spouse_estate_holder_male: "领主"
  spouse_estate_holder_female: "女士"
+ ### Ecclesiastical
+ spouse_theocracy_female: "夫人"
+ spouse_theocracy_male: "先生"
  ### Easter Eggs
  lady_in_shadows: "暗影女士"
  ### Additional Flavor Titles
@@ -1302,3 +1373,20 @@
  emperor_celestial_female_chinese_independent: "$hegemon_celestial_male_chinese$"
  spouse_emperor_celestial_male_chinese_independent: "皇夫" #皇夫
  spouse_emperor_celestial_female_chinese_independent: "皇后" #皇后
+ clerical_elector_duchy_cardinalate: "枢机职"
+ christian_saint: "圣"
+ christian_female_saint: "圣"
+ muslim_saint: "吾里"
+ muslim_female_saint: "吾里"
+ hellenic_saint: "神圣者"
+ hellenic_female_saint: "神圣者"
+ jain_saint: "成就者"
+ shinto_saint: "神"
+ confucian_saint: "先儒" #先儒
+ buddhist_saint: "圣者"
+ taoist_saint: "真人" #真人
+ jewish_saint: "义人"
+ jewish_female_saint: "义人"
+ venerated_ancestor: "广受崇敬的祖先"
+ cardinal_male: "枢机"
+ cardinal_female: "枢机"

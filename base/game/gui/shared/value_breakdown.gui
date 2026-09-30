@@ -72,6 +72,8 @@
 				}
 			}
 
+			block "footer" {}
+
 			# Things like "click to X", hotkeys etc
 			textbox = {
 				name = "input_info"
@@ -115,6 +117,166 @@
 		{
 			# We want more spacing in bottom for this background
 			margin_bottom = 17
+		}
+	}
+
+	## Rite divergence tooltip with Forbidden / Unknown / Allowed sections
+	type widget_rite_divergence_tooltip = widget {
+		alwaystransparent = no
+
+		using = DefaultTooltipBackground
+
+		vbox = {
+			set_parent_size_to_minimum = yes
+			margin = { 10 10 }
+			margin_bottom = 27
+			spacing = 5
+
+			# Divergence header
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 10 0 }
+
+				background = {
+					using = Background_Area
+					margin = { 10 5 }
+					margin_bottom = 10
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "DIVERGENCE_BREAKDOWN_HEADER"
+					default_format = "#T"
+				}
+
+				text_single = {
+					visible = "[Not( Faith.IsDivergentRiteValue( ValueBreakdown.GetFixedPointValue ) )]"
+
+					text = "[ValueBreakdown.GetFixedPointValue]"
+					align = right
+					default_format = "#T"
+				}
+
+				text_single = {
+					visible = "[Faith.IsDivergentRiteValue( ValueBreakdown.GetFixedPointValue )]"
+
+					text = "[ValueBreakdown.GetFixedPointValue|0-]"
+					align = right
+					default_format = "#T"
+				}
+			}
+
+			# Potentially heretical warning
+			hbox = {
+				visible = "[Faith.IsDivergentRiteValue( ValueBreakdown.GetFixedPointValue )]"
+				layoutpolicy_horizontal = expanding
+				margin = { 10 0 }
+				spacing = 4
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "DIVERGENCE_HERETICAL_WARNING"
+					default_format = "#warning"
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 10 5 }
+				spacing = 4
+				block "main_rite_header_visible"
+				{
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "DIVERGENCE_COMPARISON"
+				}
+			}
+
+			hbox = {
+				block "main_rite_header_visible"
+				{
+					visible = "[ObjectsEqual( Rite.Self, Rite.GetFaith.GetMainRite )]"
+				}
+				layoutpolicy_horizontal = expanding
+				margin = { 10 0 }
+				spacing = 4
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "DIVERGENCE_IS_MAIN_RITE"
+				}
+			}
+
+			hbox = {
+				visible = "[Not( Faith.IsDivergentRiteValue( ValueBreakdown.GetFixedPointValue ) )]"
+				layoutpolicy_horizontal = expanding
+				margin = { 10 0 }
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "DIVERGENCE_HERETICAL_THRESHOLD"
+					align = nobaseline
+				}
+			}
+
+			# Breakdown Sections
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				datamodel = "[ValueBreakdown.GetSubValues]"
+				visible = "[Not( IsDataModelEmpty( ValueBreakdown.GetSubValues ) )]"
+				spacing = 8
+				margin = { 10 0 }
+
+				item = {
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						visible = "[ValueBreakdown.HasTooltip]"
+						spacing = 3
+
+						# Section header
+						text_label_left = {
+							layoutpolicy_horizontal = expanding
+							text = "[ValueBreakdown.GetName]"
+							default_format = "#bold"
+						}
+
+						# Section items
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							datamodel = "[ValueBreakdown.GetSubValues]"
+							spacing = 2
+
+							item = {
+								hbox = {
+									layoutpolicy_horizontal = expanding
+
+									text_single = {
+										layoutpolicy_horizontal = expanding
+										name = "item_name"
+										text = "[ValueBreakdown.GetName]"
+										min_width = 180
+										max_width = 350
+										margin_right = 10
+										fonttintcolor = "[TooltipInfo.GetTintColor]"
+									}
+
+									expand = {}
+
+									text_single = {
+										name = "item_value"
+										text = "[ValueBreakdown.GetValue]"
+										min_width = 30
+										align = right
+										fonttintcolor = "[TooltipInfo.GetTintColor]"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -729,7 +891,7 @@
 
 		hbox = {
 			name = "costs"
-			visible = "[CostBreakdown.HasAnyCost]"
+			visible = "[CostBreakdown.HasAnyCostOrBreakdown]"
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
 			spacing = 5
@@ -749,7 +911,7 @@
 
 			hbox = {
 				name = "piety_cost"
-				visible = "[CostBreakdown.HasCost( 'piety' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'piety' )]"
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'piety' )]"
 				tooltipwidget = { widget_value_breakdown_tooltip = {} }
 
@@ -773,7 +935,7 @@
 				name = "prestige"
 
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'prestige' )]"
-				visible = "[CostBreakdown.HasCost( 'prestige' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'prestige' )]"
 
 				raw_text = "@prestige_icon![CostBreakdown.GetCost( 'prestige' )|0]"
 				align = nobaseline
@@ -786,7 +948,7 @@
 				name = "renown"
 
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'renown' )]"
-				visible = "[CostBreakdown.HasCost( 'renown' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'renown' )]"
 
 				raw_text = "@dynasty_prestige_icon![CostBreakdown.GetCost( 'renown' )|0]"
 				align = nobaseline
@@ -798,7 +960,7 @@
 			text_single = {
 				name = "gold"
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'gold' )]"
-				visible = "[CostBreakdown.HasCost( 'gold' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'gold' )]"
 
 				raw_text = "@gold_icon![CostBreakdown.GetCost( 'gold' )|0]"
 				align = nobaseline
@@ -810,7 +972,7 @@
 			text_single = {
 				name = "influence"
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'influence' )]"
-				visible = "[CostBreakdown.HasCost( 'influence' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'influence' )]"
 
 				raw_text = "@influence_icon![CostBreakdown.GetCost( 'influence' )|0]"
 				align = nobaseline
@@ -822,7 +984,7 @@
 			text_single = {
 				name = "herd"
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'herd' )]"
-				visible = "[CostBreakdown.HasCost( 'herd' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'herd' )]"
 
 				raw_text = "@herd_icon![CostBreakdown.GetCost( 'herd' )|0]"
 				align = nobaseline
@@ -834,7 +996,7 @@
 			text_single = {
 				name = "treasury"
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'treasury' )]"
-				visible = "[CostBreakdown.HasCost( 'treasury' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'treasury' )]"
 
 				raw_text = "@treasury_icon![CostBreakdown.GetCost( 'treasury' )|0]"
 				align = nobaseline
@@ -846,7 +1008,7 @@
 			text_single = {
 				name = "merit"
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'merit' )]"
-				visible = "[CostBreakdown.HasCost( 'merit' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'merit' )]"
 
 				raw_text = "@merit_icon![CostBreakdown.GetCost( 'merit' )|0]"
 				align = nobaseline
@@ -858,7 +1020,7 @@
 			text_single = {
 				name = "barter_goods"
 				datacontext = "[CostBreakdown.AccessBreakdownTooltip( 'barter_goods' )]"
-				visible = "[CostBreakdown.HasCost( 'barter_goods' )]"
+				visible = "[CostBreakdown.HasCostOrBreakdown( 'barter_goods' )]"
 
 				raw_text = "@barter_goods_icon![CostBreakdown.GetCost( 'barter_goods' )|0]"
 				align = nobaseline
@@ -869,7 +1031,7 @@
 		}
 
 		text_single  = {
-			visible = "[Not( CostBreakdown.HasAnyCost )]"
+			visible = "[Not( CostBreakdown.HasAnyCostOrBreakdown )]"
 			text = "NO_COST_HEADING"
 			using = Font_Size_Small
 			align = nobaseline

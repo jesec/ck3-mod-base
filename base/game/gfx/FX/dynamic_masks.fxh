@@ -205,6 +205,11 @@ PixelShader =
 
 		void ApplySnowMaterialMesh( inout float3 Diffuse, inout float4 Properties, inout float3 Normal, in float2 WorldSpacePosXz, in float2 MapCoords, inout float HighlightMask, in float BlendStrength )
 		{
+			#ifdef LOW_SPEC_SHADERS
+				HighlightMask = 0.0f;
+				return;
+			#endif
+
 			SSnowEffectData SnowEffectData;
 			SnowEffectData._NoSnowMask = 1.0f - PdxTex2D( SnowMaskMap, float2( MapCoords.x, 1.0f - MapCoords.y ) ).r;
 			GetSnowEffectData( SnowEffectData, MapCoords, WorldSpacePosXz );

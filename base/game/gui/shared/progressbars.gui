@@ -145,6 +145,24 @@ types ProgressBars
 		}
 	}
 
+	type arrow_progressbar_icon = icon
+	{
+		texture = "gfx/interface/colors/white.dds"
+		alpha = 0.7
+		using = Progressbar_Arrow_Animation
+		block "color" {}
+	}
+
+	type filled_line_progressbar_icon = icon
+	{
+		texture = "gfx/interface/colors/white.dds"
+		alpha = 0.7
+		block "color" {}
+	}
+}
+
+types HorizontalComplexBars
+{
 	type hbox_complex_bar_progress = hbox {
 		allow_outside = yes
 
@@ -525,6 +543,99 @@ types ProgressBars
 		}
 	}
 
+	type widget_spiritual_fulfillment_bar_horizontal = margin_widget {
+		block "fulfillment_bar_size"
+		{
+			size = { 500 50 }
+		}
+
+		block "fulfillment_datacontext" {}
+
+		hbox_complex_bar_progress = {
+			layoutpolicy_vertical = expanding
+
+			block "fulfillment_progress_margin"
+			{
+				margin_top = 30
+			}
+
+			blockoverride "filled"
+			{
+				block "fulfillment_filled"
+				{
+					background = {
+						texture = "gfx/interface/progressbars/progress_standard.dds"
+					}
+				}
+			}
+		}
+
+		using = tooltip_es
+
+		hbox_complex_bar_levels = {
+			layoutpolicy_vertical = expanding
+
+			blockoverride "marker"
+			{
+				widget_level_marker = {
+					block "fulfillment_marker_position"
+					{
+						position = { 0 -10 }
+					}
+
+					block "fulfillment_marker_scale"
+					{
+						scale = 0.75
+					}
+
+					blockoverride "marker_size_inactive"
+					{
+						size = { 50 50 }
+					}
+
+					blockoverride "marker_addon"
+					{
+						icon = {
+							texture = "gfx/interface/colors/white.dds"
+							using = Mask_Rough_Edges
+							position = { -3 17 }
+							size = { 6 60 }
+							alpha = 0.3
+
+							visible = yes
+						}
+					}
+
+					blockoverride "visible_active"
+					{
+						visible = "[Character.IsSpiritualFulfillmentLevelIndexActive( ComplexBarItem.GetIndex )]"
+					}
+
+					blockoverride "visible_inactive"
+					{
+						visible = "[Not( Character.IsSpiritualFulfillmentLevelIndexActive( ComplexBarItem.GetIndex ) )]"
+					}
+
+					blockoverride "marker_tooltip"
+					{
+						datacontext = "[Character.GetSpiritualFulfillmentLevelByIndex( ComplexBarItem.GetIndex )]"
+						tooltipwidget = {
+							using = fulfillment_tooltip
+						}
+					}
+
+					blockoverride "marker_text"
+					{
+						text = "PERSONAL_BELIEFS_VIEW_FULFILLMENT_METER_MARKER"
+					}
+				}
+			}
+		}
+	}
+}
+
+types ComplexBars
+{
 	type vassal_progressbars = hbox {
 		layoutpolicy_horizontal = expanding
 		spacing = 10
@@ -808,8 +919,10 @@ types ProgressBars
 				size = { 45 45 }
 			}
 			
-
-			texture = "gfx/interface/window_regency/regency_level_bg.dds"
+			block "marker_texture_active"
+			{
+				texture = "gfx/interface/window_regency/regency_level_bg.dds"
+			}
 
 			block "visible_active" {}
 
@@ -823,7 +936,10 @@ types ProgressBars
 			{
 				size = { 35 35 }
 			}
-			texture = "gfx/interface/window_regency/regency_level_bg_inactive.dds"
+			block "marker_texture_inactive"
+			{
+				texture = "gfx/interface/window_regency/regency_level_bg_inactive.dds"
+			}
 
 			block "visible_inactive" {}
 
@@ -854,21 +970,6 @@ types ProgressBars
 
 	type widget_level_marker = widget_level_marker_no_anchor {
 		parentanchor = center
-	}
-
-	type arrow_progressbar_icon = icon
-	{
-		texture = "gfx/interface/colors/white.dds"
-		alpha = 0.7
-		using = Progressbar_Arrow_Animation
-		block "color" {}
-	}
-
-	type filled_line_progressbar_icon = icon
-	{
-		texture = "gfx/interface/colors/white.dds"
-		alpha = 0.7
-		block "color" {}
 	}
 }
 

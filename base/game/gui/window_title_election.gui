@@ -527,7 +527,7 @@ window = {
 
 
 													text_single = {
-														text = "[Character.GetUINameNotMeNoTooltip]"
+														text = "CHARACTER_UI_NAME_NOT_ME"
 														layoutpolicy_horizontal = expanding
 														autoresize = no
 														default_format = "#low"
@@ -763,7 +763,8 @@ window = {
 					fixedgridbox = {
 						datacontext = "[SuccessionElectionWindow.GetElectors]"
 						datamodel = "[CharacterSelectionList.GetList]"
-						addcolumn = 580
+						layoutpolicy_horizontal = expanding
+						addcolumn = 555
 						addrow = 150
 						setitemsizefromcell = yes
 						datamodel_reuse_widgets = yes
@@ -796,7 +797,7 @@ window = {
 										portrait_head = {}
 
 										portrait_head = {
-											datacontext = "[SuccessionElectionWindowElector.GetElectorCandidate.GetCandidate]"
+											datacontext = "[SuccessionElectionElector.GetElectorCandidate.GetCandidate]"
 										}
 
 										hbox = {
@@ -804,11 +805,13 @@ window = {
 
 
 											vbox = {
+												layoutpolicy_horizontal = expanding
 												layoutpolicy_vertical = expanding
 												margin_left = 10
 												margin_bottom = -6
 
 												vbox = {
+													layoutpolicy_horizontal = expanding
 													margin_left = 3
 
 													text_single = {
@@ -818,7 +821,7 @@ window = {
 													}
 
 													text_single = {
-														visible = "[SuccessionElectionWindowElector.GetElectorCandidate.GetCandidate.IsValid]"
+														visible = "[SuccessionElectionElector.GetElectorCandidate.GetCandidate.IsValid]"
 														text = "SUCCESSION_ELECTION_WINDOW_RANK"
 														layoutpolicy_horizontal = expanding
 														align = left
@@ -826,9 +829,9 @@ window = {
 												}
 
 												hbox = {
+													datacontext = "[SuccessionElectionWindow.GetCandidateFromCharacter( SuccessionElectionElector.GetElectorCandidate.GetCandidate )]"
+													visible = "[SuccessionElectionElector.GetElectorCandidate.GetCandidate.IsValid]"
 													layoutpolicy_horizontal = expanding
-													visible = "[SuccessionElectionWindowElector.GetElectorCandidate.GetCandidate.IsValid]"
-													datacontext = "[SuccessionElectionWindow.GetCandidateFromCharacter( SuccessionElectionWindowElector.GetElectorCandidate.GetCandidate )]"
 													spacing = 4
 
 													tooltip = "SUCCESSION_ELECTION_WINDOW_CANDIDATE_SCORE"
@@ -843,9 +846,7 @@ window = {
 												}
 											}
 
-											spacer = {
-												minimumsize = { 50 0 }
-											}
+											expand = {}
 
 											vbox = {
 												layoutpolicy_horizontal = expanding
@@ -854,38 +855,35 @@ window = {
 												hbox = {
 													spacing = 15
 
-													hbox = {
-														spacing = 5
-														tooltip = "[SuccessionElectionWindow.GetElectorVoteStrengthBreakdown(SuccessionElectionWindowElector.GetElector)]"
+													hbox_election_vote_strength = {}
 
-														vote_strength_icon = {}
-
-														text_single = {
-															text = "[SuccessionElectionWindowElector.GetVoteStrength|V]"
-															align = nobaseline
-														}
-													}
-
-													hbox = {
-														spacing = 5
-														tooltipwidget = vote_reason_tooltip
-
-														vote_chance_icon = {}
-
-														text_single = {
-															text = "[SuccessionElectionWindowElector.GetScoreDiff|+]"
-															align = nobaseline
-														}
+													hbox_election_vote_reason = {
+														using = tooltip_es
+														tooltip_offset = { 15 0 }
 													}
 												}
 
 												button_standard = {
-													datacontext = "[SuccessionElectionWindowElector.GetElector]"
-													text = "SUCCESSION_ELECTION_WINDOW_FORCE_VOTE"
-													visible = "[And( Title.CanCharacterControlVote( Character.Self ), And( Title.IsPlayerElector, Character.IsPlayerInteractionShown( 'force_vote_in_succession_election_interaction' ) ) )]"
+													datacontext = "[SuccessionElectionElector.GetElector]"
+													visible = "[And4( Title.HasElectionType( 'theocratic_elective' ), Title.CanCharacterControlVote( Character.Self ), Title.IsPlayerElector, Character.IsPlayerInteractionShown( 'influence_papal_vote_interaction' ) )]"
+													layoutpolicy_horizontal = expanding
+
+													onclick = "[Character.OpenPlayerInteraction('influence_papal_vote_interaction')]"
+													enabled = "[Character.IsPlayerInteractionValid('influence_papal_vote_interaction')]"
+													tooltip = "[Character.GetPlayerInteractionTooltip('influence_papal_vote_interaction')]"
+
+													text = "influence_papal_vote_interaction"
+												}
+
+												button_standard = {
+													datacontext = "[SuccessionElectionElector.GetElector]"
+													visible = "[And4( Not( Title.HasElectionType( 'theocratic_elective' ) ), Title.CanCharacterControlVote( Character.Self ), Title.IsPlayerElector, Character.IsPlayerInteractionShown( 'force_vote_in_succession_election_interaction' ) )]"
+
+													onclick = "[Character.OpenPlayerInteraction('force_vote_in_succession_election_interaction')]"
 													enabled = "[Character.IsPlayerInteractionValid('force_vote_in_succession_election_interaction')]"
 													tooltip = "[Character.GetPlayerInteractionTooltip('force_vote_in_succession_election_interaction')]"
-													onclick = "[Character.OpenPlayerInteraction('force_vote_in_succession_election_interaction')]"
+
+													text = "SUCCESSION_ELECTION_WINDOW_FORCE_VOTE"
 												}
 											}
 										}
@@ -979,18 +977,6 @@ window = {
 
 types SuccessionWindowTypes
 {
-	type vote_strength_icon = icon_flat_standard
-	{
-		texture = "gfx/interface/icons/flat_icons/election_vote_strength.dds"
-		size = { 35 35 }
-	}
-
-	type vote_chance_icon = icon_flat_standard
-	{
-		texture = "gfx/interface/icons/flat_icons/election_preference_over_my_candidate.dds"
-		size = { 35 35 }
-	}
-
 	type vote_amount_icon = icon_flat_standard
 	{
 		texture = "gfx/interface/icons/flat_icons/election_window.dds"
@@ -1056,151 +1042,6 @@ types SuccessionWindowTypes
 		}
 		expand = {
 			size = { 1 40 }
-		}
-	}
-}
-
-local_template vote_reason_tooltip
-{
-	container = {
-		alwaystransparent = no
-
-		widget = {
-			name = "background"
-			using = Background_Tooltip
-			size = { 100% 100% }
-			alwaystransparent = no
-		}
-
-		container = {
-			visible = "[And( Title.CanCharacterControlVote(Character.Self), SuccessionElectionWindow.GetTitle.GetPlayerNominee.IsValid )]"
-
-			flowcontainer = {
-				visible = "[Not(Character.IsPlayer)]"
-
-				direction = vertical
-				margin = { 10 10 }
-				ignoreinvisible = yes
-
-				flowcontainer = {
-					direction = horizontal
-					ignoreinvisible = yes
-
-					flowcontainer = {
-						margin = { 10 5 }
-						direction = vertical
-
-						background = {
-							using = Background_Area
-						}
-
-						text_multi = {
-							autoresize = yes
-							minimumsize = { 250 -1 }
-							maximumsize = { 250 -1 }
-							multiline = yes
-							text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_NOMINEE_TT"
-							fonttintcolor = "[TooltipInfo.GetTintColor]"
-						}
-
-						text_multi = {
-							autoresize = yes
-							minimumsize = { 250 -1 }
-							maximumsize = { 250 -1 }
-							multiline = yes
-							fonttintcolor = "[TooltipInfo.GetTintColor]"
-							text = "[SuccessionElectionWindow.GetVoteReasonBreakdown( SuccessionElectionWindow.GetElectorFromCharacter( Character.Self ).GetElectorCandidate.GetCandidate, Character.Self )]"
-						}
-					}
-
-					widget = {
-						visible = "[Not( SuccessionElectionWindowElector.IsVoteForPlayer )]"
-						size = { 5 0 }
-					}
-
-					flowcontainer = {
-						visible = "[Not( SuccessionElectionWindowElector.IsVoteForPlayer )]"
-						margin = { 10 5 }
-						direction = vertical
-						ignoreinvisible = yes
-
-						background = {
-							using = Background_Area
-						}
-
-						text_multi = {
-							autoresize = yes
-							minimumsize = { 250 -1 }
-							maximumsize = { 250 -1 }
-							multiline = yes
-							text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_PLAYER_NOMINEE"
-							fonttintcolor = "[TooltipInfo.GetTintColor]"
-						}
-
-						text_multi = {
-							autoresize = yes
-							minimumsize = { 250 -1 }
-							maximumsize = { 250 -1 }
-							multiline = yes
-							fonttintcolor = "[TooltipInfo.GetTintColor]"
-							text = "[SuccessionElectionWindow.GetPlayerCandidateVoteReasonBreakdown( Character.Self )]"
-						}
-					}
-				}
-
-				text_multi = {
-					margin = { 5 0 }
-					visible = "[SuccessionElectionWindow.CouldVoteForPlayerCandidateInstead( Character.Self )]"
-					text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_PLAYER_NOMINEE_INFO"
-					autoresize = no
-					max_width = 520
-					size = { 100% 50 }
-					fonttintcolor = "[TooltipInfo.GetTintColor]"
-				}
-			}
-
-			text_multi = {
-				visible = "[Character.IsOtherPlayer]"
-
-				margin = { 10 5 }
-				align = left|nobaseline
-				autoresize = yes
-				minimumsize = { 270 -1 }
-				maximumsize = { 270 -1 }
-
-				text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_IS_OTHER_PLAYER"
-				fonttintcolor = "[TooltipInfo.GetTintColor]"
-			}
-
-			text_multi = {
-				visible = "[Character.IsLocalPlayer]"
-
-				margin = { 10 5 }
-				align = left|nobaseline
-				autoresize = yes
-				minimumsize = { 270 -1 }
-				maximumsize = { 270 -1 }
-				text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_IS_LOCAL_PLAYER"
-				fonttintcolor = "[TooltipInfo.GetTintColor]"
-			}
-		}
-
-		text_multi = {
-			visible = "[Not( Title.CanCharacterControlVote( Character.Self ) )]"
-
-			margin = { 10 5 }
-			align = left|nobaseline
-			autoresize = yes
-			minimumsize = { 270 -1 }
-			maximumsize = { 270 -1 }
-			text = "SUCCESSION_ELECTION_WINDOW_VOTE_BREAKDOWN_FORCED_VOTE"
-			fonttintcolor = "[TooltipInfo.GetTintColor]"
-		}
-
-		text_single = {
-			visible = "[Not( SuccessionElectionWindow.GetTitle.GetPlayerNominee.IsValid )]"
-			margin = { 10 10 }
-			text = "SUCCESSION_ELECTION_WINDOW_NO_PLAYER_NOMINEE"
 		}
 	}
 }

@@ -1,0 +1,170 @@
+### Commandline Options
+# These commandline options are available when launching the game executable.
+# Options can be combined where they make sense. Argument values can be surrounded by double quotes.
+
+##### NOTE: All of these are developer features! Use at your own risk. #####
+
+### Game-start related
+
+# Skip the startup screen and jump directly into the game, loading history
+-skip
+
+# Play as the ruler for the indicated title key (example: e_byzantium)
+-play=<title_name>
+
+# Select a specific bookmark to start at. Mainly important for start-year. (example: bm_867_carolingians)
+-bookmark=<bookmark_name>
+
+# Load and continue with the last savegame
+-continuelastsave
+
+# Load the specific savegame by name
+-loadsave=<name>
+
+### Multiplayer related
+
+# Auto-start an MP server with a specific name
+-host_server=<name>
+
+# Auto-join an MP server with a specific name
+-join_server=<name>
+
+# Set the default server password (for hosting or joining)
+-server_password=<password>
+
+# Number of players required to auto-start the game
+-auto_run_num_players=<number>
+
+# Number of seconds to delay auto-starting a game when players are present
+-auto_run_start_delay_sec=<number>
+
+# Auto-accept anyone joining an MP game
+-hotjoinautoaccept
+
+### More specialist options - useful for modding
+
+# Start the game with "debug" aka "developer" mode on (enabled by default for debug builds)
+-debug_mode
+
+# Skip calculating the checksum for local files. This will speed up startup slightly, but make multiplayer not work.
+-skip_checksum
+
+# Start the game with a specific random seed. (every new game started will have this random seed)
+-random_seed=<number>
+
+# Change the default random number generator seed for the character designer (get consistently same start character)
+-designer_seed=<number>
+
+# Do not auto-open the error log file on game startup when in debug mode
+-suppress_error_log
+
+# Disable in-game encyclopedia, can make for faster startup/reload times during development
+-disable_encyclopedia
+
+### Advanced / Tech options - use with care
+
+# Load database in threaded mode during startup. (default: yes)
+-load_databases_threaded=yes/no
+
+# Change the name of the window (useful when running multiple instances of the game)
+-window_title=<text>
+
+# Change the number of task threads used (overrides the automatic calculation)
+-taskthreads=<number>
+
+# Change the number of low-prio task threads used (overrides the automatic calculation)
+-lowtaskthreads=<number>
+
+# Change the default memory allocation for the virtual file system in MBs (overrides automatic calculation)
+-io_memory_mb=<number>
+
+# Specify a different output directory for the crash reporter (instead of <user_dir>/crash_reporter/
+-crash_reporter_dir=<directory>
+
+# Prefix all log files with a specific text. (useful for certain types of comparative debugging / MP testing)
+-logprefix=<prefix>
+# Postfix all log files with a specific text. (useful for certain types of comparative debugging / MP testing)
+-logpostfix=<postfix>
+
+# Start with specific graphics backend
+-opengl
+-dx11
+-vulkan
+# Pick a random graphics backend out of the available ones
+-randomrenderer
+
+# Log framerate data to 'logs/framerate.tsv' file
+-log_framerate
+
+# Log additional Audio debug info
+-audiodebug
+
+# Debug camera controller (disables gamepad cursors/navigation)
+-debug_controller_camera
+
+# Enable gamepad controller input (default enabled, except on Linux, where there were issues with some controllers)
+-handle_controller_input
+
+# Enable IO stats
+-io_stats
+
+# Enable Memory stats
+-memory_stats
+
+# Disable shader cache loading from file-system
+-gfxdebug_disable_shadercache
+
+# Log additional texture-streaming data to debug.log
+-gfx_texture_streamer_info
+
+# Enable extended checks for 3D mesh asset loading
+-extended_mesh_checks
+
+# Enable the experimental script optimizer
+-script_optimizer
+
+# Enables checksum calculation each game tick even if off normally, such as during single player.
+-checksum_always_update
+
+### Commandline Action Meta functions
+
+# Print registered commandline Option & Actions (not all commandline options are registered properly :P)
+-command_line_help
+
+# Runs the specified in-game console command, then exits. (init state: main - very early)
+-run_console_action_main=<console_command>
+
+# Runs the specified in-game console command, then exits. (init state: clausewitz - engine initialized)
+-run_console_action_clausewitz=<console_command>
+
+# Runs the specified in-game console command, then exits. (init state: application - game initialized)
+-run_console_action=<console_command>
+
+# Show the help for the built-in "image analyzer" tool. Run to see how to use this tool and its options.
+-image_analyzer
+
+### Automated testing
+
+# Start an automated test
+-automated_test
+
+# Make an automatic save-game every X years (for hands-off testing)
+-save_every=<years>
+
+# Directly load into a daily save (looks for save file named "Daily_<year>_<month>_<day>.ck3" of current day)
+-load_daily_save
+
+# Run in 'no graphics' mode. Useful for fully automated tests.
+-nographics
+
+# Stop the game after history setup (and open error log if not empty)
+-shutdown_after_history
+
+# Disable AI activity (same as console command 'AI.Enabled')
+-disable_ai
+
+### Authentication / Account login
+
+# Session token passed in from PDX launcher
+-pdx-launcher-session-token=<token>
+

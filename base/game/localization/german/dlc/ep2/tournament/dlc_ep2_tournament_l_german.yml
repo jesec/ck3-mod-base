@@ -158,6 +158,8 @@
  locale_window_status_spectating: "beobachtet den"
  locale_window_status_participating: "entscheidet Euch zur Teilnahme am"
  locale_window_status_knocked_out: "verliert Euren Platz im"
+ locale_window_status_resign: "tratet zurück von Eurer Teilnahme am"
+ locale_window_status_discalified: "wurdet ausgeschlossen vom"
  locale_window_status_not_qualify: "konntet Euch nicht qualifizieren und erhaltet keine Teilnahmemöglichkeit für den"
  locale_window_your_participation: "Eure Teilnahme"
  locale_window_your_participation_status_selection: "[SelectLocalization(PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer,'contestant'),'locale_window_your_participation_status_yes','locale_window_your_participation_status_no')]"
@@ -253,8 +255,8 @@
  BOW_EXPERIENCE_REGULAR_TOOLTIP: "$tournament_contest_favoured_skill_tooltip$ $tourney_participant_bow$"
  BOW_EXPERIENCE_GREATER_TOOLTIP: "$tournament_contest_most_favoured_skill_tooltip$ $tourney_participant_bow$"
  ### Tooltips
- contest_planner_contest_tooltip: "#T [ActivityPhase.GetName]#![AddLine(ActivityPhase.CanPickDescriptionBlockers(GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption))][AddTextIf(Not(ActivityPlanner.CanPlanMorePhasesOfType(ActivityPhase.Self)), AddLine('$ACTIVITY_PLANNER_CANNOT_PICK_MORE_OF_PHASE|q$'))][AddLine(ActivityPhase.GetDescription)]"
- contest_planner_contest_selected_tooltip: "#T [ActivityPhase.GetName]#![AddLine(ActivityPhase.CanPickDescriptionBlockers(GetPlayer,ActivityPlanner.GetSingleLocationPhase.GetLocation,ActivityPlanner.GetSelectedSpecialOption))][AddLine(ActivityPhase.GetDescription)]"
+ contest_planner_contest_tooltip: "#T [ActivityPhase.GetName]#![AddLine(ActivityPhase.CanPickDescriptionBlockers(GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption))][AddTextIf(Not(ActivityPlanner.CanPlanMorePhasesOfType(ActivityPhase.Self)), AddLine('$ACTIVITY_PLANNER_CANNOT_PICK_MORE_OF_PHASE|q$'))][AddLine(ActivityPhase.GetDescription(Activity.Self))]"
+ contest_planner_contest_selected_tooltip: "#T [ActivityPhase.GetName]#![AddLine(ActivityPhase.CanPickDescriptionBlockers(GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption))][AddLine(ActivityPhase.GetDescription(Activity.Self))]"
  contest_planner_remove_contest_tooltip: "#T „[ActivityPhase.GetName]“ entfernen#!"
  contest_planner_add_contest_tooltip: "#T $contest_planner_empty_slot$#!"
  tournament_contest_favoured_skill_tooltip: "Dieser [contest|E] erwirkt eine Erhöhung von"
@@ -767,7 +769,7 @@
  tournament_conclusion_winner_duel: "\nSieger[activity.MakeScope.Var('duel_winner').Char.Custom('DE_END_NOU_S_GS_N')] des #BOL Duells#!: [activity.MakeScope.Var('duel_winner').Char.GetFirstName]"
  tournament_conclusion_winner_board_game: "\nSieger[activity.MakeScope.Var('board_game_winner').Char.Custom('DE_END_NOU_S_GS_N')] des #BOL Brettspielturniers#!: [activity.MakeScope.Var('board_game_winner').Char.GetFirstName]"
  tournament_contest_reward_toast_title: "Euer Preis"
- tournament_contest_reward_toast_desc: "Ihr habt das Artefakt „[Artifact.GetNameNoTooltip]“ gewonnen"
+ tournament_contest_reward_toast_desc: "Ihr gewannt ein Artefakt ([Artifact.GetNameNoTooltip])"
  #Contest Cultural Variations
  tournament_melee_german: "Buhurt"
  tournament_melee_fallback: "Turnei"

@@ -101,7 +101,7 @@
 						margin = { 0 10 }
 
 						text_label_center = {
-							text = "[Title.GetNameNoTooltip]"
+							text = "TITLE_NAME_NO_TOOLTIP"
 							default_format = "#high"
 							using = Font_Size_Medium
 							max_width = 300
@@ -835,123 +835,54 @@ types AdminVassalDetails
 			}
 		}
 	}
-
+	
+	# requires Title context
 	type vbox_admin_vassal_successor_candidate = vbox {
 		margin = { 4 4 }
 		margin_bottom = 8
 
 		background = {
 			using = Background_Area
+			
+			margin_top = -34
 		}
 
 		background = {
 			visible = "[AdminVassalSuccessorCandidate.IsLocalPlayerCandidate]"
 			using = Background_Frame_Gold
+
+			margin_top = -34
 		}
 
 		background = {
 			visible = "[Not( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate )]"
 			using = Background_Frame
+			
+			margin_top = -34
 		}
 
 		hbox = {
 			visible = "[GreaterThan_int32( AdminVassalSuccessorCandidate.GetCandidateIndex, '(int32)0' )]"
+			margin_bottom = 8
 
-			text_single = {
+			text_label_center = {
 				text = "ADMIN_VASSAL_DETAILS_SUCCESSOR_INDEX"
 			}
 		}
 
 		portrait_head = {
-			widget = {
-				parentanchor = top
-				size = { 56 64 }
-				position = { -6 2 }
+			visible = "[Title.HasClericalRegion]"
+			widget_admin_candidate_banners = {}
+		}
 
-				widget = {
-					name = "investment_has_candidate"
-					visible = "[And( AdminVassalSuccessorCandidate.IsLocalPlayerWinnerOrAnyLoser, And( And( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate, AdminVassalSuccessorCandidate.IsLocalPlayerInvested ), Not( AdminVassalSuccessorCandidate.IsLocalPlayerCandidateInFirst ) ) )]"
-
-					size = { 100% 100% }
-
-					tooltip = "ADMIN_WINDOW_THEME_ADMINISTRATION_LOCAL_PLAYER_HAS_INVESTED_LOSING_TT"
-
-					background = {
-						texture = "gfx/interface/window_theme_administration/admin_theme_no_sucession.dds"
-					}
-
-					button_promote_candidate = {
-						parentanchor = center
-						position = { 0 -8 }
-						alwaystransparent = yes
-					}
-				}
-
-				widget = {
-					name = "no_investment_has_candidate"
-					visible = "[And( AdminVassalSuccessorCandidate.IsLocalPlayerWinnerOrAnyLoser, And( And( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate, Not( AdminVassalSuccessorCandidate.IsLocalPlayerInvested ) ), Not( AdminVassalSuccessorCandidate.IsLocalPlayerCandidateInFirst ) ) )]"
-
-					size = { 100% 100% }
-
-					tooltip = "ADMIN_WINDOW_THEME_ADMINISTRATION_LOCAL_PLAYER_HAS_CANDIDATE_LOSING_TT"
-
-					background = {
-						texture = "gfx/interface/window_theme_administration/admin_theme_no_sucession.dds"
-					}
-
-					button_house = {
-						parentanchor = center
-						position = { 0 -8 }
-						alwaystransparent = yes
-					}
-				}
-
-				widget = {
-					name = "player_candidate_in_first_invested"
-					visible = "[And( AdminVassalSuccessorCandidate.IsLocalPlayerWinnerOrAnyLoser, And( And( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate, AdminVassalSuccessorCandidate.IsLocalPlayerCandidateInFirst ), AdminVassalSuccessorCandidate.IsLocalPlayerInvested ) )]"
-
-					size = { 100% 100% }
-
-					tooltip = "ADMIN_WINDOW_THEME_ADMINISTRATION_LOCAL_PLAYER_HAS_INVESTED_WINNING_TT"
-
-					background = {
-						texture = "gfx/interface/window_theme_administration/admin_theme_sucession.dds"
-					}
-
-					button_promote_candidate = {
-						parentanchor = center
-						position = { 0 -8 }
-						alwaystransparent = yes
-					}
-				}
-
-				widget = {
-					name = "player_candidate_in_first"
-					visible = "[And( AdminVassalSuccessorCandidate.IsLocalPlayerWinnerOrAnyLoser, And( And( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate, AdminVassalSuccessorCandidate.IsLocalPlayerCandidateInFirst ), Not( AdminVassalSuccessorCandidate.IsLocalPlayerInvested ) ) )]"
-
-					size = { 100% 100% }
-
-					tooltip = "ADMIN_WINDOW_THEME_ADMINISTRATION_LOCAL_PLAYER_HAS_CANDIDATE_WINNING_TT"
-
-					background = {
-						texture = "gfx/interface/window_theme_administration/admin_theme_sucession.dds"
-					}
-
-					button_house = {
-						parentanchor = center
-						position = { 0 -8 }
-						alwaystransparent = yes
-					}
-				}
-			}
+		portrait_head_small = {
+			visible = "[Not( Title.HasClericalRegion )]"
+			widget_admin_candidate_banners = {}
 		}
 
 		hbox = {
 			spacing = 15
-
-			
-
-			
+			layoutpolicy_horizontal = expanding
 
 			# Merit
 			widget_merit = {
@@ -963,44 +894,239 @@ types AdminVassalDetails
 					size = { 24 24 }
 				}
 			}
-
+			
 			hbox = {
-				spacing = 5
-				icon = {
-					size = { 24 24 }
-					texture = "gfx/interface/icons/appointment_score.dds"
-				}
+				layoutpolicy_horizontal = expanding
 
-				text_single = {
-					text = ADMIN_VASSAL_DETAILS_SUCCESSOR_SCORES
-					align = nobaseline
-				}
+				hbox = {
+					visible = "[Title.HasClericalRegion]"
+					margin_left = 6
+					spacing = 3
 
-				tooltipwidget = {
-					widget_value_breakdown_tooltip = {
-						block "score_breakdown" {
-							datacontext = "[AdminVassalDetailView.GetSuccessionScoreBreakdown(AdminVassalSuccessorCandidate.GetCandidate.Self )]"
-						}
-						blockoverride "header_text" {
-							text = ADMIN_VASSAL_CANDIDATE_SCORE_TT_HEADING
+					button_rite_icon = {
+						name = "rite_button"
+						datacontext = "[Character.GetRite]"
+						size = { 25 25 }
+		
+						onclick = "[OpenGameViewData( 'faith', Rite.Self )]"
+					}
+
+					expand = {
+						margin = { 1 2 }
+						divider_light = {
+							layoutpolicy_vertical = expanding
 						}
 					}
 				}
+				
+				expand = {}
 
-				using = tooltip_se
+				widget = {
+					size = { 0 24 }
+					layoutpolicy_horizontal = expanding
+
+					button_standard_hover = {
+						visible = "[And( Or( And( GetPlayer.GetGovernment.IsType( 'japan_administrative_government' ), Not( Title.IsBarony) ), Not( Or( Title.IsCounty, Title.IsBarony) ) ), Character.IsPlayerInteractionShown('influence_candidacy_interaction') )]"
+						size = { 100% 100% }
+
+						onclick = "[Character.OpenPlayerInteractionWithTargetTitle('influence_candidacy_interaction', Title.Self)]"
+						enabled = "[Character.IsPlayerInteractionValid('influence_candidacy_interaction')]"
+					}
+
+					button_standard_hover = {
+						visible = "[And( GetPlayer.GetGovernment.IsType( 'ecclesiastical_government' ), Character.IsPlayerInteractionShown('influence_clerical_candidacy_interaction') )]"
+						size = { 100% 100% }
+
+						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_clerical_candidacy_interaction', Title.Self )]"
+						enabled = "[And( Character.IsPlayerInteractionWithTargetTitleValid( 'influence_clerical_candidacy_interaction', Title.Self ), Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_clerical_candidacy_interaction', Title.Self ) )]"
+					}
+
+					hbox = {
+						tooltipwidget = {
+							widget_value_breakdown_tooltip = {
+								block "score_breakdown" {
+									datacontext = "[AdminVassalDetailView.GetSuccessionScoreBreakdown(AdminVassalSuccessorCandidate.GetCandidate.Self )]"
+								}
+								blockoverride "header_text" {
+									text = ADMIN_VASSAL_CANDIDATE_SCORE_TT_HEADING
+								}
+
+								blockoverride "header" {
+									layoutpolicy_horizontal = expanding
+									text_label_left = {
+										layoutpolicy_horizontal = expanding
+										block "header_text" {
+											text = "[ValueBreakdown.GetName]"
+											visible = "[Not( StringIsEmpty( ValueBreakdown.GetName ) )]"
+										}
+										default_format = "#T"
+									}
+								}
+
+								blockoverride "footer" {
+									vbox = {
+										visible = "[And( GetPlayer.GetGovernment.IsType( 'ecclesiastical_government' ), Character.IsPlayerInteractionShown('influence_clerical_candidacy_interaction') )]"
+										layoutpolicy_horizontal = expanding
+										margin_bottom = 10
+										spacing = 10
+
+										divider_light = {
+											layoutpolicy_horizontal = expanding
+										}
+
+										cooltip_paragraph = {
+											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'influence_clerical_candidacy_interaction', Title.Self )]"
+										}
+
+										cooltip_paragraph = {
+											visible = "[And( Character.IsPlayerInteractionWithTargetTitleValid( 'influence_clerical_candidacy_interaction', Title.Self ), Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_clerical_candidacy_interaction', Title.Self ) )]"
+											text = "CLICK_TO_INFLUENCE_CLERICAL"
+											default_format = "#I"
+										}
+									}
+
+									vbox = {
+										visible = "[And( Or( And( GetPlayer.GetGovernment.IsType( 'japan_administrative_government' ), Not( Title.IsBarony) ), Not( Or( Title.IsCounty, Title.IsBarony) ) ), Character.IsPlayerInteractionShown('influence_candidacy_interaction') )]"
+										layoutpolicy_horizontal = expanding
+										margin_bottom = 10
+										spacing = 10
+
+										divider_light = {
+											layoutpolicy_horizontal = expanding
+										}
+
+										cooltip_paragraph = {
+											text = "[Character.GetPlayerInteractionTooltip('influence_candidacy_interaction')]"
+										}
+
+										cooltip_paragraph = {
+											visible = "[Character.IsPlayerInteractionValid('influence_candidacy_interaction')]"
+											text = "CLICK_TO_INFLUENCE"
+											default_format = "#I"
+										}
+									}
+								}
+							}
+						}
+
+						using = tooltip_se
+
+						hbox = {
+							spacing = 5
+
+							icon_appointment_score = {}
+
+							text_single = {
+								text = ADMIN_VASSAL_DETAILS_SUCCESSOR_SCORES
+								align = nobaseline
+							}
+						}
+					}
+				}
+				
+				spacer = {
+					visible = "[Title.HasClericalRegion]"
+					size = { 8 0 }
+				}
+				
+				expand = {}
+			}
+		}
+	}
+
+	type widget_admin_candidate_banners = widget {
+		parentanchor = top
+		size = { 56 64 }
+		position = { -6 2 }
+
+		widget = {
+			name = "investment_has_candidate"
+			visible = "[And( AdminVassalSuccessorCandidate.IsLocalPlayerWinnerOrAnyLoser, And( And( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate, AdminVassalSuccessorCandidate.IsLocalPlayerInvested ), Not( AdminVassalSuccessorCandidate.IsLocalPlayerCandidateInFirst ) ) )]"
+
+			size = { 100% 100% }
+
+			tooltip = "ADMIN_WINDOW_THEME_ADMINISTRATION_LOCAL_PLAYER_HAS_INVESTED_LOSING_TT"
+
+			background = {
+				texture = "gfx/interface/window_theme_administration/admin_theme_no_sucession.dds"
+			}
+
+			button_promote_candidate = {
+				parentanchor = center
+				position = { 0 -8 }
+				alwaystransparent = yes
+			}
+		}
+
+		widget = {
+			name = "no_investment_has_candidate"
+			visible = "[And( AdminVassalSuccessorCandidate.IsLocalPlayerWinnerOrAnyLoser, And( And( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate, Not( AdminVassalSuccessorCandidate.IsLocalPlayerInvested ) ), Not( AdminVassalSuccessorCandidate.IsLocalPlayerCandidateInFirst ) ) )]"
+
+			size = { 100% 100% }
+
+			tooltip = "ADMIN_WINDOW_THEME_ADMINISTRATION_LOCAL_PLAYER_HAS_CANDIDATE_LOSING_TT"
+
+			background = {
+				texture = "gfx/interface/window_theme_administration/admin_theme_no_sucession.dds"
+			}
+
+			button_house = {
+				parentanchor = center
+				position = { 0 -8 }
+				alwaystransparent = yes
+			}
+		}
+
+		widget = {
+			name = "player_candidate_in_first_invested"
+			visible = "[And( AdminVassalSuccessorCandidate.IsLocalPlayerWinnerOrAnyLoser, And( And( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate, AdminVassalSuccessorCandidate.IsLocalPlayerCandidateInFirst ), AdminVassalSuccessorCandidate.IsLocalPlayerInvested ) )]"
+
+			size = { 100% 100% }
+
+			tooltip = "ADMIN_WINDOW_THEME_ADMINISTRATION_LOCAL_PLAYER_HAS_INVESTED_WINNING_TT"
+
+			background = {
+				texture = "gfx/interface/window_theme_administration/admin_theme_sucession.dds"
+			}
+
+			button_promote_candidate = {
+				parentanchor = center
+				position = { 0 -8 }
+				alwaystransparent = yes
+			}
+		}
+
+		widget = {
+			name = "player_candidate_in_first"
+			visible = "[And( AdminVassalSuccessorCandidate.IsLocalPlayerWinnerOrAnyLoser, And( And( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate, AdminVassalSuccessorCandidate.IsLocalPlayerCandidateInFirst ), Not( AdminVassalSuccessorCandidate.IsLocalPlayerInvested ) ) )]"
+
+			size = { 100% 100% }
+
+			tooltip = "ADMIN_WINDOW_THEME_ADMINISTRATION_LOCAL_PLAYER_HAS_CANDIDATE_WINNING_TT"
+
+			background = {
+				texture = "gfx/interface/window_theme_administration/admin_theme_sucession.dds"
+			}
+
+			button_house = {
+				parentanchor = center
+				position = { 0 -8 }
+				alwaystransparent = yes
 			}
 		}
 	}
 
 	type hbox_admin_title_successor_candidates_list = hbox {
 		hbox = {
-			visible = "[AdminVassalSuccessorCandidateList.ShowBestPlayerCandidateIndependently( '(int32)3' )]"
-			spacing = 0
+			block "show_candidate" {
+				visible = "[AdminVassalSuccessorCandidateList.ShowBestPlayerCandidateIndependently( '(int32)3' )]"
+			}
+			spacing = 2
 
 			hbox = {
-				datamodel = "[DataModelFirst( AdminVassalSuccessorCandidateList.GetSuccessorCandidates, '(int32)3')]"
-
-				spacing = 0
+				block "candidates_datamodel_small" {
+					datamodel = "[DataModelFirst( AdminVassalSuccessorCandidateList.GetSuccessorCandidates, '(int32)3')]"
+				}
 
 				item = {
 					vbox_admin_vassal_successor_candidate = {
@@ -1010,15 +1136,19 @@ types AdminVassalDetails
 			}
 
 			vbox_admin_vassal_successor_candidate = {
-				datacontext = "[AdminVassalSuccessorCandidateList.GetBestLocalPlayerCandidate( '(int32)3' )]"
+				block "candidate_datacontext" {
+					datacontext = "[AdminVassalSuccessorCandidateList.GetBestLocalPlayerCandidate( '(int32)3' )]"
+				}
 				datacontext = "[AdminVassalSuccessorCandidate.GetCandidate]"
 			}
 		}
 
 		hbox = {
-			visible = "[Not( AdminVassalSuccessorCandidateList.ShowBestPlayerCandidateIndependently( '(int32)3' ) )]"
-			datamodel = "[DataModelFirst( AdminVassalSuccessorCandidateList.GetSuccessorCandidates, '(int32)4')]"
-			spacing = 0
+			block "not_show_candidate" {
+				visible = "[Not( AdminVassalSuccessorCandidateList.ShowBestPlayerCandidateIndependently( '(int32)3' ) )]"
+				datamodel = "[DataModelFirst( AdminVassalSuccessorCandidateList.GetSuccessorCandidates, '(int32)4')]"
+			}
+			spacing = 2
 
 			item = {
 				vbox_admin_vassal_successor_candidate = {

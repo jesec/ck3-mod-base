@@ -369,6 +369,34 @@
 			}
 		}
 	}
+	
+	antipope = {
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = clothes
+				template = religious_catholic_head_clothes
+				range = { 0 1 }
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 200
+				has_character_flag = antipope_flag
+				portrait_religious_catholic_trigger = yes
+				NOT = {
+					faith = {
+						has_doctrine_parameter = vows_of_poverty_active
+					}
+				}
+			}
+			modifier = { # A captured Antipope keeps their prison rags
+				factor = 0
+				portrait_prisoner_trigger = yes
+			}
+		}
+	}
 
 	# Court Physician
 	court_physician = {
@@ -414,6 +442,8 @@
 				factor = 0
 				OR = {
 					is_adult = no
+					is_clergy = yes
+					portrait_religious_devoted_trigger = yes
 					should_be_naked_trigger = yes
 				}
 			} 

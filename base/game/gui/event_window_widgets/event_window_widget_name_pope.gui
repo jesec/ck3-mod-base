@@ -1,0 +1,85 @@
+﻿# Event window widget to choose pope name (intended to be used when inheriting k_papal_state as player)
+# Required controller: name_character
+
+vbox = {
+	name = "event_window_widget_name_pope"
+	layoutpolicy_horizontal = expanding
+	minimumsize = { 240 -1 }
+	ignoreinvisible = yes
+	margin = { 5 0 }
+	margin_bottom = 5
+	spacing = 3
+
+	datacontext = "[EventWindowWidgetNameCharacter.GetCharacter]"
+	datacontext = "[Character.GetCulture]"
+
+	state = {
+		trigger_on_create = yes
+		name = a
+		on_start = "[EventWindowWidgetNameCharacter.SetRegnalNamingMode]"
+	}
+	
+	editbox_standard = {
+		size = { 240 30 }
+	
+
+		blockoverride "editbox_properties" 
+		{
+		    name = "no_name_needed"
+		    text = "[EventWindowWidgetNameCharacter.GetCurrentName]"
+			ontextedited = "[EventWindowWidgetNameCharacter.OnEditCurrentName]"
+			
+			state = {
+				name = "name_refresh"
+				next = "b"
+				using = Animation_Refresh_FadeOut
+			}
+
+			state = {
+				name = "b"
+				using = Animation_Refresh_FadeIn
+			}
+		}
+	}
+
+	hbox = {	
+		event_button_round = {
+			visible = "[Character.GetPrimaryTitle.HasHoldingRegnalNames( Character.IsFemale )]"
+			onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( EventWindowWidgetNameCharacter.GetRandomAvailableRegnalName )]"
+			onclick = "[PdxGuiTriggerAllAnimations('name_refresh')]"
+			tooltip =  "event_window_widget_name_ruler_random_regnal_name"
+			using = tooltip_se
+	
+			highlight_icon = {
+				datacontext = "[Character.GetFaith]"
+				texture = "[Faith.GetIcon]"
+				parentanchor = center
+				size = { 35 35 }
+			}
+		}
+
+		event_button_round = {
+			onclick = "[EventWindowWidgetNameCharacter.SetCurrentName( EventWindowWidgetNameCharacter.GetRandomAvailableCultureName )]"
+			onclick = "[PdxGuiTriggerAllAnimations('name_refresh')]"
+			tooltip =  "event_window_widget_name_child_random_cultural_name"
+			using = tooltip_se
+
+			highlight_icon = {
+				name = "culture"
+				texture = "gfx/interface/icons/icon_culture.dds"
+				size = { 35 35 }
+				parentanchor = center
+			}
+		}
+	
+		hbox = {
+			layoutpolicy_vertical = expanding
+			margin = { 10 0 }
+			
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+		}
+	}
+}
+

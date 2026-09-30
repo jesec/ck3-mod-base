@@ -17857,3 +17857,97 @@ environment_bp3_coast = {
 	}
 }
 
+
+environment_ce3_deceased_saint = {
+
+	cubemap = "gfx/portraits/environments/bp2_nursery.dds"
+	cubemap_intensity = 0.135
+
+	lights = {
+		#########################################################################
+		#								KEY LIGHT								#
+		#########################################################################
+		0 = {
+			type = "spot_light"	# Valid types are "spot_light", "point_light", and "directional_light"
+			affected_by_shadow = yes
+			color = hsv{ 0.065 0.9 4.5 }
+			#color = hsv{ 0.125 0.5 2.0 }	# Hue, saturation, value. Increase value for more intense lights
+			position = cylindrical{ 150 250 -55 } # Radius, height, angle
+
+			# For spot lights and directional lights
+			look_at = { 0 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 205
+			falloff = 15
+
+			# For point lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		#########################################################################
+		#							RIGHT RIM LIGHT								#
+		#########################################################################
+		1 = {
+			type = "directional_light"
+			affected_by_shadow = yes
+
+			color = hsv{ 0.1 0.5 0.15 }
+			position =  { 0.0 0 20.0 }
+			look_at = { 0 -300 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 1800
+			falloff = 10
+
+			# For spot lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+
+		############################s#############################################
+		#							LEFT RIM LIGHT								#
+		#########################################################################
+		2 = {
+			type = "spot_light"
+			affected_by_shadow = no
+
+			#color = hsv{ 0.7 0.7 0.0 }
+			color = hsv{ 0.7 0.7 0.25 }
+			position = cylindrical{ 160 150 55 }
+
+			# For spot lights and directional lights
+			look_at = { 80 0 0 }
+			look_at_node = {
+				default = camera_torso_look_at
+			}
+
+			# For spot lights and point lights
+			radius = 180
+			falloff = 10
+
+			# For spot lights
+			outer_cone_angle = 55
+			inner_cone_angle = 0
+		}
+	}
+
+	shadow_camera = {
+		position = cylindrical { 150 250 -75 }
+		look_at = { 0 0 0 }
+		look_at_node = {
+			default = camera_torso_look_at
+		}
+		fov = 50
+		camera_near_far = { 100 1350 }
+	}
+
+}
+

@@ -3,7 +3,7 @@
  ### DECISIONS
  train_for_tournament_decision_name: "Потренироваться перед турниром"
  train_for_tournament_decision_desc: "Нельзя игнорировать зов стали. Я облачусь в снаряжение и пойду тренироваться на учебное поле."
- train_for_tournament_decision_tooltip: "Повысить [Concept( 'prowess', 'доблесть' )|E], грядет [GetActivityType('activity_tournament').GetName]"
+ train_for_tournament_decision_tooltip: "Повысить [Concept( 'prowess', 'доблесть' )|E], грядет [GetActivityType('activity_tournament').GetName|l]"
  train_tournament_decision.tt: "Вы и ваши $knight_culture_player_plural$ отправитесь оттачивать свои навыки. В случае успеха укрепится ваша [Concept( 'prowess', 'доблесть' )|E], необходимая на военных состязаниях, которые предложит вам [GetActivityType('activity_tournament').GetName]."
  train_for_tournament_decision_confirm: "Начать тренировку"
  grand_tournament_active: "Требуется [GetActivityType('activity_tournament').GetName|l], где вы можете участвовать"
@@ -158,6 +158,8 @@
  locale_window_status_spectating: "наблюдаете за состязанием"
  locale_window_status_participating: "участвуете в состязании"
  locale_window_status_knocked_out: "выбыли из состязания"
+ locale_window_status_resign: "отказались от участия в состязании"
+ locale_window_status_discalified: "были отстранены от участия в состязании"
  locale_window_status_not_qualify: "не прошли отбор на состязание"
  locale_window_your_participation: "Ваше участие"
  locale_window_your_participation_status_selection: "[SelectLocalization(PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'contestant'), 'locale_window_your_participation_status_yes', 'locale_window_your_participation_status_no')]"
@@ -253,8 +255,8 @@
  BOW_EXPERIENCE_REGULAR_TOOLTIP: "$tournament_contest_favoured_skill_tooltip$ $tourney_participant_bow$"
  BOW_EXPERIENCE_GREATER_TOOLTIP: "$tournament_contest_most_favoured_skill_tooltip$ $tourney_participant_bow$"
  ### Tooltips
- contest_planner_contest_tooltip: "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddTextIf( Not( ActivityPlanner.CanPlanMorePhasesOfType( ActivityPhase.Self ) ), AddLine( '$ACTIVITY_PLANNER_CANNOT_PICK_MORE_OF_PHASE|q$' ) )][AddLine( ActivityPhase.GetDescription )]"
- contest_planner_contest_selected_tooltip: "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddLine( ActivityPhase.GetDescription )]"
+ contest_planner_contest_tooltip: "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddTextIf( Not( ActivityPlanner.CanPlanMorePhasesOfType( ActivityPhase.Self ) ), AddLine( '$ACTIVITY_PLANNER_CANNOT_PICK_MORE_OF_PHASE|q$' ) )][AddLine( ActivityPhase.GetDescription( Activity.Self ) )]"
+ contest_planner_contest_selected_tooltip: "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddLine( ActivityPhase.GetDescription( Activity.Self ) )]"
  contest_planner_remove_contest_tooltip: "#T Убрать: «[ActivityPhase.GetName]»#!"
  contest_planner_add_contest_tooltip: "#T Добавить состязание#!"
  tournament_contest_favoured_skill_tooltip: "Это [Concept( 'contest', 'состязание' )|E] увеличивает"
@@ -767,7 +769,7 @@
  tournament_conclusion_winner_duel: "\nПобедитель #BOL в поединке#!: [activity.MakeScope.Var('duel_winner').Char.GetFirstName]"
  tournament_conclusion_winner_board_game: "\nПобедитель состязаний по #BOL настольным играм#!: [activity.MakeScope.Var('board_game_winner').Char.GetFirstName]"
  tournament_contest_reward_toast_title: "Ваш приз"
- tournament_contest_reward_toast_desc: "Ваша награда — [Artifact.GetNameNoTooltip|l]"
+ tournament_contest_reward_toast_desc: "Вы выиграли артефакт «[Artifact.GetNameNoTooltip]»"
  #Contest Cultural Variations
  tournament_melee_german: "Бугурт"
  tournament_melee_fallback: "Ближний бой"

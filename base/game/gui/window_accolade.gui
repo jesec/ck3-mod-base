@@ -163,6 +163,38 @@ window = {
 				}
 
 				expand = {}
+
+				button_round = {
+					datacontext = "[Accolade.GetAcclaimedKnight]"
+					visible = "[Not( Character.IsPlayer )]"
+
+					tooltip = "ACCOLADE_VIEW_INTERACTIONS_BUTTON_TOOLTIP"
+					tooltip_visible = "[Not(IsInteractionMenuOpenForCharacterWithFilter(Character.Self, 'accolade'))]"
+
+					onclick = "[ToggleFilteredCharacterInteractionMenu(Character.Self, 'accolade')]"
+
+					button_icon = {
+						alwaystransparent = yes
+						parentanchor = center
+						size = { 30 30 }
+						texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+					}
+
+					text_single = {
+						parentanchor = bottom|hcenter
+						position = { 0 3 }
+						text = "[GetNumberOfValidInteractionsWithFilter(Character.Self, 'accolade')]"
+						default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+
+						background = {
+							margin = { 5 0 }
+							margin_top = -5
+							using = Background_Area_Dark
+						}
+					}
+				}
+
+				expand = {}
 			}
 
 			hbox = {
@@ -452,6 +484,7 @@ window = {
 								blockoverride "faith_context"
 								{
 									datacontext = "[Accolade.GetAcclaimedKnight.GetFaith]"
+									datacontext = "[Accolade.GetAcclaimedKnight.GetRite]"
 								}
 								blockoverride "icon_size"
 								{

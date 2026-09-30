@@ -1,0 +1,69 @@
+﻿vbox = {
+	name = "event_window_widget_rite"
+	EventWindowWidgetRite = {}
+}
+
+types EventWindowWidgetsRite
+{
+	type EventWindowWidgetRite = vbox {
+		block "rite_datacontext" {
+			datacontext = "[EventWindowWidget.GetScope.GetRootScope.Char]"
+			datacontext = "[Character.GetRite]"
+		}
+
+		visible = "[Rite.IsValid]"
+		margin = { 12 12 }
+
+		hbox = {
+			name = "rite_icon_and_tenets"
+			datacontext = "[Rite.GetFaith]"
+			spacing = 8
+
+			vbox = {
+				name = "core_tenets_column"
+				minimumsize = { 0 100 }
+
+				text_label_center = {
+					name = "rite_name"
+					layoutpolicy_horizontal = expanding
+					text = "[Rite.GetNameNoTooltip]"
+					align = center|nobaseline
+					max_width = 350
+					using = Font_Size_Medium
+				}
+
+				hbox = {
+					name = "core_tenets"
+					spacing = 4
+
+					datamodel = "[Rite.GetTenets]"
+
+					background = {
+						using = Background_Area
+						margin = { 20 0 }
+						modify_texture = {
+							texture = "gfx/interface/component_masks/mask_fade_horizontal_middle.dds"
+							blend_mode = alphamultiply
+						}
+					}
+
+					button_rite_icon = {
+						size = { 88 88 }
+						texture = "[Rite.GetIcon]"
+					}
+
+					item = {
+						widget = {
+							size = { 72 100 }
+
+							container_tenet_item_small = {
+								parentanchor = top|hcenter
+								position = { 0 6 }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

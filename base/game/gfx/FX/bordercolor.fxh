@@ -54,7 +54,7 @@ PixelShader = {
 
 		void GetBorderColorAndBlendGameLerp( float2 WorldSpacePosXZ, float3 Flatmap, 
 			out float3 BorderColor, out float BorderPreLightingBlend, 
-			out float BorderPostLightingBlend, float FlatmapLerp )
+			out float BorderPostLightingBlend, float FlatmapLerp, float SkipSecondaryProvinceOverlay )
 		{
 			float PatternTiling = 15;
 			float2 ColorMapCoords = WorldSpacePosXZ * WorldSpaceToTerrain0To1;
@@ -62,7 +62,7 @@ PixelShader = {
 				PatternTiling * 2.0f, 1.0f - ( ColorMapCoords.y * PatternTiling ) ) ).rgb;
 
 			GetProvinceOverlayAndBlend( ColorMapCoords, BorderColor, 
-				BorderPreLightingBlend, BorderPostLightingBlend );
+				BorderPreLightingBlend, BorderPostLightingBlend, SkipSecondaryProvinceOverlay );
 
 			float Luminance = dot (BorderColor, float3( 0.299f, 0.587f, 0.114f ) );
 			float3 Gray = float3( Luminance, Luminance, Luminance );
@@ -77,10 +77,10 @@ PixelShader = {
 
 		void GetBorderColorAndBlendGame( float2 WorldSpacePosXZ, float3 Flatmap, 
 			out float3 BorderColor, out float BorderPreLightingBlend, 
-			out float BorderPostLightingBlend )
+			out float BorderPostLightingBlend, float SkipSecondaryProvinceOverlay )
 		{
 			GetBorderColorAndBlendGameLerp( WorldSpacePosXZ, Flatmap, BorderColor, 
-				BorderPreLightingBlend, BorderPostLightingBlend, 0.0f );
+				BorderPreLightingBlend, BorderPostLightingBlend, 0.0f, SkipSecondaryProvinceOverlay );
 		}
 
 		void LerpBorderColorWithFogOfWarAlphaValue( inout float3 Diffuse, float FogOfWarAlphaValue, 

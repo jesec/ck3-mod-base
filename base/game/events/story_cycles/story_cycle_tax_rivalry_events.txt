@@ -283,7 +283,7 @@ tax_rivalry.0011 = {
 				}
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			sadistic = minor_stress_impact_gain
 			callous = minor_stress_impact_gain
 			stubborn = minor_stress_impact_gain
@@ -311,7 +311,7 @@ tax_rivalry.0011 = {
 	option = { # Forego this opportunity
 		name = tax_rivalry.0011.b
 		flavor = tax_rivalry.0011.b.tt
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			compassionate = minor_stress_impact_gain
 			forgiving = medium_stress_impact_gain
 		}
@@ -514,9 +514,9 @@ scripted_effect save_rival_as_scope_effect = {
 	}
 }
 
-# ===================================
+#####################################
 # =		Potential Rival Events		=
-# ===================================
+#####################################
 # 	Events that trigger while the rivalry is not yet serious. Opportunities for the liege to profit.
 
 # Contemplate stealing money and pinning the steward/tax collector against one another
@@ -580,7 +580,7 @@ tax_rivalry.1000 = {
 			}
 			trigger_event = tax_rivalry.1001	
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			greedy = minor_stress_impact_loss
 			just = minor_stress_impact_gain
 			honest = medium_stress_impact_gain
@@ -705,9 +705,9 @@ tax_rivalry.1002 = {
 
 }
 
-# ===========================
+#############################
 # =		Nemesis Events		=
-# ===========================
+#############################
 # 	The rivalry has become severe. The realm will suffer for it.
 
 scripted_effect tax_rivalry_3000_sabotage_setup_effect = {
@@ -911,7 +911,7 @@ tax_rivalry.3001 = {
 				trigger_event = tax_rivalry.3002
 			}
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			just = minor_stress_impact_gain
 			compassionate = minor_stress_impact_gain
 			vengeful = minor_stress_impact_loss
@@ -1068,9 +1068,9 @@ tax_rivalry.3003 = {
 	}
 }
 
-# ===============================
+#################################
 # =		Rivalry X Events		=
-# ===============================
+#################################
 # 	These events can fire at any point during the rivalry and have various effects.
 
 scripted_effect tax_rivalry_4000_unity_loss_effect = {
@@ -1107,20 +1107,18 @@ tax_rivalry.4000 = {
 		#To influence House Unity, we must all be of the same House!
 		scope:story.var:steward.house = scope:story.var:tax_collector.house
 		house = scope:story.var:tax_collector.house
+		# Rivalry is the whole point of the cycle — skip when the pair isn't rivals at all.
+		scope:story.var:steward = {
+			OR = {
+				has_relation_potential_rival = scope:story.var:tax_collector
+				has_relation_rival = scope:story.var:tax_collector
+			}
+		}
 	}
 
 	# This event is more likely to trigger depending on the depth of the pair's rivalry
 	weight_multiplier = {
 		base = 1
-		modifier = {
-			scope:story.var:steward = {
-				NOR = {
-					has_relation_potential_rival = scope:story.var:tax_collector
-					has_relation_rival = scope:story.var:tax_collector
-				}
-			}
-			factor = 0
-		}
 		modifier = {
 			scope:story.var:steward = { has_relation_potential_rival = scope:story.var:tax_collector }
 			factor = 0.33
@@ -1188,7 +1186,8 @@ scripted_effect tax_rivalry_4010_deepen_rivalry_effect = {
 		# Add an opinion malus if the two are nemeses and their relationship cannot deteriorate any further
 		if = {
 			limit = {
-				has_relation_nemesis = scope:tax_collector
+				has_relation_nemesis = scope:tax_collector
+
 			}
 			add_opinion = {
 				target = scope:tax_collector
@@ -1552,9 +1551,9 @@ tax_rivalry.4011 = {
 }
 
 
-# ====================================
+######################################
 # =		Invalidated Story Events	 =
-# ====================================
+######################################
 # 	Various informative events that fire once the story can no longer continue
 
 # Your liege dies and you are the primary heir
@@ -1582,7 +1581,7 @@ tax_rivalry.9000 = {
 		scope:story = {
 			end_story = yes
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_loss
 			arrogant = minor_stress_impact_loss
 			ambitious = minor_stress_impact_loss
@@ -1622,7 +1621,7 @@ tax_rivalry.9001 = {
 		scope:story = {
 			end_story = yes
 		}
-		stress_impact = {
+		stress_and_fulfillment_impact = {
 			base = medium_stress_impact_gain
 			arrogant = minor_stress_impact_gain
 			ambitious = minor_stress_impact_gain

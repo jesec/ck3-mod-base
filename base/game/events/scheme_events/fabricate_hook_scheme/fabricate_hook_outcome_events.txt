@@ -91,6 +91,7 @@ fabricate_hook_outcome.0001 = {
 				end_scheme = yes
 			}
 		}
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_fabricate_hook_success_puppeteer }
 	}
 }
 
@@ -152,6 +153,7 @@ fabricate_hook_outcome.1001 = {
 		fabricate_hook_success_effect = {
 			TYPE = fabrication_hook
 		}
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_fabricate_hook_success_puppeteer }
 	}
 
 	after = {
@@ -213,6 +215,7 @@ fabricate_hook_outcome.1002 = {
 		create_character = {
 			template = travel_messenger
 			faith = scope:target.faith
+			rite = scope:target.rite
 			culture = scope:target.culture
 			location = root.location
 			save_scope_as = messenger
@@ -228,6 +231,7 @@ fabricate_hook_outcome.1002 = {
 		fabricate_hook_success_effect = {
 			TYPE = fabrication_hook
 		}
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_fabricate_hook_success_puppeteer }
 	}
 
 	after = {
@@ -268,6 +272,7 @@ fabricate_hook_outcome.1003 = {
 		fabricate_hook_success_effect = {
 			TYPE = loyalty_hook
 		}
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_fabricate_hook_success_puppeteer }
 	}
 }
 
@@ -308,25 +313,43 @@ fabricate_hook_outcome.1004 = {
 	option = {
 		name = fabricate_hook_outcome.1004.a
 		trigger = {
-			faith = { NOT = { has_doctrine_parameter = piety_gain_from_successful_intrigue_schemes } }
-		}
-		flavor = fabricate_hook_outcome.1004.a.flavor
-		add_piety = medium_piety_loss
-		fabricate_hook_success_effect = {
-			TYPE = loyalty_hook
-		}
-	}
-
-	option = {
-		name = fabricate_hook_outcome.1004.a
-		trigger = {
-			faith = { has_doctrine_parameter = piety_gain_from_successful_intrigue_schemes }
+			rite = { rite_has_parameter = piety_gain_from_successful_intrigue_schemes }
 		}
 		flavor = fabricate_hook_outcome.1004.a.flavor_sacred_shadows
 		add_piety = medium_piety_gain
 		fabricate_hook_success_effect = {
 			TYPE = loyalty_hook
 		}
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_fabricate_hook_success_puppeteer }
+	}
+
+	option = {
+		name = fabricate_hook_outcome.1004.a
+		trigger = {
+			rite = { NOT = { rite_has_parameter = piety_gain_from_successful_intrigue_schemes } }
+			has_personal_tenet_flag = tenet_sacred_shadows_fabricate_hook
+		}
+		flavor = fabricate_hook_outcome.1004.a.flavor_sacred_shadows
+		fabricate_hook_success_effect = {
+			TYPE = loyalty_hook
+		}
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_fabricate_hook_success_puppeteer }
+	}
+
+	option = {
+		name = fabricate_hook_outcome.1004.a
+		trigger = {
+			NOR = {
+				rite = { rite_has_parameter = piety_gain_from_successful_intrigue_schemes }
+				has_personal_tenet_flag = tenet_sacred_shadows_fabricate_hook
+			}
+		}
+		flavor = fabricate_hook_outcome.1004.a.flavor
+		add_piety = medium_piety_loss
+		fabricate_hook_success_effect = {
+			TYPE = loyalty_hook
+		}
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_fabricate_hook_success_puppeteer }
 	}
 }
 
@@ -391,6 +414,7 @@ fabricate_hook_outcome.1005 = {
 		fabricate_hook_success_effect = {
 			TYPE = life_threat_hook
 		}
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_good TITLE = scheme_outcome_fabricate_hook_success_puppeteer }
 	}
 }
 
@@ -455,5 +479,6 @@ fabricate_hook_outcome.3001 = {
 	option = {
 		name = fabricate_hook_outcome.3001.a
 		fabricate_hook_discovery_effect = yes
+		notify_puppeteer_of_scheme_outcome_effect = { OWNER = scope:owner TARGET = scope:target TYPE = event_toast_effect_bad TITLE = scheme_outcome_fabricate_hook_discovered_puppeteer }
 	}
 }

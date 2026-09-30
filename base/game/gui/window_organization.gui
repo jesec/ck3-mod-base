@@ -1,0 +1,119 @@
+﻿
+window = {
+	name = "organization_window"
+	movable = yes
+	layer = middle
+	allow_outside = yes
+
+	size = { 700 90% }
+
+	datacontext = "[OrganizationWindow.GetOrganization]"
+
+	using = Window_Movable
+	using = title_view_window_side_pop_out
+	using = Window_Decoration
+	using = Window_Background
+
+	vbox = {
+		using = Window_Margins
+		spacing = 5
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				text = "[Organization.GetName]"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[OrganizationWindow.Close]"
+			}
+		}
+
+		text_single = {
+			text = "[Organization.GetDescription]"
+		}
+
+		vbox_character_list = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			datacontext = "[OrganizationWindow.AccessMemberList]"
+
+			blockoverride "container_implementation" {
+				fixedgridbox = {
+					name = "characters_grid"
+					datamodel = "[CharacterSelectionList.GetList]"
+					visible = "[Not(CharacterSelectionList.IsBuildingList)]"
+					addcolumn = 560
+					addrow = 94
+
+					item = {
+						widget_character_list_item = {
+							datacontext = "[CharacterListItem.GetCharacter]"
+							size = { 560 90 }
+						}
+					}
+				}
+			}
+		}
+	}
+
+	window_character_filter = {
+		datacontext = "[OrganizationWindow.AccessMemberList]"
+		visible_at_creation = no
+
+		blockoverride "addition_filter" {
+
+			vbox_filter_group = {
+				datacontext = "[CharacterSelectionList.GetCategory('politics_filter_category')]"
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "filters" {
+					filter_item = {
+						datacontext = "[CharacterSelectionList.GetFilter('ruler_filter')]"
+						layoutpolicy_horizontal = expanding
+					}
+					filter_item = {
+						datacontext = "[CharacterSelectionList.GetFilter('government_filter')]"
+						layoutpolicy_horizontal = expanding
+					}
+					filter_item = {
+						datacontext = "[CharacterSelectionList.GetFilter('relation_filter')]"
+						layoutpolicy_horizontal = expanding
+					}
+					filter_item = {
+						layoutpolicy_horizontal = expanding
+						datacontext = "[CharacterSelectionList.GetFilter('dynasty_filter')]"
+					}
+				}
+			}
+
+			vbox_filter_group = {
+				layoutpolicy_horizontal = expanding
+				datacontext = "[CharacterSelectionList.GetCategory('personal_filter_category')]"
+
+				blockoverride "filters" {
+					filter_item = {
+						layoutpolicy_horizontal = expanding
+						datacontext = "[CharacterSelectionList.GetFilter('culture_filter')]"
+					}
+					filter_item = {
+						layoutpolicy_horizontal = expanding
+						datacontext = "[CharacterSelectionList.GetFilter('gender_filter')]"
+					}
+					filter_item = {
+						layoutpolicy_horizontal = expanding
+						datacontext = "[CharacterSelectionList.GetFilter('health_filter')]"
+					}
+					filter_item = {
+						layoutpolicy_horizontal = expanding
+						datacontext = "[CharacterSelectionList.GetFilter('imprisoned_filter')]"
+					}
+				}
+			}
+		}
+	}
+}

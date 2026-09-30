@@ -1,0 +1,900 @@
+window = {
+	name = "holy_site_creation_window"
+	widgetid = "holy_site_creation_window"
+	layer = middle
+	parentanchor = center
+	position = { 0 -15 }
+	size = { 1200 870 }
+
+	datacontext = "[GetVariableSystem]"
+	datacontext = "[HolySiteCreationWindow.GetFaith]"
+	datacontext = "[HolySiteCreationWindow.GetHolySiteType]"
+	datacontext = "[GetPlayer.GetInventory]"
+
+	allow_outside = yes
+
+	using = Window_Movable
+
+	widget = {
+		allow_outside = yes
+		parentanchor = center
+		size = { 100% 100% }
+
+		using = Window_Background
+		using = Window_Decoration
+	}
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+	}
+
+	vbox = {
+		using = Window_Margins
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		spacing = 6
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				text = "HOLY_SITE_CREATION_WINDOW_HEADER"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[HolySiteCreationWindow.Close]"
+			}
+		}
+
+		### TWO-COLUMN BODY
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin = { 5 0 }
+			spacing = 16
+
+			### LEFT — EFFECT TEXT + ARTIFACT SLOTS
+			vbox = {
+				layoutpolicy_vertical = expanding
+				size = { 520 0 }
+
+				datacontext = "[HolySiteCreationWindow.GetHolySiteType]"
+				datacontext = "[HolySiteCreationWindow.GetSelectedBarony]"
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 10
+					margin_right = 4
+
+					hbox = {
+						datacontext = "[Title.GetHolder]"
+						tooltip = "FAITH_HOLY_SITE_HOLDER_TOOLTIP"
+
+						background = {
+							visible = "[Not( HolySiteCreationWindow.HasSelectedBarony )]"
+							margin_top = 3
+							margin_bottom = -1
+
+							using = Status_Bad
+							alpha = 0.8
+						}
+
+						background = {
+							visible = "[HolySiteCreationWindow.HasSelectedBarony]"
+							margin_top = 3
+							margin_bottom = -1
+
+							using = Background_Area
+							alpha = 0.8
+						}
+
+						highlight_icon = {
+							name = "faith_button"
+							datacontext = "[Title.GetDeJureLiege.GetHolder.GetFaith]"
+							size = { 50 50 }
+
+							texture = "[HolySiteCreationWindow.GetFaith.GetIcon]"
+						}
+
+						coa_realm_tiny_crown = {
+							visible = "[Title.HasHolder]"
+							datacontext = "[Title.GetHolder.GetTopLiege]"
+							scale = 0.95
+						}
+					}
+
+					vbox = {
+						layoutpolicy_horizontal = expanding
+
+						spacing = 4
+
+						### Holy site name
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 10
+							allow_outside = yes
+
+							widget = {
+								size = { 30 28 }
+								allow_outside = yes
+
+								coa_title_tiny = {
+									parentanchor = center
+									allow_outside = yes
+									tooltip_visible = no
+									position = { 0 5 }
+								}
+							}
+
+							text_single = {
+								visible = "[And( HolySiteType.IsValid, Not( HolySiteCreationWindow.HasSelectedBarony ) )]"
+								margin_bottom = 5
+								layoutpolicy_horizontal = expanding
+
+								text = "[HolySiteType.GetName]"
+								align = nobaseline
+								autoresize = no
+								default_format = "#low"
+								using = Font_Size_Big
+							}
+
+							text_single = {
+								visible = "[And( HolySiteType.IsValid, HolySiteCreationWindow.HasSelectedBarony )]"
+								margin_bottom = 5
+								layoutpolicy_horizontal = expanding
+
+								text = "[HolySiteType.GetDynamicName( HolySiteCreationWindow.GetSelectedBarony.Self )]"
+								align = nobaseline
+								autoresize = no
+								default_format = "#high"
+								using = Font_Size_Big
+							}
+
+							text_single = {
+								visible = "[And( Not( HolySiteType.IsValid ), HolySiteCreationWindow.HasSelectedBarony )]"
+								margin_bottom = 5
+								layoutpolicy_horizontal = expanding
+
+								text = "[HolySiteCreationWindow.GetSelectedBarony.GetProvince.GetHolding.GetNameNoTooltip]"
+								align = nobaseline
+								autoresize = no
+								default_format = "#high"
+								using = Font_Size_Big
+							}
+
+							expand = {}
+
+							button_standard_hover = {
+								size = { 0 0 }
+								onclick = "[HolySiteCreationWindow.StartSelectBarony]"
+								tooltip = "HOLY_SITE_CREATE_SELECT_LOCATION"
+
+								button = {
+									size = { 100% 100% }
+									visible = "[HolySiteCreationWindow.IsSelectingBarony]"
+									onclick = "[HolySiteCreationWindow.StopSelectBarony]"
+								}
+
+								flowcontainer = {
+									resizeparent = yes
+									ignoreinvisible = yes
+									margin = { 4 4 }
+									margin_left = 8
+									spacing = 5
+
+									text_single = {
+										parentanchor = vcenter
+										text = "CHANGE"
+										default_format = "#clickable"
+										align = nobaseline
+									}
+
+									button_round = {
+										alwaystransparent = yes
+										down = "[HolySiteCreationWindow.IsSelectingBarony]"
+
+										button_replace = {
+											alwaystransparent = yes
+											parentanchor = center
+											down = "[HolySiteCreationWindow.IsSelectingBarony]"
+										}
+									}
+								}
+							}
+						}
+
+						divider_light = {
+							layoutpolicy_horizontal = expanding
+						}
+
+						### County holder
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							datacontext = "[Title.GetHolder]"
+							tooltip = "FAITH_HOLY_SITE_HOLDER_TOOLTIP"
+							using = tooltip_se
+							spacing = 8
+
+							text_single = {
+								text = "HOLY_SITE_CREATE_SITE_SUBSCRIPT"
+							}
+
+							expand = {}
+						}
+					}
+				}
+
+				spacer = {
+					size = { 0 22 }
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 10
+
+					### Artifact slots
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "HOLY_SITE_WINDOW_SLOTS_HEADER"
+						align = center|nobaseline
+						using = Font_Size_Medium
+						default_format = "#high"
+					}
+
+					vbox = {
+						layoutpolicy_horizontal = expanding
+
+						flowcontainer = {
+							name = "holy_site_slots"
+							layoutpolicy_horizontal = expanding
+							ignoreinvisible = yes
+							direction = horizontal
+							spacing = 8
+							wrap_count = 3
+
+							background = {
+								using = Background_Area
+								margin = { 0 -30 }
+								alpha = 0.8
+
+								modify_texture = {
+									texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+									blend_mode = alphamultiply
+								}
+
+								modify_texture = {
+									texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+									blend_mode = alphamultiply
+									mirror = horizontal
+								}
+							}
+
+							datamodel = "[HolySiteCreationWindow.GetSlots]"
+							item = {
+								widget_holy_site_creation_slot = {}
+							}
+						}
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+
+							hbox = {
+								spacing = 1
+								datamodel = "[GetSegmentedProgressTargetBar( GetDefine( 'NReligion','MAX_HOLY_SITE_RARITY_TOTAL' ), FixedPointToInt( HolySiteCreationWindow.GetSelectedArtifactsRaritySum ), FixedPointToInt( HolySiteCreationWindow.GetSelectedArtifactsRaritySum ) )]"
+
+								background = {
+									margin = { 8 8 }
+									using = Background_Area
+								}
+
+								item = {
+									icon = {
+										size = { 33 16 }
+
+										texture = "gfx/interface/progressbars/progress_magnificence.dds"
+										framesize = { 45 45 }
+										frame = "[int32.GetInt]"
+									}
+								}
+							}
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 6
+						margin = { 0 6 }
+
+						expand = {}
+
+						hbox = {
+							spacing = 6
+
+							text_single = {
+								max_width = 400
+								text = "HOLY_SITE_TOTAL_RARITY_LEVELS"
+								align = nobaseline
+							}
+
+							text_single = {
+								text = "[HolySiteCreationWindow.GetSelectedArtifactsRaritySum]"
+								default_format = "#high"
+								align = nobaseline
+							}
+						}
+
+						expand = {}
+					}
+				}
+
+				### Effect description
+				scrollbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					blockoverride "scrollbox_content" {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							margin = { 10 0 }
+							spacing = 10
+
+							text_label_center = {
+								layoutpolicy_horizontal = expanding
+								text = "HOLY_SITE_WINDOW_HOLY_SITE_EFFECTS_HEADER"
+							}
+
+							text_multi = {
+								layoutpolicy_horizontal = expanding
+								text = "[HolySiteType.GetRegularEffectDesc( HolySiteCreationWindow.GetFaith.Self, HolySiteCreationWindow.GetSelectedBarony.Self, Select_CFixedPoint( HolySiteCreationWindow.HasSelectedArtifact, HolySiteCreationWindow.GetSelectedArtifactsRaritySum, '(CFixedPoint)-1' ) )]"
+								autoresize = yes
+							}
+
+							text_label_center = {
+								layoutpolicy_horizontal = expanding
+								text = "HOLY_SITE_WINDOW_HOLY_SITE_INACTIVE_EFFECTS_HEADER"
+							}
+
+							text_multi = {
+								layoutpolicy_horizontal = expanding
+								text = "[HolySiteType.GetEminentEffectDesc( HolySiteCreationWindow.GetFaith.Self, HolySiteCreationWindow.GetSelectedBarony.Self, Select_CFixedPoint( HolySiteCreationWindow.HasSelectedArtifact, HolySiteCreationWindow.GetSelectedArtifactsRaritySum, '(CFixedPoint)-1' ) )]"
+								default_format = "#low"
+								format_override = { P low }
+								format_override = { N low }
+								format_override = { L low }
+								format_override = { E low }
+								format_override = { S low }
+								max_width = 450
+								autoresize = yes
+							}
+
+							vbox = {
+								datamodel = "[HolySiteCreationWindow.GetActiveHolySiteFaiths]"
+								visible = "[Not( IsDataModelEmpty( HolySiteCreationWindow.GetActiveHolySiteFaiths ) )]"
+								layoutpolicy_horizontal = expanding
+								margin_top = 20
+
+								text_label_center = {
+									layoutpolicy_horizontal = expanding
+									min_height = 26 # This helps with weird auto-layouting issues
+									autoresize = no # This helps with weird auto-layouting issues
+									text =  "HOLY_SITE_WINDOW_HOLY_SITE_FAITHS_HEADER"
+								}
+
+								item = {
+									holy_site_creation_faith_item = {}
+								}
+							}
+
+							vbox = {
+								datamodel = "[HolySiteCreationWindow.GetInactiveHolySiteFaiths]"
+								visible = "[Not( IsDataModelEmpty( HolySiteCreationWindow.GetInactiveHolySiteFaiths ) )]"
+								layoutpolicy_horizontal = expanding
+								margin_top = 20
+
+								text_label_center = {
+									layoutpolicy_horizontal = expanding
+									text =  "HOLY_SITE_WINDOW_HOLY_SITE_FAITHS_INACTIVE_HEADER"
+								}
+
+								item = {
+									holy_site_creation_faith_item = {}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			### RIGHT — PLAYER ARTIFACT PICKER + ACTION BUTTON
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				spacing = 6
+
+				datacontext = "[GetPlayer]"
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					spacing = 6
+ 					visible = "[Not( HolySiteCreationWindow.IsSelectingBarony )]"
+
+					### Holy site type picker
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "HOLY_SITE_CREATION_TYPE_PICKER_HEADER"
+						align = center|nobaseline
+						using = Font_Size_Medium
+						default_format = "#high"
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						size = { 0 178 }
+
+						blockoverride "scrollbox_content" {
+							flowcontainer = {
+								name = "available_holy_site_types_list"
+								datamodel = "[HolySiteCreationWindow.GetAvailableHolySiteTypes]"
+								layoutpolicy_horizontal = expanding
+								spacing = 5
+								wrap_count = 3
+
+								item = {
+									flowcontainer = {
+										margin = { 2 0 }
+
+										button_standard = {
+											size = { 192 33 }
+											down = "[HolySiteCreationWindow.IsHolySiteTypeSelected( HolySiteType.Self )]"
+											enabled = "[HolySiteCreationWindow.CanPickHolySiteType( HolySiteType.Self )]"
+											tooltip =  "HOLY_SITE_TYPE_CREATE_TOOLTIP"
+											onclick = "[HolySiteCreationWindow.SelectHolySiteType( HolySiteType.Self )]"
+											text = "[HolySiteType.GetName]"
+										}
+									}
+								}
+							}
+						}
+
+						blockoverride "scrollbox_empty"
+						{
+							visible = "[IsDataModelEmpty( HolySiteCreationWindow.GetAvailableHolySiteTypes )]"
+							text = "HOLY_SITE_CREATION_NO_AVAILABLE_TYPES"
+						}
+					}
+
+					### Artifact picker
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						margin_left = 30
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							autoresize = no
+
+							text = "HOLY_SITE_WINDOW_PICKER_HEADER"
+							align = center|nobaseline
+							using = Font_Size_Medium
+							default_format = "#high"
+						}
+
+						button_menu = {
+							onclick = "[GetVariableSystem.Toggle( 'holy_site_creation_compact' )]"
+							shortcut = "holy_site_compact"
+							tooltip = "MY_REALM_COMPACT_SUBJECT_LIST"
+						}
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						blockoverride "rarity_level" {
+							hbox_artifact_rarity_level = {}
+						}
+
+						blockoverride "scrollbox_content" {
+							fixedgridbox = {
+								name = "equippable_artifacts_list"
+								visible = "[Not( GetVariableSystem.Exists( 'holy_site_creation_compact' ) )]"
+								datamodel = "[HolySiteCreationWindow.GetEnshrinableArtifacts]"
+
+								addcolumn = 560
+								addrow = 116
+
+								item = {
+									widget_artifact_entry = {
+										blockoverride "background_button_overrides"
+										{
+											onclick = "[HolySiteCreationWindow.SelectArtifact( Artifact.Self )]"
+											down = "[HolySiteCreationWindow.IsArtifactSelected( Artifact.Self )]"
+										}
+										blockoverride "artifact_click_info" {}
+										blockoverride "artifact_click_text" {
+											text = "[HolySiteCreationWindow.GetEnshrineTooltip( Artifact.Self )]"
+											default_format = "#I"
+										}
+									}
+								}
+							}
+
+							fixedgridbox = {
+								visible = "[GetVariableSystem.Exists( 'holy_site_creation_compact' )]"
+								datamodel = "[HolySiteCreationWindow.GetEnshrinableArtifacts]"
+
+								addcolumn = 100
+								addrow = 100
+								flipdirection = yes
+								datamodel_wrap = 5
+
+								item = {
+									button_standard_hover = {
+										size = { 90 90 }
+										down = "[HolySiteCreationWindow.IsArtifactSelected( Artifact.Self )]"
+
+										button_artifact = {
+											blockoverride "on_click" {
+												onclick = "[HolySiteCreationWindow.SelectArtifact( Artifact.Self )]"
+
+												onrightclick = "[ToggleGameViewData( 'artifact_details', Artifact.GetID )]"
+												onrightclick = "[LocalPlayerNewArtifacts.RemoveNewArtifact( Artifact.Self )]"
+												button_ignore = none
+											}
+											blockoverride "artifact_click_info" {}
+											blockoverride "artifact_click_text" {
+												text = "[HolySiteCreationWindow.GetEnshrineTooltip( Artifact.Self )]"
+												default_format = "#I"
+											}
+										}
+									}
+								}
+							}
+						}
+
+						blockoverride "scrollbox_empty"
+						{
+							visible = "[IsDataModelEmpty( HolySiteCreationWindow.GetEnshrinableArtifacts )]"
+							text = "HOLY_SITE_NO_ENSHRINEABLE_ARTIFACTS"
+						}
+					}
+				}
+
+				### Domain Holding List
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[HolySiteCreationWindow.IsSelectingBarony]"
+
+					spacing = 5
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "HOLY_SITE_WINDOW_PICK_LOCATION"
+						align = center|nobaseline
+						using = Font_Size_Medium
+						default_format = "#high"
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						blockoverride "scrollbox_content" {
+							vbox = {
+								name = "equippable_artifacts_list"
+								datamodel = "[HolySiteCreationWindow.GetPotentialBaronyTitles]"
+								layoutpolicy_horizontal = expanding
+								spacing = 6
+
+								item = {
+									button_standard_list = {
+										name = "title_button"
+										layoutpolicy_horizontal = expanding
+										size = { 0 58 }
+
+										onclick = "[HolySiteCreationWindow.SelectBarony( Title.Self )]"
+										down = "[HolySiteCreationWindow.IsBaronySelected( Title.Self )]"
+										using = tooltip_es
+
+										hbox = {
+											margin = { 10 0 }
+											spacing = 10
+
+											coa_title_tiny_crown = {}
+
+											text_single = {
+												name = "text"
+												layoutpolicy_horizontal = expanding
+
+												text = "[Title.GetProvince.GetHolding.GetName]"
+												default_format = "#high"
+												using = Font_Size_Medium
+												alwaystransparent = yes
+											}
+
+											highlight_icon = {
+												visible = "[HolySiteCreationWindow.IsBaronySelected( Title.Self )]"
+												size = { 30 30 }
+
+												texture = "gfx/interface/icons/symbols/icon_check.dds"
+											}
+										}
+									}
+								}
+							}
+						}
+
+						blockoverride "scrollbox_empty"
+						{
+							visible = "[IsDataModelEmpty( HolySiteCreationWindow.GetEnshrinableArtifacts )]"
+							text = "HOLY_SITE_NO_ENSHRINEABLE_ARTIFACTS"
+						}
+					}
+				}
+
+				### Action effect preview
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					size = { 0 140 }
+					min_height = 180
+					spacing = 4
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "HOLY_SITE_ACTION_EFFECTS_HEADER"
+						align = center|nobaseline
+						using = Font_Size_Small
+						default_format = "#weak"
+					}
+
+					scrollbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						blockoverride "scrollbox_content" {
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								margin = { 10 5 }
+
+								text_multi = {
+									visible = "[And( HolySiteCreationWindow.GetHolySiteType.IsValid, HolySiteCreationWindow.GetSelectedArtifact.IsValid )]"
+									layoutpolicy_horizontal = expanding
+									text = "[HolySiteCreationWindow.GetSelectedActionEffectDesc]"
+									autoresize = yes
+									max_width = 590
+								}
+
+								text_single = {
+									visible = "[Not( And( HolySiteCreationWindow.GetHolySiteType.IsValid, HolySiteCreationWindow.GetSelectedArtifact.IsValid ) )]"
+									min_height = 105
+									align = center
+									layoutpolicy_horizontal = expanding
+									text = "HOLY_SITE_CREATION_SELECT_TYPE_AND_ARTIFACT"
+									autoresize = yes
+								}
+							}
+						}
+					}
+				}
+
+				### Action buttons
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 8
+					margin = { 0 5 }
+					margin_bottom = 10
+
+					expand = {}
+
+					hbox = {
+						min_width = 200
+
+						cost_breakdown_vbox = {
+							datacontext = "[HolySiteCreationWindow.AccessCostBreakdown]"
+						}
+					}
+
+
+					button_primary = {
+						size = { 250 33 }
+						text = "HOLY_SITE_CREATION_ACTION_BUTTON_CREATE"
+						enabled = "[HolySiteCreationWindow.IsCreateButtonEnabled]"
+						tooltip = "HOLY_SITE_CREATION_CREATE_BUTTON_TT"
+						onclick = "[HolySiteCreationWindow.OnCreateButtonClicked]"
+					}
+
+					expand = {}
+				}
+			}
+		}
+	}
+}
+
+types HolySiteCreationWindowTypes
+{
+	# This slot is widget_holy_site_slot, scoped to the creation window
+	# GetSlots is empty here, but the type exists so the layout matches window_holy_site.gui
+	type widget_holy_site_creation_slot = widget
+	{
+		# Requires:
+		# datacontext = InventorySlot
+		# datacontext = HolySiteCreationWindow (inherited from window scope)
+		size = { 150 140 }
+
+		glow_effect = {
+			visible = "[InventorySlot.GetArtifact.IsValid]"
+		}
+
+		widget = {
+			using = Window_Background_NoDecoration
+			size = { 100% 100% }
+		}
+
+		text_single = {
+			parentanchor = top|hcenter
+			text = "[InventorySlot.GetName]"
+			position = { 0 -6 }
+			max_width = 130
+		}
+
+		button_artifact = {
+			name = "enshrined_artifact_button"
+			datacontext = "[InventorySlot.GetArtifact]"
+			visible = "[Not( InventorySlot.IsEmpty )]"
+			parentanchor = center
+			size = { 100 100 }
+
+			using = tooltip_se
+
+			down = "[HolySiteCreationWindow.IsArtifactSelected( Artifact.Self )]"
+
+			blockoverride "on_click"
+			{
+				onclick = "[HolySiteCreationWindow.SelectArtifact( Artifact.Self )]"
+			}
+
+			blockoverride "artifact_click_info" {}
+			blockoverride "artifact_click_text" {
+				text = "[HolySiteCreationWindow.GetRemoveTooltip( Artifact.Self )]"
+				default_format = "#I"
+			}
+
+
+			blockoverride "rarity_level" {
+				hbox_artifact_rarity_level = {}
+			}
+
+			state = {
+				name = _mouse_hierarchy_enter
+				on_start = "[PdxGuiWidget.FindChild('remove_button').TriggerAnimation('hover_enter')]"
+			}
+
+			state = {
+				name = _mouse_hierarchy_leave
+				on_start = "[PdxGuiWidget.FindChild('remove_button').TriggerAnimation('hover_leave')]"
+			}
+
+			button_round = {
+				name = "remove_button"
+				parentanchor = top|right
+				size = { 30 30 }
+
+				enabled = "[HolySiteCreationWindow.CanRemoveEnshrinedArtifact( Artifact.Self )]"
+				alpha = 0
+
+				state = {
+					name = hover_enter
+					alpha = 1
+					duration = 0.4
+					using = Animation_Curve_Default
+				}
+
+				state = {
+					name = hover_leave
+					alpha = 0
+					duration = 0.6
+					using = Animation_Curve_Default
+				}
+
+				onclick = "[HolySiteCreationWindow.SelectArtifact( Artifact.Self )]"
+				tooltip = "[HolySiteCreationWindow.GetRemoveTooltip( Artifact.Self )]"
+
+				button_icon_highlight = {
+					parentanchor = center
+					size = { 30 30 }
+					texture = "gfx/interface/icons/flat_icons/cancel_small.dds"
+				}
+			}
+		}
+
+		# Empty-slot placeholder
+		button_standard_clean = {
+			name = "empty_slot_button"
+			datacontext = "[InventorySlot]"
+			visible = "[InventorySlot.IsEmpty]"
+			parentanchor = center
+			size = { 70 70 }
+
+			spriteType = Corneredtiled
+			spriteborder = { 2 2 }
+
+			button_plus = {
+				visible = "[DataModelHasItems( HolySiteCreationWindow.GetEnshrinableArtifacts )]"
+				parentanchor = center
+				alwaystransparent = yes
+			}
+		}
+	}
+
+	type holy_site_creation_faith_item = widget
+	{
+		name = "show_faith_info"
+		size = { 0 40 }
+		layoutpolicy_horizontal = expanding
+
+		background = {
+			visible = "[ObjectsEqual( Faith.Self, HolySiteCreationWindow.GetFaith.Self )]"
+			using = Background_Area
+		}
+
+		divider_light = {
+			alpha = "[Select_float(GreaterThan_int32(Faith.GetNumberOfCountiesOfFaith,'(int32)0'), '(float)1.0','(float)0.5')]"
+			size = { 100% 3 }
+			parentanchor = bottom
+			position = { 0 1 }
+		}
+
+		hbox = {
+			margin = { 10 5 }
+			alpha = "[Select_float(GreaterThan_int32(Faith.GetNumberOfCountiesOfFaith,'(int32)0'), '(float)1.0','(float)0.5')]"
+			layoutpolicy_horizontal = expanding
+
+			icon = {
+				name = "faith_icon"
+				texture = "[Faith.GetIcon]"
+				size = { 30 30 }
+			}
+
+			vbox = {
+				margin_left = 10
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					text_single = {
+						name = "faith_name"
+
+						text = "[SelectLocalization( ObjectsEqual(HolySiteCreationWindow.GetFaith.Self, Faith.Self ), 'HOLY_SITE_FAITH_REGULAR_NEW', 'HOLY_SITE_FAITH_EMINENCE' )]"
+						align = left|nobaseline
+						max_width = 240
+					}
+
+					expand = {}
+
+					text_single = {
+						name = "religion_faith_name"
+						margin_right = 5
+
+						text = "FAITH_RELIGION"
+						min_width = 160
+						align = right|nobaseline
+					}
+				}
+			}
+		}
+	}
+}

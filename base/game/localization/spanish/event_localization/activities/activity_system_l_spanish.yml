@@ -74,6 +74,11 @@
  activity_system.0320.t: "Un final inesperado"
  activity_system.0320.desc: "Nuestr[host.Custom('ES_OA')] anfitri[host.Custom('ES_OnOna')], [host.GetName], ha perdido la posesión de sus tierras y, de este modo, el/la [activity_type.GetNameNoTooltip()|l] ha llegado a un final prematuro.\n\nDesde luego, no esperaba que terminase así este asunto tras toda la fanfarria de bombo e invitaciones. Supongo que lo único que nos queda a mi séquito y a mí es regresar a nuestro hogar en [ROOT.Char.GetCapitalLocation.GetNameNoTooltip]…"
  activity_system.0320.a: "Lo hecho, hecho está."
+ activity_system.0321.t: "$activity_system.0320.t$"
+ activity_system.0321.desc.intro: "Nuestro anfitri[host.Custom('ES_OnOna')], [host.GetName],"
+ activity_system.0321.desc.no_christian: "ha declarado que ya no cree en el [ROOT.Char.GetFaith.GetName|l]. En lugar de ello, ha descubierto sorprendentemente su pasión por el [host.GetFaith.GetName|l]."
+ activity_system.0321.desc.no_hof: "ya no representa a la Iglesia del [ROOT.Char.GetFaith.GetName|l].\n\nCuando esta impactante revelación llega a oídos de los invitados, se nos urge a regresar a casa."
+ activity_system.0321.a: "No me lo puedo creer."
  #If you have gained the incapable trait
  activity_system.0330.t: "Incapaz"
  activity_system.0330.desc.intro: "He sido considerado incapaz y se me juzga totalmente inept[GetPlayer.Custom('ES_OA')] para gestionar mis propios asuntos, ¡incluyendo mi [activity_type.GetNameNoTooltip()|l]!\n\n"
@@ -83,6 +88,11 @@
  activity_system.0331.t: "Incapaz"
  activity_system.0331.desc: "Nuestr[host.Custom('ES_OA')] anfitri[host.Custom('ES_OnOna')], [host.GetName], ha sido considerad[host.Custom('ES_OA')] incapaz por quienes [host.GetHerHim] rodean y se le juzga totalmente inept[host.Custom('ES_OA')] para gestionar sus propios asuntos, ¡incluyendo su [activity_type.GetNameNoTooltip()|l]!\n\nPor desgracia, todos debemos volver a casa con las manos vacías. "
  activity_system.0331.a: "Qué lástima."
+ #If someone necessary deccide isolate
+ activity_system.0340.t: "$isolating_modifier$"
+ activity_system.0340.desc.host: "Debido a un/a [host.Custom('GetIsolationReason')] que nadie esperaba, el/la [activity_type.GetNameNoTooltip()|l] de [location.GetName] ya no es un evento seguro. Por el bien de los asistentes, tengo que cancelar mi [activity_type.GetNameNoTooltip()|l]."
+ activity_system.0340.desc.guest: "Debido a un/a [host.Custom('GetIsolationReason')] que nadie esperaba, el/la [activity_type.GetNameNoTooltip()|l] de [location.GetName] ya no es un evento seguro. Por el bien de los asistentes, [host.Custom('ES_ElLa')] [host.GetTitledFirstName|l] tiene que cancelar su [activity_type.GetNameNoTooltip()|l]."
+ activity_system.0340.a: "¡Vayamos a un lugar seguro!"
  #Late to the activity
  activity_system.0400.t: "Con retraso sobre lo previsto"
  activity_system.0400.desc_leader: "Cuando [travel_leader.Custom2('MyCharacterIntroduction', ROOT.Char)] se me acerca con una mezcla de vergüenza y preocupación escrita en el rostro, sé que trae malas noticias.\n\n«Siento informaros de que llevamos un retraso de unos [GetTimeBetweenDates(ROOT.Char.GetInvolvedActivity.GetActiveStartDate.Self, ROOT.Char.GetTravelPlan.GetData.GetNextDestination.GetEstimatedArrivalDate)], mi [ROOT.Char.GetTitleAsNameNoTooltip], y puede que no lleguemos al destino a tiempo»."
@@ -130,3 +140,9 @@
  activity_system.0554.opening: "[host.Custom2('AppropriateGreeting', ROOT.Char)]"
  activity_system.0554.a: "Debo aceptar este desafío."
  activity_system.0554.b: "Pensaré una excusa oportuna."
+ has_activity_intent_global: "[CHARACTER.GetShortUIName|U] [Select_CString(CHARACTER.IsLocalPlayer, 'debes', 'debe')] tener el [intent|El] [ACTIVITY_INTENT.GetName]"
+ has_activity_intent_global_not: "[CHARACTER.GetShortUIName|U] no [Select_CString(CHARACTER.IsLocalPlayer, 'puedes', 'puede')] tener el [intent|El] [ACTIVITY_INTENT.GetName]"
+ has_activity_intent_first: "$has_activity_intent_global$"
+ has_activity_intent_first_not: "$has_activity_intent_global_not$"
+ has_activity_intent_third: "$has_activity_intent_global$"
+ has_activity_intent_third_not: "$has_activity_intent_global_not$"

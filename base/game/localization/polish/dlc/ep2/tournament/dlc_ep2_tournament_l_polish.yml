@@ -158,6 +158,8 @@
  locale_window_status_spectating: "obserwujesz te zmagania"
  locale_window_status_participating: "bierzesz udział w tych zmaganiach"
  locale_window_status_knocked_out: "znokautowano cię w tych zmaganiach"
+ locale_window_status_resign: "rezygnujesz z udziału w tych zmaganiach"
+ locale_window_status_discalified: "zdyskwalifikowano cię z udziału w tych zmaganiach"
  locale_window_status_not_qualify: "nie kwalifikujesz się do tych zmagań"
  locale_window_your_participation: "Twoje uczestnictwo"
  locale_window_your_participation_status_selection: "[SelectLocalization(PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'contestant'), 'locale_window_your_participation_status_yes', 'locale_window_your_participation_status_no')]"
@@ -253,8 +255,8 @@
  BOW_EXPERIENCE_REGULAR_TOOLTIP: "$tournament_contest_favoured_skill_tooltip$ parametr: $tourney_participant_bow$"
  BOW_EXPERIENCE_GREATER_TOOLTIP: "$tournament_contest_most_favoured_skill_tooltip$ parametr: $tourney_participant_bow$"
  ### Tooltips
- contest_planner_contest_tooltip: "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddTextIf( Not( ActivityPlanner.CanPlanMorePhasesOfType( ActivityPhase.Self ) ), AddLine( '$ACTIVITY_PLANNER_CANNOT_PICK_MORE_OF_PHASE|q$' ) )][AddLine( ActivityPhase.GetDescription )]"
- contest_planner_contest_selected_tooltip: "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddLine( ActivityPhase.GetDescription )]"
+ contest_planner_contest_tooltip: "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddTextIf( Not( ActivityPlanner.CanPlanMorePhasesOfType( ActivityPhase.Self ) ), AddLine( '$ACTIVITY_PLANNER_CANNOT_PICK_MORE_OF_PHASE|q$' ) )][AddLine( ActivityPhase.GetDescription( Activity.Self ) )]"
+ contest_planner_contest_selected_tooltip: "#T [ActivityPhase.GetName]#![AddLine( ActivityPhase.CanPickDescriptionBlockers( GetPlayer, ActivityPlanner.GetSingleLocationPhase.GetLocation, ActivityPlanner.GetSelectedSpecialOption ) )][AddLine( ActivityPhase.GetDescription( Activity.Self ) )]"
  contest_planner_remove_contest_tooltip: "#T Usuń: [ActivityPhase.GetName|l]#!"
  contest_planner_add_contest_tooltip: "#T $contest_planner_empty_slot$#!"
  tournament_contest_favoured_skill_tooltip: "Te [contest|El] zwiększają"
@@ -767,7 +769,7 @@
  tournament_conclusion_winner_duel: "\nZwycięzca zawodów w #BOL pojedynkowaniu się#!: [activity.MakeScope.Var('duel_winner').Char.GetFirstName]"
  tournament_conclusion_winner_board_game: "\nZwycięzca zawodów poświęconych #BOL grom planszowym#!: [activity.MakeScope.Var('board_game_winner').Char.GetFirstName]"
  tournament_contest_reward_toast_title: "Twoja nagroda"
- tournament_contest_reward_toast_desc: "Wygrywasz nagrodę: [Artifact.GetNameNoTooltip|l]"
+ tournament_contest_reward_toast_desc: "Wygrywasz następującą nagrodę: [Artifact.GetNameNoTooltip]"
  #Contest Cultural Variations
  tournament_melee_german: "Buhurt"
  tournament_melee_fallback: "Walka wręcz"

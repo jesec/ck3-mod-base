@@ -146,7 +146,7 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			scope:recipient = {
 				NOR = { #Of two different faiths AND the potential vassal's faith is not pluralistic.
 					faith = scope:actor.faith
-					faith = { has_doctrine = doctrine_pluralism_pluralistic }
+					rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
 				}
 			}
 		}
@@ -154,9 +154,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			value = -25
 			if = {
 					limit = {
-					scope:recipient.faith = {
-						faith_hostility_level = {
-							target = scope:actor.faith
+					scope:recipient.rite = {
+						rite_hostility_level = {
+							target = scope:actor.rite
 							value >= faith_hostile_level
 						}
 					}
@@ -165,9 +165,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			}
 			if = {
 				limit = {
-					scope:recipient.faith = {
-						faith_hostility_level = {
-							target = scope:actor.faith
+					scope:recipient.rite = {
+						rite_hostility_level = {
+							target = scope:actor.rite
 							value >= faith_evil_level
 						}
 					}
@@ -184,18 +184,18 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 					faith = scope:actor.faith
 				}
 				NOT = {
-					scope:actor.faith = { has_doctrine = doctrine_pluralism_pluralistic }
+					scope:actor.rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
 				}
-				faith = { has_doctrine = doctrine_pluralism_pluralistic }
+				rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
 			}
 		}
 		add = {
 			value = -10
 			if = {
 				limit = {
-					scope:recipient.faith = {
-						faith_hostility_level = {
-							target = scope:actor.faith
+					scope:recipient.rite = {
+						rite_hostility_level = {
+							target = scope:actor.rite
 							value >= faith_hostile_level
 						}
 					}
@@ -204,9 +204,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			}
 			if = {
 				limit = {
-					scope:recipient.faith = {
-						faith_hostility_level = {
-							target = scope:actor.faith
+					scope:recipient.rite = {
+						rite_hostility_level = {
+							target = scope:actor.rite
 							value >= faith_evil_level
 						}
 					}
@@ -222,17 +222,17 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 				NOT = {
 					faith = scope:actor.faith
 				}
-				scope:actor.faith = { has_doctrine = doctrine_pluralism_pluralistic }
-				faith = { has_doctrine = doctrine_pluralism_pluralistic }
+				scope:actor.rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
+				rite = { rite_has_doctrine = doctrine_pluralism_pluralistic }
 			}
 		}
 		add = {
 			value = -5
 			if = {
 				limit = {
-					scope:recipient.faith = {
-						faith_hostility_level = {
-							target = scope:actor.faith
+					scope:recipient.rite = {
+						rite_hostility_level = {
+							target = scope:actor.rite
 							value >= faith_hostile_level
 						}
 					}
@@ -241,9 +241,9 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 			}
 			if = {
 				limit = {
-					scope:recipient.faith = {
-						faith_hostility_level = {
-							target = scope:actor.faith
+					scope:recipient.rite = {
+						rite_hostility_level = {
+							target = scope:actor.rite
 							value >= faith_evil_level
 						}
 					}
@@ -494,6 +494,7 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 	}
 	modifier = {
 		desc = "LOW_LEGITIMACY_REASON"
+		add = -15
 		scope:actor = {
 			is_independent_ruler = yes
 			has_legitimacy_flag = massively_reduced_vassalization_acceptance
@@ -687,8 +688,8 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 				}
 			}
 			NOT = {
-				faith = {
-					has_doctrine_parameter = gender_equal_law
+				rite = {
+					rite_has_parameter = gender_equal_law
 				}
 			}
 		}
@@ -712,8 +713,8 @@ mpo_blood_brother_interactions_ai_accept_modifier = {
 					}
 				}
 			}
-			faith = {
-				has_doctrine_parameter = gender_equal_law
+			rite = {
+				rite_has_parameter = gender_equal_law
 			}
 		}
 	}

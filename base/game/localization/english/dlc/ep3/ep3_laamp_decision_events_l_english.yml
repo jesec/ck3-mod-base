@@ -73,14 +73,14 @@
  ep3_laamp_decision_event.1000.desc_outro_regional_east_africa_returned_01: "\n\nA tiny lizard slithers up the coral blocks of one of the narrow houses and finds its path up onto the flat roof, where it basks in the sun."
  ep3_laamp_decision_event.1000.desc_outro_regional_east_africa_returned_02: "\n\nThe baked brick of a knee-high wall basks in the heat of the sun, radiating heat to anything — or anyone — daring to climb on top of it."
  ep3_laamp_decision_event.1000.desc_outro_regional_east_africa_returned_03: "\n\nI spot a tiny seashell, forever stuck in one of the limestone wall of a nearby dwelling."
- ep3_laamp_decision_event.1000.desc_outro_regional_east_africa_returned_04: "\n\nOn my left, one of the merchants are adjusting the leaf canopy of [dummy_gender.GetHerHis] market stall to provide shade for [dummy_gender.GetHerHis] kola nuts."
+ ep3_laamp_decision_event.1000.desc_outro_regional_east_africa_returned_04: "\n\nOn my left, one of the merchants is adjusting the leaf canopy of [dummy_gender.GetHerHis] market stall to provide shade for [dummy_gender.GetHerHis] kola nuts."
  #Generic
  ep3_laamp_decision_event.1000.desc_outro_returned_generic_01: "\n\nThe noise and loud bartering at the nearby supply stalls echo all the way through to here, giving the [ROOT.Char.Custom('GetMainsquareCommons')] a hectic feel."
  ep3_laamp_decision_event.1000.desc_outro_returned_generic_02: "\n\nA menacing slaver is performing [dummy_gender.GetHerHis] questionable trade a bit further down the [ROOT.Char.Custom('GetSquareCommons')], to the chagrin of certain bystanders."
  ep3_laamp_decision_event.1000.desc_outro_returned_generic_03: "\n\nIt is warm, though not the peak heat that is typical for this region. The workers and nobles move about their daily lives, enjoying the soothing temperature."
  ep3_laamp_decision_event.1000.desc_outro_returned_generic_04: "\n\nA herd of [ROOT.Char.Custom('RegionalFarmAnimalPlural')] effectively blocks a traveling merchant's path, to much anguish and shouting."
  ep3_laamp_decision_event.1000.desc_outro_returned_generic_05: "\n\nTo my left, a [ROOT.Char.Custom('SoundingRegionalFarmAnimal')] complains about the thorough inspection from a potential buyer. The sales[dummy_gender.GetWomanMan] gently strokes its head, reassuringly."
- ep3_laamp_decision_event.1000.desc_outro_returned_generic_06: "\n\nOn my right, a small flowerbed of vibrant [ROOT.Char.Custom('get_region_flower_type_plural')] stands, providing a delightful clique of color to the [ROOT.Char.Custom('GetSquareCommons')]."
+ ep3_laamp_decision_event.1000.desc_outro_returned_generic_06: "\n\nOn my right, a small flowerbed of vibrant [ROOT.Char.GetCurrentLocation.Custom('get_region_flower_type_plural')] stands, providing a delightful clique of color to the [ROOT.Char.Custom('GetSquareCommons')]."
  ep3_laamp_decision_event.1000.desc_outro_returned_generic_07: "\n\nA [ROOT.Char.Custom('GetRandomRegionalWildDaytimeBird')] sits atop a nearby [ROOT.Char.GetCurrentLocation.Custom('GetRandomAppropriateTree')] tree; peering down at the scurrying [visiting_location.GetCounty.GetCulture.GetCollectiveNounNoTooltip] with intelligent eyes."
  #Partner
  ep3_laamp_decision_event.1000.desc_outro_returned_partner_generic_01: "\n\n[visiting_partner.GetFirstName] gently nudges me and points up at a nearby [visiting_location.Custom('GetRandomRegionalWood')] — on the tallest branch a sturdy [ROOT.Char.Custom('GetRandomRegionalWildDaytimeBird')] is perched, basking in the afternoon sun."
@@ -371,7 +371,7 @@
  treasure_map: "Treasure Map"
  treasure_map_desc: "A tattered map, supposedly leading to ancient riches in [newly_created_map.MakeScope.Var('artifact_treasure_location').GetProvince.GetBaronyNameExplicitlyNoTooltip]. Acquired from the town crier in [newly_created_map.MakeScope.Var('picked_up_in_location').GetProvince.GetBaronyNameExplicitlyNoTooltip]."
  artifact_is_related_to_contract_tt: "This [artifact|E] is related to a [task_contract|E] and cannot be destroyed"
- gallowsbait_thief_blocked_from_contract.tt: "You're too far gone in the [GetTrait('gallowsbait').GetName( GetNullCharacter )] [GetTrait( 'gallowsbait' ).GetTraitTrackByKey( 'thief' ).GetName] [trait|E] to be trusted with this [vassal_contract|E]"
+ gallowsbait_thief_blocked_from_contract.tt: "You're too far gone in the [GetTrait('gallowsbait').GetName( GetNullCharacter )] [GetTrait( 'gallowsbait' ).GetTraitTrackByKey( 'thief' ).GetName] [trait|E] to be trusted with this [task_contract|E]"
 
 
  #Option: Visit the local tavern
@@ -1008,6 +1008,7 @@ ep3_laamp_decision_event.1055.alert_partial.tt: "#alert_trial \n$BULLET_WITH_TAB
  laamp_decision_exotic_story_intrigue_gain_modifier_desc: "This character had deceptive takeaways from an exotic story."
  laamp_decision_exotic_story_learning_gain_modifier: "Exotic Learning"
  laamp_decision_exotic_story_learning_gain_modifier_desc: "This character had knowledgeable takeaways from an exotic story."
+ modifier_growth_with_lower_skill: "The lower your [skill|E], the greater it benefits"
  MODIFIER_DEFINITION_VALUE_PER_PHYSICIAN_APTITUDE: " \t#weak Increase per $court_physician_court_position$ [aptitude|E] level#!"
  laamp_decision_church_health_modifier: "Proven Treatment"
  laamp_decision_church_health_modifier_desc: "This character received treatment from an established physician."
@@ -1132,6 +1133,9 @@ ep3_laamp_decision_event.1055.alert_partial.tt: "#alert_trial \n$BULLET_WITH_TAB
  positive_shallow_adjective_ravishing: "ravishing"
  positive_shallow_adjective_seductive: "seductive"
  positive_shallow_adjective_stunning: "stunning"
+ positive_shallow_adjective_comely: "comely"
+ positive_shallow_adjective_winsome: "winsome"
+ positive_shallow_adjective_beauteous: "beauteous"
 
  positive_shallow_adjective_with_article_attractive: "an $positive_shallow_adjective_attractive$"
  positive_shallow_adjective_with_article_beautiful: "a $positive_shallow_adjective_beautiful$"
@@ -1140,10 +1144,13 @@ ep3_laamp_decision_event.1055.alert_partial.tt: "#alert_trial \n$BULLET_WITH_TAB
  positive_shallow_adjective_with_article_enthralling: "an $positive_shallow_adjective_enthralling$"
  positive_shallow_adjective_with_article_enchanting: "an $positive_shallow_adjective_enchanting$"
  positive_shallow_adjective_with_article_fetching: "a $positive_shallow_adjective_fetching$"
- positive_shallow_adjective_with_article_gorgeous: "a $positive_shallow_adjective_ravishing$"
+ positive_shallow_adjective_with_article_gorgeous: "a $positive_shallow_adjective_gorgeous$"
  positive_shallow_adjective_with_article_ravishing: "a $positive_shallow_adjective_ravishing$"
  positive_shallow_adjective_with_article_seductive: "a $positive_shallow_adjective_seductive$"
  positive_shallow_adjective_with_article_stunning: "a $positive_shallow_adjective_stunning$"
+ positive_shallow_adjective_with_article_comely: "a $positive_shallow_adjective_comely$"
+ positive_shallow_adjective_with_article_winsome: "a $positive_shallow_adjective_winsome$"
+ positive_shallow_adjective_with_article_beauteous: "a $positive_shallow_adjective_beauteous$"
 
  #Missing Camp Officer Building
  NOT_HAVE_MASTER_OF_ARMS_BUILDING: "You need a [GetDomicileBuilding('proving_grounds_01').GetName] to employ the [GetCourtPositionType('master_of_arms_camp_officer').GetName()] [officer|E]"
