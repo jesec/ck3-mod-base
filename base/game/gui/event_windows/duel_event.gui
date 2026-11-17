@@ -527,6 +527,27 @@ window = {
 							}
 						}
 
+						hbox = {
+							layoutpolicy_horizontal = expanding
+
+							hbox = {
+								name = "custom_widgets_container"
+								layoutpolicy_horizontal = expanding
+								margin = { 20 0 }
+
+								state = {
+									trigger_on_create = yes
+									name = appear_test
+									delay = 0.8
+									using = Animation_Curve_Default
+									alpha = 1
+									duration = 0.6
+								}
+							}
+
+							expand = {}
+						}
+
 						vbox = {
 							allow_outside = yes
 							ignoreinvisible = yes
@@ -586,22 +607,26 @@ window = {
 		button_round = {
 			size = { 40 40 }
 
+			tooltip = "TOGGLE_DATA_SYSTEM"
+			using = tooltip_below
+			onclick = "[ExecuteConsoleCommand('Localization.ToggleSkipDataSystemInLocOutput')]"
+
 			button_icon = {
+				alwaystransparent = yes
 				size = { 100% 100% }
 				texture = "gfx/interface/icons/flat_icons/data_system.dds"
-				tooltip = "TOGGLE_DATA_SYSTEM"
-				using = tooltip_below
-				onclick = "[ExecuteConsoleCommand('Localization.ToggleSkipDataSystemInLocOutput')]"
 				fontsize = 24
 			}
 		}
 
 		button_round = {
 			size = { 40 40 }
+			onclick = "[EventWindowData.CopyToClipboard]"
+			tooltip = "COPY_EVENT_CONTENTS"
+
 			button_copy = {
+				alwaystransparent = yes
 				parentanchor = center
-				onclick = "[EventWindowData.CopyToClipboard]"
-				tooltip = "COPY_EVENT_CONTENTS"
 			}
 		}
 

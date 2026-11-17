@@ -1918,7 +1918,10 @@ tournament_contest_versus_pair_effect = {
 			}
 			# Save stage matches for debug and fetching
 			if = {
-				limit = { scope:activity.var:contest_versus_progress = 2 }
+				limit = {
+					scope:activity.var:contest_versus_progress = 2
+					exists = var:contest_semi_finalist_match_$CONTEST$
+				}
 				set_variable = {
 					name = last_versus_match
 					value = var:contest_semi_finalist_match_$CONTEST$
@@ -1947,7 +1950,10 @@ tournament_contest_versus_pair_effect = {
 			}
 			scope:versus_matcher = {
 				if = {
-					limit = { scope:activity.var:contest_versus_progress = 2 }
+					limit = {
+						scope:activity.var:contest_versus_progress = 2
+						exists = var:contest_semi_finalist_match_$CONTEST$
+					}
 					set_variable = {
 						name = last_versus_match
 						value = var:contest_semi_finalist_match_$CONTEST$

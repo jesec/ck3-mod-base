@@ -1,0 +1,172 @@
+﻿
+district_type = {
+	# Triggered name (first valid). Root scope is the Province in which the district is built or will be built.
+	# If no province is available (e.g. encyclopedia), or no triggered name is valid, the base name is used.
+	triggered_name = {
+		trigger = { terrain = hills }
+		reference = "cool_hilly_name"
+	}
+
+	### Background
+	# A background texture for the district, to be used in the holding view
+	# In case that there are multiple the first one that fits the trigger will be the one selected.
+	background = {
+		### Picture requirements
+		# Runs in the scope of the province where the district is built
+		# Empty triggers always pass on default so do not type a trigger if you want it to always succeed.
+		trigger = <triggers>
+
+		### Illustration to show
+		#
+		# Path to the texture
+		#
+		reference = <file path>
+
+	}
+
+	### Specifies what type of district slot this district occupies
+	#
+	# Default: regular
+	#
+    type = <regular/special/duchy_capital/holding/great_district/trade_post/entrepot>
+
+	### brief: color (color block)
+	# RGBA/HSV/named tint used for the district icon in the county view.
+	# Defaults to white if omitted.
+	# Use the colors in common/named_colors/district_colors.txt
+	#
+	# Example:
+	#	color = district_economy
+	color = { 1 1 1 }
+
+	### brief: primary_building ( key )
+	# The primary building for this district
+	# (will be built when creating a district of this type)
+	#
+	primary_building = city_01
+	
+	### brief: can_be_replaced ( bool )
+	# Can this district be replaced by the player or AI with a different district of the same type
+	# While still paying costs and taking time to build like a new district
+	# This will also destroy any incompatible buildings
+	can_be_replaced = yes/no
+	
+	### brief: buildings ( keys, optional )
+	# First levels of all buildings buildable in the district
+	# (doesn't include the primary building)
+	#
+	buildings = {
+		city_market_01
+		common_shipyard_01
+		...
+	}
+
+	# Array of assets used (optional)
+	# Note: This array is optional and reading assets without it works just as well
+	#		It exists to add indention to easily collapse or minimize a bunch of assets at the same time
+	#
+	assets = {
+		# Which asset does the building use
+		#
+		asset = {
+
+			# specifies wheter to use a mesh or an entity. Meshes are more performant and should be preferred.
+			#
+			type = pdxmesh/entity
+
+			# The name of the mesh or the entity ( string )
+			# Can have multiple entries, combined with 'names'
+			# Note that they must all be entities, or all be meshes
+			#
+			name = "western_castle_01_level_03_mesh"
+			name = "western_castle_01_level_04_mesh"
+
+			# Names of meshes or entities ( array of strings )
+			# To randomize between multiple meshes/entities
+			# Note that they must all be entities, or all be meshes
+			# Combined with 'name'
+			#
+			names = { "western_castle_01_level_03a_mesh" "western_castle_01_level_03b_mesh" "western_castle_01_level_03c_mesh" }
+
+			# Path to illustration shown in the county view ( string )
+			# Texture can be accessed in GUI: "[Holding.GetIllustration]"
+			#
+			illustration = "path/to/image.dds"
+
+			# Associated sound effect and an optional parameter
+			# Can also be just soundeffect = "event:..." if no parameter is needed
+			# Can have multiple sound effects
+			#
+			soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Generic/sfx_amb_3d_holdings_generic_castle_01" soundparameter = { "Tier" = 2.0 } }
+
+			# Governments that prefer this asset to be shown
+			governments = { tribal_government }
+
+			# Province IDs in which this asset is preferred ( array of int )
+			# Has a higher priority than graphical region
+			#
+			provinces = { 496 1000 }
+
+			# Graphical regions in which this asset is preferred ( array of strings )
+			# This is the most important criterion when selecting the asset, with the exception of government and province
+			# Should match entries in geographical regions database
+			#
+			graphical_regions = { graphical_mena graphical_mediterranean }
+
+			# Graphical cultures that prefer this asset to be shown ( array of flags )
+			# Should match 'building_gfx' in cultures database
+			#
+			graphical_cultures = { western_building_gfx mediterranean_building_gfx }
+
+			# Graphical faiths that prefer this asset to be shown ( array of strings )
+			# Priority is faith > religion > family, so Catholic graphical_faith overrides Abrahamic graphical_faith
+			# Should match 'graphical_faith' in religion database
+			#
+			graphical_faiths = { catholic_gfx orthodox_gfx }
+
+			# Required DLC flag ( dlc flag )
+			# Assets marked with a DLC flag require matching DLC to be enabled
+			#
+			requires_dlc_flag = the_northern_lords
+		}
+	}
+
+	# Trigger: is the district enabled?
+	# Else won't give any effects to holder, and not be constructible ( see can_construct* below ).
+	# Scopes:
+	#	root ( province ) 			province where building is located
+	#	scope:holder ( character )	holder of the barony title
+	#	scope:county ( title )		is the county title the province belongs to
+	#
+	is_enabled = {}
+
+	# Trigger: can the district be repaired?
+	# Only Great Districts can be ruined and repaired
+	# Scopes:
+	#	root ( province ) 			province where district is located
+	#	scope:holder ( character )	holder of the barony title
+	#	scope:county ( title )		is the county title the province belongs to
+	#
+	can_rebuild = {}
+
+	# How much does it cost to rebuild the district ( scripted cost )
+	#
+	rebuild_cost = { gold = 500 ... }
+
+	# Trigger: Can the district be constructed?
+	# Use this instead of is_enabled if you want to allow rulers to "use" the district
+	# after getting the holding, but to disallow that they construct it.
+	# Note that is_enabled (see above) is always called together with can_construct_potential.
+	# To be able to construct a district all 3 triggers must evaluate to true
+	# scopes: root is the province; scope:holder is the holder of the province; county is the county title the province belongs to
+	#
+	can_construct_potential = {}				# Whether the district even appears in the build menu
+												# For upgrades it is identical to can_construct_showing_failures_only.
+	can_construct_showing_failures_only = {}	# Trigger will show only failures. Use for temporary effects player can overcome
+	can_construct = {}							# Trigger will show both filled and missing requirements
+
+	# Shall disabled district still show in the build menu. Will still use can_construct_potential ( bool )
+	# default: no
+	#
+	show_disabled = yes/no
+}

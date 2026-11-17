@@ -9,16 +9,9 @@
 holy_site_total_artifact_rarity = {
 	value = root.total_active_artifact_rarity_sum
 }
-
-# How long a ruler must wait between holy site actions, shared by the decisions and by holy site creation.
 holy_site_action_cooldown_years = {
 	value = 5
 }
-
-# Scope: character taking one of the holy site decisions.
-# Cooldown in years, waived while the faith still has a free holy site action left. Decision cooldowns
-# are evaluated with only the taking character in scope - no saved scopes - so this can read the faith
-# but nothing about the selected holy site.
 holy_site_decision_cooldown_value = {
 	value = holy_site_action_cooldown_years
 	if = {
@@ -26,3 +19,9 @@ holy_site_decision_cooldown_value = {
 		value = 0
 	}
 }
+
+# Bonuses per rarity point, granted by the county_modifier_scaled block on every holy site type
+# A site holds at most three Illustrious relics, so holy_site_total_artifact_rarity is at most 12
+# The tax bonus tops out at 24% and the sell price bonus at 1.2%
+holy_site_relic_tax_bonus = 0.02
+holy_site_relic_sell_price_bonus = 0.001

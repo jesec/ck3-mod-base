@@ -234,6 +234,10 @@ basic_allowed_to_imprison_character_trigger = { #Only to be used in is_shown for
 				}
 			}
 			is_foreign_court_or_pool_guest_of = scope:allowed_imprisoner
+			AND = { # Merchants may be imprisoned by patrons
+				government_has_flag = government_is_merchant
+				suzerain ?= scope:allowed_imprisoner
+			}
 			AND = {
 				# EP3 EVICTION
 				has_government = landless_adventurer_government
@@ -311,8 +315,18 @@ can_be_granted_titles_by = { #This is set up with trigger-ifs to allow for nice 
 			is_theocratic_lessee = no #Theocratic lessees use other gender checks
 			NOT = { $RULER$ = { government_has_mechanic = administrative } }
 			NOT = {
-				$RULER$.faith = {
-					has_dominant_ruling_gender = scope:title_grantee
+				trigger_if = {
+					limit = {
+						$RULER$ = { government_allows = state_faith }
+					}
+					$RULER$.primary_title.state_rite = {
+						rite_has_dominant_ruling_gender = scope:title_grantee
+					}
+				}
+				trigger_else = {
+					$RULER$.rite = {
+						rite_has_dominant_ruling_gender = scope:title_grantee
+					}
 				}
 			}
 		}
@@ -451,7 +465,6 @@ is_spouse_or_romantic_partner_of_root = {
 	OR = {
 		has_relation_lover = root
 		is_consort_of = root
-		has_relation_soulmate = root
 	}
 }
 terrible_sum_of_all_skills_trigger = {
@@ -619,4 +632,11 @@ has_different_clothing_gfx = {
 
 current_date_is_start_date_trigger = {
 	has_global_variable = is_game_start_date
+}
+
+# Scope: county
+# True if the county has fewer than $COUNT$ potential trade good types.
+# E.g.: county_has_fewer_than_$COUNT$_potential_trade_goods_trigger = { COUNT = 3 }
+county_has_fewer_than_x_potential_trade_goods_trigger = {
+	county_potential_trade_good_count_value < $COUNT$
 }

@@ -1,0 +1,196 @@
+window = {
+	name = "voting_session_result"
+	widgetid = "voting_session_result"
+	using = Law_Window_Frame
+	size = { 1380 900 }
+
+	visible = "[And( IsGameViewOpen('voting_session_result'), IsDefaultGUIMode )]"
+
+	vbox = {
+		using = Window_Margins
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				text = "VOTING_SESSION_RESULT_WINDOW_HEADER"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[VotingSessionResultWindow.Close]"
+			}
+		}
+
+		vbox_finished_session = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+		}
+	}
+}
+
+types VotingResultTypes
+{
+	type vbox_finished_session = vbox {
+		margin_bottom = 10
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			## Left Side, approving voters
+			vbox = {
+				min_width = 250
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				vbox_approving_assembly_members = {
+					blockoverride "column_header" {
+						text_label_center = {
+							text = "VOTING_SESSION_RESULT_WINDOW_APPROVALS"
+						}
+
+						text_multi = {
+							text = "VOTING_SESSION_RESULT_MEMBERS_APPROVE_DESC"
+							default_format = "#weak"
+							autoresize = yes
+							max_width = 300
+						}
+					}
+
+					blockoverride "member_datamodel" {
+						datamodel = "[VotingSessionResultWindow.GetResultApproveVoters]"
+					}
+
+					blockoverride "member_item" {
+						item = {
+							widget_session_approve_voter = {}
+						}
+					}
+				}
+			}
+
+			## Middle content, the outcome.
+			vbox = {
+				layoutpolicy_vertical = expanding
+
+				text_multi = {
+					autoresize = yes
+					max_width = 600
+
+					text = "VOTING_SESSION_RESULT_VOTE_VERDICT"
+					align = center
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+					text = "VOTING_SESSION_RESULT_END_DATE"
+					align = center
+				}
+
+				vbox_law_desc = {
+					minimumsize = { 600 200 }
+					using = Background_Law_Illustration
+
+					blockoverride "law_datacontext" {
+						datacontext = "[VotingSessionResultWindow.GetResultProposedLaw]"
+					}
+				}
+			}
+
+			## Right Side, rejecting voters
+			vbox = {
+				min_width = 250
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				vbox_dissenting_assembly_members = {
+					blockoverride "column_header" {
+						text_label_center = {
+							text = "VOTING_SESSION_RESULT_WINDOW_REJECTIONS"
+						}
+
+						text_multi = {
+							text = "VOTING_SESSION_RESULT_MEMBERS_REJECT_DESC"
+							default_format = "#weak"
+							autoresize = yes
+							max_width = 300
+						}
+					}
+
+					blockoverride "member_datamodel" {
+						datamodel = "[VotingSessionResultWindow.GetResultRejectVoters]"
+					}
+
+					blockoverride "member_item" {
+						item = {
+							widget_session_reject_voter = {}
+						}
+					}
+				}
+			}
+		}
+
+		## Final tally, in the same place the ongoing vote shows its running total
+		widget_vassal_approval_bar = {
+			blockoverride "approval_bar_datacontext" {
+				datacontext = "[VotingSessionResultWindow.AccessResultApprovalBar]"
+			}
+
+			blockoverride "approval_bar_approve_label" {
+				text_single = {
+					using = Font_Size_Medium
+					text = VOTING_SESSION_RESULT_NUM_APPROVE
+				}
+			}
+
+			blockoverride "approval_bar_dissent_label" {
+				text_single = {
+					using = Font_Size_Medium
+					text = VOTING_SESSION_RESULT_NUM_REJECT
+				}
+			}
+		}
+
+		spacer = {
+			size = { 0 60 }
+		}
+
+		## Occupies the slot the voting buttons use during an ongoing session
+		hbox = {
+			layoutpolicy_horizontal = expanding
+
+			button_primary = {
+				onclick = "[VotingSessionResultWindow.Close]"
+
+				text = "VOTING_SESSION_RESULT_WINDOW_CLEAR_RESULT"
+			}
+		}
+	}
+
+	type widget_session_approve_voter = widget_assembly_member_approve {
+		blockoverride "member_vote_label" {
+			text_single = {
+				margin_right = 45
+				margin_bottom = 20
+				max_width = 180
+				text = "VOTING_SESSION_RESULT_APPROVED"
+			}
+		}
+	}
+
+	type widget_session_reject_voter = widget_assembly_member_disapprove {
+		blockoverride "member_vote_label" {
+			text_single = {
+				margin_right = 45
+				margin_bottom = 20
+				max_width = 180
+				text = "VOTING_SESSION_RESULT_REJECTED"
+			}
+		}
+	}
+}

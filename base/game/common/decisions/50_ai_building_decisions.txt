@@ -1,0 +1,116 @@
+﻿# AI only - the AI never replaces districts, so this frees the capital's rural district slots for urban housing.
+ai_remove_capital_villages_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/event_scenes/ep2_travel_farm.dds"
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 120
+		duchy = 120
+		kingdom = 60
+		empire = 60
+		hegemony = 60
+	}
+
+	is_shown = {
+		is_ai = yes
+	}
+
+	is_valid = {
+		is_available_ai_adult = yes
+		trigger_if = {
+			limit = { government_has_flag = government_is_republic }
+			is_landed = yes
+			highest_held_title_tier >= tier_county
+		}
+		trigger_else = {
+			highest_held_title_tier >= tier_duchy
+			domain_size >= 5
+		}
+		short_term_gold >= major_gold_value
+		capital_province ?= {
+			province_has_district = villages_district
+			NOT = { province_has_district = urban_housing_district }
+			metropolitan_type_district_trigger = yes
+			save_temporary_scope_as = ai_capital_check
+			root = {
+				NOT = {
+					any_directly_owned_province = {
+						province_size > scope:ai_capital_check.province_size
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		add_gold = {
+			value = capital_province.ai_capital_rural_districts_refund_value
+		}
+		capital_province = {
+			remove_district_type = manor_houses_district
+			remove_district_type = religious_community_district
+			remove_district_type = villages_district
+			set_variable = ai_urban_capital
+		}
+	}
+
+	ai_potential = {
+		is_landed = yes
+		OR = {
+			highest_held_title_tier >= tier_duchy
+			AND = {
+				government_has_flag = government_is_republic
+				highest_held_title_tier >= tier_county
+			}
+		}
+	}
+
+	ai_will_do = { base = 100 }
+}
+
+# AI only: a count cannot use the Royal Household, and the AI never replaces districts, so this frees the capital's slot
+ai_remove_capital_household_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/event_scenes/throneroom_west.dds"
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 120
+		duchy = 0
+		kingdom = 0
+		empire = 0
+		hegemony = 0
+	}
+
+	is_shown = {
+		is_ai = yes
+	}
+
+	is_valid = {
+		is_available_ai_adult = yes
+		highest_held_title_tier = tier_county
+		capital_province ?= {
+			province_has_district = household_district
+		}
+	}
+
+	effect = {
+		add_gold = {
+			value = capital_province.ai_capital_household_district_refund_value
+		}
+		capital_province = {
+			remove_district_type = household_district
+		}
+	}
+
+	ai_potential = {
+		is_landed = yes
+		is_at_war = no
+		highest_held_title_tier = tier_county
+	}
+
+	ai_will_do = { base = 100 }
+}

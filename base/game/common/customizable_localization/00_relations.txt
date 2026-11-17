@@ -1088,6 +1088,35 @@ RelationToMe = {
 	}
 
 	text = {
+		localization_key = relation_best_friend_associate
+		trigger = {
+			OR = {
+				is_landless_merchant = yes
+				has_government = merchant_government
+			}
+			scope:second = {
+				is_courtier_of = root
+				has_relation_best_friend = root
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_friend_associate
+		trigger = {
+			OR = {
+				is_landless_merchant = yes
+				has_government = merchant_government
+			}
+			scope:second = {
+				is_courtier_of = root
+				has_relation_friend = root
+				NOT = { has_relation_best_friend = root }
+			}
+		}
+	}
+
+	text = {
 		localization_key = relation_best_friend_female
 		trigger = {
 			scope:second = {
@@ -1611,6 +1640,32 @@ RelationToMe = {
 	}
 
 	text = {
+		localization_key = mistress
+		trigger = {
+			scope:second = {
+				is_female = yes
+				government_has_flag = government_is_merchant
+				any_courtier = {
+					this = root
+				}
+			}
+		}
+	}
+
+	text = {
+		localization_key = master
+		trigger = {
+			scope:second = {
+				is_female = no
+				government_has_flag = government_is_merchant
+				any_courtier = {
+					this = root
+				}
+			}
+		}
+	}
+
+	text = {
 		localization_key = relation_liege_female
 		trigger = {
 			scope:second = {
@@ -1645,9 +1700,18 @@ RelationToMe = {
 	}
 
 	text = {
+		localization_key = relation_patron
+		trigger = {
+			is_tributary_of = scope:second
+			government_has_flag = government_is_merchant
+		}
+	}
+
+	text = {
 		localization_key = relation_suzerain
 		trigger = {
 			is_tributary_of = scope:second
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 
@@ -2537,6 +2601,28 @@ RelationToMe = {
 	}
 
 	text = {
+		localization_key = relation_associate_female
+		trigger = {
+			is_landless_merchant = yes
+			scope:second = {
+				is_courtier_of = root
+				is_female = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_associate_male
+		trigger = {
+			is_landless_merchant = yes
+			scope:second = {
+				is_courtier_of = root
+				is_male = yes
+			}
+		}
+	}
+
+	text = {
 		localization_key = relation_follower_female
 		trigger = {
 			is_landed_or_landless_administrative_or_theocratic = no
@@ -2573,6 +2659,28 @@ RelationToMe = {
 		localization_key = relation_courtier_male
 		trigger = {
 			is_landed_or_landless_administrative_or_theocratic = yes
+			scope:second = {
+				is_courtier_of = root
+				is_male = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_associate_female
+		trigger = {
+			has_government = merchant_government
+			scope:second = {
+				is_courtier_of = root
+				is_female = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_associate_male
+		trigger = {
+			has_government = merchant_government
 			scope:second = {
 				is_courtier_of = root
 				is_male = yes
@@ -2885,6 +2993,30 @@ RelationToMe = {
 			}
 			scope:second = {
 				is_male = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_creditor
+		trigger = {
+			scope:second = {
+				any_relation = {
+					type = debtor
+					this = root
+				}
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_debtor
+		trigger = {
+			scope:second = {
+				any_relation = {
+					type = creditor
+					this = root
+				}
 			}
 		}
 	}
@@ -3960,6 +4092,46 @@ RelationToMePossessive = {
 	}
 
 	text = {
+		localization_key = relation_best_friend_associate_possessive
+		trigger = {
+			OR = {
+				is_landless_merchant = yes
+				has_government = merchant_government
+			}
+			scope:second = {
+				is_courtier_of = root
+				any_relation = {
+					type = best_friend
+					this = root
+				}
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_friend_associate_possessive
+		trigger = {
+			OR = {
+				is_landless_merchant = yes
+				has_government = merchant_government
+			}
+			scope:second = {
+				is_courtier_of = root
+				any_relation = {
+					type = friend
+					this = root
+				}
+				NOT = {
+					any_relation = {
+						type = best_friend
+						this = root
+					}
+				}
+			}
+		}
+	}
+
+	text = {
 		localization_key = relation_friend_female_possessive
 		trigger = {
 			scope:second = {
@@ -4580,9 +4752,18 @@ RelationToMePossessive = {
 	}
 
 	text = {
+		localization_key = relation_patron_possessive
+		trigger = {
+			is_tributary_of = scope:second
+			government_has_flag = government_is_merchant
+		}
+	}
+
+	text = {
 		localization_key = relation_suzerain_possessive
 		trigger = {
 			is_tributary_of = scope:second
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 
@@ -5385,9 +5566,32 @@ RelationToMePossessive = {
 	}
 
 	text = {
+		localization_key = relation_associate_female_possessive
+		trigger = {
+			is_landless_merchant = yes
+			scope:second = {
+				is_courtier_of = root
+				is_female = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_associate_male_possessive
+		trigger = {
+			is_landless_merchant = yes
+			scope:second = {
+				is_courtier_of = root
+				is_male = yes
+			}
+		}
+	}
+
+	text = {
 		localization_key = relation_follower_female_possessive
 		trigger = {
 			is_landed_or_landless_administrative_or_theocratic = yes
+			is_landless_merchant = no
 			scope:second = {
 				is_courtier_of = root
 				is_female = yes
@@ -5399,6 +5603,7 @@ RelationToMePossessive = {
 		localization_key = relation_follower_male_possessive
 		trigger = {
 			is_landed_or_landless_administrative_or_theocratic = yes
+			is_landless_merchant = no
 			scope:second = {
 				is_courtier_of = root
 				is_male = yes
@@ -5717,6 +5922,30 @@ RelationToMePossessive = {
 			}
 			scope:second = {
 				is_male = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_creditor_possessive
+		trigger = {
+			scope:second = {
+				any_relation = {
+					type = debtor
+					this = root
+				}
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_debtor_possessive
+		trigger = {
+			scope:second = {
+				any_relation = {
+					type = creditor
+					this = root
+				}
 			}
 		}
 	}
@@ -7004,9 +7233,18 @@ RelationToMeShort = {
 	}
 
 	text = {
+		localization_key = relation_patron
+		trigger = {
+			is_tributary_of = scope:second
+			government_has_flag = government_is_merchant
+		}
+	}
+
+	text = {
 		localization_key = relation_suzerain
 		trigger = {
 			is_tributary_of = scope:second
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 
@@ -7688,9 +7926,32 @@ RelationToMeShort = {
 	}
 
 	text = {
+		localization_key = relation_associate_female
+		trigger = {
+			is_landless_merchant = yes
+			scope:second = {
+				is_courtier_of = root
+				is_female = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_associate_male
+		trigger = {
+			is_landless_merchant = yes
+			scope:second = {
+				is_courtier_of = root
+				is_male = yes
+			}
+		}
+	}
+
+	text = {
 		localization_key = relation_follower_female
 		trigger = {
 			is_landed_or_landless_administrative_or_theocratic = no
+			is_landless_merchant = no
 			scope:second = {
 				is_courtier_of = root
 				is_female = yes
@@ -7702,6 +7963,7 @@ RelationToMeShort = {
 		localization_key = relation_follower_male
 		trigger = {
 			is_landed_or_landless_administrative_or_theocratic = no
+			is_landless_merchant = no
 			scope:second = {
 				is_courtier_of = root
 				is_male = yes
@@ -7792,7 +8054,12 @@ RelationToMeShort = {
 			host ?= scope:second
 			scope:second = { is_female = yes }
 			liege ?= scope:second
-			scope:second = { has_government = landless_adventurer_government }
+			scope:second = {
+				OR = {
+					government_has_flag = government_is_landless_adventurer
+					government_has_flag = government_is_merchant
+				}
+			}
 		}
 	}
 
@@ -7802,7 +8069,12 @@ RelationToMeShort = {
 			host ?= scope:second
 			scope:second = { is_male = yes }
 			liege ?= scope:second
-			scope:second = { has_government = landless_adventurer_government }
+			scope:second = {
+				OR = {
+					government_has_flag = government_is_landless_adventurer
+					government_has_flag = government_is_merchant
+				}
+			}
 		}
 	}
 
@@ -7825,9 +8097,18 @@ RelationToMeShort = {
 	}
 
 	text = {
+		localization_key = relation_patron
+		trigger = {
+			is_tributary_of = scope:second
+			government_has_flag = government_is_merchant
+		}
+	}
+
+	text = {
 		localization_key = relation_suzerain
 		trigger = {
 			is_tributary_of = scope:second
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 
@@ -8121,6 +8402,30 @@ RelationToMeShort = {
 					NOT = { this = root }
 				}
 				is_male = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_creditor
+		trigger = {
+			scope:second = {
+				any_relation = {
+					type = debtor
+					this = root
+				}
+			}
+		}
+	}
+
+	text = {
+		localization_key = relation_debtor
+		trigger = {
+			scope:second = {
+				any_relation = {
+					type = creditor
+					this = root
+				}
 			}
 		}
 	}

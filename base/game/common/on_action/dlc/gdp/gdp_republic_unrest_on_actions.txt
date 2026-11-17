@@ -1,0 +1,77 @@
+﻿# Republic Popular Faction – Demand On_Actions
+# Runs from the republic_popular_faction demand
+# root = the republic ruler (faction_target)
+# scope:faction = the republic_popular_faction that reached power threshold
+# Picks a severity from popular_opinion, matching the popular opinion levels
+# A value on a threshold counts as the worse level
+
+gdp_republic_unrest_demand = {
+	first_valid_on_action = {
+		gdp_republic_unrest_severity_4
+		gdp_republic_unrest_severity_3
+		gdp_republic_unrest_severity_2
+		gdp_republic_unrest_severity_1
+	}
+}
+
+# Severity 4: popular_opinion <= -75 (Despised and Hated tiers — the people want blood)
+gdp_republic_unrest_severity_4 = {
+	trigger = {
+		capital_county = {
+			popular_opinion <= -75
+		}
+	}
+
+	random_events = {
+		100 = gdp_republic_unrest.0301
+		100 = gdp_republic_unrest.0311
+		100 = gdp_republic_unrest.0321
+	}
+}
+
+# Severity 3: popular_opinion in (-75, -50] (Disliked tier — serious unrest)
+gdp_republic_unrest_severity_3 = {
+	trigger = {
+		capital_county = {
+			popular_opinion <= -50
+			popular_opinion > -75
+		}
+	}
+
+	random_events = {
+		100 = gdp_republic_unrest.0201
+		100 = gdp_republic_unrest.0211
+		100 = gdp_republic_unrest.0221
+	}
+}
+
+# Severity 2: popular_opinion in (-50, -25] (Unpopular tier — grumbling crowds)
+gdp_republic_unrest_severity_2 = {
+	trigger = {
+		capital_county = {
+			popular_opinion <= -25
+			popular_opinion > -50
+		}
+	}
+
+	random_events = {
+		100 = gdp_republic_unrest.0101
+		100 = gdp_republic_unrest.0111
+		100 = gdp_republic_unrest.0121
+	}
+}
+
+# Severity 1: popular_opinion in (-25, 0) (Neutral tier — murmurs of discontent)
+gdp_republic_unrest_severity_1 = {
+	trigger = {
+		capital_county = {
+			popular_opinion > -25
+		}
+	}
+
+	random_events = {
+		100 = gdp_republic_unrest.0001
+		100 = gdp_republic_unrest.0011
+		100 = gdp_republic_unrest.0021
+	}
+}

@@ -4,8 +4,20 @@
 #
 <key> = {
 
-	# Is this confederation based on DynastyHouse instead of Characters?
-	house_based_confederation = no
+	# Is this confederation formed between characters, dynasty houses, or titles?
+	# valid options are
+	# character (default)
+	# house
+	# title
+	#
+	confederation_base = character
+
+	## Which frame of gfx/interface/icons/diplomatic_icons.dds represents this confederation?
+	#
+	# House based confederations draw a coat of arms frame in most of the UI, but still need a
+	# frame here for the diplomacy list in the character window.
+	#
+	diplomatic_icon_frame_index = <num>
 
 	## The base monthly change for the cohesion value
 	#
@@ -121,6 +133,25 @@
 		any_member_house_head = <modifier>
 		any_member_house_member_not_head = <modifier>
 		any_member_house_member = <modifier>
+
+		## Modifiers applied to various members of houses in a bloc (title based confederation)
+		#
+		# Titles inside a confederation come in two categories:
+		#  - The *leading* title is the title that leads the confederation,
+		#  - Member titles are all other titles in the confederation
+		#
+		# In addition direct vassals of the leading and member titles can also receive their own modifiers even if they are not themself members
+		# Vassal modifiers come in both landed and noble family flavors (a character can receive both)
+		# The noble family modifiers also apply to leading and member title holders in case they also own a noble family title
+		#
+		# If a character is already part of a different confederation then they won't receive modifiers from their lieges confederation
+		#
+		leading_title_holder = <modifier>
+		leading_title_noble_family = <modifier>
+		leading_title_landed_vassal = <modifier>
+		member_title_holder = <modifier>
+		member_title_noble_family = <modifier>
+		member_title_landed_vassal = <modifier>
 	}
 
 	## Is this confederation still valid, or should it dissolve?
@@ -132,6 +163,18 @@
 	#  root - The confederation
 	is_valid_confederation = <trigger>
 	on_confederation_destroyed = <effect>
+
+	## Which characters can receive modifiers from the confederation
+	#
+	# If a character fails this trigger none of the confederations modifiers will apply to them, not even those intended for non-member subjects
+	# If left empty or not included all characters will be valid to receive modifiers
+	# Does not have a random seed due to code reasons as it would risk a OOS
+	#
+	# Scope:
+	#  root - The confederation
+	#  character - The character who can be expected to be a living ruler
+	#  house - The house that the character belongs to
+	can_receive_modifiers_from_confederation = <trigger>
 
 	## Member character
 	#
@@ -162,4 +205,16 @@
 	is_valid_member_house = <trigger>
 	on_member_house_joined = <effect>
 	on_member_house_left = <effect>
+
+	## War joining
+	#
+	# Determines if a confederation member would join war against Enemy
+	#
+	# Scope:
+	# root - the confederation
+	# enemy - the character fighting a war against a confederation member
+	# ally - the confederation member that would join the war
+	member_would_join_war = {
+		<trigger>
+	}
 }

@@ -23,11 +23,11 @@ culture_uses_frequent_winter_transportation_trigger = {
 }
 
 location_has_harsh_winter_trigger = {
-	location = { has_province_modifier = winter_harsh_modifier }
+	location ?= { has_province_modifier = winter_harsh_modifier }
 }
 
 location_has_normal_or_worse_winter_trigger = {
-	location = {
+	location ?= { # Characters in limbo have no location
 		OR = {
 			has_province_modifier = winter_normal_modifier
 			has_province_modifier = winter_harsh_modifier
@@ -42,6 +42,12 @@ location_has_winter_trigger = {
 }
 
 has_winter_trigger = {
+	NOR = {
+		terrain = desert
+		terrain = oasis
+		terrain = drylands
+		terrain = desert_mountains
+	}
 	OR = {
 		has_province_modifier = winter_mild_modifier
 		has_province_modifier = winter_normal_modifier
@@ -83,8 +89,6 @@ temperate_seasons_trigger = {
 			geographical_region = world_europe
 			geographical_region = world_asia_minor
 			geographical_region = world_middle_east
-			geographical_region = world_india_rajastan
-			geographical_region = world_india_bengal
 			geographical_region = world_africa_north
 			geographical_region = world_steppe
 			geographical_region = world_tibet
@@ -108,6 +112,17 @@ tropical_seasons_region_trigger = {
 		geographical_region = world_india_deccan
 		geographical_region = world_asia_china
 		geographical_region = world_asia_southeast
+		geographical_region = world_india_rajastan
+		geographical_region = world_india_bengal
+	}
+}
+
+arid_region_trigger = {
+	OR = {
+		geographical_region = world_middle_east_persia
+		geographical_region = world_middle_east_arabia
+		geographical_region = world_middle_east_jerusalem
+		geographical_region = custom_sahara_proper
 	}
 }
 

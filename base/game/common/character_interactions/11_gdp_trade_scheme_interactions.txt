@@ -1,0 +1,226 @@
+﻿# Trade scheme interactions
+# Scheme starter for Merchants and Republics
+# Improve Trade Route schemes start from decisions, see gdp_trade_scheme_decisions.txt
+
+##################
+# Disrupt Trade Routes
+##################
+
+start_gdp_disrupt_trade_routes_interaction = {
+	icon = icon_raid_estate
+	interface_priority = 70
+	filter_tags = { interaction_category_trade_league }
+	category = interaction_category_hostile
+
+	send_name = START_SCHEME
+
+	scheme = gdp_disrupt_trade_routes
+	ignores_pending_interaction_block = yes
+
+	desc = scheme_interaction_tt_gdp_disrupt_trade_routes_approved
+
+	is_available = {
+		gdp_disrupt_trade_routes_scheme_owner_valid_trigger = yes
+	}
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		scope:actor = {
+			NOT = { this = scope:recipient }
+			gdp_is_trade_ruler_trigger = yes
+		}
+		scope:recipient = {
+			gdp_is_trade_ruler_trigger = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			can_start_scheme = {
+				type = gdp_disrupt_trade_routes
+				target_character = scope:recipient
+			}
+		}
+	}
+
+	# Scheme Starter Packages
+	options_heading = schemes.t.agent_packages
+	send_options_exclusive = yes
+	## Balanced agents.
+	send_option = {
+		flag = agent_focus_balance
+		current_description = start_gdp_disrupt_trade_routes_interaction.tt.agent_focus_balance
+	}
+	## Focused on Success Chance.
+	send_option = {
+		flag = agent_focus_success
+		current_description = start_gdp_disrupt_trade_routes_interaction.tt.agent_focus_success
+	}
+	## Focused on Speed.
+	send_option = {
+		flag = agent_focus_speed
+		current_description = start_gdp_disrupt_trade_routes_interaction.tt.agent_focus_speed
+	}
+	## Focused on Secrecy.
+	send_option = {
+		flag = agent_focus_secrecy
+		current_description = start_gdp_disrupt_trade_routes_interaction.tt.agent_focus_secrecy
+	}
+
+	on_accept = {
+		scope:actor = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = start_gdp_disrupt_trade_routes_notification
+
+				left_icon = scope:recipient
+
+				# Success.
+				if = {
+					limit = { scope:agent_focus_success ?= yes }
+					begin_scheme_with_agents_effect = {
+						SCHEME_TYPE = gdp_disrupt_trade_routes
+						TARGET_TYPE = target_character
+						TARGET_SCOPE = scope:recipient
+						# Success.
+						AGENT_1 = agent_thief
+						AGENT_2 = agent_bookkeeper
+						AGENT_3 = agent_shill
+						# Speed.
+						AGENT_4 = agent_infiltrator
+						# Secrecy.
+						AGENT_5 = agent_lookout
+					}
+				}
+				# Speed.
+				else_if = {
+					limit = { scope:agent_focus_speed ?= yes }
+					begin_scheme_with_agents_effect = {
+						SCHEME_TYPE = gdp_disrupt_trade_routes
+						TARGET_TYPE = target_character
+						TARGET_SCOPE = scope:recipient
+						# Speed.
+						AGENT_1 = agent_infiltrator
+						AGENT_2 = agent_overseer
+						AGENT_3 = agent_messenger
+						# Success.
+						AGENT_4 = agent_thief
+						# Secrecy.
+						AGENT_5 = agent_lookout
+					}
+				}
+				# Secrecy.
+				else_if = {
+					limit = { scope:agent_focus_secrecy ?= yes }
+					begin_scheme_with_agents_effect = {
+						SCHEME_TYPE = gdp_disrupt_trade_routes
+						TARGET_TYPE = target_character
+						TARGET_SCOPE = scope:recipient
+						# Secrecy.
+						AGENT_1 = agent_lookout
+						AGENT_2 = agent_alibi
+						# Success.
+						AGENT_3 = agent_thief
+						AGENT_4 = agent_bookkeeper
+						# Speed.
+						AGENT_5 = agent_infiltrator
+					}
+				}
+				# Balanced.
+				else = {
+					begin_scheme_with_agents_effect = {
+						SCHEME_TYPE = gdp_disrupt_trade_routes
+						TARGET_TYPE = target_character
+						TARGET_SCOPE = scope:recipient
+						# Success.
+						AGENT_1 = agent_thief
+						AGENT_2 = agent_bookkeeper
+						# Speed.
+						AGENT_3 = agent_infiltrator
+						AGENT_4 = agent_overseer
+						# Secrecy.
+						AGENT_5 = agent_lookout
+					}
+				}
+			}
+			# Scheme progress bonus from education
+			education_5_scheme_progress_effect = { SKILL = intrigue }
+
+			custom_tooltip = gdp_disrupt_trade_routes_effect_tt
+
+			# Hostile schemes carry the usual conscience cost.
+			if = {
+				limit = {
+					NOT = { has_fulfillment_parameter = sp_hostile_schemes_minus_murder_no_sp_or_stress_loss }
+				}
+				stress_and_fulfillment_impact = {
+					content = medium_stress_impact_gain
+				}
+			}
+			if = {
+				limit = { has_relation_nemesis = scope:recipient }
+				stress_impact = { base = major_stress_impact_loss }
+			}
+			else_if = {
+				limit = { has_relation_rival = scope:recipient }
+				stress_impact = { base = medium_stress_impact_loss }
+			}
+		}
+	}
+
+	auto_accept = yes
+
+	ai_frequency_by_tier = {
+		barony = 0
+		county = 60
+		duchy = 48
+		kingdom = 36
+		empire = 36
+		hegemony = 36
+	}
+	ai_targets = {
+		ai_recipients = nearby_domicile_owners
+		max = 10
+	}
+
+	ai_will_do = {
+		base = -20
+		# Far more tempting when the target is actually in your markets.
+		modifier = {
+			add = 40
+			scope:recipient = {
+				any_trade_route = {
+					gdp_trade_route_shares_market_with_trigger = { CHARACTER = scope:actor }
+				}
+			}
+		}
+		modifier = {
+			has_trait = vengeful
+			add = 15
+		}
+		modifier = {
+			has_trait = greedy
+			add = 15
+		}
+		modifier = {
+			has_trait = deceitful
+			add = 10
+		}
+		modifier = {
+			has_trait = just
+			add = -20
+		}
+		modifier = {
+			scope:actor = { has_relation_rival = scope:recipient }
+			add = 20
+		}
+		modifier = {
+			scope:actor = { has_relation_nemesis = scope:recipient }
+			add = 30
+		}
+		modifier = {
+			scope:actor = { has_relation_friend = scope:recipient }
+			add = -50
+		}
+	}
+}

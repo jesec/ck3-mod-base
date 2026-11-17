@@ -192,6 +192,8 @@ pam_humiliation_cb = {
 	}
 
 	on_victory = {
+		on_victory_effect = yes
+
 		scope:defender = {
 			if = {
 				limit = {
@@ -213,11 +215,6 @@ pam_humiliation_cb = {
 				TT = pam_humiliation_cb_papabile_score_loss_tt
 			}
 		}
-	
-		scope:attacker = { show_pow_release_message_effect = yes }
-
-		# Legitimacy
-		add_legitimacy_attacker_victory_effect = yes
 
 		#EP2 accolade glory gain for winning against higher ranked enemy
 		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
@@ -241,12 +238,6 @@ pam_humiliation_cb = {
 			WINNER_ALLY_FAME_SCALE = 1
 			LOSER_ALLY_FAME_SCALE = 1
 		}
-
-		# Truce
-		add_truce_attacker_victory_effect = yes
-
-		# FP1: note the victory for future memorialisation via stele (if applicable).
-		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
 	}
 
 	on_white_peace_desc = {
@@ -260,7 +251,7 @@ pam_humiliation_cb = {
 	}
 
 	on_white_peace = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_white_peace_effect = yes
 
 		#EP2 accolade glory gain for doing pretty good against higher ranked enemy
 		scope:defender = { accolade_defender_war_end_glory_gain_low_effect = yes }
@@ -277,8 +268,6 @@ pam_humiliation_cb = {
 			WINNER_ALLY_FAME_SCALE = 1
 			LOSER_ALLY_FAME_SCALE = 1
 		}
-
-		add_truce_white_peace_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -292,16 +281,12 @@ pam_humiliation_cb = {
 	}
 
 	on_defeat = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_defeat_effect = yes
 
 		scope:attacker = { play_sound_effect = "event:/DLC/CE2/UI/Notifications/ce2_ui_notifications_migration_negative" }
 		scope:defender = { play_sound_effect = "event:/DLC/CE2/UI/Notifications/ce2_ui_notifications_migration_positive" }
 
-		# Legitimacy
-		add_legitimacy_attacker_defeat_effect = yes
-
 		scope:defender = { 
-			mandala_peacemaker_perk_serenity_effect = yes
 			#EP2 accolade glory gain for winning against higher ranked enemy
 			accolade_defender_war_end_glory_gain_high_effect = yes
 			# Prestige for Defender
@@ -327,13 +312,6 @@ pam_humiliation_cb = {
 			WINNER_ALLY_FAME_SCALE = 1
 			LOSER_ALLY_FAME_SCALE = 1
 		}
-
-		add_truce_attacker_defeat_effect = yes
-
-		scope:attacker = {
-			save_temporary_scope_as = loser
-		}
-		on_lost_aggression_war_discontent_loss = yes
 	}
 
 	transfer_behavior = transfer
@@ -375,6 +353,12 @@ pam_humiliation_cb = {
 			}
 			add = 50
 		}
+	}
+	ai_score_mult = {
+		value = 1
+
+		add = common_cb_ai_score_mult_additive
+		multiply = common_cb_ai_score_mult
 	}
 }
 
@@ -544,10 +528,13 @@ pam_challenge_hof_cb = {
 	}
 
 	on_victory = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_victory_effect = yes
+		scope:attacker = {
+			#EP2 Accolade glory gain from winning against higher ranked enemy
+			accolade_attacker_war_end_glory_gain_high_effect = yes
+		}
 		pam_antipope_challenge_hof_victory_effect = yes
-		add_legitimacy_attacker_victory_effect = yes
-		add_truce_attacker_victory_effect = yes
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:attacker VALUE = major }
 	}
 
 	on_white_peace_desc = {
@@ -555,8 +542,8 @@ pam_challenge_hof_cb = {
 	}
 
 	on_white_peace = {
-		scope:attacker = { show_pow_release_message_effect = yes }
-		add_truce_white_peace_effect = yes
+		on_white_peace_effect = yes
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:attacker VALUE = major } # not important as the scales are identical
 	}
 
 	on_defeat_desc = {
@@ -570,9 +557,27 @@ pam_challenge_hof_cb = {
 	}
 
 	on_defeat = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_defeat_effect = yes
 		pam_antipope_challenge_hof_defeat_effect = yes
-		add_truce_attacker_defeat_effect = yes
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 3
+			}
+			add_piety = major_piety_loss
+		}
+		scope:defender = {
+			#EP2 Accolade glory gain from winning against higher ranked enemy
+			accolade_defender_war_end_glory_gain_high_effect = yes
+
+			add_prestige = {
+				value = tier_scaled_prestige_value
+			}
+			add_piety = {
+				value = tier_scaled_piety_value
+			}
+		}
+
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:defender VALUE = major } 
 	}
 
 	transfer_behavior = transfer
@@ -590,6 +595,10 @@ pam_challenge_hof_cb = {
 		value = {
 			value = scope:attacker.ai_zeal
 			multiply = -0.5
+			add = {
+				value = scope:attacker.ai_greed
+				multiply = 0.5
+			}
 		}
 		if = {
 			limit = {
@@ -599,6 +608,12 @@ pam_challenge_hof_cb = {
 			}
 			add = 50
 		}
+	}
+	ai_score_mult = {
+		value = 1
+
+		add = common_cb_ai_score_mult_additive
+		multiply = common_cb_ai_score_mult
 	}
 }
 
@@ -665,10 +680,10 @@ pam_antiking_cb = {
 	}
 
 	on_victory = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_victory_effect = yes
+		scope:attacker = { accolade_attacker_war_end_glory_gain_high_effect = yes }
 		pam_antiking_victory_effect = yes
-		add_legitimacy_attacker_victory_effect = yes
-		add_truce_attacker_victory_effect = yes
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:attacker VALUE = major }
 	}
 
 	on_white_peace_desc = {
@@ -676,8 +691,8 @@ pam_antiking_cb = {
 	}
 
 	on_white_peace = {
-		scope:attacker = { show_pow_release_message_effect = yes }
-		add_truce_white_peace_effect = yes
+		on_white_peace_effect = yes
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:attacker VALUE = major } # not important as the scales are identical
 	}
 
 	on_defeat_desc = {
@@ -691,9 +706,19 @@ pam_antiking_cb = {
 	}
 
 	on_defeat = {
-		scope:attacker = { show_pow_release_message_effect = yes }
-		scope:attacker = { add_piety = medium_piety_loss }
-		add_truce_attacker_defeat_effect = yes
+		on_defeat_effect = yes
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 3
+			}
+			add_piety = medium_piety_loss
+		}
+		scope:defender = {
+			#EP2 Accolade glory gain from winning against higher ranked enemy
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
+
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:defender VALUE = major } 
 	}
 
 	transfer_behavior = transfer
@@ -717,6 +742,12 @@ pam_antiking_cb = {
 			}
 			multiply = 0
 		}
+	}
+	ai_score_mult = {
+		value = 1
+
+		add = common_cb_ai_score_mult_additive
+		multiply = common_cb_ai_score_mult
 	}
 }
 
@@ -781,10 +812,11 @@ pam_investiture_conflict_cb = {
 	}
 
 	on_victory = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_victory_effect = yes
+		#EP2 Accolade glory gain from winning against higher ranked enemy
+		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:attacker VALUE = major }
 		pam_investiture_conflict_victory_effect = yes
-		add_legitimacy_attacker_victory_effect = yes
-		add_truce_attacker_victory_effect = yes
 	}
 
 	on_white_peace_desc = {
@@ -792,8 +824,13 @@ pam_investiture_conflict_cb = {
 	}
 
 	on_white_peace = {
-		scope:attacker = { show_pow_release_message_effect = yes }
-		add_truce_white_peace_effect = yes
+		on_white_peace_effect = yes
+		scope:attacker = {
+			add_prestige = medium_prestige_loss
+			add_piety = medium_piety_loss
+		}
+
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:attacker VALUE = major } # not important as the scales are identical
 	}
 
 	on_defeat_desc = {
@@ -811,9 +848,31 @@ pam_investiture_conflict_cb = {
 	}
 
 	on_defeat = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_defeat_effect = yes
 		pam_investiture_conflict_defeat_effect = yes
-		add_truce_attacker_defeat_effect = yes
+
+		scope:defender = {
+			#EP2 accolade glory gain for winning against higher ranked enemy
+			accolade_defender_war_end_glory_gain_med_effect = yes
+		}
+
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 3
+			}
+			add_piety = {
+				value = 0
+				subtract = tier_scaled_piety_value
+			}
+		}
+
+		scope:defender = {
+			add_piety = {
+				value = tier_scaled_piety_value
+			}
+		}
+
+		modify_allies_of_participants_fame_both_same_values = { WINNER = scope:defender VALUE = major } 
 	}
 
 	transfer_behavior = transfer
@@ -829,5 +888,11 @@ pam_investiture_conflict_cb = {
 
 	ai_score = {
 		value = 20
+	}
+	ai_score_mult = {
+		value = 1
+
+		add = common_cb_ai_score_mult_additive
+		multiply = common_cb_ai_score_mult
 	}
 }

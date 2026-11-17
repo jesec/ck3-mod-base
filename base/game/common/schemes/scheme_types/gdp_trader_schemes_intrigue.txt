@@ -1,0 +1,152 @@
+﻿##################################################
+# Trader Intrigue Schemes
+# Information and competitive leverage.
+##################################################
+
+### Undermining a Competitor
+# Temporary competitiveness penalty on a specific AI rival in this market.
+# Requires: at least one AI merchant with negative opinion toward route owner trading here.
+# Requires: competitiveness is still contested in this market.
+gdp_trader_undermining_competitor_scheme = {
+	skill = intrigue
+	desc = gdp_trader_undermining_competitor_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = INTRIGUE }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		gdp_trader_needs_competitiveness_trigger = yes
+		location.barony.trade_market = {
+			any_trade_route_in_market = {
+				trade_route_owner = {
+					is_ai = yes
+					government_has_flag = government_is_merchant
+					this != root.assigned_trade_route.trade_route_owner
+				}
+			}
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_undermining_competitor_scheme_success_title
+					desc = gdp_trader_undermining_competitor_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader.location.barony.trade_market = {
+						random_trade_route_in_market = {
+							limit = {
+								trade_route_owner = {
+									is_ai = yes
+									government_has_flag = government_is_merchant
+									this != scope:route_owner
+									opinion = {
+										target = scope:route_owner
+										value < 0
+									}
+								}
+							}
+							trade_route_owner = {
+								scope:trader.location.barony.trade_market = {
+									add_trade_market_modifier = {
+										modifier = gdp_trader_undermine_competitor_modifier
+										years = 5
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Recruiting Informants
+# Gain competitive pressure.
+# Requires: route owner has serve_the_crown_perk and is a Merchant government.
+gdp_trader_recruiting_informants_scheme = {
+	skill = intrigue
+	desc = gdp_trader_recruiting_informants_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = INTRIGUE }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		assigned_trade_route.trade_route_owner = {
+			government_has_flag = government_is_merchant
+			has_perk = serve_the_crown_perk
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		assigned_trade_route.trade_route_owner = {
+			government_has_flag = government_is_merchant
+			has_perk = serve_the_crown_perk
+		}
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_recruiting_informants_scheme_success_title
+					desc = gdp_trader_recruiting_informants_scheme_success_desc
+					left_icon = scope:trader
+					add_merchant_competitive_pressure_effect = {
+						VALUE = 1
+						TOOLTIP = merchant_competitive_pressure_gain_1_tt
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}

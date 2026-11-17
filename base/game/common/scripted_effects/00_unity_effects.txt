@@ -8,11 +8,11 @@
 #	TARGET		- The character being targeted by the "action"
 #	VALUE		- How much unity should change (there are scripted values for these)
 #	DESC		- A description of what CHARACTER did
-#add_clan_unity_interaction_effect = {
+#add_house_unity_interaction_effect = {
 #	if = {
 #		limit = { # Check if unity is relevant
-#			$CHARACTER$ = { government_has_flag = government_is_clan }
-#			$TARGET$ = { government_has_flag = government_is_clan }
+#			$CHARACTER$ = { government_has_flag = government_uses_house_unity }
+#			$TARGET$ = { government_has_flag = government_uses_house_unity }
 #			exists = $CHARACTER$.house
 #			exists = $TARGET$.house
 #			$CHARACTER$.house = $TARGET$.house
@@ -52,7 +52,7 @@ stop_attacker_vassal_war_add_clan_unity_effect = {
 			exists = scope:recipient.house
 			scope:recipient.house != scope:actor.house
 		}
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:defender
 			VALUE = medium_unity_gain
@@ -66,7 +66,7 @@ stop_attacker_vassal_war_add_clan_unity_effect = {
 			exists = scope:defender.house
 			scope:defender.house != scope:actor.house
 		}
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
@@ -88,7 +88,7 @@ stop_defender_vassal_war_add_clan_unity_effect = {
 			exists = scope:attacker.house
 			scope:attacker.house != scope:actor.house
 		}
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
@@ -102,7 +102,7 @@ stop_defender_vassal_war_add_clan_unity_effect = {
 			exists = scope:recipient.house
 			scope:recipient.house != scope:actor.house
 		}
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:attacker
 			VALUE = medium_unity_gain
@@ -113,7 +113,7 @@ stop_defender_vassal_war_add_clan_unity_effect = {
 }
 
 refuse_call_to_arms_add_clan_unity_effect = {
-	add_clan_unity_interaction_effect = {
+	add_house_unity_interaction_effect = {
 		CHARACTER = scope:actor
 		TARGET = scope:recipient
 		VALUE = medium_unity_loss
@@ -134,8 +134,8 @@ accept_faith_conversion_add_clan_unity_effect = {
 				}
 			}
 		}
-		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:puppet_or_actor
+		add_house_unity_interaction_effect = {
+			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_gain
 			DESC = clan_unity_conversion_accepted.desc
@@ -152,8 +152,8 @@ accept_faith_conversion_add_clan_unity_effect = {
 				}
 			}
 		}
-		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:puppet_or_actor
+		add_house_unity_interaction_effect = {
+			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
 			DESC = clan_unity_conversion_accepted.desc
@@ -174,8 +174,8 @@ refuse_faith_conversion_add_clan_unity_effect = {
 				}
 			}
 		}
-		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:puppet_or_actor
+		add_house_unity_interaction_effect = {
+			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss
 			DESC = clan_unity_conversion_declined.desc
@@ -192,8 +192,8 @@ refuse_faith_conversion_add_clan_unity_effect = {
 				}
 			}
 		}
-		add_clan_unity_interaction_effect = {
-			CHARACTER = scope:puppet_or_actor
+		add_house_unity_interaction_effect = {
+			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_gain
 			DESC = clan_unity_conversion_declined.desc
@@ -204,25 +204,24 @@ refuse_faith_conversion_add_clan_unity_effect = {
 
 notify_players_about_unity_change_effect = {
 	# Notify human players if they are not involved!
- 	$CHARACTER$.house = {
- 		every_house_member = {
-			limit = {
-				is_ai = no
-				NOT = { this = $CHARACTER$ }
-				NOT = { this = $TARGET$ }
+	every_player = {
+		limit = {
+			house ?= $CHARACTER$.house
+			NOR = {
+				this = $CHARACTER$
+				this = $TARGET$
 			}
-			$CHARACTER$ = { save_scope_as = actor }
-
-			send_interface_message = {
-				type = event_generic_neutral_text
-				title = unity_changed_title
-				desc = {
-					desc = unity_changed_desc
-					desc = $DESC$
-				}
-				left_icon = $CHARACTER$
-				right_icon = $TARGET$
+		}
+		$CHARACTER$ = { save_scope_as = actor }
+		send_interface_message = {
+			type = msg_house_unity_change_value
+			title = unity_changed_title
+			desc = {
+				desc = unity_changed_desc
+				desc = $DESC$
 			}
+			left_icon = $CHARACTER$
+			right_icon = $TARGET$
 		}
 	}
 }

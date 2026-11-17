@@ -1,0 +1,979 @@
+﻿##################################################
+# DOMICILE ARTIFACT CREATION
+##################################################
+
+# Create_library_artifact_effect
+# create_curio_artifact_effect
+# select_local_creature_effect
+# Create_creature_artifact_effect
+# luxury_contract_standard_creature_effect
+# luxury_contract_dangerous_creature_effect
+# domicile_library_artifact_modifiers_effect
+# domicile_curio_artifact_modifiers_effect
+# domicile_creature_artifact_modifiers_effect
+
+create_library_artifact_effect = {
+	create_artifact_book_effect = {
+		OWNER = $OWNER$
+		CREATOR = $CREATOR$
+		SET_SUBJECT = $SUBJECT$
+		SET_TOPIC = $TOPIC$
+	}
+	hidden_effect_new_object = {
+		scope:newly_created_artifact ?= {
+			reforge_artifact = { type = library_item }
+			domicile_library_artifact_modifiers_effect = yes
+		}
+	}
+	custom_tooltip = create_library_artifact
+}
+
+create_curio_artifact_effect = {
+	# Without a caller-set quality the trinket pool includes the bad tier, so roll common to rare here
+	hidden_effect = {
+		if = {
+			limit = {
+				NOT = { exists = scope:quality }
+			}
+			random_list = {
+				55 = {
+					save_scope_value_as = {
+						name = quality
+						value = 25
+					}
+				}
+				35 = {
+					save_scope_value_as = {
+						name = quality
+						value = 50
+					}
+				}
+				10 = {
+					save_scope_value_as = {
+						name = quality
+						value = 70
+					}
+				}
+			}
+			save_scope_value_as = {
+				name = curio_rolled_quality
+				value = yes
+			}
+		}
+	}
+	generate_trinket_effect = {
+		TRINKET_RECEIVER = $OWNER$
+		TRINKET_GIVER = $CREATOR$
+		GRAB_ALL_TRINKETS = yes
+		HISTORY_TYPE = given
+	}
+	if = {
+		limit = { exists = scope:curio_rolled_quality }
+		clear_saved_scope = quality
+		clear_saved_scope = curio_rolled_quality
+	}
+	hidden_effect_new_object = {
+		scope:new_trinket ?= {
+			reforge_artifact = { type = curio }
+			domicile_curio_artifact_modifiers_effect = yes
+		}
+	}
+	custom_tooltip = create_curio_artifact
+}
+
+#Used to find a local creature for luxury Merchant contracts
+#Note: if you add animals here, also update domicile artifact creation
+#Note: to limit the possible animals, save any of these scopes before running the effect
+#Only whether the scope exists matters, and saving several narrows the pick further
+## big_local_creature: big cats, bears and elephants
+## small_local_creature: caracals, lynxes, birds and monkeys
+## dangerous_local_creature: big cats, caracals, lynxes, bears and elephants
+## harmless_local_creature: birds and monkeys
+## prowling_local_creature: big cats, caracals and lynxes
+select_local_creature_effect = {
+	save_scope_as = $TYPE$_local_creature
+	# DEBUG creature_location check
+	if = {
+		limit = {
+			NOT = { exists = scope:creature_location }
+		}
+		location = { save_scope_as = creature_location }
+	}
+	hidden_effect = {
+		if = {
+			limit = {
+				NOT = { exists = scope:creature_type }
+			}
+			random_list = {
+				10 = { # Lion, Tiger, Leopard
+					trigger = {
+						NOR = {
+							exists = scope:harmless_local_creature
+							exists = scope:small_local_creature
+						}
+						scope:creature_location = {
+							OR = {
+								hunt_animal_lion_trigger = yes
+								hunt_animal_tiger_trigger = yes
+								hunt_animal_leopard_trigger = yes
+							}
+						}
+					}
+					modifier = {
+						factor = 0.1
+						AND = {
+							character_has_creature_type_trigger = { CHAR = root TYPE = lion }
+							character_has_creature_type_trigger = { CHAR = root TYPE = tiger }
+							character_has_creature_type_trigger = { CHAR = root TYPE = leopard }
+						}
+					}
+					random_list = {
+						5 = { # Lion
+							trigger = {
+								scope:creature_location = { hunt_animal_lion_trigger = yes }
+							}
+							modifier = {
+								factor = 5
+								scope:creature_location = {
+									OR = {
+										terrain = desert
+										terrain = forest
+									}
+								}
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = lion }
+							}
+							set_variable = { name = animal_type value = flag:lion years = 3 }
+						}
+						5 = { # Tiger
+							trigger = {
+								scope:creature_location = { hunt_animal_tiger_trigger = yes }
+							}
+							modifier = {
+								factor = 5
+								scope:creature_location = { terrain = jungle }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = tiger }
+							}
+							set_variable = { name = animal_type value = flag:tiger years = 3 }
+						}
+						5 = { # Leopard
+							trigger = {
+								scope:creature_location = { hunt_animal_leopard_trigger = yes }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = leopard }
+							}
+							set_variable = { name = animal_type value = flag:leopard years = 3 }
+						}
+					}
+				}
+				10 = { # Caracal, Lynx
+					trigger = {
+						NOR = {
+							exists = scope:harmless_local_creature
+							exists = scope:big_local_creature
+						}
+						scope:creature_location = {
+							OR = {
+								hunt_animal_caracal_trigger = yes
+								hunt_animal_lynx_trigger = yes
+							}
+						}
+					}
+					modifier = {
+						factor = 0.1
+						AND = {
+							character_has_creature_type_trigger = { CHAR = root TYPE = caracal }
+							character_has_creature_type_trigger = { CHAR = root TYPE = lynx }
+						}
+					}
+					random_list = {
+						5 = { # Caracal
+							trigger = {
+								scope:creature_location = { hunt_animal_caracal_trigger = yes }
+							}
+							modifier = {
+								factor = 5
+								scope:creature_location = {
+									OR = {
+										terrain = drylands
+										terrain = hills
+									}
+								}
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = caracal }
+							}
+							set_variable = { name = animal_type value = flag:caracal years = 3 }
+						}
+						5 = { # Lynx
+							trigger = {
+								scope:creature_location = { hunt_animal_lynx_trigger = yes }
+								NOT = { exists = scope:big_local_creature }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = lynx }
+							}
+							set_variable = { name = animal_type value = flag:lynx years = 3 }
+						}
+					}
+				}
+				5 = { # Bear, Elephant
+					trigger = {
+						NOR = {
+							exists = scope:small_local_creature
+							exists = scope:harmless_local_creature
+							exists = scope:prowling_local_creature
+						}
+						scope:creature_location = {
+							OR = {
+								luxury_contract_creature_elephant_trigger = yes
+								hunt_animal_bear_trigger = yes
+							}
+						}
+					}
+					modifier = {
+						factor = 0.1
+						AND = {
+							character_has_creature_type_trigger = { CHAR = root TYPE = bear }
+							character_has_creature_type_trigger = { CHAR = root TYPE = elephant }
+						}
+					}
+					random_list = {
+						5 = { # Bear
+							trigger = {
+								scope:creature_location = { hunt_animal_bear_trigger = yes }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = bear }
+							}
+							set_variable = { name = animal_type value = flag:bear years = 3 }
+						}
+						10 = { # Elephant
+							trigger = {
+								scope:creature_location = { luxury_contract_creature_elephant_trigger = yes }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = elephant }
+							}
+							set_variable = { name = animal_type value = flag:elephant years = 3 }
+						}
+					}
+				}
+				10 = { # Birds ( peacock, parrot, cockatoo, crane )
+					trigger = {
+						NOR = {
+							exists = scope:dangerous_local_creature
+							exists = scope:prowling_local_creature
+							exists = scope:big_local_creature
+						}
+						scope:creature_location = {
+							OR = {
+								luxury_contract_creature_peacock_trigger = yes
+								luxury_contract_creature_parrot_trigger = yes
+								luxury_contract_creature_cockatoo_trigger = yes
+								luxury_contract_creature_crane_trigger = yes
+							}
+						}
+					}
+					modifier = {
+						exists = scope:big_local_creature
+						add = -5
+					}
+					modifier = {
+						factor = 0.1
+						AND = {
+							character_has_creature_type_trigger = { CHAR = root TYPE = peacock }
+							character_has_creature_type_trigger = { CHAR = root TYPE = parrot }
+							character_has_creature_type_trigger = { CHAR = root TYPE = cockatoo }
+							character_has_creature_type_trigger = { CHAR = root TYPE = crane }
+						}
+					}
+					random_list = {
+						5 = {
+							trigger = { # peacock
+								scope:creature_location = { luxury_contract_creature_peacock_trigger = yes }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = peacock }
+							}
+							set_variable = { name = animal_type value = flag:peacock years = 3 }
+						}
+						5 = {
+							trigger = { # parrot
+								scope:creature_location = { luxury_contract_creature_parrot_trigger = yes }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = parrot }
+							}
+							set_variable = { name = animal_type value = flag:parrot years = 3 }
+						}
+						5 = {
+							trigger = { # cockatoo
+								scope:creature_location = { luxury_contract_creature_cockatoo_trigger = yes }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = cockatoo }
+							}
+							set_variable = { name = animal_type value = flag:cockatoo years = 3 }
+						}
+						5 = {
+							trigger = { # crane
+								scope:creature_location = { luxury_contract_creature_crane_trigger = yes }
+							}
+							modifier = {
+								factor = 0.1
+								character_has_creature_type_trigger = { CHAR = root TYPE = crane }
+							}
+							set_variable = { name = animal_type value = flag:crane years = 3 }
+						}
+					}
+				}
+				5 = { # Monkey
+					trigger = {
+						NOR = {
+							exists = scope:dangerous_local_creature
+							exists = scope:prowling_local_creature
+							exists = scope:big_local_creature
+						}
+						scope:creature_location = {
+							luxury_contract_creature_monkey_trigger = yes
+						}
+					}
+					modifier = {
+						factor = 0.1
+						character_has_creature_type_trigger = { CHAR = root TYPE = monkey }
+					}
+					set_variable = { name = animal_type value = flag:monkey years = 3 }
+				}
+			}
+		}
+		else = {
+			set_variable = { name = animal_type value = scope:creature_type years = 3 }
+		}
+	}
+}
+
+# randomly select birds/monkey without taking geography or region into account
+select_dealer_creature_effect = {
+	save_scope_as = $TYPE$_local_creature
+	# DEBUG creature_location check
+	if = {
+		limit = {
+			NOT = { exists = scope:creature_location }
+		}
+		location = { save_scope_as = creature_location }
+	}
+	hidden_effect = {
+		random_list = {
+			5 = {
+				modifier = {
+					factor = 0.1
+					character_has_creature_type_trigger = { CHAR = root TYPE = peacock }
+				}
+				set_variable = { name = animal_type value = flag:peacock years = 3 }
+			}
+			5 = {
+				modifier = {
+					factor = 0.1
+					character_has_creature_type_trigger = { CHAR = root TYPE = parrot }
+				}
+				set_variable = { name = animal_type value = flag:parrot years = 3 }
+			}
+			5 = {
+				modifier = {
+					factor = 0.1
+					character_has_creature_type_trigger = { CHAR = root TYPE = cockatoo }
+				}
+				set_variable = { name = animal_type value = flag:cockatoo years = 3 }
+			}
+			5 = {
+				modifier = {
+					factor = 0.1
+					character_has_creature_type_trigger = { CHAR = root TYPE = crane }
+				}
+				set_variable = { name = animal_type value = flag:crane years = 3 }
+			}
+			5 = {
+				modifier = {
+					factor = 0.1
+					character_has_creature_type_trigger = { CHAR = root TYPE = monkey }
+				}
+				set_variable = { name = animal_type value = flag:monkey years = 3 }
+			}
+		}
+	}
+}
+
+# THE SCRIPT FORMAT IN THE FOLLOWING EFFECT IS NECESSARY TO SET PROPER NAME AND DESCRIPTION # 
+
+# DO NOT CHANGE #
+
+create_domicile_creature_artifact_object_effect = {
+	hidden_effect_new_object = {
+		create_artifact = {
+			name = placeholder
+			description = placeholder
+			creator = scope:creator
+			visuals = $VISUALS$
+			type = creature
+			modifier = artifact_placeholder_modifier
+			wealth = scope:wealth
+			quality = scope:quality
+			decaying = no
+			save_scope_as = newly_created_artifact
+		}
+	}
+}
+
+create_creature_artifact_effect = {
+	# owner is who the artifact is made for
+	# For luxury contracts the creator is the contract giver, otherwise it should always be a merchant
+	$OWNER$ = { save_scope_as = owner }
+	$CREATOR$ = { save_scope_as = creator }
+
+	get_artifact_quality_effect = yes
+	get_artifact_wealth_effect = yes
+
+	scope:owner = {
+		if = {
+			limit = {
+				# Check if creature type is already set.
+				NOT = { domicile_creature_animal_type_trigger = { TYPE = var:animal_type } }
+			}
+			random_list = {
+				8 = {
+					luxury_contract_standard_creature_effect = { PROVINCE = scope:creator.location }
+				}
+				2 = {
+					luxury_contract_dangerous_creature_effect = { PROVINCE = scope:creator.location }
+				}
+			}
+		}
+
+		hidden_effect_new_object = {
+			if = {
+				limit = {
+					OR = {
+						var:animal_type ?= flag:peacock
+						var:animal_type ?= flag:parrot
+						var:animal_type ?= flag:cockatoo
+						var:animal_type ?= flag:crane
+					}
+				}
+				create_domicile_creature_artifact_object_effect = { VISUALS = creature_court_trophy_bird }
+			}
+			else_if = {
+				limit = {
+					var:animal_type ?= flag:monkey
+				}
+				create_domicile_creature_artifact_object_effect = { VISUALS = creature_court_trophy_monkey }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						var:animal_type ?= flag:caracal
+						var:animal_type ?= flag:lynx
+					}
+				}
+				create_domicile_creature_artifact_object_effect = { VISUALS = creature_court_small_hide }
+			}
+			else_if = {
+				limit = {
+					OR = {
+						var:animal_type ?= flag:lion
+						var:animal_type ?= flag:tiger
+						var:animal_type ?= flag:leopard
+						var:animal_type ?= flag:bear
+						var:animal_type ?= flag:elephant
+					}
+				}
+				create_domicile_creature_artifact_object_effect = { VISUALS = creature_court_large_hide }
+			}
+			else = {
+				create_domicile_creature_artifact_object_effect = { VISUALS = creature }
+			}
+		}
+	}
+
+	# DO NOT set this variable inside of the hidden effect - the whole scripted effect will break!! 
+	scope:newly_created_artifact ?= {
+		set_variable = {
+			name = animal_type
+			value = scope:owner.var:animal_type
+		}
+		set_variable = {
+			name = creature_location
+			value = scope:creature_location
+		}
+		if = {
+			limit = { exists = var:creature_location }
+			## Supress startup errors
+		}
+	}
+
+	hidden_effect = {
+		# Now we set the proper name and desc.
+		scope:newly_created_artifact ?= {
+			switch = {
+				trigger = var:animal_type
+				flag:lion = {
+					set_artifact_name = creature_type_lion_name
+					set_artifact_description = creature_type_lion_desc
+				}
+				flag:caracal = {
+					set_artifact_name = creature_type_caracal_name
+					set_artifact_description = creature_type_caracal_desc
+				}
+				flag:lynx = {
+					set_artifact_name = creature_type_lynx_name
+					set_artifact_description = creature_type_lynx_desc
+				}
+				flag:tiger = {
+					set_artifact_name = creature_type_tiger_name
+					set_artifact_description = creature_type_tiger_desc
+				}
+				flag:leopard = {
+					set_artifact_name = creature_type_leopard_name
+					set_artifact_description = creature_type_leopard_desc
+				}
+				flag:bear = {
+					set_artifact_name = creature_type_bear_name
+					set_artifact_description = creature_type_bear_desc
+				}
+				flag:elephant = {
+					set_artifact_name = creature_type_elephant_name
+					set_artifact_description = creature_type_elephant_desc
+				}
+				flag:peacock = {
+					set_artifact_name = creature_type_peacock_name
+					set_artifact_description = creature_type_peacock_desc
+				}
+				flag:parrot = {
+					set_artifact_name = creature_type_parrot_name
+					set_artifact_description = creature_type_parrot_desc
+				}
+				flag:cockatoo = {
+					set_artifact_name = creature_type_cockatoo_name
+					set_artifact_description = creature_type_cockatoo_desc
+				}
+				flag:crane = {
+					set_artifact_name = creature_type_crane_name
+					set_artifact_description = creature_type_crane_desc
+				}
+				flag:monkey = {
+					set_artifact_name = creature_type_monkey_name
+					set_artifact_description = creature_type_monkey_desc
+				}
+			}
+			add_scaled_artifact_modifier_prestige_effect = yes
+			random_list = {
+				50 = {
+					add_scaled_artifact_modifier_majesty_effect = yes
+				}
+				50 = {
+					add_scaled_artifact_modifier_rulership_effect = yes
+				}
+				50 = {
+					add_scaled_artifact_modifier_attractiveness_effect = yes
+				}
+			}
+			remove_artifact_modifier = artifact_placeholder_modifier
+			domicile_creature_artifact_modifiers_effect = yes
+		}
+	}
+	scope:owner = {	
+		set_variable = {
+			name = menagerie_pending_creature_artifact
+			value = scope:newly_created_artifact
+		}
+		create_story = story_cycle_menagerie
+	}
+	custom_tooltip = create_creature_artifact
+}
+
+luxury_contract_standard_creature_effect = {
+	random_list = {
+		10 = { # peacock
+			trigger = {
+				$PROVINCE$ = { luxury_contract_creature_peacock_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:peacock }
+			}
+			set_variable = { name = animal_type value = flag:peacock years = 3 }
+		}
+		10 = { # parrot
+			trigger = {
+				$PROVINCE$ = { luxury_contract_creature_parrot_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:parrot }
+			}
+			set_variable = { name = animal_type value = flag:parrot years = 3 }
+		}
+		10 = { # cockatoo
+			trigger = {
+				$PROVINCE$ = { luxury_contract_creature_cockatoo_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:cockatoo }
+			}
+			set_variable = { name = animal_type value = flag:cockatoo years = 3 }
+		}
+		5 = { # monkey
+			trigger = {
+				$PROVINCE$ = { luxury_contract_creature_monkey_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:monkey }
+			}
+			set_variable = { name = animal_type value = flag:monkey years = 3 }
+		}
+		10 = { # crane - fallback
+			modifier = {
+				factor = 0.1
+				scope:reserved_type ?= flag:crane
+			}
+			set_variable = { name = animal_type value = flag:crane years = 3 }
+		}
+	}
+}
+
+luxury_contract_dangerous_creature_effect = {
+	random_list = {
+		10 = { # Lion
+			trigger = {
+				$PROVINCE$ = { hunt_animal_lion_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:lion }
+			}
+			set_variable = { name = animal_type value = flag:lion years = 3 }
+		}
+		10 = { # Caracal
+			trigger = {
+				$PROVINCE$ = { hunt_animal_caracal_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:caracal }
+			}
+			set_variable = { name = animal_type value = flag:caracal years = 3 }
+		}
+		10 = { # Lynx
+			trigger = {
+				$PROVINCE$ = { hunt_animal_lynx_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:lynx }
+			}
+			set_variable = { name = animal_type value = flag:lynx years = 3 }
+		}
+		10 = { # Tiger
+			trigger = {
+				$PROVINCE$ = { hunt_animal_tiger_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:tiger }
+			}
+			set_variable = { name = animal_type value = flag:tiger years = 3 }
+		}
+		10 = { # Leopard
+			trigger = {
+				$PROVINCE$ = { hunt_animal_leopard_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:leopard }
+			}
+			set_variable = { name = animal_type value = flag:leopard years = 3 }
+		}
+		10 = { # Bear
+			trigger = {
+				$PROVINCE$ = { hunt_animal_bear_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:bear }
+			}
+			set_variable = { name = animal_type value = flag:bear years = 3 }
+		}
+		10 = { # Elephant
+			trigger = {
+				$PROVINCE$ = { luxury_contract_creature_elephant_trigger = yes }
+				NOT = { scope:reserved_type ?= flag:elephant }
+			}
+			set_variable = { name = animal_type value = flag:elephant years = 3 }
+		}
+		# Fallback so the list is never empty, since every other entry needs local fauna
+		# We ignore scope:reserved_type here, or the list could be empty again
+		10 = { # Bear
+			trigger = {
+				$PROVINCE$ = { luxury_contract_dangerous_creature_location_trigger = no }
+			}
+			set_variable = { name = animal_type value = flag:bear years = 3 }
+		}
+	}
+}
+
+# For the Story Cycle, assign the animal's gender
+assign_creature_gender_effect = {
+	if = {
+		limit = {
+			NOT = { exists = var:creature_gender }
+		}
+		# We start with males as these are the illustrations we have
+		set_variable = {
+			name = creature_gender
+			value = flag:male
+		}
+	}
+	if = {
+		limit = {
+			exists = var:creature_gender
+			var:animal_type ?= flag:lion
+		}
+		set_variable = {
+			name = creature_gender
+			value = flag:female
+		}
+	}
+}
+
+
+# Reforges a creature artifact when gifting to a landed ruler or becoming landed
+# Note: og_owner must be set before this runs, for loc
+reforge_creature_artifact_effect = {
+	save_scope_as = artifact
+	save_scope_value_as = { name = legendary value = no }
+	set_variable = { name = was_creature_artifact days = 1 }
+	if = {
+		limit = {		
+			OR = {
+				var:animal_type ?= flag:parrot
+				var:animal_type ?= flag:cockatoo
+				var:animal_type ?= flag:crane
+				var:animal_type ?= flag:peacock
+			}
+		}
+		reforge_artifact = {
+			type = pedestal
+			visuals = small_box
+		}
+	}
+	else_if = {
+		limit = { var:animal_type ?= flag:monkey }
+		reforge_artifact = {
+			type = animal_skull
+			visuals = animal_trophy
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				var:animal_type ?= flag:caracal
+				var:animal_type ?= flag:lynx
+			}
+		}
+		reforge_artifact = {
+			type = animal_hide
+			visuals = small_animal_hide
+		}
+	}
+	else = {
+		reforge_artifact = {
+			type = animal_hide_big
+			visuals = large_animal_hide
+		}
+	}
+	switch = {
+		trigger = var:animal_type
+		flag:lion = {
+			set_artifact_name = creature_type_reforged_lion_name
+			set_artifact_description = creature_type_lion_reforged_desc
+		}
+		flag:caracal = {
+			set_artifact_name = creature_type_reforged_caracal_name
+			set_artifact_description = creature_type_caracal_reforged_desc
+		}
+		flag:lynx = {
+			set_artifact_name = creature_type_reforged_lynx_name
+			set_artifact_description = creature_type_lynx_reforged_desc
+		}
+		flag:tiger = {
+			set_artifact_name = creature_type_reforged_tiger_name
+			set_artifact_description = creature_type_tiger_reforged_desc
+		}
+		flag:leopard = {
+			set_artifact_name = creature_type_reforged_leopard_name
+			set_artifact_description = creature_type_leopard_reforged_desc
+		}
+		flag:bear = {
+			set_artifact_name = creature_type_reforged_bear_name
+			set_artifact_description = creature_type_bear_reforged_desc
+		}
+		flag:elephant = {
+			set_artifact_name = creature_type_reforged_elephant_name
+			set_artifact_description = creature_type_elephant_reforged_desc
+		}
+		flag:peacock = {
+			set_artifact_name = creature_type_reforged_peacock_name
+			set_artifact_description = creature_type_peacock_reforged_desc
+		}
+		flag:parrot = {
+			set_artifact_name = creature_type_reforged_parrot_name
+			set_artifact_description = creature_type_parrot_reforged_desc
+		}
+		flag:cockatoo = {
+			set_artifact_name = creature_type_reforged_cockatoo_name
+			set_artifact_description = creature_type_cockatoo_reforged_desc
+		}
+		flag:crane = {
+			set_artifact_name = creature_type_reforged_crane_name
+			set_artifact_description = creature_type_crane_reforged_desc
+		}
+		flag:monkey = {
+			set_artifact_name = creature_type_reforged_monkey_name
+			set_artifact_description = creature_type_monkey_reforged_desc
+		}
+	}
+}
+
+##################################################
+# DOMICILE ARTIFACT MODIFIERS
+##################################################
+
+# this = artifact
+# Trade-topic books also get expertise and prices for one random need-type trade good category, on top of their own modifiers
+domicile_library_artifact_modifiers_effect = {
+	if = {
+		limit = {
+			OR = {
+				has_artifact_feature = book_topic_stewardship_trade_routes
+				has_artifact_feature = book_topic_stewardship_old_ledger
+			}
+		}
+		random_list = {
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = alcohol } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = comforts } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = cereals } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = meat } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = beasts_of_burden } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = salt } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = clothes } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = fabrics } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = dyes } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = alum } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = stone } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = carpentry_supplies } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = base_metals } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = luxury_items } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = jewelry_materials } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = precious_metals } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = medicaments } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = incense } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = luxury_consumption } }
+			5 = { domicile_library_artifact_category_modifiers_effect = { CATEGORY = books } }
+		}
+	}
+}
+
+domicile_library_artifact_category_modifiers_effect = {
+	domicile_artifact_add_trade_modifiers_effect = {
+		CATEGORY = $CATEGORY$
+		COMPETITIVENESS = 20
+		EXPERTISE = 40
+		SELL = 20
+		BUY = 20
+	}
+}
+
+domicile_curio_artifact_modifiers_effect = {
+	domicile_artifact_add_trade_modifiers_effect = {
+		CATEGORY = all
+		COMPETITIVENESS = 25
+		EXPERTISE = 15
+		SELL = 35
+		BUY = 25
+	}
+}
+
+domicile_creature_artifact_modifiers_effect = {
+	domicile_artifact_add_trade_modifiers_effect = {
+		CATEGORY = all
+		COMPETITIVENESS = 40
+		EXPERTISE = 15
+		SELL = 25
+		BUY = 20
+	}
+}
+
+# this = artifact
+# We add one extra trade modifier scaled by rarity, or two if the artifact is famed or better
+domicile_artifact_add_trade_modifiers_effect = {
+	domicile_artifact_add_trade_modifier_effect = {
+		CATEGORY = $CATEGORY$
+		COMPETITIVENESS = $COMPETITIVENESS$
+		EXPERTISE = $EXPERTISE$
+		SELL = $SELL$
+		BUY = $BUY$
+	}
+	if = {
+		limit = { rarity_level >= famed }
+		domicile_artifact_add_trade_modifier_effect = {
+			CATEGORY = $CATEGORY$
+			COMPETITIVENESS = $COMPETITIVENESS$
+			EXPERTISE = $EXPERTISE$
+			SELL = $SELL$
+			BUY = $BUY$
+		}
+	}
+	remove_variable = domicile_mod_competitiveness
+	remove_variable = domicile_mod_expertise
+	remove_variable = domicile_mod_sell_price
+	remove_variable = domicile_mod_buy_price
+}
+
+# Adds one trade modifier the artifact does not have yet. this = artifact
+domicile_artifact_add_trade_modifier_effect = {
+	random_list = {
+		$COMPETITIVENESS$ = {
+			trigger = {
+				NOT = { has_variable = domicile_mod_competitiveness }
+			}
+			domicile_artifact_add_tiered_trade_modifier_effect = { STAT = competitiveness }
+			set_variable = domicile_mod_competitiveness
+		}
+		$EXPERTISE$ = {
+			trigger = {
+				NOT = { has_variable = domicile_mod_expertise }
+			}
+			domicile_artifact_add_tiered_trade_modifier_effect = { STAT = $CATEGORY$_expertise }
+			set_variable = domicile_mod_expertise
+		}
+		$SELL$ = {
+			trigger = {
+				NOT = { has_variable = domicile_mod_sell_price }
+			}
+			domicile_artifact_add_tiered_trade_modifier_effect = { STAT = $CATEGORY$_sell_price }
+			set_variable = domicile_mod_sell_price
+		}
+		$BUY$ = {
+			trigger = {
+				NOT = { has_variable = domicile_mod_buy_price }
+			}
+			domicile_artifact_add_tiered_trade_modifier_effect = { STAT = $CATEGORY$_buy_price }
+			set_variable = domicile_mod_buy_price
+		}
+	}
+}
+
+# this = artifact
+domicile_artifact_add_tiered_trade_modifier_effect = {
+	if = {
+		limit = { rarity = illustrious }
+		add_artifact_modifier = gdp_domicile_artifact_$STAT$_4_modifier
+	}
+	else_if = {
+		limit = { rarity = famed }
+		add_artifact_modifier = gdp_domicile_artifact_$STAT$_3_modifier
+	}
+	else_if = {
+		limit = { rarity = masterwork }
+		add_artifact_modifier = gdp_domicile_artifact_$STAT$_2_modifier
+	}
+	else = {
+		add_artifact_modifier = gdp_domicile_artifact_$STAT$_1_modifier
+	}
+}

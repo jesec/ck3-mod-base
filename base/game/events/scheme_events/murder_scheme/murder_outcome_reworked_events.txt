@@ -42,7 +42,7 @@
 scripted_trigger murder_requires_grounded_location_trigger = {
 	scope:target = {
 		is_travelling = no
-		location = { is_sea_province = no }
+		location ?= { is_sea_province = no }
 	}
 }
 
@@ -531,7 +531,7 @@ scripted_effect grab_best_location_for_thug_murder_effect = {
 		if = {
 			limit = {
 				has_holding = yes
-				county.development_level >= 10
+				county.prosperity_level >= 10
 			}
 			save_scope_as = alley_background
 		}
@@ -1744,7 +1744,7 @@ murder_outcome_reworked.0034 = {
 
 scripted_trigger murder_outcome_riled_mob_trigger = {
 	# In a location that might riot.
-	scope:target.location.county ?= { county_opinion <= -1 }
+	scope:target.location.county ?= { popular_opinion <= -1 }
 }
 
 # Owner POV — Success
@@ -2574,7 +2574,7 @@ murder_outcome_reworked.0054 = {
 scripted_trigger murder_outcome_sink_boat_trigger = {
 	# Can't drown if you're not at sea.
 	scope:target = {
-		location = { is_sea_province = yes }
+		location ?= { is_sea_province = yes }
 	}
 }
 
@@ -4820,7 +4820,7 @@ murder_outcome_reworked.4042 = {
 		# First we kill dogs.
 		if = {
 			limit = {
-				scope:murder_method = flag:child_pushed
+				scope:murder_method ?= flag:child_pushed
 				exists = scope:child_pushed_dog
 			}
 			show_as_tooltip = {
@@ -4838,7 +4838,7 @@ murder_outcome_reworked.4042 = {
 		# Then we kill cats.
 		else_if = {
 			limit = {
-				scope:murder_method = flag:child_pushed
+				scope:murder_method ?= flag:child_pushed
 				exists = scope:child_pushed_cat
 				NOT = { exists = scope:cat_survives }
 			}

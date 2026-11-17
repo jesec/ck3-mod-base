@@ -68,34 +68,38 @@ PixelShader =
 		// Elevation: 0.0=horizon, 0.5=45 degrees up, 1.0=zenith (straight up)
 
 		// Terrain sunny scenario lighting parameters
-		#define TERRAIN_SUNNY_SPECULAR_FACTOR          1.0f
-		#define TERRAIN_SUNNY_SUN_COLOR                float3( 1.0f, 0.9f, 0.8f )
-		#define TERRAIN_SUNNY_SUN_INTENSITY            8.0f
-		#define TERRAIN_SUNNY_IBL_SCALE		           0.25f
+		#define TERRAIN_SUNNY_SPECULAR_FACTOR            1.0f
+		#define TERRAIN_SUNNY_SUN_COLOR                  float3( 1.0f, 0.9f, 0.8f )
+		#define TERRAIN_SUNNY_SUN_INTENSITY              8.0f
+		#define TERRAIN_SUNNY_IBL_SCALE		             0.25f
 
 		// Terrain shadow scenario lighting parameters
 		#define TERRAIN_OVERCAST_SPECULAR_FACTOR         1.0f
 		#define TERRAIN_OVERCAST_SUN_COLOR               float3( 0.4f, 0.4f, 0.7f )
 		#define TERRAIN_OVERCAST_SUN_INTENSITY           2.0f
 		#define TERRAIN_OVERCAST_IBL_SCALE               0.5f
+		#define TERRAIN_SUNNY_NORMAL_STRENGTH            1.0f
+		#define TERRAIN_OVERCAST_NORMAL_STRENGTH         1.1f
 
 		// Map objects sunny scenario lighting parameters
-		#define MAP_OBJECTS_SUNNY_SPECULAR_FACTOR      1.0f
-		#define MAP_OBJECTS_SUNNY_SUN_COLOR            float3( 1.0f, 0.9f, 0.8f )
-		#define MAP_OBJECTS_SUNNY_SUN_INTENSITY        10.0f
-		#define MAP_OBJECTS_SUNNY_IBL_SCALE            1.5f
+		#define MAP_OBJECTS_SUNNY_SPECULAR_FACTOR        1.0f
+		#define MAP_OBJECTS_SUNNY_SUN_COLOR              float3( 1.0f, 0.9f, 0.8f )
+		#define MAP_OBJECTS_SUNNY_SUN_INTENSITY          10.0f
+		#define MAP_OBJECTS_SUNNY_IBL_SCALE              1.5f
 
 		// Map objects shadow scenario lighting parameters
 		#define MAP_OBJECTS_OVERCAST_SPECULAR_FACTOR     1.0f
 		#define MAP_OBJECTS_OVERCAST_SUN_COLOR           float3( 0.4f, 0.4f, 0.7f )
 		#define MAP_OBJECTS_OVERCAST_SUN_INTENSITY       3.0f
 		#define MAP_OBJECTS_OVERCAST_IBL_SCALE           1.2f
+		#define MAP_OBJECTS_SUNNY_NORMAL_STRENGTH        1.0f
+		#define MAP_OBJECTS_OVERCAST_NORMAL_STRENGTH     1.8f
 
 		// Water sunny scenario lighting parameters
-		#define WATER_SUNNY_GLOSS_SCALE                20.0f
-		#define WATER_SUNNY_SPECULAR_FACTOR            0.1f
-		#define WATER_SUNNY_SUN_INTENSITY_MULTIPLIER   1.0f
-		#define WATER_SUNNY_IBL_SCALE                  0.4f
+		#define WATER_SUNNY_GLOSS_SCALE                  20.0f
+		#define WATER_SUNNY_SPECULAR_FACTOR              0.1f
+		#define WATER_SUNNY_SUN_INTENSITY_MULTIPLIER     1.0f
+		#define WATER_SUNNY_IBL_SCALE                    0.4f
 
 		// Water shadow scenario lighting parameters
 		#define WATER_OVERCAST_GLOSS_SCALE               5.0f
@@ -128,6 +132,11 @@ PixelShader =
 			return GetMapLightingProperties( WorldSpacePos, ShadowTerm );
 		}
 
+		float3 ApplyScenarioNormalStrength( float3 Normal, float Strength )
+		{
+			return normalize( float3( Normal.x * Strength, Normal.y, Normal.z * Strength ) );
+		}
+
 		//-------------------------------
 		// Unified lighting system ------
 		//-------------------------------
@@ -156,7 +165,7 @@ PixelShader =
 			#ifdef SHADOW_LIFT
 				LightingProps._ShadowTerm = lerp( LightingProps._ShadowTerm , 1.0f, 0.2f );
 				float NdotL = ( dot( MaterialProps._Normal, LightingProps._ToLightDir ) + 1.0f );
-				float DarkMask = smoothstep( 0.5f, 1.0f, 2.0f - NdotL ) * 0.3f;				
+				float DarkMask = smoothstep( 0.5f, 1.0f, 2.0f - NdotL ) * 0.45f;
 				MaterialProps._Normal = lerp( MaterialProps._Normal, LightingProps._ToLightDir, DarkMask );
 			#endif
 			#if defined( PDX_OSX ) && defined( PDX_OPENGL )
@@ -207,43 +216,61 @@ PixelShader =
 		//-------------------------------
 
 		// Terrain dual scenario lighting - uses IBL for both sunny and shadow scenarios
-		float3 CalculateTerrainDualScenarioLighting( SLightingProperties LightingProps, SMaterialProperties MaterialProps, float ShadowMask, PdxTextureSamplerCube EnvironmentMap )
+		float3 CalculateTerrainDualScenarioLighting( SLightingProperties LightingProps, SMaterialProperties MaterialProps, float SunnyNormalStrength, float OvercastNormalStrength, float ShadowMask, PdxTextureSamplerCube EnvironmentMap )
 		{
+			SMaterialProperties SunnyMaterialProps = MaterialProps;
+			SunnyMaterialProps._Normal = ApplyScenarioNormalStrength( MaterialProps._Normal, TERRAIN_SUNNY_NORMAL_STRENGTH );
+
+			SMaterialProperties OvercastMaterialProps = MaterialProps;
+			OvercastMaterialProps._Normal = ApplyScenarioNormalStrength( MaterialProps._Normal, TERRAIN_OVERCAST_NORMAL_STRENGTH );
+
 			if ( ShadowMask > 0.99f )
 			{
-				return CalculateTerrainShadowLighting( LightingProps, MaterialProps, EnvironmentMap );
+				return CalculateTerrainShadowLighting( LightingProps, OvercastMaterialProps, EnvironmentMap );
 			}
 			if ( ShadowMask > 0.0f )
 			{
-				// Calculate both lighting scenarios
-				float3 SunnyLighting = CalculateTerrainSunnyLighting( LightingProps, MaterialProps, EnvironmentMap );
-				float3 ShadowLighting = CalculateTerrainShadowLighting( LightingProps, MaterialProps, EnvironmentMap );
+				float3 SunnyLighting = CalculateTerrainSunnyLighting( LightingProps, SunnyMaterialProps, EnvironmentMap );
+				float3 ShadowLighting = CalculateTerrainShadowLighting( LightingProps, OvercastMaterialProps, EnvironmentMap );
 
-				// Blend between scenarios based on shadow mask
 				return lerp( SunnyLighting, ShadowLighting, ShadowMask );
 			}
 
-			return CalculateTerrainSunnyLighting( LightingProps, MaterialProps, EnvironmentMap );
+			return CalculateTerrainSunnyLighting( LightingProps, SunnyMaterialProps, EnvironmentMap );
+		}
+
+		float3 CalculateTerrainDualScenarioLighting( SLightingProperties LightingProps, SMaterialProperties MaterialProps, float ShadowMask, PdxTextureSamplerCube EnvironmentMap )
+		{
+			return CalculateTerrainDualScenarioLighting( LightingProps, MaterialProps, 1.0f, 1.0f, ShadowMask, EnvironmentMap );
 		}
 
 		// Map objects dual scenario lighting - uses IBL for both sunny and shadow scenarios
-		float3 CalculateMapObjectsDualScenarioLighting( SLightingProperties LightingProps, SMaterialProperties MaterialProps, float ShadowMask, PdxTextureSamplerCube EnvironmentMap)
+		float3 CalculateMapObjectsDualScenarioLighting( SLightingProperties LightingProps, SMaterialProperties MaterialProps, float SunnyNormalStrength, float OvercastNormalStrength, float ShadowMask, PdxTextureSamplerCube EnvironmentMap )
 		{
+			SMaterialProperties SunnyMaterialProps = MaterialProps;
+			SunnyMaterialProps._Normal = ApplyScenarioNormalStrength( MaterialProps._Normal, MAP_OBJECTS_SUNNY_NORMAL_STRENGTH );
+
+			SMaterialProperties OvercastMaterialProps = MaterialProps;
+			OvercastMaterialProps._Normal = ApplyScenarioNormalStrength( MaterialProps._Normal, MAP_OBJECTS_OVERCAST_NORMAL_STRENGTH );
+
 			if ( ShadowMask > 0.99f )
 			{
-				return CalculateMapObjectsShadowLighting( LightingProps, MaterialProps, EnvironmentMap );
+				return CalculateMapObjectsShadowLighting( LightingProps, OvercastMaterialProps, EnvironmentMap );
 			}
 			if ( ShadowMask > 0.0f )
 			{
-				// Calculate both lighting scenarios
-				float3 SunnyLighting = CalculateMapObjectsSunnyLighting( LightingProps, MaterialProps, EnvironmentMap );
-				float3 ShadowLighting = CalculateMapObjectsShadowLighting( LightingProps, MaterialProps, EnvironmentMap );
+				float3 SunnyLighting = CalculateMapObjectsSunnyLighting( LightingProps, SunnyMaterialProps, EnvironmentMap );
+				float3 ShadowLighting = CalculateMapObjectsShadowLighting( LightingProps, OvercastMaterialProps, EnvironmentMap );
 
-				// Blend between scenarios based on shadow masks
 				return lerp( SunnyLighting, ShadowLighting, ShadowMask );
 			}
 
-			return CalculateMapObjectsSunnyLighting( LightingProps, MaterialProps, EnvironmentMap );
+			return CalculateMapObjectsSunnyLighting( LightingProps, SunnyMaterialProps, EnvironmentMap );
+		}
+
+		float3 CalculateMapObjectsDualScenarioLighting( SLightingProperties LightingProps, SMaterialProperties MaterialProps, float ShadowMask, PdxTextureSamplerCube EnvironmentMap )
+		{
+			return CalculateMapObjectsDualScenarioLighting( LightingProps, MaterialProps, 1.0f, 1.0f, ShadowMask, EnvironmentMap );
 		}
 
 		//-------------------------------

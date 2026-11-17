@@ -205,6 +205,8 @@
 
 		### brief: noble_families ( bool )
 		# Default is no.
+		# Noble families use house power to determine their standing in the realm
+		# See house_power below
 		#
 		noble_families = no
 
@@ -239,11 +241,11 @@
 		#
 		always_use_patronym = no
 
-		### brief: affected_by_development ( bool )
+		### brief: affected_by_prosperity ( bool )
 		# Are the counties with owners with this government type affected
-		# by development.
+		# by prosperity.
 		#
-		affected_by_development = yes
+		affected_by_prosperity = yes
 
 		### brief: noble_families (bool)
 		# Does this government type allow the existence of Noble Family Titles?
@@ -302,6 +304,49 @@
 		# This government will consider the religious subordinates to be in the distribution group
 		# for Treasury budgets.
 		add_religious_subordinates_for_treasury = no
+
+		### Brief: uses_assembly (bool)
+		# Should this government use assemblies for passing laws and approving decisions?
+		# Expects assembly members are set from scripted major_assembly_member and/or minor_assembly_member functions
+		# Default is no.
+		uses_assembly = no
+
+        ### Brief: trade_post (bool)
+        #
+        # To be able to build and keep trade posts a ruler must both have a government type that supports it,
+        # and hold at least one title with a title type that also supports trade posts.
+        #
+        # Default: no
+        #
+        trade_post = no
+
+		### Brief: profit_trade_routes (bool)
+		#
+		# Can characters of this government create Profit Routes?
+		# A Profit Route buys Trade Goods at a Trade Market where they are in surplus and
+		# sells them where sell prices are high, earning gold from the difference.
+		#
+		# Requires a primary title of at least County tier.
+		#
+		# Default: no
+		#
+		profit_trade_routes = no
+
+		### Brief: distribution_trade_routes (bool)
+		#
+		# Can characters of this government create Distribution Routes?
+		# A Distribution Route connects two Trade Markets in a ruler's subrealm in order to meet
+		# the Needs of Buildings in those Markets. They neither earn gold nor depend on
+		# Trade Competitiveness/Capacity.
+		#
+		# This is only a mode permission and never grants Trade access by itself: the
+		# ruler must additionally hold land on the map (or belong to a government with
+		# profit_trade_routes = yes) and hold a primary title of at least
+		# MIN_DISTRIBUTION_ROUTE_TIER (see common/defines/00_defines.txt).
+		#
+		# Default: yes
+		#
+		distribution_trade_routes = yes
 
 		### brief: gain_legitimacy_becoming_tributary ( bool )
 		# Rulers of this government gain monthly legitimacy based on their
@@ -505,31 +550,44 @@
 	blocked_subject_courts = { government_type_key ... }
 
 	### brief: main_administrative_tier ( enum )
+	#
 	# Title tier that enables most administrative mechanics
 	# Such as title troops, map modes etc
 	#
 	main_administrative_tier = county / duchy / kingdom
 
 	### brief: min_appointment_tier ( enum )
+	#
 	# Title tier that enables appointment succession mechanics
 	#
 	min_appointment_tier = county / duchy / kingdom
 
 	### brief: minimum_provincial_maa_tier ( enum )
+	#
 	# Lowest title tier allowed to have title troops.
-	# This should only be set for administrative government types.
-	# Will default to 'duchy' if not set.
+	# This should only be set for government types with provincial/title men at arms.
+	#
+	# Default: (not set)
 	#
 	minimum_provincial_maa_tier = county / duchy / kingdom
 
-	### brief: administrative_title_maa_setup ( enum )
+	### brief: title_maa_setup ( enum )
+	#
+	# Determines what (if any) titles in a realm should have title (aka. provincial) men at arms.
+	#
 	# Which titles within the Administrative government type can create title troops
-	#   main_tier_and_top_liege - (default) Main administrative tier (see above) titles, and the top liege primary title
+	#   main_tier_and_top_liege - Main tier (see above) titles, and the top liege primary title
 	#   vassals_and_top_liege - Titles that are the main administrative tier or above, and the top liege primary title
 	#   top_vassals_and_top_liege - Titles that are directly under the top liege, and the top liege primary title
-	administrative_title_maa_setup = main_tier_and_top_liege
+	#   grand_mayor - Title that is the primary title of the highest tier ruler with the same government mechanic
+	#
+	# No default.
+	# Needs to be set for all 'administrative' mechanic government types.
+	#
+	title_maa_setup = <setup type>
 
 	### brief: vassal_contract_group ( database key )
+	#
 	# Vassal obligations, how much does the vassal give to their liege.
 	# The vassal's government type determines which contract group is
 	# used. Note that the values can be changed with the
@@ -632,6 +690,13 @@
 	# of the same government that can be appointed
 	#
 	compatible_government_type_succession = { government_type_key ... }
+
+	### brief: house_power ( value )
+	# House power is used in code to enable bonuses from powerful houses
+	# If a government uses noble_families, it should also have a corresponding house power value
+	# root - house under evaluation
+	#
+	house_power = value
 
 	### brief: ai
 	# Overrides for some AI functionaltiy when held by an AI with this
@@ -770,6 +835,16 @@
 	flags = {
 		some_flag
 		some_other_flag
+	}
+	
+	### brief: build_queue_reserve_categories ( parameter list )
+	# List of all the types of currency that will show up as reservable in the build queue interface
+	# possible types are:
+	# gold, prestige, piety, renown, influence, herd, treasury, merit, barter_goods
+	#
+	build_queue_reserve_categories = {
+		gold
+		piety
 	}
 }
 

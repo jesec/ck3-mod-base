@@ -712,6 +712,7 @@ update_embassies_effect = {
 		limit = {
 			has_perk = embassies_perk
 			is_landless_adventurer = no
+			NOT = { government_has_flag = government_is_merchant }
 		}
 		remove_all_character_modifier_instances = embassies_perk_modifier
 
@@ -761,6 +762,83 @@ update_embassies_effect = {
 				set_variable = {
 					name = current_embassies_perk_value
 					value = var:previous_current_embassies_perk_value
+				}
+			}
+		}
+	}
+}
+
+update_merchant_embassies_effect = {
+	if = {
+		limit = {
+			has_perk = embassies_perk
+			government_has_flag = government_is_merchant
+		}
+		remove_all_character_modifier_instances = embassies_perk_modifier
+		remove_all_character_modifier_instances = merchant_embassies_perk_modifier
+
+		set_variable = {
+			name = current_merchant_embassies_perk_value
+			value = 0
+		}
+
+		if = {
+			limit = {
+				exists = var:current_merchant_embassies_perk_value
+			}
+			every_trade_route = {
+				prev = {
+					if = {
+						limit = {
+							exists = var:current_merchant_embassies_perk_value
+							var:current_merchant_embassies_perk_value < merchant_embassies_max
+						}
+						change_variable = {
+							name = current_merchant_embassies_perk_value
+							add = 1
+						}
+						add_character_modifier = {
+							modifier = merchant_embassies_perk_modifier
+						}
+					}
+				}
+			}
+		}
+		remove_variable = current_merchant_embassies_perk_value
+	}
+}
+
+update_public_credit_perk_effect = {
+	remove_all_character_modifier_instances = public_credit_perk_modifier
+
+	if = {
+		limit = {
+			government_has_flag = government_is_merchant
+			has_perk = true_ruler_perk
+			prestige_level > 0
+		}
+		while = {
+			count = prestige_level
+			add_character_modifier = {
+				modifier = public_credit_perk_modifier
+			}
+		}
+	}
+}
+
+update_company_ledger_perk_effect = {
+	remove_all_character_modifier_instances = company_ledger_perk_modifier
+
+	if = {
+		limit = {
+			government_has_flag = government_is_merchant
+			has_perk = centralization_perk
+		}
+		every_trade_route = {
+			limit = { has_trader = yes }
+			prev = {
+				add_character_modifier = {
+					modifier = company_ledger_perk_modifier
 				}
 			}
 		}

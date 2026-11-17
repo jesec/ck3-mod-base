@@ -23,6 +23,21 @@ key = {
 		<triggers>
 	}
 
+	### Brief: allowed_for_character_display_regardless ( optional trigger )
+	# Like 'allowed_for_character', but failing it does not hide the group's casus bellis
+	# from the declare war interface. They are still listed, with this trigger's failure shown as the reason.
+	# Must be true for the attacker to actually use any casus belli in this group, including for the AI.
+	# Evaluated after the casus belli type's own 'allowed_for_character',
+	# and before its 'allowed_for_character_display_regardless'.
+	# Also re-checked when the primary attacker of an ongoing war changes.
+	# Default: empty (always true)
+	#
+	# Supported scopes: same as 'allowed_for_character'
+	#
+	allowed_for_character_display_regardless = {
+		<triggers>
+	}
+
 	### Brief: should_invalidate ( optional trigger )
 	# Checked for ongoing wars using a casus belli of this group. If true, the war is invalidated.
 	# Evaluated before the casus belli type's own 'should_invalidate'; either being true invalidates the war.

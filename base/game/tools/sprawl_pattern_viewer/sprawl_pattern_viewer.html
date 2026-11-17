@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sprawl Pattern Viewer</title>
+<style>
+  :root {
+    --bg: #1b1d21;
+    --panel: #26292f;
+    --text: #d8d5cd;
+    --muted: #8b8879;
+    --accent: #c9a86a;
+    --line: #3a3e46;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg); color: var(--text);
+    font: 14px/1.5 "Segoe UI", system-ui, sans-serif;
+    display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+  }
+  header {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    padding: 10px 16px; background: var(--panel); border-bottom: 1px solid var(--line);
+  }
+  header h1 { font-size: 15px; font-weight: 600; color: var(--accent); margin-right: 8px; }
+  label { color: var(--muted); font-size: 13px; }
+  select, input[type=file] { background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 4px 8px; font-size: 13px; }
+  input[type=range] { vertical-align: middle; }
+  .stat { color: var(--muted); font-size: 13px; }
+  .stat b { color: var(--text); font-weight: 600; }
+  #stage { flex: 1; position: relative; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; cursor: crosshair; }
+  #tooltip {
+    position: absolute; pointer-events: none; display: none;
+    background: rgba(20,22,26,.95); border: 1px solid var(--line); border-radius: 4px;
+    padding: 6px 10px; font-size: 12px; white-space: pre; z-index: 5;
+  }
+  #drophint {
+    position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+    background: rgba(20,22,26,.85); border: 2px dashed var(--accent); z-index: 10;
+    font-size: 18px; color: var(--accent);
+  }
+  footer { padding: 6px 16px; background: var(--panel); border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+  .toggle { display: inline-flex; align-items: center; gap: 5px; }
+  #emptystate {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    text-align: center; z-index: 8; color: var(--muted);
+  }
+  #emptystate button {
+    background: var(--accent); color: #1b1d21; border: 0; border-radius: 4px;
+    padding: 10px 18px; font-size: 14px; font-weight: 600; cursor: pointer; margin: 12px 0 8px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Sprawl Pattern Viewer</h1>
+  <label>Pattern <select id="patternSelect"></select></label>
+  <span class="stat">nodes <b id="statCount">0</b></span>
+  <span class="stat">max radius <b id="statRadius">0</b></span>
+  <label>square size <input type="range" id="sizeSlider" min="0.5" max="6" step="0.1" value="2.4">
+    <span id="sizeLabel" class="stat">2.4</span></label>
+  <label class="toggle"><input type="checkbox" id="orderToggle" checked> color by placement order</label>
+  <label class="toggle"><input type="checkbox" id="ringToggle" checked> rings</label>
+  <label>reload file <input type="file" id="fileInput" accept=".txt"></label>
+</header>
+<div id="stage">
+  <canvas id="canvas"></canvas>
+  <div id="tooltip"></div>
+  <div id="drophint">drop 00_holding_sprawl_patterns.txt to reload</div>
+  <div id="emptystate">
+    <div>
+      <p>No pattern data loaded.</p>
+      <button id="browseBtn">Browse for 00_holding_sprawl_patterns.txt</button>
+      <p>game\common\holding_sprawl_patterns\ &mdash; or drop the file anywhere on this page</p>
+    </div>
+  </div>
+</div>
+<footer>
+  Placement order matters: high-priority tiers claim the earliest nodes deterministically (warm colors),
+  randomized tiers fill the rest. Drag the pattern file onto the page to refresh after edits.
+</footer>
+<script>
+"use strict";
+
+const CACHE_KEY = "sprawl_pattern_viewer_data";
+
+function parsePatterns(text) {
+  const src = text.split(/\r?\n/).map(l => l.replace(/#.*/, "")).join("\n");
+  const patterns = {};
+  const re = /([A-Za-z_][\w]*)\s*=\s*\{/g;
+  let m;
+  while ((m = re.exec(src))) {
+    const name = m[1];
+    if (name === "node") { continue; }
+    let depth = 1, i = re.lastIndex;
+    for (; i < src.length && depth > 0; i++) {
+      if (src[i] === "{") depth++;
+      else if (src[i] === "}") depth--;
+    }
+    const block = src.slice(re.lastIndex, i);
+    const nodes = [];
+    const nre = /node\s*=\s*\{\s*(-?[\d.]+)\s+(-?[\d.]+)\s+(-?[\d.]+)\s*\}/g;
+    let nm;
+    while ((nm = nre.exec(block))) {
+      nodes.push({ x: +nm[1], y: +nm[2], rot: +nm[3] });
+    }
+    patterns[name] = nodes;
+    re.lastIndex = i;
+  }
+  return patterns;
+}
+
+let patterns = {};
+let current = null;
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const select = document.getElementById("patternSelect");
+const tooltip = document.getElementById("tooltip");
+const sizeSlider = document.getElementById("sizeSlider");
+const sizeLabel = document.getElementById("sizeLabel");
+const orderToggle = document.getElementById("orderToggle");
+const ringToggle = document.getElementById("ringToggle");
+
+function loadText(text) {
+  patterns = parsePatterns(text || "");
+  const names = Object.keys(patterns).filter(n => patterns[n].length > 0 || n.includes("pattern") || n.includes("empty"));
+  document.getElementById("emptystate").style.display = names.length ? "none" : "flex";
+  const prev = current;
+  select.innerHTML = "";
+  for (const name of names) {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name + " (" + patterns[name].length + ")";
+    select.appendChild(opt);
+  }
+  current = names.includes(prev) ? prev : names[0];
+  select.value = current || "";
+  if (names.length) {
+    try { localStorage.setItem(CACHE_KEY, text); } catch (e) {}
+  }
+  draw();
+}
+
+function view() {
+  const nodes = patterns[current] || [];
+  let maxR = 10;
+  for (const n of nodes) maxR = Math.max(maxR, Math.hypot(n.x, n.y));
+  const w = canvas.width, h = canvas.height;
+  const scale = (Math.min(w, h) / 2 - 40) / (maxR + 4);
+  return { nodes, maxR, scale, cx: w / 2, cy: h / 2 };
+}
+
+function nodeColor(i, count) {
+  if (!orderToggle.checked) return "#c9a86a";
+  const t = count > 1 ? i / (count - 1) : 0;
+  const hue = 30 + t * 180; // warm (early) to cool (late)
+  return "hsl(" + hue + ", 62%, " + (58 - t * 12) + "%)";
+}
+
+function draw() {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(1, 1);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const { nodes, maxR, scale, cx, cy } = view();
+  document.getElementById("statCount").textContent = nodes.length;
+  document.getElementById("statRadius").textContent = maxR.toFixed(1);
+
+  // grid
+  ctx.strokeStyle = "#24272c";
+  ctx.lineWidth = 1;
+  const step = 5 * scale;
+  for (let gx = cx % step; gx < canvas.width; gx += step) {
+    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvas.height); ctx.stroke();
+  }
+  for (let gy = cy % step; gy < canvas.height; gy += step) {
+    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy); ctx.stroke();
+  }
+
+  // axes
+  ctx.strokeStyle = "#34383f";
+  ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, canvas.height); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(canvas.width, cy); ctx.stroke();
+
+  // radius rings every 10 units
+  if (ringToggle.checked) {
+    ctx.strokeStyle = "#3d4149";
+    ctx.fillStyle = "#6d6a5e";
+    ctx.font = (11 * (window.devicePixelRatio || 1)) + "px sans-serif";
+    for (let r = 10; r <= maxR + 5; r += 10) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * scale, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillText(r, cx + r * scale + 4, cy - 4);
+    }
+  }
+
+  // holding marker at origin
+  ctx.fillStyle = "#8a4a3d";
+  ctx.beginPath();
+  ctx.arc(cx, cy, Math.max(4, 1.5 * scale), 0, Math.PI * 2);
+  ctx.fill();
+
+  // squares
+  const half = (parseFloat(sizeSlider.value) / 2) * scale;
+  nodes.forEach((n, i) => {
+    const px = cx + n.x * scale;
+    const py = cy + n.y * scale;
+    ctx.save();
+    ctx.translate(px, py);
+    ctx.rotate(-n.rot * Math.PI / 180);
+    ctx.fillStyle = nodeColor(i, nodes.length);
+    ctx.fillRect(-half, -half, half * 2, half * 2);
+    ctx.strokeStyle = "rgba(0,0,0,.45)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-half, -half, half * 2, half * 2);
+    // facing tick
+    ctx.strokeStyle = "rgba(0,0,0,.6)";
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, -half);
+    ctx.stroke();
+    ctx.restore();
+  });
+}
+
+canvas.addEventListener("mousemove", e => {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  const mx = (e.clientX - rect.left) * dpr;
+  const my = (e.clientY - rect.top) * dpr;
+  const { nodes, scale, cx, cy } = view();
+  let best = -1, bestD = 12 * dpr;
+  nodes.forEach((n, i) => {
+    const d = Math.hypot(cx + n.x * scale - mx, cy + n.y * scale - my);
+    if (d < bestD) { bestD = d; best = i; }
+  });
+  if (best >= 0) {
+    const n = nodes[best];
+    tooltip.style.display = "block";
+    tooltip.style.left = (e.clientX - rect.left + 14) + "px";
+    tooltip.style.top = (e.clientY - rect.top + 14) + "px";
+    tooltip.textContent = "#" + best + "\nx " + n.x.toFixed(2) + "  y " + n.y.toFixed(2) +
+      "\nrot " + n.rot.toFixed(1) + "°\nr " + Math.hypot(n.x, n.y).toFixed(1);
+  } else {
+    tooltip.style.display = "none";
+  }
+});
+canvas.addEventListener("mouseleave", () => { tooltip.style.display = "none"; });
+
+select.addEventListener("change", () => { current = select.value; draw(); });
+sizeSlider.addEventListener("input", () => { sizeLabel.textContent = sizeSlider.value; draw(); });
+orderToggle.addEventListener("change", draw);
+ringToggle.addEventListener("change", draw);
+window.addEventListener("resize", draw);
+
+const drophint = document.getElementById("drophint");
+window.addEventListener("dragover", e => { e.preventDefault(); drophint.style.display = "flex"; });
+window.addEventListener("dragleave", e => { if (e.relatedTarget === null) drophint.style.display = "none"; });
+window.addEventListener("drop", e => {
+  e.preventDefault();
+  drophint.style.display = "none";
+  const file = e.dataTransfer.files[0];
+  if (file) file.text().then(loadText);
+});
+document.getElementById("fileInput").addEventListener("change", e => {
+  const file = e.target.files[0];
+  if (file) file.text().then(loadText);
+});
+document.getElementById("browseBtn").addEventListener("click", () => {
+  document.getElementById("fileInput").click();
+});
+
+// convenience: remember the last loaded file's content per browser; browse/drop always overrides
+let cached = "";
+try { cached = localStorage.getItem(CACHE_KEY) || ""; } catch (e) {}
+loadText(cached);
+</script>
+</body>
+</html>

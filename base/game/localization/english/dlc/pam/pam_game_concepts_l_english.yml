@@ -9,9 +9,8 @@
  game_concept_puppet_desc: "A Puppet is a [character|E] under the control of a [puppeteer|E], who may take special Puppet actions through them.\n\nActing through a Puppet opens doors that would otherwise stay closed: a [clerical_puppet|E] can petition for [clerical_titles|E] or an [excommunication|E] on your behalf, while a [external_ruler_puppet|E] can be made to release [tributaries|E], grant independence, or divorce their [spouse|E].\n\nThe actions available are determined by the [puppet_type|E]."
  game_concept_puppeteer: "Puppeteer"
  game_concept_puppeteers: "Puppeteers"
- game_concept_puppeteer_possessive: "Puppeteer's"
- game_concept_puppeteers_possessive: "Puppeteers'"
  game_concept_puppeteer_desc: "A Puppeteer is a [character|E] in control of one or more [puppets|E].\n\nActing through their Puppets, a Puppeteer wields powers beyond their station, such as the influence of the [clergy|E] or the authority of a foreign [realm|E]."
+
  game_concept_clerical_puppet: "Realm Priest Puppet"
  game_concept_clerical_puppets: "Realm Priest Puppets"
  game_concept_clerical_puppet_desc: "A [realm_priest|E] that is a [puppet|E] of their [liege|E].\n\nThrough them, their Puppeteer can reach into the affairs of the [faith|E]: petitioning the [head_of_faith|E] for [clerical_titles|E] or an [excommunication|E], managing [holy_sites|E], founding a new [rite|E], or hosting an [ecumenical_council|E]."
@@ -23,10 +22,11 @@
  game_concept_external_ruler_puppet_desc: "A non-[clergy|E] [ruler|E] that has become [puppet|E] to another [character|E]. Through this puppet, you can meddle in the affairs of other [realms|E], for example by using [schemes|E] or [imprisonment|E].\n\nAcquiring a puppet of this type requires at least one of these to be true:\n\n$BULLET_WITH_TAB$#indent_newline:6 You are a [clergy|E] [vassal|E] of the target#!\n$BULLET_WITH_TAB$#indent_newline:6 You are a [GetTrait('seducer').GetName( GetNullCharacter )] and the target is your [lover|E], or your [soulmate|E] if the target is of [king|E] rank or higher#!\n$BULLET_WITH_TAB$#indent_newline:6 You are a [GetTrait('torturer').GetName( GetNullCharacter )] and hold the target in your [dungeon|E]#!\n$BULLET_WITH_TAB$#indent_newline:6 You are [GetTrait('family_first').GetName( GetNullCharacter )] and the target is your [close_family|E]#!\n$BULLET_WITH_TAB$#indent_newline:6 You are a [GetTrait('diplomat').GetName( GetNullCharacter )] and the target is an [independent_ruler|E]#!\n$BULLET_WITH_TAB$#indent_newline:6 You are a [GetTrait('schemer').GetName( GetNullCharacter )] and have a @weak_hook_icon![hook|E] on the target, or a @unspent_strong_hook_icon![strong_hook|E] if the target is of [king|E] rank or higher#!\n$BULLET_WITH_TAB$#indent_newline:6 You are a [GetTrait('gallant').GetName( GetNullCharacter )] and the target is your [spouse|E]#!\n$BULLET_WITH_TAB$#indent_newline:6 You are a [diarch|E] of the target in an [entrenched_regency|E]#!\n$BULLET_WITH_TAB$#indent_newline:6 You are the target's [head_of_faith|E], [challenger_hof|E], or [head_of_rite|E]#!"
 
  game_concept_ecumenical_council: "Ecumenical Council"
+ # game_concept_ecumenical_council_i: "@ecumenical_council!" #TODO_PAM
  game_concept_ecumenical_council_desc: "An $game_concept_ecumenical_council$ is an [activity|E] in which the top [clergy|E] in all of Christendom gather to settle the future of the Church.\n\nOver successive debates, the assembled prelates rule on the [tenet_status|E] of contested [core_tenets|E] — declaring them [permitted_tenet_status|E] or [prohibited_tenet_status|E], or elevating them to [core_tenet_status|E] — and settle the [doctrines|E] of the [faith|E]."
  game_concept_ecumenical_councils: "Ecumenical Councils"
  game_concept_ecumenical_councils_desc: "$game_concept_ecumenical_council_desc$"
- 
+
  game_concept_schism: "Schism"
  game_concept_schism_desc: "The Great $game_concept_schism$ is the moment the unified $christian_faith$ [faith|E] breaks apart along its Roman and Greek [rites|E], splitting into $catholic$ and $orthodox$.\n\nIt threatens when [the_christian_church|E] [situation|E] enters certain [the_christian_church_chapters_short|E], and rulers across Christendom must pick a side. Unless the divisions are mended — or forced apart — through [decisions|E], the split becomes permanent when the chapter ends."
  game_concept_schisms: "Schisms"
@@ -34,7 +34,7 @@
 
  game_concept_clerical_title: "Clerical Title"
  game_concept_clerical_titles: "Clerical Titles"
- game_concept_clerical_title_desc: "A $game_concept_clerical_title$ is an [ecclesiastical|E] [title|E] of the [clergy|E] governing a [clerical_region|E] within a [faith|E]. Among the [christian|E] faiths this is an [archdiocese|E].\n\nThe holder is the [religious_superior|E] of the [clergy|E] in that region, and is usually appointed by the [head_of_faith|E]."
+ # game_concept_clerical_title_i: "@ecumenical_council!" #TODO_PAM
 
  game_concept_the_christian_church: "The Christian Church"
  game_concept_the_christian_church_desc: "The Christian Church is the ecclesiastical body that oversees and guides the followers of Jesus Christ, represented as a [situation|E] that advances through a sequence of [the_christian_church_chapters_short|E].\n\nIts boundaries encompass every [archdiocese|E] in the world; every [christian|E] [ruler|E] of [county|E] rank or higher with any part of their [realm|E] inside an Archdiocese is a member, be they clergy or secular."
@@ -50,7 +50,7 @@
  game_concept_bull: "Bull"
  game_concept_bulls: "Bulls"
  game_concept_papal_bull_desc: "A Papal Bull is a solemn decree of the [head_of_faith|E] of a [christian|E] [faith|E], backed by the authority of [the_christian_church|E].\n\nA Christian [head_of_faith|E] with sufficient [church_authority|E] may proclaim a Bull through the [GetDecisionWithKey('enact_a_bull_decision').GetName] [decision|E], spending [piety|E] to:\n\n$EFFECT_LIST_BULLET$Summon a [great_holy_war|E]\n$EFFECT_LIST_BULLET$Denounce a [rite|E] as a [heresy|E]\n$EFFECT_LIST_BULLET$Declare a [core_tenet|E] [permitted_tenet_status|E] or [prohibited_tenet_status|E]"
- 
+
  game_concept_situation_the_christian_church_phase: "The Christian Church Chapter"
  game_concept_the_christian_church_chapter_short: "Chapter"
  game_concept_the_christian_church_chapters_short: "Chapters"
@@ -121,16 +121,14 @@
  game_concept_clerical_region_capital: "Clerical Region Capital"
  game_concept_clerical_region_capitals: "Clerical Region Capitals"
  game_concept_clerical_region_capital_desc: "The Clerical Region Capital is the [county|E] a [clerical_region|E] was founded upon with an [ecclesiastical_estate|E], serving as the seat of the [clerical_title|E] that governs the region. Unlike a [de_jure_capital|E], it is fixed to the region and cannot be relocated."
- 
+
  clerical_electors: "Clerical Electors"
 
  game_concept_archdiocese: "Archdiocese"
  game_concept_archdioceses: "Archdioceses"
- game_concept_archdiocese_desc: "An Archdiocese is the [christian|E] form of a [clerical_region|E], an ecclesiastical domain held by an [archbishop|E] through its [clerical_title|E] and seated in a capital [county|E], where a [grand_cathedral|E] may be raised.\n\nA [christian|E] [ruler|E] answers in spiritual matters to the [archbishop|E] of the Archdiocese that contains their [capital|E] [county|E], and the territory subject to Archdioceses collectively constitutes [the_christian_church|E] [situation|E]."
 
  game_concept_grand_cathedral: "Grand Cathedral"
  game_concept_grand_cathedrals: "Grand Cathedrals"
- game_concept_grand_cathedral_desc: "A Grand Cathedral is a [great_building|E] raised through a [great_project|E] in the capital of an [archdiocese|E], the seat of its [archbishop|E].\n\nRaising the first Cathedral is a monumental act of devotion: its founder gains lasting [piety|E], [legitimacy|E] and [spiritual_fulfillment|E], an additional [personal_tenet|E] slot, and a standing bonus to their same-[faith|E] [opinion|E]. Once raised, it draws Christian pilgrims from across [christendom|E], expands the holder's [cathedral_complex|E], and may later be enlarged into a [GetBuilding('great_project_cathedral_02').GetName|V] or [GetBuilding('great_project_cathedral_03').GetName|V]."
 
  game_concept_monastic_holy_order: "Monastic Order"
  game_concept_monastic_holy_orders: "Monastic Orders"
@@ -141,12 +139,10 @@
  game_concept_monastic_holy_order_desc: "A Monastic Order is a type of [holy_order|E] devoted to prayer, learning, and the spread of a single [core_tenet|E]. It belongs to the [rite|E] of its founder and champions one of that [rite_possessive|E] [core_tenets|E], spreading the practice among the faithful.\n\nLed by an [archabbot|E], a Monastic Order is sustained by the [temple_holdings|E] and [gold|E] granted by its [monastic_order_patrons|E]. The Order then provides [spiritual_fulfillment|E] and [piety|E] in return.\n\nAny [ruler|E] whose [faith|E] permits monasticism can establish one with the #high Found Monastic Order#! [decision|E]."
 
  game_concept_monastic_order_patron: "Monastic Order Patron"
- game_concept_monastic_order_patrons: "Monastic Order Patrons"
  game_concept_monastic_order_patronize: "Patronize"
  game_concept_monastic_order_patronized: "Patronized"
  game_concept_monastic_order_patronage: "Patronage"
  game_concept_monastic_order_patron_desc: "A Monastic Order Patron is an [ecclesiastical|E] or secular [ruler|E] of [duchy|E] [title_tier|E] or higher who sustains a [monastic_holy_order|E], most often the ruler who founded it. A patron endows the order with worldly wealth, leasing it [temple_holdings|E] and donating [gold|E] to its coffers.\n\nIn return for this generosity, the patron earns [piety|E] and [spiritual_fulfillment|E]. They may also take control of the Order's leader, and have them execute [clerical|E] interactions as a [puppet|E]."
-
  game_concept_mendicant: "Mendicant"
 
  game_concept_rite: "Rite"
@@ -156,19 +152,17 @@
  game_concept_rites: "Rites"
 
  game_concept_archabbot: "Abbot"
- game_concept_archabbot_desc: "An $game_concept_archabbot$ is the [ruler|E] of a [monastic_holy_order|E] and the [head_of_rite|E] of the [rite|E] their order champions, guiding its members in study, contemplation, and the spread of its [core_tenets|E].\n\nAn order may be supported by a [monastic_order_patron|E], whose [monastic_order_patronage|E] grants it wealth and influence.\n\nUpon an $game_concept_archabbot$'s death, their [titles|E] pass to a successor, usually their [courtier|E] with the highest [learning|E]."
+
 
  game_concept_archbishop: "Archbishop"
  game_concept_archbishops: "Archbishops"
  game_concept_archbishop_possessive: "Archbishop's"
  game_concept_archbishops_possessive: "Archbishops'"
- game_concept_archbishop_desc: "An Archbishop is the Christian holder of an [archdiocese|E], a duchy-tier [clerical_title|E] whose [clerical_region|E] may span several [realms|E].\n\nAs the [religious_superior|E] of the [bishops|E] and lesser [clergy|E] within that region, an Archbishop ranks above an ordinary [bishop|E] and answers in turn to the [head_of_faith|E]."
 
  game_concept_bishop: "Bishop"
  game_concept_bishops: "Bishops"
  game_concept_bishop_possessive: "Bishop's"
  game_concept_bishops_possessive: "Bishops'"
- game_concept_bishop_desc: "A $game_concept_bishop$ belongs to the [clergy|E] of a Christian [faith|E], and holds or leases [temple_holdings|E].\n\nA Bishop resides within an [archdiocese|E] and answers to the [archbishop|E] there as [religious_superior|E]. An unlanded Bishop with [leased|E] titles serves under a secular [liege|E]; a Bishop with unleased [landed|E] [titles|E] may rule as an [ecclesiastical|E] [ruler|E]."
 
  game_concept_rite_divergence: "Divergence"
  game_concept_rite_divergent: "Divergent"
@@ -265,6 +259,7 @@
  game_concept_ecclesiastical_domicile_building_desc: "$game_concept_ecclesiastical_estate_building_desc$"
  game_concept_ecclesiastical_estate: "Ecclesiastical Estate"
  game_concept_ecclesiastical_estates: "Ecclesiastical Estates"
+ #TODO_PAM_LK
  game_concept_ecclesiastical_estate_desc: "An $game_concept_ecclesiastical_estate$ — or $game_concept_cathedral_complex$ — is a type of [domicile|E] attached to a [clerical_title|E], representing the intimate landholdings of an [archbishop|E] and their see. Lesser [clergy|E] in an [GetGovernment('ecclesiastical_government').GetName] must rise to such a [title|E] before they are granted one.\n\n[ecclesiastical_estate_buildings|E] may be constructed here to expand the holder's wealth, [piety|E], and [spiritual_fulfillment|E]. The $game_concept_ecclesiastical_estate$ does not change location and will be inherited by the next title [holder|E]."
  game_concept_ecclesiastical_estate_building: "Ecclesiastical Estate Building"
  game_concept_ecclesiastical_estate_buildings: "Ecclesiastical Estate Buildings"
@@ -276,19 +271,29 @@
  game_concept_cathedral_complex_buildings: "$game_concept_cathedral_complex$ Buildings"
  game_concept_cathedral_complex_building_desc: "$game_concept_ecclesiastical_estate_building_desc$"
 
- game_concept_canonized: "Canonized"
- game_concept_canonized_desc: "A [character|E] who has, after death, been declared a saint or another faith's equivalent, such as a Wali or a venerated ancestor, gaining the [GetTrait('saint').GetName( GetNullCharacter )] [trait|E].\n\nA virtuous life may end in $game_concept_canonization$: it is petitioned through a [decision|E], may require the blessing of the [head_of_faith|E], and is sealed by consecrating the saint's burial site. Their resting place thereafter draws pious travelers, and their remains may yield [holy_relics|E]."
- game_concept_canonization: "Canonization"
- game_concept_canonization_desc: "$game_concept_canonized_desc$"
- game_concept_sainthood: "Sainthood"
- game_concept_sainthood_desc: "$game_concept_canonized_desc$"
+game_concept_canonized: "Canonized"
+game_concept_canonized_desc: "A [character|E] who has, after death, been declared a saint or another faith's equivalent, such as a Wali or a venerated ancestor, gaining the [GetTrait('saint').GetName( GetNullCharacter )] [trait|E].\n\nA virtuous life may end in $game_concept_canonization$: it is petitioned through a [decision|E], may require the blessing of the [head_of_faith|E], and is sealed by consecrating the saint's burial site. Their resting place thereafter draws pious travelers, and their remains may yield [holy_relics|E]."
+game_concept_canonization: "Canonization"
+game_concept_canonization_desc: "$game_concept_canonized_desc$"
+game_concept_sainthood: "Sainthood"
+game_concept_sainthood_desc: "$game_concept_canonized_desc$"
 
- game_concept_strengthen_claim_interaction: "$strengthen_claim_interaction$"
- game_concept_strengthen_claim_interaction_desc: "An [interaction|E] which strengthens an [unpressed_claim|E] into a [pressed_claim|E] through the endorsement of a relevant [ecclesiastical|E] or [theocratic|E] [ruler|E]."
- game_concept_ecclesiastic_grant_claim_interaction: "$ecclesiastic_grant_claim_interaction$"
- game_concept_ecclesiastic_grant_claim_interaction_desc: "An [interaction|E] which provides a [claim|E] to a [title|E] belonging to another [ruler|E]. Requires the acceptance of a relevant [ecclesiastical|E] or [theocratic|E] [character|E]."
- game_concept_ecclesiastic_transfer_land_interaction: "$ecclesiastic_transfer_land_interaction$"
- game_concept_ecclesiastic_transfer_land_interaction_desc: "An [interaction|E] which facilitates the peaceful transfer of a [title|E] or [vassal|E] between two [rulers|E], relying on the acceptance of the target [ruler|E] and a secondary intercessor.\n\nRefusal will usually cost the recipient [piety|E] and [legitimacy|E], as well as an additional cost selected by the actor as a method of compelling acceptance.\n\nThe intercessor, a relevant [ecclesiastical|E] or [theocratic|E] ruler, may both forbid this interaction from even taking place and, with the [GetLaw('church_authority_3').GetName] [law|E], may force through its acceptance."
+game_concept_strengthen_claim_interaction: "$strengthen_claim_interaction$"
+game_concept_strengthen_claim_interaction_desc: "An [interaction|E] which strengthens an [unpressed_claim|E] into a [pressed_claim|E] through the endorsement of a relevant [ecclesiastical|E] or [theocratic|E] [ruler|E]."
+game_concept_ecclesiastic_grant_claim_interaction: "$ecclesiastic_grant_claim_interaction$"
+game_concept_ecclesiastic_grant_claim_interaction_desc: "An [interaction|E] which provides a [claim|E] to a [title|E] belonging to another [ruler|E]. Requires the acceptance of a relevant [ecclesiastical|E] or [theocratic|E] [character|E]."
+game_concept_ecclesiastic_transfer_land_interaction: "$ecclesiastic_transfer_land_interaction$"
+game_concept_ecclesiastic_transfer_land_interaction_desc: "An [interaction|E] which facilitates the peaceful transfer of a [title|E] or [vassal|E] between two [rulers|E], relying on the acceptance of the target [ruler|E] and a secondary intercessor.\n\nRefusal will usually cost the recipient [piety|E] and [legitimacy|E], as well as an additional cost selected by the actor as a method of compelling acceptance.\n\nThe intercessor, a relevant [ecclesiastical|E] or [theocratic|E] ruler, may both forbid this interaction from even taking place and, with the [GetLaw('church_authority_3').GetName] [law|E], may force through its acceptance."
+
+ game_concept_puppeteer_possessive: "Puppeteer's"
+ game_concept_puppeteers_possessive: "Puppeteers'"
+ game_concept_clerical_title_desc: "A $game_concept_clerical_title$ is an [ecclesiastical|E] [title|E] of the [clergy|E] governing a [clerical_region|E] within a [faith|E]. Among the [christian|E] faiths this is an [archdiocese|E].\n\nThe holder is the [religious_superior|E] of the [clergy|E] in that region, and is usually appointed by the [head_of_faith|E]."
+ game_concept_archdiocese_desc: "An Archdiocese is the [christian|E] form of a [clerical_region|E], an ecclesiastical domain held by an [archbishop|E] through its [clerical_title|E] and seated in a capital [county|E], where a [grand_cathedral|E] may be raised.\n\nA [christian|E] [ruler|E] answers in spiritual matters to the [archbishop|E] of the Archdiocese that contains their [capital|E] [county|E], and the territory subject to Archdioceses collectively constitutes [the_christian_church|E] [situation|E]."
+game_concept_grand_cathedral_desc: "A Grand Cathedral is a [great_district|E] raised through a [great_project|E] in the capital of an [archdiocese|E], the seat of its [archbishop|E].\n\nRaising the first Cathedral is a monumental act of devotion: its founder gains lasting [piety|E], [legitimacy|E] and [spiritual_fulfillment|E], an additional [personal_tenet|E] slot, and a standing bonus to their same-[faith|E] [opinion|E]. Once raised, it draws Christian pilgrims from across [christendom|E], expands the holder's [cathedral_complex|E], and may later be enlarged into a [GetBuildingType('great_project_cathedral_02').GetName|V] or [GetBuildingType('great_project_cathedral_03').GetName|V]."
+ game_concept_monastic_order_patrons: "Monastic Order Patrons"
+ game_concept_archabbot_desc: "An $game_concept_archabbot$ is the [ruler|E] of a [monastic_holy_order|E] and the [head_of_rite|E] of the [rite|E] their order champions, guiding its members in study, contemplation, and the spread of its [core_tenets|E].\n\nAn order may be supported by a [monastic_order_patron|E], whose [monastic_order_patronage|E] grants it wealth and influence.\n\nUpon an $game_concept_archabbot$'s death, their [titles|E] pass to a successor, usually their [courtier|E] with the highest [learning|E]."
+ game_concept_archbishop_desc: "An Archbishop is the Christian holder of an [archdiocese|E], a duchy-tier [clerical_title|E] whose [clerical_region|E] may span several [realms|E].\n\nAs the [religious_superior|E] of the [bishops|E] and lesser [clergy|E] within that region, an Archbishop ranks above an ordinary [bishop|E] and answers in turn to the [head_of_faith|E]."
+ game_concept_bishop_desc: "A $game_concept_bishop$ belongs to the [clergy|E] of a Christian [faith|E], and holds or leases [temple_holdings|E].\n\nA Bishop resides within an [archdiocese|E] and answers to the [archbishop|E] there as [religious_superior|E]. An unlanded Bishop with [leased|E] titles serves under a secular [liege|E]; a Bishop with unleased [landed|E] [titles|E] may rule as an [ecclesiastical|E] [ruler|E]."
 
  game_concept_challenger_hof: "Challenger Head of Faith"
  game_concept_antipope: "Antipope"
@@ -330,8 +335,6 @@
  game_concept_request_ecclesiastical_title_expansion_interaction_desc: "An [interaction|E] used by [ecclesiastical|E] [rulers|E] to expand their [clerical_region|E] into the [de_jure|E] [counties|E] of an adjacent [duchy|E].\n\nThis is only possible with the approval of the [head_of_faith|E]."
  game_concept_ecclesiastic_incite_holy_war_interaction: "$ecclesiastic_incite_holy_war_interaction$"
  game_concept_ecclesiastic_incite_holy_war_interaction_desc: "An [interaction|E] through which [ecclesiastical|E] [rulers|E] can make same-[faith|E] secular rulers declare [holy_war|E] on rulers of hostile faith."
- game_concept_ecclesiastic_incite_claim_war_interaction: "$ecclesiastic_incite_claim_war_interaction$"
- game_concept_ecclesiastic_incite_claim_war_interaction_desc: "An [interaction|E] through which [ecclesiastical|E] [rulers|E] can make same-[faith|E] secular rulers declare [war|E] to press a [claim|E] on a secular [ruler|E]."
 
  game_concept_treasury_cardinal_budget: "Cardinal Budget"
  game_concept_treasury_cardinal_budget_short: "Cardinal"

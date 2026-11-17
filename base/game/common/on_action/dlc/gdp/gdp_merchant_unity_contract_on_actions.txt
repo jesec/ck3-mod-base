@@ -1,0 +1,42 @@
+﻿#############################################
+# ON ACTIONS FOR MERCHANT PATRON CONTRACTS
+#############################################
+
+### The following on_actions are specifically for their respective government types
+# Merchant government
+spawn_unity_contract_on_action = {
+	# Select a random eligible contract to create
+	random_on_action = {
+		100 = gdp_unity_irregularities
+	}
+}
+
+### GDP Unity Contracts
+# Irregularities
+gdp_unity_irregularities = {
+	trigger = {
+		can_create_task_contract = { type_name = unity_irregularities }
+	}
+	
+	effect = {
+		# Save useful scopes
+		unity_contract_task_contract_setup_scopes_effect = yes
+		# Create
+		create_task_contract = {
+			task_contract_type = unity_irregularities
+			task_contract_tier = scope:contract_tier
+			task_contract_employer = scope:local_ruler
+			target = scope:trader
+			location = scope:destination
+			save_scope_as = unity_contract
+		}
+		scope:unity_contract = {
+			set_variable = {
+				name = route
+				value = scope:route
+			}
+		}
+		# General post-creation set up
+		manage_new_unity_contract_effect = yes
+	}
+}

@@ -107,3 +107,70 @@ adoption.0002 = {
 		}
 	}
 }
+
+# Merchant Adoption accepted
+adoption.0003 = {
+	type = letter_event
+	opening = {
+		desc = adoption.0001.opening
+	}
+	desc = adoption.0003.desc
+	sender = scope:recipient
+
+	option = {
+		name = adoption.0003.a
+		play_music_cue = "mx_cue_touching_moment"
+		custom_tooltip = merchant_adoption_child_tt
+		if = {
+			limit = {
+				NOT = {
+					primary_heir ?= { house ?= root.house }
+				}
+			}
+			save_scope_value_as = {
+				name = adoptee_becomes_heir
+				value = yes
+			}
+		}
+		merchant_adopt_effect = {
+			CHILD = scope:recipient
+			ADOPTER = scope:actor
+		}
+		if = {
+			limit = { exists = scope:adoptee_becomes_heir }
+			set_designated_heir = scope:recipient
+		}
+		create_character_memory = {
+			type = merchant_family_adopted
+			participants = {
+				adoptee = scope:recipient
+			}
+		}
+		scope:new_memory = {
+			set_variable = {
+				name = adopted_house
+				value = scope:actor.house
+			}
+		}
+		scope:recipient = {
+			create_character_memory = {
+				type = was_merchant_family_adopted
+				participants = {
+					adopter = scope:actor
+				}
+			}
+			scope:new_memory = {
+				set_variable = {
+					name = adopted_house
+					value = scope:actor.house
+				}
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { exists = var:adopted_dynasty } # Error suppression 
+		}
+	}
+}

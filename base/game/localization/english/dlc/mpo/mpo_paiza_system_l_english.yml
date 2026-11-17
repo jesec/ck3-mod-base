@@ -9,8 +9,8 @@
  mpo_establish_paiza_system_decision.grant_paiza_interaction_unlocked: "Unlocks the #V $mpo_interaction_grant_paiza$#! [character_interaction|E] that can be used on your [courtiers|E], [vassals|E], and [tributaries|E]"
  mpo_establish_paiza_system_decision.request_paiza_interaction_unlocked: "Unlocks the #V $mpo_interaction_ask_for_paiza$#! [character_interaction|E] for your [vassals|E], [tributaries|E], and [adventurers|E] visiting your [court|E]"
  mpo_establish_paiza_system_decision.paiza_obedient: "Characters receiving Paiza [artifacts|E] become [obedient|E] to you."
- mpo_establish_paiza_system_decision.paiza_abuse_authority_unlocked: "@alert_icon! Characters bearing Paizas get access to the #V $mpo_abuse_authority_paiza_decision$#! [decision]"
- mpo_establish_paiza_system_decision.leverage_khan_authority_unlocked: "@alert_icon! Characters bearing Paizas get access to the #V $mpo_interaction_leverage_khan_authority$#! [interaction]"
+ mpo_establish_paiza_system_decision.paiza_abuse_authority_unlocked: "@alert_icon! Characters bearing Paizas get access to the #V $mpo_abuse_authority_paiza_decision$#! [decision|E]"
+ mpo_establish_paiza_system_decision.leverage_khan_authority_unlocked: "@alert_icon! Characters bearing Paizas get access to the #V $mpo_interaction_leverage_khan_authority$#! [character_interaction|E]"
  mpo_establish_paiza_system_decision.call_for_merchants_decision_unlocked: "Unlocks the [GetDecisionWithKey('mpo_call_for_merchants_decision').GetName] [decision|E]"
  mpo_establish_paiza_system_decision.paiza_recently_established: "Paiza System was already established by [THIS.Char.GetName]. [THIS.Char.GetHerHis|U] life prevents you from establishing a new one. Each of [THIS.Char.GetHerHis] pitiful breaths is an insult to your authority."
 
@@ -35,14 +35,14 @@
  mpo_call_for_merchants_small_decision_tooltip: "Improve your soldiers or enable [artifact|E] creation."
  mpo_call_for_merchants_small_decision_confirm: "Send the envoy"
  mpo_call_for_merchants_decision.merchant_will_arrive_smol: "$mpo_call_for_merchants_decision.merchant_will_arrive_generic$\n$BULLET_WITH_TAB$Around #P 20%#! of your [gold|E] investment"
- mpo_call_for_merchants_decision.merchant_will_arrive_generic: "A wealthy foreigner will travel to your court, leading a caravan bound for the well-developed, settled cities. Upon their return, you may receive the following benefits:\n$BULLET_WITH_TAB$[artifact|E] creation materials that unlock the #V $commission_artifact_decision$#! [decision|E]\n$BULLET_WITH_TAB$Armaments for your [horde|E] and [archer_cavalry|E]"
- mpo_call_for_merchants_decision.gold_needed_smol: "More lucrative offers require a higher [gold|e] investment, up to 800 [gold_i|E]"
+ mpo_call_for_merchants_decision.merchant_will_arrive_generic: "A wealthy foreigner will travel to your court, leading a caravan bound for the well-developed, settled cities. Upon their return, you may receive the following benefits:\n$BULLET_WITH_TAB$Around #P 40%#! of your [gold|E] investment\n$BULLET_WITH_TAB$[artifact|E] creation materials that unlock the #V $commission_artifact_decision$#! [decision|E]\n$BULLET_WITH_TAB$Armaments for your [horde|E] and [archer_cavalry|E]"
+ mpo_call_for_merchants_decision.gold_needed_smol: "More lucrative offers require a higher [gold|e] investment, up to 400 [gold_i|E]"
 
 
  mpo_call_for_merchants_decision.robbed_merchants: "The previous outsider who answered your summons vanished violently, and word of this has spread. It will be a while before another foolhardy soul dares to appear."
  mpo_call_for_merchants_decision.merchant_will_arrive: "$mpo_call_for_merchants_decision.merchant_will_arrive_generic$\n$BULLET_WITH_TAB$Around #P 40%#! of your [gold|E] investment\n$BULLET_WITH_TAB$Random [innovation|E] progress"
  mpo_call_for_merchants_decision.buildings: "Various [internal_upgrades|E] to the [GetDomicileBuilding('trade_yurt_01').GetName] [yurt_building|E] offer additional benefits."
- mpo_call_for_merchants_decision.gold_needed: "More lucrative offers require a higher [gold|E] investment, up to 2400 [gold_i|E]"
+ mpo_call_for_merchants_decision.gold_needed: "More lucrative offers require a higher [gold|E] investment, up to 1200 [gold_i|E]"
 
  is_paiza_merchant: "[CHARACTER.GetShortUIName|U] is a merchant traveling on a nomad ruler's order"
  mpo_decisions_events.0100.t: "$mpo_call_for_merchants_decision$"
@@ -66,11 +66,10 @@
  mpo_decisions_events.2141.e.warning: "$mpo_decisions_events.0100.e.warning$"
  mpo_decisions_events.2141.upon_merchant_return: "$mpo_decisions_events.0100.upon_merchant_return$"
 
-
  mpo_decisions_events.0100.upon_merchant_return: "When [paiza_merchant.GetNameNoTooltip] returns from [paiza_merchant.GetHerHis] voyage to [merchant_origin.GetName]:"
 
  mpo_decisions_events.0101.t: "Foreigner Returns"
- mpo_decisions_events.0101.desc: "[paiza_merchant.GetName] has arrived and now sips [Glossary( 'kumis', 'KUMIS_GLOSS')] in my yurt, after a long and ardous voyage to [merchant_origin.GetName].\n\nThe precious goods I requested are being unloaded. The steppe wolf and the city lamb found a way to coexist, if only for a while."
+ mpo_decisions_events.0101.desc: "[paiza_merchant.GetName] has arrived and now sips [Glossary( 'kumis', 'KUMIS_GLOSS')] in my yurt, after a long and arduous voyage to [merchant_origin.GetName].\n\nThe precious goods I requested are being unloaded. The steppe wolf and the city lamb found a way to coexist, if only for a while."
  mpo_decisions_events.0101.a: "Wonderful!"
  mpo_decisions_events.0101.b: "Tell me the tales of distant lands"
  mpo_decisions_events.0101.b.desc: "[paiza_merchant.GetName] will regale you with tales about the lands [paiza_merchant.GetSheHe] traveled through."
@@ -83,7 +82,7 @@
  mpo_decisions_events.2137.c: "Stay at my yurt."
 
  mpo_decisions_events.2138.t: "Herd for Gold"
- mpo_decisions_events.2138.desc: "You and [paiza_merchant.GetName] walk to your [GetDomicileBuilding('trade_yurt_01').GetName] to discuss the details. [paiza_merchant.GetSheHe|U] explains:\n\n"I can buy from you a sizeable amount of herd from you. I have made connections while I was travelling here. There is no wholesale buyer, but I should be able to visit enough small-time herders on my way back to make a profit. Or at least not lose that much.\n\nI extend this offer to you, out of respect to you and your majesty, my [ROOT.Char.GetTitleAsNameNoTooltip].""
+ mpo_decisions_events.2138.desc: "You and [paiza_merchant.GetName] walk to your [GetDomicileBuilding('trade_yurt_01').GetName] to discuss the details. [paiza_merchant.GetSheHe|U] explains:\n\n"I can buy from you a sizeable amount of herd from you. I have made connections while I was traveling here. There is no wholesale buyer, but I should be able to visit enough small-time herders on my way back to make a profit. Or at least not lose that much.\n\nI extend this offer to you, out of respect to you and your majesty, my [ROOT.Char.GetTitleAsNameNoTooltip].""
  mpo_decisions_events.2138.desc_rate_1: "[GetDomicileBuilding('herd_trade_yurt_01').GetName] 6 [herd_i] for 1 [gold_i]"
  mpo_decisions_events.2138.desc_rate_2: "[GetDomicileBuilding('herd_trade_yurt_03').GetName] 4 [herd_i] for 1 [gold_i]"
  mpo_decisions_events.2138.desc_rate_3: "[GetDomicileBuilding('herd_trade_yurt_06').GetName] 2 [herd_i] for 1 [gold_i]"
@@ -96,11 +95,11 @@
  mpo_abuse_authority_paiza_decision: "Abuse Gurkhan's Authority"
  mpo_abuse_authority_paiza_decision_tooltip: "The [gurkhan|E] speaks through me!"
  mpo_abuse_authority_paiza_decision_desc: "I carry the name of the Gurkhan with me. The runes etched in my paiza strike fear in people's hearts. The land around me is fertile, yet the people living here are weak. I shall take from them what I can, not by my indomitable might, but through the name of the Gurkhan."
- mpo_abuse_authority_paiza_decision_confirm: "In the name of the [gurkhan|E]!"
+ mpo_abuse_authority_paiza_decision_confirm: "In the name of the $game_concept_gurkhan$!"
  mpo_abuse_authority_paiza_decision.paiza_patron_not_topdog: "The [paiza|E] patron is no longer the [gurkhan|E]"
- mpo_abuse_authority_paiza_decision.not_topdog_realm_or_steppe: "[gurkhan|E]'s authority is not recognized here"
+ mpo_abuse_authority_paiza_decision.not_topdog_realm_or_steppe: "[gurkhan_possessive|E] authority is not recognized here"
  mpo_abuse_authority_paiza_decision.no_more_paiza_abuse: "The [gurkhan|E] reacted to your deeds"
- mpo_abuse_authority_paiza_decision.region_already_abused: "These lands have already seen the abuse of the [gurkhan|E]'s authority"
+ mpo_abuse_authority_paiza_decision.region_already_abused: "These lands have already seen the abuse of the [gurkhan_possessive|E] authority"
  mpo_abuse_authority_paiza_decision.nothing_to_abuse: "There is no land ripe for abuse in this [location|E]"
 
  mpo_decisions_events.0110.t: "In the Name of the [paiza_patron.GetTitleAsNameNoTooltip]"
@@ -118,17 +117,19 @@
  mpo_decisions_events.0111.desc: "The Gurkhan is like the steppe itself. [paiza_patron.GetNamePossessive] might and will stretch across it all. [paiza_patron.GetHerHis|U] name is whispered by the wind.\n\nI carried [paiza_patron.GetHerHis] name with me, etched in the metal of the Paiza. I have used it to bring fear and obedience into people's hearts. One time too many, it seems.\n\nNow it is my turn to fear. The Gurkhan has heard of my deeds and calls them an abuse of [paiza_patron.GetHerHis] word, of [paiza_patron.GetHerHis] name. And for that, I will become a gruesome example for all the steppe to see."
  mpo_decisions_events.0111.a: "I welcome judgement."
  mpo_decisions_events.0111.b: ""Ah, but my deeds were righteous, you see...""
+ mpo_decisions_events.0111.b.success: "The Gurkhan is merciful"
+ mpo_decisions_events.0111.b.failure: "The Gurkhan is outraged"
 
  mpo_decisions_events.0112.t: "$mpo_decisions_events.0111.t$"
- mpo_decisions_events.0112.desc: "I am like the steppe itself. My might and will stretch across it all. My name is whispered by the wind.\n\nRiders carry my name with them, etched in the metal of their Paizas. Yet some of them twist it like serpents, greedy fools like [paiza_abuser.GetName] and [paiza_abuser_1.GetName]. Not so long ago [paiza_abuser.GetSheHe] prostrated [paiza_abuser.GetHerHis|U] wormlike body before me, now [paiza_abuser.GetSheHe]  abuses my loyal subjects, who are looking to me for answers, for justice. Let the wind carry my true will now!\n\n"The word just got back to me. Let them know [ROOT.Char.GetTitledFirstNameNoTooltip] step up to any castrated cur, [paiza_abuser.GetFirstNameNoTooltip], [paiza_abuser_1.GetFirstNameNoTooltip], whomever. My name is my name!""
+ mpo_decisions_events.0112.desc: "I am like the steppe itself. My might and will stretch across it all. My name is whispered by the wind.\n\nRiders carry my name with them, etched in the metal of their Paizas. Yet some of them twist it like serpents, greedy fools like [paiza_abuser.GetName] and [paiza_abuser_1.GetName]. Not so long ago [paiza_abuser.GetSheHe] prostrated [paiza_abuser.GetHerHis|U] worm-like body before me, now [paiza_abuser.GetSheHe] abuses my loyal subjects, who are looking to me for answers, for justice. Let the wind carry my true will now!\n\n"The word just got back to me. Let them know [ROOT.Char.GetTitledFirstNameNoTooltip] step up to any castrated cur, [paiza_abuser.GetFirstNameNoTooltip], [paiza_abuser_1.GetFirstNameNoTooltip], whomever. My name is my name!""
  mpo_decisions_events.0112.a: "Bring me their heads!"
- mpo_decisions_events.0112.a.desc: "Other [characters|E] with your [paiza|E]s will be less willing to abuse your authority if both [paiza_abuser.GetFirstName] and [paiza_abuser_1.GetFirstName] are dead."
+ mpo_decisions_events.0112.a.desc: "Other [characters|E] with your [paizas|E] will be less willing to abuse your authority if both [paiza_abuser.GetFirstName] and [paiza_abuser_1.GetFirstName] are dead."
  mpo_decisions_events.0112.b: "I will let this slide... for now."
  mpo_decisions_events.0112.c: "Do not bother me ever again."
  mpo_decisions_events.0112.c.flavor: "Further abuse of your authority will happen, but you will not be notified anymore."
 
 
- mpo_paiza_abuse_counter_effect.random: "The [gurkhan|E]'s acts are as random as only humans can be"
+ mpo_paiza_abuse_counter_effect.random: "The [gurkhan_possessive|E] acts are as random as only humans can be"
  mpo_paiza_abuse_counter_effect.angry: "@warning_icon! The [gurkhan|E] is furious at your abuse of authority and is almost guaranteed to react"
  mpo_paiza_abuse_counter_effect.annoyed: "@alert_icon! The [gurkhan|E] is annoyed at your abuse of authority and is likely to react"
  mpo_paiza_abuse_counter_effect.indifferent: "The [gurkhan|E] is indifferent to your abuse of authority and will not take any action this time"
@@ -136,8 +137,8 @@
  mpo_paiza_abuse_counter_effect.khan_reaction_angry: "[gurkhan|E] will be #EMP furious#! but will not take any action"
  mpo_paiza_abuse_counter_effect.khan_reaction_annoyed: "[gurkhan|E] will be #EMP annoyed#! but will not take any action"
 
- mpo_decisions_events.0111.a.effects: "[paiza_patron.GetName] gets an [imprisonment_reason|E] and [execute_reason|E] targeting you."
- mpo_decisions_events.0111.a.severe_effects: "[paiza_patron.GetName] gets an [imprisonment_reason|E] and [execute_reason|E] targeting you and your [close_family_members|E]."
+ mpo_decisions_events.0111.a.effects: "[charter_patron.GetName] gets an [imprisonment_reason|E] and [execute_reason|E] targeting you."
+ mpo_decisions_events.0111.a.severe_effects: "[charter_patron.GetName] gets an [imprisonment_reason|E] and [execute_reason|E] targeting you and your [close_family_members|E]."
  mpo_decisions_events.0111.a.survived_khans_wrath: "Despite surviving the Gurkhan's wrath, you will not be able to abuse his authority again."
 
  mpo_call_for_merchants_decision_is_gurkhan: "You are the [gurkhan|E]"

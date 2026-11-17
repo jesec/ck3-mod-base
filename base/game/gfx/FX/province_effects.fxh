@@ -17,17 +17,6 @@ struct EffectIntensities
 
 PixelShader =
 {
-	TextureSampler ProvinceEffectsNoise
-	{
-		Index = 14
-		MagFilter = "Linear"
-		MinFilter = "Linear"
-		MipFilter = "Linear"
-		SampleModeU = "Wrap"
-		SampleModeV = "Wrap"
-		File = "gfx/map/textures/wavy_noise.dds"
-	}
-
 	BufferTexture ProvinceEffectDataBuffer
 	{
 		Ref = ProvinceEffectData
@@ -160,6 +149,15 @@ PixelShader =
 				ConditionData._DivergentRites = 0.0f;
 				return;
 			#endif
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				ConditionData._Drought = 0.0f;
+				ConditionData._Flood = 0.0f;
+				ConditionData._Summer = 0.0f;
+				ConditionData._Snow = 0.0f;
+				ConditionData._DivergentRites = 0.0f;
+				return;
+			}
 
 			float2 Pixel = MapCoords * IndirectionMapSize + 0.5f;
 			float2 FracCoord = frac( Pixel );
@@ -195,7 +193,15 @@ PixelShader =
 				ConditionData._DivergentRites = 0.0f;
 				return;
 			#endif
-
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				ConditionData._Drought = 0.0f;
+				ConditionData._Flood = 0.0f;
+				ConditionData._Summer = 0.0f;
+				ConditionData._Snow = 0.0f;
+				ConditionData._DivergentRites = 0.0f;
+				return;
+			}
 			float2 Pixel = MapCoords * IndirectionMapSize + 0.5f;
 			Pixel = floor( Pixel ) / IndirectionMapSize - InvIndirectionMapSize / 2.0f;
 			float4 Sample = SampleProvinceEffects( Pixel );
@@ -262,7 +268,7 @@ PixelShader =
 			float4 DryTexProperties = PdxTex2D( MaterialTextures, float3( DetailUV, DroughtDryTexureIndex ) );
 
 			float2 DryMaskUV = float2( MapCoords.x * 2.0f, MapCoords.y ) * DroughtDryMaskUVTiling;
-			float DryNoiseMask = PdxTex2D( ProvinceEffectsNoise, DryMaskUV ).r;
+			float DryNoiseMask = PdxTex2D( MapEffectTextures, float3( DryMaskUV, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ) ).r;
 
 			float DryMask = LevelsScan( DryNoiseMask, DryPositionValue, DryContrastValue ) * DroughtDryTextureBlendWeight * DroughtBlendWeight;
 			float2 DryBlendFactors = CalcHeightBlendFactors( float2( Diffuse.a, DryTexDiffuse.a ), float2( 1.0f - DryMask, DryMask ), DetailBlendRange * DroughtDryTextureBlendContrast);
@@ -287,7 +293,7 @@ PixelShader =
 
 			// Cracks Area Mask
 			float2 CrackedMaskUV = float2( MapCoords.x * 2.0f, MapCoords.y ) * DroughtCracksAreaMaskTiling;
-			float CrackedMask = PdxTex2D( ProvinceEffectsNoise, CrackedMaskUV ).r;
+			float CrackedMask = PdxTex2D( MapEffectTextures, float3( CrackedMaskUV, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ) ).r;
 			CrackedMask = LevelsScan( CrackedMask, CracksPositionValue, CracksContrastValue );
 
 			// Cracked areas
@@ -333,7 +339,7 @@ PixelShader =
 			float4 FloodTexProperties = PdxTex2D( MaterialTextures, float3( DetailUV, FloodTextureIndex ) );
 
 			float2 FloodNoiseUV = TextureUV * FloodNoiseTiling;
-			float FloodNoise = PdxTex2D( ProvinceEffectsNoise, FloodNoiseUV ).r;
+			float FloodNoise = PdxTex2D( MapEffectTextures, float3( FloodNoiseUV, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ) ).r;
 			float FloodNoiseFill = LevelsScan( FloodNoise, AdjustedPositionValue, AdjustedContrastValue );
 			FloodNoise = FloodNoiseFill * SlopeMultiplier;
 			float2 FloodBlendFactors = CalcHeightBlendFactors( float2( Diffuse.a, FloodTexDiffuse.a ), float2( 1.0f - FloodNoise, FloodNoise ), DetailBlendRange * 2.0f );
@@ -390,7 +396,7 @@ PixelShader =
 			float4 GrassTexProperties = PdxTex2D( MaterialTextures, float3( DetailUV, SummerGrassTexureIndex ) );
 
 			float2 GrassMaskUV = float2( MapCoords.x * 2.0f, MapCoords.y ) * SummerGrassMaskUVTiling;
-			float GrassNoiseMask = PdxTex2D( ProvinceEffectsNoise, GrassMaskUV ).r;
+			float GrassNoiseMask = PdxTex2D( MapEffectTextures, float3( GrassMaskUV, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ) ).r;
 
 			float GrassMask = LevelsScan( GrassNoiseMask, GrassPositionValue, GrassContrastValue ) * SummerGrassTextureBlendWeight * SummerBlendWeight;
 			float2 GrassBlendFactors = CalcHeightBlendFactors( float2( Diffuse.a, GrassTexDiffuse.a ), float2( 1.0f - GrassMask, GrassMask ), DetailBlendRange );
@@ -434,7 +440,7 @@ PixelShader =
 			float2 BuringMaskUV = float2( MapCoords.x * 2.0f, MapCoords.y );
 
 			// Base Noise Sampling 
-			float4 NoiseMask = SampleNoTile( ProvinceEffectsNoise, BuringMaskUV * BurningNoiseUVTiling + ( Normal.xy - 0.5f ) * 0.03f );
+			float4 NoiseMask = SampleNoTile( MapEffectTextures, BuringMaskUV * BurningNoiseUVTiling + ( Normal.xy - 0.5f ) * 0.03f, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 );
 			// Fire Color Definitions 
 			float3 CharredDiffuse = ( OriginalLuminance.xxx + Diffuse.rgb ) * 0.25f;
 			const float3 FireLow = float3( 1.0f, 0.3f, 0.01f );
@@ -444,7 +450,7 @@ PixelShader =
 			const float2 PanSpeed = float2( 0.0055f, 0.0015f );
 			float2 UVPan = frac( GlobalTime * PanSpeed ) * float2( -1.0f, 1.0f );
 
-			float4 MovingNoise = PdxTex2D( ProvinceEffectsNoise, BuringMaskUV * 15.0f + UVPan );
+			float4 MovingNoise = PdxTex2D( MapEffectTextures, float3( BuringMaskUV * 15.0f + UVPan, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ) );
 
 			// Base Burn Mask Calculation 
 			float Noise = NoiseMask.a;
@@ -561,7 +567,7 @@ PixelShader =
 
 
 			const float2 BuringMaskUV = float2( MapCoords.x * 2.0f, MapCoords.y );
-			const float4 NoiseMask = SampleNoTile( ProvinceEffectsNoise, BuringMaskUV * BurningNoiseUVTiling + ( Normal.xy - 0.5f ) * 0.03f );
+			const float4 NoiseMask = SampleNoTile( MapEffectTextures, BuringMaskUV * BurningNoiseUVTiling + ( Normal.xy - 0.5f ) * 0.03f, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 );
 
 			// Base Burn Mask Calculation 
 			const float Noise = NoiseMask.a;
@@ -614,7 +620,7 @@ PixelShader =
 				// Moving Noise for Dynamic Effects 
 				const float2 PanSpeed = float2( 0.0055f, 0.0015f );
 				const float2 UVPan = frac( GlobalTime * PanSpeed ) * float2( -1.0f, 1.0f );
-				const float4 MovingNoise = PdxTex2D( ProvinceEffectsNoise, BuringMaskUV * 15.0f + UVPan );
+				const float4 MovingNoise = PdxTex2D( MapEffectTextures, float3( BuringMaskUV * 15.0f + UVPan, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ) );
 				const float4 MidMovingNoise = MovingNoise - 0.5f;
 
 				FastAnimSpeed = GlobalTime * FastAnimSpeed;
@@ -749,7 +755,7 @@ PixelShader =
 
 			float2 MapCoords = WorldSpacePosXz * WorldSpaceToTerrain0To1;
 			float2 BurningMaskUV = float2( MapCoords.x * 2.0f, MapCoords.y );
-			float Noise = SampleNoTile( ProvinceEffectsNoise, BurningMaskUV * BurningNoiseUVTiling ).a;
+			float Noise = SampleNoTile( MapEffectTextures, BurningMaskUV * BurningNoiseUVTiling, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ).a;
 
 			float BurnPosition = lerp( 1.0f, 0.40f, ConditionValue );
 			float BlendWeight = ConditionValue * smoothstep( BurnPosition - BurningEdgeWidth, BurnPosition, Noise );
@@ -798,7 +804,7 @@ PixelShader =
 			float3 HellBase = Overlay( Diffuse.rgb, HellOverlay );
 			Diffuse.rgb = lerp( Diffuse.rgb, HellBase, ConditionValue * 0.5f );
 
-			float Noise = SampleNoTile( ProvinceEffectsNoise, BurningMaskUV * BurningNoiseUVTiling ).a;
+			float Noise = SampleNoTile( MapEffectTextures, BurningMaskUV * BurningNoiseUVTiling, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ).a;
 			float BurnPosition = lerp( 1.0f, 0.40f, ConditionValue );
 			float BlendWeight = ConditionValue * smoothstep( BurnPosition - BurningEdgeWidth, BurnPosition, Noise );
 
@@ -846,7 +852,7 @@ PixelShader =
 			DarkenFactor = lerp( DarkenFactor, 1.0f, ProvinceOverlaySecondColorWithAlpha.a );
 			float4 StripeColor = float4( ProvinceOverlayColorWithAlpha.rgb * DarkenFactor, DistanceFieldValue );
 			StripeColor.a *= smoothstep( 0.565f, 0.649f, DistanceFieldValue );
-			float4 NoiseTexture = PdxTex2D( ProvinceEffectsNoise, MapCoords / WorldSpaceToTerrain0To1 * 0.005f );
+			float4 NoiseTexture = PdxTex2D( MapEffectTextures, float3( MapCoords / WorldSpaceToTerrain0To1 * 0.005f, MAP_EFFECT_TEXTURE_INDEX_NOISE_2 ) );
 			StripeColor.a = saturate( StripeColor.a + ( NoiseTexture.b - 0.5f) * 0.3f );
 			float4 FinalColorWithAlpha = float4( Color, 1.0f );
 			ApplyZigZagStripesCustom( FinalColorWithAlpha, StripeColor, 0.8f, MapCoords, DivergentRitesDiagonalStripesAngle, LineWidthFactor, ZigZagFrequency, ZigZagCurvature );
@@ -884,8 +890,8 @@ PixelShader =
 			{
 				ConditionValue = pow( ConditionValue, 0.2f );
 				ConditionValue *= 0.85f;
-				float4 NoiseTexture = PdxTex2D( DiseaseTexture, MapCoords / WorldSpaceToTerrain0To1 * 0.002f );
-				float4 NoiseTexture2 = PdxTex2D( DiseaseTexture2, MapCoords / WorldSpaceToTerrain0To1 * 0.002f );
+				float4 NoiseTexture = PdxTex2D( MapEffectTextures, float3( MapCoords / WorldSpaceToTerrain0To1 * 0.002f, MAP_EFFECT_TEXTURE_INDEX_NOISE_0 ) );
+				float4 NoiseTexture2 = PdxTex2D( MapEffectTextures, float3( MapCoords / WorldSpaceToTerrain0To1 * 0.002f, MAP_EFFECT_TEXTURE_INDEX_NOISE_1 ) );
 				float DistanceFieldValue = CalcDistanceFieldValue( MapCoords );
 				DistanceFieldValue = pow( DistanceFieldValue, 0.7f );
 				DistanceFieldValue *= NoiseTexture2.a;

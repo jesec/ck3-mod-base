@@ -1,0 +1,306 @@
+window = {
+	datacontext = "[AssemblyWindow.GetRepublicWindow]"
+	name = "assembly_window"
+	widgetid = "assembly_window"
+	parentanchor = right
+	size = { 450 900 }
+	position = { -650 100 }
+	layer = windows_layer
+	movable = yes
+
+	using = Window_Background_Subwindow
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	visible = "[And( IsGameViewOpen('assembly_window'), IsDefaultGUIMode )]"
+
+	vbox = {
+		header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "REPUBLIC_ASSEMBLY_WINDOW_HEADER"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[AssemblyWindow.Close]"
+				}
+		}
+
+		hbox = {
+			spacing = 5
+
+			text_single = {
+				text = "REPUBLIC_WINDOW_SORT_OPTIONS"
+			}
+
+			dropdown_menu_standard = {
+				blockoverride "dropdown_size"
+				{
+					size = { 200 35 }
+				}
+				blockoverride "dropdown_properties"
+				{
+					datamodel = "[GovernmentRepublicWindow.GetAssemblySortOptions]"
+					onselectionchanged = "[GovernmentRepublicWindow.OnSelectAssemblySort]"
+					selectedindex = "[GovernmentRepublicWindow.GetCurrentAssemblySortIndex]"
+				}
+
+				blockoverride "dropdown_active_item_properties"
+				{
+					text = "[CString.GetString]"
+				}
+
+				blockoverride "dropdown_item_properties"
+				{
+					text = "[CString.GetString]"
+				}
+			}
+
+			button_standard = {
+					name = "sort_order"
+					size = { 25 25 }
+					onclick = "[GovernmentRepublicWindow.ReverseAssemblySortOrder]"
+
+					tooltip = "REPUBLIC_ASSEMBLY_WINDOW_SORT_DIRECTION"
+					using = tooltip_nw
+
+					button_icon = {
+						alwaystransparent = yes
+						parentanchor = center
+						size = { 25 25 }
+						texture = "gfx/interface/icons/flat_icons/sort_icon.dds"
+						framesize = { 66 66 }
+
+						frame = "[BoolTo1And2(GovernmentRepublicWindow.IsAssemblySortReversed)]"
+
+						blockoverride "button_frames"
+						{
+							effectname = "NoHighlight"
+						}
+					}
+				}
+		}
+
+		vbox_republic_assembly_members = {
+			margin_bottom = 20
+			layoutpolicy_vertical = growing
+			layoutpolicy_horizontal = expanding
+		}
+	}
+}
+
+types AssemblyDataTypes
+{
+	type vbox_republic_assembly_members = vbox {
+		name = "assembly"
+		layoutpolicy_vertical = expanding
+		layoutpolicy_horizontal = expanding
+		margin_left = 10
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			blockoverride "scrollbox_content"
+			{
+				vbox = {
+					margin_left = -10
+					spacing = 5
+
+					datamodel = "[GovernmentRepublicWindow.GetAssembly]"
+					item = {
+						widget_republic_assembly_item = {
+							datacontext = "[AssemblyItem.GetMember]"
+						}
+					}
+				}
+			}
+		}
+
+		expand = {}
+	}
+
+	type widget_republic_assembly_item = widget {
+		size = { 410 95 }
+		allow_outside = yes
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin_top = 6
+			margin_left = 5
+
+			background = {
+				margin = { 0 -7 }
+				using = Background_Area_Light
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				vbox = {
+					margin_right = 10
+					layoutpolicy_vertical = expanding
+
+					hbox_republic_assembly_member_portrait = {}
+
+					expand = {}
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					margin = { 0 5 }
+
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 5 0 }
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+
+							text_single = {
+								text = "[Character.GetUINameNotMeNoTooltip]"
+								align = nobaseline
+								max_width = 270
+								default_format = "#high"
+							}
+
+							expand = {}
+						}
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+
+							text_single = {
+								text = "[Character.GetRelationToString( GetPlayer )]"
+								align = nobaseline
+								max_width = 270
+							}
+
+							expand = {}
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						datacontext = "[Character.GetHouse]"
+						datacontext = "[DynastyHouse.GetHouseAspiration]"
+
+						spacing = 5
+
+						coa_house_tiny = {}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							text = "[DynastyHouse.GetNameNoTooltip]"
+							align = nobaseline
+							max_width = 75
+						}
+
+						expand = {}
+
+						hbox = {
+							visible = "[HouseAspiration.IsValid]"
+							layoutpolicy_horizontal = expanding
+							spacing = 10
+							margin = { 10 10 }
+							
+							tooltipwidget = {
+								using = house_attribute_tooltip
+							}
+
+							background = {
+								using = GenericObjectCardHeaderBackground
+								texture = "gfx/interface/colors/grey.dds"
+								mirror = horizontal
+
+								modify_texture = {
+									using = Color_Commerce
+									blend_mode = normal
+									visible = "[ObjectsEqual(GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)0' ), HouseAspiration.Self)]"
+								}
+
+								modify_texture = {
+									using = Color_Aggrandizement_Bright
+									blend_mode = normal
+									visible = "[ObjectsEqual(GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)1' ), HouseAspiration.Self)]"
+								}
+
+								modify_texture = {
+									using = Color_Communal
+									blend_mode = normal
+									visible = "[ObjectsEqual(GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)2' ), HouseAspiration.Self)]"
+								}
+
+								modify_texture = {
+									using = Color_Signorial
+									blend_mode = normal
+									visible = "[ObjectsEqual(GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)3' ), HouseAspiration.Self)]"
+								}
+
+								modify_texture = {
+									using = Color_Agitation
+									blend_mode = normal
+									visible = "[ObjectsEqual(GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)4' ), HouseAspiration.Self)]"
+								}
+							}
+
+							expand = {}
+							
+							text_single = {
+								text = "[HouseAspiration.GetName]"
+								default_format = "#weak"
+								align = nobaseline
+								max_width = 105
+							}
+
+							highlight_icon = {
+								size = { 26 26 }
+								texture = "[HouseAspiration.GetSmallIcon]"
+							}
+						}
+					}
+				}
+			}
+
+			expand = {}
+		}
+	}
+
+	type hbox_republic_assembly_member_portrait = hbox {
+		background = {
+			using = Background_Area
+			alpha = 1.2
+
+			margin = { 8 4 }
+		}
+
+		block "portrait_head"
+		{
+			portrait_head_small = {
+				blockoverride "coa"
+				{
+
+				}
+
+				highlight_icon = {
+					visible = "[AssemblyItem.IsMajorMember]"
+					size = { 85 90 }
+					texture = "gfx/portraits/portrait_frame.dds"
+				}
+			}
+		}
+	}
+}

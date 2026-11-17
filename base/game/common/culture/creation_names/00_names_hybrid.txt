@@ -59,22 +59,6 @@ anatolian_turkish = {
 	hybrid = yes
 }
 
-norse_gael = {
-	trigger = {
-		OR = {
-			AND = {
-				scope:culture = { has_cultural_pillar = heritage_goidelic }
-				scope:other_culture = { has_cultural_pillar = heritage_north_germanic }
-			}
-			AND = {
-				scope:culture = { has_cultural_pillar = heritage_north_germanic }
-				scope:other_culture = { has_cultural_pillar = heritage_goidelic }
-			}
-		}
-	}
-	hybrid = yes
-}
-
 danelander = {
 	trigger = {
 		OR = {
@@ -518,7 +502,10 @@ kurlander = {
 				culture = scope:culture
 				culture = scope:other_culture
 			}
-			duchy = title:d_courland
+			OR = {
+				duchy = title:d_courland
+				duchy = title:d_semigallia
+			}
 		}
 	}
 	hybrid = yes
@@ -964,45 +951,6 @@ coigriche = {
 	hybrid = yes
 }
 
-arpitan_hybrid = {
-	trigger = {
-		OR = {
-			AND = {
-				scope:culture = { has_cultural_pillar = heritage_frankish }
-				scope:other_culture = { has_cultural_pillar = heritage_latin }
-			}
-			AND = {
-				scope:culture = { has_cultural_pillar = heritage_latin }
-				scope:other_culture = { has_cultural_pillar = heritage_frankish }
-			}
-		}
-		OR = {
-			capital_county ?= {
-				OR = {
-					title:d_dauphine = { is_de_jure_liege_or_above_target = prev }
-					title:d_savoie = { is_de_jure_liege_or_above_target = prev }
-					title:d_provence = { is_de_jure_liege_or_above_target = prev }
-				}
-			}
-			has_primary_title = title:d_dauphine
-			has_primary_title = title:d_savoie
-			has_primary_title = title:d_provence
-		}
-		any_sub_realm_county = {
-			OR = {
-				culture = scope:culture
-				culture = scope:other_culture
-			}
-			OR = {
-				duchy = title:d_dauphine
-				duchy = title:d_savoie
-				duchy = title:d_provence
-			}
-		}
-	}
-	hybrid = yes
-}
-
 new_english_hybrid = {
 	trigger = {
 		OR = {
@@ -1217,31 +1165,6 @@ neapolitan_hybrid = {
 	hybrid = yes
 }
 
-siculo_norman = {
-	trigger = {
-		capital_county ?= {
-			title:k_sicily = {
-				is_de_jure_liege_or_above_target = prev
-			}
-		}
-		scope:culture = culture:norman
-		scope:other_culture = {
-			OR = {
-				has_cultural_pillar = heritage_latin
-				has_cultural_pillar = heritage_byzantine
-				has_cultural_pillar = heritage_berber
-			}
-		}
-		any_sub_realm_county = {
-			OR = {
-				culture = scope:culture
-				culture = scope:other_culture
-			}
-		}
-	}
-	hybrid = yes
-}
-
 arvorigeg = {
 	trigger = {
 		scope:culture = {
@@ -1298,35 +1221,6 @@ scota = {
 		}
 	}
 	hybrid = yes
-}
-
-parsi_hybrid = {
-	trigger = {
-		capital_county ?= {
-			title_province = { geographical_region = world_india }
-		}
-		faith = { religion_tag = zoroastrianism_religion }
-		OR = {
-			AND = {
-				OR = {
-					scope:culture = { has_cultural_pillar = heritage_dravidian }
-					scope:culture = { has_cultural_pillar = heritage_indo_aryan }
-				}
-				scope:other_culture = { has_cultural_pillar = heritage_iranian }
-			}
-			AND = {
-				scope:culture = { has_cultural_pillar = heritage_iranian }
-				OR = {
-					scope:other_culture = { has_cultural_pillar = heritage_dravidian }
-					scope:other_culture = { has_cultural_pillar = heritage_indo_aryan }
-				}
-			}
-		}
-		any_sub_realm_county = {
-			faith = { religion_tag = zoroastrianism_religion }
-			title_province = { geographical_region = world_india }
-		}
-	}
 }
 
 arvanite_hybrid = {

@@ -79,10 +79,10 @@ spread_chance_legends_default_value = {
 		}
 	}
 	
-	#Buildings in which people gossip
+	# Legends spread faster in larger, busier settlements.
 	if = {
 		limit = {
-			has_building_or_higher = common_tradeport_07
+			province_size_level >= 8
 		}
 		add = legend_spread_increase_add_low
 		add = legend_spread_increase_add_low
@@ -91,7 +91,7 @@ spread_chance_legends_default_value = {
 	}
 	else_if = {
 		limit = {
-			has_building_or_higher = common_tradeport_05
+			province_size_level >= 6
 		}
 		add = legend_spread_increase_add_low
 		add = legend_spread_increase_add_very_low
@@ -99,43 +99,14 @@ spread_chance_legends_default_value = {
 	}
 	else_if = {
 		limit = {
-			has_building_or_higher = common_tradeport_03
+			province_size_level >= 4
 		}
 		add = legend_spread_increase_add_very_low
 		add = legend_spread_increase_add_miniscule
 	}
 	else_if = {
 		limit = {
-			has_building_or_higher = common_tradeport_01
-		}
-		add = legend_spread_increase_add_miniscule
-	}
-
-	if = {
-		limit = {
-			has_building_or_higher = city_03
-		}
-		add = legend_spread_increase_add_low
-		add = legend_spread_increase_add_miniscule
-	}
-	else_if = {
-		limit = {
-			has_building_or_higher = city_02
-		}
-		add = legend_spread_increase_add_miniscule
-	}
-	
-	# This can be else_if because market villages and cities are exclusive and cannot be in the same province
-	else_if = {
-		limit = {
-			has_building_or_higher = market_villages_02
-		}
-		add = legend_spread_increase_add_low
-		add = legend_spread_increase_add_miniscule
-	}
-	else_if = {
-		limit = {
-			has_building_or_higher = market_villages_01
+			province_size_level >= 2
 		}
 		add = legend_spread_increase_add_miniscule
 	}
@@ -144,7 +115,7 @@ spread_chance_legends_default_value = {
 
 	if = {
 		limit = {
-			has_building_or_higher = warrior_lodges_05
+			has_building_or_higher = royal_knights_hall_5
 			scope:legend.legend_type = legend_type:heroic 
 		}
 		add = legend_spread_increase_add_low
@@ -152,7 +123,7 @@ spread_chance_legends_default_value = {
 	}
 	else_if = {
 		limit = {
-			has_building_or_higher = warrior_lodges_03
+			has_building_or_higher = royal_knights_hall_3
 			scope:legend.legend_type = legend_type:heroic 
 		}
 		add = legend_spread_increase_add_low
@@ -516,16 +487,16 @@ spread_chance_legends_mult_value = {
 			}
 		}
 
-		#Development
+		#Prosperity
 		if = {
 			limit = {
-				development_level >= good_development_level
+				prosperity_level >= good_prosperity_level
 			}
 			add = legend_spread_decrease_mult_medium
 		}
 		else_if = {
 			limit = {
-				development_level >= medium_development_level 
+				prosperity_level >= medium_prosperity_level 
 			}
 			add = legend_spread_decrease_mult_low
 		}
@@ -925,6 +896,17 @@ monthly_court_position_task_cost = {
 			value = primary_title.tier
 			subtract = 1
 			min = 1
+		}
+		# Merchants pay more
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			multiply = {
+				value = 2
+				desc = merchant_salary_mod
+				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			}
 		}
 		# Performance-heavy, so we let the AI cheat very lightly here
 		if = {

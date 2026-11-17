@@ -917,6 +917,17 @@
 	}
 
 	on_decline = {
+		if = {
+			limit = {
+				scope:actor = { has_title = title:e_hre }
+				scope:recipient = { has_title = title:k_papal_state }
+			}
+			gg_triggered_catalyst_effect = {
+				ACTOR = scope:recipient
+				RECIPIENT = scope:actor
+				CATALYST = catalyst_gg_anointment_refused
+			}
+		}
 		scope:actor = {
 			add_opinion = {
 				target = scope:recipient

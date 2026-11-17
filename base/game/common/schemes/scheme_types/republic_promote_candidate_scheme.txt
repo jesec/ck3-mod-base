@@ -1,0 +1,179 @@
+﻿republic_promote_candidate_scheme = {
+	# Basic Setup
+	skill = diplomacy
+	desc = "promote_desc_general"
+	success_desc = "PROMOTE_SUCCESS_DESC"
+	icon = icon_scheme_promote
+	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
+	target_type = character
+	category = political
+	is_secret = no
+	is_basic = yes
+	cooldown = { years = 10 }
+
+	# Parameters
+	speed_per_skill_point = -1
+	spymaster_speed_per_skill_point = 0
+	base_progress_goal = t1_base_phase_length_value
+	uses_resistance = no
+	base_maximum_success = 95
+	minimum_success = 10
+
+	# Core Triggers
+	allow = {
+		is_adult = yes
+		is_imprisoned = no
+		government_has_flag = government_is_republic
+	}
+
+	valid = {
+		scope:target = {
+			# Base checks
+			is_alive = yes
+			in_diplomatic_range = prev
+			is_landed = no
+			is_imprisoned = no
+			is_adult = yes
+			any_liege_or_above = {
+				OR = {
+					this = scope:owner
+					this = scope:owner.liege
+				}
+			}
+		}
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+
+		# Skill
+		scheme_type_skill_success_chance_modifier = { SKILL = DIPLOMACY }
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+
+		# Target skill
+		modifier = {
+			add = scope:target.diplomacy
+			scope:target = {
+				this != scope:owner
+				diplomacy > 0
+			}
+			desc = SCHEME_TARGET_DIPLOMACY
+		}
+		modifier = {
+			add = scope:target.intrigue
+			scope:target = {
+				this != scope:owner
+				intrigue > 0
+			}
+			desc = SCHEME_TARGET_INTRIGUE
+		}
+
+		# Patrician rating
+		modifier = {
+			add = {
+				value = scope:owner.house.house_power_score
+				multiply = 0.2
+			}
+			exists = scope:owner.house
+			desc = patrician_rating_value_desc
+		}
+
+		# Diarchs are better at schemes within their liege's realm
+		diarch_scheming_within_realm_bonus_modifier = yes
+
+		# Dynasty Kin Personal Scheme Success Chance on Dynasty Perk
+		modifier = {
+			add = kin_legacy_4_success_chance
+			desc = KIN_LEGACY_DESC
+			exists = scope:owner.dynasty
+			scope:owner.dynasty = {
+				has_dynasty_perk = kin_legacy_4
+			}
+			scope:target.dynasty = scope:owner.dynasty
+		}
+
+		# House Personal Scheme Success Chance on Cultural Parameter
+		modifier = {
+			add = cultural_house_personal_scheme_success_chance
+			desc = KIN_PARAMETER_DESC
+			exists = scope:owner.house
+			exists = scope:target.house
+			scope:owner.culture = {
+				has_cultural_parameter = cultural_house_personal_scheme_success_chance
+			}
+			scope:target.house = scope:owner.house
+		}
+
+		# Modifiers
+		modifier = {
+			scope:owner = { has_character_modifier = poet_for_diplo_schemes_modifier }
+			desc = poet_for_diplo_schemes_modifier
+			add = 15
+		}
+	}
+
+	# On Actions
+	on_start = {
+	}
+	on_phase_completed = {
+		# Grab our scopes.
+		save_scope_as = scheme
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = { save_scope_as = owner }
+		# Roll our result.
+		random = {
+			chance = scope:scheme.scheme_success_chance
+			save_scope_value_as = {
+				name = scheme_successful
+				value = yes
+			}
+		}
+		# How'd we do?
+		scope:owner = {
+			if = {
+				limit = { exists = scope:scheme_successful }
+				trigger_event = { on_action = republic_promote_candidate_scheme_success }
+			}
+			else = {
+				trigger_event = { on_action = republic_promote_candidate_scheme_failure }
+			}
+		}
+	}
+
+	## Invalidation
+	on_invalidated = {
+		scheme_target_character = {
+			save_scope_as = target
+		}
+		scheme_owner = {
+			save_scope_as = owner
+		}
+		# Invalidation message
+		scope:owner = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = promote_invalidated_title
+				left_icon = scope:target
+				# Target died
+				if = {
+					limit = {
+						scope:target = { is_alive = no }
+						NOT = { block_death_event_trigger = { DEAD = scope:target } }
+						scope:owner = { is_alive = yes }
+					}
+					custom_tooltip = scheme_target_died
+				}
+				# No longer in diplo range
+				else_if = {
+					limit = {
+						scope:target = {
+							NOT = { in_diplomatic_range = scope:owner }
+						}
+					}
+					custom_tooltip = scheme_target_not_in_diplomatic_range
+				}
+			}
+		}
+	}
+}

@@ -844,18 +844,17 @@ childhood_education.9002 = {
 		education_point_acquisition_effect = yes
 		if = {
 			limit = {
-				any_parent = { # parent's knight educating the child can unlock mentor accolade
-					any_knight = {
-						save_temporary_scope_as = knight_temp
-						root = {
-							any_relation = {
-								type = guardian
-								this = scope:knight_temp
-							}
+				any_parent = { accolade_progress > 0 }
+				any_relation = { # parent's knight educating the child can unlock mentor accolade
+					type = guardian
+					save_temporary_scope_as = knight_temp
+					root = {
+						any_parent = {
+							any_knight = { this = scope:knight_temp }
 						}
-						can_unlock_accolade_attribute_trigger = {
-							ATTRIBUTE = mentor
-						}
+					}
+					can_unlock_accolade_attribute_trigger = {
+						ATTRIBUTE = mentor
 					}
 				}
 			}
@@ -981,9 +980,7 @@ childhood_education.9004 = {
 				age >= 10
 				NOR = {
 					has_relation_friend = scope:guardian
-					has_relation_best_friend = scope:guardian
 					has_relation_rival = scope:guardian
-					has_relation_nemesis = scope:guardian
 				}
 			}
 			random = {

@@ -1,0 +1,319 @@
+﻿burgher_liege_valid_trigger = {
+	has_gdp_dlc_trigger = yes
+
+	OR = {
+		AND = {
+			highest_held_title_tier >= tier_kingdom
+			is_independent_ruler = yes
+			government_has_flag = government_is_feudal
+		}
+		government_has_flag = government_is_ecclesiastical
+	}
+}
+
+burgher_liege_can_be_crowned_trigger = {
+	highest_held_title_tier >= tier_kingdom
+	NOR = {
+		government_has_flag = government_is_theocracy
+		government_has_flag = government_is_republic
+	}
+}
+
+burgher_county_is_urban_trigger = {
+	prosperity_level >= burgher_faction_min_prosperity_value
+	OR = {
+		any_county_province = {
+			has_holding_type = city_holding
+		}
+		prosperity_level >= burgher_faction_rich_prosperity_value
+	}
+}
+
+burgher_county_can_join_trigger = {
+	prosperity_level >= burgher_faction_join_prosperity_value
+	OR = {
+		any_county_province = {
+			has_holding_type = city_holding
+		}
+		prosperity_level >= burgher_faction_min_prosperity_value
+	}
+}
+
+burgher_county_founder_faith_compatible_trigger = {
+	trigger_if = {
+		limit = {
+			exists = scope:faction.var:burgher_county.faith
+		}
+		NOT = {
+			faith ?= {
+				faith_hostility_level = {
+					target = scope:faction.var:burgher_county.faith
+					value >= faith_hostile_level
+				}
+			}
+		}
+	}
+	trigger_if = {
+		limit = {
+			exists = scope:faction.var:burgher_county.rite
+		}
+		NOT = {
+			rite ?= {
+				rite_hostility_level = {
+					target = scope:faction.var:burgher_county.rite
+					value >= faith_hostile_level
+				}
+			}
+		}
+	}
+}
+
+burgher_county_faction_on_cooldown_trigger = {
+	has_variable = burgher_faction_cooldown
+}
+
+burgher_county_has_own_faction_option_trigger = {
+	save_temporary_scope_as = burgher_option_county
+	OR = {
+		AND = {
+			exists = holder
+			can_title_create_faction = {
+				type = burgher_autonomy_faction
+				target = holder
+			}
+		}
+		AND = {
+			exists = holder
+			holder = {
+				any_targeting_faction = {
+					faction_is_type = burgher_autonomy_faction
+					scope:burgher_option_county = { can_title_join_faction = prev }
+				}
+			}
+		}
+	}
+}
+
+burgher_can_head_commune_trigger = {
+	is_alive = yes
+	is_adult = yes
+	is_landed = no
+	is_imprisoned = no
+	is_incapable = no
+	NOT = { is_in_list = burgher_new_communes }
+}
+
+burgher_merchant_petitioner_trigger = {
+	is_domicile_type = merchant_company
+	owner ?= {
+		burgher_can_head_commune_trigger = yes
+		NOT = { $FACTION$.var:merchant_sponsor ?= this }
+	}
+}
+
+burgher_privilege_tier_2_trigger = {
+	title_province ?= {
+		province_size_level >= burgher_privilege_tier_2_size_value
+	}
+}
+
+burgher_privilege_tier_3_trigger = {
+	title_province ?= {
+		province_size_level >= burgher_privilege_tier_3_size_value
+	}
+}
+
+burgher_county_holds_privilege_trigger = {
+	OR = {
+		has_county_modifier = civic_privilege_$PRIVILEGE$_1_county_modifier
+		has_county_modifier = civic_privilege_$PRIVILEGE$_2_county_modifier
+		has_county_modifier = civic_privilege_$PRIVILEGE$_3_county_modifier
+	}
+}
+
+burgher_lacks_privilege_tier_trigger = {
+	NOR = {
+		has_county_modifier = civic_privilege_$PRIVILEGE$_3_county_modifier
+		AND = {
+			has_county_modifier = civic_privilege_$PRIVILEGE$_2_county_modifier
+			burgher_privilege_tier_3_trigger = no
+		}
+		AND = {
+			has_county_modifier = civic_privilege_$PRIVILEGE$_1_county_modifier
+			burgher_privilege_tier_2_trigger = no
+		}
+	}
+}
+
+burgher_county_has_privileges_trigger = {
+	OR = {
+		has_county_modifier = civic_privileges_county_modifier
+		burgher_county_holds_privilege_trigger = { PRIVILEGE = market_rights }
+		burgher_county_holds_privilege_trigger = { PRIVILEGE = guild_rights }
+		burgher_county_holds_privilege_trigger = { PRIVILEGE = tax_exemption }
+		burgher_county_holds_privilege_trigger = { PRIVILEGE = militia_charter }
+	}
+}
+
+burgher_can_demand_market_rights_trigger = {
+	burgher_lacks_privilege_tier_trigger = { PRIVILEGE = market_rights }
+}
+
+burgher_can_demand_guild_rights_trigger = {
+	title_province ?= {
+		province_size_level >= burgher_demand_guild_rights_size_value
+	}
+	burgher_lacks_privilege_tier_trigger = { PRIVILEGE = guild_rights }
+}
+
+burgher_can_demand_tax_exemption_trigger = {
+	title_province ?= {
+		province_size_level >= burgher_demand_tax_exemption_size_value
+	}
+	burgher_lacks_privilege_tier_trigger = { PRIVILEGE = tax_exemption }
+}
+
+burgher_can_demand_militia_charter_trigger = {
+	title_province ?= {
+		province_size_level >= burgher_demand_militia_charter_size_value
+	}
+	burgher_lacks_privilege_tier_trigger = { PRIVILEGE = militia_charter }
+}
+
+burgher_lesser_demands_exhausted_trigger = {
+	burgher_can_demand_market_rights_trigger = no
+	burgher_can_demand_guild_rights_trigger = no
+	burgher_can_demand_tax_exemption_trigger = no
+	burgher_can_demand_militia_charter_trigger = no
+}
+
+burgher_can_receive_privilege_trigger = {
+	OR = {
+		burgher_can_demand_market_rights_trigger = yes
+		burgher_can_demand_guild_rights_trigger = yes
+		burgher_can_demand_tax_exemption_trigger = yes
+		burgher_can_demand_militia_charter_trigger = yes
+	}
+}
+
+burgher_has_no_demand_left_trigger = {
+	burgher_lesser_demands_exhausted_trigger = yes
+}
+
+burgher_county_can_receive_lesser_privilege_trigger = {
+	OR = {
+		NOT = { has_variable = civic_privileges_level }
+		AND = {
+			has_variable = civic_privileges_level
+			var:civic_privileges_level < burgher_max_privilege_level_value
+		}
+	}
+}
+
+burgher_county_can_demand_self_rule_trigger = {
+	OR = {
+		title_province ?= {
+			province_size_level >= burgher_demand_guild_rights_size_value
+		}
+		burgher_county_has_league_charter_trigger = yes
+	}
+}
+
+burgher_agitator_can_take_seat_trigger = {
+	NOT = { gdp_is_assembly_head_trigger = yes }
+}
+
+burgher_agitator_can_join_commune_trigger = {
+	highest_held_title_tier < $LEADER$.highest_held_title_tier
+}
+
+burgher_commune_liege_outranks_agitator_trigger = {
+	liege.highest_held_title_tier > $AGITATOR$.highest_held_title_tier
+	liege.highest_held_title_tier > tier_county
+	trigger_if = {
+		limit = {
+			this != $AGITATOR$
+			primary_title ?= { tier >= tier_duchy }
+		}
+		liege.highest_held_title_tier > primary_title.tier
+	}
+}
+
+gdp_can_agitate_civic_unrest_trigger = {
+	OR = {
+		is_landless_merchant = yes
+		gdp_is_popular_republic_head_trigger = yes
+		AND = {
+			gdp_is_assembly_head_trigger = yes
+			gdp_has_patrician_rating_trigger = { THRESHOLD = gdp_patrician_house_score_threshold_2_value }
+		}
+		AND = {
+			gdp_is_republican_house_head_trigger = yes
+			gdp_has_patrician_rating_trigger = { THRESHOLD = gdp_patrician_house_score_threshold_3_value }
+		}
+	}
+}
+
+gdp_can_agitate_county_trigger = {
+	OR = {
+		is_landless_merchant = yes
+		government_has_flag = government_is_republic
+	}
+
+	$COUNTY$ = { gdp_county_can_be_agitated_trigger = { ACTOR = root } }
+}
+
+gdp_county_can_be_agitated_trigger = {
+	holder ?= {
+		this != $ACTOR$
+		burgher_liege_valid_trigger = yes
+		is_landed = yes
+	}
+	burgher_county_is_urban_trigger = yes
+}
+
+burgher_county_has_league_charter_trigger = {
+	has_variable = civic_league_charter
+}
+
+burgher_county_in_autonomy_faction_trigger = {
+	any_title_joined_faction = {
+		faction_is_type = burgher_autonomy_faction
+	}
+}
+
+burgher_heritage_germanic_trigger = {
+	culture = {
+		OR = {
+			has_cultural_pillar = heritage_central_germanic
+			has_cultural_pillar = heritage_north_germanic
+			has_cultural_pillar = heritage_west_germanic
+			has_cultural_pillar = heritage_gothic
+		}
+	}
+}
+
+burgher_heritage_latin_trigger = {
+	culture = {
+		OR = {
+			has_cultural_pillar = heritage_latin
+			has_cultural_pillar = heritage_byzantine
+		}
+	}
+}
+
+is_hanseatic_league_member_trigger = {
+	is_confederation_member = yes
+	confederation ?= {
+		has_variable = is_hanseatic_league
+	}
+}
+
+burgher_league_route_peer_market_trigger = {
+	trade_market_owner ?= {
+		holder ?= {
+			this != scope:league_route_owner
+			is_member_of_confederation = scope:league_route_league
+		}
+	}
+}

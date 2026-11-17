@@ -18,63 +18,916 @@ save_var_scope_effect = {
 }
 
 #To loan money from someone (Remember: you can only have one loan at a time, but a loaner can have multiple debtors!)
-set_up_loan_effect = {
-	save_temporary_scope_as = loanee
-	set_variable = {
-		name = loan_holder
-		value = $LENDER$
-	}
-	set_variable = {
-		name = loan_amount_owed
-		value = $AMOUNT$
-	}
-	set_variable = {
-		name = years_since_loan
-		value = 0
-	}
-	set_variable = {
-		name = original_loan_holder
-		value = scope:loanee
-	}
-	set_variable = {
-		name = original_lender
-		value = $LENDER$
-	}
-	$LENDER$ = { #To make the loan inheritable
-		add_to_variable_list = { # list so that multiple rulers can take loans simulataneously
-			name = owes_me_money
-			target = root
+# ROOT = the person taking the loan, character
+# LENDER = the person giving the gold, character
+# INSTRUMENT = type of loan, flag (disguised/free/open)
+# AMOUNT = the gold being given, value
+set_up_new_loan_effect = {
+	save_temporary_scope_as = debtor_temp
+	$LENDER$ = { save_temporary_scope_as = lender_temp }
+	save_temporary_scope_value_as = { name = amount_owed_temp value = $AMOUNT$ }
+	if = {
+		limit = {
+			exists = scope:debtor_temp
+			exists = scope:lender_temp
+			scope:lender_temp != scope:debtor_temp
+			exists = scope:amount_owed_temp
 		}
-		hidden_effect = {
-			if = {
-				limit  = { exists = scope:loanee.var:loan_amount_owed }
-				pay_short_term_gold = {
-					target = scope:loanee
-					gold = scope:loanee.var:loan_amount_owed
-				}
-			}
- 		}
+		# INSTRUMENT stays a direct argument: save_temporary_scope_value_as only preserves a flag from a flag: literal, and Loan Gold passes a saved flag scope.
+		set_up_loan_story_effect = {
+			LENDER = scope:lender_temp
+			AMOUNT = scope:amount_owed_temp
+			YEARS_SINCE = 0 # new loan, 0
+			INSTRUMENT = $INSTRUMENT$
+			ORIGINAL_DEBTOR = scope:debtor_temp # new loan, story_owner
+			ORIGINAL_LENDER = scope:lender_temp # new loan, same as LENDER
+		}
+		loan_base_effect = {
+			LENDER = scope:lender_temp
+			DEBTOR = scope:debtor_temp
+			AMOUNT = scope:amount_owed_temp
+		}
 	}
 }
 
-clear_loanee_variables_effect = {
-	remove_variable = loan_amount_owed
-	remove_variable = loan_holder
-	if = {
-		limit = { has_character_flag = promised_repayment }
-		remove_character_flag = promised_repayment
+# Effect to create a loan story, which allows rulers to have multiple loans
+# ROOT - who owes
+# LENDER - who was owed
+# AMOUNT - for how much
+# INSTRUMENT - type of loan (flag)
+# YEARS_SINCE - and for how long (0 unless transferring loans)
+# ORIGINAL_DEBTOR - by whom originally (new story owner unless transferring loans)
+# ORIGINAL_LENDER - who was owed originally (same as LENDER unless transferring loans)
+set_up_loan_story_effect = {
+	save_temporary_scope_as = debtor_temp
+	$LENDER$ ?= { save_temporary_scope_as = lender_temp }
+	$ORIGINAL_DEBTOR$ ?= { save_temporary_scope_as = original_debtor_temp }
+	$ORIGINAL_LENDER$ ?= { save_temporary_scope_as = original_lender_temp }
+	create_story = {
+		type = story_cycle_loan
+		save_scope_as = new_loan
+	}
+	scope:new_loan ?= {
+		# LENDER
+		set_variable = { name = lender value = scope:lender_temp }
+		# AMOUNT
+		set_variable = { name = amount_owed value = $AMOUNT$ }
+		set_variable = { name = original_owed value = $AMOUNT$ }
+		# YEARS_SINCE
+		set_variable = { name = years_since value = $YEARS_SINCE$ }
+		# REMINDERS
+		set_variable = { name = reminders value = 0 }
+		# HISTORY
+		set_variable = { name = original_debtor value = scope:original_debtor_temp }
+		set_variable = { name = original_lender value = scope:original_lender_temp }
+		# DEMAND_COOLDOWN
+		set_variable = { name = demand_cooldown years = 2 }
+	}
+	scope:new_loan ?= {
+		# Update lender's tracker
+		var:lender ?= {
+			add_to_variable_list = {
+				name = owes_me_money
+				target = scope:new_loan.story_owner
+			}
+		}
+	}
+	# INSTRUMENT
+	if = { # use defined option if set 
+		limit = { $INSTRUMENT$ = flag:free }
+		loan_free_interest_effect = {
+			DEBTOR = scope:debtor_temp
+			LENDER = scope:lender_temp
+			AMOUNT = $AMOUNT$
+		}
+	}
+	else_if = { # use defined option if set 
+		limit = { $INSTRUMENT$ = flag:disguised }
+		loan_disguised_interest_effect = {
+			DEBTOR = scope:debtor_temp
+			LENDER = scope:lender_temp
+			AMOUNT = $AMOUNT$
+		}
+	}
+	else_if = { # use defined option if set 
+		limit = { $INSTRUMENT$ = flag:open }
+		loan_open_interest_effect = {
+			DEBTOR = scope:debtor_temp
+			LENDER = scope:lender_temp
+			AMOUNT = $AMOUNT$
+		}
+	}
+	else = { # determine if none is set
+		if = {
+			limit = {
+				scope:lender_temp.rite = { rite_has_parameter = usury_charitable_lending }
+			}
+			loan_free_interest_effect = {
+				DEBTOR = scope:debtor_temp
+				LENDER = scope:lender_temp
+				AMOUNT = $AMOUNT$
+			}
+		}
+		else_if = {
+			limit = {
+				scope:lender_temp = {
+					gdp_usury_condemns_loan_trigger = { BORROWER = scope:debtor_temp }
+					NOT = { gdp_usury_untroubled_by_sin_trigger = yes }
+				}
+			}
+			loan_disguised_interest_effect = {
+				DEBTOR = scope:debtor_temp
+				LENDER = scope:lender_temp
+				AMOUNT = $AMOUNT$
+			}
+		}
+		else = {
+			loan_open_interest_effect = {
+				DEBTOR = scope:debtor_temp
+				LENDER = scope:lender_temp
+				AMOUNT = $AMOUNT$
+			}
+		}
+	}
+	# Set up relation
+	hidden_effect = {
+		set_relation_creditor = {
+			target = $LENDER$
+			reason = creditor_loan_taken
+		}
 	}
 	if = {
-		limit = { exists = var:has_reminded_about_loan }
-		remove_variable = has_reminded_about_loan
+		limit = { exists = var:original_owed } # error suppressor
 	}
-	if = {
-		limit = { exists = var:original_loan_holder }
-		remove_variable = original_loan_holder
+}
+
+loan_free_interest_effect = {
+	scope:new_loan ?= {
+		set_variable = { name = instrument value = flag:free }
+		set_variable = { name = original_interest value = 0 }
 	}
-	if = {
-		limit = { exists = var:original_lender }
-		remove_variable = original_lender
+	# Interest explanation
+	custom_description = {
+		text = gdp_loan_owed_interest_free_tt
+		subject = $DEBTOR$
+		object = $LENDER$
+		value = $AMOUNT$
+	}
+	# Effects
+	$LENDER$ = {
+		if = {
+			limit = {
+				rite = { rite_has_parameter = usury_charitable_lending }
+			}
+			add_piety = minor_piety_gain
+		}
+	}
+	$DEBTOR$ = {
+		if = {
+			limit = { is_ai = yes }
+			add_opinion = {
+				target = $LENDER$
+				modifier = gdp_interest_free_loan_opinion
+				opinion = gdp_interest_free_loan_opinion_value
+			}
+		}
+	}
+	# Messages
+	$DEBTOR$ = {
+		if = {
+			limit = { # hide messages for inherited loans
+				NOT = { var:inheriting_loan ?= scope:new_loan.var:original_debtor }
+			}
+			loan_interest_free_message_effect = {
+				LENDER = $LENDER$
+				DEBTOR = $DEBTOR$
+				AMOUNT = $AMOUNT$
+				OWED = $AMOUNT$
+			}
+		}
+		else = { remove_variable = inheriting_loan }
+	}
+}
+
+loan_disguised_interest_effect = {
+	save_temporary_scope_value_as = {
+		name = loan_owed_temp
+		value = {
+			value = $AMOUNT$
+			multiply = {
+				value = 1
+				add = gdp_loan_disguised_interest_rate_value
+			}
+		}
+	}
+	scope:new_loan ?= {
+		set_variable = { name = instrument value = flag:disguised }
+		set_variable = { name = original_interest value = gdp_loan_disguised_interest_premium_value }
+		# Effects
+		change_variable = {
+			name = amount_owed
+			add = var:original_interest
+		}
+	}
+	# Interest explanation
+	custom_description = {
+		text = gdp_loan_owed_disguised_interest_tt
+		subject = $DEBTOR$
+		object = $LENDER$
+		value = scope:loan_owed_temp
+	}
+	$LENDER$ = {
+		add_disguised_usury_secret_effect = { DEBTOR = $DEBTOR$ }
+	}
+	# Messages
+	$DEBTOR$ = {
+		if = {
+			limit = { # hide messages for inherited loans
+				NOT = { var:inheriting_loan ?= scope:new_loan.var:original_debtor }
+			}
+			loan_interest_disguised_message_effect = {
+				LENDER = $LENDER$
+				DEBTOR = $DEBTOR$
+				AMOUNT = $AMOUNT$
+				OWED = scope:loan_owed_temp
+			}
+		}
+		else = { remove_variable = inheriting_loan }
+	}
+}
+
+loan_open_interest_effect = {
+	save_temporary_scope_value_as = {
+		name = loan_owed_temp
+		value = {
+			value = $AMOUNT$
+			multiply = {
+				value = 1
+				add = gdp_loan_open_interest_rate_value
+			}
+		}
+	}
+	scope:new_loan ?= {
+		set_variable = { name = instrument value = flag:open }
+		set_variable = { name = original_interest value = gdp_loan_open_interest_premium_value }
+		# Effects
+		change_variable = {
+			name = amount_owed
+			add = var:original_interest
+		}
+	}
+	# Interest explanation
+	custom_description = {
+		text = gdp_loan_owed_open_interest_tt
+		subject = $DEBTOR$
+		object = $LENDER$
+		value = scope:loan_owed_temp
+	}
+	$DEBTOR$ = {
+		if = {
+			limit = {
+				is_ai = yes
+				gdp_usury_borrower_condemns_loan_trigger = { LENDER = $LENDER$ }
+			}
+			add_opinion = {
+				target = $LENDER$
+				modifier = gdp_usurious_loan_opinion
+			}
+		}
+		if = {
+			limit = {
+				NOT = { has_character_flag = gdp_debt_repudiator }
+				gdp_usury_rite_voids_debts_trigger = yes
+				culture = {
+					NOT = { has_cultural_parameter = binding_oaths_harsh_break_penalties }
+				}
+			}
+			custom_tooltip = loan_money_interaction_voidable_warning_tt
+		}
+		if = {
+			limit = { has_character_flag = gdp_debt_repudiator }
+			custom_tooltip = loan_money_interaction_repudiator_warning_desc
+		}
+		$LENDER$ = {
+			gdp_usury_lend_at_interest_effect = { BORROWER = $DEBTOR$ }
+			gdp_update_usury_reputation_effect = yes
+		}
+	}
+	# Messages
+	$DEBTOR$ = {
+		if = {
+			limit = { # hide messages for inherited loans
+				NOT = { var:inheriting_loan ?= scope:new_loan.var:original_debtor }
+			}
+			loan_interest_open_message_effect = {
+				LENDER = $LENDER$
+				DEBTOR = $DEBTOR$
+				AMOUNT = $AMOUNT$
+				OWED = scope:loan_owed_temp
+			}
+		}
+		else = { remove_variable = inheriting_loan }
+	}
+}
+
+# ROOT - who owes
+# LENDER - who was owed
+# INSTRUMENT - type of loan (flag)
+increase_existing_loan_effect = {
+	save_temporary_scope_as = debtor_temp
+	$LENDER$ = { save_temporary_scope_as = lender_temp }
+	# Save total sum loaned so we can see what's left
+	save_temporary_scope_value_as = {
+		name = loan_principal_temp
+		value = scope:debtor_temp.gdp_loan_principal_value
+	}
+	random_owned_story = {
+		limit = {
+			story_type = story_cycle_loan
+			var:lender = scope:lender_temp
+			var:instrument = $INSTRUMENT$
+		}
+		if = {
+			limit = { $INSTRUMENT$ = flag:open }
+			save_temporary_scope_value_as = {
+				name = loan_owed_temp
+				value = {
+					value = scope:loan_principal_temp
+					multiply = {
+						value = 1
+						add = gdp_loan_open_interest_rate_value
+					}
+				}
+			}
+			# Interest explanation
+			custom_description = {
+				text = gdp_loan_owed_open_interest_tt
+				subject = scope:debtor_temp
+				object = scope:lender_temp
+				value = scope:loan_owed_temp
+			}
+			change_variable = {
+				name = amount_owed
+				add = scope:loan_owed_temp
+			}
+			scope:lender_temp = {
+				gdp_usury_lend_at_interest_effect = { BORROWER = scope:debtor_temp }
+				gdp_update_usury_reputation_effect = yes
+			}
+			# Messages
+			loan_interest_open_message_effect = {
+				LENDER = scope:lender_temp
+				DEBTOR = scope:debtor_temp
+				AMOUNT = scope:loan_principal_temp
+				OWED = scope:loan_owed_temp
+			}
+		}
+		else_if = {
+			limit = { $INSTRUMENT$ = flag:disguised }
+			save_temporary_scope_value_as = {
+				name = loan_owed_temp
+				value = {
+					value = scope:loan_principal_temp
+					multiply = {
+						value = 1
+						add = gdp_loan_disguised_interest_rate_value
+					}
+				}
+			}
+			custom_description = {
+				text = gdp_loan_owed_disguised_interest_tt
+				subject = scope:debtor_temp
+				object = scope:lender_temp
+				value = scope:loan_owed_temp
+			}
+			change_variable = {
+				name = amount_owed
+				add = scope:loan_owed_temp
+			}
+			scope:lender_temp = {
+				add_disguised_usury_secret_effect = { DEBTOR = scope:debtor_temp }
+			}
+			# Messages
+			loan_interest_disguised_message_effect = {
+				LENDER = scope:lender_temp
+				DEBTOR = scope:debtor_temp
+				AMOUNT = scope:loan_principal_temp
+				OWED = scope:loan_owed_temp
+			}
+		}
+		else = {
+			custom_description = {
+				text = gdp_loan_owed_interest_free_tt
+				subject = scope:debtor_temp
+				object = scope:lender_temp
+				value = scope:loan_principal_temp
+			}
+			change_variable = {
+				name = amount_owed
+				add = scope:loan_principal_temp
+			}
+			# Messages
+			loan_interest_free_message_effect = {
+				LENDER = scope:lender_temp
+				DEBTOR = scope:debtor_temp
+				AMOUNT = scope:loan_principal_temp
+				OWED = scope:loan_principal_temp
+			}
+		}
+	}
+	loan_base_effect = {
+		LENDER = scope:lender_temp
+		DEBTOR = scope:debtor_temp
+		AMOUNT = scope:loan_principal_temp
+	}
+}
+
+loan_base_effect = {
+	$DEBTOR$ = { save_temporary_scope_as = debtor_temp }
+	save_temporary_scope_value_as = {
+		name = loan_debt_temp
+		value = scope:debtor_temp.gdp_loan_money_full_gold_value
+	}
+	$LENDER$ = {
+		save_temporary_scope_as = lender_temp
+		# Send the dosh
+		custom_description = {
+			text = gdp_loan_gold_tt
+			subject = scope:lender_temp
+			object = scope:debtor_temp
+			value = $AMOUNT$
+			pay_short_term_gold = {
+				target = scope:debtor_temp
+				gold = $AMOUNT$
+			}
+		}
+		# Hook: If you don't loan the full debt amount, you only get a weak hook.
+		if = {
+			limit = {
+				OR = {
+					exists = scope:open
+					exists = scope:disguised
+					exists = scope:free
+				}
+				scope:loan_debt_temp > $AMOUNT$
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_hook_of_type = {
+							target = scope:debtor_temp
+							type = strong_loan_hook
+						}
+					}
+					can_add_hook = {
+						target = scope:debtor_temp
+						type = weak_loan_hook
+					}
+				}
+				add_hook = {
+					target = scope:debtor_temp
+					type = weak_loan_hook
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				can_add_hook = {
+					target = scope:debtor_temp
+					type = strong_loan_hook
+				}
+			}
+			add_hook = {
+				target = scope:debtor_temp
+				type = strong_loan_hook
+			}
+		}
+		# Merchant XP
+		if = {
+			limit = { is_landless_merchant = yes }
+			add_trait_xp = {
+				trait = lifestyle_merchant
+				track = creditor
+				value = lifestyle_merchant_xp_gain_minor_value
+			}
+			merchant_creditor_capstone_prestige_effect = yes
+		}
+	}
+}
+
+loan_interest_free_message_effect = {
+	$LENDER$ = { save_temporary_scope_as = lender_temp }
+	$DEBTOR$ = { save_temporary_scope_as = debtor_temp }
+	hidden_effect = {
+		scope:debtor_temp ?= {
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = gdp_purpose_events.0002_notification
+				right_icon = scope:lender_temp
+				scope:lender_temp ?= {
+					send_interface_toast = {
+						type = event_toast_effect_neutral
+						title = gdp_purpose_events.0002_notification
+						right_icon = scope:debtor_temp
+						show_as_tooltip = {
+							# Send the dosh
+							pay_short_term_gold = {
+								target = scope:debtor_temp
+								gold = $AMOUNT$
+							}
+							custom_description = {
+								text = gdp_loan_owed_interest_free_tt
+								subject = scope:debtor_temp
+								object = scope:lender_temp
+								value = $OWED$
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+loan_interest_disguised_message_effect = {
+	$LENDER$ = { save_temporary_scope_as = lender_temp }
+	$DEBTOR$ = { save_temporary_scope_as = debtor_temp }
+	hidden_effect = {
+		scope:debtor_temp ?= {
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = gdp_purpose_events.0002_notification
+				right_icon = scope:lender_temp
+				scope:lender_temp ?= {
+					send_interface_toast = {
+						type = event_toast_effect_neutral
+						title = gdp_purpose_events.0002_notification
+						right_icon = scope:debtor_temp
+						show_as_tooltip = {
+							# Send the dosh
+							pay_short_term_gold = {
+								target = scope:debtor_temp
+								gold = $AMOUNT$
+							}
+							custom_description = {
+								text = gdp_loan_owed_disguised_interest_tt
+								subject = scope:debtor_temp
+								object = scope:lender_temp
+								value = $OWED$
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+loan_interest_open_message_effect = {
+	$LENDER$ = { save_temporary_scope_as = lender_temp }
+	$DEBTOR$ = { save_temporary_scope_as = debtor_temp }
+	hidden_effect = {
+		scope:debtor_temp ?= {
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = gdp_purpose_events.0002_notification
+				right_icon = scope:lender_temp
+				scope:lender_temp ?= {
+					send_interface_toast = {
+						type = event_toast_effect_neutral
+						title = gdp_purpose_events.0002_notification
+						right_icon = scope:debtor_temp
+						show_as_tooltip = {
+							# Send the dosh
+							pay_short_term_gold = {
+								target = scope:debtor_temp
+								gold = $AMOUNT$
+							}
+							custom_description = {
+								text = gdp_loan_owed_open_interest_tt
+								subject = scope:debtor_temp
+								object = scope:lender_temp
+								value = $OWED$
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+transfer_loan_effect = {
+	$OLD_LOAN$ = { save_temporary_scope_as = old_loan_temp }
+	$NEW_LENDER$ = { save_temporary_scope_as = new_lender_temp }
+	$NEW_DEBTOR$ = {
+		save_temporary_scope_as = new_debtor_temp
+		scope:old_loan_temp = {
+			story_owner = { save_temporary_scope_as = old_debtor_temp }
+			var:lender ?= { save_temporary_scope_as = old_lender_temp }
+		}
+		if = {
+			limit = { scope:old_loan_temp.var:instrument = flag:disguised }
+			add_character_flag = gdp_transfer_disguised_usury
+		}
+		if = { # Consolidate existing loans of the same instrument into one simple big loan - same lender
+			limit = {
+				any_owned_story = {
+					story_type = story_cycle_loan
+					var:lender ?= scope:new_lender_temp
+					var:instrument ?= scope:old_loan_temp.var:instrument
+				}
+			}
+			random_owned_story = {
+				limit = {
+					story_type = story_cycle_loan
+					var:lender ?= scope:new_lender_temp
+					var:instrument ?= scope:old_loan_temp.var:instrument
+				}
+				change_variable = {
+					name = amount_owed
+					add = scope:old_loan_temp.var:amount_owed
+				}
+			}
+			scope:old_loan_temp ?= { end_story = yes } # old story is deleted
+		}
+		else_if = { # Transfer without creating a new story (same debtor)
+			limit = { this = scope:old_loan_temp.story_owner }
+			scope:old_loan_temp = {
+				set_variable = {
+					name = lender
+					value = scope:new_lender_temp
+				}
+				set_variable = {
+					name = reminders
+					value = 0
+				}
+			}
+			scope:new_lender_temp = {
+				add_to_variable_list = {
+					name = owes_me_money
+					target = scope:new_debtor_temp
+				}
+			}
+		}
+		else = { # Transfer by creating a new story (same lender)
+			set_variable = {
+				name = inheriting_loan
+				value = scope:old_loan_temp.var:original_debtor
+				days = 1
+			}
+			set_up_loan_story_effect = {
+				LENDER = scope:new_lender_temp
+				AMOUNT = scope:old_loan_temp.var:amount_owed
+				INSTRUMENT = scope:old_loan_temp.var:instrument
+				YEARS_SINCE = scope:old_loan_temp.var:years_since
+				ORIGINAL_DEBTOR = scope:old_loan_temp.var:original_debtor
+				ORIGINAL_LENDER = scope:old_loan_temp.var:original_lender
+			}
+			scope:old_loan_temp ?= { end_story = yes } # old story is deleted
+		}
+		if = {
+			limit = { has_character_flag = gdp_transfer_disguised_usury }
+			remove_character_flag = gdp_transfer_disguised_usury
+			gdp_move_disguised_usury_secret_effect = yes
+		}
+	}
+}
+
+repay_and_end_loan_story_effect = { # to handle repayment centrally
+	save_temporary_scope_as = loan_temp
+	var:lender = { save_temporary_scope_as = lender_temp }
+	story_owner = { save_temporary_scope_as = debtor_temp }
+	scope:lender_temp = {
+		send_interface_toast = {
+			type = event_toast_effect_neutral
+			title = loan_repaid_toast_title
+			right_icon = scope:debtor_temp
+			scope:debtor_temp = {
+				send_interface_toast = {
+					type = event_toast_effect_neutral
+					title = loan_repaid_toast_title
+					right_icon = scope:lender_temp
+					pay_short_term_gold = {
+						gold = scope:loan_temp.var:amount_owed
+						target = scope:lender_temp
+					}
+				}
+			}
+			if = {
+				limit = {
+					is_landless_merchant = yes
+				}
+				add_trait_xp = {
+					trait = lifestyle_merchant
+					track = creditor
+					value = lifestyle_merchant_xp_gain_minor_value
+				}
+				merchant_creditor_capstone_prestige_effect = yes
+				gdp_merchant_creditor_loan_acumen_effect = { GOLD = scope:loan_temp.var:amount_owed }
+			}
+		}
+	}
+	end_loan_story_effect = yes
+}
+
+loan_repayment_refusal_effect = {
+	save_temporary_scope_as = loan_temp
+	scope:loan_temp = {
+		if = {
+			limit = { exists = var:reminders }
+			change_variable = {
+				name = reminders
+				add = 1
+			}
+		}
+		else = {
+			set_variable = {
+				name = reminders
+				value = 1
+			}
+		}
+		if = {
+			limit = { var:reminders < 4 }
+			story_owner = { custom_tooltip = demand_repayment_refusal_warning_tt }
+		}
+		if = {
+			limit = { var:reminders ?= 2 }
+			story_owner = { add_prestige = medium_prestige_loss }
+			var:lender = {
+				if = {
+					limit = { is_ai = yes }
+					add_opinion = {
+						target = scope:loan_temp.story_owner
+						modifier = respect_opinion
+						opinion = medium_negative_opinion
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { var:reminders ?= 3 }
+			story_owner = { add_prestige = medium_prestige_loss }
+			var:lender = {
+				if = {
+					limit = { is_ai = yes }
+					add_opinion = {
+						target = scope:loan_temp.story_owner
+						modifier = respect_opinion
+						opinion = medium_negative_opinion
+					}
+				}
+				progress_towards_rival_effect = {
+					REASON = rival_vassal_loan
+					CHARACTER = scope:loan_temp.story_owner
+					OPINION = 0
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				exists = var:reminders
+				var:reminders >= 4
+			}
+			story_owner = {
+				add_prestige = medium_prestige_loss
+				add_prestige_level = -1
+			}
+			var:lender = {
+				if = {
+					limit = { is_ai = yes }
+					add_opinion = {
+						target = scope:loan_temp.story_owner
+						modifier = respect_opinion
+						opinion = medium_negative_opinion
+					}
+				}
+				progress_towards_rival_effect = {
+					REASON = rival_vassal_loan
+					CHARACTER = scope:loan_temp.story_owner
+					OPINION = 0
+				}
+			}
+			end_loan_story_effect = yes
+		}
+		else = {
+			story_owner = { add_prestige = minor_prestige_loss }
+			var:lender = {
+				if = {
+					limit = { is_ai = yes }
+					add_opinion = {
+						target = scope:loan_temp.story_owner
+						modifier = respect_opinion
+						opinion = low_negative_opinion
+					}
+				}
+			}
+		}
+	}
+}
+
+forgive_loan_effect = {
+ 	story_owner = { save_scope_as = debtor }
+ 	save_temporary_scope_value_as = {
+ 		name = amount_owed_temp
+ 		value = var:amount_owed
+ 	}
+ 	custom_description = {
+ 		text = forgive_loan_tt
+ 		subject = var:lender
+ 		object = story_owner
+ 		value = scope:amount_owed_temp
+ 	}
+ 	hidden_effect = {
+	 	var:lender = {
+	 		save_scope_as = lender
+	 		send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = ho_loan_forgiven_title
+				right_icon = scope:debtor
+				custom_description = {
+					text = ho_loan_forgiven_lender_tt
+					subject = scope:debtor
+					object = scope:lender
+					value = scope:amount_owed_temp
+				}
+			}
+	 	}
+	 	story_owner = {
+	 		send_interface_toast = {
+				type = event_toast_effect_good
+				title = ho_debt_forgiven_title
+				right_icon = scope:lender
+				custom_description = {
+					text = ho_debt_forgiven_debtor_tt
+					subject = scope:debtor
+					object = scope:lender
+					value = scope:amount_owed_temp
+				}
+			}
+	 	}
+	}
+	end_loan_story_effect = yes
+}
+
+end_loan_story_effect = { # to show relevant tooltips in one place, actual effects in the story
+	save_temporary_scope_as = loan_temp
+	show_as_tooltip = { end_loan_story_consequences_tooltip_effect = yes }
+	end_story = yes
+}
+
+end_loan_story_consequences_tooltip_effect = {
+	save_temporary_scope_as = loan_temp
+	story_owner = { save_temporary_scope_as = debtor_temp }
+	var:lender = {
+		save_temporary_scope_as = lender_temp
+		if = { # Clear relation
+			limit = { has_relation_debtor = scope:debtor_temp }
+			hidden_effect = { remove_relation_debtor = scope:debtor_temp }
+		}
+		if = { # Clear hook
+			limit = {
+				scope:debtor_temp = { is_alive = yes }
+				NOT = {
+					scope:debtor_temp = { # only if there is not another loan (edge-case from inheritance, etc.)
+						any_owned_story = {
+							story_type = story_cycle_loan
+							var:lender ?= scope:lender_temp
+							NOT = { this = scope:loan_temp }
+						}
+					}
+				}
+				OR = {
+					has_hook_of_type = {
+						target = scope:debtor_temp
+						type = strong_loan_hook
+					}
+					has_hook_of_type = {
+						target = scope:debtor_temp
+						type = weak_loan_hook
+					}
+				}
+			}
+			if = {
+				limit = {
+					has_hook_of_type = {
+						target = scope:debtor_temp
+						type = strong_loan_hook
+					}
+				}
+				remove_hook = {
+					target = scope:debtor_temp
+					type = strong_loan_hook
+				}
+			}
+			else = {
+				remove_hook = {
+					target = scope:debtor_temp
+					type = weak_loan_hook
+				}
+			}
+		}
+		gdp_update_usury_reputation_effect = yes
 	}
 }
 

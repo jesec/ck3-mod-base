@@ -5,7 +5,17 @@
 ## scope:reason = flag:inheritance when liege inherits a bigger realm with higher tier in a diarchy, and inherits it along the way
 on_entered_diarchy = {
 	effect = {
-		diarch = { save_scope_as = diarch }
+		diarch = {
+			save_scope_as = diarch
+			if = {
+				limit = {
+					exists = scope:diarch.liege
+					scope:diarch.liege != this
+					NOT = { has_relation_puppet_liege = scope:diarch.liege }
+				}
+				set_relation_puppet_liege = scope:diarch.liege
+			}
+		}
 		trigger_event = {
 			id = diarchy.0101
 			months = { 3 9 }
@@ -155,6 +165,20 @@ on_left_diarchy = {
 			}
 		}
 		scope:old_diarch ?= {
+			if = {
+				limit = {
+					is_alive = yes
+					any_relation = {
+						type = puppet_liege
+						is_alive = yes
+					}
+				}
+				random_relation = {
+					type = puppet_liege
+					limit = { is_alive = yes }
+					remove_relation_puppet_diarch = scope:old_diarch
+				}
+			}
 			# If scope:old_diarch is still around and was plotting a coup, clear their conspirator list.
 			diarch_clean_up_conspiracy_variables_effect = yes
 			# Reset the cooldown on the intro event.
@@ -271,6 +295,14 @@ on_diarch_change = {
 					days = 1
 				}
 			}
+			if = {
+				limit = {
+					exists = scope:diarch.liege
+					scope:diarch.liege != this
+					NOT = { has_relation_puppet_liege = scope:diarch.liege }
+				}
+				set_relation_puppet_liege = scope:diarch.liege
+			}
 		}
 		# First, check what kind of change we're dealing with.
 		## Death.
@@ -386,6 +418,17 @@ on_diarch_change = {
 				vizierate_remove_extravagance_modifiers_effect = yes
 				# Remove their co-ruler title.
 				remove_variable = use_co_ruler_title
+				if = {
+					limit = {
+						any_relation = {
+							type = puppet_liege
+						}
+					}
+					random_relation = {
+						type = puppet_liege
+						remove_relation_puppet_diarch = scope:old_diarch
+					}
+				}
 			}
 		}
 		# Invalidate grand weddings

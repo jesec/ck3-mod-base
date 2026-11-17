@@ -1,0 +1,1839 @@
+﻿# Merchant related script values for GDP
+
+merchant_purchase_land_cost_scale_by_era = {
+	value = 0
+	if = {
+		limit = {
+			exists = culture
+		}
+		culture = {
+			if = {
+				limit = {
+					has_cultural_era_or_later = culture_era_late_medieval
+				}
+				add = 2
+			}
+			else_if = {
+				limit = {
+					has_cultural_era_or_later = culture_era_high_medieval
+				}
+				add = 1.5
+			}
+			else_if = {
+				limit = {
+					has_cultural_era_or_later = culture_era_early_medieval
+				}
+				add = 1
+			}
+			else = {
+				add = 0.5
+			}
+		}
+	}
+}
+
+# Scaled by the buyer's era, since these are also evaluated in county scope
+merchant_purchase_land_county_cost_value = {
+	value = 200
+	multiply = scope:actor.merchant_purchase_land_cost_scale_by_era
+}
+merchant_purchase_land_duchy_cost_value = {
+	value = 500
+	multiply = scope:actor.merchant_purchase_land_cost_scale_by_era
+}
+
+# Charged on send, refunded on decline and paid to the seller on accept, so all three must agree
+merchant_purchase_land_total_cost_value = {
+	value = 0
+	if = {
+		limit = { scope:target.tier = tier_county }
+		add = merchant_purchase_land_county_cost_value
+	}
+	else = {
+		add = merchant_purchase_land_duchy_cost_value
+		scope:target = {
+			every_de_jure_county = {
+				limit = { ep3_purchase_land_valid_county_trigger = yes }
+				add = merchant_purchase_land_county_cost_value
+			}
+		}
+	}
+	if = {
+		limit = {
+			scope:actor = { has_variable = ep3_grace_to_the_family_var }
+		}
+		multiply = 0.5
+	}
+	if = {
+		limit = { scope:forgive_loan = yes }
+		scope:recipient = {
+			ordered_owned_story = {
+				limit = {
+					story_type = story_cycle_loan
+					var:lender = scope:actor
+				}
+				order_by = var:years_since
+				add = {
+					value = var:amount_owed
+					multiply = -1
+				}
+			}
+		}
+	}
+	if = {
+		limit = { scope:offer_gold = yes }
+		multiply = 2
+	}
+	min = 0
+}
+
+merchant_marriage_support_acceptance_value = 25
+
+merchant_ai_court_position_min_income_value = 2
+
+court_position_consulted_house_bonus_aptitude_value = 10
+merchant_meritocracy_house_court_position_aptitude_value = 5
+merchant_positions_of_power_house_court_position_aptitude_value = 5
+merchant_drive_them_hard_court_position_aptitude_value = 15
+merchant_drive_them_hard_dread_required_value = 20
+merchant_drive_them_hard_dread_cost_value = 10
+merchant_drive_them_hard_dread_cost_loss_value = {
+	value = merchant_drive_them_hard_dread_cost_value
+	multiply = -1
+}
+merchant_extracted_leverage_regular_prestige_gain_value = 25
+merchant_extracted_leverage_regular_dread_gain_value = 1
+merchant_extracted_leverage_county_prestige_gain_value = 50
+merchant_extracted_leverage_county_dread_gain_value = 3
+merchant_extracted_leverage_duchy_prestige_gain_value = 100
+merchant_extracted_leverage_duchy_dread_gain_value = 5
+merchant_extracted_leverage_kingdom_prestige_gain_value = 200
+merchant_extracted_leverage_kingdom_dread_gain_value = 10
+merchant_extracted_leverage_empire_prestige_gain_value = 500
+merchant_extracted_leverage_empire_dread_gain_value = 20
+merchant_extracted_leverage_hegemony_prestige_gain_value = 750
+merchant_extracted_leverage_hegemony_dread_gain_value = 40
+
+# Sponsored holding construction — flat prestige tiers by gold paid (scope:gold_cost).
+merchant_sponsor_construction_prestige_gain_value = {
+	if = {
+		limit = { scope:gold_cost >= 750 }
+		value = merchant_extracted_leverage_empire_prestige_gain_value
+	}
+	else_if = {
+		limit = { scope:gold_cost >= 500 }
+		value = merchant_extracted_leverage_kingdom_prestige_gain_value
+	}
+	else_if = {
+		limit = { scope:gold_cost >= 300 }
+		value = merchant_extracted_leverage_duchy_prestige_gain_value
+	}
+	else_if = {
+		limit = { scope:gold_cost >= 150 }
+		value = merchant_extracted_leverage_county_prestige_gain_value
+	}
+	else = {
+		value = merchant_extracted_leverage_regular_prestige_gain_value
+	}
+}
+
+# What the sponsoring merchant actually pays: the building cost from code (scope:gold_cost)
+# Trusted Contractors (cutting_corners_perk, merchant branch) reduces it by 30%
+merchant_sponsor_construction_actor_cost_value = {
+	value = scope:gold_cost
+	if = {
+		limit = { scope:actor = { has_perk = cutting_corners_perk } }
+		multiply = 0.7
+	}
+}
+
+# Shared by the republic and estate routes so the two stay aligned.
+merchant_join_realm_cost_value = {
+	value = 150
+	add = {
+		value = company_size_value
+		multiply = 100
+	}
+}
+
+merchant_honored_to_serve_partner_aptitude_value = 20
+merchant_partner_spouse_aptitude_value = 20
+merchant_promote_diligence_decision_cooldown_years_value = {
+	value = 20
+	if = {
+		limit = { has_perk = large_levies_perk }
+		value = 10
+	}
+}
+merchant_promote_diligence_unity_loss_value = {
+	value = monumental_unity_value
+	multiply = -1
+}
+merchant_promote_diligence_decision_prestige_cost_value = {
+	if = {
+		limit = { has_realm_law = company_size_small }
+		value = miniscule_prestige_value
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_medium }
+		value = minor_prestige_value
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_large }
+		value = medium_prestige_value
+	}
+	else = { value = major_prestige_value }
+}
+merchant_promote_excess_decision_cooldown_years_value = 15
+unity_divided_market_trade_capacity_value = 0.25
+unity_fractious_market_trade_capacity_value = 0.1
+unity_cooperative_market_trade_capacity_value = -0.1
+unity_concerted_market_trade_capacity_value = -0.25
+unity_divided_market_competitiveness_value = 0.25
+unity_fractious_market_competitiveness_value = 0.1
+unity_cooperative_market_competitiveness_value = -0.1
+unity_concerted_market_competitiveness_value = -0.25
+
+merchant_competitive_pressure_max_value = 2
+merchant_competitive_pressure_hard_bargaining_max_value = 4
+merchant_competitive_pressure_hard_bargaining_max_add_value = {
+	value = merchant_competitive_pressure_hard_bargaining_max_value
+	subtract = merchant_competitive_pressure_max_value
+}
+merchant_competitive_pressure_corner_the_market_max_add_value = 2
+merchant_competitive_pressure_current_max_value = {
+	value = merchant_competitive_pressure_max_value
+	if = {
+		limit = { has_perk = enduring_hardships_perk }
+		value = merchant_competitive_pressure_hard_bargaining_max_value
+	}
+	if = {
+		limit = { has_perk = soldiers_of_lesser_fortune_perk }
+		add = merchant_competitive_pressure_corner_the_market_max_add_value
+	}
+}
+merchant_competitive_pressure_spend_cost_value = 2
+merchant_competitive_pressure_organize_venture_cost_value = 1
+merchant_competitive_pressure_put_on_notice_cost_value = 1
+merchant_competitive_pressure_merge_company_cost_value = 2
+merchant_competitive_pressure_undercut_competition_gain_value = 2
+merchant_dominant_position_prestige_per_pressure_value = 150
+merchant_competitive_pressure_value = {
+	value = 0
+	if = {
+		limit = { exists = var:merchant_competitive_pressure }
+		add = var:merchant_competitive_pressure
+	}
+}
+
+merchant_trade_opportunity_scgpsp_value = 0.7
+
+merchant_chance_score_value = {
+	value = 0
+	add = { value = sum_of_all_skills_value divide = 4 } # Skilled
+	add = { value = num_of_known_languages multiply = 3 } # Language
+
+	# Age
+	if = {
+		limit = { age < 25 }
+		add = 3
+	}
+
+	# Personality
+	if = {
+		limit = { has_trait = ambitious }
+		add = 3
+	}
+	if = {
+		limit = { has_trait = brave }
+		add = 3
+	}
+	if = {
+		limit = { has_trait = arrogant }
+		add = 3
+	}
+	if = {
+		limit = { has_trait = stubborn }
+		add = 3
+	}
+	# Genetics
+	if = {
+		limit = { has_trait = beauty_good }
+		add = 3
+	}
+	if = {
+		limit = { has_trait = intellect_good }
+		add = 3
+	}
+	if = {
+		limit = { has_trait = physique_good }
+		add = 3
+	}
+
+	# Fame/Lifestyle
+	every_character_trait = {
+		limit = {
+			OR = {
+				has_trait_category = fame
+				has_trait_category = lifestyle
+			}
+		}
+		add = 3
+	}
+	# Education
+	if = {
+		limit = { has_trait = education_stewardship }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = education_learning }
+		add = 5
+	}
+	# Bastardry
+	if = {
+		limit = { has_trait = bastard }
+		add = 5
+	}
+	if = {
+		limit = { has_trait = legitimized_bastard }
+		add = 3
+	}
+	if = {
+		limit = { has_trait = wild_oat }
+		add = 3
+	}
+	if = {
+		limit = { has_trait = child_of_concubine }
+		add = 3
+	}
+	if = {
+		limit = {
+			culture = { has_cultural_parameter = unlock_voluntary_mercantilism }
+		}
+		add = 5
+	}
+	if = {
+		limit = {
+			culture = { has_cultural_parameter = fortune_seekers_merchant_propensity }
+		}
+		add = 10
+	}
+	# Too much to lose
+	every_heir_title = {
+		add = {
+			value = 0
+			subtract = tier
+		}
+		add = {
+			value = tier
+			multiply = -2
+		}
+		if = {
+			limit = {
+				previous_holder ?= {
+					is_alive = yes
+					government_has_flag = government_is_merchant
+				}
+			}
+			add = -75
+		}
+	}
+}
+
+# value based on how well/poorly the war being sponsored is going for the ruler (use on the merchant)
+sponsor_war_value = {
+	value = suzerain.medium_gold_value
+	suzerain = {
+		save_temporary_scope_as = patron_temp
+		every_character_war = {
+			if = {
+				limit = { is_defender = scope:patron_temp }
+				add = {
+					value = 0
+					if = {
+						limit = { defender_war_score > attacker_war_score }
+						add = defender_war_score
+						divide = -2
+					}
+					else = {
+						add = attacker_war_score
+						multiply = 0.5
+					}
+					max = 50
+					min = -50
+				}
+			}
+			else = {
+				add = {
+					value = 0
+					if = {
+						limit = { attacker_war_score > defender_war_score }
+						add = attacker_war_score
+						divide = -2
+					}
+					else = {
+						add = defender_war_score
+						multiply = 0.5
+					}
+					max = 50
+					min = -50
+				}
+			}
+		}
+	}
+	min = 50
+}
+
+merchant_marriage_gold_value = {
+	value = 50
+	add = {
+		value = scope:recipient.highest_held_title_tier
+		add = -1
+		multiply = 50
+	}
+	min = 50
+}
+
+merchant_marriage_prestige_value = {
+	value = 50
+	switch = {
+		trigger = scope:recipient.highest_held_title_tier
+		tier_county = { value = 100 }
+		tier_duchy = { value = 200 }
+		tier_kingdom = { value = 400 }
+		tier_empire = { value = 800 }
+		tier_hegemony = { value = 1600 }
+	}
+}
+
+merchant_competetiveness_prestige_value = {
+	add = medium_prestige_value
+	# Upgrade for tier.
+	multiply = {
+		value = suzerain.highest_held_title_tier
+		# Discount barons.
+		add = -1
+		min = 1
+	}
+	multiply = 0.8
+}
+
+gdp_merchant_ai_market_recruit_gold_value = {
+	value = medium_gold_laamps_value
+	multiply = 0.5
+}
+
+gdp_merchant_ai_prestige_purchase_min_gold_value = 300
+gdp_merchant_ai_prestige_purchase_gold_share_value = 0.2
+
+gdp_merchant_ai_prestige_purchase_gold_value = {
+	value = gold
+	multiply = gdp_merchant_ai_prestige_purchase_gold_share_value
+	round = yes
+}
+
+# Prestige cost of the next main building tier, or of the last tier once the main building is at its highest
+gdp_merchant_ai_prestige_purchase_target_value = {
+	value = 0
+	if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_01 }
+		}
+		value = merchant_company_main_prestige_cost_tier_2_value
+	}
+	else_if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_02 }
+		}
+		value = merchant_company_main_prestige_cost_tier_3_value
+	}
+	else_if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_03 }
+		}
+		value = merchant_company_main_prestige_cost_tier_4_value
+	}
+	else_if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_04 }
+		}
+		value = merchant_company_main_prestige_cost_tier_5_value
+	}
+	else_if = {
+		limit = {
+			domicile ?= {
+				OR = {
+					has_domicile_building = merchant_company_main_05
+					has_domicile_building = merchant_company_main_06
+				}
+			}
+		}
+		value = merchant_company_main_prestige_cost_tier_6_value
+	}
+}
+
+find_curio_prestige_reward_value = {
+	switch = {
+		trigger = scope:task_contract.task_contract_tier
+		tier_county = { value = 350 }
+		tier_duchy = { value = 400 }
+		tier_kingdom = { value = 450 }
+	}
+}
+menagerie_acquisition_prestige_reward_value = {
+	switch = {
+		trigger = scope:task_contract.task_contract_tier
+		tier_county = { value = 250 }
+		tier_duchy = { value = 300 }
+		tier_kingdom = { value = 350 }
+	}
+}
+
+merchant_contract_prestige_reward_mult_value = {
+	value = 1
+	if = {
+		limit = { has_perk = firm_hand_perk }
+		multiply = 1.2
+	}
+}
+
+merchant_contract_gold_reward_value = {
+	value = 10
+	if = {
+		limit = {
+			scope:task_contract.task_contract_tier >= define:NTaskContract|MEDIUM_TASK_CONTRACT_TIER
+			scope:task_contract.task_contract_tier < define:NTaskContract|HIGH_TASK_CONTRACT_TIER
+		}
+		value = 20
+	}
+	else_if = {
+		limit = {
+			scope:task_contract.task_contract_tier >= define:NTaskContract|HIGH_TASK_CONTRACT_TIER
+		}
+		value = 40
+	}
+}
+
+merchant_contract_gold_reward_critical_value = {
+	value = merchant_contract_gold_reward_value
+	multiply = 2
+}
+
+trade_opportunity_xp_success_critical = 4
+trade_opportunity_xp_success_standard = 2
+
+merchant_charter_abuse_patron_reaction_value = {
+	value = 0
+	add = {
+		value = "scope:patron.opinion(scope:merchant)"
+		divide = 10
+	}
+	add = {
+		value = scope:patron.ai_greed
+		divide = 10
+	}
+}
+
+merchant_charter_benefit_patron_reaction_value = {
+	value = 0
+	add = {
+		value = "scope:patron.opinion(scope:merchant)"
+		divide = 10
+	}
+	add = {
+		value = scope:patron.ai_greed
+		multiply = -1
+		divide = 10
+	}
+}
+
+# Artifact scope. 1 when the owner's stored patron stance was set for this charter's patron
+merchant_charter_abuse_stance_shown_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = var:charter_patron
+			save_temporary_scope_as = charter_temp
+			artifact_owner ?= {
+				exists = var:charter_abuse_stance
+				var:charter_abuse_patron ?= scope:charter_temp.var:charter_patron
+			}
+		}
+		value = 1
+	}
+}
+
+# Merchant scope. Stored abuse stance as a level: indifferent 1, annoyed 2, angry 3
+merchant_charter_abuse_stance_level_value = {
+	value = 0
+	if = {
+		limit = { var:charter_abuse_stance ?= flag:indifferent }
+		value = 1
+	}
+	else_if = {
+		limit = { var:charter_abuse_stance ?= flag:annoyed }
+		value = 2
+	}
+	else_if = {
+		limit = { var:charter_abuse_stance ?= flag:angry }
+		value = 3
+	}
+}
+
+charter_intervention_county_cooldown_years_value = 3
+
+invite_merchants_max_capital_merchants_value = 5
+invite_merchants_max_per_use_value = 3
+
+# Character scope. Merchant companies domiciled in the character's capital province
+gdp_capital_province_merchant_count_value = {
+	value = 0
+	capital_province ?= {
+		every_province_domicile = {
+			limit = {
+				owner ?= { government_has_flag = government_is_merchant }
+			}
+			add = 1
+		}
+	}
+}
+
+entice_merchants_order_value = {
+	value = 0
+	add = "opinion(scope:new_patron)"
+	if = {
+		limit = {
+			exists = scope:old_patron
+			scope:new_patron != scope:old_patron
+		}
+		add = {
+			value = "opinion(scope:old_patron)"
+			multiply = -1
+		}
+	}
+	add = {
+		value = "opinion(suzerain)"
+		multiply = -1
+	}
+	# CULTURAL ACCEPTANCE
+	if = {
+		limit = { culture != scope:new_patron.culture }
+		culture = {
+			if = {
+				limit = {
+					cultural_acceptance = { target = scope:new_patron.culture value < 25 }
+				}
+				add = -30
+			}
+			else_if = {
+				limit = {
+					cultural_acceptance = { target = scope:new_patron.culture value < 50 }
+					cultural_acceptance = { target = scope:new_patron.culture value >= 25 }
+				}
+				add = -15
+			}
+			else_if = {
+				limit = {
+					cultural_acceptance = { target = scope:new_patron.culture value < 75 }
+					cultural_acceptance = { target = scope:new_patron.culture value >= 50 }
+				}
+				add = 15
+			}
+			else = { add = 30 }
+		}
+	}
+	# FAITH HOSTILITY
+	if = {
+		limit = { faith != scope:new_patron.faith}
+		scope:new_patron.faith = {
+			if = {
+				limit = {
+					faith_hostility_level = {
+						target = prev.faith
+						value = faith_hostile_level
+					}
+				}
+				add = -50
+			}
+			else_if = {
+				limit = {
+					faith_hostility_level = {
+						target = prev.faith
+						value = faith_astray_level
+					}
+				}
+				add = -25
+			}
+		}
+		faith = {
+			if = {
+				limit = {
+					faith_hostility_level = {
+						target = scope:new_patron.faith
+						value = faith_hostile_level
+					}
+				}
+				add = -50
+			}
+			else_if = {
+				limit = {
+					faith_hostility_level = {
+						target = scope:new_patron.faith
+						value = faith_astray_level
+					}
+				}
+				add = -25
+			}
+		}
+	}
+	# COMPANY SIZE
+	if = {
+		limit = {
+			scope:new_patron.highest_held_title_tier >= tier_kingdom
+			has_realm_law = company_size_small
+		}
+		add = -75
+	}
+	else_if = {
+		limit = {
+			scope:new_patron.highest_held_title_tier >= tier_empire
+			OR = {
+				has_realm_law = company_size_small
+				has_realm_law = company_size_medium
+			}
+		}
+		add = -75
+	}
+	# DISTANCE
+	add = {
+		value = "domicile.domicile_location.squared_distance(scope:new_patron.capital_province)"
+		multiply = 0.0005
+	}
+}
+
+merchant_personality_type_ai_weight_threshold_value = 35
+
+# Seed Capital: the offered investment scales with Company Size
+gdp_seed_capital_investment_value = {
+	value = minor_gold_value
+	if = {
+		limit = { has_realm_law = company_size_medium }
+		value = medium_gold_value
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_large }
+		value = major_gold_value
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_huge }
+		value = massive_gold_value
+	}
+}
+gdp_seed_capital_investment_hook_value = {
+	value = gdp_seed_capital_investment_value
+	multiply = 2
+}
+
+# Renown internal buildings unlock at this Trade Expertise level in their category
+# Keep the gdp_renown_expertise_gate loc value in sync
+gdp_renown_building_expertise_level_value = 20
+
+merchant_monopoly_trade_expertise_bonus_negative_value = -10
+
+merchant_monopoly_trade_expertise_level_low_value = 5
+merchant_monopoly_trade_expertise_level_medium_value = 25
+merchant_monopoly_trade_expertise_level_high_value = 50
+merchant_monopoly_trade_expertise_level_max_value = 100
+
+merchant_monopoly_trade_expertise_acceptance_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = scope:trade_good_category_type
+			scope:actor = {
+				primary_title = {
+					trade_good_category_level = {
+						target = scope:trade_good_category_type
+						value >= merchant_monopoly_trade_expertise_level_low_value
+					}
+				}
+			}
+		}
+		add = {
+			value = "scope:actor.primary_title.trade_good_category_level(scope:trade_good_category_type)"
+			divide = 5
+			floor = yes
+			multiply = 2
+		}
+	}
+	else = { add = merchant_monopoly_trade_expertise_bonus_negative_value }
+}
+
+merchant_monopoly_held_complete_penalty_value = -10
+merchant_monopoly_held_partial_penalty_value = -5
+
+# Trade monopoly scope
+merchant_monopoly_held_penalty_value = {
+	if = {
+		limit = {
+			is_complete_monopoly = yes
+		}
+		add = merchant_monopoly_held_complete_penalty_value
+	}
+	else = {
+		add = merchant_monopoly_held_partial_penalty_value
+	}
+}
+
+republic_monopoly_num_of_monopolies_value = {
+	if = {
+		limit = {
+			gdp_is_assembly_head_trigger = yes
+		}
+		primary_title = {
+			every_trade_monopoly_for_title = {
+				add = merchant_monopoly_held_penalty_value
+			}
+		}
+	}
+	else = {
+		liege = {
+			primary_title = {
+				every_trade_monopoly_for_title = {
+					add = merchant_monopoly_held_penalty_value
+				}
+			}
+		}
+	}
+}
+
+league_monopoly_num_of_monopolies_value = {
+	confederation = {
+		every_trade_monopoly_for_confederation = {
+			add = merchant_monopoly_held_penalty_value
+		}
+	}
+}
+
+merchant_monopoly_num_of_monopolies_value = {
+	every_trade_monopoly_for_character = {
+		add = merchant_monopoly_held_penalty_value
+	}
+}
+
+merchant_monopoly_base_gold_cost_value = {
+	value = scope:recipient.medium_gold_value
+	multiply = {
+		value = scope:recipient.highest_held_title_tier
+		# Discount barons.
+		add = -1
+	}
+}
+
+merchant_monopoly_high_gold_cost_value = {
+	value = scope:recipient.major_gold_value
+	multiply = {
+		value = scope:recipient.highest_held_title_tier
+		# Discount barons.
+		add = -1
+	}
+}
+
+gdp_merchant_ai_trade_monopoly_chance_per_mille_value = {
+	value = 0
+	if = {
+		limit = { has_realm_law = company_size_small }
+		add = 5
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_medium }
+		add = 10
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_large }
+		add = 20
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_huge }
+		add = 40
+	}
+}
+
+gdp_republic_ai_trade_monopoly_chance_per_mille_value = {
+	value = 0
+	if = {
+		limit = { has_realm_law = republic_tier_county }
+		add = 10
+	}
+	else_if = {
+		limit = { has_realm_law = republic_tier_duchy }
+		add = 20
+	}
+	else_if = {
+		limit = { has_realm_law = republic_tier_kingdom }
+		add = 30
+	}
+	else_if = {
+		limit = { has_realm_law = republic_tier_empire }
+		add = 50
+	}
+}
+
+gdp_trade_league_ai_trade_monopoly_chance_per_mille_value = {
+	value = confederation.cohesion
+	divide = 2
+}
+
+gdp_merchant_ai_trade_monopoly_slots_value = {
+	value = 1
+	if = {
+		limit = { has_realm_law = company_size_medium }
+		value = 2
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_large }
+		value = 3
+	}
+	else_if = {
+		limit = { has_realm_law = company_size_huge }
+		value = 4
+	}
+	every_trade_monopoly_for_character = {
+		subtract = 1
+	}
+}
+
+gdp_republic_ai_trade_monopoly_slots_value = {
+	value = 1
+	if = {
+		limit = { has_realm_law = republic_tier_duchy }
+		value = 2
+	}
+	else_if = {
+		limit = { has_realm_law = republic_tier_kingdom }
+		value = 3
+	}
+	else_if = {
+		limit = { has_realm_law = republic_tier_empire }
+		value = 4
+	}
+	primary_title = {
+		every_trade_monopoly_for_title = {
+			subtract = 1
+		}
+	}
+}
+
+gdp_trade_league_ai_trade_monopoly_slots_value = {
+	value = 1
+	confederation = {
+		if = {
+			limit = { cohesion >= 95 }
+			add = 3
+		}
+		else_if = {
+			limit = { cohesion >= 70 }
+			add = 2
+		}
+		else_if = {
+			limit = { cohesion >= 45 }
+			add = 1
+		}
+		every_trade_monopoly_for_confederation = {
+			subtract = 1
+		}
+	}
+}
+
+gdp_ai_trade_monopoly_min_market_opinion_value = -25
+
+gdp_ai_trade_monopoly_category_preference_value = {
+	value = 0
+	if = {
+		limit = { gdp_ai_monopoly_high_value_category_trigger = yes }
+		add = 9
+	}
+	if = {
+		limit = {
+			gdp_ai_monopoly_purpose_category_trigger = { ACTOR = root }
+		}
+		add = 9
+	}
+	if = {
+		limit = {
+			this = trade_good_category:trade_category_meat
+			root = { has_realm_law = republic_type_maritime }
+		}
+		add = 27
+	}
+	if = {
+		limit = {
+			gdp_ai_monopoly_trade_specialization_category_trigger = { ACTOR = root }
+		}
+		add = 12
+	}
+	if = {
+		limit = {
+			gdp_ai_monopoly_trade_pricing_category_trigger = { ACTOR = root }
+		}
+		add = 6
+	}
+	if = {
+		limit = {
+			scope:ai_monopoly_league ?= { exists = var:league_focused_category }
+			this = scope:ai_monopoly_league.var:league_focused_category
+		}
+		add = 20
+	}
+}
+
+gdp_merchant_caravaneer_xp_min_markets_value = {
+	value = define:NTrade|BASE_MAX_TRADE_MARKETS_ON_ROUTE
+	add = 1
+}
+
+gdp_merchant_yearly_caravaneer_xp_value = {
+	value = 0
+	every_trade_route = {
+		limit = { gdp_merchant_trade_route_grants_caravaneer_xp_trigger = yes }
+		add = num_trade_markets
+	}
+	divide = 4
+	ceiling = yes
+	if = {
+		limit = { 
+			NOT = { has_realm_law = company_purpose_caravaneer }
+		}
+		divide = 2
+	}
+	min = 1
+}
+
+miniscule_acumen_value = 50
+minor_acumen_value = 75
+medium_acumen_value = 100
+large_acumen_value = 150
+major_acumen_value = 200
+
+company_debt_acumen_loss_value = -500
+# A merchant company only counts as in debt below this much gold.
+company_debt_gold_threshold_value = -50
+company_debt_grace_months_value = 12
+company_debt_grace_flag_months_value = {
+	value = company_debt_grace_months_value
+	add = 1
+}
+company_debt_direction_shift_value = 5
+company_debt_direction_interval_months_value = 6
+company_debt_direction_loss_value = {
+	value = company_debt_direction_shift_value
+	multiply = -1
+}
+
+# Acumen granted for a starting company of this size. Matches the unlock defines.
+company_size_medium_threshold_value = {
+	value = define:NDomicile|MERCHANT_ACUMEN_LEVEL_2_THRESHOLD
+}
+company_size_large_threshold_value = {
+	value = define:NDomicile|MERCHANT_ACUMEN_LEVEL_3_THRESHOLD
+}
+company_size_huge_threshold_value = {
+	value = define:NDomicile|MERCHANT_ACUMEN_LEVEL_4_THRESHOLD
+}
+
+# 50-75 = medium, 75-100 = large, 100+ = huge
+# This is called by set_starting_company_size_effect
+starting_company_size_potential_value = {
+	value = 0
+	add = {
+		value = age
+		divide = 2
+	}
+	add = {
+		value = stewardship
+		multiply = 1.5
+	}
+	if = {
+		limit = {
+			OR = {
+				has_trait = education_stewardship_4
+				has_trait = education_stewardship_5
+			}
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			culture = {
+				OR = {
+					has_cultural_tradition = tradition_maritime_mercantilism
+					has_cultural_tradition = tradition_caravaneers
+					has_cultural_tradition = tradition_seafaring
+					has_cultural_tradition = tradition_fortune_seekers
+					has_cultural_tradition = tradition_saharan_traders
+					has_cultural_tradition = tradition_silk_road_traders
+					has_cultural_tradition = tradition_monsoon_traders
+				}
+			}
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			capital_county = {
+				is_coastal_county = yes
+			}
+		}
+		add = 10
+	}
+}
+
+starting_acumen_value = {
+	value = 0
+	owner = {
+		if = {
+			limit = { has_realm_law = company_size_small }
+			add = miniscule_acumen_value
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_medium }
+			add = company_size_medium_threshold_value
+			if = {
+				limit = {
+					OR = {
+						age >= 50
+						AND = {
+							age >= 30
+							highest_skill = stewardship
+						}
+					}
+				}
+				add = minor_acumen_value
+			}
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_large }
+			add = company_size_large_threshold_value
+			if = {
+				limit = {
+					OR = {
+						age >= 50
+						AND = {
+							age >= 30
+							highest_skill = stewardship
+						}
+					}
+				}
+				add = medium_acumen_value
+			}
+		}
+		else = { add = company_size_huge_threshold_value }
+
+		if = {
+			limit = {
+				culture = { has_cultural_tradition = tradition_family_entrepreneurship }
+			}
+			add = minor_acumen_value
+		}
+		if = {
+			limit = {
+				culture = { has_cultural_parameter = fortune_seekers_merchant_propensity }
+			}
+			add = miniscule_acumen_value
+		}
+	}
+	add = owner.age
+	add = owner.stewardship
+}
+
+trade_expertise_xp_miniscule_value = 75
+trade_expertise_xp_minor_value = 150
+trade_expertise_xp_medium_value = 250
+trade_expertise_xp_major_value = 375
+trade_expertise_xp_massive_value = 500
+trade_expertise_xp_five_levels_value = {
+	value = define:NTrade|TRADE_CATEGORY_XP_LEVEL_THRESHOLD
+	multiply = 5
+}
+
+# 7.5 expertise levels. Significant category bump for events that should push the player to trade it.
+trade_expertise_xp_monumental_value = {
+	value = define:NTrade|TRADE_CATEGORY_XP_LEVEL_THRESHOLD
+	multiply = 7.5
+}
+
+# Trade Expertise level from which we treat the company as renowned rather than fledgling
+gdp_tgf_renowned_expertise_level_value = 25
+
+# Trade Expertise level needed to study a good
+gdp_tgf_study_expertise_level_value = 10
+
+# Expertise lost by selling a lapsed trade's know-how
+gdp_tgf_sold_expertise_xp_value = {
+	value = trade_expertise_xp_medium_value
+	multiply = -1
+}
+
+# Multiplier for beneficial trade-good flavor price modifiers, doubled when root is renowned in scope:tgf_category
+gdp_tgf_renown_tier_value = {
+	value = 1
+	if = {
+		limit = { gdp_tgf_root_renowned_in_event_category_trigger = yes }
+		value = 2
+	}
+}
+
+gdp_trader_pilgrimage_expertise_reward_value = {
+	value = trade_expertise_xp_major_value
+	if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = pilgrimage_option_pomp
+					option = pilgrimage_pomp_throng
+				}
+			}
+		}
+		add = trade_expertise_xp_major_value
+	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = pilgrimage_option_pomp
+					option = pilgrimage_pomp_ceremonial
+				}
+			}
+		}
+		add = trade_expertise_xp_medium_value
+	}
+}
+
+gdp_trader_feast_expertise_reward_value = {
+	value = trade_expertise_xp_major_value
+	if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = feast_option_wine
+					option = feast_wine_extensive
+				}
+			}
+		}
+		add = trade_expertise_xp_major_value
+	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = feast_option_wine
+					option = feast_wine_normal
+				}
+			}
+		}
+		add = trade_expertise_xp_medium_value
+	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = feast_option_wine
+					option = feast_wine_limited
+				}
+			}
+		}
+		add = trade_expertise_xp_minor_value
+	}
+}
+
+gdp_trader_hunt_expertise_reward_value = {
+	value = trade_expertise_xp_major_value
+	if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = special_type
+					option = hunt_type_legendary
+				}
+			}
+		}
+		add = trade_expertise_xp_major_value
+	}
+	else_if = {
+		limit = {
+			scope:activity = {
+				has_activity_option = {
+					category = hunt_option_attendants
+					option = hunt_attendants_many
+				}
+			}
+		}
+		add = trade_expertise_xp_medium_value
+	}
+}
+
+# Levels by company size at the 867 start.
+early_starting_expertise_value = {
+	value = define:NTrade|TRADE_CATEGORY_XP_LEVEL_THRESHOLD
+	holder = {
+		if = {
+			limit = { has_realm_law = company_size_small }
+			multiply = 5
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_medium }
+			multiply = 8
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_large }
+			multiply = 13
+		}
+		else = { multiply = 21 }
+	}
+	add = holder.age
+	add = holder.stewardship
+}
+
+# Levels by company size at the 1066 start.
+mid_starting_expertise_value = {
+	value = define:NTrade|TRADE_CATEGORY_XP_LEVEL_THRESHOLD
+	holder = {
+		if = {
+			limit = { has_realm_law = company_size_small }
+			multiply = 6
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_medium }
+			multiply = 10
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_large }
+			multiply = 16
+		}
+		else = { multiply = 26 }
+	}
+	add = holder.age
+	add = holder.stewardship
+}
+
+# Levels by company size at the 1178 start.
+late_starting_expertise_value = {
+	value = define:NTrade|TRADE_CATEGORY_XP_LEVEL_THRESHOLD
+	holder = {
+		if = {
+			limit = { has_realm_law = company_size_small }
+			multiply = 8
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_medium }
+			multiply = 13
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_large }
+			multiply = 21
+		}
+		else = { multiply = 34 }
+	}
+	add = holder.age
+	add = holder.stewardship
+}
+
+company_size_value = {
+	value = 0
+	liege ?= { # so it's usable on courtiers
+		if = {
+			limit = {
+				exists = domicile
+				government_has_flag = government_is_merchant
+			}
+			if = {
+				limit = { has_realm_law = company_size_small }
+				add = 1
+			}
+			else_if = {
+				limit = { has_realm_law = company_size_medium }
+				add = 2
+			}
+			else_if = {
+				limit = { has_realm_law = company_size_large }
+				add = 3
+			}
+			else = { add = 4 }
+		}
+	}
+}
+
+# Merchant associate salary and task cost multiplier from the employer's company size law (scope:liege = employer)
+merchant_court_position_company_size_mult = {
+	value = 1
+	scope:liege ?= {
+		if = {
+			limit = { has_realm_law = company_size_medium }
+			add = 1
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_large }
+			add = 2
+		}
+		else_if = {
+			limit = { has_realm_law = company_size_huge }
+			add = 3
+		}
+	}
+}
+
+# Base multiplier for associate salary and task costs, applied before company size scaling
+merchant_court_position_base_cost_mult = 0.5
+
+merchant_associate_task_cost = {
+	value = monthly_court_position_task_cost
+	multiply = {
+		value = merchant_court_position_base_cost_mult
+		desc = merchant_court_position_base_cost_mod
+		format = "BASE_VALUE_FORMAT_DECIMALS_MINUS_POSITIVE"
+	}
+	if = {
+		limit = { merchant_court_position_company_size_mult > 1 }
+		multiply = {
+			value = merchant_court_position_company_size_mult
+			desc = merchant_company_size_court_position_mod
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+}
+
+gdp_merchant_unity_intermarriage_value = {
+	value = -10
+}
+gdp_merchant_unity_noble_marriage_value = {
+	value = 10
+}
+
+commission_trade_route_merchant_cooldown_years_value = 5
+
+commission_trade_route_yearly_chance = {
+	value = 20
+	add = {
+		value = highest_held_title_tier # duchy is 3: 20 + 30 = 50
+		multiply = 10
+	}
+	every_in_list = {
+		variable = commission_routes # stop same dude commissioning many merchants
+		add = -10
+	}
+}
+
+gdp_average_duchy_prosperity_value = {
+	value = 0
+	every_de_jure_county = { add = prosperity_level }
+	divide = gdp_duchy_county_count_value
+	round = yes
+}
+
+gdp_duchy_county_count_value = {
+	value = 0
+	every_de_jure_county = { add = 1 }
+}
+
+gdp_share_market_insights_opinion = {
+	value = 5
+	every_trade_good_category = {
+		limit = {
+			save_temporary_scope_as = category_temp
+			scope:actor = {
+				gdp_company_category_expertise_higher_than_trigger = {
+					OTHER = scope:recipient
+				}
+			}
+		}
+		add = 5
+	}
+	every_trade_good_category = {
+		limit = {
+			save_temporary_scope_as = category_temp
+			scope:recipient = {
+				gdp_company_category_expertise_higher_than_trigger = {
+					OTHER = scope:actor
+				}
+			}
+		}
+		add = -5
+	}
+	max = 25
+	min = 5
+}
+
+gdp_steal_market_insights_category_count = {
+	value = 0
+	every_trade_good_category = {
+		limit = {
+			save_temporary_scope_as = category_temp
+			scope:recipient = {
+				gdp_company_category_expertise_higher_than_trigger = {
+					OTHER = scope:actor
+				}
+			}
+		}
+		add = 1
+	}
+}
+
+# When the company count drops below this, we start generating new ones
+merchant_company_spawn_threshold_value = {
+	value = 0
+	if = {
+		limit = { exists = global_var:merchant_company_starting_count }
+		value = global_var:merchant_company_starting_count
+	}
+}
+
+max_desired_merchant_companies_value = {
+	value = merchant_company_spawn_threshold_value
+	add = 150
+}
+
+# Above this, only notable families of destroyed republics become merchants
+merchant_company_republic_headroom_value = {
+	value = merchant_company_spawn_threshold_value
+	add = 50
+}
+
+merchant_companies_to_cull_value = {
+	value = 0
+	if = {
+		limit = { has_global_variable_list = merchants_tally }
+		every_in_global_list = {
+			variable = merchants_tally
+			add = 1
+		}
+	}
+	subtract = max_desired_merchant_companies_value
+	multiply = 0.25
+	ceiling = yes
+	min = 1
+	max = 10
+}
+
+gdp_merchant_company_strength_value = {
+	value = num_trade_routes
+	multiply = 100
+	if = {
+		limit = { exists = domicile }
+		add = {
+			value = domicile.num_domicile_buildings
+			multiply = 50
+		}
+	}
+	add = gold
+}
+
+gdp_minority_merchant_spawn_chance_value = 10
+
+merchant_current_trade_routes_value = {
+	add = num_trade_routes
+	subtract = num_commission_routes
+}
+
+merchant_max_trade_routes_value = {
+	add = max_trade_routes
+}
+
+binding_oaths_broken_word_acumen_loss_value = {
+	value = acumen
+	multiply = -0.1
+}
+
+gdp_loan_money_debt_threshold_value = -25
+
+# Loan Gold cap so that we allow players to loan partial debts
+gdp_loan_money_max_gold_value = {
+	value = major_gold_value
+	multiply = {
+		value = highest_held_title_tier
+		add = -1
+		min = 1
+	}
+	multiply = 0.5
+}
+
+# Total amount of gold to clear debt
+gdp_loan_money_full_gold_value = {
+	value = gold
+	multiply = -1
+	min = 0
+	ceiling = yes
+}
+
+# Player gold limit, to make large debts more manageable
+gdp_loan_money_gold_value = {
+	value = gdp_loan_money_full_gold_value
+	max = gdp_loan_money_max_gold_value
+	ceiling = yes
+}
+
+gdp_loan_principal_value = {
+	if = {
+		limit = {
+			OR = {
+				exists = scope:open
+				exists = scope:disguised
+				exists = scope:free
+			}
+			gold < 0
+		}
+		if = {
+			limit = {
+				OR = {
+					scope:actor ?= { is_ai = yes }
+					scope:actor.gold >= gdp_loan_money_full_gold_value
+				}
+			}
+			value = gdp_loan_money_full_gold_value
+		}
+		else = {
+			value = gdp_loan_money_gold_value
+		}
+	}
+	else = {
+		value = major_gold_value
+	}
+}
+
+gdp_loan_open_interest_rate_value = {
+	value = 0.25
+}
+
+gdp_loan_disguised_interest_rate_value = {
+	value = 0.15
+}
+
+gdp_loan_open_interest_premium_value = {
+	value = var:amount_owed
+	multiply = gdp_loan_open_interest_rate_value
+}
+
+gdp_loan_disguised_interest_premium_value = {
+	value = var:amount_owed
+	multiply = gdp_loan_disguised_interest_rate_value
+}
+
+# Disguised balances are principal plus a fixed 15% premium, so the principal is amount_owed / 1.15.
+gdp_loan_disguised_principal_value = {
+	value = var:amount_owed
+	divide = {
+		value = 1
+		add = gdp_loan_disguised_interest_rate_value
+	}
+}
+
+gdp_loan_disguised_interest_portion_value = {
+	value = var:amount_owed
+	subtract = gdp_loan_disguised_principal_value
+}
+
+gdp_interest_free_loan_opinion_value = {
+	value = 20
+}
+
+gdp_loan_ruinous_debt_value = {
+	value = monthly_character_income
+	multiply = 24
+	min = medium_gold_max_value
+}
+
+gdp_loan_less_interest_value = {
+	value = var:amount_owed
+	subtract = var:original_interest
+}
+
+gdp_commission_route_cost_value = {
+	value = 200
+}
+
+gdp_commission_route_reimbursement_value = {
+	value = 200
+	subtract = { # 10 years, 120 months, 200 / 120 = 1.6
+		value = age_in_months
+		multiply = 1.6
+	}
+	max = 200
+	min = 0
+}
+
+# Trade route scope
+# Milestones a route has reached since it was established or last changed its primary good
+# 3, 6, 9 and 12 months, then every year up to year 10, every 2 years up to year 20, then every 5 years up to year 100 (34 in total).
+gdp_trade_route_maturity_milestones_value = {
+	value = 0
+	if = {
+		limit = { age_in_months >= 3 }
+		add = 1
+	}
+	if = {
+		limit = { age_in_months >= 6 }
+		add = 1
+	}
+	if = {
+		limit = { age_in_months >= 9 }
+		add = 1
+	}
+	if = {
+		limit = { age_in_months >= 12 }
+		add = 1
+	}
+	if = {
+		limit = { age_in_years >= 2 }
+		add = {
+			value = age_in_years
+			max = 10
+			subtract = 1
+		}
+	}
+	if = {
+		limit = { age_in_years >= 12 }
+		add = {
+			value = age_in_years
+			max = 20
+			divide = 2
+			floor = yes
+			subtract = 5
+		}
+	}
+	if = {
+		limit = { age_in_years >= 25 }
+		add = {
+			value = age_in_years
+			max = 100
+			divide = 5
+			floor = yes
+			subtract = 4
+		}
+	}
+}
+bailiff_collect_loans_payment_value = {
+	value = tiny_gold_min_value
+	if = {
+		limit = { exists = court_position:bailiff_court_position }
+		add = {
+			value = tiny_gold_max_value_static
+			subtract = tiny_gold_min_value
+			multiply = "court_position:bailiff_court_position.aptitude(bailiff_court_position)"
+			divide = 4
+		}
+	}
+	min = tiny_gold_min_value
+	max = tiny_gold_max_value_static
+}
+
+gdp_merchant_sell_artifact_value = {
+	# SELLER
+	value = scope:puppet_or_actor.minor_gold_value
+	# DURABILITY
+	multiply = scope:target.artifact_durability_percent
+	# RARITY
+	scope:target ?= {
+		if = {
+			limit = { rarity = masterwork }
+			multiply = 1.33
+		}
+		else_if = {
+			limit = { rarity = famed }
+			multiply = 1.66
+		}
+		else_if = {
+			limit = { rarity = illustrious }
+			multiply = 2
+		}
+	}
+	# BUYER TIER
+	multiply = {
+		value = scope:recipient.highest_held_title_tier
+		add = -1
+		divide = 2
+		min = 1
+	}
+	# HAGGLE
+	if = {
+		limit = { scope:haggle ?= yes }
+		multiply = 0.5
+	}
+	# MIN
+	min = scope:puppet_or_actor.miniscule_gold_value
+	max = 1000
+}
+
+gdp_trader_stress_letter_threshold_value = 80
+
+# Sponsor Merchant Company decision costs; AI sponsors pay half
+gdp_sponsor_merchant_company_cost_small_value = {
+	value = {
+		add = minor_gold_value
+		min = 30
+	}
+	if = {
+		limit = { is_ai = yes }
+		multiply = 0.5
+	}
+}
+
+gdp_sponsor_merchant_company_cost_medium_value = {
+	value = {
+		value = major_gold_value
+		multiply = 2
+		min = 100
+	}
+	if = {
+		limit = { is_ai = yes }
+		multiply = 0.5
+	}
+}
+
+gdp_sponsor_merchant_company_cost_large_value = {
+	value = {
+		value = massive_gold_value
+		multiply = 2
+		min = 300
+	}
+	if = {
+		limit = { is_ai = yes }
+		multiply = 0.5
+	}
+}
+
+gdp_sponsor_merchant_company_cost_huge_value = {
+	value = {
+		value = monumental_gold_value
+		multiply = 2
+		min = 500
+	}
+	if = {
+		limit = { is_ai = yes }
+		multiply = 0.5
+	}
+}
+
+# 1.25 times the gold scope:actor paid for the recipient's ransom, when the hook came from that ransom.
+merchant_trade_hook_ransom_repayment_value = {
+	value = scope:recipient.var:merchant_ransom_hook_gold
+	multiply = 1.25
+	if = {
+		limit = {
+			scope:actor = { has_perk = golden_obligations_perk }
+		}
+		multiply = 2
+	}
+}
+
+# 1.25 times the gold scope:actor paid to sponsor the building, when the hook came from that sponsorship.
+merchant_trade_hook_sponsor_repayment_value = {
+	value = scope:recipient.var:merchant_sponsor_hook_gold
+	multiply = 1.25
+	if = {
+		limit = {
+			scope:actor = { has_perk = golden_obligations_perk }
+		}
+		multiply = 2
+	}
+}
+
+merchant_sponsor_construction_xp_value = 3

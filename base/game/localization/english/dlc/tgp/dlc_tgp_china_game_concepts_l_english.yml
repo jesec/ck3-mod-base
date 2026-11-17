@@ -54,7 +54,7 @@
  game_concept_merit_pool: "Candidate List"
  game_concept_merit_pools: "Candidate Lists"
  game_concept_merit_pool_possessive: "Candidate List's"
- game_concept_merit_pool_desc: "A $game_concept_merit_pool$ contains all potential [characters|E] who are eligible to gain [titles|E] with certain types of [appointment|E].\n\nCandidates are sorted based on their [candidate_score|E]. Some [appointment_succession_laws|E] use [merit|E], which will sort the candidates by their [merit_level|E] first and $game_concept_candidate_score$ second.\n\nWhen the [holder|E] of a Title with $game_concept_appointment$ dies, the Title will pass to the highest ranking character in the list. If the character holds a Title already, the Title must have higher a higher [appointment_prominence|E], otherwise it will pass to the next character."
+ game_concept_merit_pool_desc: "A $game_concept_merit_pool$ contains all potential [characters|E] who are eligible to gain [titles|E] with certain types of [appointment|E].\n\nCandidates are sorted based on their [candidate_score|E]. Some [appointment_succession_laws|E] use [merit|E], which will sort the candidates by their [merit_level|E] first and $game_concept_candidate_score$ second.\n\nWhen the [holder|E] of a Title with $game_concept_appointment$ dies, the Title will pass to the highest ranking character in the list. If the character holds a Title already, the Title must have a higher [appointment_prominence|E], otherwise it will pass to the next character."
 
  game_concept_appointment_prominence: "Prominence"
  game_concept_appointment_prominence_desc: "$game_concept_appointment_prominence$ reflects how desirable a [title|E] is to eligible candidates.\n\nA candidate who already holds a Title will only be appointed to a new one of the same [title_tier|E] if it has higher $game_concept_appointment_prominence$.\n\n$game_concept_appointment_prominence$ is typically based on local wealth and proximity to the [realm_capital|E], but other factors may apply depending on circumstance, such as the size of [title_men_at_arms|E] for [military_governors|E]."
@@ -64,8 +64,7 @@
  game_concept_entrant_desc: "An $game_concept_entrant$ is a character testing their mettle against the [imperial_examination|E] [activity|E]."
 
  game_concept_subject_standing: "Subject Standing"
- game_concept_subject_standing_desc: "$game_concept_subject_standing$ represents the status bestowed onto a [tributary|E] or [vassal|E] by their [suzerain|E] or [liege|E]."
-
+ game_concept_subject_standing_desc: "$game_concept_subject_standing$ represents the status bestowed onto a [tributary|E] or [vassal|E] by their [suzerain|E], [merchant_patron|E] or [liege|E]."
  game_concept_imperial_grace: "Imperial Grace"
  game_concept_imperial_grace_desc: "$game_concept_imperial_grace$ represents the status bestowed onto a [tributary|E] by [son_of_heaven|E].\n\nHigh $game_concept_imperial_grace$ may result in special privileges being granted to the $game_concept_tributary$ during [tribute_missions|E]. At low levels of $game_concept_imperial_grace$, the $game_concept_son_of_heaven$ may #EMP exact#! tribute from you, and if it reaches zero it could mean the end of the relationship."
 
@@ -103,8 +102,8 @@
  game_concept_imperial_treasury: "Imperial Treasury"
  game_concept_imperial_treasury_desc: "$game_concept_treasury_desc$"
 
- game_concept_treasury_vassal_development: "Vassal Development"
- game_concept_treasury_vassal_development_desc: "Treasury sent to direct [vassals|E] through their [liege|E], based on their tax contributions and other [obligations|E]."
+ game_concept_treasury_vassal_prosperity: "Vassal Allowance"
+ game_concept_treasury_vassal_prosperity_desc: "Treasury sent to direct [vassals|E] through their [liege|E], based on their tax contributions and other [obligations|E]."
  game_concept_treasury_ministry_budget: "Ministry Budget"
  game_concept_treasury_ministry_budget_short: "Ministry"
  game_concept_treasury_ministry_budget_desc: "Treasury sent to [vassals|E] from the central government, for the purposes of funding [ministries|E]. It is based on the periodically calculated allocation of the [treasury|E] income of the [top_liege|E]."
@@ -116,14 +115,14 @@
  game_concept_treasury_military_budget_desc: "Treasury sent to military [province|E] [vassals|E] from the central government, for the purposes of funding additional military activities. It is based on the periodically calculated allocation of the [treasury|E] income of the [top_liege|E]."
 
  game_concept_governor_salary: "Governor Salary"
- game_concept_governor_salary_desc: "In [administrative_governments|E] that distinguish between [gold|E] and [treasury|E], [governors|E] receive a Salary in $game_concept_gold$."
+ game_concept_governor_salary_desc: "In [governments|E] that distinguish between [gold|E] and [treasury|E], [governors|E] receive a Salary in $game_concept_gold$."
 
  game_concept_treasury_budgeting: "Treasury Budgeting"
  game_concept_treasury_budget: "Treasury Budget"
  game_concept_treasury_budgeting_desc: "A system responsible for distributing central funds to specific [vassals|E] and sub-vassals at specific allocation rates.\n\nWhen a budget is enacted, a per-vassal [treasury_budget_base_rate|E] is calculated for each [treasury_budget_category|E] based on the available [treasury_budget_capacity|E].\n\n@alert_icon! The calculated base rate #bold will not be changed#! until a new budget is enacted in the future! So if you get more recipients, your budget costs will rise."
 
  game_concept_treasury_budget_capacity: "Budget Capacity"
- game_concept_treasury_budget_capacity_desc: "The monthly amount of [treasury|E] available for [treasury_budgeting|E]. Consists of the treasury income minus any regular expenses that are not managed by budgeting, such as [treasury_vassal_development|E] and [court_amenities|E]."
+ game_concept_treasury_budget_capacity_desc: "The monthly amount of [treasury|E] available for [treasury_budgeting|E]. Consists of the treasury income minus any regular expenses that are not managed by budgeting, such as [treasury_vassal_prosperity|E] and [court_amenities|E]."
 
  game_concept_treasury_budget_category: "Budget Category"
  game_concept_treasury_budget_category_desc: "One distinct part of [treasury_budgeting|E] that can receive budget allocation. Each budget category can have different recipients, and might pay out in [gold|E] instead of [treasury|E]."
@@ -190,9 +189,9 @@
  game_concept_minister_of_justice_possessive: "$minister_justice_possessive$"
  minister_of_justice_action_breakdown: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Start the [GetGreatProjectType('minister_project_establish_control').GetName|V] [great_project|E]\n$BULLET$Use #V $imprison_interaction$#! [interaction|E] on [vassals|E] and [courtiers|E], who cannot refuse\n$BULLET$Use #V $pardon_interaction$#! [interaction|E] on [characters|E] who have committed [crimes|E]\n$BULLET$Use $censor_find_secrets_interaction$ [interaction|E] to find [secrets|E] in [vassal|E] [courts|E] and [imprison|E] or pardon known [criminals|E]\n$BULLET$Exposing [secrets|E] will trigger $catalyst_minister_exposed_secret$ [dynastic_cycle_catalyst|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
  game_concept_minister_of_works: "$minister_works$"
- game_concept_minister_of_works_desc: "The $game_concept_minister_of_works$ is the [minister|E] in charge of construction and development throughout the [realm|E], and may start [great_projects|E].\n\n$minister_of_works_action_breakdown$"
+ game_concept_minister_of_works_desc: "The $game_concept_minister_of_works$ is the [minister|E] in charge of construction and prosperity throughout the [realm|E], and may start [great_projects|E].\n\n$minister_of_works_action_breakdown$"
  game_concept_minister_of_works_possessive: "$minister_works_possessive$"
- minister_of_works_action_breakdown: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Start the [GetGreatProjectType('minister_project_development').GetName|V] [great_project|E]\n$BULLET$Start the [GetGreatProjectType('grand_canals').GetName|V] [great_project|E]\n$BULLET$Start the [GetGreatProjectType('great_wall').GetName|V] [great_project|E]\n$BULLET$Can construct [buildings|E] and [holdings|E] inside the [realm|E]\n$BULLET$Can construct [buildings|E] and [holdings|E] inside [tributaries|E] of [son_of_heaven|E] in [GetSituationType('dynastic_cycle').GetPhaseType('situation_dynastic_cycle_phase_stability_advancement').GetName] [dynastic_cycle_era_short|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
+ minister_of_works_action_breakdown: "#indent_newline:4 #weak The minister can, for example:\n$BULLET$Start the [GetGreatProjectType('minister_project_prosperity').GetName|V] [great_project|E]\n$BULLET$Start the [GetGreatProjectType('grand_canals').GetName|V] [great_project|E]\n$BULLET$Start the [GetGreatProjectType('great_wall').GetName|V] [great_project|E]\n$BULLET$Can construct [buildings|E] and [holdings|E] inside the [realm|E]\n$BULLET$Can construct [buildings|E] and [holdings|E] inside [tributaries|E] of [son_of_heaven|E] in [GetSituationType('dynastic_cycle').GetPhaseType('situation_dynastic_cycle_phase_stability_advancement').GetName] [dynastic_cycle_era_short|E]\n$BULLET$Access special #V $influence_meritorious_career_interaction$#! [interaction|E] options#!#!"
  game_concept_grand_secretariat_director: "Secretary Director"
  game_concept_grand_secretariat: "Grand Secretariat"
  game_concept_grand_secretariat_system: "Grand Secretariat System"
@@ -209,7 +208,7 @@
  game_concept_civilian_career_short: "Civilian"
  game_concept_military_career_path: "Military Career Path"
  game_concept_military_career_path_i: "@celestial_military_administration!" 
- game_concept_military_career_path_desc: "[rulers|E] who pursue a Military Career Path focus on martial skills over administrative tasks. They are appointed to Military Circuits and their [merit|E] will grow based on their ability to recruit and maintain [title_men_at_arms|E]."
+ game_concept_military_career_path_desc: "[rulers|E] who pursue a Military Career Path focus on martial skills over administrative tasks. They are appointed to Military Circuits and their [merit|E] will grow based on their ability to recruit and maintain [title_men_at_arms|E], and through victories in [battles|E], [sieges|E], and [wars|E]."
  game_concept_military_career: "Military Career"
  game_concept_military_career_short: "Military"
  
@@ -227,7 +226,7 @@
  game_concept_great_projects: "Great Projects"
  game_concept_great_project_i: "@great_project_icon!" 
  game_concept_great_project_possessive: "Great Project's"
- game_concept_great_project_desc: "Great Projects are massive undertakings that call on all the resources of the [realm|E].\n\nSome Great Projects involve constructing a [great_building|E], while others involve recovering from a [natural_disaster|E].\n\nWhile the Realm's [ruler|E] oversees the development of the Great Project, [subjects|E] can offer [great_project_contributions|E] to assist its progress."
+ game_concept_great_project_desc: "Great Projects are massive undertakings that call on all the resources of the [realm|E].\n\nSome Great Projects involve constructing a [great_district|E], while others involve recovering from a [natural_disaster|E].\n\nWhile the Realm's [ruler|E] oversees the development of the Great Project, [subjects|E] can offer [great_project_contributions|E] to assist its progress."
  game_concept_great_project_contribution: "Contribution"
  game_concept_great_project_contributions: "Contributions"
  game_concept_great_project_contribute: "Contribute"
@@ -310,7 +309,7 @@
  game_concept_disasters: "Disasters"
  game_concept_natural_disaster: "Natural Disaster"
  game_concept_natural_disasters: "Natural Disasters"
- game_concept_disaster_desc: "$game_concept_natural_disasters$ encompasses [floods|E] and [earthquakes|E].\n\nA $game_concept_natural_disaster$ will result in the [character_death_death|E] of many [characters|e] in the affected [counties|E], and will further have a significant negative impact on [development|E], [county_opinion|E], and [control|E] in accordance with the disaster's severity.\n\nThe devastation caused by a $game_concept_natural_disaster$ can be undone and the land revitalized with the completion of a Relief [great_project|E]."
+ game_concept_disaster_desc: "$game_concept_natural_disasters$ encompasses [floods|E] and [earthquakes|E].\n\nA $game_concept_natural_disaster$ will result in the [character_death_death|E] of many [characters|e] in the affected [counties|E], and will further have a significant negative impact on [prosperity|E], [popular_opinion|E], and [control|E] in accordance with the disaster's severity.\n\nThe devastation caused by a $game_concept_natural_disaster$ can be undone and the land revitalized with the completion of a Relief [great_project|E]."
 
  game_concept_earthquake: "Earthquake"
  game_concept_earthquakes: "Earthquakes"

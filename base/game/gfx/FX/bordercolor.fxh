@@ -5,22 +5,11 @@ Includes = {
 	"jomini/jomini_province_overlays.fxh"
 	"cw/utility.fxh"
 	"standardfuncsgfx.fxh"
+	"map_effect_textures.fxh"
 }
 
 PixelShader = {
 
-	TextureSampler PatternTexture
-	{
-		Index = 7
-		MagFilter = "Linear"
-		MinFilter = "Linear"
-		MipFilter = "Linear"
-		SampleModeU = "Wrap"
-		SampleModeV = "Wrap"
-		File = "gfx/map/textures/political_mapmode_pattern.dds"
-		srgb = yes
-	}
-	
 	Code
 	[[
 		float4 GetHighlightColor( in float2 WorldSpacePosXZ )
@@ -58,8 +47,7 @@ PixelShader = {
 		{
 			float PatternTiling = 15;
 			float2 ColorMapCoords = WorldSpacePosXZ * WorldSpaceToTerrain0To1;
-			float3 PatternMap = PdxTex2D( PatternTexture, float2( ColorMapCoords.x * 
-				PatternTiling * 2.0f, 1.0f - ( ColorMapCoords.y * PatternTiling ) ) ).rgb;
+			float3 PatternMap = PdxTex2D( MapEffectTextures, float3( ColorMapCoords.x * PatternTiling * 2.0f, 1.0f - ( ColorMapCoords.y * PatternTiling ), MAP_EFFECT_TEXTURE_INDEX_PATTERN ) ).rgb;
 
 			GetProvinceOverlayAndBlend( ColorMapCoords, BorderColor, 
 				BorderPreLightingBlend, BorderPostLightingBlend, SkipSecondaryProvinceOverlay );

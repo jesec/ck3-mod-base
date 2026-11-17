@@ -37,7 +37,7 @@ scripted_trigger hold_court_8290_province_trigger = {
 }
 
 scripted_trigger hold_court_8290_county_trigger = {
-	development_level >= terrible_development_level
+	prosperity_level >= terrible_prosperity_level
 	save_temporary_scope_as = county_temp
 	any_county_province = { hold_court_8290_province_trigger = yes }
 }
@@ -48,7 +48,7 @@ scripted_trigger hold_court_8290_vassal_trigger = {
 		government_has_flag = government_is_feudal
 		government_has_flag = government_is_clan
 	}
-	culture = { has_innovation = innovation_development_02 }
+	culture = { has_innovation = innovation_prosperity_02 }
 	save_temporary_scope_as = vassal_temp
 	any_sub_realm_county = { hold_court_8290_county_trigger = yes }
 }
@@ -124,12 +124,11 @@ hold_court.8290 = {
 			name = has_had_government_request_event
 		}
 		culture = {
-			has_innovation = innovation_development_02
+			has_innovation = innovation_prosperity_02
 			# Must have a culture that is likely to grant a city charter
 			OR = {
 				has_cultural_parameter = can_make_republican_vassals
 				has_cultural_parameter = city_buildings_more_powerful
-				has_cultural_parameter = city_buildings_less_control
 				has_cultural_parameter = republican_vassals_pay_more
 				has_cultural_parameter = more_parochial_vassals
 			}
@@ -304,12 +303,11 @@ scripted_trigger hold_court_8300_vassal_trigger = {
 	is_councillor = no
 	NOT = { root.diarch ?= this }
 	culture = {
-		has_innovation = innovation_development_02
+		has_innovation = innovation_prosperity_02
 		# Must be of a culture that would want to have a city for themselves
 		OR = {
 			has_cultural_parameter = can_make_republican_vassals
 			has_cultural_parameter = city_buildings_more_powerful
-			has_cultural_parameter = city_buildings_less_control
 			has_cultural_parameter = republican_vassals_pay_more
 			has_cultural_parameter = more_parochial_vassals
 		}
@@ -387,7 +385,6 @@ hold_court.8300 = {
 			OR = {
 				has_cultural_parameter = can_make_republican_vassals
 				has_cultural_parameter = city_buildings_more_powerful
-				has_cultural_parameter = city_buildings_less_control
 				has_cultural_parameter = republican_vassals_pay_more
 				has_cultural_parameter = more_parochial_vassals
 			}
@@ -415,7 +412,6 @@ hold_court.8300 = {
 					OR = {
 						has_cultural_parameter = can_make_republican_vassals
 						has_cultural_parameter = city_buildings_more_powerful
-						has_cultural_parameter = city_buildings_less_control
 						has_cultural_parameter = republican_vassals_pay_more
 						has_cultural_parameter = more_parochial_vassals
 					}
@@ -481,7 +477,6 @@ hold_court.8300 = {
 						OR = {
 							has_cultural_parameter = can_make_republican_vassals
 							has_cultural_parameter = city_buildings_more_powerful
-							has_cultural_parameter = city_buildings_less_control
 							has_cultural_parameter = republican_vassals_pay_more
 							has_cultural_parameter = more_parochial_vassals
 						}

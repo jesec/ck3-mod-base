@@ -1,0 +1,178 @@
+﻿gdp_set_league_focus_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/gdp_republic_trade_ships.dds"
+	}
+	decision_group_type = republic
+	sort_order = 80
+	cooldown = { years = 1 }
+
+	desc = gdp_set_league_focus_decision_desc
+	selection_tooltip = gdp_set_league_focus_decision_tooltip
+	confirm_text = gdp_set_league_focus_decision_confirm
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 300
+		duchy = 180
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		exists = confederation
+		gdp_is_trade_league_head_trigger = yes
+		confederation = {
+			any_confederation_member = {
+				any_trade_category_traded_in = {
+					has_trade_good_category_xp_track = yes
+				}
+			}
+		}
+	}
+
+	is_valid = {
+		gdp_league_can_set_focused_category_trigger = yes
+		custom_tooltip = {
+			text = gdp_set_league_focus_trading_category_tt
+			confederation ?= {
+				any_confederation_member = {
+					any_trade_category_traded_in = {
+						has_trade_good_category_xp_track = yes
+						trigger_if = {
+							limit = {
+								root.confederation ?= { exists = var:league_focused_category }
+							}
+							NOT = { this = root.confederation.var:league_focused_category }
+						}
+					}
+				}
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_available_quick = {
+			adult = yes
+			imprisoned = no
+			incapable = no
+		}
+		exists = scope:selected_item
+		gdp_league_can_set_focused_category_trigger = yes # to show in the button tooltip
+	}
+
+	cost = {
+		prestige = 500
+	}
+
+	effect = {
+		gdp_set_league_focused_category_effect = {
+			LEAGUE = root.confederation
+			CATEGORY = scope:selected_item
+		}
+	}
+
+	widget = {
+		gui = "decision_view_widget_select_trade_good_category"
+		controller = select_scope_object
+		show_from_start = yes
+		decision_to_second_step_button = "gdp_set_league_focus_decision_confirm"
+
+		setup_items = {
+			scope:actor.confederation ?= {
+				every_confederation_member = {
+					every_trade_category_traded_in = {
+						limit = { has_trade_good_category_xp_track = yes }
+						add_to_list = item_list
+					}
+				}
+			}
+		}
+
+		default_item = {
+			scope:actor.confederation ?= {
+				every_confederation_member = {
+					every_trade_category_traded_in = {
+						limit = { has_trade_good_category_xp_track = yes }
+						add_to_list = league_traded_categories
+					}
+				}
+			}
+			if = {
+				limit = {
+					scope:actor.confederation ?= { exists = var:league_focused_category }
+					any_in_list = {
+						list = league_traded_categories
+						NOT = { this = scope:actor.confederation.var:league_focused_category }
+					}
+				}
+				random_in_list = {
+					list = league_traded_categories
+					limit = {
+						NOT = { this = scope:actor.confederation.var:league_focused_category }
+					}
+					save_scope_as = selected_item
+				}
+			}
+			else = {
+				random_in_list = {
+					list = league_traded_categories
+					save_scope_as = selected_item
+				}
+			}
+		}
+
+		is_item_valid = {
+			trigger_if = {
+				limit = {
+					scope:actor.confederation ?= { exists = var:league_focused_category }
+				}
+				custom_tooltip = {
+					text = gdp_set_league_focus_not_current_tt
+					NOT = { this = scope:actor.confederation.var:league_focused_category }
+				}
+			}
+		}
+
+		ai_select_item = {
+			scope:actor.confederation ?= {
+				every_confederation_member = {
+					every_trade_category_traded_in = {
+						limit = {
+							has_trade_good_category_xp_track = yes
+							trigger_if = {
+								limit = {
+									scope:actor.confederation ?= { exists = var:league_focused_category }
+								}
+								NOT = { this = scope:actor.confederation.var:league_focused_category }
+							}
+						}
+						add_to_list = league_traded_categories
+					}
+				}
+			}
+			random_in_list = {
+				list = league_traded_categories
+				save_scope_as = selected_item
+			}
+		}
+	}
+
+	ai_potential = {
+		is_ai = yes
+		is_ruler = yes
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 80
+			confederation ?= { NOT = { has_variable = league_focused_category } }
+		}
+		modifier = {
+			add = 5
+			confederation ?= { has_variable = league_focused_category }
+		}
+	}
+}

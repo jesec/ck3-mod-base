@@ -1,0 +1,529 @@
+﻿overthrow_government = {
+	# Basic Setup
+	skill = intrigue
+	desc = overthrow_government_desc_general
+	success_desc = "OVERTHROW_GOVERNMENT_SUCCESS_DESC"
+	discovery_desc = "OVERTHROW_GOVERNMENT_DISCOVERY_DESC"
+	icon = icon_overthrow_government
+	illustration = "gfx/interface/illustrations/event_scenes/gallows.dds"
+	category = hostile
+	target_type = character
+	is_secret = yes
+	maximum_breaches = 5
+	cooldown = { years = 0 }
+
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	speed_per_target_skill_point = t2_spsp_target_value
+	spymaster_speed_per_skill_point = t2_spsp_owner_spy_value
+	target_spymaster_speed_per_skill_point = t2_spsp_target_spy_value
+	tier_speed = 1	
+	base_progress_goal = t2_base_phase_length_value
+	maximum_secrecy = 95
+	base_maximum_success = t2_base_max_success_value
+	phases_per_agent_charge = 1
+	success_chance_growth_per_skill_point = t2_scgpsp_value
+
+	# Core Triggers
+	allow = {
+		scope:target = {
+			is_adult = yes
+			this = root.liege
+			
+		}
+		is_at_war_with_liege = no
+		is_adult = yes
+		is_playable_character = yes
+		is_imprisoned = no
+	}
+	valid = {
+		is_incapable = no
+		OR = {
+			liege ?= scope:target
+			# overthrow_government_outcome.1001 hands over the title before it ends the scheme
+			has_character_flag = overthrow_government_resolving
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		
+		ai_agent_join_chance_basic_suite_modifier = yes
+		ai_agent_join_chance_hostile_general_suite_modifier = yes
+		ai_agent_join_chance_republican_political_modifier = yes
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers guests scripted_relations }
+	agent_groups_target_character_perspective = { courtiers vassals }
+
+	odds_prediction = {
+		add = hostile_scheme_base_odds_prediction_target_is_char_value
+		add = odds_skill_contribution_intrigue_value
+		add = agent_groups_owner_perspective_value
+		add = agent_groups_target_character_perspective_value
+		add = odds_fabricate_hook_scheme_misc_value
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		## Intrigue to help organize the overthrow
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+
+		hostile_scheme_base_chance_modifier = yes
+
+		# Countermeasures.
+		apply_indirect_scheme_success_chance_adjustments_modifier = yes
+
+		modifier = {
+			add = 20
+			desc = FABRICATE_HOOK_DECEITFUL
+			scope:owner = {
+				has_trait = deceitful
+			}
+		}
+
+		modifier = {
+			add = -20
+			desc = FABRICATE_HOOK_HONEST
+			scope:owner = {
+				has_trait = honest
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FABRICATE_HOOK_TARGET_TRUSTING
+			scope:target = {
+				has_trait = trusting
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FABRICATE_HOOK_TARGET_INTELLECT_BAD_1
+			scope:target = {
+				has_trait = intellect_bad_1
+			}
+		}
+
+		modifier = {
+			add = 20
+			desc = FABRICATE_HOOK_TARGET_INTELLECT_BAD_2
+			scope:target = {
+				has_trait = intellect_bad_2
+			}
+		}
+
+		modifier = {
+			add = 30
+			desc = FABRICATE_HOOK_TARGET_INTELLECT_BAD_3
+			scope:target = {
+				has_trait = intellect_bad_3
+			}
+		}
+
+		modifier = {
+			add = -10
+			desc = FABRICATE_HOOK_TARGET_INTELLECT_GOOD_1
+			scope:target = {
+				has_trait = intellect_good_1
+			}
+		}
+
+		modifier = {
+			add = -20
+			desc = FABRICATE_HOOK_TARGET_INTELLECT_GOOD_2
+			scope:target = {
+				has_trait = intellect_good_2
+			}
+		}
+
+		modifier = {
+			add = -30
+			desc = FABRICATE_HOOK_TARGET_INTELLECT_GOOD_3
+			scope:target = {
+				has_trait = intellect_good_3
+			}
+		}
+
+		modifier = {
+			add = -20
+			desc = FABRICATE_HOOK_TARGET_SCHEMER
+			scope:target = {
+				has_trait = schemer
+			}
+		}
+
+		modifier = {
+			add = -20
+			desc = FABRICATE_HOOK_TARGET_PARANOID
+			scope:target = {
+				has_trait = paranoid
+			}
+		}
+
+		modifier = {
+			add = -10
+			desc = FABRICATE_HOOK_TARGET_FICKLE
+			scope:target = {
+				has_trait = fickle
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FABRICATE_HOOK_TARGET_ARROGANT
+			scope:target = {
+				has_trait = arrogant
+			}
+		}
+
+		modifier = {
+			add = 20
+			desc = FABRICATE_HOOK_TARGET_GREEDY
+			scope:target = {
+				has_trait = greedy
+			}
+		}
+
+		modifier = {
+			add = 10
+			desc = FABRICATE_HOOK_TARGET_CRAVEN
+			scope:target = {
+				has_trait = craven
+			}
+		}
+
+
+		## Republic specific modifiers ##
+
+		# Doge is Diligent (-)
+		modifier = {
+			add = -10
+			desc = OVERTHROW_GOVERNMENT_TARGET_DILIGENT
+			scope:target = {
+				has_trait = diligent
+			}
+		}
+
+		# Doge is August (- -)
+		modifier = {
+			add = -20
+			desc = OVERTHROW_GOVERNMENT_TARGET_AUGUST
+			scope:target = {
+				has_trait = august
+			}
+		}
+
+		# Doge is Overseer (- -)
+		modifier = {
+			add = -10
+			desc = OVERTHROW_GOVERNMENT_TARGET_OVERSEER
+			scope:target = {
+				has_trait = overseer
+			}
+		}
+
+		# Doge is Diplomat (- -)
+		modifier = {
+			add = -10
+			desc = OVERTHROW_GOVERNMENT_TARGET_DIPLOMAT
+			scope:target = {
+				has_trait = diplomat
+			}
+		}
+
+		# Doge is Excommunicated (- -)
+		modifier = {
+			add = -10
+			desc = OVERTHROW_GOVERNMENT_TARGET_EXCOMMUNICATED
+			scope:target = {
+				has_trait = excommunicated
+			}
+		}
+
+		# Doge is a Drunkard ( + )
+		modifier = {
+			add = 10
+			desc = OVERTHROW_GOVERNMENT_TARGET_DRUNKARD
+			scope:target = {
+				has_trait = drunkard
+			}
+		}
+		
+		# Doge is a Patriarch (-)
+		modifier = {
+			add = -10
+			desc = OVERTHROW_GOVERNMENT_TARGET_FAMILY_FIRST
+			scope:target = {
+				has_trait = family_first
+			}
+		}
+
+		# The Government is unpopular (+)
+		modifier = {
+			add = 20
+			desc = OVERTHROW_GOVERNMENT_TARGET_UNPOPULAR
+			scope:target = {
+				capital_county ?= {
+					popular_opinion = { -50 0 }
+				}
+			}
+		}
+
+		modifier = {
+			add = 30
+			desc = OVERTHROW_GOVERNMENT_TARGET_VERY_UNPOPULAR
+			scope:target = {
+				capital_county ?= {
+					popular_opinion < -50
+				}
+			}
+		}
+
+		modifier = {
+			add = -20
+			desc = OVERTHROW_GOVERNMENT_TARGET_POPULAR
+			scope:target = {
+				capital_county ?= {
+					popular_opinion = { 25 50 }
+				}
+			}
+		}
+
+		modifier = {
+			add = -30
+			desc = OVERTHROW_GOVERNMENT_TARGET_VERY_POPULAR
+			scope:target = {
+				capital_county ?= {
+					popular_opinion > 50
+				}
+			}
+		}
+		
+		# Control is low in the capital (+)
+		modifier = {
+			add = 10
+			desc = OVERTHROW_GOVERNMENT_TARGET_VERY_LOW_CONTROL
+			scope:target = {
+				capital_county ?= {
+					county_control < county_control_relative_25
+				}
+			}
+		}
+
+		modifier = {
+			add = 5
+			desc = OVERTHROW_GOVERNMENT_TARGET_LOW_CONTROL
+			scope:target = {
+				capital_county ?= {
+					county_control >= county_control_relative_25
+					county_control <= county_control_baseline
+				}
+			}
+		}
+		modifier = {
+			add = -35
+			desc = OVERTHROW_GOVERNMENT_TARGET_VERY_HIGH_CONTROL
+			scope:target = {
+				capital_county ?= {
+					county_control > county_control_relative_75
+				}
+			}
+		}
+
+		compare_modifier = {
+			value = scope:owner.cp:councillor_spymaster.intrigue
+			multiplier = 2
+			desc = FABRICATE_HOOK_SPYMASTER_INTRIGUE
+			trigger = {
+				exists = scope:owner.cp:councillor_spymaster
+				scope:owner.cp:councillor_spymaster != scope:target
+			}
+		}
+		
+		modifier = {
+			add = -50
+			desc = FABRICATE_HOOK_TARGETING_SPYMASTER
+			scope:target = {
+				has_council_position = councillor_spymaster
+			}
+		}
+		
+		# Spiritual Head of Faith
+		modifier = {
+			add = -50
+			desc = "SCHEME_VS_SPIRITUAL_HOF"
+			scope:target = {
+				faith = scope:owner.faith
+				faith = {
+					has_doctrine = doctrine_spiritual_head
+				}
+				faith = {
+					religious_head ?= {
+			 			this = scope:target
+			 		}
+				}
+			}
+		}
+	}	
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
+
+	
+		if = {
+			limit = {
+				scope:target = {
+					capital_county ?= {
+						county_control < county_control_baseline
+					}
+				}
+			}
+			add = {
+				value = 20
+				desc = OVERTHROW_GOVERNMENT_SECRET_LOW_CONTROL
+			}
+		}
+		if = {
+			limit = {
+				scope:target = {
+					capital_county ?= {
+						popular_opinion <= 0
+					}
+				}
+			}
+			add = {
+				value = 20
+				desc = OVERTHROW_GOVERNMENT_SECRET_UNPOPULAR
+			}
+		}
+	}
+
+	# On Actions
+	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:indirect
+		}
+		add_scheme_starting_opportunities_intrigue_effect = yes
+		# Fallback agents — a balanced config if you start the scheme from script.
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
+				}
+			}
+			add_agent_slot = agent_conspirator
+			add_agent_slot = agent_demagogue
+			add_agent_slot = agent_thief
+			add_agent_slot = agent_financier
+			add_agent_slot = agent_commander
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		overthrow_government_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click  = { overthrow_government_scheme_prep_effect = yes }
+	
+	on_monthly = {
+		hostile_scheme_monthly_discovery_chance_effect = yes
+	}
+	
+	on_semiyearly = {
+	}
+	on_invalidated = {
+		scheme_target_character = {
+			save_scope_as = target
+		}
+		scheme_owner = {
+			save_scope_as = owner
+		}
+		if = {
+			limit = {
+				scope:target = { is_alive = no }
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = overthrow_government_scheme_invalidated_title
+					left_icon = scope:target
+					custom_description_no_bullet = {
+						object = scope:target
+						text = scheme_target_died
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:target = {
+					is_imprisoned = yes
+				}
+			}
+			scope:target.imprisoner = { save_scope_as = other_imprisoner }
+			scope:owner = {
+				send_interface_toast = {
+					title = overthrow_government_scheme_invalidated_title
+					left_icon = scope:target
+					custom_description_no_bullet = {
+						subject = scope:other_imprisoner
+						object = scope:target
+						text = scheme_target_imprisoned_by_other
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:target = {
+					has_trait = incapable
+				}
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = overthrow_government_scheme_invalidated_title
+					left_icon = scope:target
+					custom_tooltip = scheme_target_is_incapable
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				NOT = { scope:owner.liege ?= scope:target }
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = overthrow_government_scheme_invalidated_title
+					left_icon = scope:target
+					custom_description_no_bullet = {
+						object = scope:target
+						text = scheme_target_not_liege
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				scope:target = { 
+					NOT = { in_diplomatic_range = scope:owner } 
+				}
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = overthrow_government_scheme_invalidated_title
+					left_icon = scope:target
+					custom_description_no_bullet = {
+						object = scope:target
+						text = scheme_target_not_in_diplomatic_range
+					}
+				}
+			}
+		}
+	}
+}

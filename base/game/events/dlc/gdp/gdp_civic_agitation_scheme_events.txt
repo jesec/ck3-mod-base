@@ -1,0 +1,263 @@
+﻿namespace = gdp_civic_agitation
+
+gdp_civic_agitation.0005 = {
+	hidden = yes
+
+	immediate = {
+		save_scope_as = owner
+		scope:scheme.scheme_target_title ?= { save_scope_as = target }
+
+		save_scope_value_as = {
+			name = discovery_chance
+			value = {
+				value = 100
+				subtract = scope:scheme.scheme_secrecy
+			}
+		}
+
+		random = {
+			chance = scope:discovery_chance
+			save_scope_value_as = {
+				name = scheme_exposed_this_execution
+				value = yes
+			}
+			scope:scheme ?= { expose_scheme = yes }
+			add_character_modifier = {
+				modifier = gdp_caught_agitating_modifier
+				years = 10
+			}
+			scope:target.holder ?= {
+				add_opinion = {
+					modifier = angry_opinion
+					target = root
+					opinion = -40
+				}
+			}
+		}
+
+		random = {
+			chance = gdp_civic_agitation_resolution_chance_value
+			save_scope_value_as = {
+				name = scheme_successful
+				value = yes
+			}
+		}
+
+		if = {
+			limit = { exists = scope:scheme_successful }
+			trigger_event = { on_action = gdp_civic_agitation_scheme_success }
+		}
+		else = {
+			trigger_event = { on_action = gdp_civic_agitation_scheme_failure }
+		}
+
+		scope:scheme ?= { end_scheme = yes }
+	}
+}
+
+gdp_civic_agitation.0001 = {
+	type = character_event
+	window = scheme_successful_event
+	title = gdp_civic_agitation.0001.t
+
+	desc = gdp_civic_agitation.0001.desc
+
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = personality_cynical
+	}
+	right_portrait = {
+		trigger = { exists = scope:target.holder }
+		character = scope:target.holder
+		animation = disapproval
+	}
+
+	trigger = {
+		exists = scope:target
+	}
+
+	option = {
+		name = gdp_civic_agitation.0001.a
+
+		set_variable = burgher_sponsor_joins_war
+
+		gdp_civic_agitation_success_effect = {
+			COUNTY = scope:target
+			SPONSOR = root
+		}
+
+		custom_tooltip = gdp_civic_agitation_sponsor_joins_war_tt
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				has_trait = craven
+			}
+			modifier = {
+				factor = 0
+				is_at_war = yes
+			}
+		}
+	}
+
+	option = {
+		name = gdp_civic_agitation.0001.b
+
+		trigger = {
+			gold >= major_gold_value
+		}
+
+		show_as_unavailable = {
+			gold < major_gold_value
+		}
+
+		remove_short_term_gold = major_gold_value
+		set_variable = burgher_sponsor_war_chest
+
+		gdp_civic_agitation_success_effect = {
+			COUNTY = scope:target
+			SPONSOR = root
+		}
+
+		custom_tooltip = gdp_civic_agitation_sponsor_war_chest_tt
+
+		stress_and_fulfillment_impact = {
+			greedy = medium_stress_impact_gain
+			generous = minor_stress_impact_loss
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				has_trait = greedy
+			}
+		}
+	}
+
+	option = {
+		name = {
+			trigger = { exists = scope:scheme_exposed_this_execution }
+			text = gdp_civic_agitation.0001.c.exposed
+		}
+		name = {
+			trigger = {
+				NOT = { exists = scope:scheme_exposed_this_execution }
+			}
+			text = gdp_civic_agitation.0001.c
+		}
+
+		gdp_civic_agitation_success_effect = {
+			COUNTY = scope:target
+			SPONSOR = root
+		}
+
+		stress_and_fulfillment_impact = {
+			ambitious = minor_stress_impact_gain
+			brave = minor_stress_impact_gain
+			craven = minor_stress_impact_loss
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = ambitious
+					has_trait = brave
+				}
+			}
+		}
+	}
+}
+
+gdp_civic_agitation.0002 = {
+	type = character_event
+	window = scheme_failed_event
+	title = gdp_civic_agitation.0002.t
+
+	desc = gdp_civic_agitation.0002.desc
+
+	theme = intrigue
+
+	left_portrait = {
+		character = root
+		animation = disappointed
+	}
+	right_portrait = {
+		trigger = { exists = scope:factor }
+		character = scope:factor
+		animation = dismissal
+	}
+
+	immediate = {
+		if = {
+			limit = { NOT = { exists = scope:target } }
+			scope:scheme.scheme_target_title ?= { save_scope_as = target }
+		}
+
+		if = {
+			limit = { NOT = { exists = scope:factor } }
+			if = {
+				limit = {
+					cp:councillor_spymaster ?= {
+						is_available_ai_adult = yes
+						this != root
+					}
+				}
+				cp:councillor_spymaster = { save_scope_as = factor }
+			}
+			else_if = {
+				limit = {
+					cp:councillor_chancellor ?= {
+						is_available_ai_adult = yes
+						this != root
+					}
+				}
+				cp:councillor_chancellor = { save_scope_as = factor }
+			}
+			else_if = {
+				limit = {
+					any_councillor = {
+						is_available_ai_adult = yes
+						this != root
+					}
+				}
+				random_councillor = {
+					limit = {
+						is_available_ai_adult = yes
+						this != root
+					}
+					save_scope_as = factor
+				}
+			}
+			else = {
+				random_courtier = {
+					limit = {
+						is_available_ai_adult = yes
+						this != root
+					}
+					save_scope_as = factor
+				}
+			}
+		}
+
+		stress_and_fulfillment_impact = {
+			base = minor_stress_impact_gain
+			greedy = medium_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+			patient = minor_stress_impact_loss
+			content = minor_stress_impact_loss
+		}
+	}
+
+	option = {
+		name = gdp_civic_agitation.0002.a
+	}
+}

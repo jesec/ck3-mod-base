@@ -1,0 +1,53 @@
+﻿macro = {
+	description = "Get the right type of suzerain relationship"
+	definition = "GetSuzerainRelationship(Character)"
+	replace_with = "SelectLocalization( IsLandlessMerchant( Character ), 'PATRON', 'SUZERAIN' )"
+}
+
+macro = {
+	description = "Is the character a Landless Merchant?"
+	definition = "IsLandlessMerchant(TargetCharacter)"
+	replace_with = "TargetCharacter.GetGovernment.IsType( 'merchant_government' )"
+}
+
+macro = {
+	description = "Is the character a Landless Adventurer or Merchant?"
+	definition = "IsLandlessAdventurerOrMerchant(TargetCharacter)"
+	replace_with = "Or( TargetCharacter.GetGovernment.IsType( 'landless_adventurer_government' ), TargetCharacter.GetGovernment.IsType( 'merchant_government' ) )"
+}
+
+macro = {
+	description = "Is the character a Republican Character?"
+	definition = "IsRepublican(TargetCharacter)"
+	replace_with = "TargetCharacter.GetGovernment.IsType( 'republic_government' )"
+}
+
+macro = {
+	description = "Is the character a landless Republican Character?"
+	definition = "IsPatrician(TargetCharacter)"
+	replace_with = "And( TargetCharacter.GetGovernment.IsType( 'republic_government' ), Not( TargetCharacter.IsLandedRuler ) )"
+}
+
+macro = {
+	description = "Does the trade good category not have an active effects description?"
+	definition = "HasEmptyActiveEffects(TradeGoodCategory)"
+	replace_with = "StringIsEmpty( TradeGoodCategory.GetTradeGoodCategoryActiveEffectsDesc( Character.Self ) )"
+}
+
+macro = {
+	description = "Has the trade good a positive category level?"
+	definition = "IsTradeGoodCategoryActive(TradeGoodCategory)"
+	replace_with = "Or( GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ), TradeGoodCategory.IsActivelyTradedGood( Character.Self ) )"
+}
+
+macro = {
+	description = "Alpha blend logic for province (location) stat icons in window_menatarms.gui"
+	definition = "MaaProvinceStatAlpha(Stat)"
+	replace_with = "Select_float(NotEqualTo_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, Stat ),'(CFixedPoint)0'), '(float)1.0','(float)0.4')"
+}
+
+macro = {
+	description = "Alpha blend logic for other MaA stat icons in window_menatarms_type_view.gui"
+	definition = "MaaStatAlpha(Stat)"
+	replace_with = "Select_float(NotEqualTo_CFixedPoint(MenAtArmsType.GetStat( GetPlayer, Province.Self, Title.Self, Stat ),'(CFixedPoint)0'), '(float)1.0','(float)0.4')"
+}

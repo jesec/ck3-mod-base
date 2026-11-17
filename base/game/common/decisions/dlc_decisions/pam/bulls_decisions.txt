@@ -607,6 +607,25 @@ pam_permit_tenet_bull_decision = {
 						save_scope_as = selected_item
 					}
 				}
+				else_if = { # A tenet intrinsic to the faith is restored before anything else is sanctioned
+					limit = {
+						any_character_tenet = {
+							knowledge_filter = known
+							pam_tenet_can_be_permitted_trigger = yes
+							pam_tenet_ai_should_permit_intrinsic_trigger = { CHARACTER = scope:actor }
+						}
+					}
+					ordered_character_tenet = {
+						knowledge_filter = known
+						limit = {
+							pam_tenet_can_be_permitted_trigger = yes
+							pam_tenet_ai_should_permit_intrinsic_trigger = { CHARACTER = scope:actor }
+						}
+						order_by = pam_raw_tenet_popularity_value
+						position = 0
+						save_scope_as = selected_item
+					}
+				}
 				else_if = { # A tenet the faith adores gets sanctioned whether or not the Pope cares for it
 					limit = {
 						any_character_tenet = {
@@ -647,6 +666,10 @@ pam_permit_tenet_bull_decision = {
 								factor = 0.25
 								this = tenet:tenet_polyamory
 							}
+							modifier = {
+								factor = anathema_to_faith_ai_weight_factor
+								tenet_is_anathema_to_faith_trigger = { FAITH = scope:actor.faith }
+							}
 						}
 						save_scope_as = selected_item
 					}
@@ -668,6 +691,10 @@ pam_permit_tenet_bull_decision = {
 							modifier = {
 								factor = 0.25
 								this = tenet:tenet_polyamory
+							}
+							modifier = {
+								factor = anathema_to_faith_ai_weight_factor
+								tenet_is_anathema_to_faith_trigger = { FAITH = scope:actor.faith }
 							}
 						}
 						save_scope_as = selected_item
@@ -704,6 +731,10 @@ pam_permit_tenet_bull_decision = {
 				knowledge_filter = known
 				pam_tenet_can_be_permitted_no_actor_trigger = yes
 				pam_tenet_is_overwhelmingly_popular_trigger = { CHARACTER = root }
+			}
+			any_character_tenet = {
+				knowledge_filter = known
+				pam_tenet_ai_should_permit_intrinsic_trigger = { CHARACTER = root }
 			}
 		}
 	}
@@ -871,6 +902,31 @@ pam_prohibit_tenet_bull_decision = {
 						save_scope_as = selected_item
 					}
 				}
+				else_if = { # An anathema the faith permits is struck down next
+					limit = {
+						any_character_tenet = {
+							knowledge_filter = known
+							pam_tenet_can_be_prohibited_trigger = yes
+							scope:actor = {
+								NOT = { has_personal_tenet = scope:pam_tenet_candidate }
+							}
+							pam_tenet_ai_should_prohibit_anathema_trigger = { CHARACTER = scope:actor }
+						}
+					}
+					ordered_character_tenet = {
+						knowledge_filter = known
+						limit = {
+							pam_tenet_can_be_prohibited_trigger = yes
+							scope:actor = {
+								NOT = { has_personal_tenet = scope:pam_tenet_candidate }
+							}
+							pam_tenet_ai_should_prohibit_anathema_trigger = { CHARACTER = scope:actor }
+						}
+						order_by = pam_raw_tenet_popularity_value
+						position = 0
+						save_scope_as = selected_item
+					}
+				}
 				else = {
 					random_undesired_tenet = {
 						limit = {
@@ -910,6 +966,14 @@ pam_prohibit_tenet_bull_decision = {
 					NOT = { has_personal_tenet = scope:pam_tenet_candidate }
 				}
 				pam_tenet_ai_should_purge_trigger = { CHARACTER = root }
+			}
+			any_character_tenet = {
+				knowledge_filter = known
+				pam_tenet_can_be_prohibited_no_actor_trigger = yes
+				root = {
+					NOT = { has_personal_tenet = scope:pam_tenet_candidate }
+				}
+				pam_tenet_ai_should_prohibit_anathema_trigger = { CHARACTER = root }
 			}
 			any_undesired_tenet = {
 				known_tenets = yes

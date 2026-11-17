@@ -3,14 +3,14 @@
  activity_survey: "Inspection"
  activity_survey_desc: "Perform a thorough inspection of your lands to ensure your realm is a well-running machine, and look for opportunities to improve upon the current bureaucracy and situation."
  activity_survey_tenet_bonus: "\n$BULLET_WITH_TAB$Will yield [piety_experience|E] upon completion"
- activity_survey_host_desc: "[AddLocalizationIf( GetPlayer.GetGovernment.HasRule( 'merit' ), 'activity_survey_gain_merit_desc' )]$BULLET_WITH_TAB$May gain @pressed_claim![claims|E]\n$BULLET_WITH_TAB$May increase @vassal_icon![offer_vassalization|E] Acceptance\n$BULLET_WITH_TAB$May improve @gold_icon![taxes|E] in the [county|E]\n$BULLET_WITH_TAB$May improve @development_icon![development|E] in the [county|E]\n$BULLET_WITH_TAB$May improve @control_icon![control|E] in the [county|E]\n$BULLET_WITH_TAB$May improve @stationed_regiment_icon![levies|E] in the [county|E]\n$BULLET_WITH_TAB$May improve @opinion_icon![opinion|E]\n$BULLET_WITH_TAB$May improve @domain_icon![county_opinion|E][AddLocalizationIf( GetPlayer.GetFaith.HasParameterByKey('inspections_unlocked_and_costs_piety' ), 'activity_survey_tenet_bonus' )]"
+ activity_survey_host_desc: "[AddLocalizationIf( GetPlayer.GetGovernment.HasRule( 'merit' ), 'activity_survey_gain_merit_desc' )]$BULLET_WITH_TAB$May gain @pressed_claim![claims|E]\n$BULLET_WITH_TAB$May increase @vassal_icon![offer_vassalization|E] Acceptance\n$BULLET_WITH_TAB$May improve @gold_icon![taxes|E] in the [county|E]\n$BULLET_WITH_TAB$May improve @prosperity_icon![prosperity|E] in the [county|E]\n$BULLET_WITH_TAB$May improve @control_icon![control|E] in the [county|E]\n$BULLET_WITH_TAB$May improve @stationed_regiment_icon![levies|E] in the [county|E]\n$BULLET_WITH_TAB$May improve @opinion_icon![opinion|E]\n$BULLET_WITH_TAB$May improve @popular_opinion_icon![popular_opinion|E][AddLocalizationIf( GetPlayer.GetFaith.HasParameterByKey('inspections_unlocked_and_costs_piety' ), 'activity_survey_tenet_bonus' )]"
  activity_survey_guest_desc: ""
  activity_survey_conclusion_desc: "This journey has given me a great chance to see more of my realm, but I can only stay here for so long. My job here is done, it is time to return home."
  activity_survey_selection_tooltip: "Ensure your realm is run by competent bootlickers through a thorough inspection\n\nAnticipated Rewards: $rewards_inspection_tt$"
  activity_survey_destination_selection: "\n[inspections|E] benefit from happening in [counties|E] with low [county_control|E] or along the border to foreign [realms|E], where the local bureaucracy is coming up short. These areas may give you more opportunities and have an increased [inspection_success_chance_no_prefix|E]."
  survey_activity_not_capital: "[inspections|E] cannot be hosted in the [capital|E]"
  survey_activity_on_cooldown: "[inspections|E] can only be hosted in a [county|E] once every #bold 5#! years"
- rewards_inspection_tt: "\n$BULLET_WITH_TAB$@pressed_claim![claims|E] & @vassal_icon![offer_vassalization|E] Acceptance\n$BULLET_WITH_TAB$@gold_icon![taxes|E], @development_icon![development|E], & @control_icon![control|E]\n$BULLET_WITH_TAB$@stationed_regiment_icon![levies|E], @opinion_icon![opinion|E], & @domain_icon![county_opinion|E]"
+ rewards_inspection_tt: "\n$BULLET_WITH_TAB$@pressed_claim![claims|E]\n$BULLET_WITH_TAB$@vassal_icon![offer_vassalization|E] Acceptance\n$BULLET_WITH_TAB$@gold_icon![taxes|E]\n$BULLET_WITH_TAB$[prosperity_i|E] [prosperity|E]\n$BULLET_WITH_TAB$[control_i|E] [control|E]\n$BULLET_WITH_TAB$@stationed_regiment_icon![levies|E]\n$BULLET_WITH_TAB$[opinion_i|E] [opinion|E]\n$BULLET_WITH_TAB$[popular_opinion_i|E] [popular_opinion|E]"
  activity_survey_predicted_cost: "The cost of an [inspection|E] is primarily affected by the amount of funding allocated to the [activity|E]. More funding will make it easier to accomplish your tasks, but will be more expensive."
  
  activity_survey_gain_merit_desc: "$BULLET_WITH_TAB$$may_gain_merit_desc$\n"
@@ -62,11 +62,12 @@
  ### Intro Event ###
  bp3_survey.0005.t: "Arrival"
  bp3_survey.0005.desc.holder: "As I arrive in [ROOT.Char.GetCurrentLocation.GetName], I am brought to a small study where [county_holder.GetTitledFirstName] receives me. I sent a messenger beforehand, so it should be no surprise I am here, but [county_holder.GetSheHe] is clearly curious as to the reasons why. All of [county_holder.GetHerHis] fussing, is it due to a guilty conscience, or are they simply platitudes?\n\nNo matter, I am not here to deal with [county_holder.GetHerHim] right now, I am here to..."
+ bp3_survey.0005.desc.capital: "My ledgers have gone unattended for too long. I can see it in the tax records, feel it in the mood of the court. Whatever else demands my attention, it will have to wait while I set things right here.\n\nI call for my officials and get to work, starting with..."
  bp3_survey.0005.desc.no_holder: "As I arrive in [ROOT.Char.GetCurrentLocation.GetName], I am brought to the study. A group of servants attend to all my needs and fuss around me for a while, until I ask them to leave. How am I meant to focus on my task at hand, if they keep running around the room?\n\nWith them out of the way, I can finally start working on my plans, which is to..."
  bp3_survey.0005.a: "Expand my borders."
  bp3_survey.0005.a.tt: "The [inspection|E] will attempt to:$SurveyArrivalIntroClaims$ $SurveyARrivalIntroVassals$"
  bp3_survey.0005.b: "Improve the bureaucracy here in [ROOT.Char.GetCurrentLocation.GetNameNoTooltip]."
- bp3_survey.0005.b.tt: "The [inspection|E] will attempt to:$SurveyArrivalIntroTax$ $SurveyArrivalIntroDevelopment$ $SurveyArrivalIntroControl$"
+ bp3_survey.0005.b.tt: "The [inspection|E] will attempt to:$SurveyArrivalIntroTax$ $SurveyArrivalIntroProsperity$ $SurveyArrivalIntroControl$"
  bp3_survey.0005.c: "Ensure the people here remember why I am their liege."
  bp3_survey.0005.c.tt: "The [inspection|E] will attempt to:$SurveyArrivalIntroLevy$ $SurveyArrivalIntroOpinion$ $SurveyArrivalIntroPopularOpinion$"
 
@@ -74,17 +75,17 @@
  SurveyARrivalIntroVassals: "\n$BULLET_WITH_TAB$ Increase @vassal_icon![offer_vassalization|E] Acceptance"
 
  SurveyArrivalIntroTax: "\n$BULLET_WITH_TAB$ Improve @gold_icon![taxes|E] (#bold [activity.GetHost.MakeScope.ScriptValue('survey_province_tax_info_value')|2]#!)"
- SurveyArrivalIntroDevelopment: "[activity.GetHost.Custom('SurveyArrivalIntroDevelopmentLoc')]"
+ SurveyArrivalIntroProsperity: "[activity.GetHost.Custom('SurveyArrivalIntroProsperityLoc')]"
  SurveyArrivalIntroControl: "[activity.GetHost.Custom('SurveyArrivalIntroControlLoc')]"
 
  SurveyArrivalIntroLevy: "\n$BULLET_WITH_TAB$ Improve @stationed_regiment_icon![levies|E] (#bold [activity.GetHost.MakeScope.ScriptValue('survey_province_levy_info_value')|0]#!)"
  SurveyArrivalIntroOpinion: "[activity.GetHost.Custom2('SurveyArrivalIntroOpinionLoc', county_holder)]"
  SurveyArrivalIntroPopularOpinion: "[activity.GetHost.Custom('SurveyArrivalIntroPopularOpinionLoc')]"
 
- SurveyArrivalIntroDevelopmentLocMaxed: "" # Intentionally empty
- SurveyArrivalIntroDevelopmentLocGood: "\n$BULLET_WITH_TAB$ Improve @development_icon![development|E] (#bold #p [ROOT.Char.MakeScope.ScriptValue('survey_province_development_info_value')|0]#!#!)"
- SurveyArrivalIntroDevelopmentLocBad: "\n$BULLET_WITH_TAB$ Improve @development_icon![development|E] (#bold #n [ROOT.Char.MakeScope.ScriptValue('survey_province_development_info_value')|0]#!#!)"
- SurveyArrivalIntroDevelopmentLocNeutral: "\n$BULLET_WITH_TAB$ Improve @development_icon![development|E] (#bold #color_yellow [ROOT.Char.MakeScope.ScriptValue('survey_province_development_info_value')|0]#!#!)"
+ SurveyArrivalIntroProsperityLocMaxed: "" # Intentionally empty
+ SurveyArrivalIntroProsperityLocGood: "\n$BULLET_WITH_TAB$ Improve @prosperity_icon![prosperity|E] (#bold #p [ROOT.Char.MakeScope.ScriptValue('survey_province_prosperity_info_value')|0]#!#!)"
+ SurveyArrivalIntroProsperityLocBad: "\n$BULLET_WITH_TAB$ Improve @prosperity_icon![prosperity|E] (#bold #n [ROOT.Char.MakeScope.ScriptValue('survey_province_prosperity_info_value')|0]#!#!)"
+ SurveyArrivalIntroProsperityLocNeutral: "\n$BULLET_WITH_TAB$ Improve @prosperity_icon![prosperity|E] (#bold #color_yellow [ROOT.Char.MakeScope.ScriptValue('survey_province_prosperity_info_value')|0]#!#!)"
 
  SurveyArrivalIntroControlLocMaxed: "" # Intentionally empty
  SurveyArrivalIntroControlLocBad: "\n$BULLET_WITH_TAB$ Improve @control_icon![control|E] (#bold #n [ROOT.Char.MakeScope.ScriptValue('survey_province_control_info_value')|0]#!#!)"
@@ -94,9 +95,9 @@
  SurveyArrivalIntroOpinionLocGood: "\n$BULLET_WITH_TAB$ Improve @opinion_icon![opinion|E] (#bold #p [second.GetOpinionOf( GetPlayer )|=]#!#!)"
  SurveyArrivalIntroOpinionLocBad: "\n$BULLET_WITH_TAB$ Improve @opinion_icon![opinion|E] (#bold #n [second.GetOpinionOf( GetPlayer )|=]#!#!)"
 
- SurveyArrivalIntroPopularOpinionLocMaxed: "\n$BULLET_WITH_TAB$ Improve @domain_icon![county_opinion|E] (#bold #p [ROOT.Char.MakeScope.ScriptValue('survey_province_popular_opinion_info_value')|0]#!#!)"
- SurveyArrivalIntroPopularOpinionLocBad: "\n$BULLET_WITH_TAB$ Improve @domain_icon![county_opinion|E] (#bold #n [ROOT.Char.MakeScope.ScriptValue('survey_province_popular_opinion_info_value')|0]#!#!)"
- SurveyArrivalIntroPopularOpinionLocNeutral: "\n$BULLET_WITH_TAB$ Improve @domain_icon![county_opinion|E] (#bold #color_yellow [ROOT.Char.MakeScope.ScriptValue('survey_province_popular_opinion_info_value')|0]#!#!)"
+ SurveyArrivalIntroPopularOpinionLocMaxed: "\n$BULLET_WITH_TAB$ Improve [popular_opinion_i|E] [popular_opinion|E] (#bold #p [ROOT.Char.MakeScope.ScriptValue('survey_province_popular_opinion_info_value')|0]#!#!)"
+ SurveyArrivalIntroPopularOpinionLocBad: "\n$BULLET_WITH_TAB$ Improve [popular_opinion_i|E] [popular_opinion|E] (#bold #n [ROOT.Char.MakeScope.ScriptValue('survey_province_popular_opinion_info_value')|0]#!#!)"
+ SurveyArrivalIntroPopularOpinionLocNeutral: "\n$BULLET_WITH_TAB$ Improve [popular_opinion_i|E] [popular_opinion|E] (#bold #color_yellow [ROOT.Char.MakeScope.ScriptValue('survey_province_popular_opinion_info_value')|0]#!#!)"
 
  ### End Event ###
  bp3_survey.0010.t: "Conclusion"
@@ -108,6 +109,7 @@
  bp3_survey.0010.desc.people.failure: "No matter how much I have spoken to or engaged with the locals in [province.GetName], the county has a constant air of discontent. Despite my best efforts, I do not know how to approach or solve this issue.\n\nMaybe it is not meant to be, at least not right now"
  bp3_survey.0010.a: "As planned."
  bp3_survey.0010.b: "I will return and put this right at some other point in time."
+ bp3_survey.0010.b.capital: "I will put this right another time."
 
  bp3_survey.0010.acceptance.positive: "Increased [offer_vassalization|E] Acceptance from [THIS.Char.GetName]: "
  bp3_survey.0010.acceptance.success: "$bp3_survey.0010.acceptance.positive$ #p +10#!"
@@ -124,8 +126,8 @@
  inspection_reward_average_tax_modifier_desc: "The local taxes has seen a recent upswing."
  inspection_reward_focused_tax_modifier: "Inspection Focus: Taxes"
  inspection_reward_focused_tax_modifier_desc: "A lot of time and effort went into ensuring the taxpayers pay their due."
- inspection_reward_focused_development_modifier: "Inspection Focus: Development"
- inspection_reward_focused_development_modifier_desc: "A significant amount of money was set aside for improving the local roads and public buildings."
+ inspection_reward_focused_prosperity_modifier: "Inspection Focus: Prosperity"
+ inspection_reward_focused_prosperity_modifier_desc: "A significant amount of money was set aside for improving the local roads and public buildings."
  inspection_reward_focused_control_modifier: "Inspection Focus: Control"
  inspection_reward_focused_control_modifier_desc: "Recruitment and retraining of the local garrison has seen an improvement to control of the county."
 
@@ -153,8 +155,8 @@
 
  inspection_conclusion_success_tax_key_title: "Adjusted Taxes"
  inspection_conclusion_success_tax_key: "[host.GetShortUIName] has improved upon and removed many of the tax loopholes in [province.GetName]."
- inspection_conclusion_success_development_key_title: "Improved Infrastructure"
- inspection_conclusion_success_development_key: "The roads and bridges in [province.GetName] has been granted a significant sum of money for renovation."
+ inspection_conclusion_success_prosperity_key_title: "Improved Infrastructure"
+ inspection_conclusion_success_prosperity_key: "The roads and bridges in [province.GetName] has been granted a significant sum of money for renovation."
  inspection_conclusion_success_control_key_title: "Tightened Control"
  inspection_conclusion_success_control_key: "The local garrison has been reinforced and retrained to handle any issues in [province.GetName]."
 
@@ -220,7 +222,7 @@
  bp3_survey.0030.a: "Fixing our local tax loopholes will pay for itself in due time."
  bp3_survey.0030.a.tt: "Improved [tax|E] reward if the [inspection|E] is successful\n"
  bp3_survey.0030.b: "The [province.Custom('SurveyMidDomainInfrastructureOptionsLoc')] [province.GetNameNoTooltip] needs the aid."
- bp3_survey.0030.b.tt: "Improved [development|E] reward if the [inspection|E] is successful\n"
+ bp3_survey.0030.b.tt: "Improved [prosperity|E] reward if the [inspection|E] is successful\n"
  bp3_survey.0030.c: "The local garrison has been struggling as of late."
  bp3_survey.0030.c.tt: "Improved [control|E] reward if the [inspection|E] is successful\n"
  bp3_survey.0030.d: "Actually... #emp I#! need that money."
@@ -230,10 +232,10 @@
  inspection_mid_activity_tax_average_modifier: "Adjusted Taxes"
  inspection_mid_activity_tax_average_modifier_desc: "There have been recent adjustments to the bureaucracy around gathering the taxes in the county."
 
- inspection_mid_activity_development_great_modifier: "Improved Development"
- inspection_mid_activity_development_great_modifier_desc: "The local liege has taken steps to reallocate money to significantly improve upon the local infrastructure."
- inspection_mid_activity_development_average_modifier: "Adjusted Development"
- inspection_mid_activity_development_average_modifier_desc: "Money has been set aside to help improve the local bureaucracy."
+ inspection_mid_activity_prosperity_great_modifier: "Improved Prosperity"
+ inspection_mid_activity_prosperity_great_modifier_desc: "The local liege has taken steps to reallocate money to significantly improve upon the local infrastructure."
+ inspection_mid_activity_prosperity_average_modifier: "Adjusted Prosperity"
+ inspection_mid_activity_prosperity_average_modifier_desc: "Money has been set aside to help improve the local bureaucracy."
 
  inspection_mid_activity_control_great_modifier: "Improved Control"
  inspection_mid_activity_control_great_modifier_desc: "The local garrison has been allocated a significant amount of money to increase their patrols in the county."
@@ -264,7 +266,8 @@
  bp3_survey.0040.b: "How impressed I am by the job [county_holder.GetFirstNameNoTooltip] is doing."
  bp3_survey.0040.b.tt: "Improved [opinion|E] reward if the [inspection|E] is successful\n"
  bp3_survey.0040.c: "What a great impression I have of [province.GetNameNoTooltip]."
- bp3_survey.0040.c.tt: "Improved [county_opinion|E] reward if the [inspection|E] is successful\n"
+ bp3_survey.0040.c.capital: "What my people think of me."
+ bp3_survey.0040.c.tt: "Improved [popular_opinion|E] reward if the [inspection|E] is successful\n"
 
  inspection_mid_activity_levy_great_modifier: "Improved Levies"
  inspection_mid_activity_levy_great_modifier_desc: "The province has seen a notable increase in recruitment after the liege engaged with the locals."
@@ -343,8 +346,8 @@
  bp3_survey.1020.c: "The garrison can take care of it."
  bp3_survey.1020.d: "It is not that big a problem."
 
- inspection_value_old_roads_desc: "\t#weak Increase for every #bold 3#! [development|E] below #bold 30#!#!"
- MODIFIER_DEFINITION_OLD_ROADS_DESC: "\nThis modifier is increased the lower the [development|E] is"
+ inspection_value_old_roads_desc: "\t#weak Increase for every #bold 3#! [prosperity|E] below #bold 30#!#!"
+ MODIFIER_DEFINITION_OLD_ROADS_DESC: "\nThis modifier is increased the lower the [prosperity|E] is"
 
  inspection_old_roads_of_x_border_modifier: "New Roads"
  inspection_old_roads_of_x_border_modifier_desc: "A significant sum of gold has been allocated to maintain the local road network."
@@ -355,43 +358,6 @@
  inspection_old_roads_negative_modifier: "Poorly Maintained Roads"
  inspection_old_roads_negative_modifier_desc: "The old roads in the county have long fallen into disrepair, and are in dire need of some maintenance."
 
- bp3_survey.1030.t: "Fighting Among the Guilds"
- bp3_survey.1030.desc: "As I am in the middle of a discussion with one of my bureaucrats, I am suddenly disrupted by two groups yelling at each other only a few steps away. My guards manage to break them apart, barely, as the representatives of the two factions continue shouting at one another.\n\nAfter repeatedly trying to settle them down, I finally understand this is a confrontation between the [city_province.Custom('InspectionFightingGuilds1Loc')] and the [city_province.Custom('InspectionFightingGuilds2Loc')] over property rights in the most important part of the city center."
- bp3_survey.1030.a: "There's room for both of you!"
- bp3_survey.1030.a.win: "They find a compromise"
- bp3_survey.1030.a.loss: "It turns into a power struggle affecting all of [city_province.GetNameNoTooltip]"
- bp3_survey.1030.a.loss_short: "They refuse to compromise"
- bp3_survey.1030.b: "Support the [city_province.Custom('InspectionFightingGuilds1Loc')]."
- bp3_survey.1030.c: "Aid the [city_province.Custom('InspectionFightingGuilds2Loc')]."
- bp3_survey.1030.d: "[city_province.Custom('InspectionFightingGuilds1Loc')]? [city_province.Custom('InspectionFightingGuilds2Loc')]?! Pfft, that's my gold!"
-
- InspectionFightingGuildsMillers: "$LocalGuildsMillers$"
- InspectionFightingGuildsBakers: "$LocalGuildsBakers$"
- InspectionFightingGuildsFishmongers: "$LocalGuildsFishmongers$"
- InspectionFightingGuildsShoemakers: "$LocalGuildsShoemakers$"
- InspectionFightingGuildsTanners: "$LocalGuildsTanners$"
- InspectionFightingGuildsTailors: "$LocalGuildsTailors$"
- InspectionFightingGuildsWeavers: "$LocalGuildsWeavers$"
- InspectionFightingGuildsSkinners: "$LocalGuildsSkinners$"
- InspectionFightingGuildsButchers: "$LocalGuildsButchers$"
- InspectionFightingGuildsFurriers: "$LocalGuildsFurriers$"
- InspectionFightingGuildsVintners: "$LocalGuildsVintners$"
- InspectionFightingGuildsCarpenters: "$LocalGuildsCarpenters$"
- InspectionFightingGuildsMasons: "$LocalGuildsMasons$"
- InspectionFightingGuildsMiners: "$LocalGuildsMiners$"
- InspectionFightingGuildsBlacksmiths: "$LocalGuildsBlacksmiths$"
- InspectionFightingGuildsSaddlers: "$LocalGuildsSaddlers$"
- InspectionFightingGuildsMerchants: "$LocalGuildsMerchants$"
- InspectionFightingGuildsPhysicians: "$LocalGuildsPhysicians$"
- InspectionFightingGuildsPharmacists: "$LocalGuildsPharmacists$"
- InspectionFightingGuildsToolmakers: "$LocalGuildsToolmakers$"
- InspectionFightingGuildsInnkeepers: "Innkeepers' Guild"
- InspectionFightingGuildsArtists: "Artists' Guild"
-
- inspection_fighting_guilds_innkeepers_guild_modifier: "Innkeepers Guild"
- inspection_fighting_guilds_innkeepers_guild_modifier_desc: "This city is heavily influenced by a powerful $inspection_fighting_guilds_innkeepers_guild_modifier$."
- inspection_fighting_guilds_artists_guild_modifier: "Artists Guild"
- inspection_fighting_guilds_artists_guild_modifier_desc: "Artists come from far and wide to take part in the creative endeavors one can often see at every corner of the city."
  inspection_learning_intent_local_guilds_modifier: "Local Guilds"
  inspection_learning_intent_local_guilds_modifier_desc: "Some new guilds has settled down in the barony after engaging with the liege in other parts of the realm."
 
@@ -460,8 +426,8 @@
 
  bp3_survey.1080.t: "A Place Worth Visiting"
  bp3_survey.1080.desc: ""It's not safe at all, [ROOT.Char.Custom('FormOfAddressForLiege')]", a haggard looking traveler tells me. "Barely survived with my life, I did." True to [traveler_character.GetHerHis] word, it sounds like [traveler_character.GetSheHe] has been through quite an experience\n\n"
- bp3_survey.1080.desc.holy_poi: "It seems [ROOT.GetCharacter.GetFaith.GetReligion.GetAdherentNamePluralNoTooltip] from all over have traveled here to [location_province.GetName] to see the holiest of sights, [location_province.Custom('GetSpecialBuildingPrefix')][location_province.GetHolding.GetSpecialBuildingType.GetName], only to be intercepted by criminals."
- bp3_survey.1080.desc.poi: "It seems people from all over have traveled here to see [location_province.Custom('GetSpecialBuildingPrefix')][location_province.GetHolding.GetSpecialBuildingType.GetName], only to be intercepted by criminals."
+ bp3_survey.1080.desc.holy_poi: "It seems [ROOT.GetCharacter.GetFaith.GetReligion.GetAdherentNamePluralNoTooltip] from all over have traveled here to [location_province.GetName] to see the holiest of sights, [location_province.Custom('GetSpecialBuildingPrefix')][location_province.GetHolding.GetSpecialDistrictType.GetPrimaryBuildingType.CalcTriggeredName(location_province.Self)], only to be intercepted by criminals."
+ bp3_survey.1080.desc.poi: "It seems people from all over have traveled here to see [location_province.Custom('GetSpecialBuildingPrefix')][location_province.GetHolding.GetSpecialDistrictType.GetPrimaryBuildingType.CalcTriggeredName(location_province.Self)], only to be intercepted by criminals."
  bp3_survey.1080.desc.holy_site: "It seems [ROOT.GetCharacter.GetFaith.GetReligion.GetAdherentNamePluralNoTooltip] from all over has come to [location_province.GetName] to see the local holy site, only to be intercepted by criminals."
  bp3_survey.1080.desc.outro: "If we allow bandits and footpads to continue preying on visitors... It's only a matter of time until they will start looking elsewhere."
  bp3_survey.1080.a: "I will recruit a small guard patrol to protect the travelers."

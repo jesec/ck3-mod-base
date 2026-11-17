@@ -97,12 +97,10 @@ worsen_relationship_effect = {
 		}
 		#Potential Rival -> Rival
 		else_if = {
-			limit = {
-				has_relation_potential_rival = $TARGET$
-			}
-			set_relation_rival = {
-				target = $TARGET$
-				reason = $REASON$
+			limit = { has_relation_potential_rival = $TARGET$ }
+			set_relation_rival_effect = {
+				TARGET = $TARGET$
+				REASON = $REASON$
 			}
 			if = {
 				limit = {
@@ -131,9 +129,9 @@ worsen_relationship_effect = {
 				has_relation_rival = $TARGET$
 				can_set_relation_nemesis_trigger = { CHARACTER = $TARGET$ }
 			}
-			set_relation_nemesis = {
-				target = $TARGET$
-				reason = $REASON$
+			set_relation_nemesis_effect = {
+				TARGET = $TARGET$
+				REASON = $REASON$
 			}
 			if = {
 				limit = {
@@ -193,14 +191,12 @@ improve_relationship_effect = {
 		}
 		#Nemesis -> Rival
 		if = {
-			limit = {
-				has_relation_nemesis = $TARGET$
-			}
+			limit = { has_relation_nemesis = $TARGET$ }
 			remove_relation_nemesis = $TARGET$
 			hidden_effect = {
-				set_relation_rival = {
-					target = $TARGET$
-					reason = $REASON$
+				set_relation_rival_effect = {
+					TARGET = $TARGET$
+					REASON = $REASON$
 				}
 			}
 			if = {
@@ -226,9 +222,7 @@ improve_relationship_effect = {
 		}
 		#Rival -> Potential Rival
 		else_if = {
-			limit = {
-				has_relation_rival = $TARGET$
-			}
+			limit = { has_relation_rival = $TARGET$ }
 			remove_relation_rival = $TARGET$
 			hidden_effect = { set_relation_potential_rival = $TARGET$ }
 			if = {
@@ -254,9 +248,7 @@ improve_relationship_effect = {
 		}
 		#Potential Rival -> Potential Friend
 		else_if = {
-			limit = {
-				has_relation_potential_rival = $TARGET$
-			}
+			limit = { has_relation_potential_rival = $TARGET$ }
 			remove_relation_potential_rival = $TARGET$
 			hidden_effect = { set_relation_potential_friend = $TARGET$ }
 			if = {
@@ -282,9 +274,7 @@ improve_relationship_effect = {
 		}
 		#Potential Friend -> Friend
 		else_if = {
-			limit = {
-				has_relation_potential_friend = $TARGET$
-			}
+			limit = { has_relation_potential_friend = $TARGET$ }
 			set_relation_friend = { 
 				target = $TARGET$
 				reason = $REASON$ 

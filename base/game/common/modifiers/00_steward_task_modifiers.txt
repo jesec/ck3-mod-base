@@ -22,7 +22,7 @@ tax_collector_fair_arbiter_modifier = {
 #######
 
 steward_construction_slowdown_modifier = {
-	icon = county_modifier_development_negative
+	icon = county_modifier_prosperity_negative
 	build_speed = 0.2
 	build_gold_cost = 0.2
 	build_prestige_cost = 0.2
@@ -31,18 +31,22 @@ steward_construction_slowdown_modifier = {
 
 steward_task_efficient_taxation_modifier = {
 	icon = stewardship_positive
-	tax_mult = 0.1
+	urban_tax_mult = 0.1
 }
 
 steward_settler_resistance_modifier = {
 	icon = stewardship_negative
-	tax_mult = -0.1
+	urban_tax_mult = -0.1
 	levy_size = -0.25
+	control_baseline_add = -5
+	monthly_control_change_when_above_baseline_mult = 0.1
+	popular_opinion_add = -8
 }
 
 steward_welcome_administration_modifier = {
 	icon = stewardship_positive
-	tax_mult = 0.1
+	civic_tax_mult = 0.1
+	monthly_control_change_when_below_baseline_mult = 0.1
 }
 
 steward_realm_identity_modifier = {
@@ -52,50 +56,57 @@ steward_realm_identity_modifier = {
 
 steward_population_mismanaged_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -40
+	popular_opinion_add = -10
+	prosperity_growth_factor = small_prosperity_growth_loss
 }
 
 steward_administration_embraced_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 40
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_mult = 0.1
 }
 
 steward_de_jure_denied_modifier = {
 	icon = stewardship_negative
 	levy_size = -0.4
-	county_opinion_add = -40
-	tax_mult = -0.4
+	popular_opinion_add = -10
+	all_tax_mult = -0.4
+	control_baseline_add = -10
+	monthly_control_change_when_above_baseline_mult = 0.1
 }
 
 steward_redoubled_taxation_modifier = {
-	icon = county_modifier_development_mixed
-	tax_mult = 0.2
-	development_growth_factor = small_development_growth_loss
+	icon = county_modifier_prosperity_mixed
+	urban_tax_mult = 0.2
+	civic_tax_mult = 0.2
+	prosperity_growth_factor = small_prosperity_growth_loss
+	popular_opinion_add = -5
 }
 
-steward_redoubled_development_modifier = {
-	icon = county_modifier_development_mixed
-	tax_mult = -0.2
-	development_growth_factor = medium_development_growth_gain
+steward_redoubled_prosperity_modifier = {
+	icon = county_modifier_prosperity_mixed
+	all_tax_mult = -0.2
+	prosperity_growth_factor = medium_prosperity_growth_gain
+	popular_opinion_add = 5
 }
 
 # Accept Culture Task
 steward_accept_culture_reduced_taxes_modifier = {
 	icon = stewardship_negative
-	tax_mult = -0.25
+	urban_tax_mult = -0.25
 }
 
-steward_accept_culture_reduced_development_spread_modifier = {
+steward_accept_culture_reduced_prosperity_spread_modifier = {
 	icon = stewardship_negative
-	development_growth_factor = -0.2
+	prosperity_growth_factor = -0.2
 }
 
 steward_accept_culture_increased_opinion_modifier = {
 	icon = stewardship_positive
-	county_opinion_add = 40
+	popular_opinion_add = 5
 }
 
-steward_accept_culture_increased_development_spread_modifier = {
+steward_accept_culture_increased_prosperity_spread_modifier = {
 	icon = stewardship_positive
-	development_growth_factor = 0.2
+	prosperity_growth_factor = 0.2
 }

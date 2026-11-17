@@ -166,6 +166,26 @@ scheme_prep_pick_best_stance = {
 		}
 		animation = scheme
 	}
+	## GG Political Schemes
+	triggered_animation = {
+		trigger = {
+			this = root
+			scope:scheme = { 
+				OR = {				
+					scheme_type = gg_switch_sides
+					scheme_type = gg_align_undecided
+				}
+			}
+		}
+		animation = debating
+	}
+	triggered_animation = {
+		trigger = {
+			this = root
+			scope:scheme = { scheme_type = gg_claim_leadership }
+		}
+		animation = scheme
+	}
 	## Other Hostile schemes.
 	triggered_animation = {
 		trigger = {
@@ -187,7 +207,10 @@ scheme_prep_pick_best_stance = {
 	triggered_animation = {
 		trigger = {
 			this = root
-			scope:scheme = { scheme_skill = martial }
+			scope:scheme = {
+				scheme_skill = martial
+				gdp_is_trade_opportunity_scheme_trigger = no
+			}
 		}
 		animation = marshal
 	}
@@ -195,7 +218,12 @@ scheme_prep_pick_best_stance = {
 	triggered_animation = {
 		trigger = {
 			this = root
-			scope:scheme = { scheme_skill = stewardship }
+			scope:scheme = {
+				OR = {
+					scheme_skill = stewardship
+					gdp_is_trade_opportunity_scheme_trigger = yes
+				}
+			}
 		}
 		animation = steward
 	}
@@ -640,4 +668,95 @@ ecumenical_council_lay_guest_animation_alt = {
 		}
 		animation = { reading page_flipping contemplating pondering thinking holding_scrolls }
 	}
+}
+
+
+# New recruit animations go here 
+gdp_visit_holding_animation_1320 = {
+	triggered_animation = {
+		trigger = {
+			has_character_flag = is_charlatan_recruit
+		}
+		animation = debating
+	}
+	triggered_animation = {
+		trigger = {
+			has_character_flag = is_numerate_recruit
+		}
+		animation = writing
+	}
+	triggered_animation = {
+		trigger = {
+			has_character_flag = is_hired_muscle_recruit
+		}
+		animation = hunting_knife_start
+	}
+	triggered_animation = {
+		trigger = {
+			has_character_flag = is_traveler_recruit
+		}
+		animation = biting_coin
+	}
+	triggered_animation = {
+		trigger = {
+			has_character_flag = is_urchin_recruit
+		}
+		animation = newborn
+	}
+	triggered_animation = {
+		trigger = {
+			has_character_flag = is_herbalist_recruit
+		}
+		animation = physician
+	}
+}
+
+horse_camel_animation = {
+	triggered_animation = {
+		trigger = { char_uses_camel_trigger = yes }
+		animation = { dromedary_riding_tired }
+	}
+	triggered_animation = {
+		trigger = {
+			char_uses_camel_trigger = yes
+			has_trait = impatient
+		}
+		animation = { dromedary_riding }
+	}
+	triggered_animation = {
+		trigger = { has_trait = impatient }
+		animation = { jockey_gallop }
+	}
+	animation = jockey_walk
+}
+
+horse_camel_activity_travel_animation = {
+	triggered_animation = {
+		trigger = {
+			scope:character.location = { is_sea_province = yes }
+		}
+		animation = { idle }
+	}
+	triggered_animation = {
+		trigger = {
+			scope:character = { char_uses_camel_trigger = yes }
+		}
+		animation = { dromedary_riding_tired }
+	}
+	triggered_animation = {
+		trigger = {
+			scope:character = {
+				char_uses_camel_trigger = yes
+				has_trait = impatient
+			}
+		}
+		animation = { dromedary_riding }
+	}
+	triggered_animation = {
+		trigger = {
+			scope:character = { has_trait = impatient }
+		}
+		animation = { jockey_gallop }
+	}
+	animation = jockey_walk
 }

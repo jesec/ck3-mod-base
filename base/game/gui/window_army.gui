@@ -235,8 +235,10 @@
 							using = tooltip_ne
 							parentanchor = bottom
 
+							onclick = "[ArmyWindow.ToggleReorganizationWindow]"
+
 							button_army_reorganize = {
-								onclick = "[ArmyWindow.ToggleReorganizationWindow]"
+								alwaystransparent = yes
 								parentanchor = center
 							}
 						}
@@ -1108,10 +1110,12 @@
 								size = { 30 30 }
 								visible = "[ArmyWindow.CanStopGathering]"
 
+								onclick = "[ArmyWindow.StopGathering]"
+								tooltip = "STOP_GATHERING"
+
 								button_cancel_small = {
+									alwaystransparent = yes
 									parentanchor = center
-									onclick = "[ArmyWindow.StopGathering]"
-									tooltip = "STOP_GATHERING"
 								}
 							}
 							
@@ -1223,8 +1227,10 @@
 					tooltip = "[ArmyWindow.BuildAttachToUnitTooltip]"
 					using = tooltip_ne
 
+					onclick = "[ArmyWindow.AttachToLocalUnit]"
+
 					button_attach_to_unit = {
-						onclick = "[ArmyWindow.AttachToLocalUnit]"
+						alwaystransparent = yes
 						parentanchor = center
 					}
 				}
@@ -1235,8 +1241,10 @@
 					tooltip = "TOGGLE_ATTACH_TO_UNIT_WINDOW"
 					using = tooltip_ne
 
+					onclick = "[ArmyWindow.ToggleAttachToWindow]"
+
 					button_attach_to_unit = {
-						onclick = "[ArmyWindow.ToggleAttachToWindow]"
+						alwaystransparent = yes
 						parentanchor = center
 					}
 				}
@@ -1248,8 +1256,10 @@
 					tooltip = "[ArmyWindow.BuildDetachFromUnitTooltip]"
 					using = tooltip_ne
 
+					onclick = "[ArmyWindow.DetachFromUnit]"
+
 					button_detach_from_unit = {
-						onclick = "[ArmyWindow.DetachFromUnit]"
+						alwaystransparent = yes
 						parentanchor = center
 					}
 				}
@@ -1338,27 +1348,31 @@
 					enabled = "[ArmyWindow.CanSplitCustomSelected]"
 
 
+					tooltip = "[ArmyWindow.BuildSplitCustomTooltip]"
+					using = tooltip_ne
+					onclick = "[ArmyWindow.ToggleSplitArmyWindow]"
+					shortcut = army_create_new
+
 					button_army_create = {
+						alwaystransparent = yes
 						parentanchor = center
-						tooltip = "[ArmyWindow.BuildSplitCustomTooltip]"
-						using = tooltip_ne
-						onclick = "[ArmyWindow.ToggleSplitArmyWindow]"
-						shortcut = army_create_new
 					}
 				}
 
 				button_round = {
 					name = "split_in_half_button"
 
+					onclick = [ArmyWindow.SplitHalfSelected]
+					shortcut = army_split_half
+					tooltip = [ArmyWindow.BuildSplitHalfTooltip]
+					enabled = [ArmyWindow.CanSplitHalfSelected]
+					using = tooltip_ne
 
 					button_army_split_in_half = {
+						alwaystransparent = yes
 						parentanchor = center
-						onclick = [ArmyWindow.SplitHalfSelected]
-						shortcut = army_split_half
-						tooltip = [ArmyWindow.BuildSplitHalfTooltip]
-						using = tooltip_ne
 					}
-					enabled = [ArmyWindow.CanSplitHalfSelected]
+					
 				}
 
 				button_round = {
@@ -1403,14 +1417,16 @@
 				button_round = {
 					name = "toggle_raiding"
 
+					onclick = "[ArmyWindow.ToggleRaiding]"
+
 					button_army_toggle_raiding = {
-						onclick = [ArmyWindow.ToggleRaiding]
+						alwaystransparent = yes
 						visible = "[Not(Army.IsRaidArmy)]"
 						parentanchor = center
 					}
 
 					button_army_details = {
-						onclick = "[ArmyWindow.ToggleRaiding]"
+						alwaystransparent = yes
 						visible = "[Army.IsRaidArmy]"
 						parentanchor = center
 					}
@@ -1424,14 +1440,16 @@
 				button_round = {
 					name = "toggle_bartering"
 
+					onclick = "[ArmyWindow.ToggleBartering]"
+
 					button_army_toggle_bartering = {
-						onclick = [ArmyWindow.ToggleBartering]
+						alwaystransparent = yes
 						visible = "[Not(Army.IsBarterArmy)]"
 						parentanchor = center
 					}
 
 					button_army_details = {
-						onclick = "[ArmyWindow.ToggleBartering]"
+						alwaystransparent = yes
 						visible = "[Army.IsBarterArmy]"
 						parentanchor = center
 					}
@@ -1449,10 +1467,12 @@
 					enabled = [ArmyWindow.CanDisband]
 					tooltip = [ArmyWindow.BuildDisbandTooltip]
 
+					onclick = [ArmyWindow.DisbandSelected]
+					shortcut = army_disband
+
 					button_army_disband = {
+						alwaystransparent = yes
 						parentanchor = center
-						onclick = [ArmyWindow.DisbandSelected]
-						shortcut = army_disband
 					}
 				}
 			}
@@ -1845,9 +1865,11 @@ window = {
 						enabled = "[ArmyReorgWindow.CanDisband]"
 						tooltip = "DISBAND_TOOLTIP"
 
+						onclick = "[ArmyReorgWindow.DisbandLeft]"
+
 						button_army_disband = {
+							alwaystransparent = yes
 							parentanchor = center
-							onclick = "[ArmyReorgWindow.DisbandLeft]"
 						}
 					}
 				}
@@ -1877,9 +1899,11 @@ window = {
 						enabled = "[ArmyReorgWindow.CanDisband]"
 						tooltip = "DISBAND_TOOLTIP"
 
+						onclick = "[ArmyReorgWindow.DisbandRight]"
+
 						button_army_disband = {
+							alwaystransparent = yes
 							parentanchor = center
-							onclick = "[ArmyReorgWindow.DisbandRight]"
 						}
 					}
 				}

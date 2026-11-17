@@ -834,15 +834,13 @@ az_debate.0004 = {
             any_attending_character = {
                 this != root
                 is_ai = yes
+                top_participant_group:dynastic_cycle ?= {
+                    participant_group_type = undecided_movement
+                }
                 opinion = {
 					target = root
 					value >= 0
 				}
-                situation:dynastic_cycle ?= {
-                    situation_participant_group:undecided_movement = {
-                        participant_group_has_character = this
-                    }
-                }
             }
         }
     }
@@ -856,15 +854,13 @@ az_debate.0004 = {
                 limit = {
                     this != root
                     is_ai = yes
+                    top_participant_group:dynastic_cycle ?= {
+                        participant_group_type = undecided_movement
+                    }
                     opinion = {
 						target = root
 						value >= 0
 					}
-                    situation:dynastic_cycle ?= {
-                        situation_participant_group:undecided_movement = {
-                            participant_group_has_character = this
-                        }
-                    }
                 }
                 save_scope_as = freethinker_friend
             }
@@ -2303,7 +2299,7 @@ az_debate.0010 = {
 
     trigger = {
         exists = top_participant_group:dynastic_cycle
-        scope:activity = {
+        scope:activity ?= {
             any_attending_character = {
                 this != root
                 is_ai = yes

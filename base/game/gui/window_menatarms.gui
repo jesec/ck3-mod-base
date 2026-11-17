@@ -394,16 +394,44 @@ window = {
 				vbox = {
 					layoutpolicy_horizontal = expanding
 
-					text_single = {
+					hbox = {
 						layoutpolicy_horizontal = expanding
-						text = "MAA_REINFORCEMENT_COST_ENTRY"
-						max_width = 390
+						spacing = 5
+						icon = {
+							block "stat_icon_size"
+							{
+								size = { 26 26 }
+							}
+							texture = "gfx/interface/icons/regimenttypes/unit_stat_full_maintenance.dds"
+						}
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							text = "MAA_REINFORCEMENT_COST_ENTRY"
+							max_width = 390
+							align = nobaseline
+						}
+
+						tooltip = "[Regiment.CalcHighMonthlyCostBreakdown]"
 					}
 
-					text_single = {
+					hbox = {
 						layoutpolicy_horizontal = expanding
-						text = "MAA_MAINTENANCE"
-						max_width = 390
+						spacing = 5
+						icon = {
+							block "stat_icon_size"
+							{
+								size = { 26 26 }
+							}
+							texture = "gfx/interface/icons/regimenttypes/unit_stat_unraised_maintenance.dds"
+						}
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							text = "MAA_MAINTENANCE"
+							max_width = 390
+							align = nobaseline
+						}
+
+						tooltip = "[Regiment.CalcLowMonthlyCostBreakdown]"
 					}
 
 					text_single = {
@@ -549,10 +577,14 @@ types MenAtArmsTypes
 	#
 	type vbox_maa_province_stats_numbers = vbox_maa_stats_numbers_base
 	{
-		blockoverride "stat_spacing"
-		{
-			spacing = 5
+		blockoverride "stat_widget" {
+			using = MaaNumbersStaggered
 		}
+		
+		blockoverride "forced_spacing" {
+			min_width = 45
+		}
+	
 		blockoverride "siege_stat"
 		{
 			text = "REGIMENT_PROVINCE_SIEGE"
@@ -560,7 +592,7 @@ types MenAtArmsTypes
 		blockoverride "siege_tt"
 		{
 			tooltip = "REGIMENT_PROVINCE_SIEGE_TT"
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'siege_value' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4')]"
+			alpha = "[MaaProvinceStatAlpha( 'siege_value' )]"
 		}
 		blockoverride "siege_effective_level"
 		{
@@ -574,7 +606,7 @@ types MenAtArmsTypes
 		{
 			tooltip = "REGIMENT_PROVINCE_DAMAGE_TT"
 			# fade out if 0
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'damage' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4')]"
+			alpha = "[MaaProvinceStatAlpha( 'damage' )]"
 		}
 		blockoverride "toughness_stat"
 		{
@@ -584,7 +616,7 @@ types MenAtArmsTypes
 		{
 			tooltip = "REGIMENT_PROVINCE_TOUGHNESS_TT"
 			# fade out if 0
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'toughness' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4')]"
+			alpha = "[MaaProvinceStatAlpha( 'toughness' )]"
 		}
 		blockoverride "pursuit_stat"
 		{
@@ -594,7 +626,7 @@ types MenAtArmsTypes
 		{
 			tooltip = "REGIMENT_PROVINCE_PURSUIT_TT"
 			# fade out if 0
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'pursuit' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4')]"
+			alpha = "[MaaProvinceStatAlpha( 'pursuit' )]"
 		}
 		blockoverride "screen_stat"
 		{
@@ -604,7 +636,149 @@ types MenAtArmsTypes
 		{
 			tooltip = "REGIMENT_PROVINCE_SCREEN_TT"
 			# fade out if 0
-			alpha = "[Select_float(GreaterThan_CFixedPoint(MenAtArmsType.GetProvinceStat( GetPlayer, Province.Self, Title.Self, 'screen' ),'(CFixedPoint)0'), '(float)1.0','(float)0.4')]"
+			alpha = "[MaaProvinceStatAlpha( 'screen' )]"
+		}
+		blockoverride "maintenance_low_stat"
+		{
+			text = "REGIMENT_PROVINCE_MAINTENANCE_LOW"
+		}
+		blockoverride "maintenance_low_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_MAINTENANCE_LOW_TT"
+			# fade out if 0
+			alpha = "[MaaProvinceStatAlpha( 'maintenance_low' )]"
+
+		}
+		blockoverride "maintenance_high_stat"
+		{
+			text = "REGIMENT_PROVINCE_MAINTENANCE_HIGH"
+		}
+		blockoverride "maintenance_high_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_MAINTENANCE_HIGH_TT"
+			# fade out if 0
+			alpha = "[MaaProvinceStatAlpha( 'maintenance_high' )]"
+
+		}
+		blockoverride "control_value_stat"
+		{
+			text = "REGIMENT_PROVINCE_CONTROL_VALUE"
+		}
+		blockoverride "control_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_CONTROL_TT"
+			alpha = "[MaaProvinceStatAlpha( 'control_value' )]"
+		}
+		blockoverride "stat_icon_size"
+		{
+			size = { 30 30 }
+		}
+	}
+	
+	### Brief: vbox_maa_province_stats_numbers
+	#	Widget for showing the men at arms stationed in a province.
+	#
+	#	Requires datacontexts:
+	#		MenAtArmsType:
+	#			The type of men at arms we are looking at
+	#
+	#		Province:
+	#			The province the men at arms are stationed in. If not
+	#			stationed use null object
+	#
+	#		Title:
+	#			The Landed Title these men at arms are owned by, if any.
+	#			If Personal MAAs, this should be the null object.
+	#
+	type vbox_maa_province_stats_numbers_mapicon = vbox_maa_stats_numbers_base
+	{
+		blockoverride "stat_spacing"
+		{
+			spacing = 5
+		}
+		blockoverride "siege_stat"
+		{
+			text = "REGIMENT_PROVINCE_SIEGE"
+		}
+		blockoverride "siege_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_SIEGE_TT"
+			alpha = "[MaaProvinceStatAlpha( 'siege_value' )]"
+		}
+		blockoverride "siege_effective_level"
+		{
+			# Hide effective level it is shown later anyway
+		}
+		blockoverride "damage_stat"
+		{
+			text = "REGIMENT_PROVINCE_DAMAGE"
+		}
+		blockoverride "damage_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_DAMAGE_TT"
+			# fade out if 0
+			alpha = "[MaaProvinceStatAlpha( 'damage' )]"
+		}
+		blockoverride "toughness_stat"
+		{
+			text = "REGIMENT_PROVINCE_TOUGHNESS"
+		}
+		blockoverride "toughness_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_TOUGHNESS_TT"
+			# fade out if 0
+			alpha = "[MaaProvinceStatAlpha( 'toughness' )]"
+		}
+		blockoverride "pursuit_stat"
+		{
+			text = "REGIMENT_PROVINCE_PURSUIT"
+		}
+		blockoverride "pursuit_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_PURSUIT_TT"
+			# fade out if 0
+			alpha = "[MaaProvinceStatAlpha( 'pursuit' )]"
+		}
+		blockoverride "screen_stat"
+		{
+			text = "REGIMENT_PROVINCE_SCREEN"
+		}
+		blockoverride "screen_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_SCREEN_TT"
+			# fade out if 0
+			alpha = "[MaaProvinceStatAlpha( 'screen' )]"
+		}
+		blockoverride "maintenance_low_stat"
+		{
+			text = "REGIMENT_PROVINCE_MAINTENANCE_LOW"
+		}
+		blockoverride "maintenance_low_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_MAINTENANCE_LOW_TT"
+			# fade out if 0
+			alpha = "[MaaProvinceStatAlpha( 'maintenance_low' )]"
+
+		}
+		blockoverride "maintenance_high_stat"
+		{
+			text = "REGIMENT_PROVINCE_MAINTENANCE_HIGH"
+		}
+		blockoverride "maintenance_high_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_MAINTENANCE_HIGH_TT"
+			# fade out if 0
+			alpha = "[MaaProvinceStatAlpha( 'maintenance_high' )]"
+
+		}
+		blockoverride "control_value_stat"
+		{
+			text = "REGIMENT_PROVINCE_CONTROL_VALUE"
+		}
+		blockoverride "control_tt"
+		{
+			tooltip = "REGIMENT_PROVINCE_CONTROL_TT"
+			alpha = "[MaaProvinceStatAlpha( 'control_value' )]"
 		}
 		blockoverride "stat_icon_size"
 		{

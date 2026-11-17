@@ -1,8 +1,60 @@
 ﻿
+
 # root - Character who changed government
 # scope:old_government - Character's old government type
 on_government_change = {
 	effect = {
+		# GDP Invalidate adventurer and merchant contracts on government change
+		if = {
+			limit = {
+				scope:old_government = government_type:merchant_government
+			}
+			merchant_inspector_clear_specialized_market_effect = yes
+			gdp_invalidate_merchant_task_contracts_on_government_change_effect = yes
+			gdp_update_usury_reputation_effect = yes
+		}
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				NOT = { scope:old_government = government_type:merchant_government }
+			}
+			set_variable = {
+				name = gdp_recently_became_merchant_cooldown
+				years = 5
+			}
+		}
+		if = {
+			limit = {
+				scope:old_government = government_type:landless_adventurer_government
+			}
+			gdp_invalidate_landless_adventurer_task_contracts_on_government_change_effect = yes
+		}
+		# Otherwise new adventurers sit in Undecided until the situation's next periodic group refresh
+		if = {
+			limit = {
+				government_has_flag = government_is_landless_adventurer
+				exists = situation:guelph_ghibelline
+			}
+			recalculate_participant_group = situation:guelph_ghibelline
+		}
+
+		# No longer Wanua
+		if = {
+			limit = {
+					scope:old_government = government_type:wanua_government
+					NOT = { government_has_flag = government_is_wanua }
+			}
+			every_held_title = {
+				   limit = {
+							tier = tier_barony
+							exists = title_province
+				   }
+				   title_province = {
+							# Remove Wanua-only resource buildings so they do not become worthless if you stop being a Wanua.
+							remove_wanua_resource_barter_buildings_effect = yes
+				   }
+			}
+		}
 		christian_clergy_learn_liturgical_language_effect = yes
 
 		# MPO remove nomad title
@@ -26,7 +78,13 @@ on_government_change = {
 				NOR = {
 					government_has_flag = government_is_nomadic
 					government_has_flag = government_is_tribal
-					confederation = { has_variable = confederation_ignore_government }
+					confederation = {
+						OR = {
+							is_title_based = yes
+							has_variable = confederation_ignore_government
+							confederation_type = confederation_type:lombard_league
+						}
+					}
 				}
 			}
 			confederation = {
@@ -112,5 +170,56 @@ on_government_change = {
 		# PAM align theocracy government - the change re-enters this on_action once, then stops
 		pam_align_theocracy_with_faith_government_effect = yes
 		pam_strip_illegal_cardinalate_effect = yes
+
+		# Merchant/republic swap
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				scope:old_government = government_type:republic_government
+				any_held_title = {
+					is_noble_family_title = yes
+					save_temporary_scope_as = title_temp
+				}
+			}
+			save_scope_as = new_merchant
+			scope:title_temp ?= { # silently fails if already present, so we can try every time
+				add_to_global_variable_list = {
+					name = merchants_tally
+					target = this
+				}
+				set_title_name_dynamic = merchant_name_001
+			}
+		}
+		else_if = {
+			limit = {
+				government_has_flag = government_is_republic
+				scope:old_government = government_type:merchant_government
+				any_held_title = {
+					is_noble_family_title = yes
+					save_temporary_scope_as = title_temp
+				}
+			}
+			save_scope_as = new_patrician
+			scope:title_temp ?= { # silently fails, so we can try every time
+				remove_list_global_variable = {
+					name = merchants_tally
+					target = this
+				}
+				set_title_name_dynamic = patrician_family_name_001
+			}
+		}
+
+		# GDP achievement: Wearer of Many Hats
+		ep5_09_wearer_of_many_hats_achievement_record_effect = yes
+	}
+}
+
+# quarterly_playable_pulse runs this because on_government_change misses silent government swaps
+ep5_09_wearer_of_many_hats_achievement_pulse = {
+	trigger = {
+		is_ai = no
+	}
+	effect = {
+		ep5_09_wearer_of_many_hats_achievement_record_effect = yes
 	}
 }

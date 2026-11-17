@@ -288,6 +288,7 @@ herhis_subject_of_interest = {
 					has_education_stewardship_trigger = yes
 					has_focus_or_focus_trait_trigger = { FOCUS = stewardship_wealth_focus }
 					stewardship >= high_skill_rating
+					government_has_flag = government_is_merchant
 				}
 			}
 		}
@@ -684,6 +685,7 @@ my_subject_of_interest = {
 					has_education_stewardship_trigger = yes
 					has_focus_or_focus_trait_trigger = { FOCUS = stewardship_wealth_focus }
 					stewardship >= high_skill_rating
+					government_has_flag = government_is_merchant
 				}
 			}
 		}
@@ -983,7 +985,12 @@ subject_of_interest = {
 		localization_key = court_alliances
 	}
 	text = {
-		trigger = { has_education_stewardship_trigger = yes }
+		trigger = {	
+			OR = {
+				has_education_stewardship_trigger = yes
+				government_has_flag = government_is_merchant
+			}
+		}
 		localization_key = trade_routes
 	}
 	text = {
@@ -995,7 +1002,10 @@ subject_of_interest = {
 		localization_key = poisons
 	}
 	text = {
-		trigger = { has_education_intrigue_trigger = yes }
+		trigger = {
+			has_education_intrigue_trigger = yes
+			NOT = { scope:activity.activity_host ?= { government_has_flag = government_is_merchant } }
+		}
 		localization_key = the_rumors_at_court
 	}
 	text = {

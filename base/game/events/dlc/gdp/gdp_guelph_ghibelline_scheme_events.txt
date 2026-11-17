@@ -1,0 +1,922 @@
+﻿namespace = gdp_guelph_ghibelline_scheme
+
+############ 
+# gdp_guelph_ghibelline_scheme.1000 - Align/Switch Sides: Look! Isn't my side great!
+# gdp_guelph_ghibelline_scheme.1010 - Claim Leadership: Turn the partisans against the current leader
+# gdp_guelph_ghibelline_scheme.1020 - Have an agent at the target's court assist your scheme
+# gdp_guelph_ghibelline_scheme.1030 - Replace Ruler: Tarnish target's reputation
+#
+
+########### 
+
+#Align/Switch Sides: Look! Isn't my side great!
+gdp_guelph_ghibelline_scheme.1000 = {
+	type = character_event
+	title = gdp_guelph_ghibelline_scheme.1000.t
+	desc = gdp_guelph_ghibelline_scheme.1000.desc
+	theme = guelph_ghibelline
+	override_background = { reference = market_crowd }
+	left_portrait = {
+		character = root
+		animation = flirtation
+	}
+	right_portrait = {
+		character = scope:target
+		animation = contemplating
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	trigger = {
+		NOT = {
+			scope:scheme = { exists = var:had_gg_scheme_1000 }
+		}
+		scope:target = { is_available = yes }
+		is_available = yes
+		#Same location, or nearby at least
+		OR = {
+			location = scope:target.location
+			location = { 
+				any_neighboring_province = { this = scope:target.location }
+			}
+		}
+	}
+	immediate = {
+		scope:scheme = {
+			set_variable = had_gg_scheme_1000
+		}
+	}
+	#Roll to get a better outcome
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1000.a
+		duel = {
+			skills = { diplomacy intrigue }
+			target = scope:target
+			#Success
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+				}
+				desc = gdp_guelph_ghibelline_scheme.1000.a.desc.success
+				send_interface_toast = {
+					type = event_toast_text_and_effect_good
+					title = gdp_guelph_ghibelline_scheme.1000.t.success
+					desc = gdp_guelph_ghibelline_scheme.1000.a.desc.success
+					left_icon = root
+					scope:scheme = {
+						add_scheme_modifier = { type = scheme_clever_coaxing_modifier }
+					}
+				}
+			}
+			#Failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = 10
+				}
+				desc = gdp_guelph_ghibelline_scheme.1000.a.desc.failure
+				send_interface_toast = {
+					type = event_toast_text_and_effect_bad
+					title = gdp_guelph_ghibelline_scheme.1000.t.failure
+					desc = gdp_guelph_ghibelline_scheme.1000.a.desc.failure
+					left_icon = root
+					stress_and_fulfillment_impact = {
+						base = medium_stress_impact_gain
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				diplomacy > scope:target.diplomacy
+				intrigue > scope:target.intrigue
+				add = 20
+			}
+		}
+	}
+	#Pay some resource for a guaranteed outcome
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1000.b
+		remove_short_term_gold = minor_gold_value
+		scope:scheme = {
+			add_scheme_modifier = { type = scheme_innocent_knickknack_modifier }
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				short_term_gold <= minor_gold_value
+				factor = 0
+			}
+		}
+	}
+	#I'm good
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1000.c
+		ai_chance = {
+			base = 25
+		}
+	}
+}
+
+#Claim Leadership: Turn the partisans against the current leader
+gdp_guelph_ghibelline_scheme.1010 = {
+	type = character_event
+	title = gdp_guelph_ghibelline_scheme.1010.t
+	desc = gdp_guelph_ghibelline_scheme.1010.desc
+	theme = guelph_ghibelline
+	override_background = { reference = council_chamber }
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = stress
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	trigger = {
+		NOT = {
+			scope:scheme = { exists = var:had_gg_scheme_1010 }
+		}
+		scope:target = { is_available = yes }
+		is_available = yes
+	}
+	immediate = {
+		scope:scheme = {
+			set_variable = had_gg_scheme_1010
+		}
+	}
+	#Renown check
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1010.b
+		trigger = {
+			dynasty = { dynasty_prestige_level >= medium_dynasty_prestige_level }
+		}
+		show_as_unavailable = { always = yes }
+		reason = renown
+		scope:scheme = {
+			add_scheme_modifier = {
+				type = scheme_resplendent_letter_modifier
+				days = 300
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+	#Roll!
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1010.a
+		custom_tooltip = gdp_guelph_ghibelline_scheme.1010.a.tt
+		duel = {
+			skills = { diplomacy learning }
+			target = scope:target
+			#Success
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+				}
+				modifier = {
+					exists = var:gg_involvement
+					add = var:gg_involvement
+				}
+				desc = gdp_guelph_ghibelline_scheme.1010.a.desc.success
+				send_interface_toast = {
+					type = event_toast_text_and_effect_good
+					title = gdp_guelph_ghibelline_scheme.1010.t.success
+					desc = gdp_guelph_ghibelline_scheme.1010.a.desc.success
+					left_icon = root
+					scope:scheme = {
+						add_scheme_modifier = {
+							type = scheme_convincing_letter_modifier
+							days = 300
+						}
+					}
+				}
+			}
+			#Failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = 10
+				}
+				desc = gdp_guelph_ghibelline_scheme.1010.a.desc.failure
+				send_interface_toast = {
+					type = event_toast_text_and_effect_bad
+					title = gdp_guelph_ghibelline_scheme.1010.t.failure
+					desc = gdp_guelph_ghibelline_scheme.1010.a.desc.failure
+					left_icon = root
+					stress_and_fulfillment_impact = {
+						base = minor_stress_impact_gain
+					}
+					scope:scheme = {
+						add_scheme_modifier = {
+							type = scheme_intercepted_letter_modifier
+							days = 300
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				diplomacy > scope:target.diplomacy
+				learning > scope:target.learning
+				add = 25
+			}
+			modifier = {
+				exists = var:gg_involvement
+				var:gg_involvement >= gg_involvement_major_value
+				add = 20
+			}
+		}
+	}
+	#I'm good
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1010.c
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+#Have an agent at the target's court assist your scheme
+gdp_guelph_ghibelline_scheme.1020 = {
+	type = character_event
+	title = gdp_guelph_ghibelline_scheme.1020.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					scope:scheme = { scheme_type = gg_replace_ruler }
+				}
+				desc = gdp_guelph_ghibelline_scheme.1020.intro.replace_ruler
+			}
+			triggered_desc = {
+				trigger = {
+					scope:scheme = { scheme_type = gg_claim_leadership }
+				}
+				desc = gdp_guelph_ghibelline_scheme.1020.intro.claim_leadership
+			}
+			desc = gdp_guelph_ghibelline_scheme.1020.intro
+		}
+		desc = gdp_guelph_ghibelline_scheme.1020.segway
+		triggered_desc = {
+			trigger = {
+				scope:scheme = { scheme_type = gg_replace_ruler }
+			}
+			desc = gdp_guelph_ghibelline_scheme.1020.outro.replace_ruler
+		}
+		triggered_desc = {
+			trigger = {
+				scope:scheme = { scheme_type = gg_claim_leadership }
+			}
+			desc = gdp_guelph_ghibelline_scheme.1020.outro.promote_character
+		}
+		triggered_desc = {
+			trigger = {
+				scope:scheme = { 
+					OR = {
+						scheme_type = gg_align_undecided
+						scheme_type = gg_switch_sides
+					}
+				}
+			}
+			desc = gdp_guelph_ghibelline_scheme.1020.outro.promote_scheme
+		}
+	}
+	theme = guelph_ghibelline
+	override_background = { reference = throne_room }
+	left_portrait = {
+		character = scope:court_agent
+		triggered_animation = {
+			trigger = {
+				scope:scheme = { scheme_type = gg_claim_leadership }
+			}
+			animation = scheme
+		}
+		animation = flirtation
+	}
+	right_portrait = {
+		character = scope:target
+		trigger = {
+			scope:scheme = {
+				NOR = {
+					scheme_type = gg_replace_ruler
+					scheme_type = gg_claim_leadership
+				}
+			}
+		}
+		animation = contemplating
+	}
+	lower_left_portrait = {
+		character = root
+		trigger = {
+			scope:scheme = {
+				OR = {
+					scheme_type = gg_replace_ruler
+					scheme_type = gg_claim_leadership
+				}
+			}
+		}
+		animation = thinking
+	}
+	lower_right_portrait = {
+		character = scope:target
+		trigger = {
+			scope:scheme = {
+				OR = {
+					scheme_type = gg_replace_ruler
+					scheme_type = gg_claim_leadership
+				}
+			}
+		}
+		animation = contemplating
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	trigger = {
+		NOT = {
+			scope:scheme = { exists = var:had_gg_scheme_1020 }
+		}
+		scope:target = { is_available = yes }
+		scope:scheme = {
+			any_scheme_agent_character = { is_available = yes } 
+		}
+	}
+	immediate = {
+		scope:scheme = {
+			set_variable = had_gg_scheme_1020
+			random_scheme_agent_character = {
+				limit = { is_available = yes }
+				save_scope_as = court_agent
+			}
+		}
+	}
+	#Leverage your Involvement
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1020.a
+		trigger = { gg_has_medium_involvement_trigger = yes }
+		show_as_unavailable = { always = yes }
+		reason = gg_involvement
+		scope:scheme = {
+			if = {
+				limit = {
+					scheme_agent_charges <= {
+						value = opportunity_cap_value
+						subtract = 2
+					}
+				}
+				change_opportunities = 2
+			}
+			if = {
+				limit = {
+					scope:scheme = {
+						OR = {
+							scheme_type = gg_replace_ruler
+							scheme_type = gg_claim_leadership
+						}
+					}
+				}
+				add_scheme_modifier = { type = scheme_leverage_involvement_rr_modifier }
+			}
+			else = {
+				add_scheme_modifier = { type = scheme_leverage_involvement_modifier }
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+	#Replace Ruler: Exchange secrecy for success chance
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1020.b
+		trigger = {
+			scope:scheme = { scheme_type = gg_replace_ruler }
+		}
+		scope:scheme = {
+			add_scheme_modifier = { type = scheme_shady_characters_modifier }
+		}
+		random = {
+			chance = {
+				add = {
+					value = scope:target.intrigue
+					multiply = 2
+				}
+				subtract = {
+					value = scope:court_agent.intrigue
+					multiply = 2
+				}
+			}
+			send_interface_toast = {
+				type = event_toast_text_and_effect_bad
+				title = gdp_guelph_ghibelline_scheme.1020.prestige
+				desc = gdp_guelph_ghibelline_scheme.1020.prestige.desc
+				left_icon = root
+				add_prestige = minor_prestige_loss
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				scope:court_agent.intrigue > scope:target.intrigue
+				add = 30
+			}
+		}
+	}
+	#Roll agent's intrigue against target's intrigue
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1020.c
+		trigger = {
+			OR = {
+				scope:scheme = { scheme_type = gg_replace_ruler }
+				AND = {
+					scope:scheme = { 
+						NOT = { scheme_type = gg_replace_ruler }
+					}
+					NAND = {
+						prestige_level >= high_prestige_level
+						piety_level >= high_piety_level
+					}
+				}
+			}
+		}
+		scope:court_agent = {
+			duel = {
+				skill = intrigue
+				target = scope:target
+				#Success
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 3.5
+					}
+					modifier = {
+						exists = var:gg_involvement
+						add = var:gg_involvement
+					}
+					desc = gdp_guelph_ghibelline_scheme.1020.c.desc.success
+					root = {
+						send_interface_toast = {
+							type = event_toast_text_and_effect_good
+							title = gdp_guelph_ghibelline_scheme.1020.t.success
+							desc = gdp_guelph_ghibelline_scheme.1020.c.desc.success
+							left_icon = root
+							scope:scheme = {
+								if = {
+									limit = {
+										scope:scheme = {
+											OR = {
+												scheme_type = gg_replace_ruler
+												scheme_type = gg_claim_leadership
+											}
+										}
+									}
+									add_scheme_modifier = { type = scheme_behind_the_scenes_rr_modifier }
+								}
+								else = {
+									add_scheme_modifier = { type = scheme_behind_the_scenes_modifier }
+								}
+							}
+						}
+					}
+				}
+				#Failure
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -3.5
+						min = 10
+					}
+					desc = gdp_guelph_ghibelline_scheme.1020.c.desc.failure
+					root = {
+						send_interface_toast = {
+							type = event_toast_text_and_effect_bad
+							title = gdp_guelph_ghibelline_scheme.1020.t.failure
+							desc = gdp_guelph_ghibelline_scheme.1020.c.desc.failure
+							left_icon = root
+							scope:court_agent = {
+								stress_and_fulfillment_impact = {
+									base = minor_stress_impact_gain
+								}
+							}
+							add_prestige = minor_prestige_loss
+						}
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				scope:court_agent.intrigue > scope:target.intrigue
+				add = 20
+			}
+			modifier = {
+				exists = var:gg_involvement
+				var:gg_involvement >= gg_involvement_major_value
+				add = 20
+			}
+		}	
+	}
+	#Leverage prestige
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1020.d
+		trigger = {
+			scope:scheme = {
+				NOT = { scheme_type = gg_replace_ruler }
+			}
+			prestige_level >= high_prestige_level
+		}
+		reason = prestige_level
+		scope:scheme = {
+			if = {
+				limit = {
+					scheme_agent_charges <= {
+						value = opportunity_cap_value
+						subtract = 1
+					}
+				}
+				change_opportunities = 1
+			}
+			add_scheme_modifier = { type = scheme_revered_reputation_modifier }
+		}
+		random = {
+			chance = {
+				add = 10
+				add = {
+					value = scope:target.diplomacy
+					multiply = 2
+				}
+				subtract = {
+					value = diplomacy
+					multiply = 2
+				}
+			}
+			send_interface_toast = {
+				type = event_toast_text_and_effect_bad
+				title = gdp_guelph_ghibelline_scheme.1020.prestige
+				desc = gdp_guelph_ghibelline_scheme.1020.prestige.desc
+				left_icon = root
+				add_prestige = minor_prestige_loss
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				diplomacy > scope:target.diplomacy
+				add = 20
+			}
+		}
+	}
+	#Leverage piety
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1020.e
+		trigger = {
+			scope:scheme = {
+				NOT = { scheme_type = gg_replace_ruler }
+			}
+			piety_level >= high_piety_level
+		}
+		reason = piety_level
+		scope:scheme = {
+			if = {
+				limit = {
+					scheme_agent_charges <= {
+						value = opportunity_cap_value
+						subtract = 1
+					}
+				}
+				change_opportunities = 1
+			}
+			add_scheme_modifier = { type = scheme_dazzling_devoutness_modifier }
+		}
+		random = {
+			chance = {
+				add = 10
+				add = {
+					value = scope:target.learning
+					multiply = 2
+				}
+				subtract = {
+					value = learning
+					multiply = 2
+				}
+			}
+			send_interface_toast = {
+				type = event_toast_text_and_effect_bad
+				title = gdp_guelph_ghibelline_scheme.1020.piety
+				desc = gdp_guelph_ghibelline_scheme.1020.piety.desc
+				left_icon = root
+				add_piety = minor_piety_loss
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				learning > scope:target.learning
+				add = 20
+			}
+		}
+	}
+	#I'm good
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1020.f
+	}
+}
+
+scripted_effect 1030_duel_effect = {
+	duel = {
+		skill = $SKILL$
+		target = scope:target
+		#Success
+		50 = {
+			compare_modifier = {
+				value = scope:duel_value
+				multiplier = 3.5
+			}
+			desc = gdp_guelph_ghibelline_scheme.1030.b.desc.success
+			send_interface_toast = {
+				type = event_toast_text_and_effect_good
+				title = gdp_guelph_ghibelline_scheme.1030.t.success
+				desc = gdp_guelph_ghibelline_scheme.1030.b.desc.success
+				left_icon = root
+				scope:scheme = {
+					add_scheme_modifier = { type = scheme_undermined_ruler_modifier }
+				}
+			}
+		}
+		#Failure
+		50 = {
+			compare_modifier = {
+				value = scope:duel_value
+				multiplier = -3.5
+				min = 10
+			}
+			desc = gdp_guelph_ghibelline_scheme.1030.b.desc.failure
+			send_interface_toast = {
+				type = event_toast_text_and_effect_bad
+				title = gdp_guelph_ghibelline_scheme.1030.t.failure
+				desc = gdp_guelph_ghibelline_scheme.1030.b.desc.failure
+				left_icon = root
+				stress_and_fulfillment_impact = {
+					base = medium_stress_impact_gain
+				}
+				random = {
+					chance = {
+						add = 40
+						subtract = $SKILL$
+					}
+					add_prestige = minor_prestige_loss
+				}
+			}
+		}
+	}
+}
+
+#Replace Ruler: Tarnish target's reputation
+gdp_guelph_ghibelline_scheme.1030 = {
+	type = character_event
+	title = gdp_guelph_ghibelline_scheme.1030.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:sly_character }
+				desc = gdp_guelph_ghibelline_scheme.1030.desc.sly_character
+			}
+			desc = gdp_guelph_ghibelline_scheme.1030.desc
+		}
+	}
+	theme = guelph_ghibelline
+	override_background = { reference = council_chamber }
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = {
+				NOT = { exists = scope:sly_character }
+			}
+			animation = scheme
+		}
+		animation = contemplating
+	}
+	right_portrait = {
+		trigger = { exists = scope:sly_character }
+		character = scope:sly_character
+		animation = scheme
+	}
+	lower_right_portrait = {
+		character = scope:target
+		animation = dismissal
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	trigger = {
+		NOT = {
+			scope:scheme = { exists = var:had_gg_scheme_1030 }
+		}
+	}
+	immediate = {
+		scope:scheme = {
+			set_variable = had_gg_scheme_1030
+		}
+		scope:target = {
+			random_list = {
+				1 = {
+					trigger = { lowest_skill = diplomacy }
+					save_scope_value_as = {
+						name = target_skill_flag
+						value = flag:diplomacy
+					}
+					save_scope_value_as = {
+						name = target_skill
+						value = diplomacy
+					}
+				}
+				1 = {
+					trigger = { lowest_skill = martial }
+					save_scope_value_as = {
+						name = target_skill_flag
+						value = flag:martial
+					}
+					save_scope_value_as = {
+						name = target_skill
+						value = martial
+					}
+				}
+				1 = {
+					trigger = { lowest_skill = stewardship }
+					save_scope_value_as = {
+						name = target_skill_flag
+						value = flag:stewardship
+					}
+					save_scope_value_as = {
+						name = target_skill
+						value = stewardship
+					}
+				}
+				1 = {
+					trigger = { lowest_skill = intrigue }
+					save_scope_value_as = {
+						name = target_skill_flag
+						value = flag:intrigue
+					}
+					save_scope_value_as = {
+						name = target_skill
+						value = intrigue
+					}
+				}
+				1 = {
+					trigger = { lowest_skill = learning }
+					save_scope_value_as = {
+						name = target_skill_flag
+						value = flag:learning
+					}
+					save_scope_value_as = {
+						name = target_skill
+						value = learning
+					}
+				}
+			}
+		}
+		random_courtier_or_guest = {
+			limit = {
+				this != root
+				is_available_ai_adult = yes
+				is_of_major_or_minor_interest_trigger = { CHARACTER = root }
+				NOR = {
+					has_trait = compassionate
+					has_trait = honest
+					gg_first_and_second_are_opposite_sides_trigger = { FIRST = root SECOND = prev }
+				}
+			}
+			weight = {
+				base = 1
+				modifier = {
+					gg_first_and_second_are_same_side_trigger = { FIRST = root SECOND = prev }
+					add = 10
+				}
+				modifier = {
+					has_trait = deceitful
+					add = 5
+				}
+				modifier = {
+					has_trait = callous
+					add = 5
+				}
+				modifier = {
+					has_trait = sadistic
+					add = 5
+				}
+			}
+			save_scope_as = sly_character
+		}
+	}
+	#Leverage your Involvement
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1030.a
+		trigger = { gg_has_minor_involvement_trigger = yes }
+		show_as_unavailable = { always = yes }
+		reason = gg_involvement
+		scope:scheme = {
+			if = {
+				limit = {
+					scheme_agent_charges <= {
+						value = opportunity_cap_value
+						subtract = 2
+					}
+				}
+				change_opportunities = 2
+			}
+			add_scheme_modifier = { type = scheme_leverage_involvement_rr_modifier }
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+	#Roll for the skill check
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1030.b
+		switch = {
+			trigger = scope:target_skill_flag
+			flag:diplomacy = {
+				1030_duel_effect = { SKILL = diplomacy }
+			}
+			flag:martial = {
+				1030_duel_effect = { SKILL = martial }
+			}
+			flag:stewardship = {
+				1030_duel_effect = { SKILL = stewardship }
+			}
+			flag:intrigue = {
+				1030_duel_effect = { SKILL = intrigue }
+			}
+			flag:learning = {
+				1030_duel_effect = { SKILL = learning }
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				scope:target_skill_flag = flag:diplomacy
+				diplomacy > scope:target_skill
+				add = 20
+			}
+			modifier = {
+				scope:target_skill_flag = flag:martial
+				martial > scope:target_skill
+				add = 20
+			}
+			modifier = {
+				scope:target_skill_flag = flag:stewardship
+				stewardship > scope:target_skill
+				add = 20
+			}
+			modifier = {
+				scope:target_skill_flag = flag:intrigue
+				intrigue > scope:target_skill
+				add = 20
+			}
+			modifier = {
+				scope:target_skill_flag = flag:learning
+				learning > scope:target_skill
+				add = 20
+			}
+		}
+	}
+	#Pay some resource for a guaranteed outcome
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1030.c
+		remove_short_term_gold = minor_gold_value
+		scope:scheme = {
+			add_scheme_modifier = { type = scheme_rumor_mill_modifier }
+		}
+		ai_chance = {
+			base = 20
+			modifier = {
+				short_term_gold <= minor_gold_value
+				factor = 0
+			}
+		}
+	}
+	#I'm good
+	option = {
+		name = gdp_guelph_ghibelline_scheme.1030.d
+		ai_chance = {
+			base = 15
+		}
+	}
+}

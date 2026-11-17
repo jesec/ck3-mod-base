@@ -203,10 +203,22 @@ chancellor_foreign_affairs_prestige_gain_consulted_house_modifier = {
 # Total prestige gained per month through foreign affairs, including all modifiers
 chancellor_foreign_affairs_prestige_total = {
 	add = chancellor_foreign_affairs_prestige_gain_base
-	add = chancellor_foreign_affairs_prestige_gain_perk_bonus_modifier
-	add = chancellor_foreign_affairs_prestige_gain_erudition_modifier
-	add = chancellor_foreign_affairs_prestige_gain_family_business_modifier
-	add = chancellor_foreign_affairs_prestige_gain_consulted_house_modifier
+	if = {
+		limit = { scope:councillor_liege = { has_perk = adaptive_traditions_perk } }
+		add = chancellor_foreign_affairs_prestige_gain_perk_bonus_modifier
+	}
+	if = {
+		limit = { councillor_liege_has_erudition_legacy_5_perk = yes }
+		add = chancellor_foreign_affairs_prestige_gain_erudition_modifier
+	}
+	if = {
+		limit = { councillor_liege_has_family_business_bonus = yes }
+		add = chancellor_foreign_affairs_prestige_gain_family_business_modifier
+	}
+	if = {
+		limit = { councillor_liege_has_consulted_house_bonus = yes }
+		add = chancellor_foreign_affairs_prestige_gain_consulted_house_modifier
+	}
 }
 
 ####################
@@ -877,8 +889,7 @@ chancellor_reliable_house_scale = {
 	value = 0
 	if = {
 		limit = {
-			exists = liege.dynasty
-			liege.dynasty = { has_dynasty_perk = fp2_coterie_legacy_2 }
+			liege.dynasty ?= { has_dynasty_perk = fp2_coterie_legacy_2 }
 			house = liege.house
 		}
 		add = diplomacy
@@ -889,4 +900,80 @@ chancellor_reliable_house_scale = {
 		floor = yes
 		min = 1
 	}
+}
+
+#########################################
+#### REPUBLIC ASSEMBLY PREPARATION ######
+#########################################
+
+republic_assembly_preparation_skill_value = {
+	add = diplomacy
+}
+
+republic_assembly_preparation_patrician_rating_value = {
+	if = {
+		limit = {
+			liege.house ?= {
+				house_power_score >= gdp_patrician_house_score_threshold_2_value
+			}
+		}
+		add = republic_assembly_preparation_skill_value
+		multiply = {
+			value = republic_assembly_preparation_patrician_bonus_value
+			divide = 100
+		}
+	}
+}
+
+republic_assembly_preparation_max_limit_value = 25
+
+republic_assembly_preparation_max_value = {
+	add = republic_assembly_preparation_skill_value
+	add = republic_assembly_preparation_patrician_rating_value
+	max = republic_assembly_preparation_max_limit_value
+}
+
+republic_assembly_preparation_base_monthly_increase = {
+	value = 0.05
+}
+
+republic_assembly_preparation_skill_monthly_increase = {
+	add = diplomacy
+	divide = 24
+}
+
+republic_assembly_preparation_patrician_rating_monthly_increase = {
+	if = {
+		limit = {
+			liege.house ?= {
+				house_power_score >= gdp_patrician_house_score_threshold_2_value
+			}
+		}
+		add = republic_assembly_preparation_base_monthly_increase
+		add = republic_assembly_preparation_skill_monthly_increase
+		multiply = {
+			value = republic_assembly_preparation_patrician_bonus_value
+			divide = 100
+		}
+	}
+}
+
+republic_assembly_preparation_monthly_increase = {
+	add = republic_assembly_preparation_base_monthly_increase
+	add = republic_assembly_preparation_skill_monthly_increase
+	add = republic_assembly_preparation_patrician_rating_monthly_increase
+}
+
+republic_assembly_preparation_final_value = {
+	value = 0
+	if = {
+		limit = {
+			scope:councillor_liege = { has_variable = republic_assembly_preparation_value }
+		}
+		add = scope:councillor_liege.var:republic_assembly_preparation_value
+	}
+}
+
+republic_assembly_preparation_value_side_effect_loss = {
+	value = 5
 }

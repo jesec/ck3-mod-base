@@ -1,0 +1,433 @@
+﻿##################################################
+# Trader Stewardship Schemes
+# Business, logistics, and trade mechanics.
+##################################################
+
+### Negotiate Deals
+# Better buy/sell prices in this market for 5 years.
+# Requires: route must already be trading in this market.
+# Requires: competitiveness is still contested in this market.
+gdp_trader_negotiate_deals_scheme = {
+	skill = stewardship
+	desc = gdp_trader_negotiate_deals_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = STEWARDSHIP }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		gdp_trader_needs_competitiveness_trigger = yes
+		assigned_trade_route = {
+			any_trade_market_on_route = {
+				this = root.location.barony.trade_market
+			}
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_negotiate_deals_scheme_success_title
+					desc = gdp_trader_negotiate_deals_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader.location.barony.trade_market = {
+						add_trade_market_modifier = {
+							modifier = gdp_trader_negotiate_deals_modifier
+							years = 5
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Finding a Deal
+# Small gold payout outright.
+# No special condition.
+gdp_trader_finding_a_deal_scheme = {
+	skill = stewardship
+	desc = gdp_trader_finding_a_deal_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = STEWARDSHIP }
+	}
+
+	allow = { gdp_trader_is_valid_for_scheme_trigger = yes }
+	valid = { gdp_trader_is_valid_for_scheme_trigger = yes }
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_finding_a_deal_scheme_success_title
+					desc = gdp_trader_finding_a_deal_scheme_success_desc
+					left_icon = scope:trader
+					add_gold = minor_gold_value
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Securing Surplus
+# Temporary capacity boost on the trader's route.
+# Requires: market must have at least one surplus good.
+gdp_trader_securing_surplus_scheme = {
+	skill = stewardship
+	desc = gdp_trader_securing_surplus_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = STEWARDSHIP }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		location.barony.trade_market = {
+			any_trade_good_with_surplus = {
+				always = yes
+			}
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_securing_surplus_scheme_success_title
+					desc = gdp_trader_securing_surplus_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader = {
+						assigned_trade_route = {
+							add_trade_route_modifier = {
+								modifier = gdp_trader_capacity_boost_modifier
+								years = 5
+							}
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Appraising the Market
+# Small competitiveness boost in this market for the route owner.
+# Requires: route trading at least one good in this market.
+# Requires: competitiveness is still contested in this market.
+gdp_trader_appraising_market_scheme = {
+	skill = stewardship
+	desc = gdp_trader_appraising_market_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = STEWARDSHIP }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		gdp_trader_needs_competitiveness_trigger = yes
+		assigned_trade_route = {
+			any_trade_market_on_route = {
+				this = root.location.barony.trade_market
+			}
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_appraising_market_scheme_success_title
+					desc = gdp_trader_appraising_market_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader.location.barony.trade_market = {
+						add_trade_market_modifier = {
+							modifier = gdp_trader_negotiate_deals_modifier
+							years = 5
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Organizing the Caravan
+# Temporary capacity boost on the trader's route.
+# Requires: route must have at least two market stops.
+gdp_trader_organizing_caravan_scheme = {
+	skill = stewardship
+	desc = gdp_trader_organizing_caravan_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = STEWARDSHIP }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		assigned_trade_route = {
+			num_trade_markets >= 2
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_organizing_caravan_scheme_success_title
+					desc = gdp_trader_organizing_caravan_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader = {
+						assigned_trade_route = {
+							add_trade_route_modifier = {
+								modifier = gdp_trader_capacity_boost_modifier
+								years = 5
+							}
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Exploring New Markets
+# Scouts a market the company is not currently trading in.
+# Requires: route owner must NOT currently have any route passing through this market.
+gdp_trader_exploring_new_markets_scheme = {
+	skill = stewardship
+	desc = gdp_trader_exploring_new_markets_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = STEWARDSHIP }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		NOT = {
+			assigned_trade_route = {
+				any_trade_market_on_route = {
+					this = root.location.barony.trade_market
+				}
+			}
+		}
+		NOT = {
+			location.barony.trade_market = {
+				has_trade_market_modifier = gdp_trader_exploring_new_markets_modifier
+			}
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_exploring_new_markets_scheme_success_title
+					desc = gdp_trader_exploring_new_markets_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader.location.barony.trade_market = {
+						add_trade_market_modifier = {
+							modifier = gdp_trader_exploring_new_markets_modifier
+							years = 5
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Identifying Rare Goods
+# Medium gold payout, larger than Finding a Deal.
+# Requires: trader has high Stewardship; market has at least one surplus good.
+gdp_trader_identifying_rare_goods_scheme = {
+	skill = stewardship
+	desc = gdp_trader_identifying_rare_goods_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = STEWARDSHIP }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		stewardship >= high_skill_rating
+		location.barony.trade_market = {
+			any_trade_good_with_surplus = {
+				always = yes
+			}
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_identifying_rare_goods_scheme_success_title
+					desc = gdp_trader_identifying_rare_goods_scheme_success_desc
+					left_icon = scope:trader
+					add_gold = medium_gold_value
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}

@@ -18,6 +18,9 @@ feast_main_stable_breakin.0001 = {
 	hidden = yes
 
 	trigger = {
+		scope:activity.activity_host = {
+			is_landed = yes
+		}
 		trigger_if = {
 			limit = {
 				scope:activity.activity_host = { has_variable = last_feast_was }
@@ -386,7 +389,25 @@ feast_main_stable_breakin.0003 = {
 		character = scope:breakin_helper
 		animation = shame
 	}
-	lower_right_portrait = scope:breakin_deviant
+	lower_right_portrait = {
+		character = scope:breakin_deviant
+		trigger = {
+			NOR = {
+				scope:breakin_stager ?= this
+				scope:breakin_helper ?= this
+			}
+		}
+	}
+	lower_center_portrait = {
+		character = scope:breakin_bystander
+		trigger = {
+			NOR = {
+				scope:breakin_stager ?= this
+				scope:breakin_helper ?= this
+				scope:breakin_deviant ?= this
+			}
+		}
+	}
 
 	immediate = {
 		play_music_cue = mx_cue_meadandwine

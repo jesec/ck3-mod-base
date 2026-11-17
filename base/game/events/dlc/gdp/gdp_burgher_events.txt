@@ -1,0 +1,655 @@
+﻿namespace = gdp_burgher
+
+gdp_burgher.0001 = {
+	type = letter_event
+	opening = gdp_burgher.0001.opening
+	sender = scope:burgher_petitioner
+
+	desc = gdp_burgher.0001.desc
+
+	trigger = {
+		exists = scope:faction
+		exists = scope:burgher_county
+	}
+
+	immediate = {
+		burgher_resolve_county_effect = { FACTION = scope:faction }
+
+		if = {
+			limit = { exists = scope:burgher_county }
+			burgher_select_demand_effect = { COUNTY = scope:burgher_county }
+			burgher_find_petitioner_effect = {
+				FACTION = scope:faction
+				COUNTY = scope:burgher_county
+			}
+		}
+	}
+
+	option = {
+		name = gdp_burgher.0001.a
+
+		burgher_settle_demand_effect = { FACTION = scope:faction }
+
+		scope:faction = {
+			burgher_notify_sponsor_effect = {
+				FACTION = this
+				TOAST_TYPE = event_toast_effect_good
+				TITLE = burgher_sponsor_privilege_toast
+				EFFECT = "custom_tooltip = burgher_sponsor_privilege_toast_desc"
+			}
+			burgher_sponsor_charter_spoils_effect = { FACTION = this }
+
+			destroy_faction = yes
+		}
+
+		add_prestige = minor_prestige_loss
+
+		faction_accept_demand_legitimacy_effect = yes
+
+		stress_and_fulfillment_impact = {
+			arrogant = medium_stress_impact_gain
+			generous = minor_stress_impact_loss
+			just = minor_stress_impact_loss
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				has_trait = arrogant
+			}
+			modifier = {
+				factor = 0
+				scope:faction = { faction_power < 50 }
+			}
+		}
+	}
+
+	option = {
+		name = gdp_burgher.0001.b
+
+		add_internal_flag = dangerous
+
+		if = {
+			limit = { exists = scope:burgher_county }
+			burgher_refuse_demand_effect = {
+				FACTION = scope:faction
+				COUNTY = scope:burgher_county
+			}
+		}
+
+		scope:faction = {
+			burgher_notify_sponsor_effect = {
+				FACTION = this
+				TOAST_TYPE = event_toast_effect_bad
+				TITLE = burgher_sponsor_refused_toast
+				EFFECT = "custom_tooltip = burgher_sponsor_refused_toast_desc"
+			}
+		}
+
+		add_prestige = minor_prestige_gain
+
+		stress_and_fulfillment_impact = {
+			just = minor_stress_impact_gain
+			compassionate = minor_stress_impact_gain
+			arrogant = minor_stress_impact_loss
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = just
+					has_trait = compassionate
+				}
+			}
+			modifier = {
+				factor = 0
+				scope:faction = { faction_power > 110 }
+			}
+			modifier = {
+				factor = 0
+				is_at_war = yes
+			}
+		}
+	}
+
+	after = {
+		scope:burgher_petitioner ?= {
+			if = {
+				limit = { has_character_flag = burgher_petitioner_created }
+
+				if = {
+					limit = { has_variable = burgher_leader_of }
+					remove_character_flag = burgher_petitioner_created
+				}
+				else = {
+					silent_disappearance_effect = yes
+				}
+			}
+		}
+	}
+}
+
+gdp_burgher.0010 = {
+	type = letter_event
+	opening = gdp_burgher.0001.opening
+	desc = gdp_burgher.0010.desc
+	sender = scope:faction.special_character
+
+	trigger = {
+		exists = scope:faction
+		exists = scope:burgher_county
+	}
+
+	immediate = {
+		burgher_resolve_county_effect = { FACTION = scope:faction }
+		scope:faction ?= { setup_burgher_leader_effect = yes }
+	}
+
+	option = {
+		name = gdp_burgher.0010.a
+
+		trigger = {
+			exists = scope:burgher_county
+			exists = scope:burgher_leader
+		}
+
+		scope:faction ?= {
+			burgher_notify_sponsor_effect = {
+				FACTION = this
+				TOAST_TYPE = event_toast_effect_good
+				TITLE = burgher_sponsor_self_rule_toast
+				EFFECT = "custom_tooltip = burgher_sponsor_self_rule_toast_desc"
+			}
+
+			every_faction_county_member = {
+				set_variable = {
+					name = burgher_faction_cooldown
+					years = burgher_concede_cooldown_years_value
+				}
+			}
+		}
+
+		custom_tooltip = burgher_concede_cooldown_tt
+
+		burgher_win_self_rule_effect = {
+			LEADER = scope:burgher_leader
+			COUNTY = scope:burgher_county
+		}
+
+		burgher_sponsor_republic_type_effect = {
+			FACTION = scope:faction
+			RULER = scope:burgher_leader
+		}
+
+		scope:faction ?= {
+			burgher_sponsor_spoils_effect = { FACTION = this }
+		}
+
+		scope:faction ?= { destroy_faction = yes }
+
+		add_prestige = medium_prestige_loss
+
+		if = {
+			limit = { is_valid_for_legitimacy_change = yes }
+			add_legitimacy = medium_legitimacy_loss
+		}
+
+		stress_and_fulfillment_impact = {
+			arrogant = major_stress_impact_gain
+			ambitious = medium_stress_impact_gain
+			content = minor_stress_impact_loss
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = arrogant
+					has_trait = ambitious
+				}
+			}
+			modifier = {
+				factor = 0
+				scope:faction = { faction_power <= 120 }
+			}
+		}
+	}
+
+	option = {
+		name = gdp_burgher.0010.b
+
+		add_internal_flag = dangerous
+
+		scope:faction = {
+			burgher_notify_sponsor_effect = {
+				FACTION = this
+				TOAST_TYPE = event_toast_effect_neutral
+				TITLE = burgher_sponsor_refused_toast
+				EFFECT = "custom_tooltip = burgher_sponsor_refused_toast_desc"
+			}
+
+			faction_start_war = {}
+		}
+
+		stress_and_fulfillment_impact = {
+			craven = medium_stress_impact_gain
+			brave = minor_stress_impact_loss
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				has_trait = craven
+			}
+			modifier = {
+				factor = 0
+				scope:faction = { faction_power > 120 }
+			}
+		}
+	}
+}
+
+gdp_burgher.0020 = {
+	type = character_event
+	window = big_event_window
+	title = gdp_burgher.0020.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { gdp_is_assembly_head_trigger = yes }
+				desc = gdp_burgher.0020.desc.assembly_head
+			}
+			desc = gdp_burgher.0020.desc
+		}
+	}
+	theme = republic
+
+	left_portrait = {
+		character = root
+		animation = personality_greedy
+	}
+	right_portrait = {
+		trigger = { exists = scope:burgher_ruler }
+		character = scope:burgher_ruler
+		animation = happiness
+	}
+
+	trigger = {
+		exists = scope:burgher_ruler
+		exists = scope:freed_county
+		scope:burgher_ruler != root
+	}
+
+	option = {
+		name = gdp_burgher.0020.a
+
+		trigger = {
+			custom_tooltip = {
+				text = gdp_burgher_agitator_not_republic_head_tt
+				burgher_agitator_can_take_seat_trigger = yes
+			}
+			scope:burgher_ruler = {
+				trigger_if = {
+					limit = { is_independent_ruler = no }
+					burgher_commune_liege_outranks_agitator_trigger = { AGITATOR = root }
+				}
+			}
+		}
+
+		burgher_agitator_takes_commune_effect = yes
+
+		add_prestige = major_prestige_gain
+
+		stress_and_fulfillment_impact = {
+			ambitious = major_stress_impact_loss
+			humble = medium_stress_impact_gain
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = humble
+					has_trait = content
+				}
+			}
+		}
+	}
+
+	option = {
+		name = gdp_burgher.0020.b
+
+		trigger = {
+			gdp_is_assembly_head_trigger = no
+			custom_tooltip = {
+				text = gdp_burgher_agitator_outranks_republic_head_tt
+				burgher_agitator_can_join_commune_trigger = { LEADER = scope:burgher_ruler }
+			}
+		}
+		show_as_unavailable = { gdp_is_assembly_head_trigger = no }
+
+		burgher_agitator_joins_commune_effect = { LEADER = scope:burgher_ruler }
+
+		add_prestige = medium_prestige_gain
+
+		scope:burgher_ruler = {
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 30
+			}
+		}
+
+		stress_and_fulfillment_impact = {
+			greedy = medium_stress_impact_loss
+			ambitious = minor_stress_impact_gain
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				has_trait = ambitious
+			}
+		}
+	}
+
+	option = {
+		name = gdp_burgher.0020.c
+
+		add_prestige = minor_prestige_gain
+
+		scope:freed_county = {
+			add_popular_opinion = 20
+		}
+
+		scope:burgher_ruler = {
+			add_opinion = {
+				target = root
+				modifier = grateful_opinion
+				opinion = 20
+			}
+		}
+
+		if = {
+			limit = { gdp_is_assembly_head_trigger = no }
+			stress_and_fulfillment_impact = {
+				humble = medium_stress_impact_loss
+				ambitious = medium_stress_impact_gain
+			}
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				has_trait = ambitious
+				gdp_is_assembly_head_trigger = no
+			}
+		}
+	}
+}
+
+gdp_burgher.0030 = {
+	hidden = yes
+
+	trigger = {
+		has_variable = burgher_leader_of
+		joined_faction ?= var:burgher_leader_of
+
+		scope:war ?= {
+			using_cb = burgher_war
+			primary_defender = scope:previous_controller
+		}
+	}
+
+	immediate = {
+		scope:county = {
+			change_county_control = -10
+		}
+
+		if = {
+			limit = {
+				scope:county = { burgher_county_is_urban_trigger = yes }
+			}
+
+			spawn_army = {
+				name = burgher_militia_army_name
+				levies = {
+					value = scope:county.burgher_county_militia_value
+					multiply = 0.5
+				}
+				men_at_arms = {
+					type = pikemen_militia
+					stacks = 1
+				}
+				location = scope:barony.title_province
+				war = scope:war
+				inheritable = no
+				war_keep_on_attacker_victory = yes
+			}
+
+			if = {
+				limit = {
+					scope:county = {
+						burgher_county_faction_on_cooldown_trigger = no
+					}
+					var:burgher_leader_of = {
+						NOT = {
+							any_faction_county_member = { this = scope:county }
+						}
+					}
+				}
+				scope:county = {
+					title_join_faction = root.var:burgher_leader_of
+				}
+
+				save_scope_value_as = {
+					name = burgher_siege_joined
+					value = yes
+				}
+			}
+		}
+
+		if = {
+			limit = { exists = scope:burgher_siege_joined }
+
+			var:burgher_leader_of.var:merchant_sponsor ?= {
+				if = {
+					limit = { is_alive = yes }
+					send_interface_toast = {
+						type = event_toast_effect_good
+						title = burgher_sponsor_siege_join_toast
+						left_icon = this
+						right_icon = scope:county
+						custom_tooltip = burgher_sponsor_siege_join_toast_desc
+					}
+				}
+			}
+		}
+	}
+}
+
+gdp_burgher.0090 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = { is_at_war = yes }
+			remove_character_flag = burgher_leader_dissolving
+			add_character_flag = burgher_leader_pending_dissolve
+		}
+		else_if = {
+			limit = {
+				is_alive = yes
+				is_landed = no
+			}
+			remove_character_flag = burgher_leader_pending_dissolve
+			if = {
+				limit = { gold > 0 }
+				remove_long_term_gold = gold
+			}
+
+			death = {
+				death_reason = death_vanished
+			}
+		}
+		else = {
+			remove_character_flag = burgher_leader_dissolving
+			remove_character_flag = burgher_leader_pending_dissolve
+
+			if = {
+				limit = { has_variable = burgher_title }
+				burgher_dissolve_leader_effect = yes
+			}
+			else = {
+				remove_variable = burgher_leader_of
+				remove_character_flag = burgher_spawned_leader
+			}
+		}
+	}
+}
+
+namespace = gdp_hanseatic
+
+gdp_hanseatic.0010 = {
+	type = letter_event
+	opening = gdp_hanseatic.0010.opening
+	sender = scope:monopoly_asker
+
+	desc = gdp_hanseatic.0010.desc
+
+	trigger = {
+		any_trade_monopoly_for_character = { count > 0 }
+		OR = {
+			AND = {
+				gdp_is_assembly_head_trigger = no
+				liege ?= {
+					government_has_flag = government_is_republic
+					is_hanseatic_league_member_trigger = yes
+					this != root
+				}
+			}
+			AND = {
+				is_hanseatic_league_member_trigger = yes
+				confederation ?= {
+					has_leading_title = yes
+					exists = leading_title.holder
+					leading_title.holder != root
+				}
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { is_confederation_member = yes }
+			confederation = { save_scope_as = the_league }
+		}
+		else = {
+			liege.confederation ?= { save_scope_as = the_league }
+		}
+
+		if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+				liege ?= {
+					government_has_flag = government_is_republic
+					is_hanseatic_league_member_trigger = yes
+					this != root
+				}
+			}
+			liege = { save_scope_as = monopoly_asker }
+		}
+		else = {
+			confederation.leading_title.holder = { save_scope_as = monopoly_asker }
+		}
+
+		if = {
+			limit = {
+				gdp_is_assembly_head_trigger = no
+				liege ?= { government_has_flag = government_is_republic }
+			}
+			liege.capital_county ?= { save_scope_as = hanse_city_title }
+		}
+		else_if = {
+			limit = { exists = capital_county }
+			capital_county = { save_scope_as = hanse_city_title }
+		}
+		else = {
+			domicile.domicile_location.county ?= { save_scope_as = hanse_city_title }
+		}
+	}
+
+	option = {
+		name = gdp_hanseatic.0010.a
+		hanseatic_convert_personal_monopolies_effect = {
+			OWNER_PARAM = owning_confederation
+			OWNER = scope:the_league
+		}
+		scope:the_league = { change_cohesion = hanseatic_monopoly_league_cohesion_value }
+		add_prestige = medium_prestige_gain
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				has_trait = greedy
+			}
+		}
+	}
+
+	option = {
+		name = gdp_hanseatic.0010.b
+
+		trigger = { exists = scope:hanse_city_title }
+
+		hanseatic_convert_personal_monopolies_effect = {
+			OWNER_PARAM = owning_title
+			OWNER = scope:hanse_city_title
+		}
+		scope:the_league = { change_cohesion = hanseatic_monopoly_city_cohesion_value }
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = {
+		name = gdp_hanseatic.0010.c
+
+		add_internal_flag = dangerous
+
+		scope:the_league = { change_cohesion = hanseatic_monopoly_keep_cohesion_value }
+
+		stress_and_fulfillment_impact = {
+			just = medium_stress_impact_gain
+			generous = medium_stress_impact_gain
+			greedy = minor_stress_impact_loss
+		}
+
+		ai_chance = {
+			base = 100
+
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = just
+					has_trait = generous
+				}
+			}
+		}
+	}
+}

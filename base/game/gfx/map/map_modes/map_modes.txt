@@ -792,6 +792,8 @@ dejure_counties = {
 	selection = counties
 	fill_in_impassable = no
 
+	barony_description = DEJURE_COUNTIES_MAPMODE_TOOLTIP
+
 	gradient_parameters = {
 		zoom_step =					@zoom_step_near
 
@@ -1600,6 +1602,8 @@ simple_terrain = {
 	selection = holding
 	fill_in_impassable = no
 
+	barony_description = TERRAIN_MAP_MODE_TOOLTIP
+
 	gradient_parameters = {
 		zoom_step =					@zoom_step_near
 
@@ -1914,6 +1918,7 @@ select_barony_title = {
 	color_mode = select_barony_title
 	small_map_names = baronies
 	large_map_names = baronies
+	selection = baronies
 	fill_in_impassable = no
 
 	gradient_parameters = {
@@ -1990,8 +1995,9 @@ select_barony_title = {
 
 select_county_title = {
 	color_mode = select_county_title
-	small_map_names = counties
-	large_map_names = counties
+	small_map_names = dejure_counties
+	large_map_names = dejure_counties
+	selection = counties
 	fill_in_impassable = no
 
 	gradient_parameters = {
@@ -2068,8 +2074,9 @@ select_county_title = {
 
 select_duchy_title = {
 	color_mode = select_duchy_title
-	small_map_names = duchies
-	large_map_names = duchies
+	small_map_names = dejure_duchies
+	large_map_names = dejure_duchies
+	selection = duchies
 	fill_in_impassable = no
 
 	gradient_parameters = {
@@ -2146,8 +2153,9 @@ select_duchy_title = {
 
 select_kingdom_title = {
 	color_mode = select_kingdom_title
-	small_map_names = kingdoms
-	large_map_names = kingdoms
+	small_map_names = dejure_kingdoms
+	large_map_names = dejure_kingdoms
+	selection = kingdoms
 	fill_in_impassable = no
 
 	gradient_parameters = {
@@ -2224,8 +2232,9 @@ select_kingdom_title = {
 
 select_empire_title = {
 	color_mode = select_empire_title
-	small_map_names = empires
-	large_map_names = empires
+	small_map_names = dejure_empires
+	large_map_names = dejure_empires
+	selection = empires
 	fill_in_impassable = no
 
 	gradient_parameters = {
@@ -2304,6 +2313,7 @@ select_hegemony_title = {
 	color_mode = select_hegemony_title
 	small_map_names = dejure_hegemonies
 	large_map_names = dejure_hegemonies
+	selection = hegemonies
 	fill_in_impassable = no
 
 	gradient_parameters = {
@@ -2616,12 +2626,14 @@ declare_war = {
 	}
 }
 
-county_development = {
-	color_mode = county_development
+county_prosperity = {
+	color_mode = county_prosperity
 	small_map_names = dejure_counties
 	large_map_names = dejure_counties
 	fill_in_impassable = no
 	selection = holding
+
+	barony_description = PROSPERITY_MAP_MODE_TOOLTIP
 
 	gradient_parameters = {
 		zoom_step =					@zoom_step_near
@@ -2636,6 +2648,144 @@ county_development = {
 		edge_color_mult = 			@data_edge_color_mult
 		before_lighting_blend =		@data_before_lighting_blend
 		after_lighting_blend =		@data_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
+	}
+}
+
+popular_opinion_map = {
+	color_mode = popular_opinion
+	small_map_names = dejure_counties
+	large_map_names = dejure_counties
+	fill_in_impassable = no
+	selection = counties
+
+	barony_description = POPULAR_OPINION_MAP_MODE_TOOLTIP
+
+	gradient_parameters = {
+		zoom_step =					@zoom_step_near
+
+		gradient_alpha_inside = 	@filled_near_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_near_gradient_alpha_outside
+		gradient_width = 			@filled_near_gradient_width
+		gradient_color_mult =		@filled_near_gradient_color_mult
+		edge_width = 				@filled_near_edge_width
+		edge_sharpness = 			@filled_near_edge_sharpness
+		edge_alpha = 				@filled_near_edge_alpha
+		edge_color_mult = 			@filled_near_edge_color_mult
+		before_lighting_blend =		@filled_near_before_lighting_blend
+		after_lighting_blend =		@filled_near_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@filled_mid_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@filled_far_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@pre_flat_map_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@flat_map_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
+
 	}
 }
 
@@ -3067,7 +3217,7 @@ government = {
 		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
 		gradient_width = 			@filled_mid_gradient_width
 		gradient_color_mult =		@filled_mid_gradient_color_mult
-		edge_width = 				@filled_mid_edge_width
+		edge_width = 				@filled_near_edge_width
 		edge_sharpness = 			@filled_mid_edge_sharpness
 		edge_alpha = 				@filled_mid_edge_alpha
 		edge_color_mult = 			@filled_mid_edge_color_mult
@@ -3081,7 +3231,7 @@ government = {
 		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
 		gradient_width = 			@filled_far_gradient_width
 		gradient_color_mult =		@filled_far_gradient_color_mult
-		edge_width = 				@filled_far_edge_width
+		edge_width = 				@filled_near_edge_width
 		edge_sharpness = 			@filled_far_edge_sharpness
 		edge_alpha = 				@filled_far_edge_alpha
 		edge_color_mult = 			@filled_far_edge_color_mult
@@ -3095,7 +3245,7 @@ government = {
 		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
 		gradient_width = 			@pre_flat_map_gradient_width
 		gradient_color_mult =		@pre_flat_map_gradient_color_mult
-		edge_width = 				@pre_flat_map_edge_width
+		edge_width = 				@filled_near_edge_width
 		edge_sharpness = 			@pre_flat_map_edge_sharpness
 		edge_alpha = 				@pre_flat_map_edge_alpha
 		edge_color_mult = 			@pre_flat_map_edge_color_mult
@@ -4364,6 +4514,62 @@ economy_buildings = {
 		before_lighting_blend =		@data_before_lighting_blend
 		after_lighting_blend =		@data_after_lighting_blend
 	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
+	}
 }
 
 county_control = {
@@ -4388,6 +4594,62 @@ county_control = {
 		edge_color_mult = 			@data_edge_color_mult
 		before_lighting_blend =		@data_before_lighting_blend
 		after_lighting_blend =		@data_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@data_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
 	}
 }
 
@@ -6151,6 +6413,8 @@ terrain = {
 	selection = selected_character_realms_or_holdings
 	fill_in_impassable = no_small_names
 
+	barony_description = TERRAIN_MAP_MODE_TOOLTIP
+
 	gradient_parameters = {
 		zoom_step =					@zoom_step_near
 
@@ -6220,6 +6484,419 @@ terrain = {
 		edge_color_mult = 			0
 		before_lighting_blend =		0
 		after_lighting_blend =		0
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@flat_map_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
+
+	}
+}
+
+trade_goods = {
+	color_mode = trade_goods
+	small_map_names = trade_markets
+	large_map_names = trade_markets
+	selection = trade_markets
+	select_holdings_on_close_zoom = no
+	fill_in_impassable = yes
+
+	barony_description = TRADE_GOODS_MAPMODE_TOOLTIP
+
+		gradient_parameters = {
+		zoom_step =					@zoom_step_near
+
+		gradient_alpha_inside = 	@filled_near_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_near_gradient_alpha_outside
+		gradient_width = 			@filled_near_gradient_width
+		gradient_color_mult =		@filled_near_gradient_color_mult
+		edge_width = 				@filled_near_edge_width
+		edge_sharpness = 			@filled_near_edge_sharpness
+		edge_alpha = 				@filled_near_edge_alpha
+		edge_color_mult = 			@filled_near_edge_color_mult
+		before_lighting_blend =		@filled_near_before_lighting_blend
+		after_lighting_blend =		@filled_near_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@filled_mid_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@filled_far_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@pre_flat_map_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@flat_map_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
+
+	}
+}
+
+trade_good_potential_production = {
+	color_mode = trade_good_potential_production
+	small_map_names = dejure_counties
+	large_map_names = dejure_counties
+	selection = trade_markets
+	select_holdings_on_close_zoom = no
+	fill_in_impassable = yes
+
+	barony_description = TRADE_GOOD_POTENTIAL_PRODUCTION_MAPMODE_TOOLTIP
+
+		gradient_parameters = {
+		zoom_step =					@zoom_step_near
+
+		gradient_alpha_inside = 	@filled_near_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_near_gradient_alpha_outside
+		gradient_width = 			@filled_near_gradient_width
+		gradient_color_mult =		@filled_near_gradient_color_mult
+		edge_width = 				@filled_near_edge_width
+		edge_sharpness = 			@filled_near_edge_sharpness
+		edge_alpha = 				@filled_near_edge_alpha
+		edge_color_mult = 			@filled_near_edge_color_mult
+		before_lighting_blend =		@filled_near_before_lighting_blend
+		after_lighting_blend =		@filled_near_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@filled_mid_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@filled_far_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@pre_flat_map_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@flat_map_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
+
+	}
+}
+
+trade_good_top_production = {
+	color_mode = trade_good_top_production
+	small_map_names = trade_good_top_production
+	large_map_names = trade_good_top_production
+	selection = county_capital_holdings
+	select_holdings_on_close_zoom = no
+	fill_in_impassable = yes
+
+	barony_description = TRADE_GOOD_TOP_PRODUCTION_MAPMODE_TOOLTIP
+
+		gradient_parameters = {
+		zoom_step =					@zoom_step_near
+
+		gradient_alpha_inside = 	@filled_near_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_near_gradient_alpha_outside
+		gradient_width = 			@filled_near_gradient_width
+		gradient_color_mult =		@filled_near_gradient_color_mult
+		edge_width = 				@filled_near_edge_width
+		edge_sharpness = 			@filled_near_edge_sharpness
+		edge_alpha = 				@filled_near_edge_alpha
+		edge_color_mult = 			@filled_near_edge_color_mult
+		before_lighting_blend =		@filled_near_before_lighting_blend
+		after_lighting_blend =		@filled_near_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@filled_mid_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@filled_far_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@pre_flat_map_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@flat_map_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
+
+	}
+}
+
+settlement_size = {
+	color_mode = province_size
+	small_map_names = dejure_counties
+	large_map_names = dejure_counties
+	selection = holding
+	fill_in_impassable = yes
+
+	barony_description = SETTLEMENT_SIZE_MAPMODE_TOOLTIP
+
+		gradient_parameters = {
+		zoom_step =					@zoom_step_near
+
+		gradient_alpha_inside = 	@filled_near_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_near_gradient_alpha_outside
+		gradient_width = 			@filled_near_gradient_width
+		gradient_color_mult =		@filled_near_gradient_color_mult
+		edge_width = 				@filled_near_edge_width
+		edge_sharpness = 			@filled_near_edge_sharpness
+		edge_alpha = 				@filled_near_edge_alpha
+		edge_color_mult = 			@filled_near_edge_color_mult
+		before_lighting_blend =		@filled_near_before_lighting_blend
+		after_lighting_blend =		@filled_near_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@filled_mid_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@filled_far_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@pre_flat_map_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_flat_map
+
+		gradient_alpha_inside = 	@flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@flat_map_gradient_alpha_outside
+		gradient_width = 			@flat_map_gradient_width
+		gradient_color_mult =		@flat_map_gradient_color_mult
+		edge_width = 				@flat_map_edge_width
+		edge_sharpness = 			@flat_map_edge_sharpness
+		edge_alpha = 				@flat_map_edge_alpha
+		edge_color_mult = 			@flat_map_edge_color_mult
+		before_lighting_blend =		@flat_map_before_lighting_blend
+		after_lighting_blend =		@flat_map_after_lighting_blend
+
+	}
+}
+trade_markets = {
+	color_mode = trade_markets
+	small_map_names = trade_markets
+	large_map_names = trade_markets
+	selection = trade_markets
+	select_holdings_on_close_zoom = no
+	fill_in_impassable = yes
+
+	barony_description = TRADE_GOODS_MAPMODE_TOOLTIP
+
+		gradient_parameters = {
+		zoom_step =					@zoom_step_near
+
+		gradient_alpha_inside = 	@filled_near_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_near_gradient_alpha_outside
+		gradient_width = 			@filled_near_gradient_width
+		gradient_color_mult =		@filled_near_gradient_color_mult
+		edge_width = 				@filled_near_edge_width
+		edge_sharpness = 			@filled_near_edge_sharpness
+		edge_alpha = 				@filled_near_edge_alpha
+		edge_color_mult = 			@filled_near_edge_color_mult
+		before_lighting_blend =		@filled_near_before_lighting_blend
+		after_lighting_blend =		@filled_near_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_mid
+
+		gradient_alpha_inside = 	@filled_mid_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_mid_gradient_alpha_outside
+		gradient_width = 			@filled_mid_gradient_width
+		gradient_color_mult =		@filled_mid_gradient_color_mult
+		edge_width = 				@filled_mid_edge_width
+		edge_sharpness = 			@filled_mid_edge_sharpness
+		edge_alpha = 				@filled_mid_edge_alpha
+		edge_color_mult = 			@filled_mid_edge_color_mult
+		before_lighting_blend =		@filled_mid_before_lighting_blend
+		after_lighting_blend =		@filled_mid_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_far
+
+		gradient_alpha_inside = 	@filled_far_gradient_alpha_inside
+		gradient_alpha_outside = 	@filled_far_gradient_alpha_outside
+		gradient_width = 			@filled_far_gradient_width
+		gradient_color_mult =		@filled_far_gradient_color_mult
+		edge_width = 				@filled_far_edge_width
+		edge_sharpness = 			@filled_far_edge_sharpness
+		edge_alpha = 				@filled_far_edge_alpha
+		edge_color_mult = 			@filled_far_edge_color_mult
+		before_lighting_blend =		@filled_far_before_lighting_blend
+		after_lighting_blend =		@filled_far_after_lighting_blend
+	}
+	gradient_parameters = {
+		zoom_step =					@zoom_step_pre_flat_map
+
+		gradient_alpha_inside = 	@pre_flat_map_gradient_alpha_inside
+		gradient_alpha_outside = 	@pre_flat_map_gradient_alpha_outside
+		gradient_width = 			@pre_flat_map_gradient_width
+		gradient_color_mult =		@pre_flat_map_gradient_color_mult
+		edge_width = 				@pre_flat_map_edge_width
+		edge_sharpness = 			@pre_flat_map_edge_sharpness
+		edge_alpha = 				@pre_flat_map_edge_alpha
+		edge_color_mult = 			@pre_flat_map_edge_color_mult
+		before_lighting_blend =		@pre_flat_map_before_lighting_blend
+		after_lighting_blend =		@pre_flat_map_after_lighting_blend
 	}
 	gradient_parameters = {
 		zoom_step =					@zoom_step_flat_map

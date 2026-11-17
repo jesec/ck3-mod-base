@@ -1,0 +1,63 @@
+﻿burgher_autonomy_demand = {
+	first_valid_on_action = {
+		burgher_autonomy_demand_self_rule
+		burgher_autonomy_demand_privileges
+		burgher_autonomy_demand_lesser_privileges
+	}
+}
+
+burgher_autonomy_demand_self_rule = {
+	trigger = {
+		scope:faction ?= {
+			OR = {
+				var:merchant_sponsor ?= {
+					is_alive = yes
+				}
+				var:burgher_county ?= {
+					OR = {
+						scope:faction = {
+							has_variable = burgher_grievance
+							var:burgher_grievance >= burgher_grievance_threshold_value
+						}
+						AND = {
+							burgher_county_can_demand_self_rule_trigger = yes
+							OR = {
+								AND = {
+									has_variable = civic_privileges_level
+									var:civic_privileges_level >= burgher_max_privilege_level_value
+								}
+								burgher_has_no_demand_left_trigger = yes
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		scope:faction ?= { setup_burgher_leader_effect = yes }
+	}
+
+	events = {
+		gdp_burgher.0010
+	}
+}
+
+burgher_autonomy_demand_privileges = {
+	trigger = {
+		scope:faction.var:burgher_county ?= {
+			burgher_can_receive_privilege_trigger = yes
+		}
+	}
+
+	events = {
+		gdp_burgher.0001
+	}
+}
+
+burgher_autonomy_demand_lesser_privileges = {
+	events = {
+		gdp_burgher.0001
+	}
+}

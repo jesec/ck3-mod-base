@@ -2165,6 +2165,49 @@ beards = {
 		}
 	}
 
+	east_asian_curly_fallback = { # Chinese and Southeast Asian wardrobes have no curly beards; Japanese ones already use mena_curly
+		dna_modifiers = {
+			accessory = {
+				mode = add
+				gene = beards
+				template = mena_beards_curly
+				range = { 0 1 } # For the randomness to work correctly
+			}
+		}
+		weight = {
+			base = 0
+			modifier = {
+				add = 70
+				exists = this
+				has_gene = {
+					category = gene_hair_type
+					template = hair_curly
+				}
+				portrait_east_asian_hair_fallback_trigger = yes
+				NOT = { portrait_japanese_clothing_trigger = yes }
+			}
+			modifier = { # Guarantee-beard groups (Muslims, Orthodox clergy, etc.) should still match their hair gene
+				add = 200
+				should_always_have_beard_trigger = yes
+				exists = this
+				has_gene = {
+					category = gene_hair_type
+					template = hair_curly
+				}
+				portrait_east_asian_hair_fallback_trigger = yes
+				NOT = { portrait_japanese_clothing_trigger = yes }
+			}
+			modifier = {
+				add = -100
+				exists = this
+				OR = {
+					is_from_ruler_designer = yes
+					has_character_flag = has_scripted_appearance
+				}
+			}
+		}
+	}
+
 }
 
 

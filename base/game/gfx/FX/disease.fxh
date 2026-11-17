@@ -1,6 +1,7 @@
 Includes = {
 	"cw/utility.fxh"
 	"standardfuncsgfx.fxh"
+	"map_effect_textures.fxh"
 	"jomini/jomini_province_overlays.fxh"
 	"jomini/jomini_water.fxh"
 }
@@ -12,28 +13,6 @@ ConstantBuffer( DiseaseConstants )
 	float FogStrengthFactor;
 	uint NumEpidemicTypes;
 	bool IsEnabled;
-}
-
-TextureSampler DiseaseTexture
-{
-	Index = 10	
-	MagFilter = "Linear"
-	MinFilter = "Linear"
-	MipFilter = "Linear" 
-	SampleModeU = "Wrap"
-	SampleModeV = "Wrap"
-	File = "gfx/map/disease/disease.dds"
-}
-
-TextureSampler DiseaseTexture2
-{
-	Index = 11
-	MagFilter = "Linear"
-	MinFilter = "Linear"
-	MipFilter = "Linear" 
-	SampleModeU = "Wrap"
-	SampleModeV = "Wrap"
-	File = "gfx/map/disease/disease2.dds"
 }
 
 BufferTexture DiseaseMaskBuffer
@@ -87,7 +66,7 @@ PixelShader =
 
 		float4 GetDiseaseTextureValue( in float2 Coordinate )
 		{
-			return PdxTex2D( DiseaseTexture, Coordinate / WorldSpaceToTerrain0To1 );
+			return PdxTex2D( MapEffectTextures, float3( Coordinate / WorldSpaceToTerrain0To1, MAP_EFFECT_TEXTURE_INDEX_NOISE_0 ) );
 		}
 
 		EpidemicSettings GetEpidemicSettings( in uint EpidemicIndex )
@@ -184,8 +163,8 @@ PixelShader =
 			const float2 NoiseCoordinate1 = float2( FogUV.x + SinNoiseSpeed * 0.033f , FogUV.y + SinNoiseSpeed * 0.01f ) * 12;
 			const float2 NoiseCoordinate2 = float2( FogUV.x * 0.5f + CosNoiseSpeed * -0.026f + SinNoiseSpeed * 0.03f, FogUV.y * 0.5f + CosNoiseSpeed * 0.03f ) * 12;
 			
-			const float NoiseTextureValue = PdxTex2D( DiseaseTexture, NoiseCoordinate1 ).r;
-			const float NoiseTextureValue2 = PdxTex2D( DiseaseTexture, NoiseCoordinate2 ).r;
+			const float NoiseTextureValue = PdxTex2D( MapEffectTextures, float3( NoiseCoordinate1, MAP_EFFECT_TEXTURE_INDEX_NOISE_0 ) ).r;
+			const float NoiseTextureValue2 = PdxTex2D( MapEffectTextures, float3( NoiseCoordinate2, MAP_EFFECT_TEXTURE_INDEX_NOISE_0 ) ).r;
 			DiseaseMask += NoiseTextureValue * NoiseTextureValue2 * DiseaseMask * FogStrengthFactor;
 		}
 
@@ -197,11 +176,11 @@ PixelShader =
 
 			if ( TypeSettings._TextureIndex == 0 )
 			{
-				PackedValue = PdxTex2D( DiseaseTexture, TiledCoordinate );
+				PackedValue = PdxTex2D( MapEffectTextures, float3( TiledCoordinate, MAP_EFFECT_TEXTURE_INDEX_NOISE_0 ) );
 			}
 			else if ( TypeSettings._TextureIndex == 1 )
 			{
-				PackedValue = PdxTex2D( DiseaseTexture2, TiledCoordinate );
+				PackedValue = PdxTex2D( MapEffectTextures, float3( TiledCoordinate, MAP_EFFECT_TEXTURE_INDEX_NOISE_1 ) );
 			}
 			else
 			{
@@ -268,6 +247,10 @@ PixelShader =
 			{
 				return;
 			}
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				return;
+			}
 			int MaxNumEpidemicTypes = min( MAX_EPIDEMIC_TYPES, NumEpidemicTypes );
 			const float ZoomBlendOut = clamp( ( 1.0f - _WaterZoomedInZoomedOutFactor * 2.615f ) * 5.0f, 0.0f, 1.0f );
 			if( ZoomBlendOut > 0.0f )
@@ -302,6 +285,10 @@ PixelShader =
 		{
 #ifndef LOW_SPEC_SHADERS
 			if ( !IsEnabled )
+			{
+				return;
+			}
+			if ( _TerrainEffectsEnabled < 0.001f )
 			{
 				return;
 			}

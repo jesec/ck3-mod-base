@@ -140,6 +140,20 @@ hajj.0500 = {
 	}
 	cooldown = { years = 10 }
 	trigger = {
+		is_available_healthy_adult = yes
+		#Needs to be a mandatory Hajj religion
+		rite = { rite_has_parameter = mandatory_hajj }
+		faith = {
+			any_holy_site_barony = { this = title:b_makka }
+		}
+		#This really should take care of most Hajj/Pilgrim-related trigger checks - if you don't have this trait, you really shouldn't have a Hajj cooldown etc
+		NOT = { has_trait = hajjaj }
+		#Only one modifier for _you_
+		NOR = {
+			has_character_modifier = ghost_pilgrimage_promised_modifier
+			has_character_modifier = hajj_promised_modifier
+			has_character_modifier = pilgrimage_promised_modifier
+		}
 		any_close_family_member = {
 			OR = {
 				has_any_good_relationship_with_character_trigger = { CHARACTER = root }
@@ -167,24 +181,10 @@ hajj.0500 = {
 			faith = root.faith
 			has_trait = hajjaj
 		}
-		is_available_healthy_adult = yes
-		#Needs to be a mandatory Hajj religion
-		rite = { rite_has_parameter = mandatory_hajj }
-		faith = {
-			any_holy_site_barony = { this = title:b_makka }
-		}
-		#This really should take care of most Hajj/Pilgrim-related trigger checks - if you don't have this trait, you really shouldn't have a Hajj cooldown etc
-		NOT = { has_trait = hajjaj }
 		#Don't want to be standing in the holy site already / have Mecca as our (invalid) capital
 		NOR = { 
 			root.location.barony = title:b_makka
 			capital_province.barony ?= title:b_makka 
-		}
-		#Only one modifier for _you_
-		NOR = {
-			has_character_modifier = ghost_pilgrimage_promised_modifier
-			has_character_modifier = hajj_promised_modifier
-			has_character_modifier = pilgrimage_promised_modifier
 		}
 	}
 	immediate = {

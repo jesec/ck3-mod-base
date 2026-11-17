@@ -1,0 +1,207 @@
+﻿#############
+# Scheme Scripted Modifiers
+#############
+
+##################################################
+# Success Chance Modifiers
+
+merchant_trade_opportunity_scheme_basic_success_chance_modifier = {
+	# Better rewards are harder to get
+	modifier = {
+		add = -10
+		desc = SCHEME_TIER_DIFFICULTY
+		task_contract.task_contract_tier = 1
+	}
+	modifier = {
+		add = -20
+		desc = SCHEME_TIER_DIFFICULTY
+		task_contract.task_contract_tier = 2
+	}
+}
+
+merchant_find_curio_poi_modifier = {
+	modifier = {
+		exists = scope:find_curio
+		add = {
+			value = 0
+			every_county_in_region = {
+				region = $REGION$
+				limit = {
+					any_county_province = { gdp_find_curio_poi_province_trigger = yes }
+				}
+				add = 5
+			}
+		}
+	}
+}
+
+# Boost success on 2nd pass
+merchant_find_shared_duel_success_modifier = {
+	modifier = {
+		add = {
+			value = 0
+			scope:merchant = {
+				every_in_list = {
+					variable = lc_building_completed_list
+					add = 10
+				}
+			}
+		}
+	}
+}
+
+base_duel_compare_modifier = {
+	compare_modifier = {
+		value = $VALUE$
+		multiplier = $MULTIPLIER$
+		min = -49
+	}
+}
+
+weight_up_trade_route_by_traded_good_with_category_xp_below_modifier = {
+	modifier = {
+		$MERCHANT$ = { save_temporary_scope_as = merchant_temp }
+		any_traded_good = {
+			any_trade_category = {
+				save_temporary_scope_as = category_temp
+				has_trade_good_category_xp_track = yes
+				"scope:merchant_temp.primary_title.trade_good_category_level(scope:category_temp)" < $BELOW$
+			}
+		}
+		add = $WEIGHT$
+	}
+}
+
+weight_up_trade_good_by_category_xp_below_modifier = {
+	modifier = {
+		$MERCHANT$ = { save_temporary_scope_as = merchant_temp }
+		any_trade_category = {
+			save_temporary_scope_as = category_temp
+			has_trade_good_category_xp_track = yes
+			"scope:merchant_temp.primary_title.trade_good_category_level(scope:category_temp)" < $BELOW$
+		}
+		add = $WEIGHT$
+	}
+}
+
+# Lowers the weight of a luxury contract target animal the merchant already owns at famed rarity or higher
+luxury_contract_owned_creature_modifier = {
+	modifier = {
+		factor = 0.1
+		character_has_creature_type_trigger = { CHAR = root TYPE = $TYPE$ }
+	}
+}
+
+diversify_commission_route_market_need_modifier = {
+	modifier = { # Weight from category needs
+		save_temporary_scope_as = market_temp
+		add = {
+			every_trade_category_with_unfulfilled_need = {
+				limit = { save_temporary_scope_as = category_temp }
+				add = "scope:market_temp.trade_category_unfulfilled_need(scope:category_temp)"
+			}
+			multiply = 0.01
+		}
+	}
+	modifier = { # Weight from specific good needs
+		save_temporary_scope_as = market_temp
+		add = {
+			every_trade_good_with_unfulfilled_need = {
+				limit = { save_temporary_scope_as = target_temp }
+				add = {
+					value = "scope:market_temp.trade_good_unfulfilled_need(scope:target_temp)"
+					divide = 2 # offset from category need
+				}
+			}
+			multiply = 0.01
+		}
+	}
+}
+
+diversify_commission_route_category_routes_modifier = {
+	modifier = {
+		save_temporary_scope_as = category_temp
+		factor = {
+			value = 1
+			scope:commissioner ?= {
+				every_tributary = {
+					limit = { government_has_flag = government_is_merchant }
+					every_trade_route = {
+						limit = {
+							is_commission_route = yes
+							commissioner ?= scope:commissioner
+							any_traded_good = {
+								any_trade_category = { this = scope:category_temp }
+							}
+						}
+						divide = 2
+					}
+				}
+			}
+			min = 0.1
+		}
+	}
+}
+
+diversify_commission_route_good_routes_modifier = {
+	modifier = {
+		save_temporary_scope_as = target_temp
+		factor = {
+			value = 1
+			scope:commissioner ?= {
+				every_tributary = {
+					limit = { government_has_flag = government_is_merchant }
+					every_trade_route = {
+						limit = {
+							is_commission_route = yes
+							commissioner ?= scope:commissioner
+							any_traded_good = { this = scope:target_temp }
+						}
+						divide = 2
+					}
+				}
+			}
+			min = 0.1
+		}
+	}
+}
+
+diversify_commission_route_category_need_modifier = {
+	modifier = {
+		save_temporary_scope_as = target_temp
+		add = "scope:trade_market.trade_category_unfulfilled_need(scope:target_temp)"
+	}
+	modifier = {
+		save_temporary_scope_as = target_temp
+		"scope:trade_market.trade_category_unfulfilled_need(scope:target_temp)" > 100
+		factor = 2
+	}
+	modifier = { # Weight from specific good needs
+		add = {
+			every_trade_good_in_category = {
+				limit = { save_temporary_scope_as = target_temp }
+				add = {
+					value = "scope:trade_market.trade_good_unfulfilled_need(scope:target_temp)"
+					divide = 2 # offset from category need
+				}
+			}
+		}
+	}
+}
+
+diversify_commission_route_good_need_modifier = {
+	modifier = {
+		save_temporary_scope_as = target_temp
+		add = "scope:trade_market.trade_good_unfulfilled_need(scope:target_temp)"
+	}
+	modifier = {
+		save_temporary_scope_as = target_temp
+		"scope:trade_market.trade_good_unfulfilled_need(scope:target_temp)" > 100
+		factor = 2
+	}
+	modifier = {
+		save_temporary_scope_as = target_temp
+		"scope:trade_market.trade_good_unfulfilled_need(scope:target_temp)" < 10
+		factor = 0.1
+	}
+}

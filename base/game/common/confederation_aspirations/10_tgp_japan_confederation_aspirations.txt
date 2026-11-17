@@ -1,0 +1,442 @@
+﻿##########################################
+# House Aspirations for Powerful Families
+# Japan Administrative/Feudal Government
+##########################################
+# Aspirations appear in-game in script order
+# So we group them in rough categories
+
+bloc_no_aspiration = {
+	is_default = yes
+
+	is_shown = {
+		always = no
+	}
+
+	level = {
+		parameters = {
+			no_aspect #Piggy-backing the No Effect tooltip
+		}
+		ai_score = {
+			value = -1000
+		}
+	}
+
+	cooldown = { years = 5 }
+
+	illustration = "gfx/interface/_debug/placeholder.dds"
+}
+
+#"Diplomacy"
+bloc_ceremony = {
+
+	level = {
+		parameters = {
+			any_member_increased_feast_rewards
+			any_member_increased_activity_attendance
+		}
+
+		confederation_member_modifier = {
+			monthly_prestige_gain_mult = 0.05
+		}
+
+		ai_score = {
+			value = house_aspiration_ceremony_ai_score_value
+		}
+	}
+
+	level = {
+		parameters = {
+			any_member_house_continued_appointment_score
+			# From previous levels
+			any_member_increased_feast_rewards
+			any_member_increased_activity_attendance
+		}
+
+		confederation_member_modifier = {
+			owned_personal_scheme_success_chance_growth_add = 5
+			# From previous levels
+			monthly_prestige_gain_mult = 0.05
+		}
+
+		ai_score = {
+			value = house_aspiration_ceremony_ai_score_value
+		}
+	}
+
+	level = {
+		parameters = {
+			any_member_ceremonial_house_marriage_acceptance
+			# From previous levels
+			any_member_increased_feast_rewards
+			any_member_increased_activity_attendance
+			leading_house_regent_appointment_score
+			any_member_house_continued_appointment_score
+		}
+
+		confederation_leader_modifier = {
+			max_personal_schemes_add = 1
+		}
+		confederation_member_modifier = {
+			# From previous levels
+			monthly_prestige_gain_mult = 0.05
+			owned_personal_scheme_success_chance_growth_add = 2
+		}
+
+		ai_score = {
+			value = house_aspiration_ceremony_ai_score_value
+		}
+	}
+
+	cooldown = { years = 5 }
+
+	on_changed = {
+		trigger_event = { id = tgp_house_blocs.0010 delayed = yes } # Delayed so message is correct
+	}
+
+	illustration = "gfx/interface/_debug/placeholder.dds"
+}
+
+#"Intrigue"
+bloc_determination = {
+
+	level = {
+		confederation_member_modifier = {
+			monthly_control_change_when_below_baseline_mult = 0.1
+			dread_gain_mult = 0.1
+			dread_baseline_add = 5
+		}
+
+		ai_score = {
+			value = house_aspiration_determination_ai_score_value
+		}
+	}
+
+	level = {
+		parameters = {
+			any_member_raid_estate_success_chance
+		}
+
+		confederation_member_modifier = {
+			owned_hostile_scheme_success_chance_growth_add = 5
+			enemy_hostile_scheme_success_chance_growth_add = -5
+			# From previous levels
+			monthly_control_change_when_below_baseline_mult = 0.1
+			dread_gain_mult = 0.1
+			dread_baseline_add = 5
+		}
+
+		ai_score = {
+			value = house_aspiration_determination_ai_score_value
+		}
+	}
+
+	level = {
+		parameters = {
+			bloc_members_join_leaders_schemes
+			# From previous levels
+			any_member_raid_estate_success_chance
+		}
+
+		confederation_leader_modifier = {
+			max_hostile_schemes_add = 1
+		}
+		confederation_member_modifier = {
+			tyranny_gain_mult = -0.1
+			# From previous levels
+			monthly_control_change_when_below_baseline_mult = 0.1
+			dread_gain_mult = 0.1
+			dread_baseline_add = 5
+			owned_hostile_scheme_success_chance_growth_add = 5
+			enemy_hostile_scheme_success_chance_growth_add = -5
+		}
+
+		ai_score = {
+			value = house_aspiration_determination_ai_score_value
+		}
+	}
+
+	cooldown = { years = 5 }
+
+	on_changed = {
+		trigger_event = { id = tgp_house_blocs.0010 delayed = yes } # Delayed so message is correct
+	}
+
+	illustration = "gfx/interface/_debug/placeholder.dds"
+}
+
+#"Learning"
+bloc_humility = {
+
+	level = {
+		confederation_member_modifier = {
+			monthly_piety_gain_per_happy_powerful_vassal_add = 0.1
+			monthly_piety_gain_mult = 0.05
+		}
+
+		ai_score = {
+			value = house_aspiration_humility_ai_score_value
+			add = -25 # First level is less attractive (to discourage switching track)
+		}
+
+	}
+
+	level = {
+		parameters = {
+			any_member_increased_pilgrimage_rewards
+		}
+
+		confederation_member_modifier = {
+			piety_level_impact_mult = 0.1
+			vassal_piety_contribution_mult = 0.1
+			# From previous levels
+			monthly_piety_gain_per_happy_powerful_vassal_add = 0.1
+			monthly_piety_gain_mult = 0.05
+		}
+
+		ai_score = {
+			value = house_aspiration_humility_ai_score_value
+		}
+	}
+
+	level = {
+		parameters = {
+			bloc_members_join_leaders_faith
+			# From previous levels
+			any_member_increased_pilgrimage_rewards
+		}
+
+		confederation_member_modifier = {
+			diplomacy_per_piety_level = 1
+			tolerance_advantage_mod = 2
+			# From previous levels
+			monthly_piety_gain_per_happy_powerful_vassal_add = 0.1
+			monthly_piety_gain_mult = 0.05
+			piety_level_impact_mult = 0.1
+		}
+
+		ai_score = {
+			value = house_aspiration_humility_ai_score_value
+		}
+	}
+
+	cooldown = { years = 5 }
+
+	on_changed = {
+		trigger_event = { id = tgp_house_blocs.0010 delayed = yes } # Delayed so message is correct
+	}
+
+	illustration = "gfx/interface/_debug/placeholder.dds"
+}
+
+#"Stewardship"
+bloc_prosperity = {
+
+	level = {
+		parameters = {
+			any_member_activity_cost_reduced
+		}
+
+		confederation_member_modifier = {
+			monthly_income_mult = 0.05
+			mercenary_hire_cost_mult = -0.1
+		}
+
+		ai_score = {
+			value = house_aspiration_prosperity_ai_score_value
+			add = -25 # First level is less attractive (to discourage switching track)
+		}
+	}
+
+	level = {
+		parameters = {
+			any_member_commission_and_inspiration_reduced
+			# From previous levels
+			any_member_activity_cost_reduced
+		}
+
+		confederation_member_modifier = {
+			prosperity_growth_factor = 0.1
+			# From previous levels
+			monthly_income_mult = 0.05
+			mercenary_hire_cost_mult = -0.1
+		}
+
+		ai_score = {
+			value = house_aspiration_prosperity_ai_score_value
+		}
+	}
+
+	level = {
+		parameters = {
+			bloc_members_send_leader_gifts
+			# From previous levels
+			any_member_activity_cost_reduced
+			any_member_commission_and_inspiration_reduced
+		}
+
+		confederation_leader_modifier = {
+			domain_limit_max = 1
+		}
+		confederation_member_modifier = {
+			# From previous levels
+			monthly_income_mult = 0.05
+			prosperity_growth_factor = 0.1
+			mercenary_hire_cost_mult = -0.1
+		}
+
+		ai_score = {
+			value = house_aspiration_prosperity_ai_score_value
+		}
+	}
+
+	cooldown = { years = 5 }
+
+	on_changed = {
+		trigger_event = { id = tgp_house_blocs.0010 delayed = yes } # Delayed so message is correct
+	}
+
+	illustration = "gfx/interface/_debug/placeholder.dds"
+}
+
+#"Diplomacy/Stewardship"
+bloc_service = {
+
+	level = {
+		parameters = {
+			any_member_house_governor_appointment_score
+		}
+
+		confederation_member_modifier = {
+			monthly_influence_mult = 0.05
+		}
+
+		ai_score = {
+			value = house_aspiration_service_ai_score_value
+			add = -25 # First level is less attractive (to discourage switching track)
+		}
+	}
+
+	level = {
+		parameters = {
+			# From previous levels
+			any_member_house_governor_appointment_score
+		}
+
+		confederation_member_modifier = {
+			owned_political_scheme_success_chance_growth_add = 5
+			enemy_political_scheme_success_chance_growth_add = -5
+			governor_efficiency_mult = 0.1
+			# From previous levels
+			monthly_influence_mult = 0.05
+		}
+
+		ai_score = {
+			value = house_aspiration_service_ai_score_value
+		}
+	}
+
+	level = {
+		parameters = {
+			bloc_leader_unlocks_restore_emperor_faction
+			# From previous levels
+			any_member_house_governor_appointment_score
+		}
+
+		confederation_member_modifier = {
+			# From previous levels
+			monthly_influence_mult = 0.05
+			owned_political_scheme_success_chance_growth_add = 5
+			enemy_political_scheme_success_chance_growth_add = -5
+			governor_efficiency_mult = 0.1
+		}
+
+		ai_score = {
+			value = house_aspiration_service_ai_score_value
+		}
+	}
+
+	cooldown = { years = 5 }
+
+	on_changed = {
+		trigger_event = { id = tgp_house_blocs.0010 delayed = yes } # Delayed so message is correct
+	}
+
+	illustration = "gfx/interface/_debug/placeholder.dds"
+}
+
+#"Martial"
+bloc_strength = {
+	show_in_main_hud = yes
+
+	# What confederation type does this house prefer?
+	#confederation_type = house_bloc_strength
+
+	level = {
+		parameters = {
+			any_member_casus_belli_cost_reduction
+		}
+
+		confederation_member_modifier = {
+			levy_size = 0.1
+			knight_effectiveness_per_martial = 0.05
+			hostage_prestige_mult = 0.1
+		}
+
+		ai_score = {
+			value = house_aspiration_strength_ai_score_value
+			add = -25 # First level is less attractive (to discourage switching track)
+		}
+	}
+
+	level = {
+		parameters = {
+			any_member_extra_capture_chance
+			# From previous levels
+			any_member_casus_belli_cost_reduction
+		}
+
+		confederation_member_modifier =	{
+			led_by_owner_extra_advantage_add = 2
+			siege_phase_time = -0.1
+			# From previous levels
+			levy_size = 0.1
+			knight_effectiveness_per_martial = 0.05
+			hostage_prestige_mult = 0.1
+		}
+
+		ai_score = {
+			value = house_aspiration_strength_ai_score_value
+		}
+	}
+
+	level = {
+		parameters = {
+			any_member_extra_capture_chance
+			house_head_adopt_soryo_regency
+			bloc_members_join_leaders_offensive_internal_wars
+			# From previous levels
+			any_member_casus_belli_cost_reduction
+			any_member_extra_capture_chance
+		}
+
+		confederation_member_modifier = {
+			men_at_arms_cap = 1
+			# From previous levels
+			levy_size = 0.1
+			led_by_owner_extra_advantage_add = 2
+			siege_phase_time = -0.1
+		}
+
+		ai_score = {
+			value = house_aspiration_strength_ai_score_value
+		}
+	}
+
+	cooldown = { years = 5 }
+
+	on_changed = {
+		trigger_event = { id = tgp_house_blocs.0010 delayed = yes } # Delayed so message is correct
+	}
+
+	illustration = "gfx/interface/_debug/placeholder.dds"
+}

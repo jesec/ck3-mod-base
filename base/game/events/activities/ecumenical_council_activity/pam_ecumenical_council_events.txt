@@ -150,7 +150,6 @@ scripted_trigger ecumenical_council_is_worldly_trigger = {
 scripted_trigger ecumenical_council_is_confidant_trigger = {
 	OR = {
 		has_relation_friend = root
-		has_relation_best_friend = root
 		has_relation_lover = root
 	}
 }
@@ -1706,6 +1705,12 @@ ecumenical_council_events.0010 = {
 				}
 				multiply = 0
 			}
+			if = {
+				limit = {
+					scope:ec_debate_topic_1 = { tenet_is_intrinsic_to_faith_trigger = { FAITH = root.faith } }
+				}
+				multiply = 0
+			}
 		}
 	}
 	# Permit
@@ -1726,9 +1731,7 @@ ecumenical_council_events.0010 = {
 		}
 		custom_tooltip = ecumenical_council_outcome_preview_permitted_tt
 		ai_will_select = {
-			value = 10
-			add = scope:ec_debate_topic_1.pam_tenet_popularity_impact_value
-			add = scope:ec_debate_topic_1.pam_christian_vice_restraint_value
+			value = scope:ec_debate_topic_1.pam_ec_permit_option_ai_weight_value
 		}
 	}
 	# Learn
@@ -3321,6 +3324,12 @@ ecumenical_council_events.0020 = {
 				}
 				multiply = 0
 			}
+			if = {
+				limit = {
+					scope:ec_debate_topic_2 = { tenet_is_intrinsic_to_faith_trigger = { FAITH = root.faith } }
+				}
+				multiply = 0
+			}
 		}
 	}
 	# Permit
@@ -3341,9 +3350,7 @@ ecumenical_council_events.0020 = {
 		}
 		custom_tooltip = ecumenical_council_outcome_preview_permitted_tt
 		ai_will_select = {
-			value = 10
-			add = scope:ec_debate_topic_2.pam_tenet_popularity_impact_value
-			add = scope:ec_debate_topic_2.pam_christian_vice_restraint_value
+			value = scope:ec_debate_topic_2.pam_ec_permit_option_ai_weight_value
 		}
 	}
 	# Learn

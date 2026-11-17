@@ -33,8 +33,8 @@
  holy_order.0200.a:0 "[ROOT.Char.GetFaith.HighGodName] smiles upon me!"
  holy_order.0200.b:0 "But... But I need the money!"
 
- holy_order.0202.second_time:0 "Once again I remind you that you owe my order #bold [ROOT.Var('loan_amount_owed').GetValue|0]#! gold."
- holy_order.0202.opening:0 "You owe my order #bold [ROOT.Var('loan_amount_owed').GetValue|0]#! gold."
+ holy_order.0202.second_time:0 "Once again I remind you that you owe my order #bold [amount_owed|V0]#! gold."
+ holy_order.0202.opening:0 "You owe my order #bold [amount_owed|V0]#! gold."
  holy_order.0202.desc:0 "If you do not return the gold we will find alternative ways for you to repay us — ways agreeable to [ROOT.Char.GetFaith.HighGodName], but maybe less so to you."
  holy_order.0202.a:0 "Of course I will honor our agreement."
  holy_order.0202.a_no:0 "I will pay! Just let me find the gold..."
@@ -49,10 +49,11 @@
  holy_order.0203.desc:0 "I do not look kindly upon those who break their word, and neither does [ROOT.Char.GetFaith.HighGodNameAlternate]. To rectify this slight you will lease the [province.GetName] to us so that we may further [ROOT.Char.GetFaith.HighGodNamePossessive] work."
  holy_order.0203.a:0 "Of course [province.GetNameNoTierNoTooltip] will be yours."
  holy_order.0203.b:0 "This is a ridiculous demand!"
+ holy_order.0203.b.tt: "Your loan from [holy_order.GetName] will be wiped"
 
  holy_order.0204.desc:0 "I do not look kindly upon those who break their word, and neither does [ROOT.Char.GetFaith.HighGodNameAlternate]. To rectify this slight you will send us your [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('child'))] [child.GetTitledFirstName] to do [ROOT.Char.GetFaith.HighGodNamePossessive] work."
  holy_order.0204.a:0 "I'll... I'll send [child.GetHerHim] on [child.GetHerHis] way."
- holy_order.0204.a.tt:1 "You will no longer owe the order any gold"
+ holy_order.0204.a.tt:1 "You will no longer owe [holy_order.GetName] any gold"
 
  holy_order.0205.desc:0 "This whole affair about the loan has been a shameful display of your greed. I will make sure the [ROOT.Char.GetFaith.ReligiousHeadName] hears about this!"
  holy_order.0205.a:0 "Curses!"
@@ -63,12 +64,6 @@
  holy_order.1001.a: "Your request is granted. For [ROOT.Char.GetFaith.HighGodName]!"
  holy_order.1001.b: "Would [alternative_barony.GetNameNoTierNoTooltip] not serve you just as well?"
  holy_order.1001.c: "No, I will not grant you this land."
-
- holy_order.1011.intro: "In the [target_barony.GetName], there is good land to be tended, and a fine [grandmaster.GetFaith.HouseOfWorship] that would be well-served by a cloister of my [grandmaster.Custom('SistersBrothers')]."
- holy_order.1011.end: "\n\nWould you act as our broker, so that the [holy_order.GetName] might establish a monastery there?"
- holy_order.1011.a: "The Order may lease [target_barony.GetNameNoTierNoTooltip]."
- holy_order.1011.b: "There is tranquility in [alternative_barony.GetNameNoTierNoTooltip]?"
- holy_order.1011.c: "I fear you must send your [grandmaster.Custom('SistersBrothers')] elsewhere."
 
  holy_order.2001.t:0 "A Divine Purpose"
  holy_order.2001.desc:0 "When my [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('child'))], [child.GetFirstName], comes to me, I quickly understand [child.GetSheHe] has something very serious to discuss.\n\n"[ROOT.Char.Custom('MotherFather')|U], my life here will forever be led in the shadow of others. Let me instead join [holy_order.GetName], and serve [child.GetFaith.HighGodName]. I have given this much thought, and it is what I wish to do.""
@@ -104,6 +99,9 @@ holy_order.2010.desc: "Hermits, mystics, and dissatisfied disciples from older o
 holy_order.2010.4: "[tenet_4.GetName( order_rite )], and [monk_tenet_1.Custom('SisterBrother')|U] [monk_tenet_1.GetFirstNameNoTooltip]."
 holy_order.2010.5: "[tenet_5.GetName( order_rite )], and [monk_tenet_2.Custom('SisterBrother')|U] [monk_tenet_2.GetFirstNameNoTooltip]."
 holy_order.2010.6: "[tenet_6.GetName( order_rite )], and [monk_tenet_3.Custom('SisterBrother')|U] [monk_tenet_3.GetFirstNameNoTooltip]."
+holy_order.2010.a: "[personal_tenet_1.GetBaseNameNoTooltip]."
+holy_order.2010.b: "[personal_tenet_2.GetBaseNameNoTooltip]."
+holy_order.2010.c: "[personal_tenet_3.GetBaseNameNoTooltip]."
 holy_order.2010.d: "[tenet_1.GetName( order_rite )], and [monk_tenet_1.Custom('SisterBrother')|U] [monk_tenet_1.GetFirstNameNoTooltip]."
 holy_order.2010.e: "[tenet_2.GetName( order_rite )], and [monk_tenet_2.Custom('SisterBrother')|U] [monk_tenet_2.GetFirstNameNoTooltip]."
 holy_order.2010.f: "[tenet_3.GetName( order_rite )], and [monk_tenet_3.Custom('SisterBrother')|U] [monk_tenet_3.GetFirstNameNoTooltip]."
@@ -145,6 +143,9 @@ child_in_holy_order_desc: "[recipient.GetShortUIName] is a child promised to [re
 custom.every_domain_monastic_order: "Every [monastic_holy_order|E] in your [domain|E]"
 order_gains_minor_tenet_popularity_tt: "Their [core_tenet|E] gains #P [EmptyScope.ScriptValue('minor_tenet_popularity_value')|0]#! [tenet_popularity|E]"
 new_order_gains_minor_tenet_popularity_tt: "Your new [monastic_holy_order|E] will provide an additional #P [EmptyScope.ScriptValue('minor_tenet_popularity_value')|0]#! [tenet_popularity|E] to its [core_tenet|E]"
+
+custom.every_domain_military_monastic_order: "Every [holy_order|E] in your [domain|E]"
+
 holy_order.2030.t: "Donation: [recipient.GetPrimaryTitle.GetNameNoTooltip]"
 holy_order.2030.desc: "My riches are sent into the vaults of [recipient.GetTitledFirstNamePossessive] monasteries. A donation that shall fund the reverent working of lands, the copying of holy texts, the worldly aims of [recipient.GetPrimaryTitle.GetName]...\n\n...and a thousand prayers devoted to the cause of my immortal soul. For monastics live to pray, and their singular, righteous devotion — it is said — means that [ROOT.Char.GetFaith.random_GoodGodNames|U] takes special care to heed their prayers.\n\n#EMP [actor.GetFaith.HighGodName|U], do you hear them speak my name?#!"
 holy_order.2030.desc_desperate_plea: "#EMP Do you know how I've grovelled and begged — like a wretch — for your mercy?#!"
@@ -157,6 +158,7 @@ holy_order.2031.desc: "I have thought and prayed on your request, and I fear no 
 holy_order.2031.a: "Bah! I still have my coin, at least."
  holy_order.2031.toast_puppeteer:0 "[recipient.GetShortUIName] refused [puppet_or_actor.GetShortUINamePossessive] monastic donation"
 
+reduces_order_worldliness_tt: "#weak [holy_order_title.GetNamePossessive] yearly [worldliness|E] gain will be reduced#!"
 already_has_monastic_lease_tt: "[target.GetNameNoTier] is already [leased|E] to a [monastic_holy_order|E]"
 
 lease_title_to_existing_monastic_order_interaction: "Bestow a Monastery"
@@ -188,3 +190,8 @@ movement_took_monastery_notification_3_tt: "[new_holy_order.GetName] took [baron
 movement_took_monastery_notification_2_tt: "[new_holy_order.GetName] took [barony.GetNameNoTier] and [lease_2.GetNameNoTier] from [target_order.GetName]"
 movement_took_monastery_notification_tt: "[new_holy_order.GetName] took the [lease|E] of [barony.GetNameNoTier] from [target_order.GetName]"
 movement_took_monastery_patron_notification_tt: "[founder.GetShortUIName] sanctioned this reforming [monastic_holy_order|E]"
+ holy_order.1011.intro: "In the [target_barony.GetName], there is good land to be tended, and a fine [grandmaster.GetFaith.HouseOfWorship] that would be well-served by a cloister of my [grandmaster.Custom('SistersBrothers')]."
+ holy_order.1011.end: "\n\nWould you act as our broker, so that the [holy_order.GetName] might establish a monastery there?"
+ holy_order.1011.a: "The Order may lease [target_barony.GetNameNoTierNoTooltip]."
+ holy_order.1011.b: "There is tranquility in [alternative_barony.GetNameNoTierNoTooltip]?"
+ holy_order.1011.c: "I fear you must send your [grandmaster.Custom('SistersBrothers')] elsewhere."

@@ -94,7 +94,7 @@ on_action_mandala_realm_contract_0001 = {
 					}
 				}
 				save_scope_as = target_province
-				#Consider county_opinion as a factor
+				#Consider popular_opinion as a factor
 				random_list = {
 					30 = {
 						save_scope_value_as = {
@@ -110,11 +110,11 @@ on_action_mandala_realm_contract_0001 = {
 
 						modifier = {
 							add = 10
-							prev.county_opinion >= 10
+							prev.popular_opinion >= 10
 						}
 						modifier = {
 							add = 10
-							prev.county_opinion >= 20
+							prev.popular_opinion >= 20
 						}
 					}
 					5 = {
@@ -125,19 +125,19 @@ on_action_mandala_realm_contract_0001 = {
 
 						modifier = {
 							add = 10
-							prev.county_opinion >= 40
+							prev.popular_opinion >= 40
 						}
 						modifier = {
 							add = 10
-							prev.county_opinion >= 60
+							prev.popular_opinion >= 60
 						}
 						modifier = {
 							add = 10
-							prev.county_opinion >= 80
+							prev.popular_opinion >= 80
 						}
 						modifier = {
 							add = 10
-							prev.county_opinion >= 100
+							prev.popular_opinion >= 100
 						}
 					}
 				}
@@ -183,7 +183,7 @@ on_action_mandala_realm_contract_0002 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 			}
 			save_scope_as = target_province
@@ -220,7 +220,7 @@ on_action_mandala_realm_contract_0003 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control >= 100
+					county = { county_control >= county_control_baseline }
 				}
 			}
 			save_scope_as = target_province
@@ -266,7 +266,7 @@ on_action_mandala_realm_contract_0004 = {
 				base = 1
 				modifier = {
 					add = 100
-					has_building_or_higher = pastures_01
+					province_has_district = villages_district
 				}
 			}
 			save_scope_as = target_province
@@ -386,10 +386,7 @@ on_action_mandala_realm_contract_0007 = {
 				base = 1
 				modifier = {
 					add = 100
-					OR = {
-						has_building_or_higher = cereal_fields_01
-						has_building_or_higher = paddy_fields_01
-					}
+					has_building_or_higher = grain_resource_building_1
 				}
 				modifier = {
 					add = -200
@@ -432,10 +429,7 @@ on_action_mandala_realm_contract_0008 = {
 				base = 1
 				modifier = {
 					add = 100
-					OR = {
-						has_building_or_higher = cereal_fields_01
-						has_building_or_higher = paddy_fields_01
-					}
+					has_building_or_higher = grain_resource_building_1
 				}
 				modifier = {
 					add = -200
@@ -531,10 +525,7 @@ on_action_mandala_realm_contract_0010 = {
 				base = 1
 				modifier = {
 					add = 100
-					OR = {
-						has_building_or_higher = cereal_fields_01
-						has_building_or_higher = paddy_fields_01
-					}
+					has_building_or_higher = grain_resource_building_1
 				}
 			}
 			save_scope_as = target_province
@@ -571,7 +562,7 @@ on_action_mandala_realm_contract_0011 = {
 				base = 1
 				modifier = {
 					add = 100
-					has_building_or_higher = hunting_grounds_01
+					has_building_or_higher = hunting_lodges_1
 				}
 				modifier = {
 					add = -200
@@ -669,7 +660,7 @@ on_action_mandala_realm_contract_0013 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 			}
 			save_scope_as = target_province
@@ -715,7 +706,7 @@ on_action_mandala_realm_contract_0014 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -758,7 +749,7 @@ on_action_mandala_realm_contract_0015 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -799,7 +790,7 @@ on_action_mandala_realm_contract_0016 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -844,7 +835,7 @@ on_action_mandala_realm_contract_0017 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -885,7 +876,7 @@ on_action_mandala_realm_contract_0018 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -937,7 +928,7 @@ on_action_mandala_realm_contract_0019 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -989,7 +980,7 @@ on_action_mandala_realm_contract_0020 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -1030,7 +1021,7 @@ on_action_mandala_realm_contract_0021 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -1130,7 +1121,7 @@ on_action_mandala_realm_contract_0023 = {
 				base = 1
 				modifier = {
 					add = 10
-					county.county_control < 100
+					county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = 100
@@ -1263,7 +1254,7 @@ on_action_mandala_realm_contract_0026 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control > 100
+					county = { county_control >= county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -1306,7 +1297,7 @@ on_action_mandala_realm_contract_0027 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control > 100
+					county = { county_control >= county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -1364,7 +1355,7 @@ on_action_mandala_realm_contract_0028 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control > 100
+					county = { county_control >= county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -1460,7 +1451,7 @@ on_action_mandala_realm_contract_0030 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control > 100
+					county = { county_control >= county_control_baseline }
 				}
 				modifier = {
 					add = -200
@@ -1503,7 +1494,7 @@ on_action_mandala_realm_contract_0031 = {
 				base = 1
 				modifier = {
 					add = 100
-					county.county_control > 100
+					county = { county_control >= county_control_baseline }
 				}
 				modifier = {
 					add = -200

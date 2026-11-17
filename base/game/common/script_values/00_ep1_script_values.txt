@@ -153,7 +153,7 @@ grandeur_loss_on_succession_value = {
 
 # The unmodified, average cost of sponsoring an Inspiration.
 basic_fund_inspiration_cost = {
-	value = 100
+	value = 60
 	if = {
 		limit = {
 			scope:inspiration_sponsor.confederation ?= { has_cohesion_level_parameter = any_member_commission_and_inspiration_reduced }
@@ -366,10 +366,28 @@ court_position_candidate_score_base_value = {
 			}
 			add = -150
 		}
+		if = {
+			limit = {
+				NOT = { exists = scope:firing_court_position }
+				government_has_flag = government_is_merchant
+				monthly_character_income < merchant_ai_court_position_min_income_value
+			}
+			add = -10000
+		}
+		if = {
+			limit = {
+				NOT = { exists = scope:firing_court_position }
+				government_has_flag = government_is_republic
+				is_landless_ruler = yes
+				monthly_character_balance < merchant_ai_court_position_min_income_value
+			}
+			add = -10000
+		}
 	}
 }
 
 # Aptitude goes from 1 to 5, so the score here goes from 4 to 20 (except significantly discouraging hiring someone who isn't the best)
+# A higher scope:highest_available_aptitude must not raise the score. The firing AI assumes the best candidate to skip searching for one, so a rise here prevents it from ever revoking the position
 court_position_candidate_aptitude_value = {
 	scope:employee = {
 		# Does the liege have a better candidate that they should be hiring instead?
@@ -422,7 +440,8 @@ court_position_debt_considerations_value = {
 				add = -5000
 			}
 		}
-		else = {
+		else_if = {
+			limit = { debt_level >= 1 }
 			if = {
 				limit = {
 					debt_level = 1
@@ -468,11 +487,12 @@ court_position_seneschal_debt_considerations_value = { # Regardless of debt, hav
 	scope:liege = {
 		if = {
 			limit = {
+				debt_level >= 1
 				is_at_war = no
 				NOT = {
 					any_held_title = {
 						title_tier = county
-						county_control < 100
+						county_control < county_control_baseline
 					}
 				}
 			}

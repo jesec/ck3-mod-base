@@ -1,0 +1,1420 @@
+﻿reactive_advice_building_needs = {
+	chain = reactive_advice
+	start_automatically = no
+	shown_in_encyclopedia = no
+
+	# Intro - current screen (map / HUD) before first navigation
+	reactive_advice_building_needs_intro = {
+		text = "reactive_advice_building_needs_intro_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+
+		interface_effect = {
+			close_all_views = yes
+		}
+
+		gui_transition = {
+			button_id = "skip"
+			button_text = "tutorial_lesson_button_skip"
+			target = lesson_finish
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_step_open_domain_tab
+		}
+	}
+
+	# Navigate: Domain Tab in Realms Panel
+	reactive_advice_building_needs_step_open_domain_tab = {
+		text = "reactive_advice_building_needs_step_open_domain_tab_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "tab_my_realm_tutorial_uses_this"
+		highlight_widget = "tab_domain"
+
+		
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_intro
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_domain_tab
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_building_needs_step_open_domain_tab_prompt"
+					is_widgetid_open = my_realm_domain_body
+				}
+			}
+		}
+	}
+
+	# Explain: Domain Tab is open
+	reactive_advice_building_needs_domain_tab = {
+		text = "reactive_advice_building_needs_domain_tab_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+		highlight_widget = "trade_market_heading_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_step_open_domain_tab
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_step_open_county_view
+		}
+
+		trigger_transition = {
+			target = reactive_advice_building_needs_step_open_domain_tab
+			trigger = {
+				NOT = { is_widgetid_open = my_realm_domain_body }
+			}
+		}
+	}
+
+	# Navigate: County View via Domain List holding entries
+	reactive_advice_building_needs_step_open_county_view = {
+		text = "reactive_advice_building_needs_step_open_county_view_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "holding_realm_list_item"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_domain_tab
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_county_view
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_building_needs_step_open_county_view_prompt"
+					is_widgetid_open = holding_view
+				}
+			}
+		}
+
+		trigger_transition = {
+			target = reactive_advice_building_needs_step_open_domain_tab
+			trigger = {
+				NOT = { is_widgetid_open = my_realm_domain_body }
+			}
+		}
+	}
+
+	# Explain: County View is open
+	reactive_advice_building_needs_county_view = {
+		text = "reactive_advice_building_needs_county_view_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "holding_view_buildings_area"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_step_open_county_view
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_step_open_district_view
+		}
+
+		trigger_transition = {
+			target = reactive_advice_building_needs_step_open_county_view
+			trigger = {
+				NOT = { is_widgetid_open = holding_view }
+			}
+		}
+	}
+
+	# Navigate: District View
+	reactive_advice_building_needs_step_open_district_view = {
+		text = "reactive_advice_building_needs_step_open_district_view_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "holding_district_button_tutorial_uses_this"
+
+		animation = top_center
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_county_view
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_district_view
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_building_needs_step_open_district_view_prompt"
+					is_widgetid_open = district_view
+				}
+			}
+		}
+
+		trigger_transition = {
+			target = reactive_advice_building_needs_step_open_county_view
+			trigger = {
+				NOT = { is_widgetid_open = holding_view }
+			}
+		}
+	}
+
+	# Explain: District View is open
+	reactive_advice_building_needs_district_view = {
+		text = "reactive_advice_building_needs_district_view_desc"
+		shown_in_encyclopedia = no
+
+		animation = right
+		highlight_widget = "building_needs_list_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_step_open_district_view
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_district_view_2
+		}
+
+		trigger_transition = {
+			target = reactive_advice_building_needs_step_open_district_view
+			trigger = {
+				NOT = { is_widgetid_open = district_view }
+			}
+		}
+	}
+
+	# Explain: District View, trade categories
+	reactive_advice_building_needs_district_view_2 = {
+		text = "reactive_advice_building_needs_district_view_2_desc"
+		shown_in_encyclopedia = no
+
+		animation = right
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_district_view
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_step_open_market_view
+		}
+
+		trigger_transition = {
+			target = reactive_advice_building_needs_step_open_district_view
+			trigger = {
+				NOT = { is_widgetid_open = district_view }
+			}
+		}
+	}
+
+	# Navigate: Market View from County View market button
+	reactive_advice_building_needs_step_open_market_view = {
+		text = "reactive_advice_building_needs_step_open_market_view_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "county_view_market_button"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_district_view_2
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_market_view
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_building_needs_step_open_market_view_prompt"
+					is_widgetid_open = trade_market_window
+				}
+			}
+		}
+	}
+
+	# Explain: Market View is open
+	reactive_advice_building_needs_market_view = {
+		text = "reactive_advice_building_needs_market_view_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "trade_market_window"
+		animation = center
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_step_open_market_view
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_market_view_balances
+		}
+
+		trigger_transition = {
+			target = reactive_advice_building_needs_step_open_market_view
+			trigger = {
+				NOT = { is_widgetid_open = trade_market_window }
+			}
+		}
+	}
+
+	# Explain: Market balances
+	reactive_advice_building_needs_market_view_balances = {
+		text = "reactive_advice_building_needs_market_view_balances_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "market_balances_tutorial_uses_this"
+		animation = center
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_market_view
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_building_needs_market_view_unmet_need
+		}
+
+		trigger_transition = {
+			target = reactive_advice_building_needs_step_open_market_view
+			trigger = {
+				NOT = { is_widgetid_open = trade_market_window }
+			}
+		}
+	}
+
+	# Explain: Unmet need (end)
+	reactive_advice_building_needs_market_view_unmet_need = {
+		text = "reactive_advice_building_needs_market_view_unmet_need_desc"
+		shown_in_encyclopedia = no
+		
+		animation = center
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_building_needs_market_view_balances
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_complete"
+			target = lesson_finish
+		}
+	}
+}
+
+reactive_advice_construction_queue = {
+	chain = reactive_advice
+	start_automatically = no
+	shown_in_encyclopedia = no
+
+	reactive_advice_construction_queue_intro = {
+		text = "reactive_advice_construction_queue_intro_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+
+		interface_effect = {
+			close_all_views = yes
+		}
+
+		highlight_widget = "build_queue_button_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "skip"
+			button_text = "tutorial_lesson_button_skip"
+			target = lesson_finish
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_construction_queue_queue
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_construction_queue_intro_prompt"
+					is_widgetid_open = build_queue_window
+				}
+			}
+		}
+	}
+
+	reactive_advice_construction_queue_queue = {
+		text = "reactive_advice_construction_queue_queue_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "build_queue_queue_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_construction_queue_intro
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_construction_queue_reserve
+		}
+
+		trigger_transition = {
+			target = reactive_advice_construction_queue_intro
+			trigger = {
+				NOT = { is_widgetid_open = build_queue_window }
+			}
+		}
+	}
+
+	reactive_advice_construction_queue_reserve = {
+		text = "reactive_advice_construction_queue_reserve_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "build_queue_reserve_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_construction_queue_queue
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_construction_queue_summary
+		}
+
+		trigger_transition = {
+			target = reactive_advice_construction_queue_intro
+			trigger = {
+				NOT = { is_widgetid_open = build_queue_window }
+			}
+		}
+	}
+
+	reactive_advice_construction_queue_summary = {
+		text = "reactive_advice_construction_queue_summary_desc"
+		shown_in_encyclopedia = no
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_construction_queue_reserve
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_complete"
+			target = lesson_finish
+		}
+	}
+}
+
+# Profit Route Planner
+reactive_advice_trade_route_planner = {
+	chain = reactive_advice
+	shown_in_encyclopedia = no
+
+	trigger = {
+		is_widgetid_open = "trade_route_planner_window"
+		government_allows = profit_trade_routes
+	}
+
+	# Player closed Trade Route Planner
+	trigger_transition = {
+		target = lesson_abort
+		trigger = {
+			NOT = { is_widgetid_open = "trade_route_planner_window" }
+		}
+	}
+
+	reactive_advice_trade_route_planner_intro = {
+		text = "reactive_advice_trade_route_planner_intro_desc"
+		shown_in_encyclopedia = no
+		animation = center
+
+		gui_transition = {
+			button_id = "skip"
+			button_text = "tutorial_lesson_button_skip"
+			target = lesson_finish
+		}
+
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_trade_route_planner_recommended_goods
+		}
+	}
+
+	reactive_advice_trade_route_planner_recommended_goods = {
+		text = "reactive_advice_trade_route_planner_recommended_goods_desc"
+		shown_in_encyclopedia = no
+		animation = bottom_left
+
+		highlight_widget = "trade_route_planner_recommended_goods_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_trade_route_planner_intro
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_trade_route_planner_adding_markets
+		}
+	}
+
+	reactive_advice_trade_route_planner_adding_markets = {
+		text = "reactive_advice_trade_route_planner_adding_markets_desc"
+		shown_in_encyclopedia = no
+		animation = top_left
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_trade_route_planner_recommended_goods
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_trade_route_planner_carried_goods
+		}
+	}
+
+	reactive_advice_trade_route_planner_carried_goods = {
+		text = "reactive_advice_trade_route_planner_carried_goods_desc"
+		shown_in_encyclopedia = no
+		animation = top_right
+
+		highlight_widget = "trade_route_planner_carried_goods_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_trade_route_planner_adding_markets
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_trade_route_planner_capacity
+		}
+	}
+
+	reactive_advice_trade_route_planner_capacity = {
+		text = "reactive_advice_trade_route_planner_capacity_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "trade_route_planner_capacity_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_trade_route_planner_carried_goods
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_trade_route_planner_path
+		}
+	}
+
+	reactive_advice_trade_route_planner_path = {
+		text = "reactive_advice_trade_route_planner_path_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "trade_route_planner_path_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_trade_route_planner_capacity
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_trade_route_planner_trader
+		}
+	}
+
+	reactive_advice_trade_route_planner_trader = {
+		text = "reactive_advice_trade_route_planner_trader_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "trade_route_planner_trader_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_trade_route_planner_path
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_trade_route_planner_summary
+		}
+	}
+
+	reactive_advice_trade_route_planner_summary = {
+		text = "reactive_advice_trade_route_planner_summary_desc"
+		shown_in_encyclopedia = no
+		animation = center
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_trade_route_planner_trader
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_complete"
+			target = lesson_finish
+		}
+	}
+}
+
+
+
+reactive_advice_merchant_introduction = {
+	chain = reactive_advice
+	start_automatically = no
+	shown_in_encyclopedia = no
+
+	reactive_advice_merchant_introduction_intro = {
+		text = "reactive_advice_merchant_introduction_intro_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+
+		interface_effect = {
+			close_all_views = yes
+		}
+
+		gui_transition = {
+			button_id = "skip"
+			button_text = "tutorial_lesson_button_skip"
+			target = lesson_finish
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_open_overview
+		}
+	}
+
+	reactive_advice_merchant_introduction_open_overview = {
+		text = "reactive_advice_merchant_introduction_open_overview_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "tab_my_realm_tutorial_uses_this"
+		highlight_widget = "merchant_overview_tab_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_intro
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_company_size
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_merchant_introduction_open_overview_prompt"
+					is_widgetid_open = realm_panel_top_laws
+				}
+			}
+		}
+	}
+
+	reactive_advice_merchant_introduction_company_size = {
+		text = "reactive_advice_merchant_introduction_company_size_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+		highlight_widget = "merchant_company_size_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_open_overview
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_domicile
+		}
+
+		trigger_transition = {
+			target = reactive_advice_merchant_introduction_open_overview
+			trigger = {
+				NOT = { is_widgetid_open = realm_panel_top_laws }
+			}
+		}
+	}
+
+	reactive_advice_merchant_introduction_domicile = {
+		text = "reactive_advice_merchant_introduction_domicile_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+		highlight_widget = "merchant_domicile_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_company_size
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_company_purpose
+		}
+
+		trigger_transition = {
+			target = reactive_advice_merchant_introduction_open_overview
+			trigger = {
+				NOT = { is_widgetid_open = realm_panel_top_laws }
+			}
+		}
+	}
+
+	# Last highlight on the Overview tab. Later steps use the Patronage tab.
+	reactive_advice_merchant_introduction_company_purpose = {
+		text = "reactive_advice_merchant_introduction_company_purpose_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+		highlight_widget = "merchant_company_purpose_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_domicile
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_open_patronage
+		}
+
+		trigger_transition = {
+			target = reactive_advice_merchant_introduction_open_overview
+			trigger = {
+				NOT = { is_widgetid_open = realm_panel_top_laws }
+			}
+		}
+	}
+
+	reactive_advice_merchant_introduction_open_patronage = {
+		text = "reactive_advice_merchant_introduction_open_patronage_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "merchant_patronage_tab_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_company_purpose
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_patron
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_merchant_introduction_open_patronage_prompt"
+					is_widgetid_open = merchant_patron_section_tutorial_uses_this
+				}
+			}
+		}
+
+		trigger_transition = {
+			target = reactive_advice_merchant_introduction_open_overview
+			trigger = {
+				NOT = { is_widgetid_open = my_realm_window }
+			}
+		}
+	}
+
+	reactive_advice_merchant_introduction_patron = {
+		text = "reactive_advice_merchant_introduction_patron_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+		highlight_widget = "merchant_patron_section_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_open_patronage
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_clients
+		}
+
+		trigger_transition = {
+			target = reactive_advice_merchant_introduction_open_patronage
+			trigger = {
+				NOT = { is_widgetid_open = merchant_patron_section_tutorial_uses_this }
+			}
+		}
+	}
+
+	# Last highlight in the Realm View.
+	reactive_advice_merchant_introduction_clients = {
+		text = "reactive_advice_merchant_introduction_clients_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+		highlight_widget = "my_realm_body_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_patron
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_open_trade
+		}
+
+		trigger_transition = {
+			target = reactive_advice_merchant_introduction_open_patronage
+			trigger = {
+				NOT = { is_widgetid_open = merchant_patron_section_tutorial_uses_this }
+			}
+		}
+	}
+
+	reactive_advice_merchant_introduction_open_trade = {
+		text = "reactive_advice_merchant_introduction_open_trade_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "tab_trade"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_clients
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_create_route
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_merchant_introduction_open_trade_prompt"
+					is_widgetid_open = trade_routes_tab_content_tutorial_uses_this
+				}
+			}
+		}
+	}
+
+	reactive_advice_merchant_introduction_create_route = {
+		text = "reactive_advice_merchant_introduction_create_route_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+		highlight_widget = "trade_stats_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_open_trade
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_merchant_introduction_succeed
+		}
+
+		trigger_transition = {
+			target = reactive_advice_merchant_introduction_open_trade
+			trigger = {
+				NOT = { is_widgetid_open = trade_routes_tab_content_tutorial_uses_this }
+			}
+		}
+	}
+
+	reactive_advice_merchant_introduction_succeed = {
+		text = "reactive_advice_merchant_introduction_succeed_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_merchant_introduction_create_route
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_complete"
+			target = lesson_finish
+		}
+	}
+}
+
+reactive_advice_company_direction = {
+	chain = reactive_advice
+	start_automatically = no
+	shown_in_encyclopedia = no
+
+	reactive_advice_company_direction_intro = {
+		text = "reactive_advice_company_direction_intro_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+
+		gui_transition = {
+			button_id = "skip"
+			button_text = "tutorial_lesson_button_skip"
+			target = lesson_finish
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_company_direction_open_house
+		}
+	}
+
+	reactive_advice_company_direction_open_house = {
+		text = "reactive_advice_company_direction_open_house_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "house_button"
+
+		animation = bottom_left
+
+		interface_effect = {
+			if = {
+				limit = {
+					NOT = {
+						is_widgetid_open = dynasty_house_view
+					}
+				}
+				close_all_views = yes
+			}
+		}
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_company_direction_intro
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_company_direction_open_direction_tab
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_company_direction_open_house_prompt"
+					is_widgetid_open = dynasty_house_view
+				}
+			}
+		}
+	}
+
+	reactive_advice_company_direction_open_direction_tab = {
+		text = "reactive_advice_company_direction_open_direction_tab_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+
+		highlight_widget = "company_direction_tab_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_company_direction_open_house
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_company_direction_panel
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_company_direction_open_direction_tab_prompt"
+					is_widgetid_open = company_direction_panel_tutorial_uses_this
+				}
+			}
+		}
+
+		trigger_transition = {
+			target = reactive_advice_company_direction_open_house
+			trigger = {
+				NOT = { is_widgetid_open = dynasty_house_view }
+			}
+		}
+	}
+
+	reactive_advice_company_direction_panel = {
+		text = "reactive_advice_company_direction_panel_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+		highlight_widget = "house_unity_panel_widget"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_company_direction_open_direction_tab
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_complete"
+			target = lesson_finish
+		}
+
+		trigger_transition = {
+			target = reactive_advice_company_direction_open_direction_tab
+			trigger = {
+				NOT = { is_widgetid_open = company_direction_panel_tutorial_uses_this }
+			}
+		}
+	}
+}
+
+reactive_advice_sponsor_construction = {
+	chain = reactive_advice
+	start_automatically = no
+	shown_in_encyclopedia = no
+
+	reactive_advice_sponsor_construction_select_holding = {
+		text = "reactive_advice_sponsor_construction_select_holding_desc"
+		shown_in_encyclopedia = no
+
+		interface_effect = {
+			close_all_views = yes
+		}
+
+		gui_transition = {
+			button_id = "skip"
+			button_text = "tutorial_lesson_button_skip"
+			target = lesson_finish
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_sponsor_construction_open_district
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_sponsor_construction_select_holding_prompt"
+					is_widgetid_open = holding_view
+				}
+			}
+		}
+	}
+
+	reactive_advice_sponsor_construction_open_district = {
+		text = "reactive_advice_sponsor_construction_open_district_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "district_button"
+		
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_sponsor_construction_select_holding
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_sponsor_construction_button
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_sponsor_construction_open_district_prompt"
+					is_widgetid_open = merchant_sponsor_construction_tutorial_uses_this
+				}
+			}
+		}
+
+		trigger_transition = {
+			target = reactive_advice_sponsor_construction_select_holding
+			trigger = {
+				NOT = { is_widgetid_open = holding_view }
+			}
+		}
+	}
+
+	reactive_advice_sponsor_construction_button = {
+		text = "reactive_advice_sponsor_construction_button_desc"
+		shown_in_encyclopedia = no
+		animation = right
+
+		highlight_widget = "merchant_sponsor_construction_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_sponsor_construction_open_district
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_complete"
+			target = lesson_finish
+		}
+	}
+}
+
+
+reactive_advice_republican_politics = {
+	chain = reactive_advice
+	start_automatically = no
+	shown_in_encyclopedia = no
+
+	reactive_advice_republican_politics_intro = {
+		text = "reactive_advice_republican_politics_intro_desc"
+		shown_in_encyclopedia = no
+
+		animation = center
+
+		interface_effect = {
+			close_all_views = yes
+		}
+
+		highlight_widget = "republic_hud_button_tutorial_uses_this"
+		highlight_widget = "republic_overview_tab_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "skip"
+			button_text = "tutorial_lesson_button_skip"
+			target = lesson_finish
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_republican_politics_overview
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_republican_politics_intro_prompt"
+					is_game_view_open = government_republic
+					is_widgetid_open = republic_overview_body_tutorial_uses_this
+				}
+			}
+		}
+	}
+
+	reactive_advice_republican_politics_overview = {
+		text = "reactive_advice_republican_politics_overview_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "republic_overview_rank_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_republican_politics_intro
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_republican_politics_election
+		}
+
+		trigger_transition = {
+			target = reactive_advice_republican_politics_intro
+			trigger = {
+				NOT = { is_widgetid_open = republic_overview_body_tutorial_uses_this }
+			}
+		}
+	}
+
+	reactive_advice_republican_politics_election = {
+		text = "reactive_advice_republican_politics_election_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "republic_overview_ruler_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_republican_politics_overview
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_republican_politics_open_assembly
+		}
+
+		trigger_transition = {
+			target = reactive_advice_republican_politics_overview
+			trigger = {
+				NOT = { is_widgetid_open = republic_overview_body_tutorial_uses_this }
+			}
+		}
+	}
+
+	reactive_advice_republican_politics_open_assembly = {
+		text = "reactive_advice_republican_politics_open_assembly_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "republic_assembly_tab_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_republican_politics_election
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_republican_politics_assembly
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_republican_politics_open_assembly_prompt"
+					is_widgetid_open = republic_assembly_body_tutorial_uses_this
+				}
+			}
+		}
+
+		trigger_transition = {
+			target = reactive_advice_republican_politics_election
+			trigger = {
+				NOT = { is_game_view_open = government_republic }
+			}
+		}
+	}
+
+	reactive_advice_republican_politics_assembly = {
+		text = "reactive_advice_republican_politics_assembly_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "republic_assembly_ambitions_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_republican_politics_open_assembly
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_republican_politics_open_families
+		}
+
+		trigger_transition = {
+			target = reactive_advice_republican_politics_open_assembly
+			trigger = {
+				NOT = { is_widgetid_open = republic_assembly_body_tutorial_uses_this }
+			}
+		}
+	}
+
+	reactive_advice_republican_politics_open_families = {
+		text = "reactive_advice_republican_politics_open_families_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "republic_families_tab_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_republican_politics_assembly
+		}
+
+		trigger_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_republican_politics_families
+			trigger = {
+				custom_tooltip = {
+					text = "reactive_advice_republican_politics_open_families_prompt"
+					is_widgetid_open = republic_families_body_tutorial_uses_this
+				}
+			}
+		}
+
+		trigger_transition = {
+			target = reactive_advice_republican_politics_assembly
+			trigger = {
+				NOT = { is_game_view_open = government_republic }
+			}
+		}
+	}
+
+	reactive_advice_republican_politics_families = {
+		text = "reactive_advice_republican_politics_families_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "republic_patrician_rating_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_republican_politics_open_families
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_republican_politics_summary
+		}
+
+		trigger_transition = {
+			target = reactive_advice_republican_politics_open_families
+			trigger = {
+				NOT = { is_widgetid_open = republic_families_body_tutorial_uses_this }
+			}
+		}
+	}
+
+	reactive_advice_republican_politics_summary = {
+		text = "reactive_advice_republican_politics_summary_desc"
+		shown_in_encyclopedia = no
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_republican_politics_families
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_complete"
+			target = lesson_finish
+		}
+	}
+}
+
+
+# Distribution Route Planner, no important_action, opens with the UI
+reactive_advice_distribution_route_planner = {
+	chain = reactive_advice
+	shown_in_encyclopedia = no
+
+	trigger = {
+		is_widgetid_open = "distribution_route_planner_tutorial_uses_this"
+	}
+
+	trigger_transition = {
+		target = lesson_abort
+		trigger = {
+			NOT = { is_widgetid_open = "distribution_route_planner_tutorial_uses_this" }
+		}
+	}
+
+	reactive_advice_distribution_route_planner_intro = {
+		text = "reactive_advice_distribution_route_planner_intro_desc"
+		shown_in_encyclopedia = no
+		animation = center
+
+		gui_transition = {
+			button_id = "skip"
+			button_text = "tutorial_lesson_button_skip"
+			target = lesson_finish
+		}
+
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_distribution_route_planner_basic_goods
+		}
+	}
+
+	reactive_advice_distribution_route_planner_basic_goods = {
+		text = "reactive_advice_distribution_route_planner_basic_goods_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "trade_route_planner_basic_goods_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_distribution_route_planner_intro
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_distribution_route_planner_accessible_surpluses
+		}
+	}
+
+	reactive_advice_distribution_route_planner_accessible_surpluses = {
+		text = "reactive_advice_distribution_route_planner_accessible_surpluses_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "trade_map_accessible_surpluses_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_distribution_route_planner_basic_goods
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_distribution_route_planner_unmet_needs
+		}
+	}
+
+	reactive_advice_distribution_route_planner_unmet_needs = {
+		text = "reactive_advice_distribution_route_planner_unmet_needs_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "trade_map_unmet_needs_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_distribution_route_planner_accessible_surpluses
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_next"
+			target = reactive_advice_distribution_route_planner_needs
+		}
+	}
+
+	reactive_advice_distribution_route_planner_needs = {
+		text = "reactive_advice_distribution_route_planner_needs_desc"
+		shown_in_encyclopedia = no
+
+		highlight_widget = "trade_route_planner_needs_tutorial_uses_this"
+
+		gui_transition = {
+			button_id = "back"
+			button_text = "tutorial_lesson_button_back"
+			target = reactive_advice_distribution_route_planner_unmet_needs
+		}
+		gui_transition = {
+			button_id = "next"
+			button_text = "tutorial_lesson_button_complete"
+			target = lesson_finish
+		}
+	}
+}
+

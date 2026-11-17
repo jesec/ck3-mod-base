@@ -1,0 +1,196 @@
+﻿namespace = gdp_merchant_patron_contract
+
+##################################################
+# GENERAL SCRIPTED TRIGGERS & EFFECTS
+
+# Syncs stress lost from successfully completing a trade deal scheme.
+scripted_effect merchant_base_patron_schemes_acknowledge_success_stress_effect = {
+	stress_and_fulfillment_impact = { arrogant = minor_stress_impact_loss }
+}
+
+# Syncs stress gained from failing a trade deal scheme.
+scripted_effect merchant_base_patron_schemes_acknowledge_failure_stress_effect = {
+	if = {
+		limit = { scope:task_contract_tier >= 2 }
+		stress_and_fulfillment_impact = {
+			base = miniscule_stress_impact_gain
+			humble = minor_stress_impact_loss
+			arrogant = minor_stress_impact_gain
+		}
+	}
+}
+
+####
+# gdp_merchant_patron_contract.0001-0010 - Hobnob
+###
+
+gdp_merchant_patron_contract.0001 = { # intro
+	type = character_event
+	title = gdp_merchant_patron_contract.0001.t
+	desc = gdp_merchant_patron_contract.0001.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = throne_room_conversation_1
+	}
+	right_portrait = {
+		character = scope:patron
+		animation = flirtation_left
+	}
+	override_background = { reference = sitting_room }
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+
+	immediate = {
+		scope:patron = { save_scope_as = bg_override_char }
+	}
+
+	# Go for a balanced agent mix.
+	option = {
+		name = gdp_merchant_patron_contract.0001.d
+		reason = give_me_balanced_agents
+		flavor = EVENT_WINDOW_OPTION_AGENTS_BALANCED
+		scope:task_contract_scheme = {
+			# Success.
+			add_agent_slot = agent_diplomat
+			add_agent_slot = agent_diplomat
+			add_agent_slot = agent_shill
+			# Speed.
+			add_agent_slot = agent_herald
+			add_agent_slot = agent_socialite
+		}
+		# No stress, we're just selecting our starter batch.
+		# AI always selects balanced agents.
+		ai_chance = { base = 1000 }
+	}
+
+	# Focus on success chance agents.
+	option = {
+		name = gdp_merchant_patron_contract.0001.a
+		reason = give_me_success_agents
+		flavor = EVENT_WINDOW_OPTION_AGENTS_SUCCESS
+		scope:task_contract_scheme = {
+			# Success.
+			add_agent_slot = agent_diplomat
+			add_agent_slot = agent_diplomat
+			add_agent_slot = agent_shill
+			add_agent_slot = agent_bodyguard
+			# Speed.
+			add_agent_slot = agent_herald
+		}
+		# No stress, we're just selecting our starter batch.
+		# AI always picks the balanced config.
+	}
+	
+	# Focus on speedy agents.
+	option = {
+		name = gdp_merchant_patron_contract.0001.b
+		reason = give_me_speed_agents
+		flavor = EVENT_WINDOW_OPTION_AGENTS_SPEED
+		scope:task_contract_scheme = {
+			# Success.
+			add_agent_slot = agent_diplomat
+			# Speed.
+			add_agent_slot = agent_herald
+			add_agent_slot = agent_herald
+			add_agent_slot = agent_socialite
+			add_agent_slot = agent_socialite
+		}
+		# No stress, we're just selecting our starter batch.
+		# AI always picks the balanced config.
+	}
+	
+	# Now show us the panel.
+	after = {
+		open_view = {
+			view = intrigue_window
+			player = root
+		}
+	}
+}
+
+#	Success event.
+gdp_merchant_patron_contract.0002 = {
+	type = character_event
+	window = scheme_successful_event
+	title = gdp_merchant_patron_contract.0002.t
+	desc = gdp_merchant_patron_contract.0002.desc
+	theme = diplomacy
+	center_portrait = {
+		character = root
+		animation = hero_flex
+	}
+	right_portrait = {
+		character = scope:patron
+		animation = admiration
+	}
+	override_background = { reference = sitting_room }
+
+	immediate = {
+		merchant_base_patron_contract_schemes_set_up_outcome_immediate_effect = yes
+		random_list = {
+			67 = {
+				scope:scheme.task_contract = { complete_task_contract = success_standard }
+			}
+			33 = {
+				scope:scheme.task_contract = { complete_task_contract = success_critical }
+			}
+		}
+		scope:patron = { add_stress = major_stress_loss }
+		# And wrap things up.
+		scope:scheme ?= { end_scheme = yes }
+	}
+
+	# Acknowledge.
+	option = {
+		name = gdp_merchant_patron_contract.0002.a
+		flavor = merchant_base_patron_contract_schemes.0000.f.contract_concluded
+		merchant_base_patron_schemes_acknowledge_success_stress_effect = yes
+	}
+}
+
+#	Failure event.
+gdp_merchant_patron_contract.0003 = {
+	type = character_event
+	window = scheme_failed_event
+	title = gdp_merchant_patron_contract.0003.t
+	desc = gdp_merchant_patron_contract.0003.desc
+	theme = diplomacy
+	center_portrait = {
+		character = root
+		animation = disappointed
+	}
+	right_portrait = {
+		character = scope:patron
+		animation = dismissal
+	}
+	override_background = { reference = courtyard }
+
+	immediate = {
+		merchant_base_patron_contract_schemes_set_up_outcome_immediate_effect = yes
+		scope:scheme.task_contract = { complete_task_contract = failure_standard }
+		# And wrap things up.
+		scope:scheme ?= { end_scheme = yes }
+	}
+
+	# Acknowledge.
+	option = {
+		name = gdp_merchant_patron_contract.0003.a
+		flavor = merchant_base_patron_contract_schemes.0000.f.contract_concluded
+
+		merchant_base_patron_schemes_acknowledge_failure_stress_effect = yes
+	}
+}
+
+gdp_merchant_patron_contract.0004 = { # result roll
+	hidden = yes
+
+	immediate = {
+		roll_scheme_success_or_failure_effect = {
+			SUCCESS_EVENT = gdp_merchant_patron_contract.0002
+			FAILURE_EVENT = gdp_merchant_patron_contract.0003
+		}
+	}
+}

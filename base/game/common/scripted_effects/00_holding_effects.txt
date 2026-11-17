@@ -34,7 +34,10 @@
 		}
 		tgp_silk_road_feudalize_holding_effect = yes
 		if = {
-			limit = { holder != scope:actor }
+			limit = {
+				holder != scope:actor
+				NOT = { exists = scope:feudalize_without_opinion }
+			}
 			holder = {
 				# Add some opinion to make it worthwhile
 				add_opinion = {
@@ -45,6 +48,28 @@
 			}
 		}
 	}
+}
+
+# Province scope. Turns a tribal holding into $HOLDING$ and keeps its building levels as generated buildings
+holding_convert_tribal_keeping_buildings_effect = {
+	set_variable = {
+		name = tribal_to_feudal_building_level
+		value = combined_building_level
+		days = 1
+	}
+	holding_pre_feudalize_effect = yes
+	set_holding_type = $HOLDING$
+	while = {
+		limit = {
+			var:tribal_to_feudal_building_level > 1
+		}
+		generate_building = yes
+		change_variable = {
+			name = tribal_to_feudal_building_level
+			subtract = 1
+		}
+	}
+	remove_variable = tribal_to_feudal_building_level
 }
 
 holding_pre_tribalize_effect = {

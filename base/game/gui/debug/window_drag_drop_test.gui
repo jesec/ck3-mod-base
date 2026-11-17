@@ -1,0 +1,489 @@
+window = {
+	name = "window_drag_drop_test"
+
+	using = Window_Background_Subwindow
+
+	parentanchor = center
+	resizable = no
+	movable = no
+
+	vbox = {
+		set_parent_size_to_minimum = yes
+		minimumsize = { 400 300 }
+		margin = { 4 4 }
+		margin_bottom = 25
+		spacing = 15
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				raw_text = "Drag and Drop Test Window"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[CloseGameView( 'drag_drop_test' )]"
+			}
+		}
+
+		hbox = {
+			margin { 50 0 }
+
+			# DRAG & DROP TO REORDER LIST EXAMPLE 1
+			# Reorder list objects by dropping directly onto other objects
+			drag_and_drop_ordered_list_example = {
+				datacontext = "[DragDropWindow.AccessListOrderExample1]"
+
+				blockoverride "header_text"
+				{
+					raw_text = "Reorder List Example 1"
+				}
+
+				blockoverride "subtitle_text"
+				{
+					raw_text = "Reorder objects by dropping directly onto slots"
+				}
+
+				blockoverride "accept_draggable_id"
+				{
+					accept_draggable_id = "draggable_object_example_1"
+				}
+
+				blockoverride "draggable_id"
+				{
+					draggable_id = "draggable_object_example_1"
+				}
+			}
+
+			spacer = { size = { 50 0 } }
+	
+			# DRAG & DROP TO REORDER LIST EXAMPLE 2
+			# Reorder list objects by placing them in between other objects
+			drag_and_drop_ordered_list_example_2 = {
+				datacontext = "[DragDropWindow.AccessListOrderExample2]"
+
+				blockoverride "header_text"
+				{
+					raw_text = "Reorder List Example 2"
+				}
+
+				blockoverride "subtitle_text"
+				{
+					raw_text = "Reorder objects by dropping them between slots"
+				}
+
+				blockoverride "accept_draggable_id"
+				{
+					accept_draggable_id = "draggable_object_example_2"
+				}
+
+				blockoverride "draggable_id"
+				{
+					draggable_id = "draggable_object_example_2"
+				}
+			}
+
+			spacer = { size = { 50 0 } }
+
+			# DRAG & DROP TO ASSIGN ITEMS EXAMPLE
+			# Assign items to inventory slots by drag & drop
+			vbox = {
+				datacontext = "[DragDropWindow.AccessInventorySlotExample]"
+
+				text_single = {
+					raw_text = "Inventory Slot Example"
+					align = nobaseline
+					alwaystransparent = yes
+				}
+
+				text_multi = {
+					margin = { 0 10 }
+					raw_text = "Assign objects to slots"
+					using = Font_Size_Small
+					default_format = "#italic"
+					autoresize = yes
+					align = nobaseline|center
+					max_width = 200
+				}
+
+				hbox = {
+					spacing = 15
+
+					# Draggable Objects
+					flowcontainer = {
+						direction = vertical
+						spacing = 15
+		
+						datamodel = "[DragDropExample.AccessDraggableObjects]"
+					
+						item = {
+							widget = {
+								size = { 100 100 }
+					
+								draggable_object = {
+									size = { 70% 70% }
+									parentanchor = center
+					
+									draggable_behavior = {
+										draggable_id = "draggable_object_inventory"
+					
+										drag_widget = {
+											draggable_object = {
+												position = "[GuiCurrentDrag.CurrentPosition]"
+												widgetanchor = center
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+	
+					# Droppable Slots
+					flowcontainer = {
+						direction = vertical
+						spacing = 15
+		
+						datamodel = "[DragDropExample.AccessDroppableSlots]"
+					
+						item = {
+							widget = {
+								size = { 100 100 }
+
+								icon = {
+									size = { 100 100 }
+									texture = "gfx/interface/tooltips/tooltip_frame.dds"
+
+									text_multi = {
+										visible = "[Not( DroppableSlot.HasCurrentDraggableObject )]"
+										parentanchor = center
+
+										raw_text = "Drop Something Here"
+										default_format = "#low;italic"
+										align = center
+										fontsize_min = 12
+										
+										autoresize = yes
+										max_width = 90
+										max_height = 90
+									}
+									
+									drop_target = {
+										accept_draggable_id = "draggable_object_inventory"
+										is_drop_allowed = yes
+										on_receive_drop = "[DroppableSlot.SetCurrentDraggableObject( GetDraggedDatacontext('DraggableObject').Self )]"
+									}
+						
+									draggable_object = {
+										visible = "[DroppableSlot.HasCurrentDraggableObject]"
+										datacontext = "[DroppableSlot.GetCurrentDraggableObject]"
+										parentanchor = center
+										size = { 70% 70% }
+						
+										draggable_behavior = {
+											draggable_id = "draggable_object_inventory"
+											on_drop_accepted = "[DroppableSlot.ClearCurrentDraggableObject]"
+						
+											drag_widget = {
+												draggable_object = {
+													position = "[GuiCurrentDrag.CurrentPosition]"
+													widgetanchor = center
+												}
+											}
+										}
+									}
+								}
+	
+								button_close = {
+									visible = "[DroppableSlot.HasCurrentDraggableObject]"
+
+									size = { 20 20 }
+									position = { -5 5 }
+									parentanchor = top|right
+
+									raw_tooltip = "Clear Slot"
+
+									onclick = "[DroppableSlot.ClearCurrentDraggableObject]"
+									clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_close"
+								}
+							}
+						}
+					}
+				}
+	
+				spacer = { size = { 0 15 } }
+	
+				button_standard = {
+					name = "add_new_droppable"
+					size = { 100 100 }
+					onclick = "[DragDropExample.AddDroppableSlot]"
+	
+					button_icon = {
+						name = "new_droppable_icon"
+						parentanchor = center
+						size = { 28 28 }
+						alpha = 0.7
+						texture = "gfx/interface/icons/flat_icons/plus.dds"
+						alwaystransparent = yes
+					}
+				}
+	
+				spacer = { size = { 0 20 } }
+			}
+		}
+	}
+}
+
+types ScriptableDragDropTypes
+{
+	type draggable_object = icon {
+		size = { 70 70 }
+		texture = "gfx/interface/white.dds"
+		color = "[DraggableObject.GetColor]"
+
+		raw_tooltip = "[DraggableObject.GetName]"
+
+		vbox = {
+			margin = { 5 5 }
+			text_single = {
+				margin = { 4 0 }
+				text = "[DraggableObject.GetName]"
+				align = nobaseline
+				default_format = "#color_black"
+				alwaystransparent = yes
+			}
+	
+			text_single = {
+				margin = { 4 0 }
+				text = "[DraggableObject.GetIndex]"
+				align = nobaseline
+				default_format = "#color_black"
+				alwaystransparent = yes
+			}
+		}
+	}
+
+	type drag_and_drop_ordered_list_example = vbox {
+		text_single = {
+			block "header_text" {
+				raw_text = "Drag & Drop to Reorder List Example"
+			}
+			align = nobaseline
+			alwaystransparent = yes
+		}
+
+		text_multi = {
+			margin = { 0 10 }
+			block "subtitle_text" {
+				raw_text = "Reorder objects by dropping directly onto them"
+			}
+			using = Font_Size_Small
+			default_format = "#italic"
+			autoresize = yes
+			align = nobaseline|center
+			max_width = 200
+		}
+
+		flowcontainer = {
+			direction = vertical
+			spacing = 15
+
+			datamodel = "[DragDropExample.AccessDroppableSlots]"
+		
+			item = {
+				# Widget that the draggables can be dropped into
+				icon = {
+					size = { 100 100 }
+					texture = "gfx/interface/tooltips/tooltip_frame.dds"
+
+					# drop_target is required for making it possible to drop into a widget.
+					# There is no upper limit for how many drop_target can be put in a single widget,
+					# but when dropping into a widget, only the first (based on the order they occur in file) drop_target which accepts the ID of the draggable will receive the drop.
+					drop_target = {
+						# The drop_target will only receive drops of draggables with one of the IDs specified using accept_draggable_id.
+						# A drop_target must have at least 1 accept_draggable_id to be considered valid, but the is no upper limit for how many accept_draggable_id can be put in a single drop_target.
+						block "accept_draggable_id" {
+							accept_draggable_id = "draggable_object"
+						}
+		
+						# is_drop_allowed specifies additional conditions for whether or not the drop_target's on_receive_drop and the draggable_behavior's on_drop_accepted should be executed.
+						# This one just checks that the data of the draggable is not the same as the data that this widget already has, as drag-dropping into itself should be treated as aborting the drag.
+						# drop_target is not required to have a is_drop_allowed.
+						# Maximum of 1 is_drop_allowed per drop_target.
+						is_drop_allowed = yes
+		
+						# on_receive_drop specifies what should happen when receiving an acceptable drop, similarly to how a buttons onclick-property specifies what should happen when that button is clicked on.
+						# drop_target is not required to have a on_receive_drop, and there is no upper limit on how many on_receive_drop can be in a single drop_target.
+						on_receive_drop = "[DragDropExample.InsertObjectAtIndex( GetDraggedDatacontext('DraggableObject').Self, DroppableSlot.GetIndex )]"
+		
+						# The GetDraggedDatacontext promote, seen in both the above is_drop_allowed and on_receive_drop, is a special promote that can only be used in those two properties.
+						# It makes it possible to use the specified datacontext present on the dragged-from widget
+						# To specify which datacontext it is you want to use, put the name of the type, surrounded by single quotes, inside of the parentheses.
+					}
+		
+					# A widget that is only visible when the DroppableSlot datacontext has received a DraggableObject (via on_receive_drop in the drop_target)
+					draggable_object = {
+						visible = "[DroppableSlot.HasCurrentDraggableObject]"
+						datacontext = "[DroppableSlot.GetCurrentDraggableObject]"
+						parentanchor = center
+						size = { 70% 70% }
+		
+						# Putting a draggable_behavior here allows us to drag out of this widget, once an acceptable draggable has been dropped into it.
+						draggable_behavior = {
+							block "draggable_id" {
+								draggable_id = "draggable_object"
+							}
+		
+							# on_drop_accepted specifies what should happen when a drag from this draggable_behavior is dropped into a drop_target that accepts its ID and doesn't have an unfulfilled is_drop_allowed condition.
+							# on_drop_accepted = "[DroppableSlot.ClearCurrentDraggableObject]"
+		
+							drag_widget = {
+								draggable_object = {
+									position = "[GuiCurrentDrag.CurrentPosition]"
+									widgetanchor = center
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		spacer = { size = { 0 15 } }
+
+		button_standard = {
+			name = "add_new_droppable"
+			size = { 100 100 }
+			onclick = "[DragDropExample.AddDroppableSlot]"
+
+			button_icon = {
+				name = "new_droppable_icon"
+				parentanchor = center
+				size = { 28 28 }
+				alpha = 0.7
+				texture = "gfx/interface/icons/flat_icons/plus.dds"
+				alwaystransparent = yes
+			}
+		}
+
+		spacer = { size = { 0 20 } }
+	}
+
+	type drag_and_drop_ordered_list_example_2 = vbox {
+		text_single = {
+			block "header_text" {
+				raw_text = "Drag & Drop to Reorder List Example"
+			}
+			align = nobaseline
+			alwaystransparent = yes
+		}
+
+		text_multi = {
+			margin = { 0 10 }
+			block "subtitle_text" {
+				raw_text = "Reorder objects by dropping directly onto them"
+			}
+			using = Font_Size_Small
+			default_format = "#italic"
+			autoresize = yes
+			align = nobaseline|center
+			max_width = 200
+		}
+
+		flowcontainer = {
+			direction = vertical
+			spacing = 15
+
+			datamodel = "[DragDropExample.AccessDroppableSlots]"
+		
+			item = {
+				widget = {
+					size = { 100 100 }
+
+					icon = {
+						size = { 100 100 }
+						texture = "gfx/interface/tooltips/tooltip_frame.dds"
+
+						drop_target = {
+							block "accept_draggable_id" {
+								accept_draggable_id = "draggable_object"
+							}
+			
+							is_drop_allowed = yes
+							on_receive_drop = "[DragDropExample.InsertObjectAtIndex( GetDraggedDatacontext('DraggableObject').Self, DroppableSlot.GetIndex )]"
+						}
+			
+						draggable_object = {
+							visible = "[DroppableSlot.HasCurrentDraggableObject]"
+							datacontext = "[DroppableSlot.GetCurrentDraggableObject]"
+							parentanchor = center
+							size = { 70% 70% }
+			
+							draggable_behavior = {
+								block "draggable_id" {
+									draggable_id = "draggable_object"
+								}
+
+								drag_widget = {
+									draggable_object = {
+										position = "[GuiCurrentDrag.CurrentPosition]"
+										widgetanchor = center
+									}
+								}
+							}
+						}
+					}
+
+					# Hidden drop target between items
+					# Allows inserting items in between other items
+					widget = {
+						size = { 100 50 }
+						position = { 0 -50 }
+
+						drop_target = {
+							block "accept_draggable_id" {
+								accept_draggable_id = "draggable_object"
+							}
+			
+							is_drop_allowed = yes
+							on_receive_drop = "[DragDropExample.InsertObjectAtIndex( GetDraggedDatacontext('DraggableObject').Self, DroppableSlot.GetIndex )]"
+						}
+					}
+				}
+			}
+		}
+
+		# Append object to end of array
+		widget = {
+			size = { 100 15 }
+	
+			drop_target = {
+				block "accept_draggable_id" {
+					accept_draggable_id = "draggable_object"
+				}
+
+				is_drop_allowed = yes
+				on_receive_drop = "[DragDropExample.MoveToEndOfArray( GetDraggedDatacontext('DraggableObject').Self )]"
+			}
+		}
+
+		button_standard = {
+			name = "add_new_droppable"
+			size = { 100 100 }
+			onclick = "[DragDropExample.AddDroppableSlot]"
+
+			button_icon = {
+				name = "new_droppable_icon"
+				parentanchor = center
+				size = { 28 28 }
+				alpha = 0.7
+				texture = "gfx/interface/icons/flat_icons/plus.dds"
+				alwaystransparent = yes
+			}
+		}
+
+		spacer = { size = { 0 20 } }
+	}
+}

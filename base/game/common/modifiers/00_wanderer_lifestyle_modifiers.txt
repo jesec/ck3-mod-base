@@ -6,55 +6,55 @@
 local_arbitration_modifier_1 = {
 	icon = stewardship_positive
 	travel_danger = -10
-	county_opinion_add = 10
+	popular_opinion_add = 5
 	levy_reinforcement_rate = 0.15
 	levy_size = 0.15
 }
 
 local_arbitration_modifier_2 = {
-	icon = stewardship_positive
-	tax_mult = 0.25
+	icon = stewardship_positive	
+	urban_tax_mult = 0.25
 	travel_danger = -10
-	county_opinion_add = 10
+	popular_opinion_add = 5
 }
 
 local_arbitration_modifier_3 = {
 	icon = stewardship_positive
-	development_growth = 0.05
-	development_growth_factor = 0.15
+	prosperity_growth = 0.05
+	prosperity_growth_factor = 0.15
 	travel_danger = -10
-	county_opinion_add = 10
+	popular_opinion_add = 5
 }
 
 journey_local_bard_modifier = {
 	icon = diplomacy_positive
-	county_opinion_add = 20
-	monthly_county_control_growth_add = 0.1
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_add = 0.1
 }
 
 journey_drink_and_circus_modifier = {
 	icon = diplomacy_positive
-	county_opinion_add = 20
+	popular_opinion_add = 5
 }
 
 journey_pauper_king_modifier = {
 	icon = diplomacy_positive
 	diplomacy = 2
-	county_opinion_add = 30
+	popular_opinion_add = 5
 }
 
 journey_blame_game_modifier = {
 	icon = diplomacy_negative
 	diplomacy = -1
-	county_opinion_add = -10
+	popular_opinion_add = -10
 	stress_gain_mult = 0.25
 }
 
 journey_blame_game_province_modifier = {
 	icon = diplomacy_positive
-	monthly_county_control_growth_add = 0.2
-	county_opinion_add = 25
-	development_growth = 0.1
+	monthly_control_change_when_below_baseline_add = 0.2
+	popular_opinion_add = 5
+	prosperity_growth = 0.1
 }
 
 destination_excursion_safety_modifier = {
@@ -69,7 +69,7 @@ destination_excursion_speed_modifier = {
 
 inspired_by_alms_modifier = {
 	icon = county_modifier_control_positive
-	monthly_county_control_growth_add = 0.2
+	monthly_control_change_when_below_baseline_add = 0.2
 	zealot_opinion = 10
 	zealot_tax_contribution_mult = 0.05
 }
@@ -89,8 +89,8 @@ imported_tactics_character_modifier = {
 }
 
 interesting_insight_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.15
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.15
 }
 
 journey_apa_legend_modifier = {
@@ -178,12 +178,18 @@ mustered_archer_cavalry = {
 
 no_stone_unturned_perk_modifier = {
 	icon = stewardship_positive
-	monthly_county_control_growth_factor = 0.1
+	monthly_control_change_when_below_baseline_mult = 0.1
 }
 
 no_stone_unturned_boosted_perk_modifier = {
 	icon = stewardship_positive
-	monthly_county_control_growth_factor = 0.15
+	monthly_control_change_when_below_baseline_mult = 0.15
+}
+
+local_inspection_perk_modifier = {
+	icon = stewardship_positive
+	all_tax_mult = 0.05
+	popular_opinion_add = 5
 }
 
 destination_inspired_by_language = {
@@ -199,33 +205,33 @@ wanderer_restlessness_modifier = {
 
 inspection_mid_activity_tax_average_modifier = {
 	icon = economy_positive
-	tax_mult = 0.1
+	urban_tax_mult = 0.1
 }
 
 inspection_mid_activity_tax_great_modifier = {
 	icon = economy_positive
-	tax_mult = 0.2
+	urban_tax_mult = 0.2
 }
 
-inspection_mid_activity_development_average_modifier = {
+inspection_mid_activity_prosperity_average_modifier = {
 	icon = stewardship_positive
-	development_growth = 0.1
+	prosperity_growth = 0.1
 }
 
-inspection_mid_activity_development_great_modifier = {
+inspection_mid_activity_prosperity_great_modifier = {
 	icon = stewardship_positive
-	development_growth = 0.2
+	prosperity_growth = 0.2
 }
 
 inspection_mid_activity_control_average_modifier = {
 	icon = county_modifier_control_positive
-	monthly_county_control_growth_add = 0.1
+	monthly_control_change_when_below_baseline_add = 0.1
 	garrison_size = 0.1
 }
 
 inspection_mid_activity_control_great_modifier = {
 	icon = county_modifier_control_positive
-	monthly_county_control_growth_add = 0.2
+	monthly_control_change_when_below_baseline_add = 0.2
 	garrison_size = 0.2
 }
 
@@ -243,34 +249,29 @@ inspection_mid_activity_levy_great_modifier = {
 
 inspection_mid_activity_opinion_average_modifier = {
 	icon = diplomacy_positive
-	county_opinion_add = 10
+	popular_opinion_add = 5
 }
 
 inspection_mid_activity_opinion_great_modifier = {
 	icon = diplomacy_positive
-	county_opinion_add = 20
+	popular_opinion_add = 5
 }
 
 inspection_reward_average_tax_modifier = {
 	icon = economy_positive
-	tax_mult = 0.1
-	monthly_income = 1
+	urban_tax_mult = 0.05
+	monthly_urban_tax = 0.25
 }
 
 inspection_reward_focused_tax_modifier = {
 	icon = economy_positive
-	tax_mult = 0.15
-	monthly_income = 2
-}
-
-inspection_reward_focused_development_modifier = {
-	icon = stewardship_positive
-	development_growth = 0.25
+	urban_tax_mult = 0.1
+	monthly_urban_tax = 0.5
 }
 
 inspection_reward_focused_control_modifier = {
 	icon = county_modifier_control_positive
-	monthly_county_control_growth_add = 0.2
+	control_baseline_add = 5
 }
 
 inspection_reward_average_levy_modifier = {
@@ -281,16 +282,6 @@ inspection_reward_average_levy_modifier = {
 inspection_reward_focused_levy_modifier = {
 	icon = martial_positive
 	levy_size = 0.3
-}
-
-inspection_reward_average_popular_opinion_modifier = {
-	icon = diplomacy_positive
-	 county_opinion_add = 25
-}
-
-inspection_reward_focused_popular_opinion_modifier = {
-	icon = diplomacy_positive
-	county_opinion_add = 50
 }
 
 inspection_reward_focused_opinion_modifier = {
@@ -315,17 +306,17 @@ inspection_reward_focused_claims_modifier = {
 
 inspection_empty_lands_populace_modifier = {
 	icon = diplomacy_positive
-	county_opinion_add = 10
+	popular_opinion_add = 5
 }
 
 inspection_empty_lands_domain_modifier = {
-	icon = county_modifier_development_positive
-	monthly_county_control_growth_add = 0.1
+	icon = county_modifier_prosperity_positive
+	monthly_control_change_when_below_baseline_add = 0.1
 	travel_danger = -5
 }
 
 inspection_empty_lands_border_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	holding_build_gold_cost = -0.3
 	holding_build_speed = -0.3
 }
@@ -333,33 +324,33 @@ inspection_empty_lands_border_modifier = {
 inspection_bandits_in_x_domain_modifier = {
 	icon = county_modifier_control_mixed
 	garrison_size = 0.25
-	monthly_county_control_growth_add = 0.3
-	county_opinion_add = -10
+	monthly_control_change_when_below_baseline_add = 0.3
+	popular_opinion_add = -10
 }
 
 inspection_bandits_in_x_populace_modifier = {
 	icon = diplomacy_positive
-	county_opinion_add = 10
+	popular_opinion_add = 5
 	attraction_opinion = 5
 	epidemic_resistance = 5
 }
 
 inspection_bandits_in_x_border_negative_modifier = {
 	icon = county_modifier_control_negative
-	county_opinion_add = -10
-	development_growth_factor = -0.1
-	monthly_county_control_decline_add = -0.2
+	popular_opinion_add = -10
+	prosperity_growth_factor = -0.1
+	control_baseline_add = minor_control_baseline_loss
 }
 
 inspection_bandits_in_x_border_positive_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.1
-	monthly_county_control_growth_add = 0.1
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.05
+	monthly_control_change_when_below_baseline_add = 0.1
 }
 
 inspection_old_roads_of_x_border_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.1
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.1
 
 	scale = {
 		value = inspection_value_old_roads_scale
@@ -370,8 +361,8 @@ inspection_old_roads_of_x_border_modifier = {
 
 inspection_old_roads_of_x_domain_modifier = {
 	icon = county_modifier_control_mixed
-	development_growth_factor = 0.1
-	monthly_county_control_decline_add = -0.05
+	prosperity_growth_factor = 0.1
+	control_baseline_add = miniscule_control_baseline_loss
 	garrison_size = -0.1
 
 	scale = {
@@ -382,9 +373,9 @@ inspection_old_roads_of_x_domain_modifier = {
 }
 
 inspection_old_roads_of_x_populace_modifier = {
-	icon = county_modifier_development_mixed
-	development_growth_factor = 0.1
-	county_opinion_add = -5
+	icon = county_modifier_prosperity_mixed
+	prosperity_growth_factor = 0.1
+	popular_opinion_add = -5
 	levy_size = -0.1
 
 	scale = {
@@ -395,29 +386,12 @@ inspection_old_roads_of_x_populace_modifier = {
 }
 
 inspection_old_roads_negative_modifier = {
-	icon = county_modifier_development_negative
-	development_growth = -0.1
-}
-
-inspection_fighting_guilds_innkeepers_guild_modifier = {
-	icon = county_modifier_development_mixed
-	development_growth_factor = 0.15
-	county_opinion_add = 10
-	tax_mult = 0.15
-	building_slot_add = -1
-	supply_limit_mult = 0.2
-}
-
-inspection_fighting_guilds_artists_guild_modifier = {
-	icon = county_modifier_development_mixed
-	development_growth_factor = 0.15
-	county_opinion_add = 25
-	building_slot_add = -1
-	travel_danger = -10
+	icon = county_modifier_prosperity_negative
+	prosperity_growth = -0.1
 }
 
 inspection_fire_spreading_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	build_gold_cost = -0.5
 	build_prestige_cost = -0.5
 	build_speed = -0.5
@@ -426,13 +400,13 @@ inspection_fire_spreading_modifier = {
 inspection_selfless_ruler_modifier = {
 	icon = diplomacy_positive
 	general_opinion = 5
-	county_opinion_add = 10
+	popular_opinion_add = 5
 }
 
 inspection_expanding_walls_new_modifier = {
 	icon = economy_positive
-	build_gold_cost = -0.05
-	build_speed = -0.05
+	build_gold_cost = -0.02
+	build_speed = -0.02
 
 	scale = {
 		value = inspection_expanding_walls_new_scale
@@ -442,9 +416,9 @@ inspection_expanding_walls_new_modifier = {
 }
 
 inspection_expanding_walls_old_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.03
-	development_growth = 0.03
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.005
+	prosperity_growth = 0.01
 
 	scale = {
 		value = inspection_expanding_walls_old_scale
@@ -455,7 +429,7 @@ inspection_expanding_walls_old_modifier = {
 
 inspection_regular_irregularities_local_modifier = {
 	icon = diplomacy_negative
-	county_opinion_add = -10
+	popular_opinion_add = -10
 	barons_and_minor_landholders_opinion = -15
 }
 
@@ -466,40 +440,40 @@ inspection_regular_irregularities_modifier = {
 }
 
 inspection_proteted_poi_levy_modifier = {
-	icon = county_modifier_development_mixed
+	icon = county_modifier_prosperity_mixed
 	levy_size = -0.25
 	garrison_size = -0.25
 	travel_danger = -10
 }
 
 inspection_protected_holy_site_levy_modifier = {
-	icon = county_modifier_development_mixed
+	icon = county_modifier_prosperity_mixed
 	levy_size = -0.25
 	garrison_size = -0.25
 	travel_danger = -10
 }
 
 inspection_protected_holy_poi_levy_modifier = {
-	icon = county_modifier_development_mixed
+	icon = county_modifier_prosperity_mixed
 	levy_size = -0.25
 	garrison_size = -0.25
 	travel_danger = -10
 }
 
 inspection_protected_poi_gold_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	garrison_size = 0.25
 	travel_danger = -10
 }
 
 inspection_protected_holy_site_gold_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	garrison_size = 0.25
 	travel_danger = -10
 }
 
 inspection_protected_holy_poi_gold_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	garrison_size = 0.25
 	travel_danger = -10
 }
@@ -512,62 +486,57 @@ inspection_hidden_hinterlands_recruit_modifier = {
 inspection_hidden_hinterlands_hunters_modifier = {
 	icon = hunt_mixed
 	travel_danger = -10
-	tax_mult = -0.25
+	woodland_tax_mult = -0.25
 }
 
 inspection_learning_intent_building_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	build_gold_cost = -0.05
 	build_speed = -0.05
 }
 
 inspection_learning_intent_flourishing_metal_trade_modifier = {
 	icon = economy_positive
-	monthly_income = 1
-}
-
-inspection_learning_intent_local_guilds_modifier = {
-	icon = county_modifier_development_positive
-	development_growth = 0.05
+	monthly_artisan_tax = 1
 }
 
 inspection_survey_new_goods_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.05
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.05
 }
 
 inspection_second_try_modifier = {
-	icon = county_modifier_development_positive
-	county_opinion_add = 5
+	icon = county_modifier_prosperity_positive
+	monthly_control_change_when_below_baseline_add = 0.1
 }
 
 inspection_third_try_modifier = {
-	icon = county_modifier_development_positive
-	county_opinion_add = 5
+	icon = county_modifier_prosperity_positive
+	monthly_control_change_when_below_baseline_add = 0.1
 }
 
 inspection_fourth_try_modifier = {
-	icon = county_modifier_development_positive
-	county_opinion_add = 5
+	icon = county_modifier_prosperity_positive
+	monthly_control_change_when_below_baseline_add = 0.1
 }
 
 internal_affairs_local_uprising_appeasement_modifier = {
 	icon = county_modifier_control_positive
-	monthly_county_control_growth_add = 0.2
-	county_opinion_add = 25
+	monthly_control_change_when_below_baseline_add = 0.2
+	popular_opinion_add = 5
 }
 
 internal_affairs_local_uprising_festival_modifier = {
 	icon = county_modifier_control_positive
-	monthly_county_control_growth_add = 0.1
-	county_opinion_add = 10
+	monthly_control_change_when_below_baseline_add = 0.1
+	popular_opinion_add = 5
 }
 
 inspection_unfitting_ruler_modifier = {
-	icon = county_modifier_development_mixed
-	tax_mult = 0.01
+	icon = county_modifier_prosperity_mixed
+	urban_tax_mult = 0.01
 	levy_size = 0.01
-	development_decline = -0.0025
+	prosperity_decline = -0.0025
 
 	scale = {
 		value = inspection_unfitting_ruler_value
@@ -578,8 +547,8 @@ inspection_unfitting_ruler_modifier = {
 
 internal_affairs_local_corruption_modifier = {
 	icon = county_modifier_control_mixed
-	tax_mult = 0.06
-	monthly_county_control_decline_add = -0.02
+	civic_tax_mult = 0.06
+	control_baseline_add = miniscule_control_baseline_loss
 
 	scale = {
 		value = internal_affairs_local_corruption_value
@@ -607,7 +576,7 @@ internal_affairs_county_religious_tensions_modifier = {
 
 internal_affairs_county_religious_tolerance_modifier = {
 	icon = piety_positive
-	monthly_county_control_growth_factor = 0.05
+	monthly_control_change_when_below_baseline_mult = 0.05
 }
 
 internal_affairs_character_religious_tolerance_modifier = {

@@ -9,6 +9,7 @@ major_county_control_loss = -30
 extreme_county_control_loss = -40
 massive_county_control_loss = -50
 monumental_county_control_loss = -75
+
 miniscule_county_control_gain = 5
 minor_county_control_gain = 10
 medium_county_control_gain = 20
@@ -17,12 +18,64 @@ extreme_county_control_gain = 40
 massive_county_control_gain = 50
 monumental_county_control_gain = 75
 
-low_county_control = 33
-medium_county_control = 66
+miniscule_control_baseline_loss = -5
+minor_control_baseline_loss = -10
+medium_control_baseline_loss = -15
+
+low_county_control = 24
+medium_county_control = 30
 full_county_control = 100
 
-low_county_control_limit = 35
-high_county_control_limit = 95
+low_county_control_limit = 30
+high_county_control_limit = {
+	value = county_control_baseline
+	subtract = 5
+	min = 25
+}
+
+# Baseline-relative thresholds (county scope); the number is the old threshold from when 50 was the baseline
+county_control_relative_20 = {
+	value = county_control_baseline
+	multiply = 0.4
+}
+county_control_relative_25 = {
+	value = county_control_baseline
+	multiply = 0.5
+}
+county_control_relative_40 = {
+	value = county_control_baseline
+	multiply = 0.8
+}
+county_control_relative_60 = {
+	value = 100
+	subtract = county_control_baseline
+	multiply = 0.2
+	add = county_control_baseline
+}
+county_control_relative_65 = {
+	value = 100
+	subtract = county_control_baseline
+	multiply = 0.3
+	add = county_control_baseline
+}
+county_control_relative_70 = {
+	value = 100
+	subtract = county_control_baseline
+	multiply = 0.4
+	add = county_control_baseline
+}
+county_control_relative_75 = {
+	value = 100
+	subtract = county_control_baseline
+	multiply = 0.5
+	add = county_control_baseline
+}
+county_control_relative_80 = {
+	value = 100
+	subtract = county_control_baseline
+	multiply = 0.6
+	add = county_control_baseline
+}
 
 high_control_county_corruption_removal_chance = 35
 
@@ -31,91 +84,161 @@ max_county_corruption_modifiers_at_once = 3
 county_corruption_modifier_count = {
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_inefficient_tax_collection_modifier
+			OR = {
+				has_county_modifier = county_corruption_inefficient_tax_collection_modifier
+				has_county_modifier = county_corruption_inefficient_tax_collection_modifier_2
+				has_county_modifier = county_corruption_inefficient_tax_collection_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_deserting_levies_modifier
+			OR = {
+				has_county_modifier = county_corruption_deserting_levies_modifier
+				has_county_modifier = county_corruption_deserting_levies_modifier_2
+				has_county_modifier = county_corruption_deserting_levies_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_smuggling_ring_modifier
+			OR = {
+				has_county_modifier = county_corruption_smuggling_ring_modifier
+				has_county_modifier = county_corruption_smuggling_ring_modifier_2
+				has_county_modifier = county_corruption_smuggling_ring_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_inefficient_census_modifier
+			OR = {
+				has_county_modifier = county_corruption_bandits_rampant_modifier
+				has_county_modifier = county_corruption_bandits_rampant_modifier_2
+				has_county_modifier = county_corruption_bandits_rampant_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_lack_of_sheriffs_modifier
+			OR = {
+				has_county_modifier = county_corruption_inefficient_census_modifier
+				has_county_modifier = county_corruption_inefficient_census_modifier_2
+				has_county_modifier = county_corruption_inefficient_census_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_lack_of_courts_modifier
+			OR = {
+				has_county_modifier = county_corruption_lack_of_sheriffs_modifier
+				has_county_modifier = county_corruption_lack_of_sheriffs_modifier_2
+				has_county_modifier = county_corruption_lack_of_sheriffs_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_thieves_guild_modifier
+			OR = {
+				has_county_modifier = county_corruption_lack_of_courts_modifier
+				has_county_modifier = county_corruption_lack_of_courts_modifier_2
+				has_county_modifier = county_corruption_lack_of_courts_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_unsafe_highways_modifier
+			OR = {
+				has_county_modifier = county_corruption_thieves_guild_modifier
+				has_county_modifier = county_corruption_thieves_guild_modifier_2
+				has_county_modifier = county_corruption_thieves_guild_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_uncooperative_guilds_modifier
+			OR = {
+				has_county_modifier = county_corruption_unsafe_highways_modifier
+				has_county_modifier = county_corruption_unsafe_highways_modifier_2
+				has_county_modifier = county_corruption_unsafe_highways_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_lackluster_administration_modifier
+			OR = {
+				has_county_modifier = county_corruption_uncooperative_guilds_modifier
+				has_county_modifier = county_corruption_uncooperative_guilds_modifier_2
+				has_county_modifier = county_corruption_uncooperative_guilds_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_roaming_bandits_modifier
+			OR = {
+				has_county_modifier = county_corruption_lackluster_administration_modifier
+				has_county_modifier = county_corruption_lackluster_administration_modifier_2
+				has_county_modifier = county_corruption_lackluster_administration_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_wild_beast_attacks_modifier
+			OR = {
+				has_county_modifier = county_corruption_roaming_bandits_modifier
+				has_county_modifier = county_corruption_roaming_bandits_modifier_2
+				has_county_modifier = county_corruption_roaming_bandits_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_upset_shepherds_modifier
+			OR = {
+				has_county_modifier = county_corruption_wild_beast_attacks_modifier
+				has_county_modifier = county_corruption_wild_beast_attacks_modifier_2
+				has_county_modifier = county_corruption_wild_beast_attacks_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_rogue_warriors_modifier
+			OR = {
+				has_county_modifier = county_corruption_upset_shepherds_modifier
+				has_county_modifier = county_corruption_upset_shepherds_modifier_2
+				has_county_modifier = county_corruption_upset_shepherds_modifier_3
+			}
 		}
 		add = 1
 	}
 	if = {
 		limit = {
-			has_county_modifier = county_corruption_unruly_nomads_modifier
+			OR = {
+				has_county_modifier = county_corruption_rogue_warriors_modifier
+				has_county_modifier = county_corruption_rogue_warriors_modifier_2
+				has_county_modifier = county_corruption_rogue_warriors_modifier_3
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
+			OR = {
+				has_county_modifier = county_corruption_unruly_nomads_modifier
+				has_county_modifier = county_corruption_unruly_nomads_modifier_2
+				has_county_modifier = county_corruption_unruly_nomads_modifier_3
+			}
 		}
 		add = 1
 	}
@@ -127,7 +250,7 @@ county_control_corruption_gain_chance = {
 	subtract = county_control # At low_county_control_limit Control, there is a 0 percent chance of gaining Corruption
 
 	divide = {
-		add = 5 # A base of approximately 25% chance of gaining corruption per year at 0 Control
+		add = 1.5 # A base of approximately 40% chance of gaining corruption per year at 0 Control
 	}
 	divide = { # Further reduce the chance of corruption per corruption modifier the County already has
 		add = county_corruption_modifier_count

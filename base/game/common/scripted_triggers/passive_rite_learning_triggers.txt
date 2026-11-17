@@ -75,11 +75,13 @@ is_valid_passive_learning_source_for_learner_trigger = {
 		OR = {
 			any_character_tenet = {
 				knowledge_filter = unknown
+				rite_filter = scope:passive_rite_learning_candidate_source.rite
 				passive_rite_learning_candidate_tenet_is_core_trigger = { RITE = scope:passive_rite_learning_candidate_source.rite }
 				count >= 1
 			}
 			any_character_doctrine = {
 				knowledge_filter = unknown
+				rite_filter = scope:passive_rite_learning_candidate_source.rite
 				passive_rite_learning_candidate_doctrine_is_core_trigger = { RITE = scope:passive_rite_learning_candidate_source.rite }
 				passive_rite_learning_doctrine_is_learnable_trigger = yes
 				count >= 1
@@ -97,11 +99,13 @@ is_valid_passive_learning_source_at_activity_for_learner_trigger = {
 		OR = {
 			any_character_tenet = {
 				knowledge_filter = unknown
+				rite_filter = scope:passive_rite_learning_candidate_source.rite
 				passive_rite_learning_candidate_tenet_is_core_trigger = { RITE = scope:passive_rite_learning_candidate_source.rite }
 				count >= 1
 			}
 			any_character_doctrine = {
 				knowledge_filter = unknown
+				rite_filter = scope:passive_rite_learning_candidate_source.rite
 				passive_rite_learning_candidate_doctrine_is_core_trigger = { RITE = scope:passive_rite_learning_candidate_source.rite }
 				passive_rite_learning_doctrine_is_learnable_trigger = yes
 				count >= 1
@@ -117,6 +121,7 @@ is_valid_passive_learning_rite_for_learner_trigger = {
 		OR = {
 			any_character_tenet = {
 				knowledge_filter = unknown
+				rite_filter = scope:passive_rite_learning_candidate_rite
 				passive_rite_learning_candidate_tenet_is_core_trigger = { RITE = scope:passive_rite_learning_candidate_rite }
 				count >= 1
 			}
@@ -302,15 +307,17 @@ passive_rite_learning_tenet_resonates_with_player_trigger = {
 
 study_faith_has_anything_to_learn_trigger = {
 	OR = {
-		any_character_tenet = {
-			knowledge_filter = unknown
-			passive_rite_learning_candidate_tenet_is_core_trigger = { RITE = $RITE$ }
-			count >= 1
-		}
 		any_character_doctrine = {
 			knowledge_filter = unknown
+			rite_filter = $RITE$
 			passive_rite_learning_candidate_doctrine_is_core_trigger = { RITE = $RITE$ }
 			passive_rite_learning_doctrine_is_learnable_trigger = yes
+			count >= 1
+		}
+		any_character_tenet = {
+			knowledge_filter = unknown
+			rite_filter = $RITE$
+			passive_rite_learning_candidate_tenet_is_core_trigger = { RITE = $RITE$ }
 			count >= 1
 		}
 	}

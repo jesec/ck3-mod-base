@@ -1,0 +1,92 @@
+# Required controller: select_scope_object
+
+vbox = {
+	name = "decision_view_widget_select_trade_market"
+	layoutpolicy_horizontal = expanding
+	layoutpolicy_vertical = expanding
+	ignoreinvisible = yes
+
+	scrollbox = {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		size = { 545 200 }
+
+		blockoverride "scrollbox_content" {
+			vbox = {
+				margin_top = 10
+				datamodel = "[DecisionViewWidgetSelectScopeObject.GetEntries]"
+				spacing = 6
+
+				item = {
+					button_standard = {
+						size = { 500 60 }
+						margin = { 10 10 }
+
+						datacontext = "[SelectScopeObjectEntry.GetScopeObject.TradeMarket]"
+
+						onclick = "[DecisionViewWidgetSelectScopeObject.OnSelect(SelectScopeObjectEntry.Self)]"
+						enabled = "[SelectScopeObjectEntry.IsEnabled]"
+						down = "[SelectScopeObjectEntry.IsSelected]"
+						tooltip = "[SelectScopeObjectEntry.GetTooltip]"
+
+						hbox = {
+							resizeparent = yes
+							minimumsize = { 500 60 }
+							spacing = 10
+							margin = { 10 6 }
+
+							icon = {
+								name = "option_icon"
+								size = { 45 45 }
+								texture = "gfx/interface/icons/trade/icon_trade_market.dds"
+							}
+
+							vbox = {
+								name = "option_info"
+								layoutpolicy_horizontal = expanding
+
+								text_single = {
+									name = "option_type"
+									layoutpolicy_horizontal = expanding
+									text = "[TradeMarket.GetNameNoTooltip]"
+									default_format = "#bold"
+									max_width = 400
+									align = left
+								}
+
+								# Inner items rebind TradeMarket, so compare against the entry's market
+								vbox = {
+									name = "option_routes"
+									datamodel = "[GetPlayer.GetTradeRoutes]"
+									layoutpolicy_horizontal = expanding
+									ignoreinvisible = yes
+
+									item = {
+										vbox = {
+											datamodel = "[TradeRoute.GetMarkets]"
+											layoutpolicy_horizontal = expanding
+											ignoreinvisible = yes
+
+											item = {
+												text_single = {
+													visible = "[ObjectsEqual( TradeMarket.Self, SelectScopeObjectEntry.GetScopeObject.TradeMarket )]"
+													layoutpolicy_horizontal = expanding
+													text = "[TradeRoute.GetNameNoTooltip]"
+													default_format = "#weak"
+													max_width = 400
+													align = left
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		blockoverride "scrollbox_background_fade" {}
+	}
+}

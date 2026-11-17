@@ -2,6 +2,21 @@
 #fallback_move_to_pool_effect
 #select_and_move_to_pool_effect - Use this to move courtiers/guests to pool
 
+select_fallback_pool_duchy_in_kingdom_effect = {
+	random_in_de_jure_hierarchy = {
+		continue = { tier > tier_duchy }
+		limit = {
+			tier = tier_duchy
+			title_capital_county.holder.capital_province = {
+				local_pool_is_full_trigger = no
+			}
+		}
+		title_capital_county.holder.capital_province = {
+			save_scope_as = destination
+		}
+	}
+}
+
 select_fallback_pool_to_move_to_effect = {
 	if = {
 		limit = {
@@ -41,21 +56,33 @@ select_fallback_pool_to_move_to_effect = {
 		}
 	}
 	else = {
-		random_kingdom = {
-			limit = {
-				is_titular = no
-				title_capital_county.title_province ?= {
-					squared_distance = {
-						target = scope:mover.location value <= squared_distance_large
+		random_list = {
+			25 = { # Somewhere else in the same de jure kingdom
+				scope:mover.location.kingdom ?= {
+					select_fallback_pool_duchy_in_kingdom_effect = yes
+				}
+			}
+			75 = { # Somewhere in a neighboring realm
+				trigger = {
+					exists = scope:mover.location.province_owner
+				}
+				scope:mover.location.province_owner = {
+					random_neighboring_and_across_water_top_liege_realm_owner = {
+						capital_county.kingdom ?= {
+							select_fallback_pool_duchy_in_kingdom_effect = yes
+						}
 					}
 				}
 			}
-			random_in_de_jure_hierarchy = {
-				limit = {
-					tier = tier_duchy
-					title_capital_county.holder.capital_province = { local_pool_is_full_trigger = no }
+		}
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:destination
 				}
-				title_capital_county.holder.capital_province = { save_scope_as = destination }
+			}
+			scope:mover.location.kingdom ?= {
+				select_fallback_pool_duchy_in_kingdom_effect = yes
 			}
 		}
 		if = {
@@ -510,8 +537,8 @@ courtier_guest_pool_character_secret_giving_effect = {
 	}
 }
 
-pool_character_development_effect = {
-	###POSIBLE EFFECTS###
+pool_character_prosperity_effect = {
+	###POSSIBLE EFFECTS###
 	# Increase a low skill
 	# Get married
 	# Get a scripted relation
@@ -1086,12 +1113,12 @@ pool_character_development_effect = {
 		# Learn a language
 		30 = {
 			trigger = {
-				exists = location.county.culture
 				learning >= 8
-				num_of_known_languages < language_soft_cap
+				exists = location.county.culture
 				NOT = {
 					knows_language_of_culture = location.county.culture
 				}
+				num_of_known_languages < language_soft_cap
 			}
 			learn_language_of_culture = location.county.culture
 		}
@@ -1128,10 +1155,10 @@ pool_character_development_effect = {
 		# Cultural Traditions
 		if = { # blademaster_traits_more_common
 			limit = {
-				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
 				culture = {
 					has_cultural_parameter = blademaster_traits_more_common
 				}
+				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
 			}
 			blademaster_lifestyle_rank_up_effect = yes
 		}
@@ -1140,10 +1167,10 @@ pool_character_development_effect = {
 		chance = 80
 		if = { # wanderers_gain_extra_combat_skills
 			limit = {
-				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
 				culture = {
 					has_cultural_parameter = wanderers_gain_extra_combat_skills
 				}
+				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
 			}
 			random_list = {
 				10 = {
@@ -1174,16 +1201,16 @@ pool_character_development_effect = {
 			}
 		}
 		random_list = {
-			20 = {
+			30 = {
 				wanderer_give_random_economic_trait_effect = yes
 			}
-			30 = {
+			35 = {
 				add_stewardship_skill = 1
 			}
-			10 = {
+			15 = {
 				add_stewardship_skill = 2
 			}
-			40 = {
+			20 = {
 				add_gold = 50
 			}
 		}
@@ -1195,11 +1222,11 @@ pool_character_development_effect = {
 		chance = 10
 		if = {
 			limit = {
-				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
-				has_education_martial_trigger = yes
 				culture = {
 					has_cultural_parameter = winter_soldier_trait_more_common
 				}
+				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
+				has_education_martial_trigger = yes
 				NOT = {
 					has_trait = winter_soldier
 				}
@@ -1211,11 +1238,11 @@ pool_character_development_effect = {
 		chance = 10
 		if = {
 			limit = {
-				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
-				has_education_martial_trigger = yes
 				culture = {
 					has_cultural_parameter = forest_fighter_trait_more_common
 				}
+				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
+				has_education_martial_trigger = yes
 				NOT = {
 					has_trait = forest_fighter
 				}
@@ -1227,11 +1254,11 @@ pool_character_development_effect = {
 		chance = 10
 		if = {
 			limit = {
-				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
-				has_education_martial_trigger = yes
 				culture = {
 					has_cultural_parameter = rough_terrain_expert_trait_more_common
 				}
+				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
+				has_education_martial_trigger = yes
 				NOT = {
 					has_trait = rough_terrain_expert
 				}
@@ -1243,11 +1270,11 @@ pool_character_development_effect = {
 		chance = 10
 		if = {
 			limit = {
-				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
-				has_education_martial_trigger = yes
 				culture = {
 					has_cultural_parameter = desert_warrior_trait_more_common
 				}
+				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
+				has_education_martial_trigger = yes
 				NOT = {
 					has_trait = desert_warrior
 				}
@@ -1259,11 +1286,11 @@ pool_character_development_effect = {
 		chance = 10
 		if = {
 			limit = {
-				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
-				has_education_martial_trigger = yes
 				culture = {
 					has_cultural_parameter = jungle_stalker_trait_more_common
 				}
+				can_be_combatant_based_on_gender_trigger = { ARMY_OWNER = scope:pool_character }
+				has_education_martial_trigger = yes
 				NOT = {
 					has_trait = jungle_stalker
 				}
@@ -1449,7 +1476,7 @@ purge_excess_wanderer_riches_effect = {
 			}
 			500 = { # Become an adventurer!
 				trigger = {
-					has_dlc_feature = roads_to_power
+					has_playable_adventurer_dlc_trigger = yes
 					gold >= 500
 					is_physically_able_adult = yes
 					exists = location.county

@@ -1,0 +1,3070 @@
+﻿#########################
+### GDP Merchant Triggers
+#########################
+
+# Shared with can_be_trader scripted rule (00_rules.txt)
+gdp_can_be_trader_trigger = {
+	is_available_quick = {
+		alive = yes
+		adult = yes
+		incapable = no
+		imprisoned = no
+	}
+	# Merchants have no council seat besides the spouse's
+	trigger_if = {
+		limit = {
+			NOT = {
+				liege ?= { government_has_flag = government_is_merchant }
+			}
+		}
+		custom_tooltip = {
+			text = gdp_can_be_trader_council_tt
+			OR = {
+				is_councillor = no
+				has_council_position = councillor_spouse
+			}
+		}
+	}
+	custom_tooltip = {
+		text = gdp_can_be_trader_partner_tt
+		NOT = { has_court_position = partner_court_position }
+	}
+	NOT = { exists = var:partner_contract }
+}
+
+# Trigger for the Become Merchant Decision
+gdp_is_valid_for_merchant_trigger = {
+	save_temporary_scope_as = potential_merchant_temp
+	trigger_if = {
+		limit = {
+			# If you are a Patrician you should absolutely have this option
+			NOT = { government_allows = profit_trade_routes }
+		}
+		trigger_if = {
+			limit = {
+				OR = {
+					is_ai = yes
+					NOT = { government_has_mechanic = administrative }
+					NOT = { top_liege = this }
+					is_landed = yes
+				}
+			}
+			custom_tooltip = {
+				text = adventurer_not_nf_head_trigger_tt
+				NOT = {
+					any_held_title = { is_noble_family_title = yes }
+				}
+			}
+		}
+	}
+	# Not in line for ceremonial liege
+	trigger_if = {
+		limit = { tgp_realm_has_ceremonial_liege_trigger = yes }
+		custom_tooltip = {
+			text = tgp_japan_imperial_branch_decision_imperial_heir_trigger
+			NOT = {
+				ceremonial_liege_title = {
+					place_in_line_of_succession = {
+						target = scope:potential_merchant_temp
+						value <= 4
+					}
+				}
+			}
+		}
+	}
+	trigger_if = {
+		limit = { is_ai = yes }
+		is_available_quick = {
+			adult = yes
+			incapable = no
+			imprisoned = no
+		}
+		age < 60 # Won't immediately die
+		health >= fine_health # Healthy enough to venture forth
+		highest_skill_value >= decent_skill_rating
+		# Can't be completely unwilling to go outside.
+		OR = {
+			ai_boldness >= low_negative_ai_value
+			ai_energy >= low_negative_ai_value
+		}
+		NOR = {
+			has_trait = content # Too chill to trade
+			has_trait = craven # Too scared to trade
+			has_trait = lazy # Too lazy to trade
+		}
+		# Block admin members of noble families
+		NOT = {
+			house ?= {
+				any_house_member = {
+					any_held_title = { is_noble_family_title = yes }
+				}
+			}
+			NOT = { government_allows = profit_trade_routes }
+		}
+	}
+}
+
+gdp_find_curio_poi_province_trigger = {
+	OR = {
+		# Religious
+		gdp_find_curio_poi_religious_province_trigger = yes
+		# Scholarly
+		gdp_find_curio_poi_scholarly_province_trigger = yes
+	}
+}
+
+gdp_find_curio_poi_religious_province_trigger = {
+	OR = {
+		# Religious
+		has_building_with_flag = travel_point_of_interest_religious
+		has_building_with_flag = holy_building
+	}
+}
+
+gdp_find_curio_poi_scholarly_province_trigger = {
+	OR = {
+		# Scholarly
+		has_building_with_flag = travel_point_of_interest_learning
+		has_building_with_flag = special_university
+	}
+}
+
+is_trading_good_trigger = {
+	any_trade_route = {				
+		any_traded_good = {
+			this = trade_good_type:trade_good_$PARAMETER$
+		}
+	}
+}
+
+is_interesting_entrepot_good_trigger = {
+	OR = {
+		this = trade_good_type:trade_good_spices
+		this = trade_good_type:trade_good_silk
+		this = trade_good_type:trade_good_jade
+		this = trade_good_type:trade_good_ivory
+	}
+}
+
+# A distant silk road market
+is_rumourable_entrepot_market_trigger = {
+	trade_market_owner.title_province ?= {
+		squared_distance = {
+			target = $MERCHANT$.domicile.domicile_location
+			value > squared_distance_medium
+		}
+	}
+	any_trade_good_with_surplus = { is_interesting_entrepot_good_trigger = yes }
+	NOT = { any_character_in_market = { this = $MERCHANT$ } }
+}
+
+has_merchant_competitive_pressure_trigger = {
+	trigger_if = {
+		limit = { exists = var:merchant_competitive_pressure }
+		var:merchant_competitive_pressure >= $VALUE$
+	}
+	trigger_else = { always = no }
+}
+
+has_less_than_max_merchant_competitive_pressure_trigger = {
+	trigger_if = {
+		limit = { exists = var:merchant_competitive_pressure }
+		var:merchant_competitive_pressure < merchant_competitive_pressure_current_max_value
+	}
+	trigger_else = { always = yes }
+}
+
+has_active_trade_opportunity_scheme_trigger = {
+	any_character_active_contract = {
+		has_task_contract_group = merchant_trade_opportunity_group
+		scheme ?= {
+			NOT = { has_scheme_modifier = organize_the_venture_scheme_modifier }
+		}
+	}
+}
+
+gdp_trade_opportunity_market_on_route_destination_available_trigger = {
+	trade_market_owner.title_province = {
+		gdp_trade_opportunity_location_available_trigger = { MERCHANT = $MERCHANT$ }
+	}
+}
+
+# Scope: province
+gdp_trade_opportunity_location_available_trigger = {
+	save_temporary_scope_as = trade_opportunity_location_check
+	$MERCHANT$ = {
+		NOT = {
+			any_character_task_contract = {
+				has_task_contract_group = merchant_trade_opportunity_group
+				task_contract_location = scope:trade_opportunity_location_check
+			}
+		}
+	}
+}
+
+merchant_organizable_contract_scheme_trigger = {
+	OR = {
+		has_task_contract_group = merchant_trade_opportunity_group
+		has_task_contract_group = merchant_luxury_contract_group
+		has_task_contract_group = merchant_patron_contract_group
+		has_task_contract_group = merchant_unity_contract_group
+	}
+	scheme ?= {
+		NOT = { has_scheme_modifier = organize_the_venture_scheme_modifier }
+	}
+}
+
+# Trade opportunities (and matching accept gates) when the merchant already has one taken contract
+merchant_trade_opportunity_valid_to_accept_contract_limit_trigger = {
+	custom_tooltip = {
+		text = merchant_trade_opportunity_valid_to_accept_contract_limit_trigger
+		OR = {
+			num_taken_task_contracts < 1
+			AND = {
+				num_taken_task_contracts = 1
+				NOT = {
+					any_character_active_contract = {
+						merchant_organizable_contract_scheme_trigger = yes
+						NOT = { exists = var:contract_partner }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Merchant (root) already delegated another taken contract, or the partner is on one (partner_contract var).
+merchant_trade_opportunity_partner_send_blocked_trigger = {
+	OR = {
+		scope:partner ?= { has_variable = partner_contract }
+		any_character_task_contract = {
+			NOT = { this = scope:task_contract }
+			exists = var:contract_partner
+		}
+	}
+}
+
+# Scoped partner or partner candidate can be sent to handle scope:task_contract.
+merchant_trade_opportunity_partner_available_trigger = {
+	is_available_quick = {
+		adult = yes
+		travel = no
+		imprisoned = no
+		incapable = no
+	}
+	is_trader = no
+	custom_tooltip = {
+		text = gdp_merchant_trade_opportunity.9010.c.involved.tt
+		NOR = {
+			scope:task_contract.task_contract_employer ?= this
+			scope:task_contract.task_contract_target ?= this
+		}
+	}
+}
+
+# Scoped character is a companion in a travel plan owned by $TAKER$.
+merchant_trade_opportunity_partner_in_entourage_trigger = {
+	save_temporary_scope_as = entourage_candidate_temp
+	$TAKER$.current_travel_plan ?= {
+		travel_plan_owner = $TAKER$
+		any_entourage_character = { this = scope:entourage_candidate_temp }
+	}
+}
+
+# Partner candidate who can be sent to handle scope:task_contract, from home or from $TAKER$'s entourage
+merchant_trade_opportunity_partner_candidate_available_trigger = {
+	is_available_quick = {
+		adult = yes
+		imprisoned = no
+		incapable = no
+	}
+	trigger_if = {
+		limit = { is_travelling = yes }
+		merchant_trade_opportunity_partner_in_entourage_trigger = { TAKER = $TAKER$ }
+	}
+	is_trader = no
+	custom_tooltip = {
+		text = gdp_merchant_trade_opportunity.9010.c.involved.tt
+		NOR = {
+			scope:task_contract.task_contract_employer ?= this
+			scope:task_contract.task_contract_target ?= this
+		}
+	}
+}
+
+# Merchant in $MARKET$ who shares tradable goods with $ROUTE_OWNER$
+gdp_profit_potential_rival_trigger = {
+	is_landless_merchant = yes
+	market_potential_rival_trigger = {
+		ROUTE_OWNER = $ROUTE_OWNER$
+		MARKET = $MARKET$
+	}
+}
+
+# As gdp_profit_potential_rival_trigger, but unlanded Patricians also count. Contested market checks must keep using the merchant-only version.
+gdp_put_on_notice_potential_rival_trigger = {
+	gdp_is_merchant_or_unlanded_patrician_trigger = yes
+	market_potential_rival_trigger = {
+		ROUTE_OWNER = $ROUTE_OWNER$
+		MARKET = $MARKET$
+	}
+}
+
+market_potential_rival_trigger = {
+	exists = house
+	NOR = {
+		this = $ROUTE_OWNER$
+		house ?= $ROUTE_OWNER$.house
+	}
+	potential_trade_rival = {
+		target = $ROUTE_OWNER$
+		trade_market = $MARKET$
+	}
+}
+
+# this = trade market that is still contested for $ROUTE_OWNER$:
+# - a profit rival trades in this market
+# - no complete monopoly exists
+# - $ROUTE_OWNER$ holds no monopoly over it
+gdp_market_competitiveness_contested_trigger = {
+	save_temporary_scope_as = contested_market_temp
+	any_character_in_market = {
+		gdp_profit_potential_rival_trigger = {
+			ROUTE_OWNER = $ROUTE_OWNER$
+			MARKET = scope:contested_market_temp
+		}
+	}
+	NOR = {
+		has_complete_trade_monopoly = yes
+		any_trade_monopoly_for_market = {
+			OR = {
+				character_owner ?= $ROUTE_OWNER$
+				AND = {
+					exists = title_owner
+					title_owner.holder ?= $ROUTE_OWNER$
+				}
+				AND = {
+					exists = $ROUTE_OWNER$.confederation
+					exists = confederation_owner
+					confederation_owner ?= $ROUTE_OWNER$.confederation
+				}
+			}
+		}
+	}
+}
+
+put_on_notice_challenge_competitor_target_trigger = {
+	$ACTOR$ = {
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				save_temporary_scope_as = trade_opportunity_market
+				any_character_in_market = {
+					this = $TARGET$
+					gdp_put_on_notice_potential_rival_trigger = {
+						ROUTE_OWNER = $ACTOR$
+						MARKET = scope:trade_opportunity_market
+					}
+				}
+				NOR = {
+					has_competitiveness_modifier_for_character = {
+						character = $ACTOR$
+						modifier = gdp_challenge_competitor_trade_opportunity_success_critical_modifier
+					}
+					has_competitiveness_modifier_for_character = {
+						character = $ACTOR$
+						modifier = gdp_challenge_competitor_trade_opportunity_success_modifier
+					}
+					has_competitiveness_modifier_for_character = {
+						character = $ACTOR$
+						modifier = gdp_challenge_competitor_trade_opportunity_failure_modifier
+					}
+				}
+			}
+		}
+	}
+}
+
+put_on_notice_sabotage_competition_target_trigger = {
+	$ACTOR$ = {
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				save_temporary_scope_as = trade_opportunity_market
+				any_character_in_market = {
+					this = $TARGET$
+					gdp_put_on_notice_potential_rival_trigger = {
+						ROUTE_OWNER = $ACTOR$
+						MARKET = scope:trade_opportunity_market
+					}
+				}
+			}
+		}
+	}
+}
+
+put_on_notice_disrupt_charter_target_trigger = {
+	$ACTOR$ = {
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				save_temporary_scope_as = trade_opportunity_market
+				any_character_in_market = {
+					this = $TARGET$
+					gdp_profit_potential_rival_trigger = {
+						ROUTE_OWNER = $ACTOR$
+						MARKET = scope:trade_opportunity_market
+					}
+					merchant_has_charter_from_patron_trigger = {
+						EQUIPPED = no
+						INCLUDE_FORGERIES = yes
+					}
+				}
+			}
+		}
+	}
+}
+
+### Merchant company domicile building asset variants (scope with domicile_location, e.g. domicile owner)
+company_domicile_western_asset_trigger = {
+	domicile_location.culture = {
+		OR = {
+			has_graphical_western_culture_group_trigger = yes
+			has_graphical_norse_culture_group_trigger = yes
+			has_graphical_mediterranean_culture_group_trigger = yes
+			AND = {
+				has_graphical_iberian_culture_group_trigger = yes
+				NOT = { has_cultural_pillar = language_arabic }
+			}
+		}
+	}
+}
+
+company_domicile_asian_asset_trigger = {
+	domicile_location.culture = {
+		OR = {
+			has_graphical_east_asia_or_southeast_asia_group_trigger = yes
+			AND = {
+				has_graphical_steppe_culture_group_trigger = yes
+				has_cultural_pillar = heritage_mongolic
+			}
+		}
+	}
+}
+
+valid_charter_abuse_market_trigger = {
+	save_temporary_scope_as = county_temp
+	title_province.barony.trade_market ?= {
+		NOT = {
+			has_competitiveness_modifier_for_character = {
+				character = $MERCHANT$
+				modifier = gdp_charter_abused_market_modifier
+			}
+		}
+	}
+	$MERCHANT$ = {
+		NOR = {
+			scope:county_temp.holder = this
+			is_target_in_variable_list = {
+				name = charter_intervention_county_cooldown
+				target = scope:county_temp
+			}
+		}
+	}
+}
+
+valid_charter_intervention_market_trigger = {
+	save_temporary_scope_as = county_temp
+	$MERCHANT$ = {
+		NOR = {
+			scope:county_temp.holder = this
+			is_target_in_variable_list = {
+				name = charter_intervention_county_cooldown
+				target = scope:county_temp
+			}
+		}
+	}
+}
+
+merchant_has_any_charter_trigger = {
+	government_has_flag = government_is_merchant
+	any_character_artifact = { exists = var:charter_patron } # is charter
+}
+
+merchant_has_usable_charter_trigger = {
+	save_temporary_scope_as = merchant_temp
+	custom_tooltip = {
+		text = merchant_charter_of_patron_or_liege
+		any_character_artifact = {
+			save_temporary_scope_as = charter_temp
+			var:charter_patron ?= { save_temporary_scope_as = patron_temp } # is charter
+			scope:merchant_temp = { can_benefit_from_artifact = scope:charter_temp }
+		}
+	}
+	trigger_if = {
+		limit = { flag:$ONLY_EQUIPPED$ = flag:yes }
+		custom_tooltip = {
+			text = merchant_charter_of_patron_or_liege_equipped
+			scope:charter_temp ?= { is_equipped = yes }
+		}
+	}
+	trigger_if = {
+		limit = { flag:$INCLUDE_FORGERIES$ = flag:no }
+		custom_tooltip = {
+			text = merchant_charter_of_patron_or_liege_forgery
+			NOT = { exists = scope:charter_temp.var:forger }
+		}
+	}
+	merchant_has_patron_or_below_trigger = { PATRON = scope:patron_temp }
+	patron_is_duke_or_above_trigger = { PATRON = scope:patron_temp }
+}
+
+# is a merchant whose patron is PATRON or their vassal or below
+merchant_has_patron_or_below_trigger = {
+	$PATRON$ ?= { save_temporary_scope_as = patron_temp }
+	custom_tooltip = {
+		text = merchant_charter_patron_or_liege_or_above
+		government_has_flag = government_is_merchant
+		exists = scope:patron_temp
+		suzerain ?= {
+			OR = {
+				this = scope:patron_temp
+				is_vassal_or_below_of = scope:patron_temp
+			}
+		}
+	}
+}
+
+patron_is_duke_or_above_trigger = {
+	$PATRON$ ?= { save_temporary_scope_as = patron_temp }
+	custom_tooltip = {
+		text = merchant_charter_duke_or_higher
+		scope:patron_temp ?= { highest_held_title_tier >= tier_duchy }
+	}
+}
+
+# is a merchant with a charter from PATRON
+merchant_has_charter_from_trigger = {
+	$PATRON$ ?= { save_temporary_scope_as = patron_temp }
+	custom_tooltip = {
+		text = merchant_has_charter_from
+		government_has_flag = government_is_merchant
+		any_character_artifact = {
+			var:charter_patron ?= scope:patron_temp
+			save_temporary_scope_as = charter_temp
+		}
+	}
+	trigger_if = {
+		limit = { flag:$ONLY_EQUIPPED$ = flag:yes }
+		custom_tooltip = {
+			text = merchant_charter_of_patron_or_liege_equipped
+			scope:charter_temp ?= { is_equipped = yes }
+		}
+	}
+	trigger_if = {
+		limit = { flag:$INCLUDE_FORGERIES$ = flag:no }
+		custom_tooltip = {
+			text = merchant_charter_of_patron_or_liege_forgery
+			NOT = { exists = scope:charter_temp.var:forger }
+		}
+	}
+}
+
+# is a merchant with a charter from active patron
+merchant_has_charter_from_patron_trigger = {
+	suzerain ?= { save_temporary_scope_as = patron_temp }
+	merchant_has_charter_from_trigger = {
+		PATRON = scope:patron_temp
+		ONLY_EQUIPPED = $EQUIPPED$
+		INCLUDE_FORGERIES = $INCLUDE_FORGERIES$
+	}
+}
+
+# Merchant scope. Has abused a charter from PATRON
+merchant_has_abused_charter_from_patron_trigger = {
+	var:charter_abused_patron ?= $PATRON$
+}
+
+# Used by external buildings to check main building level
+merchant_company_external_unlocked_by_main_building_trigger = {
+	domicile ?= { has_domicile_building_or_higher = merchant_company_main_$TIER$ }
+}
+
+# Main residence tier 4 / 5 / 6
+merchant_company_external_unlocked_by_main_tier_04_trigger = {
+	domicile ?= { has_domicile_building_or_higher = merchant_company_main_04 }
+}
+
+merchant_company_external_unlocked_by_main_tier_05_trigger = {
+	domicile ?= { has_domicile_building_or_higher = merchant_company_main_05 }
+}
+
+merchant_company_external_unlocked_by_main_tier_06_trigger = {
+	domicile ?= { has_domicile_building_or_higher = merchant_company_main_06 }
+}
+
+# Merchant diplo range
+gdp_merchant_diplo_range_trigger = {
+	$MERCHANT$ = {
+		save_temporary_scope_as = merchant_temp
+		scope:merchant_temp.domicile.domicile_location ?= { save_temporary_scope_as = company_temp }
+	}
+	$TARGET$ = {
+		save_temporary_scope_as = ruler_temp
+		trigger_if = {
+			limit = { exists = capital_province }
+			capital_province ?= { save_temporary_scope_as = capital_temp }
+		}
+		trigger_else_if = {
+			limit = { exists = host.capital_province }
+			host.capital_province ?= { save_temporary_scope_as = capital_temp }
+		}
+		trigger_else = {
+			location ?= { save_temporary_scope_as = capital_temp }
+		}
+	}
+	custom_description = {
+		text = gdp_merchant_diplo_range_trigger_tt
+		subject = scope:merchant_temp
+		object = scope:ruler_temp
+		scope:company_temp ?= {
+			trigger_if = { # Check range
+				limit = { exists = scope:capital_temp }
+				squared_distance = {
+					target = scope:capital_temp
+					value < 1000000 # more than adventurers
+				}
+			}
+			trigger_else = { always = no }
+		}
+	}
+}
+
+# Renown internal buildings: the company holds high Trade Expertise in the category
+gdp_renown_building_expertise_trigger = {
+	custom_tooltip = {
+		text = gdp_renown_building_expertise_$CATEGORY$_tt
+		any_held_title = {
+			exists = title_domicile
+			title_domicile = { is_domicile_type = merchant_company }
+			trade_good_category_level = {
+				target = trade_good_category:$CATEGORY$
+				value >= gdp_renown_building_expertise_level_value
+			}
+		}
+	}
+}
+
+# AI: renown-level expertise in $CATEGORY$ and a trade route that trades one of its goods
+merchant_company_ai_trades_category_trigger = {
+	gdp_renown_building_expertise_trigger = { CATEGORY = $CATEGORY$ }
+	any_trade_route = {
+		any_traded_good = {
+			any_trade_category = { this = trade_good_category:$CATEGORY$ }
+		}
+	}
+}
+
+# AI: a trade route that trades a good of $CAT1$, $CAT2$, $CAT3$ or $CAT4$
+merchant_company_ai_trades_any_category_trigger = {
+	any_trade_route = {
+		any_traded_good = {
+			any_trade_category = {
+				OR = {
+					this = trade_good_category:$CAT1$
+					this = trade_good_category:$CAT2$
+					this = trade_good_category:$CAT3$
+					this = trade_good_category:$CAT4$
+				}
+			}
+		}
+	}
+}
+
+# AI: renown-level expertise in $CATEGORY$ and a trade route that trades $GOOD$
+merchant_company_ai_trades_good_trigger = {
+	gdp_renown_building_expertise_trigger = { CATEGORY = $CATEGORY$ }
+	any_trade_route = {
+		any_traded_good = { this = trade_good_type:$GOOD$ }
+	}
+}
+
+# Merchant market overlap: the trader's routes already trade in one of the target's markets
+gdp_merchant_market_overlap_trigger = {
+	$MERCHANT$ = { save_temporary_scope_as = merchant_overlap_temp }
+	$TARGET$ = { save_temporary_scope_as = ruler_overlap_temp }
+	custom_description = {
+		text = gdp_merchant_market_overlap_trigger_tt
+		subject = scope:merchant_overlap_temp
+		object = scope:ruler_overlap_temp
+		scope:ruler_overlap_temp ?= {
+			any_held_trade_market = {
+				any_character_in_market = { this = scope:merchant_overlap_temp }
+			}
+		}
+	}
+}
+
+unity_irregularities_valid_to_keep_trigger = {
+	save_temporary_scope_as = contract_temp
+	NOT = { exists = var:expired }
+	task_contract_taker = {
+		valid_merchant_contract_basic_trigger = yes
+		save_temporary_scope_as = merchant_temp
+	}
+	# EMPLOYER CHECKS
+	task_contract_employer ?= {
+		OR = {
+			is_ruler = yes
+			is_theocratic_lessee = yes
+		}
+		is_available_quick = {
+			adult = yes
+			alive = yes
+			imprisoned = no
+			incapable = no
+		}
+	}
+	# LOCATION CHECKS
+	var:route.trader ?= task_contract_target
+	NOT = { task_contract_location.county.duchy = task_contract_taker.capital_province.county.duchy }
+	task_contract_location.barony.trade_market = {
+		any_trade_route_in_market = { this = scope:contract_temp.var:route }
+	}
+	# TARGET CHECKS
+	task_contract_target = {
+		is_available_quick = {
+			adult = yes
+			alive = yes
+			imprisoned = no
+			incapable = no
+		}
+		liege = scope:merchant_temp
+	}
+}
+
+unity_irregularities_valid_to_continue_trigger = {
+	unity_irregularities_valid_to_keep_trigger = yes
+	# Make sure our trader hasn't died.
+	var:person_a = { is_alive = yes }
+	var:person_b = { is_alive = yes }
+	# And that, in MP, our secondaries haven't died either.
+	OR = {
+		NOT = { has_variable = person_c }
+		var:person_c = { is_alive = yes }
+	}
+	OR = {
+		NOT = { has_variable = person_d }
+		var:person_d = { is_alive = yes }
+	}
+}
+
+# Travel event camera triggers
+char_uses_camel_trigger = {
+	OR = {
+		location = { geographical_region = material_hsb_camel_bone }
+		AND = {
+			culture = { culture_uses_camel_trigger = yes }
+			location = {
+				OR = {
+					geographical_region = material_hsb_camel_bone
+					geographical_region = world_asia_minor
+				}
+			}
+		}
+	}
+}
+
+culture_uses_camel_trigger = {
+	OR = {
+		has_cultural_tradition = tradition_caravaneers
+		has_cultural_tradition = tradition_desert_nomads
+		has_cultural_tradition = tradition_saharan_nomads
+		has_cultural_pillar = heritage_arabic
+		has_cultural_pillar = heritage_berber
+		has_cultural_pillar = heritage_iranian
+	}
+}
+
+gdp_menagerie_artifact_has_active_story_trigger = {
+	$CHARACTER$ = {
+		any_owned_story = {
+			type = story_cycle_menagerie
+			var:artifact_type ?= $ARTIFACT$
+		}
+	}
+}
+
+# $TYPE$ is an animal the domicile creatures support
+# Hunt events reuse var:animal_type for boars, stags and the like
+domicile_creature_animal_type_trigger = {
+	OR = {
+		$TYPE$ ?= flag:lion
+		$TYPE$ ?= flag:tiger
+		$TYPE$ ?= flag:leopard
+		$TYPE$ ?= flag:caracal
+		$TYPE$ ?= flag:lynx
+		$TYPE$ ?= flag:bear
+		$TYPE$ ?= flag:elephant
+		$TYPE$ ?= flag:peacock
+		$TYPE$ ?= flag:parrot
+		$TYPE$ ?= flag:cockatoo
+		$TYPE$ ?= flag:crane
+		$TYPE$ ?= flag:monkey
+	}
+}
+
+# Merchant commission triggers
+# Shared between commission_trade_route_interaction and its AI event gdp_merchant.9020
+# The target good does not exist yet, so we cannot check it here
+# root is the merchant
+
+# Yes while the commission's contracted term still has time left
+# gdp_commission_merchant_route_modifier is applied for the same duration as the route
+# We use this to tell an early break from a commission that ran to its end date
+commission_route_still_under_contract_trigger = {
+	has_trade_route_modifier_duration_remaining = {
+		modifier = gdp_commission_merchant_route_modifier
+		days >= 1
+	}
+}
+
+commission_trade_route_commissioner_trigger = {
+	# ...landed...
+	is_available_quick = {
+		landed = yes
+		advanced_ruler = yes
+	}
+	# ...counts and below don't commission...
+	trigger_if = {
+		limit = { is_ai = yes }
+		highest_held_title_tier >= tier_duchy
+	}
+	any_tributary = { government_has_flag = government_is_merchant }
+}
+
+commission_trade_route_merchant_trigger = {
+	# Valid...
+	exists = $COMMISSIONER$
+	exists = $MERCHANT$
+	$COMMISSIONER$ = { save_temporary_scope_as = commissioner_temp }
+	$MERCHANT$ = { save_temporary_scope_as = merchant_temp }
+	scope:merchant_temp = {	
+		# ...not on cooldown after declining, so an AI patron does not ask again immediately...
+		trigger_if = {
+			limit = {
+				scope:commissioner_temp = { is_ai = yes }
+			}
+			custom_tooltip = {
+				text = commission_trade_route_merchant_recent_request_tt
+				NOT = { has_variable = commission_trade_route_cooldown }
+			}
+		}
+		is_available_quick = {
+			ruler = yes
+			incapable = no
+			imprisoned = no
+		}
+		# ...is a Merchant Tributary of the commissioner...
+		is_landless_merchant = yes
+		custom_tooltip = {
+			text = must_be_your_merchant_tributary_tt
+			is_tributary_of = scope:commissioner_temp
+		}
+		NOR = {
+			is_known_dealbreaker_trigger = { KNOWER = scope:commissioner_temp }
+			is_at_war_with = scope:commissioner_temp
+		}
+		custom_tooltip = {
+			text = commission_trade_route_merchant_already_commissioned_tt
+			NOT = { has_commission_route_with = scope:commissioner_temp }
+		}
+		custom_tooltip = {
+			text = commission_trade_route_merchant_max_commissions_tt
+			has_fewer_commission_routes_than = max_commission_routes
+		}
+	}
+}
+
+# AI merchant commission goods check
+# Separate from commission_trade_route_interaction, because code handles much of its goods sorting
+commission_trade_route_good_trigger = {
+	# Valid...
+	exists = $MERCHANT$
+	exists = $COMMISSIONER$
+	exists = $MARKET$
+	exists = $GOOD$
+	$MERCHANT$ = { save_temporary_scope_as = merchant_temp }
+	$COMMISSIONER$ = { save_temporary_scope_as = commissioner_temp }
+	$MARKET$ = { save_temporary_scope_as = market_temp }
+	$GOOD$ = { save_temporary_scope_as = good_temp }
+
+	scope:merchant_temp = {	
+		# ...not trading said good in said place already...
+		custom_tooltip = {
+			text = commission_trade_route_good_trigger_conflict_tt
+			NOT = {
+				any_trade_route = {
+					any_trade_market_on_route = { this = scope:market_temp }
+					any_traded_good = { this = scope:good_temp }
+				}
+			}
+		}
+		# ...and the route would actually trade, checked last as it runs a full trade projection
+		custom_tooltip = {
+			text = commission_trade_route_would_not_trade_tt
+			can_create_commission_trade_route = {
+				primary_good = scope:good_temp
+				destination = scope:market_temp
+			}
+		}
+	}
+}
+
+# Merchant war triggers
+
+gdp_merchant_may_wage_independence_war_trigger = {
+	custom_description = {
+		text = merchant_blocked_from_independence_wars_desc
+		subject = this
+		NOT = { government_has_flag = government_is_merchant }
+	}
+}
+
+# Merchants only wage offensive wars through their Seize Realm CBs
+gdp_merchant_cb_group_constraints_trigger = {
+	NOT = { government_has_flag = government_is_merchant }
+}
+
+gdp_merchant_seize_realm_allowed_for_character_trigger = {
+	has_gdp_dlc_trigger = yes
+	government_has_flag = government_is_merchant
+	has_realm_law_flag = unlock_seize_realm_county_cb
+	is_landed = no
+}
+
+gdp_merchant_seize_realm_allowed_for_character_display_regardless_trigger = {
+	has_gdp_dlc_trigger = yes
+	is_at_war = no
+}
+
+gdp_merchant_allowed_against_character_trigger = {
+	is_landed = yes
+	# Players vs. AI filtering.
+	OR = {
+		# Can always target the AI.
+		is_ai = yes
+		# Cannot target a player unless they completely control at least two duchies.
+		any_sub_realm_duchy = {
+			count >= 2
+			save_temporary_scope_as = player_controlled_duchy
+			# Custom description to suppress errors.
+			custom_description = {
+				text = SUPPRESS
+				scope:defender = { completely_controls = scope:player_controlled_duchy }
+			}
+		}
+	}
+	# Scope:defender cannot be merchant patron of attacker
+	scope:defender = {
+		this != scope:attacker.suzerain
+	}
+}
+
+gdp_merchant_seize_realm_invasion_cb_trigger = {
+	OR = {
+		using_cb = seize_realm_county_cb
+		using_cb = seize_realm_duchy_cb
+		using_cb = seize_realm_kingdom_cb
+	}
+}
+
+# Active seize realm war led by this character as primary attacker
+gdp_merchant_seize_realm_attacker_trigger = {
+	OR = {
+		any_character_war = {
+			gdp_merchant_seize_realm_invasion_cb_trigger = yes
+			is_war_leader = scope:actor
+			is_attacker = scope:actor
+		}
+		any_character_war = {
+			gdp_merchant_seize_realm_invasion_cb_trigger = yes
+			is_war_leader = root
+			is_attacker = root
+		}
+	}
+}
+
+# $strong_indebted_hook$ or $strong_loan_hook$ on $RECIPIENT$ (not spent / on cooldown).
+gdp_merchant_seize_realm_usable_strong_indebted_hook_on_trigger = {
+	$ACTOR$ = {
+		OR = {
+			has_hook_of_type = {
+				target = $RECIPIENT$
+				type = strong_indebted_hook
+			}
+			has_hook_of_type = {
+				target = $RECIPIENT$
+				type = strong_loan_hook
+			}
+		}
+		has_strong_usable_hook = $RECIPIENT$
+	}
+}
+
+# Indebted characters may be pressed into a seize realm war
+gdp_merchant_seize_realm_debtor_valid_recipient_trigger = {
+	$RECIPIENT$ = {
+		is_playable_character = yes
+		is_adult = yes
+		is_imprisoned = no
+		NOT = { is_at_war_with = $ACTOR$ }
+	}
+	custom_description = {
+		text = gdp_merchant_seize_realm_invite_hooked_ally_hook_tt
+		gdp_merchant_seize_realm_usable_strong_indebted_hook_on_trigger = {
+			ACTOR = $ACTOR$
+			RECIPIENT = $RECIPIENT$
+		}
+	}
+}
+
+# Rulers the attacker could compel via gdp_merchant_seize_realm_call_debtor_interaction
+gdp_merchant_seize_realm_potential_debtor_ally_trigger = {
+	is_independent_ruler = yes
+	is_adult = yes
+	is_imprisoned = no
+	NOT = { is_at_war_with = scope:defender }
+	scope:attacker = {
+		has_hook_of_type = {
+			target = prev
+			type = strong_indebted_hook
+		}
+	}
+}
+
+gdp_merchant_should_invalidate_trigger = {
+	OR = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				any_in_de_jure_hierarchy = {
+					tier = tier_county
+					is_landless_type_title = no
+					holder = { target_is_same_character_or_above = scope:defender }
+				}
+			}
+		}
+		scope:attacker = { is_landed = yes }
+	}
+}
+		
+# ACTOR's house has at least one in-wed (no parent in that house) born to RECIPIENT's house.
+gdp_actor_house_has_in_wed_from_recipient_house_trigger = {
+	$ACTOR$ = { save_temporary_scope_as = in_wed_check_actor }
+	$RECIPIENT$ = { save_temporary_scope_as = in_wed_check_recipient }
+	scope:in_wed_check_actor.house ?= {
+		any_house_member = {
+			NOT = {
+				any_parent = { house ?= scope:in_wed_check_actor.house }
+			}
+			any_parent = { house ?= scope:in_wed_check_recipient.house }
+		}
+	}
+}
+
+gdp_merchant_company_title_trigger = {
+	tier = tier_county
+	OR = {
+		has_variable = merchant_creation_reason
+		AND = {
+			is_landless_type_title = yes
+			is_noble_family_title = yes
+			# Admin noble family titles pass the checks above but hold estates, not companies
+			title_domicile ?= { is_domicile_type = merchant_company }
+		}
+	}
+}
+
+gdp_merchant_can_reclaim_house_company_title_trigger = {
+	NOT = {
+		any_held_title = { gdp_merchant_company_title_trigger = yes }
+	}
+	house ?= {
+		has_variable = gdp_merchant_company_reclaim_pending
+		exists = var:gdp_merchant_house_company_title
+		var:gdp_merchant_house_company_title = {
+			gdp_merchant_company_title_trigger = yes
+			NOT = { holder = root }
+		}
+	}
+}
+
+# House heads cannot create_cadet_branch.
+gdp_merchant_needs_cadet_for_new_company_trigger = {
+	exists = house
+	is_house_head = no
+	NOT = {
+		any_held_title = { gdp_merchant_company_title_trigger = yes }
+	}
+}
+
+# Yearly Caravaneer track XP. Trade route scope.
+gdp_merchant_trade_route_grants_caravaneer_xp_trigger = {
+	age_in_months >= 6
+	num_trade_markets >= gdp_merchant_caravaneer_xp_min_markets_value
+}
+
+any_trade_route_with_goods_category_trigger = {
+	any_trade_route = {
+		any_traded_good = { has_category = trade_good_category:trade_category_$CATEGORY$ }
+	}
+}
+
+any_trade_route_and_market_with_goods_category_produced_trigger = {
+	any_trade_route = {
+		any_traded_good = { has_category = trade_good_category:trade_category_$CATEGORY$ }
+		any_trade_market_on_route = {
+			trade_market_production_of_trade_good_need_category = {
+				target = trade_good_category:trade_category_$CATEGORY$
+				value > 0
+			}
+		}
+	}
+}
+
+has_bigger_company_than_trigger = {
+	liege ?= {
+		exists = domicile
+		government_has_flag = government_is_merchant
+		save_temporary_scope_as = merchant_temp
+		$OTHER$.liege ?= {
+			exists = domicile
+			government_has_flag = government_is_merchant
+			company_size_value < scope:merchant_temp.liege.company_size_value
+		}
+	}
+}
+
+has_smaller_company_than_trigger = {
+	liege ?= {
+		exists = domicile
+		government_has_flag = government_is_merchant
+		save_temporary_scope_as = merchant_temp
+		$OTHER$.liege ?= {
+			exists = domicile
+			government_has_flag = government_is_merchant
+			company_size_value > scope:merchant_temp.liege.company_size_value
+		}
+	}
+}
+
+is_heirless_and_close_to_trigger = {
+	OR = {
+		is_spouse_of = $OTHER$
+		can_have_children = no
+		AND = {
+			age >= 50
+			NOR = {
+				trigger_if = {
+					limit = { matrilinear_marriage = yes }
+					has_trait = pregnant
+				}
+				trigger_else = {
+					any_spouse = { has_trait = pregnant }
+				}	
+			}
+			OR = {
+				is_close_family_of = $OTHER$
+				has_relation_friend = $OTHER$
+				has_relation_lover = $OTHER$
+			}
+		}
+	}
+}
+
+has_fitting_rank_for_company_size = {
+	trigger_if = {
+		limit = { $MERCHANT$.company_size_value = 2 }
+		highest_held_title_tier >= tier_duchy
+	}
+	trigger_else_if = {
+		limit = { $MERCHANT$.company_size_value = 3 }
+		highest_held_title_tier >= tier_kingdom
+	}
+	trigger_else_if = {
+		limit = {  $MERCHANT$.company_size_value = 4 }
+		highest_held_title_tier >= tier_empire
+	}
+	trigger_else = { highest_held_title_tier >= tier_county }
+}
+
+# Province scope. Merchant companies can only move to Market Capitals.
+gdp_is_market_capital_province_trigger = {
+	barony ?= { this = trade_market.trade_market_owner }
+}
+
+merchant_move_company_size_trigger = {
+	highest_held_title_tier >= tier_duchy
+	any_held_county = {
+		is_landless_type_title = no
+		save_temporary_scope_as = county_temp
+		any_county_province = { gdp_is_market_capital_province_trigger = yes }
+	}
+	has_fitting_rank_for_company_size = { MERCHANT = $MERCHANT$ }
+}
+
+gdp_trader_can_start_scheme_trigger = {
+	can_start_scheme = {
+		type = $SCHEME$
+		targets_nothing = yes
+	}
+	# Scheme cooldown only applies to character targets, and these schemes target nothing.
+	trigger_if = {
+		limit = {
+			NOT = { has_character_flag = gdp_trader_ignore_scheme_cooldown }
+		}
+		NOT = { has_character_flag = $SCHEME$_cooldown }
+	}
+}
+
+gdp_trader_needs_competitiveness_trigger = {
+	trigger_if = {
+		# If we are at max capacity competitiveness doesn't matter.
+		limit = {
+			assigned_trade_route ?= { current_capacity < max_capacity }
+		}
+		assigned_trade_route.trade_route_owner ?= {
+			save_temporary_scope_as = trader_route_owner_temp
+		}
+		# Check for rivals; if we hold a monopoly we don't care about competitiveness.
+		location.barony.trade_market ?= {
+			gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = scope:trader_route_owner_temp }
+		}
+	}
+	trigger_else = { always = no }
+}
+
+# Trader character scope. The route owner has not recalled their trade envoys.
+gdp_trade_envoys_are_out_trigger = {
+	assigned_trade_route.trade_route_owner ?= {
+		government_has_flag = government_has_merchant_company
+		NOT = { has_character_flag = gdp_trade_envoys_recalled }
+	}
+}
+
+# Character scope. True when the route owner's primary title holder trades $CATEGORY$.
+gdp_trader_route_owner_trades_category_trigger = {
+	assigned_trade_route.trade_route_owner.primary_title = {
+		exists = holder
+		holder = {
+			any_trade_route = {
+				any_traded_good = {
+					any_trade_category = {
+						this = trade_good_category:$CATEGORY$
+					}
+				}
+			}
+		}
+	}
+}
+
+# Character scope, mirrors gdp_trader_save_district_trade_category_effect
+# The local district maps to a category this route owner actually trades
+gdp_trader_learning_from_locals_allowed_trigger = {
+	exists = location.resource_district
+	switch = {
+		trigger = location.resource_district.district_type
+		district_type:forestry_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_carpentry_supplies }
+		}
+		district_type:grain_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_cereals }
+		}
+		district_type:wool_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_fabrics }
+		}
+		district_type:cattle_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_beasts_of_burden }
+		}
+		district_type:cotton_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_fabrics }
+		}
+		district_type:stone_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_carpentry_supplies }
+		}
+		district_type:fish_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_meat }
+		}
+		district_type:wine_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_alcohol }
+		}
+		district_type:oil_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_comforts }
+		}
+		district_type:rice_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_cereals }
+		}
+		district_type:millet_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_cereals }
+		}
+		district_type:mine_district = {
+			trigger_if = {
+				limit = {
+					location.county = {
+						OR = {
+							has_potential_for_trade_good = trade_good_type:trade_good_gold
+							has_potential_for_trade_good = trade_good_type:trade_good_silver
+						}
+					}
+				}
+				gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_precious_metals }
+			}
+			trigger_else_if = {
+				limit = {
+					location.county = {
+						OR = {
+							has_potential_for_trade_good = trade_good_type:trade_good_gems
+							has_potential_for_trade_good = trade_good_type:trade_good_jade
+						}
+					}
+				}
+				gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_jewelry_materials }
+			}
+			trigger_else_if = {
+				limit = {
+					location.county = {
+						has_potential_for_trade_good = trade_good_type:trade_good_alum
+					}
+				}
+				gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_alum }
+			}
+			trigger_else = {
+				# Iron, copper, or salt mine - default to base metals
+				gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_base_metals }
+			}
+		}
+		district_type:salt_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_salt }
+		}
+		district_type:amber_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_jewelry_materials }
+		}
+		district_type:silk_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_luxury_items }
+		}
+		district_type:furs_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_clothes }
+		}
+		district_type:spices_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_luxury_consumption }
+		}
+		district_type:tea_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_comforts }
+		}
+		district_type:dyes_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_dyes }
+		}
+		district_type:ivory_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_jewelry_materials }
+		}
+		district_type:sugar_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_luxury_consumption }
+		}
+		district_type:incense_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_incense }
+		}
+		district_type:medicaments_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_medicaments }
+		}
+		district_type:ceramics_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_luxury_items }
+		}
+		district_type:hemp_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_carpentry_supplies }
+		}
+		district_type:flax_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_fabrics }
+		}
+		district_type:honey_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_comforts }
+		}
+		district_type:fruit_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_comforts }
+		}
+		district_type:horses_district = {
+			gdp_trader_route_owner_trades_category_trigger = { CATEGORY = trade_category_beasts_of_burden }
+		}
+		fallback = { always = no }
+	}
+}
+
+# Shared allow/valid trigger for all trader activity schemes.
+# Scoped to the trader character.
+gdp_trader_is_valid_for_scheme_trigger = {
+	is_available_quick = {
+		alive = yes
+		adult = yes
+		imprisoned = no
+		incapable = no
+	}
+	exists = assigned_trade_route
+	assigned_trade_route.trade_route_owner = {
+		is_ai = no
+	}
+	gdp_trade_envoys_are_out_trigger = yes
+}
+
+# Scheme scope. True for the personal market-work schemes traders run on their routes.
+gdp_trader_is_activity_scheme_trigger = {
+	OR = {
+		scheme_type = gdp_trader_negotiating_with_ruler_scheme
+		scheme_type = gdp_trader_building_connections_scheme
+		scheme_type = gdp_trader_lobbying_advantages_scheme
+		scheme_type = gdp_trader_building_reputation_scheme
+		scheme_type = gdp_trader_championing_patron_scheme
+		scheme_type = gdp_trader_entertaining_merchants_scheme
+		scheme_type = gdp_trader_hiring_local_talent_scheme
+		scheme_type = gdp_trader_learning_from_locals_scheme
+		scheme_type = gdp_trader_studying_local_crafts_scheme
+		scheme_type = gdp_trader_appraising_goods_scheme
+		scheme_type = gdp_trader_securing_safe_passage_scheme
+		scheme_type = gdp_trader_undermining_competitor_scheme
+		scheme_type = gdp_trader_recruiting_informants_scheme
+		scheme_type = gdp_trader_negotiate_deals_scheme
+		scheme_type = gdp_trader_finding_a_deal_scheme
+		scheme_type = gdp_trader_securing_surplus_scheme
+		scheme_type = gdp_trader_appraising_market_scheme
+		scheme_type = gdp_trader_organizing_caravan_scheme
+		scheme_type = gdp_trader_exploring_new_markets_scheme
+		scheme_type = gdp_trader_identifying_rare_goods_scheme
+	}
+}
+
+# Paused market work. A travel plan still counts as is_travelling, including when paused.
+gdp_trader_should_use_market_background_trigger = {
+	is_trader = yes
+	OR = {
+		current_travel_plan ?= { is_paused = yes }
+		any_scheme = {
+			gdp_trader_is_activity_scheme_trigger = yes
+		}
+	}
+}
+
+gdp_hostile_takeover_scheme_owner_valid_trigger = {
+	is_available_quick = {
+		adult = yes
+		imprisoned = no
+		incapable = no
+	}
+	shared_hostile_takeover_participant_valid_trigger = yes
+	custom_tooltip = {
+		text = hostile_takeover_minimum_company_size_trigger
+		NOT = { has_realm_law = company_size_small }
+	}
+}
+
+gdp_hostile_takeover_scheme_target_valid_trigger = {
+	exists = house
+	house != $SCHEME_OWNER$.house
+	shared_hostile_takeover_participant_valid_trigger = yes
+	company_size_value <= $SCHEME_OWNER$.company_size_value
+}
+
+is_known_dealbreaker_trigger = {
+	OR = {
+		has_trait = dealbreaker
+		any_secret = {
+			type = secret_dealbreaker
+			is_known_by = $KNOWER$
+		}
+	}
+}
+
+is_purchasable_title_trigger = {
+	is_title_created = yes
+	holder = {
+		is_ai = yes
+		this = scope:recipient
+	}
+	OR = { #flatten the selection
+		tier = tier_duchy
+		tier = tier_county
+	}
+	is_landless_type_title = no
+	NOR = {
+		this = scope:recipient.capital_county
+		this = scope:recipient.capital_county.duchy
+	}
+}
+
+# Expertise is stored on the company title, not the primary title.
+gdp_has_trade_expertise_access_trigger = {
+	government_allows = profit_trade_routes
+	any_held_title = { gdp_merchant_company_title_trigger = yes }
+}
+
+# Eligibility for the trade-good flavor pool. this = character
+gdp_tgf_eligible_trigger = {
+	age >= 10
+	government_allows = profit_trade_routes
+	NOT = { has_character_flag = is_in_task_contract_event_chain }
+	any_trade_route = {
+		is_commission_route = no
+		any_traded_good = { always = yes }
+	}
+}
+
+# this = character whose company has reached the renowned Trade Expertise tier in $CATEGORY$
+gdp_tgf_renowned_in_category_trigger = {
+	any_held_title = {
+		gdp_merchant_company_title_trigger = yes
+		trade_good_category_level = {
+			target = $CATEGORY$
+			value >= gdp_tgf_renowned_expertise_level_value
+		}
+	}
+}
+
+# Root is renowned in scope:tgf_category, the category of the event's good. Any scope
+gdp_tgf_root_renowned_in_event_category_trigger = {
+	exists = scope:tgf_category
+	root = {
+		gdp_tgf_renowned_in_category_trigger = { CATEGORY = scope:tgf_category }
+	}
+}
+
+# this = character whose company is below the renowned Trade Expertise tier in $CATEGORY$
+gdp_tgf_fledgling_in_category_trigger = {
+	NOT = {
+		gdp_tgf_renowned_in_category_trigger = { CATEGORY = $CATEGORY$ }
+	}
+}
+
+# this = trade market with an origin county, where $ROUTE$ buys one of its traded goods
+gdp_tgf_route_buys_here_trigger = {
+	save_temporary_scope_as = tgf_core_market_temp
+	exists = trade_market_owner.title_province.county
+	$ROUTE$ = {
+		any_traded_good = {
+			save_temporary_scope_as = tgf_core_good_temp
+			$ROUTE$ = {
+				is_buying_trade_good_in_market = {
+					trade_market = scope:tgf_core_market_temp
+					trade_good_type = scope:tgf_core_good_temp
+				}
+			}
+		}
+	}
+}
+
+# this = trade market with an origin county, where $ROUTE$ sells one of its traded goods
+gdp_tgf_route_sells_here_trigger = {
+	save_temporary_scope_as = tgf_core_market_temp
+	exists = trade_market_owner.title_province.county
+	$ROUTE$ = {
+		any_traded_good = {
+			save_temporary_scope_as = tgf_core_good_temp
+			$ROUTE$ = {
+				is_selling_trade_good_in_market = {
+					trade_market = scope:tgf_core_market_temp
+					trade_good_type = scope:tgf_core_good_temp
+				}
+			}
+		}
+	}
+}
+
+# this = trade market whose holder is an available adult AI other than root. Expects root = the merchant
+gdp_tgf_stranger_holder_market_trigger = {
+	trade_market_owner ?= {
+		holder ?= {
+			NOT = { this = root }
+			is_physically_able_ai_adult = yes
+		}
+	}
+}
+
+# this = trade route with a trader that buys a good in a market with a landed origin county
+gdp_tgf_report_route_trigger = {
+	is_commission_route = no
+	has_trader = yes
+	save_temporary_scope_as = tgf_report_route_temp
+	any_trade_market_on_route = {
+		gdp_tgf_route_buys_here_trigger = { ROUTE = scope:tgf_report_route_temp }
+	}
+}
+
+# this = a rival or ally merchant candidate for trade-good flavor events
+# AI only, so player houses never get uninvited relation changes
+gdp_tgf_valid_rival_trigger = {
+	is_physically_able_ai_adult = yes
+	exists = house
+	any_held_title = { gdp_merchant_company_title_trigger = yes }
+}
+
+# this = market where $ROUTE$ buys a good whose category root is still fledgling in
+# Expects root = the merchant
+gdp_tgf_fledgling_buy_market_trigger = {
+	save_temporary_scope_as = tgf_fledgling_market_temp
+	exists = trade_market_owner.title_province.county
+	$ROUTE$ = {
+		any_traded_good = {
+			save_temporary_scope_as = tgf_fledgling_good_temp
+			$ROUTE$ = {
+				is_buying_trade_good_in_market = {
+					trade_market = scope:tgf_fledgling_market_temp
+					trade_good_type = scope:tgf_fledgling_good_temp
+				}
+			}
+			trade_good_need_category = {
+				save_temporary_scope_as = tgf_fledgling_cat_temp
+			}
+			root = {
+				gdp_tgf_fledgling_in_category_trigger = { CATEGORY = scope:tgf_fledgling_cat_temp }
+			}
+		}
+	}
+}
+
+# this = trade route that buys a good of thematic category $CATEGORY$ in a market with an origin county
+gdp_tgf_category_buy_route_trigger = {
+	is_commission_route = no
+	save_temporary_scope_as = tgf_catbuy_route_temp
+	any_trade_market_on_route = {
+		gdp_tgf_category_buy_market_trigger = {
+			ROUTE = scope:tgf_catbuy_route_temp
+			CATEGORY = $CATEGORY$
+		}
+	}
+}
+
+# this = trade market where $ROUTE$ buys a good of thematic category $CATEGORY$
+gdp_tgf_category_buy_market_trigger = {
+	save_temporary_scope_as = tgf_catbuy_market_temp
+	exists = trade_market_owner.title_province.county
+	$ROUTE$ = {
+		any_traded_good = {
+			any_trade_category = { this = trade_good_category:$CATEGORY$ }
+			save_temporary_scope_as = tgf_catbuy_good_temp
+			$ROUTE$ = {
+				is_buying_trade_good_in_market = {
+					trade_market = scope:tgf_catbuy_market_temp
+					trade_good_type = scope:tgf_catbuy_good_temp
+				}
+			}
+		}
+	}
+}
+
+# this = trade route that sells a good of thematic category $CATEGORY$ in a market with an origin county
+gdp_tgf_category_sell_route_trigger = {
+	is_commission_route = no
+	save_temporary_scope_as = tgf_catsell_route_temp
+	any_trade_market_on_route = {
+		gdp_tgf_category_sell_market_trigger = {
+			ROUTE = scope:tgf_catsell_route_temp
+			CATEGORY = $CATEGORY$
+		}
+	}
+}
+
+# this = trade market where $ROUTE$ sells a good of thematic category $CATEGORY$
+gdp_tgf_category_sell_market_trigger = {
+	save_temporary_scope_as = tgf_catsell_market_temp
+	exists = trade_market_owner.title_province.county
+	$ROUTE$ = {
+		any_traded_good = {
+			any_trade_category = { this = trade_good_category:$CATEGORY$ }
+			save_temporary_scope_as = tgf_catsell_good_temp
+			$ROUTE$ = {
+				is_selling_trade_good_in_market = {
+					trade_market = scope:tgf_catsell_market_temp
+					trade_good_type = scope:tgf_catsell_good_temp
+				}
+			}
+		}
+	}
+}
+
+# this = trade market, like the sell version, but the owner must also be a valid stranger
+gdp_tgf_category_sell_holder_market_trigger = {
+	gdp_tgf_category_sell_market_trigger = {
+		ROUTE = $ROUTE$
+		CATEGORY = $CATEGORY$
+	}
+	gdp_tgf_stranger_holder_market_trigger = yes
+}
+
+# this = trade route that carries $GOOD$
+gdp_tgf_good_route_trigger = {
+	is_commission_route = no
+	any_traded_good = { this = trade_good_type:$GOOD$ }
+}
+
+# this = trade route that sells $GOOD$ in a market with an origin county
+gdp_tgf_good_sell_route_trigger = {
+	is_commission_route = no
+	save_temporary_scope_as = tgf_goodsell_route_temp
+	any_trade_market_on_route = {
+		gdp_tgf_good_sell_market_trigger = {
+			ROUTE = scope:tgf_goodsell_route_temp
+			GOOD = $GOOD$
+		}
+	}
+}
+
+# this = trade market where $ROUTE$ sells $GOOD$
+gdp_tgf_good_sell_market_trigger = {
+	save_temporary_scope_as = tgf_goodsell_market_temp
+	exists = trade_market_owner.title_province.county
+	$ROUTE$ = {
+		is_selling_trade_good_in_market = {
+			trade_market = scope:tgf_goodsell_market_temp
+			trade_good_type = trade_good_type:$GOOD$
+		}
+	}
+}
+
+# this = trade route that sells $GOOD$ in a market whose holder is a valid stranger
+gdp_tgf_good_sell_holder_route_trigger = {
+	is_commission_route = no
+	save_temporary_scope_as = tgf_goodsell_route_temp
+	any_trade_market_on_route = {
+		gdp_tgf_good_sell_holder_market_trigger = {
+			ROUTE = scope:tgf_goodsell_route_temp
+			GOOD = $GOOD$
+		}
+	}
+}
+
+# this = trade market where $ROUTE$ sells $GOOD$ and the owner holder is a valid stranger
+gdp_tgf_good_sell_holder_market_trigger = {
+	gdp_tgf_good_sell_market_trigger = {
+		ROUTE = $ROUTE$
+		GOOD = $GOOD$
+	}
+	gdp_tgf_stranger_holder_market_trigger = yes
+}
+
+# this = trade route that buys $GOOD$ in a market whose local pool holds an adult commoner
+gdp_tgf_good_buy_pool_route_trigger = {
+	is_commission_route = no
+	save_temporary_scope_as = tgf_goodbuy_route_temp
+	any_trade_market_on_route = {
+		gdp_tgf_good_buy_pool_market_trigger = {
+			ROUTE = scope:tgf_goodbuy_route_temp
+			GOOD = $GOOD$
+		}
+	}
+}
+
+# this = trade market where $ROUTE$ buys $GOOD$ and the local pool holds an adult commoner
+gdp_tgf_good_buy_pool_market_trigger = {
+	save_temporary_scope_as = tgf_goodbuy_market_temp
+	exists = trade_market_owner.title_province.county
+	$ROUTE$ = {
+		is_buying_trade_good_in_market = {
+			trade_market = scope:tgf_goodbuy_market_temp
+			trade_good_type = trade_good_type:$GOOD$
+		}
+	}
+	trade_market_owner.title_province = {
+		save_temporary_scope_as = tgf_goodbuy_province_temp
+		any_pool_character = {
+			province = scope:tgf_goodbuy_province_temp
+			is_healthy = yes
+			has_no_particular_noble_roots_trigger = yes
+			is_physically_able_adult = yes
+		}
+	}
+}
+
+# this = trade market where $ROUTE$ buys $GOOD$
+gdp_tgf_good_buy_market_trigger = {
+	save_temporary_scope_as = tgf_goodbuy_market_temp
+	exists = trade_market_owner.title_province.county
+	$ROUTE$ = {
+		is_buying_trade_good_in_market = {
+			trade_market = scope:tgf_goodbuy_market_temp
+			trade_good_type = trade_good_type:$GOOD$
+		}
+	}
+}
+
+# this = trade route that sells $GOOD$ in a market whose local pool holds an adult commoner
+gdp_tgf_good_sell_pool_route_trigger = {
+	is_commission_route = no
+	save_temporary_scope_as = tgf_goodsell_route_temp
+	any_trade_market_on_route = {
+		gdp_tgf_good_sell_pool_market_trigger = {
+			ROUTE = scope:tgf_goodsell_route_temp
+			GOOD = $GOOD$
+		}
+	}
+}
+
+# this = trade market where $ROUTE$ sells $GOOD$ and the local pool holds an adult commoner
+gdp_tgf_good_sell_pool_market_trigger = {
+	gdp_tgf_good_sell_market_trigger = {
+		ROUTE = $ROUTE$
+		GOOD = $GOOD$
+	}
+	trade_market_owner.title_province = {
+		save_temporary_scope_as = tgf_goodsell_province_temp
+		any_pool_character = {
+			province = scope:tgf_goodsell_province_temp
+			is_healthy = yes
+			has_no_particular_noble_roots_trigger = yes
+			is_physically_able_adult = yes
+		}
+	}
+}
+
+# this = trade good that is not livestock, so it can be packed, sealed or carted
+gdp_tgf_not_livestock_good_trigger = {
+	NOR = {
+		this = trade_good_type:trade_good_horses
+		this = trade_good_type:trade_good_cattle
+	}
+}
+
+# this = trade market where $ROUTE$ sells a good and the local pool holds an adult to broker it
+gdp_tgf_broker_market_trigger = {
+	gdp_tgf_route_sells_here_trigger = { ROUTE = $ROUTE$ }
+	trade_market_owner.title_province = {
+		save_temporary_scope_as = tgf_broker_province_temp
+		any_pool_character = {
+			province = scope:tgf_broker_province_temp
+			is_healthy = yes
+			is_physically_able_adult = yes
+		}
+	}
+}
+
+# this = character, an AI merchant from another house who can bid against root
+gdp_tgf_auction_rival_trigger = {
+	gdp_tgf_valid_rival_trigger = yes
+	NOT = { house ?= root.house }
+}
+
+# this = trade route
+gdp_tgf_market_day_route_trigger = {
+	is_commission_route = no
+	save_temporary_scope_as = tgf_market_day_route_temp
+	any_trade_market_on_route = {
+		gdp_tgf_market_day_market_trigger = { ROUTE = scope:tgf_market_day_route_temp }
+	}
+}
+
+# this = trade market where $ROUTE$ sells a good and the holder is an AI stranger
+gdp_tgf_market_day_market_trigger = {
+	gdp_tgf_stranger_holder_market_trigger = yes
+	gdp_tgf_route_sells_here_trigger = { ROUTE = $ROUTE$ }
+}
+
+# this = character flush with coin and out of debt, so the greed events feel right
+gdp_tgf_flush_with_money_trigger = {
+	short_term_gold >= minor_gold_value
+	domicile ?= { acumen >= 250 }
+	NOT = { has_character_flag = merchant_company_in_debt }
+}
+
+# this = character whose company has a strictly higher level than $OTHER$'s company in scope:category_temp
+# Expects scope:category_temp = trade good category
+gdp_company_category_expertise_higher_than_trigger = {
+	any_held_title = {
+		gdp_merchant_company_title_trigger = yes
+		save_temporary_scope_as = higher_expertise_company_temp
+		$OTHER$ = {
+			any_held_title = {
+				gdp_merchant_company_title_trigger = yes
+				save_temporary_scope_as = lower_expertise_company_temp
+				"scope:higher_expertise_company_temp.trade_good_category_level(scope:category_temp)" > "scope:lower_expertise_company_temp.trade_good_category_level(scope:category_temp)"
+			}
+		}
+	}
+}
+
+# this = character whose company is ahead in at least one category
+gdp_company_has_higher_category_expertise_than_trigger = {
+	save_temporary_scope_as = higher_expertise_character_temp
+	any_trade_good_category = {
+		has_trade_good_category_xp_track = yes
+		save_temporary_scope_as = category_temp
+		scope:higher_expertise_character_temp = {
+			gdp_company_category_expertise_higher_than_trigger = {
+				OTHER = $OTHER$
+			}
+		}
+	}
+}
+
+shared_steal_market_insights_participant_valid_trigger = {
+	gdp_has_trade_expertise_access_trigger = yes
+	is_house_head = yes
+}
+
+gdp_steal_market_insights_scheme_owner_valid_trigger = {
+	is_available_quick = {
+		adult = yes
+		imprisoned = no
+		incapable = no
+	}
+	shared_steal_market_insights_participant_valid_trigger = yes
+}
+
+gdp_steal_market_insights_scheme_target_valid_trigger = {
+	$SCHEME_OWNER$ = { save_temporary_scope_as = owner_temp }
+	exists = house
+	exists = scope:owner_temp.house
+	house != scope:owner_temp.house
+	shared_steal_market_insights_participant_valid_trigger = yes
+	custom_tooltip = {
+		text = gdp_steal_market_insights_scheme_target_valid_category_tt
+		gdp_company_has_higher_category_expertise_than_trigger = { OTHER = scope:owner_temp }
+	}
+}
+
+merchant_capstone_trade_expertise_trigger = {
+	save_temporary_scope_as = merchant_expertise_check
+	any_trade_good_category = {
+		save_temporary_scope_as = category_temp
+		"scope:merchant_expertise_check.primary_title.trade_good_category_level(scope:category_temp)" >= 25
+	}
+}
+
+disrupt_charter_trade_opportunity_target_trigger = {
+	NOT = { this = $SCHEME_OWNER$ }
+	is_landless_merchant = yes
+	save_temporary_scope_as = disruptee_temp
+	$SCHEME_OWNER$ = {
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				any_character_in_market = { this = scope:disruptee_temp }
+			}
+		}
+	}
+	disrupt_charter_trade_opportunity_target_valid_trigger = { SCHEME_OWNER = $SCHEME_OWNER$ }
+}
+
+disrupt_charter_trade_opportunity_target_valid_trigger = {
+	NOT = { this = $SCHEME_OWNER$ }
+	is_landless_merchant = yes
+	merchant_has_charter_from_patron_trigger = {
+		EQUIPPED = no
+		INCLUDE_FORGERIES = yes
+	}
+	OR = {
+		suzerain.top_liege = $SCHEME_OWNER$.suzerain.top_liege
+		gdp_merchant_diplo_range_trigger = {
+			TARGET = this
+			MERCHANT = $SCHEME_OWNER$
+		}
+	}
+}
+
+gdp_should_spawn_new_merchant_company_trigger = {
+	gdp_merchant_companies_counted_trigger = yes
+	global_variable_list_size = {
+		name = merchants_tally
+		value < merchant_company_spawn_threshold_value
+	}
+}
+
+gdp_merchant_companies_counted_trigger = {
+	has_global_variable_list = merchants_tally
+	exists = global_var:merchant_company_starting_count
+	global_var:merchant_company_starting_count > 0
+}
+
+gdp_merchant_companies_below_cap_trigger = {
+	gdp_merchant_companies_counted_trigger = yes
+	global_variable_list_size = {
+		name = merchants_tally
+		value < max_desired_merchant_companies_value
+	}
+}
+
+gdp_merchant_companies_over_cap_trigger = {
+	gdp_merchant_companies_counted_trigger = yes
+	global_variable_list_size = {
+		name = merchants_tally
+		value > max_desired_merchant_companies_value
+	}
+}
+
+gdp_merchant_companies_below_republic_headroom_trigger = {
+	trigger_if = {
+		limit = { gdp_merchant_companies_counted_trigger = yes }
+		global_variable_list_size = {
+			name = merchants_tally
+			value < merchant_company_republic_headroom_value
+		}
+	}
+}
+
+gdp_merchant_company_cullable_trigger = {
+	NOR = {
+		has_variable = gdp_starting_merchant_company
+		has_variable = gdp_new_merchant_company
+	}
+	holder ?= {
+		is_ai = yes
+		is_landless_merchant = yes
+		is_at_war = no
+		gdp_merchant_company_keep_trigger = no
+	}
+}
+
+gdp_merchant_is_player_relevant_trigger = {
+	save_temporary_scope_as = player_relevant_merchant_temp
+	any_player = {
+		OR = {
+			scope:player_relevant_merchant_temp.suzerain ?= this
+			dynasty ?= scope:player_relevant_merchant_temp.dynasty
+			is_close_or_extended_family_of = scope:player_relevant_merchant_temp
+			is_consort_of = scope:player_relevant_merchant_temp
+			has_important_relationship_with_character_trigger = { CHARACTER = scope:player_relevant_merchant_temp }
+			is_allied_to = scope:player_relevant_merchant_temp
+			any_character_task_contract = {
+				task_contract_target.house ?= scope:player_relevant_merchant_temp.house
+			}
+		}
+	}
+}
+
+# Families worth keeping as merchants when the merchant population is over its limits
+gdp_merchant_company_keep_trigger = {
+	OR = {
+		is_ai = no
+		has_character_flag = gdp_notable_republic_family
+		num_trade_routes >= 4
+		dynasty ?= { dynasty_prestige_level >= high_dynasty_prestige_level }
+		gdp_merchant_is_player_relevant_trigger = yes
+		house ?= {
+			OR = {
+				any_house_member = { count >= 20 }
+				any_house_member = { is_landed = yes }
+			}
+		}
+	}
+}
+
+gdp_minority_merchant_candidate_trigger = {
+	save_temporary_scope_as = minority_merchant_temp
+	location.county ?= {
+		NOR = {
+			culture = scope:minority_merchant_temp.culture
+			faith = scope:minority_merchant_temp.faith
+		}
+	}
+	NOR = {
+		is_target_in_global_variable_list = {
+			name = gdp_minority_merchant_cultures
+			target = scope:minority_merchant_temp.culture
+		}
+		is_target_in_global_variable_list = {
+			name = gdp_minority_merchant_faiths
+			target = scope:minority_merchant_temp.faith
+		}
+	}
+}
+
+gdp_minority_merchant_host_trigger = {
+	is_landed = yes
+	highest_held_title_tier >= tier_county
+	exists = capital_province
+	faith = {
+		NOT = { religion = { is_in_family = rf_pagan } }
+	}
+}
+
+gdp_pool_character_valid_for_merchant_company_trigger = {
+	is_ai = yes
+	is_ruler = no
+	is_lowborn = no
+	exists = location
+	is_available_quick = {
+		adult = yes
+		incapable = no
+		imprisoned = no
+	}
+	age < 60
+	health >= fine_health
+	highest_skill_value >= decent_skill_rating
+	OR = {
+		ai_boldness >= low_negative_ai_value
+		ai_energy >= low_negative_ai_value
+	}
+	NOR = {
+		has_trait = content
+		has_trait = craven
+		has_trait = lazy
+	}
+	NOR = {
+		any_heir_title = { }
+		any_held_title = {
+			gdp_merchant_company_title_trigger = yes
+		}
+	}
+}
+
+# Courtier that $SPONSOR$ can sponsor through the Sponsor Merchant Company decision
+gdp_sponsor_merchant_company_candidate_trigger = {
+	is_courtier_of = $SPONSOR$
+	is_ruler = no
+	is_lowborn = no
+	location ?= $SPONSOR$.capital_province
+	is_travelling = no
+	is_available_quick = {
+		adult = yes
+		incapable = no
+		imprisoned = no
+	}
+	health >= fine_health
+	NOR = {
+		any_heir_title = { }
+		is_parent_of = $SPONSOR$
+		is_child_of = $SPONSOR$
+		is_sibling_of = $SPONSOR$
+		is_consort_of = $SPONSOR$
+	}
+}
+
+gdp_merchant_family_has_no_ruler_trigger = {
+	NOR = {
+		any_close_or_extended_family_member = {
+			is_ruler = yes
+		}
+		dynasty ?= {
+			any_dynasty_member = {
+				is_ruler = yes
+			}
+		}
+	}
+}
+
+gdp_usury_condemns_loan_trigger = {
+	OR = {
+		rite = {
+			rite_has_parameter = usury_forbidden
+		}
+		rite = {
+			rite_has_parameter = usury_discouraged
+		}
+		AND = {
+			rite = {
+				rite_has_parameter = usury_outsiders_only
+			}
+			religion = $BORROWER$.religion
+		}
+	}
+}
+
+gdp_usury_forbids_loan_trigger = {
+	OR = {
+		rite = {
+			rite_has_parameter = usury_forbidden
+		}
+		AND = {
+			rite = {
+				rite_has_parameter = usury_outsiders_only
+			}
+			religion = $BORROWER$.religion
+		}
+	}
+}
+
+gdp_usury_borrower_condemns_loan_trigger = {
+	gdp_usury_condemns_loan_trigger = {
+		BORROWER = $LENDER$
+	}
+}
+
+# Either the lender's or the borrower's rite discourages or shuns this loan.
+gdp_usury_either_party_condemns_loan_trigger = {
+	OR = {
+		$LENDER$ = {
+			gdp_usury_condemns_loan_trigger = { BORROWER = $BORROWER$ }
+		}
+		$BORROWER$ = {
+			gdp_usury_borrower_condemns_loan_trigger = { LENDER = $LENDER$ }
+		}
+	}
+}
+
+gdp_usury_untroubled_by_sin_trigger = {
+	OR = {
+		gdp_usury_shameless_reputation_trigger = yes
+		spiritual_fulfillment <= spiritual_fulfillment_minus_1
+	}
+}
+
+gdp_usury_shameless_reputation_trigger = {
+	OR = {
+		has_trait = greedy
+		has_trait = cynical
+	}
+}
+
+# Lender's interest is public: an open-interest loan on the books, or a disguised loan that was exposed
+gdp_usury_has_public_lending_trigger = {
+	save_temporary_scope_as = usury_lender_temp
+	OR = {
+		has_character_flag = gdp_usury_exposed
+		any_in_list = {
+			variable = owes_me_money
+			has_existing_loan_from_with_instrument_trigger = {
+				LENDER = scope:usury_lender_temp
+				INSTRUMENT = flag:open
+			}
+		}
+	}
+}
+
+gdp_usury_loan_is_void_trigger = {
+	story_type = story_cycle_loan
+	var:lender ?= { save_temporary_scope_as = lender_temp }
+	var:instrument ?= flag:open
+	story_owner = {
+		OR = {
+			rite = { rite_has_parameter = usury_forbidden }
+			AND = {
+				rite = { rite_has_parameter = usury_outsiders_only }
+				religion = scope:lender_temp.religion
+			}
+		}
+	}
+}
+
+gdp_usury_rite_voids_debts_trigger = {
+	rite = {
+		OR = {
+			rite_has_parameter = usury_debts_voidable
+			rite_has_parameter = usury_outsider_debts_voidable
+		}
+	}
+}
+
+gdp_usury_cleric_can_void_loan_trigger = {
+	pam_is_clergy_ruler_trigger = yes
+	is_available_quick = {
+		alive = yes
+		adult = yes
+		incapable = no
+		imprisoned = no
+	}
+	faith = $BORROWER$.faith
+	gdp_usury_rite_voids_debts_trigger = yes
+	save_temporary_scope_as = usury_cleric_temp
+	NOR = {
+		this = $BORROWER$
+		$BORROWER$ = {
+			has_existing_loan_from_trigger = { LENDER = scope:usury_cleric_temp }
+		}
+		is_at_war_with = $BORROWER$
+		has_relation_rival = $BORROWER$
+	}
+}
+
+gdp_usury_has_approving_cleric_trigger = {
+	save_temporary_scope_as = usury_debtor_temp
+	gdp_usury_rite_voids_debts_trigger = yes
+	OR = {
+		faith.religious_head ?= {
+			gdp_usury_cleric_can_void_loan_trigger = {
+				BORROWER = scope:usury_debtor_temp
+			}
+		}
+		capital_county.clerical_region_title.holder ?= {
+			gdp_usury_cleric_can_void_loan_trigger = {
+				BORROWER = scope:usury_debtor_temp
+			}
+		}
+		location.county.clerical_region_title.holder ?= {
+			gdp_usury_cleric_can_void_loan_trigger = {
+				BORROWER = scope:usury_debtor_temp
+			}
+		}
+		top_liege ?= {
+			OR = {
+				gdp_usury_cleric_can_void_loan_trigger = {
+					BORROWER = scope:usury_debtor_temp
+				}
+				any_vassal_or_below = {
+					gdp_usury_cleric_can_void_loan_trigger = {
+						BORROWER = scope:usury_debtor_temp
+					}
+				}
+			}
+		}
+	}
+}
+
+gdp_usury_chaplain_endorses_trigger = {
+	cp:councillor_court_chaplain ?= {
+		OR = {
+			is_ai = no
+			opinion = {
+				target = root
+				value > 0
+			}
+			court_chaplain_endorse_override_trigger = yes
+		}
+	}
+}
+
+gdp_merchant_would_lend_to_borrower_trigger = {
+	trigger_if = {
+		limit = {
+			$BORROWER$ = {
+				has_character_flag = gdp_debt_repudiator
+			}
+		}
+		has_trait = greedy
+	}
+}
+
+upheaval_market_modifier_trigger = {
+	OR = {
+		has_trade_market_modifier = gdp_market_recently_sieged_capacity_modifier
+		has_trade_market_modifier = gdp_market_recently_raided_capacity_modifier
+		has_trade_market_modifier = gdp_market_army_movement_capacity_modifier
+		has_trade_market_modifier = gdp_market_smuggling_trade_modifier
+		has_trade_market_modifier = gdp_market_banditry_trade_modifier
+		has_trade_market_modifier = gdp_natural_disaster_1_trade_modifier
+		has_trade_market_modifier = gdp_natural_disaster_2_trade_modifier
+		has_trade_market_modifier = gdp_natural_disaster_3_trade_modifier
+		has_trade_market_modifier = gdp_epidemic_1_trade_modifier
+		has_trade_market_modifier = gdp_epidemic_2_trade_modifier
+		has_trade_market_modifier = gdp_epidemic_3_trade_modifier
+	}
+}
+
+exploit_upheaval_market_modifier_trigger = {
+	OR = {
+		upheaval_market_modifier_trigger = yes
+		has_trade_market_modifier = gdp_market_smuggling_trade_modifier
+		has_trade_market_modifier = gdp_market_banditry_trade_modifier
+	}
+}
+
+has_existing_loan_from_trigger = {
+	any_owned_story = {
+		story_type = story_cycle_loan
+		var:lender ?= $LENDER$
+	}
+}
+
+has_existing_loan_from_with_instrument_trigger = {
+	any_owned_story = {
+		story_type = story_cycle_loan
+		var:lender = $LENDER$
+		var:instrument = $INSTRUMENT$
+	}
+}
+
+# Make a Request options, minus the mutual-exclusion all_false checks.
+# Evaluated with interaction scopes: actor = merchant, recipient = patron.
+patron_request_competitiveness_available_trigger = {
+	scope:recipient = {
+		highest_held_title_tier > tier_barony
+		is_available_quick = {
+			imprisoned = no
+			incapable = no
+		}
+		save_temporary_scope_as = holder_check
+	}
+	scope:actor = {
+		domicile ?= { domicile_location.county.holder = scope:holder_check }
+		custom_tooltip = {
+			text = patron_request.cooldown.tt
+			NOT = { has_variable = 1200_patron_competitiveness }
+		}
+		custom_tooltip = {
+			text = patron_request.already_have_permission.tt
+			NOT = {
+				domicile.domicile_location.barony.trade_market ?= {
+					has_competitiveness_modifier_for_character = {
+						character = scope:actor
+						modifier = gdp_trade_privileges_modifier
+					}
+				}
+			}
+		}
+		num_trade_routes >= 1
+	}
+}
+
+# Scope: a character the patron can marry off. Checks that the merchant has someone they could marry
+patron_request_marriage_candidate_has_match_trigger = {
+	marriage_interaction_can_be_picked_trigger = yes
+	save_temporary_scope_as = patron_marriage_candidate
+	scope:actor = {
+		OR = {
+			AND = {
+				marriage_interaction_can_be_picked_trigger = yes
+				can_marry_character_trigger = { CHARACTER = scope:patron_marriage_candidate }
+			}
+			any_courtier = {
+				marriage_interaction_can_be_picked_trigger = yes
+				can_marry_character_trigger = { CHARACTER = scope:patron_marriage_candidate }
+			}
+			any_courtier_away = {
+				marriage_interaction_can_be_picked_trigger = yes
+				can_marry_character_trigger = { CHARACTER = scope:patron_marriage_candidate }
+			}
+			any_child = {
+				matchmaker = scope:actor
+				marriage_interaction_can_be_picked_trigger = yes
+				can_marry_character_trigger = { CHARACTER = scope:patron_marriage_candidate }
+			}
+		}
+	}
+}
+
+patron_request_marriage_available_trigger = {
+	scope:actor.short_term_gold >= merchant_marriage_gold_value
+	custom_tooltip = {
+		text = patron_request_interaction.request_marriage.no_match
+		scope:recipient = {
+			OR = {
+				patron_request_marriage_candidate_has_match_trigger = yes
+				any_courtier = { patron_request_marriage_candidate_has_match_trigger = yes }
+				any_courtier_away = { patron_request_marriage_candidate_has_match_trigger = yes }
+				any_child = {
+					matchmaker = scope:recipient
+					patron_request_marriage_candidate_has_match_trigger = yes
+				}
+			}
+		}
+	}
+}
+
+patron_request_hunt_available_trigger = {
+	scope:recipient = {
+		is_landed = yes
+		highest_held_title_tier > tier_barony
+		is_available_quick = {
+			imprisoned = no
+			incapable = no
+		}
+	}
+	scope:actor = {
+		NOT = { is_activity_type_on_cooldown = activity_hunt }
+		custom_tooltip = {
+			text = patron_request.already_have_permission.tt
+			NOT = { var:merchant_hunt_permission ?= scope:recipient }
+		}
+	}
+}
+
+merchant_is_silk_road_participant_trigger = {
+	save_temporary_scope_as = merchant_temp
+	situation:silk_road_situation ?= {
+		any_participant_group = {
+			participant_group_type = silk_road_merchant
+			participant_group_has_character = scope:merchant_temp
+		}
+	}
+}
+
+trade_market_has_entrepot_district_trigger = {
+	trade_market_owner.duchy = {
+		any_de_jure_county = {
+			any_county_province = { province_has_district = entrepot_location_district }
+		}
+	}
+}
+
+# Scope: province
+gdp_entrepot_trade_opportunity_location_available_trigger = {
+	province_has_district = entrepot_location_district
+	gdp_trade_opportunity_location_available_trigger = { MERCHANT = $MERCHANT$ }
+}
+
+# Scope: trade market
+gdp_entrepot_trade_opportunity_market_available_trigger = {
+	trade_market_owner.duchy = {
+		any_de_jure_county = {
+			any_county_province = {
+				gdp_entrepot_trade_opportunity_location_available_trigger = { MERCHANT = $MERCHANT$ }
+			}
+		}
+	}
+}
+
+patron_request_any_option_available_trigger = {
+	OR = {
+		patron_request_competitiveness_available_trigger = yes
+		patron_request_marriage_available_trigger = yes
+		patron_request_hunt_available_trigger = yes
+	}
+}
+
+trade_good_category_has_expertise_track_and_is_traded_on_route = {
+	has_trade_good_category_xp_track = yes
+	save_temporary_scope_as = category_temp
+	$ROUTE$ = {
+		any_traded_good = {
+			any_trade_category = { this = scope:category_temp }
+		}
+	}
+}
+
+# Scope: trade good type. ROUTE and MARKET must be saved scopes, as they are evaluated inside the route.
+trade_good_bought_by_route_in_market_trigger = {
+	save_temporary_scope_as = trade_good_route_transaction_check
+	$ROUTE$ = {
+		is_buying_trade_good_in_market = {
+			trade_market = $MARKET$
+			trade_good_type = scope:trade_good_route_transaction_check
+		}
+	}
+}
+
+trade_good_sold_by_route_in_market_trigger = {
+	save_temporary_scope_as = trade_good_route_transaction_check
+	$ROUTE$ = {
+		is_selling_trade_good_in_market = {
+			trade_market = $MARKET$
+			trade_good_type = scope:trade_good_route_transaction_check
+		}
+	}
+}
+
+# Scope: trade route. MARKET must be a saved scope.
+trade_route_buying_any_good_in_market_trigger = {
+	save_temporary_scope_as = trade_route_transaction_check
+	any_traded_good = {
+		trade_good_bought_by_route_in_market_trigger = {
+			ROUTE = scope:trade_route_transaction_check
+			MARKET = $MARKET$
+		}
+	}
+}
+
+trade_route_selling_any_good_in_market_trigger = {
+	save_temporary_scope_as = trade_route_transaction_check
+	any_traded_good = {
+		trade_good_sold_by_route_in_market_trigger = {
+			ROUTE = scope:trade_route_transaction_check
+			MARKET = $MARKET$
+		}
+	}
+}
+
+
+character_has_creature_type_trigger = {
+	$CHAR$ = {
+		any_character_artifact = {
+			artifact_type = creature
+			var:animal_type ?= flag:$TYPE$
+			rarity_level >= famed
+		}
+	}
+}
+merchant_house_head_drive_decision_not_promoting_diligence = {
+	house = {
+		NOR = {
+			exists = var:unity_merchant_promote_diligence_decision_cooldown
+			has_house_unity_modifier = unity_promoting_diligence_modifier
+		}
+	}
+}
+
+merchant_house_head_drive_decision_not_promoting_excess = {
+	house = {
+		NOR = {
+			exists = var:unity_merchant_promote_excess_decision_cooldown
+			has_house_unity_modifier = unity_promoting_excess_modifier
+		}
+	}
+}
+
+trade_market_character_liable_for_tolls_trigger = {
+	NOT = { is_exempt_from_tolls = $CHARACTER$ }
+	any_trade_route_in_market = {
+		trade_route_owner = $CHARACTER$
+		is_profit_route = yes
+	}
+}
+
+company_size_large_or_huge_trigger = {
+	OR = {
+		has_realm_law = company_size_large
+		has_realm_law = company_size_huge
+	}
+}
+
+market_has_food_need_trigger = {
+	OR = {
+		# Good Need
+		any_trade_good_with_unfulfilled_need = {
+			OR = {
+				has_category = trade_good_category:trade_category_cereals
+				has_category = trade_good_category:trade_category_meat
+			}
+		}
+		# Category Need
+		any_trade_category_with_unfulfilled_need = {
+			OR = {
+				this = trade_good_category:trade_category_cereals
+				this = trade_good_category:trade_category_meat
+			}
+		}
+	}
+}
+
+market_has_any_need_trigger = {
+	OR = {
+		any_trade_good_with_unfulfilled_need = {}
+		any_trade_category_with_unfulfilled_need = {}
+	}
+}
+
+toll_level_is_cheaper_than_paid_trigger = {
+	toll_tier_in_market = {
+		target = $CHARACTER$
+		value > $TOLL_LEVEL$.toll_tier
+	}
+}
+
+pays_any_tolls_in_market_trigger = {
+	# Char has tolls in this market
+	toll_tier_in_market = {
+		target = $CHARACTER$
+		value > 0
+	}
+	# Actually paying tolls
+	tolls_paid_in_market = {
+		target = $CHARACTER$
+		value > 0.025 # not a trivial amount
+	}
+}
+
+gdp_merchant_company_in_debt_trigger = {
+	gold < company_debt_gold_threshold_value
+}
+
+pays_any_tolls_in_market_without_exception_trigger = {
+	# No exception of any kind
+	NOT = { has_toll_exception = $CHARACTER$ }
+	toll_tier_in_market = {
+		target = $CHARACTER$
+		value > 0
+	}
+	# Actually paying tolls
+	tolls_paid_in_market = {
+		target = $CHARACTER$
+		value > 0.025 # not a trivial amount
+	}
+}
+
+# Stock Registers lifestyle perk (defensive_measures_perk for merchants): lowers internal merchant company building costs
+has_stock_registers_perk_trigger = {
+	government_has_flag = government_is_merchant
+	has_perk = defensive_measures_perk
+}
+
+# this = county title held by root or an AI, so AI-run events never change a player's county
+gdp_tgf_county_held_by_root_or_ai_trigger = {
+	holder ?= {
+		OR = {
+			this = root
+			is_ai = yes
+		}
+	}
+}
+
+gdp_ai_can_monopolize_market_trigger = {
+	can_create_trade_monopoly = { trade_good_category = $CATEGORY$ }
+	trade_market_owner.county.holder ?= {
+		is_ai = yes
+		NOT = {
+			any_liege_or_above = { is_ai = no }
+		}
+		trigger_if = {
+			limit = { is_hanseatic_league_member_trigger = yes }
+			exists = scope:ai_monopoly_league
+			is_member_of_confederation = scope:ai_monopoly_league
+		}
+		trigger_if = {
+			limit = {
+				NOR = {
+					this = $ACTOR$
+					is_vassal_or_below_of = $ACTOR$
+				}
+			}
+			is_imprisoned = no
+			NOR = {
+				is_at_war_with = $ACTOR$
+				has_relation_rival = $ACTOR$
+				has_opinion_modifier = {
+					target = $ACTOR$
+					modifier = released_from_prison
+				}
+				has_opinion_modifier = {
+					target = $ACTOR$
+					modifier = eviction_ignored_opinion
+				}
+				house_has_feud_relation_with_trigger = { TARGET = $ACTOR$ }
+			}
+			opinion = {
+				target = $ACTOR$
+				value > gdp_ai_trade_monopoly_min_market_opinion_value
+			}
+			trigger_if = {
+				limit = {
+					$ACTOR$ = { government_has_flag = government_is_republic }
+				}
+				OR = {
+					NOT = { government_has_flag = government_is_republic }
+					AND = {
+						exists = scope:ai_monopoly_league
+						is_member_of_confederation = scope:ai_monopoly_league
+					}
+				}
+			}
+		}
+	}
+	NOT = {
+		any_trade_route_in_market = {
+			trade_route_owner ?= { is_ai = no }
+			any_traded_good = { has_category = $CATEGORY$ }
+		}
+	}
+}
+
+gdp_ai_monopoly_route_trigger = {
+	any_traded_good = { has_category = $CATEGORY$ }
+	any_trade_market_on_route = {
+		gdp_ai_can_monopolize_market_trigger = {
+			CATEGORY = $CATEGORY$
+			ACTOR = $ACTOR$
+		}
+	}
+}
+
+gdp_ai_monopoly_high_value_category_trigger = {
+	OR = {
+		this = trade_good_category:trade_category_luxury_items
+		this = trade_good_category:trade_category_jewelry_materials
+		this = trade_good_category:trade_category_precious_metals
+		this = trade_good_category:trade_category_luxury_consumption
+		this = trade_good_category:trade_category_incense
+		this = trade_good_category:trade_category_medicaments
+		this = trade_good_category:trade_category_books
+		this = trade_good_category:trade_category_dyes
+		this = trade_good_category:trade_category_alum
+	}
+}
+
+gdp_ai_monopoly_purpose_category_trigger = {
+	OR = {
+		AND = {
+			$ACTOR$ = { has_realm_law = company_purpose_artisan }
+			OR = {
+				this = trade_good_category:trade_category_luxury_items
+				this = trade_good_category:trade_category_fabrics
+				this = trade_good_category:trade_category_dyes
+				this = trade_good_category:trade_category_alum
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = company_purpose_creditor }
+			OR = {
+				this = trade_good_category:trade_category_precious_metals
+				this = trade_good_category:trade_category_jewelry_materials
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = company_purpose_caravaneer }
+			OR = {
+				this = trade_good_category:trade_category_luxury_consumption
+				this = trade_good_category:trade_category_incense
+				this = trade_good_category:trade_category_beasts_of_burden
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_type_maritime }
+			OR = {
+				this = trade_good_category:trade_category_salt
+				this = trade_good_category:trade_category_carpentry_supplies
+				this = trade_good_category:trade_category_luxury_consumption
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_type_civic }
+			OR = {
+				this = trade_good_category:trade_category_clothes
+				this = trade_good_category:trade_category_fabrics
+				this = trade_good_category:trade_category_dyes
+				this = trade_good_category:trade_category_luxury_items
+				this = trade_good_category:trade_category_books
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_type_communal }
+			OR = {
+				this = trade_good_category:trade_category_cereals
+				this = trade_good_category:trade_category_comforts
+				this = trade_good_category:trade_category_alcohol
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_type_popular }
+			OR = {
+				this = trade_good_category:trade_category_cereals
+				this = trade_good_category:trade_category_salt
+				this = trade_good_category:trade_category_meat
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_type_noble }
+			OR = {
+				this = trade_good_category:trade_category_beasts_of_burden
+				this = trade_good_category:trade_category_base_metals
+				this = trade_good_category:trade_category_jewelry_materials
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_type_roman }
+			OR = {
+				this = trade_good_category:trade_category_cereals
+				this = trade_good_category:trade_category_stone
+				this = trade_good_category:trade_category_alcohol
+			}
+		}
+		AND = {
+			scope:ai_monopoly_league ?= { has_variable = is_hanseatic_league }
+			OR = {
+				this = trade_good_category:trade_category_meat
+				this = trade_good_category:trade_category_salt
+				this = trade_good_category:trade_category_alcohol
+				this = trade_good_category:trade_category_clothes
+				this = trade_good_category:trade_category_carpentry_supplies
+				this = trade_good_category:trade_category_jewelry_materials
+				this = trade_good_category:trade_category_cereals
+			}
+		}
+	}
+}
+
+gdp_ai_monopoly_trade_specialization_category_trigger = {
+	OR = {
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_specialization_base_needs }
+			OR = {
+				this = trade_good_category:trade_category_beasts_of_burden
+				this = trade_good_category:trade_category_cereals
+				this = trade_good_category:trade_category_meat
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_specialization_construction }
+			OR = {
+				this = trade_good_category:trade_category_carpentry_supplies
+				this = trade_good_category:trade_category_stone
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_specialization_metals }
+			OR = {
+				this = trade_good_category:trade_category_base_metals
+				this = trade_good_category:trade_category_precious_metals
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_specialization_luxury }
+			OR = {
+				this = trade_good_category:trade_category_books
+				this = trade_good_category:trade_category_jewelry_materials
+				this = trade_good_category:trade_category_luxury_items
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_specialization_luxury_food }
+			OR = {
+				this = trade_good_category:trade_category_alcohol
+				this = trade_good_category:trade_category_comforts
+				this = trade_good_category:trade_category_luxury_consumption
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_specialization_minerals }
+			OR = {
+				this = trade_good_category:trade_category_alum
+				this = trade_good_category:trade_category_salt
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_specialization_textiles }
+			OR = {
+				this = trade_good_category:trade_category_clothes
+				this = trade_good_category:trade_category_fabrics
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_specialization_unique }
+			OR = {
+				this = trade_good_category:trade_category_dyes
+				this = trade_good_category:trade_category_incense
+				this = trade_good_category:trade_category_medicaments
+			}
+		}
+	}
+}
+
+gdp_ai_monopoly_trade_pricing_category_trigger = {
+	OR = {
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_pricing_arsenal }
+			OR = {
+				this = trade_good_category:trade_category_base_metals
+				this = trade_good_category:trade_category_carpentry_supplies
+				this = trade_good_category:trade_category_stone
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_pricing_granary }
+			OR = {
+				this = trade_good_category:trade_category_cereals
+				this = trade_good_category:trade_category_salt
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_pricing_victualling }
+			OR = {
+				this = trade_good_category:trade_category_alcohol
+				this = trade_good_category:trade_category_meat
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_pricing_caravan }
+			OR = {
+				this = trade_good_category:trade_category_beasts_of_burden
+				this = trade_good_category:trade_category_incense
+				this = trade_good_category:trade_category_luxury_consumption
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_pricing_mint }
+			OR = {
+				this = trade_good_category:trade_category_jewelry_materials
+				this = trade_good_category:trade_category_precious_metals
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_pricing_dyeworks }
+			OR = {
+				this = trade_good_category:trade_category_alum
+				this = trade_good_category:trade_category_dyes
+				this = trade_good_category:trade_category_fabrics
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_pricing_drapery }
+			OR = {
+				this = trade_good_category:trade_category_clothes
+				this = trade_good_category:trade_category_luxury_items
+			}
+		}
+		AND = {
+			$ACTOR$ = { has_realm_law = republic_trade_pricing_apothecary }
+			OR = {
+				this = trade_good_category:trade_category_books
+				this = trade_good_category:trade_category_comforts
+				this = trade_good_category:trade_category_medicaments
+			}
+		}
+	}
+}
+
+gdp_can_be_ransomed_by_merchant = {
+	is_available_quick = {
+		landed = yes
+		imprisoned = yes
+	}
+	imprisoner != root
+	highest_held_title_tier >= tier_county
+	root.gold >= this.ransom_cost_value
+}
+
+suzerain_tier_to_company_size_shared_valid_trigger = {
+	trigger_if = {
+		limit = { suzerain ?= { highest_held_title_tier >= tier_empire } }
+		custom_tooltip = {
+			text = merchant_charter_company_size_requirement_empire_tt
+			has_realm_law = company_size_huge
+		}
+	}
+	trigger_else_if = {
+		limit = { suzerain ?= { highest_held_title_tier >= tier_kingdom } }
+		custom_tooltip = {
+			text = merchant_charter_company_size_requirement_kingdom_tt
+			OR = {
+				has_realm_law = company_size_large
+				has_realm_law = company_size_huge
+			}
+		}
+	}
+	trigger_else_if = {
+		limit = { suzerain ?= { highest_held_title_tier >= tier_duchy } }
+		custom_tooltip = {
+			text = merchant_charter_company_size_requirement_duchy_tt
+			OR = {
+				has_realm_law = company_size_medium
+				has_realm_law = company_size_large
+				has_realm_law = company_size_huge
+			}
+		}
+	}
+	trigger_else = { always = yes } # other validity checks should confirm
+
+}
+
+exceptional_diplo_range_trigger = {
+	#limit range for landless adventurers
+	trigger_if = {
+		limit = {
+			$CHARACTER$ = { has_government = landless_adventurer_government }
+		}
+		#Has to be used instead of diplo range checks in laamp to landed interactions
+		ep3_laamp_diplo_range_trigger = {
+			TARGET = $TARGET$
+			LAAMP = $CHARACTER$
+		}
+	}
+	# limit range for merchants
+	trigger_if = {
+		limit = {
+			$CHARACTER$ = {
+				has_government = merchant_government
+			}
+		}
+		gdp_merchant_diplo_range_trigger = {
+			TARGET = $TARGET$
+			MERCHANT = $CHARACTER$
+		}
+	}
+}
+
+merchant_trade_hook_from_ransom_trigger = {
+	scope:recipient = {
+		has_variable = merchant_ransom_hook_payer
+		var:merchant_ransom_hook_payer = scope:actor
+		has_variable = merchant_ransom_hook_gold
+	}
+}
+
+merchant_trade_hook_from_sponsor_trigger = {
+	scope:recipient = {
+		has_variable = merchant_sponsor_hook_payer
+		var:merchant_sponsor_hook_payer = scope:actor
+		has_variable = merchant_sponsor_hook_gold
+	}
+}

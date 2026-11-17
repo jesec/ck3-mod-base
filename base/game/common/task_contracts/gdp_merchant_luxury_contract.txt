@@ -1,0 +1,185 @@
+﻿menagerie_acquisition = {
+	group = merchant_luxury_contract_group
+	icon = "gfx/interface/icons/character_interactions/icon_luxury_contract.dds"
+	travel = yes
+	use_diplomatic_range = no
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+	}
+	valid_to_keep = {
+		task_contract_taker = { valid_merchant_contract_basic_trigger = yes }
+	}
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		merchant_trade_opportunity_valid_to_accept_contract_limit_trigger = yes
+		# Prevent AI wasting gold it doesn't have
+		trigger_if = {
+			limit = { is_ai = yes }
+			short_term_gold >= major_gold_value
+		}
+	}
+	valid_to_continue = {
+		task_contract_taker = { valid_merchant_contract_basic_trigger = yes }
+	}
+
+	weight = {
+		value = 1
+	}
+
+	on_accepted = {
+		task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_accept_contract" }
+		save_scope_as = task_contract # save contract
+		task_contract_location.barony = { save_scope_as = task_contract_title } # save location
+		task_contract_taker = {
+			trigger_event = gdp_merchant_luxury_contract.0001
+			remove_character_flag = menagerie_acquisition_rejected_other_path
+			remove_character_flag = menagerie_acquisition_failed_other_path
+		}
+	}
+
+	on_invalidated = {
+		merchant_luxury_contract_invalidated_message_effect = yes
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			effect = {
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
+				save_scope_as = task_contract
+				task_contract_taker = {
+					# Prestige reward
+					add_prestige = {
+						value = menagerie_acquisition_prestige_reward_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					# Set artifact owner
+					if = {
+						limit = { exists = scope:task_contract.var:artifact }
+						scope:task_contract.var:artifact = {
+							# Sometimes artifact is created directly on contract owner, and applying ownership again causes issues
+							if = { 
+								limit = { artifact_owner = scope:task_contract.task_contract_taker }
+								show_as_tooltip = { set_owner = scope:task_contract.task_contract_taker }
+							}
+							else = { set_owner = scope:task_contract.task_contract_taker }
+						}
+					}
+					# Pseudo tooltip for UI before artifact creation
+					else = { custom_tooltip = create_creature_artifact }
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			effect = {
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
+				save_scope_as = task_contract
+				task_contract_taker = {
+					add_stress = {
+						value = miniscule_stress_gain
+						multiply = trade_opportunity_contract_tier_value
+					}
+				}
+			}
+		}
+	}
+
+	on_completed = {
+		# GDP Associate promise
+		task_contract_taker = {
+			gdp_merchant_associate_promise_completed_effect = { TYPE = flag:luxury_contract }
+		}
+	}
+}
+
+find_curio = {
+	group = merchant_luxury_contract_group
+	icon = "gfx/interface/icons/character_interactions/icon_luxury_contract.dds"
+	travel = yes
+	use_diplomatic_range = no
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+	}
+	valid_to_keep = {
+		task_contract_taker = { valid_merchant_contract_basic_trigger = yes }
+	}
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		merchant_trade_opportunity_valid_to_accept_contract_limit_trigger = yes
+		# Prevent AI wasting gold it doesn't have
+		trigger_if = {
+			limit = { is_ai = yes }
+			short_term_gold >= major_gold_value
+		}
+	}
+	valid_to_continue = {
+		task_contract_taker = { valid_merchant_contract_basic_trigger = yes }
+	}
+
+	weight = {
+		value = 1
+	}
+
+	on_accepted = {
+		task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_accept_contract" }
+		save_scope_as = task_contract # save contract
+		task_contract_location.barony = { save_scope_as = task_contract_title } # save location
+		task_contract_taker = { trigger_event = gdp_merchant_luxury_contract.1001 }
+	}
+
+	on_invalidated = {
+		merchant_luxury_contract_invalidated_message_effect = yes
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			effect = {
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
+				save_scope_as = task_contract
+				task_contract_taker = {
+					# Prestige reward
+					add_prestige = {
+						value = find_curio_prestige_reward_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					# Set artifact owner
+					if = {
+						limit = { exists = scope:task_contract.var:artifact }
+						scope:task_contract.var:artifact = {
+							# Sometimes artifact is created directly on contract owner, and applying ownership again causes issues
+							if = { 
+								limit = { artifact_owner = scope:task_contract.task_contract_taker }
+								show_as_tooltip = { set_owner = scope:task_contract.task_contract_taker }
+							}
+							else = { set_owner = scope:task_contract.task_contract_taker }
+						}
+					}
+					# Pseudo tooltip for UI before artifact creation
+					else = { custom_tooltip = create_curio_or_book_artifact }
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			effect = {
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
+				save_scope_as = task_contract
+				task_contract_taker = {
+					add_stress = {
+						value = miniscule_stress_gain
+						multiply = trade_opportunity_contract_tier_value
+					}
+				}
+			}
+		}
+	}
+
+	on_completed = {
+		# GDP Associate promise
+		task_contract_taker = {
+			gdp_merchant_associate_promise_completed_effect = { TYPE = flag:luxury_contract }
+		}
+	}
+}

@@ -1,0 +1,42 @@
+﻿# Monopolies owned personally or through a held title
+ep5_04_there_can_be_only_one_achievement_monopoly_count_value = {
+	value = 0
+	every_trade_monopoly_for_character = {
+		add = 1
+	}
+	every_held_title = {
+		every_trade_monopoly_for_title = {
+			add = 1
+		}
+	}
+}
+
+# Monthly volume of the character's routes that sell Spices into a European Entrepot market
+ep5_10_the_spice_must_flow_achievement_volume_value = {
+	value = 0
+	every_trade_route = {
+		limit = {
+			any_traded_good = {
+				this = trade_good_type:trade_good_spices
+			}
+			save_temporary_scope_as = spice_route_temp
+			any_trade_market_on_route = {
+				save_temporary_scope_as = spice_market_temp
+				trade_market_owner.title_province ?= {
+					geographical_region = world_europe
+				}
+				trade_market_has_entrepot_district_trigger = yes
+				scope:spice_route_temp = {
+					any_traded_good = {
+						this = trade_good_type:trade_good_spices
+						trade_good_sold_by_route_in_market_trigger = {
+							ROUTE = scope:spice_route_temp
+							MARKET = scope:spice_market_temp
+						}
+					}
+				}
+			}
+		}
+		add = current_capacity
+	}
+}

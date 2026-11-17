@@ -212,13 +212,12 @@ types HouseAspirations
 			datacontext = "[HouseAspirationWindow.GetHouseAspiration]"
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
+			spacing = 8
 
 			hbox = {
 				name = "level_track"
 				datamodel = "[HouseAspiration.GetLevels]"
 				visible = "[GreaterThan_int32( GetDataModelSize( HouseAspiration.GetLevels ), '(int32)1' )]"
-				margin_bottom = 12
-				margin_top = 4
 
 				item = {
 					hbox = {
@@ -250,7 +249,7 @@ types HouseAspirations
 							button_icon_highlight = {
 								name = "level_icon"
 								parentanchor = center
-								size = { 41 24 }
+								size = { 40 40 }
 								down = "[HouseAspirationWindow.IsSelectedLevelIndex(PdxGuiWidget.GetIndexInDataModel)]"
 								alwaystransparent = yes
 								texture = "[HouseAspirationWindow.GetLevelIconForHouseAspirationLevel(PdxGuiWidget.GetIndexInDataModel)]"
@@ -268,6 +267,14 @@ types HouseAspirations
 						}
 					}
 				}
+			}
+
+
+			text_single = {
+				visible = "[HouseAspiration.UpgradesAutomatically]"
+				text = FAMILY_ATTRIBUTE_WINDOW_HOUSE_AUTOMATIC_LEVELS
+				align = nobaseline
+				default_format = "#weak"
 			}
 
 			scrollbox = {
@@ -292,9 +299,16 @@ types HouseAspirations
 						datamodel = "[HouseAspiration.GetLevels]"
 						item = {
 							vbox_house_aspiration_level_info = {
-								visible = "[HouseAspirationWindow.IsSelectedLevelIndex(PdxGuiWidget.GetIndexInDataModel)]"
+								visible = "[HouseAspirationWindow.IsSelectedLevelIndex( PdxGuiWidget.GetIndexInDataModel )]"
 							}
 						}
+					}
+
+					text_multi = {
+						min_width = 450
+						max_width = 450
+						text = "[HouseAspirationWindow.GetSelectedHouseAspirationCanUpgradeDesc]"
+						autoresize = yes
 					}
 				}
 			}
@@ -336,7 +350,7 @@ types HouseAspirations
 				}
 
 				text_single = {
-					visible = "[HouseAspirationWindow.HasSelectedHouseAspirationCost]"
+					visible = "[Not(And3(HouseAspirationWindow.IsCurrentHouseAspirationSelected, IsRepublican( GetPlayer ), HouseAspirationWindow.HasSelectedHouseAspirationCost ) )]"
 					layoutpolicy_horizontal = expanding
 					align = center|nobaseline
 					text = "FAMILY_ATTRIBUTE_WINDOW_HOUSE_POWER_COST"
@@ -355,7 +369,7 @@ types HouseAspirations
 					}
 
 					button_primary_big = {
-						visible = "[And( HouseAspirationWindow.IsCurrentHouseAspirationSelected, HouseAspiration.HasMultipleLevels )]"
+						visible = "[And3( HouseAspirationWindow.IsCurrentHouseAspirationSelected, HouseAspiration.HasMultipleLevels, Not( HouseAspiration.UpgradesAutomatically ) )]"
 						text = "FAMILY_ATTRIBUTE_WINDOW_UPGRADE_HOUSE_POWER"
 
 						enabled = "[IsValidCommand( HouseAspirationWindow.UpgradeHouseAspiration )]"

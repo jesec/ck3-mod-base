@@ -49,20 +49,16 @@ on_confederation_join = {
 			target = scope:confederation
 		}
 		save_scope_as = joiner
-		confederation = {
-			save_scope_as = confederation
-			every_confederation_member = {
-				limit = {
-					NOT = {
-						this = root
-					}
-				}
-				send_interface_message = {
-					type = msg_joined_confederation
-					title = msg_joined_confederation
-					desc = msg_joined_confederation_desc
-					left_icon = scope:joiner
-				}
+		every_player = {
+			limit = {
+				confederation ?= scope:confederation
+				this != scope:joiner
+			}
+			send_interface_message = {
+				type = msg_joined_confederation
+				title = msg_joined_confederation
+				desc = msg_joined_confederation_desc
+				left_icon = scope:joiner
 			}
 		}
 	}

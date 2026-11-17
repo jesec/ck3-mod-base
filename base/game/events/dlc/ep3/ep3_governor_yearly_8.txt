@@ -993,7 +993,11 @@ ep3_governor_yearly.8040 = {
 				base = 1
 				modifier = {
 					add = 1
-					government_has_flag = government_is_republic
+					OR = {
+						government_has_flag = government_is_republic
+						government_has_flag = government_is_merchant	
+					}
+					
 				}
 				modifier = {
 					add = -1
@@ -1019,7 +1023,7 @@ ep3_governor_yearly.8040 = {
 		name = ep3_governor_yearly.8040.a
 		increase_governance_effect = { VALUE = 5 }
 		add_character_modifier = {
-			modifier = ep3_governor_yearly_8040_province_development_modifier
+			modifier = ep3_governor_yearly_8040_province_prosperity_modifier
 			years = 10
 		}
 		reverse_add_opinion = {
@@ -1043,7 +1047,7 @@ ep3_governor_yearly.8040 = {
 	option = { # Focus on estate
 		name = ep3_governor_yearly.8040.b
 		add_character_modifier = {
-			modifier = ep3_governor_yearly_8040_domicile_development_modifier
+			modifier = ep3_governor_yearly_8040_domicile_prosperity_modifier
 			years = 10
 		}
 		reverse_add_opinion = {
@@ -1325,12 +1329,9 @@ scripted_trigger ep3_governor_yearly_8060_complainant_trigger = {
 
 scripted_effect ep3_governor_yearly_8060_success_effect = {
 	add_short_term_gold = scope:gold
-	custom_tooltip = {
-		text = ep3_governor_yearly.8060.efficiency_tt
-		add_character_flag = {
-			flag = ep3_8060_efficiency_drop
-			years = 10
-		}
+	add_character_modifier = {
+		modifier = ep3_governor_yearly_8060_efficiency_drop_modifier
+		years = 10
 	}
 }
 
@@ -2132,9 +2133,9 @@ ep3_governor_yearly.8090 = {
 
 	option = { # Antagonize
 		name = ep3_governor_yearly.8090.a
-		set_relation_rival = {
-			target = scope:old_holder
-			reason = rival_ep3_province_claim
+		set_relation_rival_effect = {
+		    TARGET = scope:old_holder
+		    REASON = rival_ep3_province_claim
 		}
 		duel = {
 			skills = { stewardship intrigue }
@@ -2784,7 +2785,7 @@ ep3_governor_yearly.8110 = {
 #####################################
 
 scripted_trigger ep3_governor_yearly_8120_county_trigger = {
-	county_control >= 75
+	county_control >= county_control_relative_75
 	OR = {
 		ep3_governor_yearly_8120_earthquake_trigger = yes
 		ep3_governor_yearly_8120_storm_trigger = yes
@@ -2870,7 +2871,7 @@ ep3_governor_yearly.8120 = {
 			}
 			save_scope_as = disaster_county
 			change_county_control = -30
-			change_development_progress_with_overflow = -50
+			change_prosperity_progress_with_overflow = -50
 		}
 	}
 
@@ -2894,7 +2895,7 @@ ep3_governor_yearly.8120 = {
 					increase_governance_effect = { VALUE = 5 }
 					scope:disaster_county = {
 						change_county_control = 20
-						change_development_progress_with_overflow = 40
+						change_prosperity_progress_with_overflow = 40
 					}
 					add_character_modifier = {
 						modifier = ep3_governor_yearly_8120_relief_leader_modifier
@@ -3186,7 +3187,7 @@ ep3_governor_yearly.8140 = {
 			}
 			save_scope_as = peasant
 		}
-		scope:estate_county = { change_development_progress_with_overflow = -50 }
+		scope:estate_county = { change_prosperity_progress_with_overflow = -50 }
 	}
 
 	option = { # Fine family
@@ -3341,7 +3342,11 @@ scripted_trigger ep3_governor_yearly_8150_county_trigger = {
 }
 
 scripted_trigger ep3_governor_yearly_8150_create_faction_chance_trigger = {
-	county_opinion < -25
+	popular_opinion < -25
+	can_title_create_faction = {
+		type = $TYPE$_faction
+		target = root
+	}
 	title_create_faction_type_chance = {
 		type = $TYPE$_faction
 		target = root
@@ -3491,7 +3496,7 @@ ep3_governor_yearly.8150 = {
 					base = 1
 					modifier = {
 						add = {
-							value = county_opinion
+							value = popular_opinion
 							multiply = -1
 						}
 					}
@@ -3507,7 +3512,7 @@ ep3_governor_yearly.8150 = {
 			list = rebel_counties
 			order_by = {
 				value = 0
-				subtract = county_opinion
+				subtract = popular_opinion
 			}
 			save_scope_as = rebel_county
 		}
@@ -3691,7 +3696,7 @@ ep3_governor_yearly.8150 = {
 			check_range_bounds = no
 			order_by = {
 				value = 0
-				subtract = county_opinion
+				subtract = popular_opinion
 			}
 			title_join_faction = scope:targeting_faction
 		}
@@ -3820,7 +3825,7 @@ ep3_governor_yearly.8160 = {
 			alternative_limit = { ep3_governor_yearly_8160_faith_trigger = yes }
 			weight = {
 				base = 1
-				modifier = { add = development_level }
+				modifier = { add = prosperity_level }
 				modifier = {
 					holder = root
 					factor = 2

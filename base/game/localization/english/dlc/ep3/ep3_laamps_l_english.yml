@@ -2,7 +2,11 @@
  domicile_name: "[CHARACTER.GetDynastyHouseNameNoTooltip] [DOMICILE_TYPE.GetNameNoTooltip]"
  unowned_domicile_name: "[TITLE.GetNameNoTooltip] [DOMICILE_TYPE.GetNameNoTooltip]"
  domicile_name_possessive: "[CHARACTER.GetDynastyHouseNameNoTooltip] [DOMICILE_TYPE.GetNamePossessiveNoTooltip]"
- noble_family_name: "[Select_CString( CHARACTER.GetHouse.IsValid, CHARACTER.GetHouse.GetBaseNameNoTooltip, CHARACTER.GetNameNoTooltip)] Family"
+ noble_family_name: "[Select_CString( CHARACTER.GetHouse.IsValid, CHARACTER.GetHouse.GetBaseNameNoTooltip, CHARACTER.GetNameNoTooltip)] [CHARACTER.Custom('GetNobleFamilySuffix')]"
+ c_nf_default_suffix: "Family"
+ c_nf_jin_suffix: "Family" # Hala
+ c_nf_china_suffix: "Family" # Shì
+ patrician_family_name_001: "[new_patrician.GetHouse.GetBaseNameNoTooltip] [new_patrician.Custom('GetNobleFamilySuffix')]"
  adventurer_name: "[new_landless_adventurer.GetFirstNamePossessiveNoTooltip] Camp"
  adventurer_name_001: "[new_landless_adventurer.Custom('GetAdventureNamePrefixes')|U] [new_landless_adventurer.Custom('GetAdventureNameAnimals')|U]"
  adventurer_name_002: "[new_landless_adventurer_house.GetBaseNameNoTooltip|U] [new_landless_adventurer.Custom('GetAdventureNameBand')|U]"
@@ -67,15 +71,16 @@
  laamp_vassal_breakaway_tt: "Every vassal has a chance to break away"
  contract_title: "[CHARACTER.GetDynastyHouseNameNoTooltip] Contract"
 
- ep3_laamp_diplo_range_trigger_tt_desc: "[TARGET_CHARACTER.GetShortUINamePossessive] [capital|E] is in range of [CHARACTER.GetShortUINamePossessive] [camp|E]."
- ep3_laamp_diplo_range_trigger_tt_not_desc: "[TARGET_CHARACTER.GetShortUINamePossessive] [capital|E] is too far away. [CHARACTER.GetShortUINamePossessive|U] [camp|E] must be moved closer."
-
+ ep3_laamp_diplo_range_trigger_tt_desc: "[TARGET_CHARACTER.GetShortUINamePossessive|U] [capital|E] is in range of [CHARACTER.GetShortUINamePossessive] [camp|E]."
+ ep3_laamp_diplo_range_trigger_tt_not_desc: "[TARGET_CHARACTER.GetShortUINamePossessive|U] [capital|E] is too far away\n#help [CHARACTER.GetShortUINamePossessive|U] [camp|E] must be moved closer"
  PROVISION_COST_TO_OWNER_TRIGGER: "[provisions|E] cost between $DOMICILE_LOCATION$ and $OWNER_LOCATION$ is $COMPARATOR$ $NUM|V$"
  PROVISION_COST_TO_DOMICILE_TRIGGER: "[provisions|E] cost between $DOMICILE_LOCATION$ and $OWNER_LOCATION$ is $COMPARATOR$ $NUM|V$"
- PROVISIONS_GREATER_OR_EQUAL_TRIGGER: "[provisions|E] are greater or equal to $NUM|V$"
- NOT_PROVISIONS_GREATER_OR_EQUAL_TRIGGER: "[provisions|E] are NOT greater or equal to @provisions_icon!$NUM|V0$"
+ PROVISIONS_GREATER_OR_EQUAL_TRIGGER: "[provisions|E] are at least $NUM|V$"
+ NOT_PROVISIONS_GREATER_OR_EQUAL_TRIGGER: "[provisions|E] are less than @provisions_icon!$NUM|V0$"
 
  destroy_laamp_effect.tt.domicile_liquidated: "All [camp|E] buildings will be demolished, and a portion of their costs returned"
  destroy_laamp_effect.tt.domicile_liquidated_title: "Camp Liquidated"
  can_move_domicile_camp_exile.tt: "The [holder|E] of this [county|E], or a [liege|E], has exiled you"
  LAAMP_AGE_LIMIT: "You can't create an adventurer younger than 16."
+ fleeing_republic_landless_adventurer_created_message_eradicate_tt: "Marked as an Enemy of the State, [new_landless_adventurer.GetShortUINamePossessive|U] took to the open road to escape persecution."
+ 

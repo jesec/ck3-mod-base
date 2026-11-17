@@ -674,16 +674,14 @@ board_games.0001 = {
 			# Yes! I countered them.
 			triggered_desc = {
 				trigger = {
-					exists = scope:bg_counterer
-					this = scope:bg_counterer
+					scope:bg_counterer ?= this
 				}
 				desc = board_games.0001.desc.i_have_countered
 			}
 			# Yes! I have been countered.
 			triggered_desc = {
 				trigger = {
-					exists = scope:bg_counterer
-					this != scope:bg_counterer
+					scope:bg_counterer ?= scope:bg_opponent
 				}
 				desc = board_games.0001.desc.i_am_countered
 			}
@@ -2220,8 +2218,7 @@ scripted_effect bg_calc_current_scores_effect = {
 				## First, work out if we've been countered.
 				if = {
 					limit = {
-						exists = scope:bg_counterer
-						scope:bg_counterer = $OTHER_PLAYER$
+						scope:bg_counterer ?= $OTHER_PLAYER$
 					}
 					# Lots'n'lots for crit successes.
 					if = {
@@ -2263,8 +2260,7 @@ scripted_effect bg_calc_current_scores_effect = {
 				## Otherwise, we can use the normal values.
 				if = {
 					limit = {
-						exists = scope:bg_counterer
-						scope:bg_counterer = $CURRENT_PLAYER$
+						scope:bg_counterer ?= $CURRENT_PLAYER$
 					}
 					# Lots'n'lots for crit successes.
 					if = {
@@ -2437,8 +2433,6 @@ board_games.0011 = {
 
 	immediate = {
 		# Work out counterers.
-		## First, clear the prior counterer (if any).
-		clear_saved_scope = bg_counterer
 		## Scope:bg_defender.
 		### Scope:bg_skill_a > scope:bg_skill_b.
 		if = {
@@ -2488,6 +2482,10 @@ board_games.0011 = {
 				scope:bg_defender_move = scope:bg_skill_a
 			}
 			scope:bg_attacker = { save_scope_as = bg_counterer }
+		}
+		else = {
+			# clear saved scope not work in chains
+			dummy_male = { save_scope_as = bg_counterer }
 		}
 		# Calc new score totals.
 		bg_calc_current_scores_effect = {

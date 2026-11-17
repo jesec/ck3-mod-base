@@ -63,39 +63,45 @@ siege_engineer_build_equipment = {
 	}
 
 	on_monthly = {
+		# Aptitude is expensive, so only work it out on the max possible chance. Outer chance x inner multiply must be 100
+		# See "Chance gates" in _court_position_tasks.info
 		random = {
-			chance = {
-				value = 1
-				add = "root.aptitude(siege_engineer_court_position)"
-			}
-			scope:liege ?= {
-				if = {
-					limit = {
-						any_maa_regiment = {
-							is_unit_type = siege_weapon
-						}
-					}
-					random_maa_regiment = {
-						limit = {
-							is_unit_type = siege_weapon
-							can_upgrade_maa = yes
-						}
-						change_maa_regiment_size = 1
-					}
+			chance = 5
+			random = {
+				chance = {
+					value = 1
+					add = "root.aptitude(siege_engineer_court_position)"
+					multiply = 20
 				}
-				else_if = {
-					limit = {
-						NOT = {
+				scope:liege ?= {
+					if = {
+						limit = {
 							any_maa_regiment = {
 								is_unit_type = siege_weapon
 							}
 						}
-						maa_regiments_count < maa_regiments_max_count
+						random_maa_regiment = {
+							limit = {
+								is_unit_type = siege_weapon
+								can_upgrade_maa = yes
+							}
+							change_maa_regiment_size = 1
+						}
 					}
-					create_maa_regiment = {
-						type = onager
-						check_can_recruit = no
-						size = 1
+					else_if = {
+						limit = {
+							NOT = {
+								any_maa_regiment = {
+									is_unit_type = siege_weapon
+								}
+							}
+							maa_regiments_count < maa_regiments_max_count
+						}
+						create_maa_regiment = {
+							type = onager
+							check_can_recruit = no
+							size = 1
+						}
 					}
 				}
 			}

@@ -1,0 +1,107 @@
+﻿# Merchant related script values for GDP
+
+seek_trade_opportunity_decision_cooldown_years_value = {
+	value = 2
+}
+
+challenge_competitor_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+	# Weight up with number of local competitors
+	save_temporary_scope_as = owner
+	domicile.domicile_location.county = {
+		every_county_province = {
+			every_province_domicile = {
+				limit = {
+					is_domicile_type = merchant_company
+					NOT = { owner = scope:owner }
+				}
+				add = 25
+				if = {
+					limit = {
+						owner = { trade_competitiveness > scope:owner.trade_competitiveness }
+					}
+					add = 25
+				}
+			}
+		}
+	}
+}
+
+promote_goods_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+market_investment_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+exploit_upheaval_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+alleviate_upheaval_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+support_guilds_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+	multiply = 1.5 # purpose
+}
+
+seek_debtors_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+	multiply = 1.5 # purpose
+}
+
+sabotage_competition_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+build_category_connections_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+disrupt_charter_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+silk_road_network_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+silk_road_caravan_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+entrepot_buy_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+entrepot_sell_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+negotiate_tolls_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+smuggle_goods_trade_opportunity_weight_value = {
+	value = task_contract_weight_default_value # Standard weights.
+}
+
+trade_opportunity_contract_tier_value = {
+	value = 1
+	if = {
+		limit = {
+			scope:task_contract.task_contract_tier >= define:NTaskContract|MEDIUM_TASK_CONTRACT_TIER
+			scope:task_contract.task_contract_tier < define:NTaskContract|HIGH_TASK_CONTRACT_TIER
+		}
+		add = 0.5
+	}
+	else_if = {
+		limit = {
+			scope:task_contract.task_contract_tier >= define:NTaskContract|HIGH_TASK_CONTRACT_TIER
+		}
+		add = 1
+	}
+}

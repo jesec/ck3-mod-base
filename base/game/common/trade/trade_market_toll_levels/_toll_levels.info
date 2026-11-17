@@ -1,0 +1,43 @@
+﻿##########################
+# Tolls
+#
+# Tolls are imposed by a market owner on the market.
+# For every sell transaction in the market, the trade route owner loses some profit to tolls, and the owner generates some
+# Both rates are calculated from the gross profits of the transaction
+##########################
+
+toll_type = {
+
+	### Toll Rates
+	# Traders and market owners have separate toll rates
+	# They do not need to match, meaning a merchant may be paying more than the market owner earns and vice versa
+	#
+
+	### Brief: route_owner_toll_rate (value)
+	# How much should the route owner pay in tolls on their sell transactions in the market
+	# Value is a percentage between 0% and 100%, e.g. 0.1 = 10%
+	#
+	route_owner_toll_rate = 0.10
+
+	### Brief: market_owner_toll_rate (value)
+	# How much should the market owner profit from each sell transaction in the market
+	# Value is a percentage between 0% and 100%, e.g. 0.05 = 5%
+	#
+	market_owner_toll_rate = 0.05
+
+	### Brief: ai_market_owner_desire (value)
+	# How much does the ai want to enact this toll level?
+	# Scripted value, root is the market owner
+	# trade_market is the market being considered
+	#
+	ai_market_owner_desire = {
+		value = 10
+		if = {
+			limit = {
+				has_trait = greedy
+				scope:trade_market.toll_level = toll_level_low_tolls
+			}
+			add = 100
+		}
+	}
+}

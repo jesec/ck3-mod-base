@@ -1,0 +1,615 @@
+﻿##########################
+# General Republic Events
+##########################
+namespace = republic_event
+
+### Follow-up/confirmation event for founding a republic - gdp_adopt_republic_government_decision
+republic_event.0001 = {
+	type = character_event
+	window = big_event_window
+	title = republic_event.0001.t
+	desc = republic_event.0001.desc
+	theme = republic
+
+	override_effect_2d = {
+		reference = legend_glow
+	}
+
+	left_portrait = {
+		character = root
+		animation = toast_goblet
+		camera = camera_body_left_slight
+	}
+
+	immediate = {
+		gdp_found_a_republic_effect = yes
+	}
+
+	option = {
+		name = republic_event.0001.a
+	}
+}
+
+### Follow-up/confirmation event for tribals adopting republican ways - gdp_adopt_republican_ways_decision
+republic_event.0002 = {
+	type = character_event
+	window = big_event_window
+	title = republic_event.0002.t
+	desc = republic_event.0002.desc
+	theme = republic
+
+	override_effect_2d = {
+		reference = legend_glow
+	}
+
+	left_portrait = {
+		character = root
+		animation = toast_goblet
+		camera = camera_body_left_slight
+	}
+
+	immediate = {
+		gdp_convert_tribal_realm_to_republic_effect = yes
+	}
+
+	option = {
+		name = republic_event.0002.a
+	}
+}
+
+### Follow-up/confirmation event for restoring the Roman Republic - gdp_restore_roman_republic_decision
+republic_event.0100 = {
+	type = character_event
+	#window = big_event_window
+	window = fullscreen_event
+	title = republic_event.0100.t
+	desc = republic_event.0100.desc
+	theme = republic
+	override_background = { reference = ep3_triumph }
+	queue_icon = "gfx/interface/icons/laws/republic_type_roman_small.dds"
+
+	immediate = {
+		gdp_restore_the_roman_republic_effect = yes
+	}
+
+	option = {
+		name = republic_event.0100.a
+
+		# Make Rome the capital, and give it some additional benefits
+		# If we don't hold Rome outselves, we revoke it
+		if = {
+			limit = {
+				title:c_roma_urbs.holder != root
+			}
+			create_title_and_vassal_change = {
+				type = revoked
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			title:c_roma_urbs = {
+				change_title_holder = {
+					holder = root
+					change = scope:change
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		# If Rome is not the capital already, make it so
+		if = {
+			limit = {
+				capital_county != title:c_roma_urbs
+			}
+			set_realm_capital = title:c_roma_urbs
+		}
+		# If Rome doesn't have a Great District, we add a Great Plaza for free
+		title:c_roma_urbs.title_province = {
+			if = {
+				limit = {
+					has_great_district = no
+				}
+				add_great_district = republic_great_plaza_district
+			}
+		}
+	}
+
+	option = {
+		name = republic_event.0100.b
+	}
+}
+
+### Notification/letter event from revoke_capital_trade_post_interaction
+republic_event.0010 = {
+	type = letter_event
+	opening = {
+		desc = republic_event.0010.opening
+	}
+	desc = republic_event.0010.desc
+	sender = scope:actor
+
+	immediate = {
+		show_as_tooltip = {
+			scope:actor.capital_province ?= {
+				set_trade_post_owner = scope:actor
+			}
+		}
+	}
+
+	option = {
+		name = republic_event.0010.a
+	}
+}
+
+### Notification/letter event from oust_trade_post_interaction
+republic_event.0012 = {
+	type = letter_event
+	opening = {
+		desc = republic_event.0010.opening # We re-use the same loc key
+	}
+	desc = republic_event.0012.desc
+	sender = scope:actor
+
+	immediate = {
+		scope:target.district_province ?= {
+			remove_district_type = trade_post_location_district
+		}
+	}
+
+	option = {
+		name = republic_event.0012.a
+	}
+}
+
+### Republic ruler (i.e. doge) is enforced to enact a new budget
+# Based on tgp_china_ministry.0100, but separate because republics have their own treasury and budget setup
+republic_event.0020 = {
+	type = character_event
+	title = republic_event.0020.t
+	desc = {
+		desc = republic_event.0020.intro
+		desc = newline.desc
+		# Desc depending on if you have someone to tell you about the budget or not
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:steward
+				}
+				desc = republic_event.0020.steward_desc
+			}
+			desc = republic_event.0020.solo_desc
+		}
+		# Reason for needing a new budget
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					monthly_character_treasury_balance < -40
+				}
+				desc = republic_event.0020.deficit_desc
+			}
+			triggered_desc = {
+				trigger = {
+					character_treasury_new_budget_capacity >= { value = character_treasury_budget_capacity multiply = 1.3 }
+				}
+				desc = republic_event.0020.income_desc
+			}
+			desc = republic_event.0020.fallback_desc
+		}
+		triggered_desc = {
+			trigger = {
+				exists = scope:steward
+			}
+			desc = single_quotation_desc
+		}
+	}
+	theme = stewardship
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = { exists = scope:steward }
+			animation = steward
+		}
+		triggered_animation = {
+			trigger = { NOT = { exists = scope:steward } }
+			animation = stressed_teacher
+		}
+	}
+	right_portrait = {
+		character = scope:steward
+		animation = stressed_teacher
+	}
+	
+	trigger = {
+		gdp_is_assembly_head_trigger = yes
+		has_treasury = yes
+		is_independent_ruler = yes
+		OR = { # You are not travelling, but we don't mind if AI is
+			is_ai = yes
+			is_travelling = no
+		}
+		OR = {
+			# The AI hasn't set a new budget recently
+			AND = {
+				is_ai = yes
+				treasury_months_since_budget_enact_date >= 60
+			}
+			# The player hasn't set a new budget recently (time is more generous than for the AI)
+			treasury_months_since_budget_enact_date >= 96
+			# Left over treasury is more than 30% larger than the last budget
+			character_treasury_new_budget_capacity >= { value = character_treasury_budget_capacity multiply = 1.3 }
+			# You are running too big a deficit
+			monthly_character_treasury_balance < -50
+		}
+	}
+
+	immediate = {
+		save_scope_as = treasury_ruler
+		# We pick the steward, or a vassal, preferring assembly members
+		if = {
+			limit = { exists = cp:councillor_steward }
+			cp:councillor_steward = {
+				save_scope_as = steward
+			}
+		}
+		else_if = {
+			limit = {
+				any_vassal = {
+					count > 0
+					has_same_government = liege
+				}
+			}
+			random_vassal = {
+				limit = {
+					has_same_government = liege
+				}
+				weight = {
+					base = 1
+					modifier = {
+						is_councillor = yes
+						add = 5
+					}
+					modifier = {
+						is_assembly_member = yes
+						add = 25
+					}
+				}
+				
+				save_scope_as = steward
+			}
+		}
+		
+		if = {
+			limit = {
+				exists = scope:steward
+			}
+			random_list = {
+				10 = {
+					trigger = {
+						prefers_high_salary_budget_trigger = { CHARACTER = scope:steward }
+					}
+					save_scope_as = high_salary_budget
+				}
+				15 = { # We skew it slightly in favor of a more balanced budget - for balancing reasons
+					trigger = {
+						prefers_medium_salary_budget_trigger = { CHARACTER = scope:steward }
+					}
+					save_scope_as = medium_salary_budget
+				}
+				10 = {
+					trigger = {
+						prefers_low_salary_budget_trigger = { CHARACTER = scope:steward }
+					}
+					save_scope_as = low_salary_budget
+				}
+			}
+		}
+	}
+
+	option = { # Set a budget
+		name = republic_event.0020.a
+		
+		custom_tooltip =  republic_event.0020.a_tooltip
+		trigger_event = republic_event.0021
+		
+		ai_chance = {
+			base = 0
+		}
+	}
+
+	option = { # Let the steward handle the budget for you
+		trigger = {
+			exists = scope:steward
+		}
+		name = republic_event.0020.c
+		flavor = {
+			triggered_desc = {
+				trigger = {
+					OR = {
+						AND = {
+							exists = scope:high_salary_budget
+							has_realm_law = budget_allocation_salary_50
+						}
+						AND = {
+							exists = scope:medium_salary_budget
+							has_realm_law = budget_allocation_salary_30
+						}
+						AND = {
+							exists = scope:low_salary_budget
+							has_realm_law = budget_allocation_salary_15
+						}
+					}
+				}
+				desc = republic_event.0020.c_no_change
+			}
+		}
+		
+		if = { # High salary favored budget
+			limit = {
+				exists = scope:high_salary_budget
+				NOT = { has_realm_law = budget_allocation_salary_50 }
+			}
+			add_realm_law = budget_allocation_salary_50
+		}
+		else_if = { # Medium salary favored budget
+			limit = {
+				exists = scope:medium_salary_budget
+				NOT = { has_realm_law = budget_allocation_salary_30 }
+			}
+			add_realm_law = budget_allocation_salary_30
+		}
+		else_if = { # Low salary favored budget
+			limit = {
+				exists = scope:low_salary_budget
+				NOT = { has_realm_law = budget_allocation_salary_15 }
+			}
+			add_realm_law = budget_allocation_salary_15
+		}
+		enact_treasury_budgets_init = yes
+		
+		ai_chance = {
+			base = 100
+		}
+	}
+
+	option = { # Keep the existing budget
+		name = republic_event.0020.b
+		
+		enact_treasury_budgets_init = yes
+		
+		ai_chance = {
+			base = 0
+		}
+	}
+}
+
+# Follow-up: Pick which budget to enact
+republic_event.0021 = {
+	type = character_event
+	title = republic_event.0020.t
+	desc = republic_event.0021.desc
+	theme = stewardship
+	left_portrait = {
+		character = root
+		triggered_animation = {
+			trigger = { exists = scope:steward }
+			animation = steward
+		}
+		triggered_animation = {
+			trigger = { NOT = { exists = scope:steward } }
+			animation = stressed_teacher
+		}
+	}
+	right_portrait = {
+		character = scope:steward
+		animation = stressed_teacher
+	}
+
+	option = { # High salary budget
+		name = republic_event.0021.a
+		flavor = republic_event.0021.a.info_desc
+
+		if = { # If you already have the law, we only show it as being enacted
+			limit = { has_realm_law = budget_allocation_salary_50 }
+			show_as_tooltip = { add_realm_law = budget_allocation_salary_50 }
+		}
+		else = {
+			add_realm_law = budget_allocation_salary_50
+		}
+		enact_treasury_budgets_init = yes
+	}
+
+	option = { # Medium salary budget
+		name = republic_event.0021.b
+		flavor = republic_event.0021.b.info_desc
+
+		if = { # If you already have the law, we only show it as being enacted
+			limit = { has_realm_law = budget_allocation_salary_30 }
+			show_as_tooltip = { add_realm_law = budget_allocation_salary_30 }
+		}
+		else = {
+			add_realm_law = budget_allocation_salary_30
+		}
+		enact_treasury_budgets_init = yes
+	}
+
+	option = { # Low salary budget
+		name = republic_event.0021.c
+		flavor = republic_event.0021.c.info_desc
+
+		if = { # If you already have the law, we only show it as being enacted
+			limit = { has_realm_law = budget_allocation_salary_15 }
+			show_as_tooltip = { add_realm_law = budget_allocation_salary_15 }
+		}
+		else = {
+			add_realm_law = budget_allocation_salary_15
+		}
+		enact_treasury_budgets_init = yes
+	}
+}
+
+### Notification/letter event from rescind_trade_monopoly_interaction
+republic_event.0030 = {
+	type = letter_event
+	opening = {
+		desc = republic_event.0010.opening # Re-used loc
+	}
+	desc = republic_event.0030.desc
+	
+	sender = scope:actor
+
+	immediate = {
+		custom_tooltip = rescind_trade_monopoly_notification_base_desc
+		if = {
+			limit = { exists = scope:character_monopoly }
+			custom_tooltip = rescind_trade_monopoly_notification_character_desc
+		}
+		if = {
+			limit = { exists = scope:title_monopoly }
+			custom_tooltip = rescind_trade_monopoly_notification_title_desc
+		}
+		if = {
+			limit = { exists = scope:confederation_monopoly }
+			custom_tooltip = rescind_trade_monopoly_notification_confederation_desc
+		}
+	}
+
+	option = {
+		name = republic_event.0030.a
+	}
+}
+
+### Notification/letter event from remove_from_trade_league_interaction
+republic_event.0040 = {
+	type = letter_event
+	opening = {
+		desc = republic_event.0010.opening # Re-used loc
+	}
+	desc = republic_event.0040.desc
+	
+	sender = scope:actor
+
+	immediate = {
+		# Remove recipient from trade league
+		scope:actor.confederation = {
+			set_variable = league_expelling_member
+
+			remove_confederation_member_title = scope:recipient.primary_title
+		}
+	}
+
+	option = {
+		name = republic_event.0040.a
+		add_opinion = {
+			modifier = disrespect_opinion
+			target = scope:actor
+			opinion = -20
+		}
+	}
+
+}
+
+### Notification/letter event - vote - getting elected
+republic_event.0050 = {
+	type = letter_event
+	opening = {
+		desc = republic_event.assembly.opening
+	}
+	desc = republic_event.0050.desc
+	sender = scope:new_holder
+
+	immediate = {
+		show_as_tooltip = {
+			scope:new_holder = { get_title = scope:title }
+		}
+	}
+
+	option = {
+		name = republic_event.assembly.response
+	}
+}
+
+### Notification/letter event - vote - getting re-elected
+republic_event.0051 = {
+	type = letter_event
+	opening = {
+		desc = republic_event.assembly.opening
+	}
+	desc = republic_event.0051.desc
+	sender = scope:new_holder
+
+	immediate = {
+		show_as_tooltip = {
+			scope:new_holder = { get_title = scope:title }
+		}
+	}
+
+	option = {
+		name = republic_event.assembly.response
+	}
+}
+
+### Notification/letter event - vote - vote started
+republic_event.0052 = {
+	type = letter_event
+	opening = {
+		desc = republic_event.assembly.opening
+	}
+	desc = republic_event.0052.desc
+	sender = scope:proposer
+
+	trigger = {
+		exists = scope:proposer
+		scope:proposer = { is_alive = yes }
+	}
+
+	immediate = {
+		custom_tooltip = republic_event.law.TT
+	}
+
+	option = {
+		name = republic_event.assembly.response
+	}
+}
+
+### Notification/letter event - vote - vote outcome
+republic_event.0053 = {
+	type = letter_event
+	opening = {
+		desc = republic_event.assembly.opening
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					exists = scope:current_law
+					scope:current_law = scope:new_law
+				}
+				desc = republic_event.0053.pass.desc
+			}
+			desc = republic_event.0053.rejected.desc
+		}
+	}
+	sender = scope:proposer
+
+	trigger = {
+		exists = scope:proposer
+		scope:proposer = { is_alive = yes }
+	}
+
+	option = {
+		name = republic_event.assembly.response
+		if = {
+			limit = {
+				exists = scope:current_law
+				scope:current_law = scope:new_law
+			}
+			custom_tooltip = republic_event.law_passed.TT
+		}
+		else_if = {
+			limit = { exists = scope:current_law }
+			custom_tooltip = republic_event.law_rejected.TT
+			custom_tooltip = republic_event.law_kept.TT
+		}
+		else = {
+			custom_tooltip = republic_event.law_rejected.TT
+		}
+	}
+}

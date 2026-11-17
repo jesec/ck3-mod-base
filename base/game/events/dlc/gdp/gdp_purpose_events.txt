@@ -1,0 +1,376 @@
+﻿namespace = gdp_purpose_events
+
+# You are in debt, ask a merchant for a loan
+gdp_purpose_events.0001 = {
+	type = letter_event
+	opening = gdp_purpose_events.0001.opening
+	desc = gdp_purpose_events.0001.desc
+	sender = scope:merchant
+	cooldown = { years = 10 }
+
+	trigger = {
+		gold <= -100
+		is_landed = yes
+		any_in_global_list = {
+			variable = merchants_tally
+			holder = {
+				this != root
+				has_realm_law = company_purpose_creditor
+				NOT = { has_character_flag = merchant_lent_money_recently }
+				government_has_flag = government_is_merchant
+				gdp_merchant_would_lend_to_borrower_trigger = {
+					BORROWER = root
+				}
+				short_term_gold >= root.major_gold_value
+			}
+			gdp_merchant_diplo_range_trigger = {
+				TARGET = root
+				MERCHANT = holder
+			}
+		}
+	}
+
+	immediate = {
+		save_scope_as = indebted_ruler
+		random_in_global_list = {
+			variable = merchants_tally
+			limit = {
+				holder = {
+					this != root
+					has_realm_law = company_purpose_creditor
+					NOT = { has_character_flag = merchant_lent_money_recently }
+					government_has_flag = government_is_merchant
+					gdp_merchant_would_lend_to_borrower_trigger = {
+						BORROWER = root
+					}
+					short_term_gold >= root.major_gold_value
+				}
+				# Is within diplo range
+				gdp_merchant_diplo_range_trigger = {
+					TARGET = root
+					MERCHANT = holder
+				}
+			}
+			holder = { save_scope_as = merchant }
+		}
+	}
+
+
+	option = { # Send me the money!
+		name = gdp_purpose_events.0001.a
+		custom_tooltip = gdp_purpose_events.0001.a.tt
+		scope:merchant = {
+			add_character_flag = {
+				flag = merchant_lent_money_recently
+				years = 10
+			}
+			trigger_event = gdp_purpose_events.0002
+		}
+	}
+
+	option = { # Nah
+		name = gdp_purpose_events.0001.b
+		custom_tooltip = no_thanks.tt
+	}
+}
+
+# A ruler is in debt, asking you for a loan
+gdp_purpose_events.0002 = {
+	type = letter_event
+	opening = gdp_purpose_events.0002.opening
+	desc = gdp_purpose_events.0002.desc
+	sender = scope:indebted_ruler
+
+	immediate = {
+		scope:indebted_ruler = { save_scope_as = recipient }
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = {
+							scope:merchant = {
+								gdp_usury_condemns_loan_trigger = {
+									BORROWER = scope:indebted_ruler
+								}
+							}
+						}
+						desc = gdp_purpose_events.0002.a.sin
+					}
+					desc = gdp_purpose_events.0002.a
+				}
+			}
+		}
+		scope:indebted_ruler = {
+			set_up_new_loan_effect = {
+				LENDER = scope:merchant
+				AMOUNT = major_gold_value
+				INSTRUMENT = flag:open
+			}
+		}
+		gdp_purpose_events_0002_lend_effect = yes
+	}
+
+	option = {
+		name = gdp_purpose_events.0002.c
+		trigger = {
+			scope:merchant = {
+				gdp_usury_condemns_loan_trigger = {
+					BORROWER = scope:indebted_ruler
+				}
+			}
+		}
+		custom_tooltip = gdp_usury_disguised_loan_tt
+		scope:indebted_ruler = {
+			set_up_new_loan_effect = {
+				LENDER = scope:merchant
+				AMOUNT = major_gold_value
+				INSTRUMENT = flag:disguised
+			}
+		}
+		gdp_purpose_events_0002_lend_effect = yes
+	}
+
+	option = {
+		name = gdp_purpose_events.0002.d
+		scope:indebted_ruler = {
+			set_up_new_loan_effect = {
+				LENDER = scope:merchant
+				AMOUNT = major_gold_value
+				INSTRUMENT = flag:free
+			}
+		}
+		gdp_purpose_events_0002_lend_effect = yes
+	}
+
+	option = { # Nah
+		name = gdp_purpose_events.0002.b
+		scope:indebted_ruler = {
+			send_interface_toast = {
+				title = gdp_purpose_events.0002_fail_notification
+				type = event_toast_effect_bad
+				left_icon = scope:indebted_ruler					
+				right_icon = scope:merchant
+			}
+			add_opinion = {
+				target = scope:merchant
+				modifier = annoyed_opinion
+				opinion = -5
+			}
+		}
+	}
+}
+
+# You are at war, ask a merchant for sponsorship
+gdp_purpose_events.0003 = {
+	type = letter_event
+	opening = gdp_purpose_events.0001.opening
+	desc = gdp_purpose_events.0003.desc
+	sender = scope:merchant
+	orphan = yes
+	cooldown = { years = 10 }
+
+	trigger = {
+		is_available_quick = {
+			at_war = yes
+			landed = yes
+		}
+		NOT = {
+			government_has_flag = government_is_herder
+		}
+		any_tributary = {
+			is_ai = yes
+			has_realm_law_flag = unlock_military_merchant_patron_requests
+			NOT = { has_character_flag = merchant_lent_money_recently }
+			government_has_flag = government_is_merchant
+			save_temporary_scope_as = temp_merchant
+			root = {
+				any_character_war = {
+					NOT = { is_participant = scope:temp_merchant }
+				}
+			}
+			short_term_gold >= sponsor_war_value
+		}
+	}
+
+	immediate = {
+		save_scope_as = ruler
+		save_scope_as = temp_ruler # for the sponsor_war_value check
+		save_temporary_scope_value_as = {
+			name = sponsor_war_cost
+			value = sponsor_war_value
+		}
+		random_tributary = {
+			limit = {
+				is_ai = yes
+				has_realm_law_flag = unlock_military_merchant_patron_requests
+				NOT = { has_character_flag = merchant_lent_money_recently }
+				government_has_flag = government_is_merchant
+				save_temporary_scope_as = temp_merchant
+				root = {
+					any_character_war = {
+						NOT = { is_participant = scope:temp_merchant }
+					}
+				}
+				short_term_gold >= sponsor_war_value
+			}
+			weight = {
+				modifier = { add = short_term_gold }
+				opinion_modifier = {
+					opinion_target = root
+					multiplier = 1
+				}
+			}
+			save_scope_as = merchant
+		}
+	}
+
+	option = { # Sponsor me!
+		name = gdp_purpose_events.0003.a
+		custom_tooltip = gdp_purpose_events.0001.a.tt
+		scope:merchant = {
+			add_character_flag = {
+				flag = merchant_lent_money_recently
+				years = 10
+			}
+			trigger_event = gdp_purpose_events.0004
+		}
+	}
+
+	option = { # Nah
+		name = gdp_purpose_events.0003.b
+		custom_tooltip = no_thanks.tt
+	}
+}
+
+# A ruler is at war, asking you for sponsorship
+gdp_purpose_events.0004 = {
+	type = letter_event
+	opening = gdp_purpose_events.0004.opening
+	desc = gdp_purpose_events.0004.desc
+	sender = scope:ruler
+
+	option = { # Sponsor getherhim!
+		name = gdp_purpose_events.0004.a
+		ai_chance = { base = 50 }
+		scope:ruler = {
+			send_interface_toast = {
+				title = gdp_purpose_events.0002_notification
+				type = event_toast_effect_good
+				left_icon = scope:ruler
+				right_icon = scope:merchant
+				scope:merchant = {
+					send_interface_toast = {
+						title = gdp_purpose_events.0002_notification
+						type = event_toast_effect_good
+						left_icon = scope:merchant
+						right_icon = scope:ruler
+						scope:merchant = {
+							pay_short_term_gold = {
+								target = scope:ruler
+								gold = sponsor_war_value
+							}
+							add_hook = {
+								target = scope:ruler
+								type = indebted_hook
+							}
+							add_prestige = minor_prestige_gain
+							add_trait_xp = {
+								trait = lifestyle_merchant
+								track = creditor
+								value = lifestyle_merchant_xp_gain_minor_value
+							}
+							merchant_creditor_capstone_prestige_effect = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Sponsor getherhim with a mercenary discount!
+		name = gdp_purpose_events.0004.b
+		ai_chance = { base = 50 }
+		scope:ruler = {
+			send_interface_toast = {
+				title = gdp_purpose_events.0002_notification
+				type = event_toast_effect_good
+				left_icon = scope:ruler
+				right_icon = scope:merchant
+				scope:merchant = {
+					send_interface_toast = {
+						title = gdp_purpose_events.0002_notification
+						type = event_toast_effect_good
+						left_icon = scope:merchant
+						right_icon = scope:ruler
+						scope:ruler = {
+							add_character_modifier = {
+								modifier = merchant_patron_fund_mercenaries_modifier
+								years = 10
+							}
+						}
+						scope:merchant = {
+							remove_short_term_gold = sponsor_war_value
+							add_hook = {
+								target = scope:ruler
+								type = indebted_hook
+							}
+							add_prestige = minor_prestige_gain
+							add_trait_xp = {
+								trait = lifestyle_merchant
+								track = creditor
+								value = lifestyle_merchant_xp_gain_minor_value
+							}
+							merchant_creditor_capstone_prestige_effect = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = { # Nah
+		name = gdp_purpose_events.0002.b
+		scope:ruler = {
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				OR = {
+					opinion = {
+						target = scope:ruler
+						value <= 50
+					}
+					faith = {
+						faith_hostility_level = {
+							target = scope:ruler.faith
+							value >= 1
+						}
+					}
+				}
+				add = 75
+			}
+			modifier = {
+				scope:ruler = {
+					is_ai = no
+				}
+				factor = 0	
+			}
+		}
+		scope:ruler = {
+			send_interface_toast = {
+				title = gdp_purpose_events.0002_fail_notification
+				type = event_toast_effect_bad
+				left_icon = scope:ruler					
+				right_icon = scope:merchant
+			}
+			add_opinion = {
+				target = scope:merchant
+				modifier = annoyed_opinion
+				opinion = -5
+			}
+		}
+	}
+}

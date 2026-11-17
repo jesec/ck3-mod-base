@@ -1,0 +1,1116 @@
+﻿gg_months_until_dictatus_papae = {
+	value = 1075
+	subtract = current_year
+	multiply = 12
+	add = 1
+	subtract = current_month
+	min = 0
+}
+
+gg_years_until_dictatus_papae = {
+	value = gg_months_until_dictatus_papae
+	divide = 12
+	floor = yes
+}
+
+gg_months_until_concordat_of_worms = {
+	value = 1123
+	subtract = current_year
+	multiply = 12
+	add = 8
+	subtract = current_month
+	min = 0
+}
+
+gg_years_until_concordat_of_worms = {
+	value = gg_months_until_concordat_of_worms
+	divide = 12
+	floor = yes
+}
+
+gg_hre_no_cb_northern_italy_years_value = 30
+
+gg_pope_opinion_value = 35
+gg_pope_opinion_negative_value = {
+	value = gg_pope_opinion_value
+	multiply = -1
+}
+
+gg_vilified_ruler_years = 10
+
+house_members_to_banish_tier_value = {
+	add = 1
+	if = {
+		limit = { primary_title.tier >= tier_empire }
+		add = 1
+	}
+	else_if = {
+		limit = { primary_title.tier = tier_kingdom }
+		add = 0.75
+	}
+	else_if = {
+		limit = { primary_title.tier = tier_duchy }
+		add = 0.5
+	}
+	else_if = {
+		limit = { primary_title.tier = tier_county }
+		add = 0.25
+	}
+	else_if = {
+		limit = { primary_title.tier = tier_barony }
+		add = 0.1
+	}
+	every_close_or_extended_family_member = {
+		limit = {
+			top_liege = prev.top_liege
+			house = prev.house
+			NOR = {
+				any_spouse = { house ?= prev.top_liege.house }
+				any_parent = { house ?= prev.top_liege.house }
+			}
+		}
+		add = 0.5
+		if = {
+			limit = { primary_title.tier >= tier_empire }
+			add = 1
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_kingdom }
+			add = 0.75
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_duchy }
+			add = 0.5
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_county }
+			add = 0.25
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_barony }
+			add = 0.1
+		}
+	}
+	every_spouse = {
+		limit = {
+			top_liege = prev.top_liege
+			NOT = {
+				any_parent = { house ?= prev.top_liege.house }
+			}
+		}
+		add = 0.5
+		if = {
+			limit = { primary_title.tier >= tier_empire }
+			add = 1
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_kingdom }
+			add = 0.75
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_duchy }
+			add = 0.5
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_county }
+			add = 0.25
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_barony }
+			add = 0.1
+		}
+	}
+	every_consort = {
+		limit = {
+			top_liege = prev.top_liege
+			NOT = {
+				any_parent = { house ?= prev.top_liege.house }
+			}
+		}
+		add = 0.5
+		if = {
+			limit = { primary_title.tier >= tier_empire }
+			add = 1
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_kingdom }
+			add = 0.75
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_duchy }
+			add = 0.5
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_county }
+			add = 0.25
+		}
+		else_if = {
+			limit = { primary_title.tier = tier_barony }
+			add = 0.1
+		}
+	}
+}
+
+num_lombard_league_titles = {
+	#Venice
+	#Verona
+	#Padua
+	#Treviso
+	#Bologna
+	#Ferrara
+	#Modena
+	#Mantua
+	#Cremona
+	#Brescia
+
+	#Novara
+	#Tortona
+	#Piacenza
+	#Parma
+	#Genoa
+	#Guastalla
+	#Polesine
+	#Lombardia
+
+	value = 18
+}
+
+num_lombard_league_members = {
+	value = num_lombard_league_titles
+	subtract = 1 #... the leader doesn't count as a member
+}
+
+num_half_lombard_league_titles = {
+	value = num_lombard_league_titles
+	divide = 2
+}
+
+#Displace Ruler
+displace_gg_ai_score_value = {
+	value = 1
+	scope:attacker = {
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						is_guelph_trigger = yes
+						situation_guelph_score_percentage > 0.2
+					}
+					AND = {
+						is_ghibelline_trigger = yes
+						situation_ghibelline_score_percentage > 0.2
+					}
+				}
+			}
+			value = 10
+			add = ai_boldness
+		}
+		if = {
+			limit = {
+				OR = {
+					is_at_war = yes
+					scope:defender.confederation ?= { combined_military_strength >= scope:attacker.current_military_strength }
+					scope:defender.current_military_strength >= scope:attacker.current_military_strength
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+#Reinstate Ruler
+reinstate_gg_ai_score_value = {
+	value = 1
+	scope:attacker = {
+		add = ai_boldness
+		if = {
+			limit = {
+				OR = {
+					exists = var:guelph_leader
+					exists = var:ghibelline_leader
+				}
+			}
+			value = 10	
+		}
+		if = {
+			limit = {
+				OR = {
+					is_at_war = yes
+					scope:defender.confederation ?= { combined_military_strength >= scope:attacker.current_military_strength }
+					scope:defender.current_military_strength >= scope:attacker.current_military_strength
+				}
+			}
+			multiply = 0
+		}
+	}
+}
+
+gg_recruited_characters_goal = 5
+
+gg_involvement_modifier_cap = 10
+
+gg_involvement_base_value = 0
+gg_involvement_minimum_victory_value = gg_involvement_medium_value
+gg_involvement_minimum_compromise_value = gg_involvement_miniscule_value
+gg_involvement_minimum_leadership_value = gg_involvement_medium_value
+gg_involvement_base_addition_value = 2
+
+gg_involvement_miniscule_value = 5
+gg_involvement_minor_value = 10
+gg_involvement_medium_value = 15
+gg_involvement_major_value = 25
+gg_involvement_massive_value = 50
+gg_involvement_omega_value = 75
+gg_involvement_capped_value = 100
+
+gg_involvement_scheme_success_value = { #5
+	value = gg_involvement_base_addition_value
+	add = 3
+	if = {
+		limit = { gg_phase_gives_half_involvement_trigger = yes }
+		multiply = 0.5
+	}
+	if = {
+		limit = { gg_phase_gives_double_involvement_trigger = yes }
+		multiply = 2
+	}
+}
+gg_involvement_scheme_failure_value = { #2
+	value = gg_involvement_base_addition_value
+	if = {
+		limit = { gg_phase_gives_half_involvement_trigger = yes }
+		multiply = 0.5
+	}
+	if = {
+		limit = { gg_phase_gives_double_involvement_trigger = yes }
+		multiply = 2
+	}
+}
+
+gg_involvement_change_phase_decision_value = { #2
+	value = gg_involvement_base_addition_value
+	if = {
+		limit = { gg_phase_gives_half_involvement_trigger = yes }
+		multiply = 0.5
+	}
+	if = {
+		limit = { gg_phase_gives_double_involvement_trigger = yes }
+		multiply = 2
+	}
+}
+
+gg_involvement_triggered_catalyst_value = { #1
+	value = gg_involvement_base_addition_value
+	divide = 2
+	if = {
+		limit = { gg_phase_gives_half_involvement_trigger = yes }
+		multiply = 0.5
+	}
+	if = {
+		limit = { gg_phase_gives_double_involvement_trigger = yes }
+		multiply = 2
+	}
+}
+
+gg_involvement_interaction_value = { #2
+	value = gg_involvement_base_addition_value
+	if = {
+		limit = { gg_phase_gives_half_involvement_trigger = yes }
+		multiply = 0.5
+	}
+	if = {
+		limit = { gg_phase_gives_double_involvement_trigger = yes }
+		multiply = 2
+	}
+}
+
+gg_involvement_catalyst_interaction_value = {
+	value = gg_involvement_triggered_catalyst_value
+	add = gg_involvement_interaction_value
+}
+
+gg_involvement_cb_success_value = { #7
+	value = gg_involvement_base_addition_value
+	add = 5
+	if = {
+		limit = { gg_phase_gives_half_involvement_trigger = yes }
+		multiply = 0.5
+	}
+	if = {
+		limit = { gg_phase_gives_double_involvement_trigger = yes }
+		multiply = 2
+	}
+}
+
+gg_involvement_cb_participant_value = { #4
+	value = gg_involvement_base_addition_value
+	multiply = 2
+	if = {
+		limit = { gg_phase_gives_half_involvement_trigger = yes }
+		multiply = 0.5
+	}
+	if = {
+		limit = { gg_phase_gives_double_involvement_trigger = yes }
+		multiply = 2
+	}
+}
+
+gg_involvement_cb_failure_value = { #2
+	value = gg_involvement_base_addition_value
+	if = {
+		limit = { gg_phase_gives_half_involvement_trigger = yes }
+		multiply = 0.5
+	}
+	if = {
+		limit = { gg_phase_gives_double_involvement_trigger = yes }
+		multiply = 2
+	}
+}
+
+gg_leader_renown = 5000
+gg_leader_involvement_multiplier = 10
+gg_leader_involvement_renown = {
+	value = root.var:gg_involvement
+	multiply = gg_leader_involvement_multiplier
+}
+gg_compromise_leader_involvement_renown = {
+	value = var:gg_involvement
+	multiply = gg_leader_involvement_multiplier
+}
+gg_supporter_renown = 2500
+gg_supporter_involvement_renown = {
+	value = root.var:gg_involvement
+	multiply = 5
+}
+
+gg_independent_dukes_factor = 0.05
+gg_independent_kings_factor = 0.1
+gg_independent_emperors_factor = 0.2
+
+gg_compromise_factor = 0.2
+gg_compromise_cultural_acceptance_increase = 5
+gg_ghibelline_compromise_control_value = 10
+gg_ghibelline_compromise_control_negative_value = {
+	value = gg_ghibelline_compromise_control_value
+	multiply = -1
+}
+gg_ghibelline_compromise_modifier_length_years = 25
+
+
+gg_involvement_position = {
+	save_temporary_scope_as = root_scope
+	if = {
+		limit = { has_variable = gg_involvement }
+		situation:guelph_ghibelline ?= {
+			every_situation_participant = {
+				limit = {
+					has_variable = gg_involvement
+					var:gg_involvement > scope:root_scope.var:gg_involvement
+				}
+				add = 1
+			}
+		}
+		add = 1
+	}
+	min = 1
+	round = yes
+}
+
+gg_leader_victory_renown = {
+	value = gg_leader_renown
+	multiply = {
+		value = primary_title.tier
+		divide = 10
+	}
+}
+
+gg_supporter_victory_renown = {
+	value = gg_supporter_renown
+	multiply = {
+		value = primary_title.tier
+		divide = 10
+	}
+}
+
+gg_independent_guelph_supporters_factor = {
+	value = 1
+	add = {
+		value = gg_independent_dukes_factor
+		multiply = situation_guelph_dukes_num
+	}
+	add = {
+		value = gg_independent_kings_factor
+		multiply = situation_guelph_kings_num
+	}
+	add = {
+		value = gg_independent_emperors_factor
+		multiply = situation_guelph_emperors_num
+	}
+}
+
+gg_independent_ghibelline_supporters_factor = {
+	value = 1
+	add = {
+		value = gg_independent_dukes_factor
+		multiply = situation_ghibelline_dukes_num
+	}
+	add = {
+		value = gg_independent_kings_factor
+		multiply = situation_ghibelline_kings_num
+	}
+	add = {
+		value = gg_independent_emperors_factor
+		multiply = situation_ghibelline_emperors_num
+	}
+}
+
+
+gg_leader_compromise_renown = {
+	value = gg_leader_renown
+	multiply = {
+		value = primary_title.tier
+		divide = 10
+	}
+	if = {
+		limit = { is_guelph_trigger = yes }
+		multiply = gg_independent_guelph_supporters_factor
+	}
+	else = {
+		multiply = gg_independent_ghibelline_supporters_factor
+	}
+}
+
+gg_supporter_compromise_renown = {
+	value = gg_supporter_renown
+	multiply = {
+		value = primary_title.tier
+		divide = 10
+	}
+	if = {
+		limit = { is_guelph_trigger = yes }
+		multiply = gg_independent_guelph_supporters_factor
+	}
+	else = {
+		multiply = gg_independent_ghibelline_supporters_factor
+	}
+}
+
+#FOR THE INTERACTION CUSTOM TOOLTIP
+gg_leader_compromise_display_renown = {
+	value = gg_leader_compromise_renown
+	multiply = gg_compromise_factor
+}
+
+#FOR THE INTERACTION CUSTOM TOOLTIP
+gg_supporter_compromise_display_renown = {
+	value = gg_supporter_compromise_renown
+	multiply = gg_compromise_factor
+}
+
+situation_ghibelline_leader_primary_title_value = {
+	situation:guelph_ghibelline ?= {
+		situation_participant_group:ghibelline_leader = {
+			every_situation_group_participant = { add = this.primary_title.tier }
+		}
+	}
+}
+
+situation_guelph_leader_primary_title_value = {
+	situation:guelph_ghibelline ?= {
+		situation_participant_group:guelph_leader = {
+			every_situation_group_participant = { add = this.primary_title.tier }
+		}
+	}
+}
+
+
+situation_ghibelline_emperors_num = {
+	value = 0
+	situation:guelph_ghibelline ?= {
+		every_situation_participant = {
+			limit = {
+				is_ghibelline_trigger = yes
+				is_independent_ruler = yes
+				primary_title.tier >= tier_empire
+			}
+			add = 1
+		}
+	}
+}
+
+situation_ghibelline_kings_num = {
+	value = 0
+	situation:guelph_ghibelline ?= {
+		every_situation_participant = {
+			limit = {
+				is_ghibelline_trigger = yes
+				is_independent_ruler = yes
+				primary_title.tier = tier_kingdom
+			}
+			add = 1
+		}
+	}
+}
+
+situation_ghibelline_dukes_num = {
+	value = 0
+	situation:guelph_ghibelline ?= {
+		every_situation_participant = {
+			limit = {
+				is_ghibelline_trigger = yes
+				is_independent_ruler = yes
+				primary_title.tier = tier_duchy
+			}
+			add = 1
+		}
+	}
+}
+
+situation_ghibelline_num = {
+	value = 0
+	situation:guelph_ghibelline ?= {
+		every_situation_participant = {
+			limit = { is_ghibelline_trigger = yes }
+			add = 1
+		}
+	}
+}
+
+situation_guelph_emperors_num = {
+	value = 0
+	situation:guelph_ghibelline ?= {
+		every_situation_participant = {
+			limit = {
+				is_guelph_trigger = yes
+				is_independent_ruler = yes
+				primary_title.tier >= tier_empire
+			}
+			add = 1
+		}
+	}
+}
+
+situation_guelph_kings_num = {
+	value = 0
+	situation:guelph_ghibelline ?= {
+		every_situation_participant = {
+			limit = {
+				is_guelph_trigger = yes
+				is_independent_ruler = yes
+				primary_title.tier = tier_kingdom
+			}
+			add = 1
+		}
+	}
+}
+
+situation_guelph_dukes_num = {
+	value = 0
+	situation:guelph_ghibelline ?= {
+		every_situation_participant = {
+			limit = {
+				is_guelph_trigger = yes
+				is_independent_ruler = yes
+				primary_title.tier = tier_duchy
+			}
+			add = 1
+		}
+	}
+}
+
+situation_guelph_num = {
+	value = 0
+	situation:guelph_ghibelline ?= {
+		every_situation_participant = {
+			limit = { is_guelph_trigger = yes }
+			add = 1
+		}
+	}
+}
+
+
+situation_guelph_ghibelline_total_percentage = {
+	value = situation_ghibelline_num
+	add = situation_guelph_num
+}
+
+situation_ghibelline_percentage = {
+	value = situation_ghibelline_num
+	divide = situation_guelph_ghibelline_total_percentage
+	multiply = 100
+	round = yes
+	divide = 100
+}
+
+situation_guelph_percentage = {
+	value = situation_guelph_num
+	divide = situation_guelph_ghibelline_total_percentage
+	multiply = 100
+	round = yes
+	divide = 100
+}
+
+gg_precursor_phase_positive_score_factor = {
+	if = {
+		limit = {
+			situation:guelph_ghibelline ?= { 
+				OR = {
+					situation_current_phase = in_nomine_domini
+					situation_current_phase = dictatus_papae
+					situation_current_phase = ad_interim
+				}
+			}
+		}
+		value = 1.2
+	}
+	else = { value = 1 }
+}
+
+gg_precursor_phase_negative_score_factor = {
+	if = {
+		limit = {
+			situation:guelph_ghibelline ?= { 
+				OR = {
+					situation_current_phase = in_nomine_domini
+					situation_current_phase = investiture_controversy
+				}
+			}
+		}
+		value = 0.5
+	}
+	else = { value = 1 }
+}
+
+#REFERENCED IN GUI
+situation_ghibelline_group_score = {
+	value = 0
+	if = {
+		limit = { exists = situation:guelph_ghibelline }
+		situation:guelph_ghibelline ?= {
+			add = {
+				value = situation_ghibelline_emperor_score
+				desc = situation_gg_ghibelline_empire_ruler_score
+			}
+			add = {
+				value = situation_ghibelline_king_score
+				desc = situation_gg_ghibelline_kingdom_ruler_score
+			}
+			add = {
+				value = situation_ghibelline_duke_score
+				desc = situation_gg_ghibelline_duchy_ruler_score
+			}
+			add = {
+				value = situation_ghibelline_count_score
+				desc = situation_gg_ghibelline_county_ruler_score
+			}
+			add = {
+				value = situation_ghibelline_rest_score
+				desc = situation_gg_ghibelline_rest_ruler_score
+			}
+			#Is the Emperor uncrowned?!
+			if = {
+				limit = {
+					any_situation_participant = {
+						has_variable = ghibelline_leader
+						any_held_title = { this = title:e_hre }
+						has_realm_law = uncrowned
+					}
+				}
+				subtract = {
+					value = 250
+					desc = "situation_gg_ghibelline_leader_uncrowned_score"
+				}
+			}
+			#Imprisoned?
+			if = {
+				limit = {
+					any_situation_participant = {
+						has_variable = ghibelline_leader
+						is_imprisoned = yes
+					}
+				}
+				subtract = {
+					value = 250
+					desc = "situation_gg_ghibelline_leader_imprisoned_score"
+				}
+			}
+			#... or indeed excommunicated?
+			if = {
+				limit = {
+					any_situation_participant = {
+						has_variable = ghibelline_leader
+						has_trait = excommunicated
+					}
+				}
+				subtract = {
+					value = 350
+					desc = "situation_gg_ghibelline_leader_excommunicated_score"
+				}
+			}
+		}
+	}
+}
+
+situation_ghibelline_emperor_score = {
+	value = 0
+	situation_participant_group:ghibelline_member = {
+		every_situation_group_participant = {
+			limit = {
+				primary_title.tier = tier_empire
+				is_landed = yes
+			}
+			add = 500
+		}
+	}
+}
+
+situation_ghibelline_king_score = {
+	value = 0
+	situation_participant_group:ghibelline_member = {
+		every_situation_group_participant = {
+			limit = {
+				primary_title.tier = tier_kingdom
+				is_landed = yes
+			}
+			add = 100
+		}
+	}
+}
+
+situation_ghibelline_duke_score = {
+	value = 0
+	situation_participant_group:ghibelline_member = {
+		every_situation_group_participant = {
+			limit = {
+				primary_title.tier = tier_duchy
+				is_landed = yes
+			}
+			add = 50
+		}
+	}
+}
+
+situation_ghibelline_count_score = {
+	value = 0
+	situation_participant_group:ghibelline_member = {
+		every_situation_group_participant = {
+			limit = {
+				primary_title.tier = tier_county
+				is_landed = yes
+			}
+			add = 10
+		}
+	}
+}
+
+situation_ghibelline_rest_score = {
+	value = 0
+	situation_participant_group:ghibelline_member = {
+		every_situation_group_participant = {
+			limit = {
+				OR = {
+					is_landed = no
+					primary_title.tier < tier_county
+				}
+			}
+			add = 1
+		}
+	}
+}
+
+situation_ghibelline_total_member_score = {
+	situation_participant_group:ghibelline_member = {
+		every_situation_group_participant = {
+			if = {
+				limit = { primary_title.tier = tier_empire }
+				add = 500
+			}
+			else_if = {
+				limit = { primary_title.tier = tier_kingdom }
+				add = 100
+			}
+			else_if = {
+				limit = { primary_title.tier = tier_duchy }
+				add = 50
+			}
+			else_if = {
+				limit = { primary_title.tier = tier_county }
+				add = 10
+			}
+			else = { add = 1 }
+		}
+	}
+}
+
+#REFERENCED IN GUI
+situation_guelph_group_score = {
+	value = 0
+	if = {
+		limit = { exists = situation:guelph_ghibelline }
+		situation:guelph_ghibelline ?= {
+			add = {
+				value = situation_guelph_emperor_score
+				desc = situation_gg_guelph_empire_ruler_score
+			}
+			add = {
+				value = situation_guelph_king_score
+				desc = situation_gg_guelph_kingdom_ruler_score
+			}
+			add = {
+				value = situation_guelph_duke_score
+				desc = situation_gg_guelph_duchy_ruler_score
+			}
+			add = {
+				value = situation_guelph_count_score
+				desc = situation_gg_guelph_county_ruler_score
+			}
+			add = {
+				value = situation_guelph_rest_score
+				desc = situation_gg_guelph_rest_ruler_score
+			}
+			#Has pope
+			if = {
+				limit = {
+					any_situation_participant = {
+						has_variable = guelph_leader
+						AND = {
+							any_held_title = { this = title:k_papal_state }
+							primary_title = { is_head_of_faith = yes }
+						}
+					}
+				}
+				add = {
+					value = 250
+					desc = "situation_gg_guelph_leader_is_pope_score"
+				}
+			}
+			#Imprisoned Guelph Leader?
+			if = {
+				limit = {
+					any_situation_participant = {
+						has_variable = guelph_leader
+						is_imprisoned = yes
+					}
+				}
+				subtract = {
+					value = 250
+					desc = "situation_gg_guelph_leader_imprisoned_score"
+				}
+			}
+		}
+	}
+}
+
+situation_guelph_emperor_score = {
+	value = 0
+	situation_participant_group:guelph_member = {
+		every_situation_group_participant = {
+			limit = {
+				primary_title.tier = tier_empire
+				is_landed = yes
+			}
+			add = 500
+		}
+	}
+}
+
+situation_guelph_king_score = {
+	value = 0
+	situation_participant_group:guelph_member = {
+		every_situation_group_participant = {
+			limit = {
+				primary_title.tier = tier_kingdom
+				is_landed = yes
+			}
+			add = 100
+		}
+	}
+}
+
+situation_guelph_duke_score = {
+	value = 0
+	situation_participant_group:guelph_member = {
+		every_situation_group_participant = {
+			limit = {
+				primary_title.tier = tier_duchy
+				is_landed = yes
+			}
+			add = 50
+		}
+	}
+}
+
+situation_guelph_count_score = {
+	value = 0
+	situation_participant_group:guelph_member = {
+		every_situation_group_participant = {
+			limit = {
+				primary_title.tier = tier_county
+				is_landed = yes
+			}
+			add = 10
+		}
+	}
+}
+
+situation_guelph_rest_score = {
+	value = 0
+	situation_participant_group:guelph_member = {
+		every_situation_group_participant = {
+			limit = {
+				OR = {
+					is_landed = no
+					primary_title.tier < tier_county
+				}
+			}
+			add = 1
+		}
+	}
+}
+
+situation_guelph_total_member_score = {
+	situation_participant_group:guelph_member = {
+		every_situation_group_participant = {
+			if = {
+				limit = { primary_title.tier = tier_empire }
+				add = {
+					value = 500
+					multiply = gg_precursor_phase_positive_score_factor
+				}
+			}
+			else_if = {
+				limit = { primary_title.tier = tier_kingdom }
+				add = {
+					value = 100
+					multiply = gg_precursor_phase_positive_score_factor
+				}
+			}
+			else_if = {
+				limit = { primary_title.tier = tier_duchy }
+				add = {
+					value = 50
+					multiply = gg_precursor_phase_positive_score_factor
+				}
+			}
+			else_if = {
+				limit = { primary_title.tier = tier_county }
+				add = {
+					value = 10
+					multiply = gg_precursor_phase_positive_score_factor
+				}
+			}
+			else = {
+				add = {
+					value = 1
+					multiply = gg_precursor_phase_positive_score_factor
+				}
+			}
+		}
+	}
+}
+
+#REFERENCED IN GUI
+situation_ghibelline_score_percentage = {
+	value = situation_ghibelline_group_score
+	divide = situation_guelph_ghibelline_score_total
+	multiply = 100
+	round = yes
+}
+
+#REFERENCED IN GUI
+situation_guelph_score_percentage = {
+	value = situation_guelph_group_score
+	divide = situation_guelph_ghibelline_score_total
+	multiply = 100
+	round = yes
+}
+
+situation_guelph_ghibelline_score_total = {
+	value = 0
+	add = {
+		value = situation_guelph_group_score
+		desc = situation_gg_guelph_total_score
+	}
+	add = {
+		value = situation_ghibelline_group_score
+		desc = situation_gg_ghibelline_total_score
+	}
+}
+
+situation_guelph_score_factor = {
+	value = situation_guelph_group_score
+	divide = situation_guelph_ghibelline_score_total
+	add = 1 #So 1.4 for instance
+}
+
+situation_ghibelline_score_factor = {
+	value = situation_ghibelline_group_score
+	divide = situation_guelph_ghibelline_score_total
+	add = 1 #So 1.6 for instance
+}
+
+situation_advantage_threshold = 0.7
+
+situation_score_advantage_threshold = {
+	value = situation_guelph_ghibelline_score_total
+	multiply = situation_advantage_threshold
+}
+
+situation_advantage_keep_threshold = 0.6
+
+situation_score_advantage_keep_threshold = {
+	value = situation_guelph_ghibelline_score_total
+	multiply = situation_advantage_keep_threshold
+}
+
+situation_guelph_ghibelline_score_diff_factor = {
+	if = {
+		limit = { situation_guelph_group_score >= situation_ghibelline_group_score }
+		value = situation_guelph_group_score
+		subtract = situation_ghibelline_group_score
+	}
+	else = {
+		value = situation_ghibelline_group_score
+		subtract = situation_guelph_group_score
+	}
+	divide = 100
+	min = 1
+}
+
+gg_agitation_weariness_years = 15
+
+#Years an AI leader holds the Advantage before claiming victory
+gg_advantage_ai_victory_years = 10
+
+#Yearly chance during the Dictatus Papae, needs scope:gg_excommunicator and scope:gg_excommunication_target
+gg_pope_excommunicates_emperor_chance_value = {
+	value = 10
+	if = {
+		limit = {
+			scope:gg_excommunicator = {
+				opinion = {
+					target = scope:gg_excommunication_target
+					value < 0
+				}
+			}
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			scope:gg_excommunicator = {
+				OR = {
+					has_relation_rival = scope:gg_excommunication_target
+					is_at_war_with = scope:gg_excommunication_target
+				}
+			}
+		}
+		add = 25
+	}
+	if = {
+		limit = {
+			scope:gg_excommunication_target = { has_character_modifier = pam_kowtowed_to_pope_modifier }
+		}
+		multiply = 0
+	}
+}

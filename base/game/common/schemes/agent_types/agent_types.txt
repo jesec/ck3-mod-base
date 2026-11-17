@@ -3075,6 +3075,14 @@ agent_bookkeeper = {
 				desc = scheme_agent_aptitude.trait.eunuch
 			}
 		}
+		### +++ administrator
+		if = {
+			limit = { has_trait = administrator }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.administrator
+			}
+		}
 		### ++ Humble
 		if = {
 			limit = { has_trait = humble }
@@ -3566,7 +3574,7 @@ agent_devotee = { # This one is only added through an event, not for regular age
 	valid_agent_for_slot = {
 		trigger_if = {
 			limit = {
-				overlord = { government_has_flag = government_is_mandala }
+				overlord ?= { government_has_flag = government_is_mandala }
 			}
 			always = yes
 		}
@@ -4890,157 +4898,24 @@ agent_alibi = {
 		}
 	}
 
-	contribution = {
-		# Base value.
-		value = scheme_agent_general_bonuses_contribution_score_value
-		# Skills
-		## Diplomacy
-		add = {
-			value = diplomacy
-			multiply = agent_3to1_3_skill_mult_value
-			ceiling = yes
-			max = agent_max_skill_value
-			desc = scheme_agent_aptitude.skill.diplomacy
-		}
-		## Learning
-		add = {
-			value = learning
-			multiply = agent_3to1_1_skill_mult_value
-			ceiling = yes
-			max = agent_max_skill_value
-			desc = scheme_agent_aptitude.skill.learning
-		}
-		# Traits
-		## Bonuses
-		### +++ Honest
-		if = {
-			limit = { has_trait = honest }
-			add = {
-				value = agent_trait_bonus_t3_value
-				desc = scheme_agent_aptitude.trait.honest
-			}
-		}
-		### +++ Just
-		if = {
-			limit = { has_trait = just }
-			add = {
-				value = agent_trait_bonus_t3_value
-				desc = scheme_agent_aptitude.trait.just
-			}
-		}
-		### +++ Loyal
-		if = {
-			limit = { has_trait = loyal }
-			add = {
-				value = agent_trait_bonus_t3_value
-				desc = scheme_agent_aptitude.trait.loyal
-			}
-		}
-		### ++ Confider
-		if = {
-			limit = { has_trait = confider }
-			add = {
-				value = agent_trait_bonus_t2_value
-				desc = scheme_agent_aptitude.trait.confider
-			}
-		}
-		### +++ Eunuch
-		if = {
-			limit = {
-				culture = { has_cultural_parameter = eunuch_powerful_scheme_agents }
-				is_eunuch_trigger = yes
-			}
-			add = {
-				value = agent_trait_bonus_t3_value
-				desc = scheme_agent_aptitude.trait.eunuch
-			}
-		}
-		### ++ Gregarious
-		if = {
-			limit = { has_trait = gregarious }
-			add = {
-				value = agent_trait_bonus_t2_value
-				desc = scheme_agent_aptitude.trait.gregarious
-			}
-		}
-		### ++ Humble
-		if = {
-			limit = { has_trait = humble }
-			add = {
-				value = agent_trait_bonus_t2_value
-				desc = scheme_agent_aptitude.trait.humble
-			}
-		}
-		### + Content
-		if = {
-			limit = { has_trait = content }
-			add = {
-				value = agent_trait_bonus_t1_value
-				desc = scheme_agent_aptitude.trait.content
-			}
-		}
-		## Maluses
-		### - Ambitious
-		if = {
-			limit = { has_trait = ambitious }
-			add = {
-				value = agent_trait_malus_t1_value
-				desc = scheme_agent_aptitude.trait.ambitious
-			}
-		}
-		### -- Arrogant
-		if = {
-			limit = { has_trait = arrogant }
-			add = {
-				value = agent_trait_malus_t2_value
-				desc = scheme_agent_aptitude.trait.arrogant
-			}
-		}
-		### -- Shy
-		if = {
-			limit = { has_trait = shy }
-			add = {
-				value = agent_trait_malus_t2_value
-				desc = scheme_agent_aptitude.trait.shy
-			}
-		}
-		### -- Contrite
-		if = {
-			limit = { has_trait = contrite }
-			add = {
-				value = agent_trait_malus_t2_value
-				desc = scheme_agent_aptitude.trait.contrite
-			}
-		}
-		### --- Disloyal
-		if = {
-			limit = { has_trait = disloyal }
-			add = {
-				value = agent_trait_malus_t3_value
-				desc = scheme_agent_aptitude.trait.disloyal
-			}
-		}
-		### --- Arbitrary
-		if = {
-			limit = { has_trait = arbitrary }
-			add = {
-				value = agent_trait_malus_t3_value
-				desc = scheme_agent_aptitude.trait.arbitrary
-			}
-		}
-		### --- Deceitful
-		if = {
-			limit = { has_trait = deceitful }
-			add = {
-				value = agent_trait_malus_t3_value
-				desc = scheme_agent_aptitude.trait.deceitful
-			}
-		}
+	contribution = { add = agent_alibi_contribution_value }
+}
 
-		# Cap this off.
-		max = agent_scheme_contributor_max
-		min = agent_scheme_contributor_min
+# Alibi (targeting title)
+agent_alibi_title = {
+	contribution_type = secrecy
+
+	valid_agent_for_slot = {
+		# Filter out rando nobodies.
+		OR = {
+			is_ruler = yes
+			is_councillor_of = scope:target.holder
+			is_close_or_extended_family_of = scope:target.holder
+			has_any_good_relationship_with_character_trigger = { CHARACTER = scope:target.holder }
+		}
 	}
+
+	contribution = { add = agent_alibi_contribution_value }
 }
 
 # Justiciar
@@ -5188,7 +5063,10 @@ agent_intermediary = {
 	contribution_type = success_chance_max
 
 	valid_agent_for_slot = {
-		is_governor_or_landless_admin = yes
+		OR = {
+			is_governor_or_landless_admin = yes
+			is_republic_ruler_or_landless_republic = yes
+		}
 	}
 
 	contribution = {
@@ -5351,7 +5229,10 @@ agent_proponent = {
 	contribution_type = success_chance_max
 
 	valid_agent_for_slot = {
-		is_governor_or_landless_admin = yes
+		OR = {
+			is_governor_or_landless_admin = yes
+			is_republic_ruler_or_landless_republic = yes
+		}
 	}
 
 	contribution = {
@@ -5503,7 +5384,10 @@ agent_sycophant = {
 	contribution_type = success_chance_max
 
 	valid_agent_for_slot = {
-		government_has_mechanic = administrative
+		OR = {
+			government_has_mechanic = administrative
+			government_has_flag = government_is_republic
+		}
 	}
 
 	contribution = {
@@ -5634,7 +5518,10 @@ agent_political_socialite = {
 	contribution_type = speed
 
 	valid_agent_for_slot = {
-		is_governor_or_landless_admin = yes
+		OR = {
+			is_governor_or_landless_admin = yes
+			is_republic_ruler_or_landless_republic = yes
+		}
 	}
 
 	contribution = {
@@ -6645,3 +6532,1092 @@ agent_eunuch_speed = {
 	}
 }
 
+# GDP
+
+#################################################
+### Merchant Agents
+
+## Success
+
+agent_peddler = {
+	contribution_type = success_chance_max
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## Stewardship
+		add = {
+			value = stewardship
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.stewardship
+		}
+		## Diplomacy
+		add = {
+			value = diplomacy
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.diplomacy
+		}
+		# Traits
+		## Bonuses
+		### +++ gregarious
+		if = {
+			limit = { has_trait = gregarious }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.gregarious
+			}
+		}
+		### +++ diplomat
+		if = {
+			limit = { has_trait = diplomat }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.diplomat
+			}
+		}
+		### ++ arrogant
+		if = {
+			limit = { has_trait = arrogant }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.arrogant
+			}
+		}
+		### ++ brave
+		if = {
+			limit = { has_trait = brave }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.brave
+			}
+		}
+		### + Patient
+		if = {
+			limit = { has_trait = patient }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.patient
+			}
+		}
+		### + Diligent
+		if = {
+			limit = { has_trait = diligent }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.diligent
+			}
+		}
+		### + deceitful
+		if = {
+			limit = { has_trait = deceitful }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.deceitful
+			}
+		}
+		## Maluses
+		### - humble
+		if = {
+			limit = { has_trait = humble }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.humble
+			}
+		}
+		### - honest
+		if = {
+			limit = { has_trait = honest }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.honest
+			}
+		}
+		### -- Impatient
+		if = {
+			limit = { has_trait = impatient }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.impatient
+			}
+		}
+		### --- just
+		if = {
+			limit = { has_trait = just }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.just
+			}
+		}
+		### --- Lazy
+		if = {
+			limit = { has_trait = lazy }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.lazy
+			}
+		}
+		# Cap this off.
+		max = agent_scheme_contributor_max
+		min = agent_scheme_contributor_min
+	}
+}
+
+agent_appraiser = {
+	contribution_type = success_chance_max
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## Stewardship
+		add = {
+			value = learning
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.learning
+		}
+		## Diplomacy
+		add = {
+			value = stewardship
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.stewardship
+		}
+		# Traits
+		## Bonuses
+		### +++ patient
+		if = {
+			limit = { has_trait = patient }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.patient
+			}
+		}
+		### +++ greedy
+		if = {
+			limit = { has_trait = greedy }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.greedy
+			}
+		}
+		### ++ humble
+		if = {
+			limit = { has_trait = humble }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.humble
+			}
+		}
+		### ++ stubborn
+		if = {
+			limit = { has_trait = stubborn }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.stubborn
+			}
+		}
+		### + Patient
+		if = {
+			limit = { has_trait = patient }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.patient
+			}
+		}
+		### + Diligent
+		if = {
+			limit = { has_trait = diligent }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.diligent
+			}
+		}
+		### + deceitful
+		if = {
+			limit = { has_trait = deceitful }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.deceitful
+			}
+		}
+		## Maluses
+		### - arrogant
+		if = {
+			limit = { has_trait = arrogant }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.arrogant
+			}
+		}
+		### - honest
+		if = {
+			limit = { has_trait = honest }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.honest
+			}
+		}
+		### -- Impatient
+		if = {
+			limit = { has_trait = impatient }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.impatient
+			}
+		}
+		### --- just
+		if = {
+			limit = { has_trait = just }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.just
+			}
+		}
+		### --- Lazy
+		if = {
+			limit = { has_trait = lazy }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.lazy
+			}
+		}
+		# Cap this off.
+		max = agent_scheme_contributor_max
+		min = agent_scheme_contributor_min
+	}
+}
+
+agent_broker = {
+	contribution_type = success_chance_max
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## Stewardship
+		add = {
+			value = stewardship
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.stewardship
+		}
+		## Diplomacy
+		add = {
+			value = diplomacy
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.diplomacy
+		}
+		# Traits
+		## Bonuses
+		### +++ gregarious
+		if = {
+			limit = { has_trait = gregarious }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.gregarious
+			}
+		}
+		### +++ diplomat
+		if = {
+			limit = { has_trait = diplomat }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.diplomat
+			}
+		}
+		### ++ arrogant
+		if = {
+			limit = { has_trait = arrogant }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.arrogant
+			}
+		}
+		### ++ just
+		if = {
+			limit = { has_trait = just }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.just
+			}
+		}
+		### + Patient
+		if = {
+			limit = { has_trait = patient }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.patient
+			}
+		}
+		### + Diligent
+		if = {
+			limit = { has_trait = diligent }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.diligent
+			}
+		}
+		### + deceitful
+		if = {
+			limit = { has_trait = deceitful }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.deceitful
+			}
+		}
+		## Maluses
+		### - humble
+		if = {
+			limit = { has_trait = humble }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.humble
+			}
+		}
+		### - honest
+		if = {
+			limit = { has_trait = honest }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.honest
+			}
+		}
+		### -- Impatient
+		if = {
+			limit = { has_trait = impatient }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.impatient
+			}
+		}
+		### --- arbitrary
+		if = {
+			limit = { has_trait = arbitrary }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.arbitrary
+			}
+		}
+		### --- Lazy
+		if = {
+			limit = { has_trait = lazy }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.lazy
+			}
+		}
+		# Cap this off.
+		max = agent_scheme_contributor_max
+		min = agent_scheme_contributor_min
+	}
+}
+
+## Speed
+
+# Overseer
+agent_overseer = {
+	contribution_type = speed
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## Stewardship
+		add = {
+			value = stewardship
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.stewardship
+		}
+		## Learning
+		add = {
+			value = martial
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.martial
+		}
+		# Traits
+		## Bonuses
+		### +++ diligent
+		if = {
+			limit = { has_trait = overseer }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.overseer
+			}
+		}
+		### +++ administrator
+		if = {
+			limit = { has_trait = administrator }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.administrator
+			}
+		}
+		### +++ Eunuch
+		if = {
+			limit = {
+				culture = { has_cultural_parameter = eunuch_powerful_scheme_agents }
+				OR = {
+					has_trait = eunuch_1
+					has_trait = beardless_eunuch
+				}
+			}
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.eunuch
+			}
+		}
+		### ++ Humble
+		if = {
+			limit = { has_trait = humble }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.humble
+			}
+		}
+		### ++ Eccentric
+		if = {
+			limit = { has_trait = eccentric }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.eccentric
+			}
+		}
+		### + Shy
+		if = {
+			limit = { has_trait = shy }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.shy
+			}
+		}
+		### + Patient
+		if = {
+			limit = { has_trait = patient }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.patient
+			}
+		}
+		### + Diligent
+		if = {
+			limit = { has_trait = diligent }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.diligent
+			}
+		}
+		## Maluses
+		### - Arrogant
+		if = {
+			limit = { has_trait = arrogant }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.arrogant
+			}
+		}
+		### - Deceitful
+		if = {
+			limit = { has_trait = deceitful }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.deceitful
+			}
+		}
+		### -- Impatient
+		if = {
+			limit = { has_trait = impatient }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.impatient
+			}
+		}
+		### --- Arbitrary
+		if = {
+			limit = { has_trait = arbitrary }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.arbitrary
+			}
+		}
+		### --- Lazy
+		if = {
+			limit = { has_trait = lazy }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.lazy
+			}
+		}
+		# Cap this off.
+		max = agent_scheme_contributor_max
+		min = agent_scheme_contributor_min
+		# Speed, so invert it.
+		multiply = -1
+	}
+}
+
+agent_messenger = {
+	contribution_type = speed
+	contribution = {
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## Stewardship
+		add = {
+			value = stewardship
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.prowess
+		}
+		## Diplomacy
+		add = {
+			value = diplomacy
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.diplomacy
+		}
+		# Traits
+		## Bonuses
+		### +++ Athletic
+		if = {
+			limit = { has_trait = athletic }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.athletic
+			}
+		}
+		### +++ Diplomat
+		if = {
+			limit = { has_trait = diplomat }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.diplomat
+			}
+		}
+		### ++ Humble
+		if = {
+			limit = { has_trait = humble }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.humble
+			}
+		}
+		### ++ Eccentric
+		if = {
+			limit = { has_trait = eccentric }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.eccentric
+			}
+		}
+		### + Gregarious
+		if = {
+			limit = { has_trait = gregarious }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.gregarious
+			}
+		}
+		### + Impatient
+		if = {
+			limit = { has_trait = impatient }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.impatient
+			}
+		}
+		### + Diligent
+		if = {
+			limit = { has_trait = diligent }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.diligent
+			}
+		}
+		## Maluses
+		### - Arrogant
+		if = {
+			limit = { has_trait = arrogant }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.arrogant
+			}
+		}
+		### - Deceitful
+		if = {
+			limit = { has_trait = deceitful }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.deceitful
+			}
+		}
+		### -- Patient
+		if = {
+			limit = { has_trait = patient }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.patient
+			}
+		}
+		### --- Shy
+		if = {
+			limit = { has_trait = shy }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.shy
+			}
+		}
+		### --- Lazy
+		if = {
+			limit = { has_trait = lazy }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.lazy
+			}
+		}
+		# Cap this off.
+		max = agent_scheme_contributor_max
+		min = agent_scheme_contributor_min
+		# Speed, so invert it.
+		multiply = -1
+	}
+}
+
+#################################################
+### Republic Agents
+
+## Success
+#Conspirator
+agent_conspirator = {
+	contribution_type = success_chance_max
+
+	valid_agent_for_slot = {
+		government_has_flag = government_is_republic
+		is_lowborn = no
+	}
+
+
+	contribution = {
+		# Base value.
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## Intrigue
+		add = {
+			value = intrigue
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.intrigue
+		}
+		## diplomacy
+		add = {
+			value = diplomacy
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.diplomacy
+		}
+		# Traits
+		## Bonuses
+		### +++ Ambitious
+		if = {
+			limit = { has_trait = ambitious }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.ambitious
+			}
+		}
+		### is an assembly member
+		
+		if = {
+			limit = { is_assembly_member = yes }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.assembly_member
+			}
+		}
+		### +++ is powerful vassal
+		if = {
+			limit = { is_powerful_vassal = yes }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.powerful_vassal
+			}
+		}
+		###  +++  is shrewd
+		if = {
+			limit = { has_trait = shrewd }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.shrewd
+			}
+		}
+		###  ++  is strategist
+		if = {
+			limit = { has_trait = strategist }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.strategist
+			}
+		}
+		###  ++  administrator
+		if = {
+			limit = { has_trait = administrator }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.administrator
+			}
+		}
+		### +++ Schemer
+		if = {
+			limit = { has_trait = schemer }
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.schemer
+			}
+		}
+		### + is seducer
+		if = {
+			limit = { has_trait = seducer }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.seducer
+			}
+		}
+		## Minuses
+		### -- is content
+		if = {
+			limit = { has_trait = content }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.content
+			}
+		}
+		### -- is lazy
+		if = {
+			limit = { has_trait = lazy }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.lazy
+			}
+		}
+		### -- is honest
+				if = {
+			limit = { has_trait = honest }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.honest
+			}
+		}
+		### -- is impatient
+		if = {
+			limit = { has_trait = impatient }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.impatient
+			}
+		}
+	}
+}
+#Demagogue
+agent_demagogue = {
+	contribution_type = success_chance_max
+
+	contribution = {
+		# Base value.
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## Intrigue
+		add = {
+			value = learning
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.learning
+		}
+		## diplomacy
+		add = {
+			value = diplomacy
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.diplomacy
+		}
+		# Traits
+		## Bonuses
+		### + is seducer
+		if = {
+			limit = { has_trait = seducer }
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.seducer
+			}
+		}
+		### ++ poet
+		if = {
+			limit = { has_trait = lifestyle_poet }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.lifestyle_poet
+			}
+		}
+		### ++ mystic
+		if = {
+			limit = { has_trait = lifestyle_mystic }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.lifestyle_mystic
+			}
+		}
+		### ++ gregarious
+		if = {
+			limit = { has_trait = gregarious }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.gregarious
+			}
+		}
+		### + beauty_good_1
+		if = {
+			limit = { has_trait = beauty_good_1}
+			add = {
+				value = agent_trait_bonus_t1_value
+				desc = scheme_agent_aptitude.trait.beauty_good_1
+			}
+		}
+		### + beauty_good_2
+		if = {
+			limit = { has_trait = beauty_good_2}
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.beauty_good_2
+			}
+		}
+		### + beauty_good_3
+		if = {
+			limit = { has_trait = beauty_good_3}
+			add = {
+				value = agent_trait_bonus_t3_value
+				desc = scheme_agent_aptitude.trait.beauty_good_3
+			}
+		}
+		## Malus 
+		### -- shy
+		if = {
+			limit = { has_trait = shy }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.shy
+			}
+		}
+		### -- stuttering
+		if = {
+			limit = { has_trait = stuttering }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.stuttering
+			}
+		}
+		### -- lisping
+		if = {
+			limit = { has_trait = lisping  }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.lisping
+			}
+		}
+	}
+}
+
+## Secrecy
+#Commander
+agent_commander = {
+	contribution_type = secrecy
+
+	contribution = {
+		# Base value.
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## Intrigue
+		add = {
+			value = prowess
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.prowess
+		}
+		## diplomacy
+		add = {
+			value = martial
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.martial
+		}
+		# Traits
+		## Bonuses
+		### ++ Brave
+		if = {
+			limit = { has_trait = brave }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.brave
+			}
+		}
+		### ++ diligent
+		if = {
+			limit = { has_trait = diligent }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.diligent
+			}
+		}
+		### ++ deceitful
+		if = {
+			limit = { has_trait = deceitful }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.deceitful
+			}
+		}
+		### ++ hunter
+		if = {
+			limit = { has_trait = lifestyle_hunter }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.lifestyle_hunter
+			}
+		}
+		### ++ blade master
+		if = {
+			limit = { has_trait = lifestyle_blademaster }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.lifestyle_blademaster
+			}
+		}
+		### ++ Gallowsbait
+		if = {
+			limit = { has_trait = gallowsbait }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.gallowsbait
+			}
+		}
+		## Malus
+		### -- lazy
+		if = {
+			limit = { has_trait = lazy }
+			add = {
+				value = agent_trait_malus_t2_value
+				desc = scheme_agent_aptitude.trait.lazy
+			}
+		}
+		### --- craven
+		if = {
+			limit = { has_trait = craven }
+			add = {
+				value = agent_trait_malus_t3_value
+				desc = scheme_agent_aptitude.trait.craven
+			}
+		}
+	}
+}
+
+##Speed
+#Financier
+agent_financier = {
+	contribution_type = speed
+
+	valid_agent_for_slot = {
+		OR = {
+			government_has_flag = government_is_republic
+			government_has_flag = government_is_merchant
+		}
+	}
+
+	contribution = {
+		# Base value.
+		value = scheme_agent_general_bonuses_contribution_score_value
+		# Skills
+		## stewardship
+		add = {
+			value = stewardship
+			multiply = agent_3to1_3_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.stewardship
+		}
+		## Intrigue
+		add = {
+			value = intrigue
+			multiply = agent_3to1_1_skill_mult_value
+			ceiling = yes
+			max = agent_max_skill_value
+			desc = scheme_agent_aptitude.skill.intrigue
+		}
+		# Traits
+		## Bonuses
+		### ++ generous
+		if = {
+			limit = { has_trait = generous }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.generous
+			}
+		}
+		### ++ administrator
+		if = {
+			limit = { has_trait = administrator }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.administrator
+			}
+		}
+		### ++ architect
+		if = {
+			limit = { has_trait = architect }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.architect
+			}
+		}
+		### +++ avaricious 
+		if = {
+			limit = { has_trait = avaricious }
+			add = {
+				value = agent_trait_bonus_t2_value
+				desc = scheme_agent_aptitude.trait.avaricious 
+			}
+		}
+		## Malus
+		### - greedy 
+		if = {
+			limit = { has_trait = greedy }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.greedy
+			}
+		}
+		### - arbitrary
+		if = {
+			limit = { has_trait = arbitrary }
+			add = {
+				value = agent_trait_malus_t1_value
+				desc = scheme_agent_aptitude.trait.arbitrary
+			}
+		}
+		# Cap this off.
+		max = agent_scheme_contributor_max
+		min = agent_scheme_contributor_min
+		# Speed, so invert it.
+		multiply = -1
+	}
+}

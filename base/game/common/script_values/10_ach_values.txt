@@ -139,6 +139,15 @@ coronation_cost = {
 				desc = coronation_nomadic_reg
 			}
 		}
+		if = {
+			limit = {
+				rite ?= { rite_has_parameter = no_anointment_coronation_cost_discount }
+			}
+			multiply = {
+				value = coronation_no_anointment_cost_mult_value
+				desc = coronation_no_anointment_cost_desc
+			}
+		}
 
 		# players can not see AI cost, so let it be!
 		if = {
@@ -190,11 +199,43 @@ coronation_cost_herd = {
 		}
 		desc = coronation_realm_size_desc
 	}
+	if = {
+		limit = {
+			rite ?= { rite_has_parameter = no_anointment_coronation_cost_discount }
+		}
+		multiply = {
+			value = coronation_no_anointment_cost_mult_value
+			desc = coronation_no_anointment_cost_desc
+		}
+	}
 
 	# players can not see AI cost, so let it be!
 	if = {
 		limit = { is_ai = yes }
 		multiply = coronation_cost_factor_for_ai
+	}
+}
+
+coronation_no_anointment_cost_discount = 0.25
+
+coronation_no_anointment_cost_mult_value = {
+	value = 1
+	subtract = coronation_no_anointment_cost_discount
+}
+
+coronation_anointment_piety_mult = 1.5
+coronation_imperial_anointment_piety_bonus = 0.5
+
+coronation_anointment_piety_mult_value = {
+	value = coronation_anointment_piety_mult
+	if = {
+		limit = {
+			rite ?= { rite_has_parameter = imperial_anointment_piety_bonus }
+		}
+		multiply = {
+			value = 1
+			add = coronation_imperial_anointment_piety_bonus
+		}
 	}
 }
 
@@ -532,6 +573,13 @@ coronation_province_reference_value = {
 
 	if = {
 		limit = {
+			has_building_or_higher = royal_chapel_1
+		}
+		add = 5
+	}
+
+	if = {
+		limit = {
 			has_province_modifier = coronation_ancient_tradition_modifier
 		}
 		add = 15
@@ -646,7 +694,7 @@ oath_university_gold_value = {
 	}
 }
 
-oath_university_development_value = {
+oath_university_prosperity_value = {
 	value = 20
 	culture = {
 		switch = {
@@ -1070,6 +1118,7 @@ coronation_vassals_approval_value = {
 				has_trait = legitimized_bastard
 				has_trait = gallivanter
 				has_trait = disinherited
+				has_trait = adopted_no_inheritance
 				has_trait = bastard_founder
 				has_trait = disloyal
 			}
@@ -1100,7 +1149,7 @@ coronation_popular_approval_value = {
 	if = {
 		limit = {
 			location.county = {
-				county_opinion >= 50
+				popular_opinion >= 50
 			}
 		}
 		add = 2
@@ -1108,7 +1157,7 @@ coronation_popular_approval_value = {
 	if = {
 		limit = {
 			location.county = {
-				county_opinion >= 25
+				popular_opinion >= 25
 			}
 		}
 		add = 1
@@ -1126,6 +1175,14 @@ coronation_popular_approval_value = {
 	}
 	if = {
 		limit = {
+			involved_activity ?= {
+				activity_location = { has_building_or_higher = royal_chapel_1 }
+			}
+		}
+		add = 1
+	}
+	if = {
+		limit = {
 			OR = {
 				has_trait = peasant_leader
 				has_trait = populist_leader
@@ -1133,6 +1190,7 @@ coronation_popular_approval_value = {
 				has_trait = education_republican_knowledge_2
 				has_trait = education_republican_knowledge_3
 				has_trait = education_republican_knowledge_4
+				has_trait = education_republican_knowledge_5
 			}
 		}
 		add = 2
@@ -1163,7 +1221,7 @@ coronation_popular_approval_value = {
 						}
 					}
 				}
-				county_opinion < 0
+				popular_opinion < 0
 			}
 		}
 		add = -1
@@ -1179,7 +1237,7 @@ coronation_popular_approval_value = {
 						}
 					}
 				}
-				county_control < 100
+				county_control < county_control_baseline
 			}
 		}
 		add = -1
@@ -1195,7 +1253,7 @@ coronation_popular_approval_value = {
 						}
 					}
 				}
-				county_opinion <= -30
+				popular_opinion <= -30
 			}
 		}
 		add = -1
@@ -1211,7 +1269,7 @@ coronation_popular_approval_value = {
 						}
 					}
 				}
-				county_control <= 50
+				county_control <= county_control_relative_25
 			}
 		}
 		add = -1

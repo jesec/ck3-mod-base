@@ -1,0 +1,1171 @@
+﻿#########################
+### GDP Republic Triggers
+#########################
+# Trigger for when assembly approval is required
+gdp_requires_assembly_approval_trigger = {
+	OR = {
+		has_realm_law = republic_assembly_authority_constitutional
+		has_realm_law = republic_assembly_authority_legislative
+	}
+}
+
+gdp_can_pass_republic_law_trigger = {
+	# If we have a council assembly with voting powers, no council position can be left empty
+	trigger_if = {
+		limit = {
+			has_realm_law = republic_assembly_composition_council
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+		has_free_council_slot = no
+	}
+	# If we have a senate, the number of senators much be at least 90% of the total senate size
+	trigger_if = {
+		limit = {
+			has_realm_law_flag = republic_senate_size
+			NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+		}
+		gdp_republic_senate_has_enough_senators_trigger = yes
+	}
+}
+
+gdp_can_propose_law_changes_trigger = {
+	OR = {
+		# Republican leader may always propose changes
+		this = top_liege
+		liege ?= {
+			NOT = { government_has_flag = government_is_republic }
+		}
+		# Major members may suggest changes when the assembly has voting powers
+		trigger_if = {
+			limit = {
+				liege ?= {
+					NOT = { has_realm_law = republic_assembly_authority_ceremonial }
+				}
+			}
+			is_major_assembly_member = yes
+		}
+	}
+}
+
+gdp_assembly_approval_for_decrees_trigger = {
+	highest_liege_matching_rule:uses_assembly = {
+		has_realm_law = republic_assembly_authority_constitutional
+	}
+}
+
+gdp_assembly_can_pass_decrees_trigger = {
+	# Check first if assembly approval is required
+	trigger_if = {
+		limit = {
+			gdp_assembly_approval_for_decrees_trigger = yes
+		}
+		highest_liege_matching_rule:uses_assembly = {
+			# If we have a council assembly with voting powers, no council position can be left empty
+			trigger_if = {
+				limit = {
+					has_realm_law = republic_assembly_composition_council
+				}
+				has_free_council_slot = no
+			}
+			# If we have a senate, the number of senators much be at least 90% of the total senate size
+			trigger_if = {
+				limit = {
+					has_realm_law_flag = republic_senate_size
+				}
+				gdp_republic_senate_has_enough_senators_trigger = yes
+			}
+		}
+	}
+}
+
+gdp_republic_banishment_allowed_trigger = {
+	custom_tooltip = {
+		text = republic_banishment_prohibited_desc
+		NOT = { has_realm_law_flag = republic_banishment_prohibited }
+	}
+	trigger_if = {
+		limit = {
+			gdp_is_assembly_head_trigger = yes
+			has_realm_law_flag = republic_banishment_approval_required
+		}
+		custom_tooltip = {
+			text = must_have_assembly_approval_banishment_desc
+			var:has_assembly_approval_banishment ?= $TARGET$
+		}
+	}
+}
+
+gdp_republic_proscription_allowed_trigger = {
+	custom_tooltip = {
+		text = republic_banishment_prohibited_desc
+		NOT = { has_realm_law_flag = republic_banishment_prohibited }
+	}
+	trigger_if = {
+		limit = {
+			gdp_is_assembly_head_trigger = yes
+			has_realm_law_flag = republic_banishment_approval_required
+		}
+		custom_tooltip = {
+			text = must_have_assembly_approval_proscription_desc
+			var:has_assembly_approval_proscription ?= $TARGET$
+		}
+	}
+}
+
+gdp_has_any_punitive_approval_for_trigger = {
+	OR = {
+		var:has_assembly_approval_banishment ?= $TARGET$
+		var:has_assembly_approval_execution ?= $TARGET$
+		var:has_assembly_approval_proscription ?= $TARGET$
+	}
+}
+
+gdp_republic_execution_allowed_trigger = {
+	custom_tooltip = {
+		text = republic_execution_prohibited_desc
+		NOT = { has_realm_law_flag = republic_execution_prohibited }
+	}
+	trigger_if = {
+		limit = {
+			gdp_is_assembly_head_trigger = yes
+			has_realm_law_flag = republic_execution_approval_required
+		}
+		custom_tooltip = {
+			text = must_have_assembly_approval_execution_desc
+			var:has_assembly_approval_execution ?= $TARGET$
+		}
+	}
+}
+
+gdp_has_valid_indicted_character_trigger = {
+	save_temporary_scope_as = indicting_character
+	custom_tooltip = {
+		text = gdp_has_no_valid_indicted_character_desc
+		var:gdp_indicted_character ?= {
+			is_alive = yes
+			OR = {
+				is_imprisoned_by = scope:indicting_character
+				top_liege = scope:indicting_character
+			}
+		}
+	}
+}
+
+gdp_has_proscription_grounds_trigger = {
+	OR = {
+		has_execute_reason = $TARGET$
+		has_banish_reason = $TARGET$
+		gg_first_and_second_are_opposite_sides_trigger = { FIRST = this SECOND = $TARGET$ }
+		house_has_feud_relation_with_trigger = { TARGET = $TARGET$ }
+	}
+}
+
+gdp_has_valid_indicted_family_trigger = {
+	save_temporary_scope_as = indicting_character
+	custom_tooltip = {
+		text = gdp_has_no_valid_indicted_family_desc
+		var:gdp_indicted_character ?= {
+			is_alive = yes
+			top_liege = scope:indicting_character
+			primary_title ?= { is_noble_family_title = yes }
+		}
+	}
+	trigger_if = {
+		limit = {
+			var:gdp_indicted_character ?= { is_alive = yes }
+		}
+		custom_tooltip = {
+			text = gdp_indicted_family_head_is_player_desc
+			var:gdp_indicted_character = { is_ai = yes }
+		}
+	}
+}
+
+landed_republican_trigger = {
+	government_has_flag = government_is_republic
+	is_landed = yes
+}
+
+gdp_is_assembly_head_trigger = {
+	custom_tooltip = {
+		text = you_are_head_of_the_assembly
+		government_has_flag = government_is_republic
+		OR = {
+			is_independent_ruler = yes
+			liege ?= {
+				NOT = { government_has_flag = government_is_republic }
+			}	
+		}
+	}
+}
+
+gdp_is_popular_republic_head_trigger = {
+	custom_tooltip = {
+		text = gdp_is_popular_republic_head_trigger_tt
+		gdp_is_assembly_head_trigger = yes
+		has_realm_law = republic_type_popular
+	}
+}
+
+gdp_is_republican_house_head_trigger = {
+	custom_tooltip = {
+		text = gdp_is_republican_house_head_trigger_tt
+		government_has_flag = government_is_republic
+		is_house_head = yes
+	}
+}
+
+gdp_has_patrician_rating_trigger = {
+	save_temporary_scope_as = patrician_rating_holder
+	custom_description = {
+		text = has_patrician_rating_threshold_desc
+		object = scope:patrician_rating_holder
+		value = $THRESHOLD$
+		house ?= {
+			house_power_score >= $THRESHOLD$
+		}
+	}
+}
+
+# Does the senate have enough senators for approval? (republic head is the scoped character)
+gdp_republic_senate_has_enough_senators_trigger = {
+	# Safety check to ensure that we have a senate
+	trigger_if = {
+		limit = {
+			has_realm_law_flag = republic_senate_size
+		}
+		save_temporary_scope_value_as = {
+			name = needed_senate_size
+			value = {
+				value = republic_senate_size_max_value
+				multiply = 0.8 # Must have at least 80% of the senator seats filled
+				ceiling = yes # Rounded up
+			}
+		}
+		custom_tooltip = {
+			text = must_have_at_least_senator_limit_desc
+			primary_title ?= {
+				any_full_assembly_member = {
+					count >= scope:needed_senate_size
+				}
+			}
+		}
+	}
+}
+
+#  Does the senate have any empty seats? (republic head is the scoped character)
+gdp_republic_senate_has_empty_seats_trigger = {
+	# Safety check to ensure that we have a senate
+	trigger_if = {
+		limit = {
+			has_realm_law_flag = republic_senate_size
+		}
+		save_temporary_scope_value_as = {
+			name = max_senate_size
+			value = republic_senate_size_max_value
+		}
+		custom_tooltip = {
+			text = republic_senate_is_full_desc
+			primary_title ?= {
+				any_full_assembly_member = {
+					count < scope:max_senate_size
+				}
+			}
+		}
+	}
+}
+
+# Can the scope character be appointed as a senator?
+gdp_can_become_senator_trigger = {
+	liege = { save_temporary_scope_as = roman_liege }
+
+	government_has_flag = government_is_republic
+	trigger_if = {
+		limit = {
+			scope:roman_liege ?= {
+				OR = {
+					has_realm_law = male_only_law
+					has_realm_law = male_preference_law
+				}
+			}
+		}
+		is_female = no
+	}
+	trigger_if = {
+		limit = {
+			scope:roman_liege ?= {
+				OR = {
+					has_realm_law = female_only_law
+					has_realm_law = female_preference_law
+				}
+			}
+		}
+		is_female = yes
+	}
+	is_adult = yes
+	is_imprisoned = no
+	is_lowborn = no
+	NOT = { has_character_flag = republic_appointed_senator }
+}
+
+
+# Can the scoped character still pledge their assembly vote to their liege?
+gdp_can_pledge_assembly_vote_trigger = {
+	is_available_ai_adult = yes
+	is_assembly_member = yes
+	NOT = {
+		liege ?= {
+			is_target_in_variable_list = {
+				name = law_approvers
+				target = prev
+			}
+		}
+	}
+}
+
+gdp_republic_task_assembly_member_trigger = {
+	is_alive = yes
+	this != root
+	OR = {
+		is_assembly_member = yes
+		any_held_title = { is_noble_family_title = yes }
+	}
+}
+
+# Is the scoped character a fellow member of $CHARACTER$'s republic pursuing the same house ambition?
+gdp_shares_house_ambition_trigger = {
+	this != $CHARACTER$
+	government_has_flag = government_is_republic
+	exists = house
+	house = { has_same_house_aspiration_as = $CHARACTER$.house }
+}
+
+gdp_eligible_for_republic_legacy_trigger = {
+	has_gdp_dlc_trigger = yes
+	OR = {
+		game_rule_unrestricted_dynasty_legacies_trigger = yes
+		dynasty = {
+			OR = {
+				dynast = {
+					government_has_flag = government_is_republic
+				}
+				has_dynasty_perk = gdp_republic_legacy_1
+			}
+		}
+	}
+}
+
+gdp_can_upgrade_republican_house_ambition_trigger = {
+	save_temporary_scope_as = current_house_head
+	trigger_if = {
+		limit = {
+			$VALUE$ = 1
+		}
+		custom_description = {
+			text = has_patrician_rating_threshold_desc
+			object = scope:current_house_head
+			value = gdp_patrician_house_score_threshold_1_value
+			house ?= {
+				house_power_score >= gdp_patrician_house_score_threshold_1_value
+			}
+		}
+	}
+	trigger_else_if = {
+		limit = {
+			$VALUE$ = 2
+		}
+		custom_description = {
+			text = has_patrician_rating_threshold_desc
+			object = scope:current_house_head
+			value = gdp_patrician_house_score_threshold_2_value
+			house ?= {
+				house_power_score >= gdp_patrician_house_score_threshold_2_value
+			}
+		}
+	}
+	trigger_else_if = {
+		limit = {
+			$VALUE$ = 3
+		}
+		custom_description = {
+			text = has_patrician_rating_threshold_desc
+			object = scope:current_house_head
+			value = gdp_patrician_house_score_threshold_3_value
+			house ?= {
+				house_power_score >= gdp_patrician_house_score_threshold_3_value
+			}
+		}
+	}
+	trigger_else = {
+		always = no # If we get here, we've done something wrong!
+	}
+}
+
+# Can the scoped character use the Free City obligation on republic vassals?
+gdp_can_have_free_cities_trigger = {
+	# Must be an independent emperor or hegemon
+	this = top_liege
+	highest_held_title_tier >= tier_empire
+	# But is not a republic
+	NOT = { government_has_flag = government_is_republic }
+	# Must have access to free cities somehow
+	OR = {
+		# Always true for the HRE
+		has_title = title:e_hre
+		# Cultural traditions
+		culture ?= { has_cultural_tradition = tradition_parochialism }
+	}
+}
+
+gdp_protects_chartered_cities_trigger = {
+	OR = {
+		realm_law_authority_level_2 = yes
+		realm_law_authority_level_3 = yes
+		realm_law_authority_level_max = yes
+	}
+}
+
+gdp_city_rights_bind_war_declarer_trigger = {
+	$TARGET$ = { is_independent_ruler = no }
+	top_liege = $TARGET$.top_liege
+	NOR = {
+		target_is_vassal_or_below = $TARGET$
+		is_vassal_or_below_of = $TARGET$
+	}
+}
+
+gdp_is_protected_city_war_target_trigger = {
+	gdp_city_rights_bind_war_declarer_trigger = { TARGET = $TARGET$ }
+	$TARGET$ = {
+		OR = {
+			vassal_contract_has_flag = free_city_obligation
+			AND = {
+				vassal_contract_has_flag = chartered_city_obligation
+				liege = { gdp_protects_chartered_cities_trigger = yes }
+			}
+		}
+	}
+}
+
+# Preferred budget triggers - used for the treasury maintenance event (republic_event.0020)
+prefers_high_salary_budget_trigger = {
+	$CHARACTER$ = {
+		# Has to be landed or a patrician
+		OR = {
+			is_landed = yes
+			any_held_title = {
+				is_noble_family_title = yes
+			}
+		}
+		OR = {
+			house ?= {
+				has_house_aspiration_parameter = republic_aggrandizement
+			}
+			ai_greed >= 75
+		}
+	}
+}
+prefers_medium_salary_budget_trigger = {
+	$CHARACTER$ = {
+		OR = {
+			house ?= {
+				OR = {
+					has_house_aspiration_parameter = republic_commerce
+					has_house_aspiration_parameter = republic_signorial
+				}
+			}
+			ai_greed >= 0
+		}
+	}
+}
+prefers_low_salary_budget_trigger = {
+	$CHARACTER$ = {
+		OR = {
+			house ?= {
+				has_house_aspiration_parameter = republic_communal
+			}
+			ai_greed < 0
+		}
+	}
+}
+
+# Is the scope character a patrician?
+gdp_is_patrician_trigger = {
+	government_has_flag = government_is_republic
+	can_have_trade_posts = yes
+	domicile ?= {
+		is_domicile_type = merchant_company
+	}
+}
+
+gdp_is_merchant_or_unlanded_patrician_trigger = {
+	OR = {
+		is_landless_merchant = yes
+		gdp_is_unlanded_patrician_trigger = yes
+	}
+}
+
+gdp_is_unlanded_patrician_trigger = {
+	gdp_is_patrician_trigger = yes
+	is_landed = no
+}
+
+gdp_use_patrician_council_trigger = {
+	government_has_flag = government_is_republic
+	is_landed = no
+}
+
+gdp_is_in_same_republic_as_trigger = {
+	OR = {
+		liege ?= $CHARACTER$
+		$CHARACTER$.liege ?= this
+		AND = {
+			$CHARACTER$.liege ?= liege
+			liege = { government_has_flag = government_is_republic }
+		}
+	}
+}
+
+# Trigger for checking if the target char/patrician is supporting the scoped character's house
+gdp_can_get_patrician_house_support_trigger = {
+	save_temporary_scope_as = patrician_wanting_support
+	house ?= {
+		trigger_if = {
+			limit = {
+				has_variable_list = patrician_house_support_gained
+				variable_list_size = {
+					name = patrician_house_support_gained
+					value > 0
+				}
+			}
+			$TARGET_CHAR$ = { save_temporary_scope_as = patrician_providing_support }
+			custom_tooltip = {
+				text = already_providing_support_desc
+				NOT = {
+					any_in_list = {
+						variable = patrician_house_support_gained
+						this = scope:patrician_providing_support
+					}
+				}
+			}
+		}
+	}
+}
+
+# Base triggers for valid owner for Steal Trade Post scheme
+gdp_steal_trade_post_scheme_owner_valid_trigger = {
+	is_available_quick = {
+		adult = yes
+		imprisoned = no
+		incapable = no
+	}
+}
+
+# Local ruler of a Steal Trade Post target
+# The scheme success chance and the interaction preview both use this
+gdp_steal_trade_post_local_ruler_favors_trigger = {
+	opinion = {
+		target = $FAVORED$
+		value >= 50
+	}
+	opinion = {
+		target = $OTHER$
+		value < 50
+	}
+}
+
+# Is the scope character part of the same trade league as the target character
+is_in_same_trade_league_as_trigger = {
+	# Scopes
+	$TARGET_CHARACTER$ = { save_temporary_scope_as = target_league_character }
+	# This character is in a trade league
+	government_has_flag = government_is_republic
+	highest_liege_matching_rule:uses_assembly ?= {
+		exists = primary_title.title_confederation
+		primary_title.title_confederation = {
+			confederation_type = confederation_type:trade_league
+			save_temporary_scope_as = shared_trade_league
+		}
+	}
+	# Target character is in the same trade league
+	scope:target_league_character = {
+		government_has_flag = government_is_republic # For safety
+		highest_liege_matching_rule:uses_assembly.primary_title.title_confederation ?= { this = scope:shared_trade_league }
+	}
+}
+
+gdp_is_league_member_trigger = {
+	exists = confederation
+	OR = {
+		confederation.confederation_type = confederation_type:trade_league
+		confederation.confederation_type = confederation_type:lombard_league
+	}
+}
+
+# Is the scope character already planning any of the Great Plaza projects? Only one may be planned at a time.
+gdp_is_planning_great_plaza_project_trigger = {
+	OR = {
+		is_planning_great_project = gdp_republic_expand_great_plaza_project
+		is_planning_great_project = gdp_republic_great_plaza_loggia_project
+		is_planning_great_project = gdp_republic_great_plaza_statute_hall_project
+		is_planning_great_project = gdp_republic_great_plaza_council_chamber_project
+		is_planning_great_project = gdp_republic_great_plaza_debt_office_project
+		is_planning_great_project = gdp_republic_great_plaza_civic_hospital_project
+		is_planning_great_project = gdp_republic_great_plaza_weigh_house_project
+		is_planning_great_project = gdp_republic_great_plaza_clock_tower_project
+		is_planning_great_project = gdp_republic_great_plaza_civic_ward_project
+		is_planning_great_project = gdp_republic_great_plaza_league_chapter_house_project
+		is_planning_great_project = gdp_republic_great_plaza_podesta_residence_project
+		is_planning_great_project = gdp_republic_great_plaza_fountain_project
+		is_planning_great_project = gdp_republic_great_plaza_saint_sanctuary_project
+		is_planning_great_project = gdp_republic_great_plaza_basilica_project
+		
+	}
+}
+
+gdp_can_plan_great_plaza_project_trigger = {
+	OR = {
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_project
+		can_plan_great_project = great_project_type:gdp_republic_expand_great_plaza_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_loggia_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_statute_hall_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_council_chamber_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_debt_office_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_civic_hospital_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_weigh_house_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_clock_tower_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_civic_ward_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_league_chapter_house_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_podesta_residence_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_fountain_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_saint_sanctuary_project
+		can_plan_great_project = great_project_type:gdp_republic_great_plaza_basilica_project
+	}
+}
+
+# Head of a title-based trade league. Excludes the Lombard League.
+gdp_is_trade_league_head_trigger = {
+	custom_tooltip = {
+		text = you_are_head_of_the_trade_league
+		any_held_title = {
+			is_leading_title = yes
+			title_confederation ?= {
+				confederation_type = confederation_type:trade_league
+			}
+		}
+	}
+}
+
+# Member of a title-based trade league. Excludes the Lombard League.
+gdp_is_trade_league_member_trigger = {
+	is_confederation_member = yes
+	confederation ?= {
+		confederation_type = confederation_type:trade_league
+	}
+}
+
+# In $ACTOR$'s trade league, and not otherwise allied to them
+gdp_callable_only_through_trade_league_trigger = {
+	this != $ACTOR$
+	gdp_is_trade_league_member_trigger = yes
+	$ACTOR$.confederation ?= confederation
+	NOT = { is_allied_to = $ACTOR$ }
+}
+
+# War scope
+gdp_is_trade_league_war_trigger = {
+	OR = {
+		using_cb = trade_league_trade_war_cb
+		using_cb = trade_league_monopoly_cb
+		using_cb = trade_league_commune_cb
+	}
+}
+
+# Cohesion gate for the monopoly CB
+gdp_league_can_enforce_monopolies_trigger = {
+	custom_tooltip = {
+		text = league_monopoly_cb_cohesion_tt
+		confederation ?= {
+			has_cohesion_level_parameter = trade_league_unlocks_casus_bellis
+		}
+	}
+}
+
+# Cohesion gate for the commune CB
+gdp_league_can_proclaim_communes_trigger = {
+	custom_tooltip = {
+		text = league_commune_cohesion_tt
+		confederation ?= {
+			has_cohesion_level_parameter = trade_league_unlocks_casus_bellis
+		}
+	}
+}
+
+# Cohesion gate for the trade war CB
+gdp_league_can_wage_trade_wars_trigger = {
+	custom_tooltip = {
+		text = league_trade_war_cohesion_tt
+		confederation ?= {
+			OR = {
+				has_cohesion_level_parameter = trade_league_can_wage_trade_wars
+				has_cohesion_level_parameter = trade_league_unlocks_casus_bellis
+			}
+		}
+	}
+}
+
+# Only the first arsenal/treasury tier is a cohesion parameter, so the window lists it once.
+gdp_league_can_build_arsenals_trigger = {
+	custom_tooltip = {
+		text = league_arsenal_cohesion_tt
+		confederation ?= {
+			has_cohesion_level_parameter = trade_league_can_build_arsenals
+		}
+	}
+}
+
+gdp_league_can_fortify_arsenals_trigger = {
+	custom_tooltip = {
+		text = league_fortified_arsenal_cohesion_tt
+		confederation ?= {
+			cohesion >= gdp_league_fortified_arsenal_cohesion_value
+		}
+	}
+}
+
+gdp_league_can_build_great_arsenals_trigger = {
+	custom_tooltip = {
+		text = league_great_arsenal_cohesion_tt
+		confederation ?= {
+			cohesion >= gdp_league_great_arsenal_cohesion_value
+		}
+	}
+}
+
+gdp_league_can_set_focused_category_trigger = {
+	custom_tooltip = {
+		text = league_focus_cohesion_tt
+		confederation ?= {
+			has_cohesion_level_parameter = trade_league_can_set_focused_category
+		}
+	}
+}
+
+# Valid commune CB target for $LEADER$'s league
+gdp_league_commune_target_valid_trigger = {
+	is_landless_type_title = no
+	custom_tooltip = {
+		text = league_commune_target_not_republican_tt
+		holder ?= {
+			NOT = { government_has_flag = government_is_republic }
+		}
+	}
+	# City or castle required: other holdings cannot convert to a republic
+	custom_tooltip = {
+		text = league_commune_target_holding_tt
+		title_province ?= {
+			OR = {
+				has_holding_type = city_holding
+				has_holding_type = castle_holding
+			}
+		}
+	}
+	custom_tooltip = {
+		text = league_commune_target_size_tt
+		title_province ?= {
+			province_size_level >= 2
+		}
+	}
+	custom_tooltip = {
+		text = league_commune_target_reach_tt
+		OR = {
+			is_coastal_county = yes
+			is_neighbor_to_realm = $LEADER$
+			AND = {
+				exists = $LEADER$.confederation
+				any_neighboring_county = {
+					holder ?= {
+						is_member_of_confederation = $LEADER$.confederation
+					}
+				}
+			}
+		}
+	}
+}
+
+# League member or their vassal trades in this market
+gdp_league_member_trading_in_market_trigger = {
+	any_character_in_market = {
+		OR = {
+			is_member_of_confederation = $LEAGUE$
+			any_liege_or_above = {
+				is_member_of_confederation = $LEAGUE$
+			}
+		}
+	}
+}
+
+# Valid monopoly CB target for $LEADER$'s league
+gdp_league_monopoly_cb_target_valid_trigger = {
+	is_landless_type_title = no
+	save_temporary_scope_as = monopoly_cb_county
+	custom_tooltip = {
+		text = league_monopoly_cb_market_seat_tt
+		title_province.barony.trade_market ?= {
+			trade_market_owner.county = scope:monopoly_cb_county
+		}
+	}
+	custom_tooltip = {
+		text = league_monopoly_cb_member_trading_tt
+		title_province.barony.trade_market ?= {
+			gdp_league_member_trading_in_market_trigger = { LEAGUE = $LEADER$.confederation }
+		}
+	}
+	custom_tooltip = {
+		text = league_monopoly_cb_already_complete_tt
+		title_province.barony.trade_market ?= {
+			NOR = {
+				has_complete_trade_monopoly = yes
+				any_trade_monopoly_for_market = {
+					is_complete_monopoly = yes
+					confederation_owner ?= $LEADER$.confederation
+				}
+			}
+		}
+	}
+}
+
+# Trades on behalf of $LEAGUE$, either as a member or under one
+gdp_league_affiliated_trigger = {
+	OR = {
+		is_member_of_confederation = $LEAGUE$
+		any_liege_or_above = {
+			is_member_of_confederation = $LEAGUE$
+		}
+	}
+}
+
+# $LEAGUE$ trades here, outside $RIVAL_LEAGUE$'s seats
+gdp_league_contested_market_trigger = {
+	gdp_league_member_trading_in_market_trigger = { LEAGUE = $LEAGUE$ }
+	NOT = {
+		trade_market_owner.holder ?= {
+			gdp_league_affiliated_trigger = { LEAGUE = $RIVAL_LEAGUE$ }
+		}
+	}
+}
+
+# Holds assets $LEAGUE$ can contest
+gdp_league_holds_contested_trade_assets_trigger = {
+	OR = {
+		any_owned_trade_post_district = {
+			district_province.barony.trade_market ?= {
+				gdp_league_contested_market_trigger = {
+					LEAGUE = $LEAGUE$
+					RIVAL_LEAGUE = $RIVAL_LEAGUE$
+				}
+			}
+		}
+		any_trade_monopoly_for_character = {
+			monopoly_trade_market ?= {
+				gdp_league_contested_market_trigger = {
+					LEAGUE = $LEAGUE$
+					RIVAL_LEAGUE = $RIVAL_LEAGUE$
+				}
+			}
+		}
+		any_held_title = {
+			any_trade_monopoly_for_title = {
+				monopoly_trade_market ?= {
+					gdp_league_contested_market_trigger = {
+						LEAGUE = $LEAGUE$
+						RIVAL_LEAGUE = $RIVAL_LEAGUE$
+					}
+				}
+			}
+		}
+	}
+}
+
+# $LEADER$'s league holds contested assets here
+gdp_league_trade_war_target_valid_trigger = {
+	custom_tooltip = {
+		text = league_trade_war_contested_market_tt
+		confederation ?= {
+			save_temporary_scope_as = trade_war_rival_league
+			OR = {
+				any_confederation_member = {
+					OR = {
+						gdp_league_holds_contested_trade_assets_trigger = {
+							LEAGUE = $LEADER$.confederation
+							RIVAL_LEAGUE = scope:trade_war_rival_league
+						}
+						any_vassal_or_below = {
+							gdp_league_holds_contested_trade_assets_trigger = {
+								LEAGUE = $LEADER$.confederation
+								RIVAL_LEAGUE = scope:trade_war_rival_league
+							}
+						}
+					}
+				}
+				any_trade_monopoly_for_confederation = {
+					monopoly_trade_market ?= {
+						gdp_league_contested_market_trigger = {
+							LEAGUE = $LEADER$.confederation
+							RIVAL_LEAGUE = scope:trade_war_rival_league
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Cohesion gate for Expel Rival Traders
+gdp_league_can_demand_expulsions_trigger = {
+	custom_tooltip = {
+		text = league_expulsion_cohesion_tt
+		confederation ?= {
+			cohesion >= gdp_league_expulsion_cohesion_gate_value
+		}
+	}
+}
+
+# Trades on behalf of a trade league, but not on behalf of $LEAGUE$
+gdp_league_rival_affiliated_trigger = {
+	NOT = { gdp_league_affiliated_trigger = { LEAGUE = $LEAGUE$ } }
+	OR = {
+		gdp_is_trade_league_member_trigger = yes
+		any_liege_or_above = {
+			gdp_is_trade_league_member_trigger = yes
+		}
+	}
+}
+
+# Not trading for $LEAGUE$, and either in another league or outside $REALM_HEAD$'s realm
+gdp_league_foreign_competitor_trigger = {
+	NOT = { gdp_league_affiliated_trigger = { LEAGUE = $LEAGUE$ } }
+	OR = {
+		gdp_is_trade_league_member_trigger = yes
+		any_liege_or_above = {
+			gdp_is_trade_league_member_trigger = yes
+		}
+		NOR = {
+			this = $REALM_HEAD$
+			is_vassal_or_below_of = $REALM_HEAD$
+		}
+	}
+}
+
+# Monopoly held for someone other than $LEAGUE$
+gdp_monopoly_held_for_rival_league_trigger = {
+	OR = {
+		confederation_owner ?= {
+			confederation_type = confederation_type:trade_league
+			NOT = { this = $LEAGUE$ }
+		}
+		character_owner ?= {
+			gdp_league_foreign_competitor_trigger = {
+				LEAGUE = $LEAGUE$
+				REALM_HEAD = $REALM_HEAD$
+			}
+		}
+		title_owner.holder ?= {
+			gdp_league_foreign_competitor_trigger = {
+				LEAGUE = $LEAGUE$
+				REALM_HEAD = $REALM_HEAD$
+			}
+		}
+	}
+}
+
+# A competitor of $LEAGUE$ holds a trade post in $MARKET$ on land $REALM_HEAD$ rules
+gdp_league_rival_trade_post_in_market_trigger = {
+	$REALM_HEAD$ = {
+		any_realm_province = {
+			exists = trade_post_district
+			barony.trade_market ?= $MARKET$
+			trade_post_owner = {
+				gdp_league_foreign_competitor_trigger = {
+					LEAGUE = $LEAGUE$
+					REALM_HEAD = $REALM_HEAD$
+				}
+			}
+		}
+	}
+}
+
+# A competitor of $LEAGUE$ holds a monopoly in $MARKET$
+gdp_league_rival_monopoly_in_market_trigger = {
+	$MARKET$ = {
+		any_trade_monopoly_for_market = {
+			gdp_monopoly_held_for_rival_league_trigger = {
+				LEAGUE = $LEAGUE$
+				REALM_HEAD = $REALM_HEAD$
+			}
+		}
+	}
+}
+
+# $REALM_HEAD$ has something to expel from $MARKET$ on $LEAGUE$'s behalf
+gdp_league_expulsion_target_valid_trigger = {
+	OR = {
+		gdp_league_rival_trade_post_in_market_trigger = {
+			MARKET = $MARKET$
+			REALM_HEAD = $REALM_HEAD$
+			LEAGUE = $LEAGUE$
+		}
+		gdp_league_rival_monopoly_in_market_trigger = {
+			MARKET = $MARKET$
+			REALM_HEAD = $REALM_HEAD$
+			LEAGUE = $LEAGUE$
+		}
+	}
+}
+
+# Seat county of a market $REALM_HEAD$ can clear for $LEAGUE$
+gdp_league_expulsion_county_valid_trigger = {
+	save_temporary_scope_as = expulsion_county
+	title_province.barony.trade_market ?= {
+		save_temporary_scope_as = expulsion_county_market
+		trade_market_owner.county ?= scope:expulsion_county
+		gdp_league_expulsion_target_valid_trigger = {
+			MARKET = scope:expulsion_county_market
+			REALM_HEAD = $REALM_HEAD$
+			LEAGUE = $LEAGUE$
+		}
+	}
+}
+
+# character holds a republic title
+gdp_holds_republic_title_trigger = {
+	custom_tooltip = {
+		text = gdp_holds_republic_title_trigger_tt
+		government_has_flag = government_is_republic
+		any_held_title = { gdp_is_republic_title_trigger = yes }
+	}
+}
+
+gdp_is_republican_despot_or_supporter_trigger = {
+	OR = {
+		has_realm_law = republican_despot_succession_law
+		AND = {
+			liege ?= { has_realm_law = republican_despot_succession_law }
+			OR = {
+				house ?= liege.house
+				is_player_heir_of = liege
+			}
+		}
+	}
+}
+
+gdp_republic_has_democratic_laws_trigger = {
+	OR = {
+		has_realm_law = republic_assembly_authority_constitutional
+		has_realm_law = republic_assembly_composition_parliament
+		has_realm_law = republic_assembly_composition_general
+		has_realm_law = republic_type_popular
+	}
+}
+
+gdp_character_in_democratic_republic_trigger = {
+	OR = {
+		gdp_republic_has_democratic_laws_trigger = yes
+		liege ?= { gdp_republic_has_democratic_laws_trigger = yes }
+	}
+}
+
+gdp_is_criminal_for_republic_punishment_laws_trigger = {
+	OR = {
+		AND = {
+			exists = top_liege.rite
+			has_any_criminal_trait_in_rite_trigger = {
+				CHARACTER = this
+				RITE = this.top_liege.rite
+			}
+		}
+		AND = {
+			exists = liege
+			liege = {
+				OR = {
+					has_imprisonment_reason = prev
+					has_banish_reason = prev
+					has_execute_reason = prev
+				}
+			}
+		}
+	}
+}
+
+# title is a republic title (potentially, if holder is republican)
+gdp_is_republic_title_trigger = {
+	custom_tooltip = {
+		text = gdp_is_republic_title_trigger_tt
+		tier > tier_county
+		is_landless_type_title = no
+		is_noble_family_title = no
+		NOT = {
+			any_in_de_jure_hierarchy = {
+				NOT = { this = prev }
+			}
+		}
+		save_temporary_scope_as = republic_title_temp
+	}
+}
+
+gdp_republic_has_improved_levy_army_law_trigger = {
+	culture = { has_cultural_parameter = unlock_improved_republic_militia }
+}
+
+# Character scope - check if a ruler's capital historically was maritime (or should be in terms of gameplay)
+gdp_is_historical_maritime_republic = {
+	capital_county ?= {
+		OR = {
+			# Italian city states
+			this = title:c_amalfi
+			this = title:c_pisa
+			this = title:c_genoa
+			this = title:c_venezia
+			this = title:c_ancona
+			this = title:c_ragusa # Close enough
+			# Hanseatic League
+			this = title:c_lubeck
+			this = title:c_hamburg
+			this = title:c_bremen
+			this = title:c_gutland # Close enough
+		}
+	}
+}
+
+# Yes when a character can adopt the republic government
+# This shows the Adopt Republican Ideals decision and the Request City Charter interaction
+gdp_basic_can_adopt_republic_government_trigger = {
+	has_gdp_dlc_trigger = yes
+	# You are not one of the following governments
+	NOR = {
+		government_has_flag = government_is_republic
+		government_has_flag = government_is_tribal
+		government_has_flag = government_has_herd
+		government_has_flag = government_is_theocracy
+		government_is_japanese_trigger = yes
+	}
+	# Your realm isn't already too large, at which point we hide this altogether
+	sub_realm_size < 75
+	# You own land
+	is_landed = yes
+	# Is duchy tier or less
+	highest_held_title_tier <= tier_duchy
+}
+
+# Can the target character leverage the scoped trade market?
+gdp_can_leverage_trade_posts_in_market_trigger = {
+	custom_tooltip = {
+		text = gdp_improve_trade_post_market_decision_already_active_desc
+		NOT = {
+			has_competitiveness_modifier_for_character = {
+				character = $CHARACTER$
+				modifier = gdp_dominate_market_trade_post_modifier
+			}
+		}
+	}
+}

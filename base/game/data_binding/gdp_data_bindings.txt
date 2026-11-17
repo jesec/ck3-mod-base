@@ -1,0 +1,23 @@
+﻿macro = {
+	description = "Does the merchant have any patron charter artifact?"
+	definition = "MerchantHasAnyCharter(Character)"
+	replace_with = "GetScriptedGui( 'merchant_has_any_charter_gui' ).IsValid( GuiScope.SetRoot( Character.MakeScope ).End )"
+}
+
+macro = {
+	description = "Does the merchant have a charter from their current suzerain (patron)?"
+	definition = "MerchantHasCharterFromPatron(Character)"
+	replace_with = "GetScriptedGui( 'merchant_has_charter_from_patron_gui' ).IsValid( GuiScope.SetRoot( Character.MakeScope ).End )"
+}
+
+macro = {
+	description = "Does the merchant have a charter from PatronCharacter?"
+	definition = "MerchantHasCharterFromScopePatron(Character, PatronCharacter)"
+	replace_with = "GetScriptedGui( 'merchant_has_charter_from_scope_patron_gui' ).IsValid( GuiScope.SetRoot( Character.MakeScope ).AddScope( 'patron', PatronCharacter.MakeScope ).End )"
+}
+
+macro = {
+	description = "Is this interaction Revoke Toll Exception?"
+	definition = "IsRevokeTollInteraction"
+	replace_with = "ObjectsEqual( CharacterInteractionConfirmationWindow.GetInteraction.Self, GetCharacterInteraction( 'revoke_toll_exception_interaction' ).Self )"
+}

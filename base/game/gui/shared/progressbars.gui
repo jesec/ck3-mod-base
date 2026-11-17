@@ -1,4 +1,4 @@
-types ProgressBars
+﻿types ProgressBars
 {
 	type progressbar_royal_court = progressbar {
 		min = 0
@@ -87,6 +87,15 @@ types ProgressBars
 		{
 			progresstexture = "gfx/interface/progressbars/progress_green.dds"
 			noprogresstexture = "gfx/interface/progressbars/progress_black.dds"
+		}
+	}
+
+	type progressbar_green_red = progressbar_standard
+	{
+		blockoverride "progress_textures"
+		{
+			progresstexture = "gfx/interface/progressbars/progress_bright_green.dds"
+			noprogresstexture = "gfx/interface/progressbars/progress_red.dds"
 		}
 	}
 
@@ -548,20 +557,14 @@ types HorizontalComplexBars
 	}
 
 	type widget_spiritual_fulfillment_bar_horizontal = margin_widget {
-		block "fulfillment_bar_size"
-		{
-			size = { 500 50 }
-		}
+		size = { 500 50 }
 
 		block "fulfillment_datacontext" {}
 
 		hbox_complex_bar_progress = {
 			layoutpolicy_vertical = expanding
 
-			block "fulfillment_progress_margin"
-			{
-				margin_top = 30
-			}
+			margin_top = 30
 
 			blockoverride "filled"
 			{
@@ -576,63 +579,75 @@ types HorizontalComplexBars
 
 		using = tooltip_es
 
-		hbox_complex_bar_levels = {
+		# Thresholds do not span the full range, so we pad the levels with the same margins as the bar
+		hbox = {
+			allow_outside = yes
 			layoutpolicy_vertical = expanding
 
-			blockoverride "marker"
-			{
-				widget_level_marker = {
-					block "fulfillment_marker_position"
-					{
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				layoutstretchfactor_horizontal = "[ComplexBar.GetLeftMargin]"
+			}
+
+			hbox_complex_bar_levels = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				layoutstretchfactor_horizontal = "[ComplexBar.GetDataWidth]"
+
+				blockoverride "marker"
+				{
+					widget_level_marker = {
 						position = { 0 -10 }
-					}
-
-					block "fulfillment_marker_scale"
-					{
 						scale = 0.75
-					}
 
-					blockoverride "marker_size_inactive"
-					{
-						size = { 50 50 }
-					}
-
-					blockoverride "marker_addon"
-					{
-						icon = {
-							texture = "gfx/interface/colors/white.dds"
-							using = Mask_Rough_Edges
-							position = { -3 17 }
-							size = { 6 50 }
-							alpha = 0.3
-
-							visible = yes
+						blockoverride "marker_size_inactive"
+						{
+							size = { 50 50 }
 						}
-					}
 
-					blockoverride "visible_active"
-					{
-						visible = "[Character.IsSpiritualFulfillmentLevelIndexActive( ComplexBarItem.GetIndex )]"
-					}
+						blockoverride "marker_addon"
+						{
+							icon = {
+								size = { 6 50 }
+								position = { -3 17 }
 
-					blockoverride "visible_inactive"
-					{
-						visible = "[Not( Character.IsSpiritualFulfillmentLevelIndexActive( ComplexBarItem.GetIndex ) )]"
-					}
-
-					blockoverride "marker_tooltip"
-					{
-						datacontext = "[Character.GetSpiritualFulfillmentLevelByIndex( ComplexBarItem.GetIndex )]"
-						tooltipwidget = {
-							using = fulfillment_tooltip
+								texture = "gfx/interface/colors/white.dds"
+								using = Mask_Rough_Edges
+								alpha = 0.3
+							}
 						}
-					}
 
-					blockoverride "marker_text"
-					{
-						text = "PERSONAL_BELIEFS_VIEW_FULFILLMENT_METER_MARKER"
+						blockoverride "visible_active"
+						{
+							visible = "[Character.IsSpiritualFulfillmentLevelIndexActive( ComplexBarItem.GetIndex )]"
+						}
+
+						blockoverride "visible_inactive"
+						{
+							visible = "[Not( Character.IsSpiritualFulfillmentLevelIndexActive( ComplexBarItem.GetIndex ) )]"
+						}
+
+						blockoverride "marker_tooltip"
+						{
+							datacontext = "[Character.GetSpiritualFulfillmentLevelByIndex( ComplexBarItem.GetIndex )]"
+							tooltipwidget = {
+								using = fulfillment_tooltip
+							}
+						}
+
+						blockoverride "marker_text"
+						{
+							text = "PERSONAL_BELIEFS_VIEW_FULFILLMENT_METER_MARKER"
+						}
 					}
 				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				layoutstretchfactor_horizontal = "[ComplexBar.GetRightMargin]"
 			}
 		}
 	}
@@ -853,7 +868,10 @@ types ComplexBars
 			block "highlight_addon" {}
 
 			parentanchor = center
-			size = { 65 65 }
+			block "highlight_size"
+			{
+				size = { 65 65 }
+			}
 
 			texture = "gfx/interface/window_roco_grandeur/pin_highlight.dds"
 

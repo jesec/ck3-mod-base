@@ -10,6 +10,51 @@ on_marriage = { # Will not fire from historical marriages
 			SPOUSE = scope:spouse
 			RULER = root
 		}
+
+		if = {
+			limit = {
+				exists = house.house_head
+				exists = scope:spouse.house.house_head
+			}
+			if = {
+				limit = {
+					OR = {
+						this = house.house_head
+						is_close_family_of = house.house_head
+						scope:spouse = scope:spouse.house.house_head
+						scope:spouse = { is_close_family_of = house.house_head }
+					}
+				}
+				if = {
+					limit = {
+						OR = {
+							is_ai = no
+							scope:spouse = { is_ai = no }
+						}
+					}
+					gg_reconciliation_catalyst_effect = {
+						ACTOR = house.house_head
+						RECIPIENT = scope:spouse.house.house_head
+						CATALYST = catalyst_gg_cross_party_marriage
+						ONCE_A_YEAR = no
+					}
+				}
+				else = {
+					gg_reconciliation_catalyst_effect = {
+						ACTOR = house.house_head
+						RECIPIENT = scope:spouse.house.house_head
+						CATALYST = catalyst_gg_cross_party_marriage
+						ONCE_A_YEAR = yes
+					}
+				}
+			}
+
+			league_pair_cohesion_effect = {
+				FIRST = house.house_head
+				SECOND = scope:spouse.house.house_head
+				AMOUNT = 1
+			}
+		}
 		
 		create_character_memory = {
 			type = married
@@ -421,6 +466,11 @@ on_concubinage_end = {
 	}
 }
 
+# root = first person in betrothal
+# scope:second = second person in betrothal
+on_betrothal = {
+
+}
 
 # root = first person in betrothal
 # scope:second = second person in betrothal

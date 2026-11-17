@@ -44,6 +44,7 @@
  ceremonial_house_non_heir_desc: "Non-inheriting [ceremonial_house|E]"
  japanese_kampaku_devoted_desc: "Is a [GetTrait('devoted').GetName( GetNullCharacter )]"
  japanese_kampaku_domicile_capital_desc: "[ROOT.Char.GetHouse.GetBaseName] [manor|E] in [capital|E]"
+ japanese_kampaku_not_administrative_desc: "Does NOT have an [administrative_government|E]"
  japanese_kampaku_age_desc: "Age"
  japanese_kampaku_house_bloc_size_desc: "Size of Lead [bloc|E]"
  japanese_kampaku_house_bloc_size_heir_desc: "Size of Predecessor's [bloc|E]"
@@ -57,10 +58,9 @@
  game_concept_bloc: "Bloc"
  game_concept_blocs: "Blocs"
  game_concept_bloc_possessive: "Bloc's"
- game_concept_house_bloc_desc: "A $game_concept_house_bloc$ is an defensive alliance of [houses|E] within a [realm|E]. Any [member_house|E] who is attacked will be defended by all other $game_concept_member_houses$.\n\n[house_heads|E] decide whether to become [bloc_member_houses|E], with all ruling members of their House in the Realm following them.\n\nBlocs always have a [leading_house|E], whose $game_concept_house_head$ may expel other members, is the favored [ceremonial_regent|E] of all members, and whose [house_aspiration|E] determines the bonuses granted by higher levels of [cohesion|E].\n\nOnly $game_concept_leading_house_possessive$ $game_concept_house_head$ may create [factions|E] against the [top_liege|E], and all $game_concept_bloc_member_houses$ members will join all [factions|E] they create."
+ game_concept_house_bloc_desc: "A $game_concept_house_bloc$ is an defensive alliance of [houses|E] within a [realm|E]. Any [member_house|E] who is attacked will be defended by all other $game_concept_member_houses$.\n\n[house_heads|E] decide whether to become [bloc_member_houses|E], with all ruling members of their House in the Realm following them.\n\nBlocs always have a [leading_house|E], whose $game_concept_house_head$ may expel other members, is the favored [ceremonial_regent|E] of all members, and whose [house_aspiration|E] determines the bonuses granted by higher levels of [bloc_cohesion|E].\n\nOnly $game_concept_leading_house_possessive$ $game_concept_house_head$ may create [factions|E] against the [top_liege|E], and all $game_concept_bloc_member_houses$ members will join all [factions|E] they create."
 
  game_concept_bloc_cohesion: "Bloc Cohesion"
- game_concept_cohesion: "Cohesion"
  game_concept_bloc_cohesion_desc: "$game_concept_cohesion$ measures the unity of a [house_bloc|E], with higher levels granting increasing benefits to members of [bloc_member_houses|E], based on the [leading_house_possessive|E] [house_aspiration|E].\n\nThe main source is [house_relations|E] between $game_concept_bloc_member_houses$, which can affect $game_concept_cohesion$ positively and negatively. Additionally, the Bloc's overall size or mismatched $game_concept_house_aspirations$ or [government|E] of members can reduce $game_concept_cohesion$.\n\nMaintaining a level of $game_concept_bloc_cohesion$ will bestow various bonuses on [member_houses|E], based on the Aspiration of the $game_concept_leading_house$.\n\nUpon reaching #V 0#! $game_concept_cohesion$ a $game_concept_house_bloc$ will automatically dissolve."
  game_concept_bloc_cohesion_tt: "#T @bloc_cohesion! $game_concept_bloc_cohesion$#!\n\n$game_concept_bloc_cohesion_desc$"
 
@@ -111,9 +111,9 @@
  tgp_blocked_ceremonial_house_matrilineal_marriage_trigger: "The [ceremonial_liege|E] would not accept this"
 
  tgp_is_ceremonial_liege_tt: "[THIS.Char.GetShortUIName|U] [CharAreIs(THIS.Char)] the [ceremonial_liege|E]"
- tgp_has_ceremonial_liege_title_tt: "[THIS.Char.GetShortUIName|U] [CharHaveHas(THIS.Char)] the [ceremonial_liege|E] [title|E] #weak ([THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetDefinitiveName|V])#!"
+ tgp_has_ceremonial_liege_title_tt: "[THIS.Char.GetShortUIName|U] [CharHaveHas(THIS.Char)] the [ceremonial_liege|E] [title|E] #weak ([THIS.Char.GetCeremonialLiegeTitle.GetDefinitiveName|V])#!"
  tgp_has_ceremonial_liege_title_no_title_tt: "[THIS.Char.GetShortUIName|U] [CharHaveHas(THIS.Char)] the [ceremonial_liege|E] [title|E]"
- tgp_is_in_ceremonial_house_tt: "[THIS.Char.GetShortUIName|U] [CharAreIs( THIS.Char )] a member of the [ceremonial_house|E] #weak ([THIS.Char.GetTopLiege.GetPrimaryTitle.MakeScope.Var('administrative_ui_special_title').Title.GetHolder.GetHouse.GetName|V])#!"
+ tgp_is_in_ceremonial_house_tt: "[THIS.Char.GetShortUIName|U] [CharAreIs( THIS.Char )] a member of the [ceremonial_house|E] #weak ([THIS.Char.GetCeremonialLiege.GetHouse.GetName|V])#!"
  tgp_realm_has_ceremonial_liege_tt: "[THIS.Char.GetTopLiege.GetPrimaryTitle.GetDefinitiveName|U] has a [ceremonial_liege|E]"
  tgp_ceremonial_liege_coronation_trigger: "Only an [independent|E] [ceremonial_liege|E] can be crowned in their [realm|E]"
 
@@ -149,7 +149,7 @@
  japan_administrative_province_trade_short: "@japan_administrative_trade_administration! Industrial"
  japan_administrative_province_trade_text_icon: "@japan_administrative_trade_administration!"
  japan_administrative_province_trade_benefits: "#emphasis #bold [vassal|E] Benefits:#!#!\nUses [GetLaw('japanese_appointment_succession_law').GetName]\n\n#alert_trial @alert_icon! Limited to [EmptyScope.ScriptValue('japan_administrative_province_trade_max_value')|V0]#!"
- japan_administrative_province_trade_desc: "#low A civil administration that focuses on maritime commerce and long-term development.#!"
+ japan_administrative_province_trade_desc: "#low A civil administration that focuses on maritime commerce and long-term prosperity.#!"
  japan_administrative_province_trade_amount_desc: "$japan_administrative_province_trade_short$ limit reached"
  japan_administrative_province_military: "@japan_administrative_military_administration! Military Administration"
  japan_administrative_province_military_short: "@japan_administrative_military_administration! Military"

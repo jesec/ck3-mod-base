@@ -565,7 +565,7 @@ petition_liege_0101_county_convert_effect = {
 }
 
 ### Opinion
-petition_liege_0101_county_opinion_effect = {
+petition_liege_0101_popular_opinion_effect = {
 	scope:petition_liege = {
 		stress_and_fulfillment_impact = {
 			base = minor_stress_impact_gain
@@ -577,14 +577,14 @@ petition_liege_0101_county_opinion_effect = {
 		}
 	}
 	every_in_list = {
-		list = petition_liege_county_opinion_list
+		list = petition_liege_popular_opinion_list
 		limit = {
 			holder = scope:petition_vassal
-			county_opinion <= -25
+			popular_opinion <= -25
 		}
-		custom = petition_liege_0101_county_opinion_effect_tt
+		custom = petition_liege_0101_popular_opinion_effect_tt
 		add_county_modifier = {
-			modifier = petition_liege_county_opinion_modifier
+			modifier = petition_liege_popular_opinion_modifier
 			years = 5
 		}
 	}
@@ -807,40 +807,40 @@ petition_liege_0101_construct_temple_effect = {
 	}
 }
 
-### Development
-petition_liege_0101_development_effect = {
+### Prosperity
+petition_liege_0101_prosperity_effect = {
 	scope:petition_liege = {
 		stress_and_fulfillment_impact = {
 			greedy = medium_stress_impact_gain
 		}
-		capital_province.county = { change_development_level = -2 }
+		capital_province.county = { change_prosperity_level = -2 }
 		hidden_effect = {
 			send_interface_toast = {
-				title = petition_liege.0101.t.development
+				title = petition_liege.0101.t.prosperity
 				left_icon = scope:petition_vassal
 				show_as_tooltip = {
-					capital_province.county = { change_development_level = -2 }
+					capital_province.county = { change_prosperity_level = -2 }
 				}	
 			}
 		}
 	}
 	scope:petition_vassal = {
 		capital_province.county = {
-			change_development_level = 2
+			change_prosperity_level = 2
 			add_county_modifier = {
-				modifier = petition_liege_development_modifier
+				modifier = petition_liege_prosperity_modifier
 				years = 5
 			}
 		}
 		hidden_effect = {
 			send_interface_toast = {
-				title = petition_liege.0101.t.development
+				title = petition_liege.0101.t.prosperity
 				left_icon = scope:petition_liege
 				show_as_tooltip = {
 					capital_province.county = {
-						change_development_level = 2
+						change_prosperity_level = 2
 						add_county_modifier = {
-							modifier = petition_liege_development_modifier
+							modifier = petition_liege_prosperity_modifier
 							years = 5
 						}
 					}
@@ -1091,7 +1091,7 @@ petition_type_outcome_effect = {
 		flag:faction_war = { petition_liege_0101_faction_dismantle_effect = yes }
 		flag:county_control = { petition_liege_0101_county_control_effect = yes }
 		flag:county_convert = { petition_liege_0101_county_convert_effect = yes }
-		flag:county_opinion = { petition_liege_0101_county_opinion_effect = yes }
+		flag:popular_opinion = { petition_liege_0101_popular_opinion_effect = yes }
 		flag:fortify_border = { petition_liege_0101_fortify_border_effect = yes }
 		flag:title_liege = { petition_liege_0101_title_liege_effect = yes }
 		flag:title_vassal = {
@@ -1112,7 +1112,7 @@ petition_type_outcome_effect = {
 		}
 		flag:construct_city = { petition_liege_0101_construct_city_effect = yes }
 		flag:construct_temple = { petition_liege_0101_construct_temple_effect = yes }
-		flag:development = { petition_liege_0101_development_effect = yes }
+		flag:prosperity = { petition_liege_0101_prosperity_effect = yes }
 		flag:house_fief = { petition_liege_0101_house_fief_effect = yes }
 		flag:regent = { petition_liege_0121_regent_effect = yes }
 		flag:appointment = { petition_liege_0121_appointment_effect = yes }

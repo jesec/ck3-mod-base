@@ -1,4 +1,60 @@
 ﻿
+# Converts all Norse counties in a kingdom's de jure hierarchy to a new culture
+# Skips counties held by or under a human Norse player, so they get the interactive event
+diverge_culture_from_norse_effect = {
+	reset_culture_creation_date = yes
+	get_all_innovations_from = scope:norse
+	copy_all_traditions_from = scope:norse
+	if = {
+		limit = { has_cultural_tradition = tradition_malleable_invaders }
+		remove_culture_tradition = tradition_malleable_invaders
+	}
+	if = {
+		limit = {
+			free_tradition_slot >= 1
+			NOT = { has_cultural_tradition = $UNIQUE_TRADITION$ }
+		}
+		add_culture_tradition = $UNIQUE_TRADITION$
+	}
+}
+
+convert_kingdom_de_jure_counties_effect = {
+	if = {
+		limit = { 
+			title:$TITLE$ = { 
+				exists = this
+				NOT = { is_titular = yes }
+			}
+		}
+		title:$TITLE$ = {
+			every_in_de_jure_hierarchy = {
+				limit = {
+					tier = tier_county
+					culture = $OLD_CULTURE$
+					NOT = {
+						holder = {
+							OR = {
+								AND = {
+									is_ai = no
+									culture = $OLD_CULTURE$
+								}
+								any_liege_or_above = {
+									is_ai = no
+									culture = $OLD_CULTURE$
+								}
+							}
+						}
+					}
+				}
+				set_county_culture = $NEW_CULTURE$
+				holder = {
+					if = { limit = { culture = $OLD_CULTURE$ }  set_culture = $NEW_CULTURE$ }
+				}
+			}
+		}
+	}
+}
+
 convert_county_and_holder_if_in_region_effect = {
 	if = {
 		# If this county is of the old culture and is in the designated region, flip it to the new culture.

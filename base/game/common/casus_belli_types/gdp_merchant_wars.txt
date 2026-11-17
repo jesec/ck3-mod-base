@@ -1,0 +1,517 @@
+﻿seize_realm_county_cb = {
+	icon = seize_land
+	group = merchant_seize_realm
+
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+	allow_hostages = no
+
+	allowed_for_character = {
+		gdp_merchant_seize_realm_allowed_for_character_trigger = yes
+		scope:defender.highest_held_title_tier >= tier_county
+	}
+
+	allowed_for_character_display_regardless = {
+		has_required_prestige_level_to_declare_war = { LEVEL = 2 }
+		gdp_merchant_seize_realm_allowed_for_character_display_regardless_trigger = yes
+		custom_description = {
+			text = company_purpose_profiteering_law_cb_tt
+			has_realm_law_flag = unlock_seize_realm_county_cb
+		}
+	}
+
+	allowed_against_character = {
+		gdp_merchant_allowed_against_character_trigger = yes
+	}
+
+	target_titles = all
+	target_title_tier = county
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+
+	attacker_score_from_occupation_scale = 150
+	attacker_score_from_battles_scale = 150
+	defender_score_from_battles_scale = 150
+
+	ai_can_target_all_titles = { always = yes }
+
+	ai_score_mult = {
+		value = viking_conquest_ai_score_value
+
+		add = common_cb_ai_score_mult_additive
+		multiply = aggressive_cb_ai_score_mult
+		multiply = common_cb_ai_score_mult
+	}
+
+	valid_to_start = {
+		scope:target = {
+			is_landless_type_title = no
+			# Also make sure you can't war for, like, the Papal States
+			trigger_if = {
+				limit = { holder.faith ?= root.faith }
+				NOT = {
+					holder ?= { is_theocratic_lessee = yes }
+				}
+			}
+			any_county_province = {
+				OR = {
+					has_holding_type = city_holding
+					has_holding_type = castle_holding
+					has_holding_type = tribal_holding
+				}
+			}
+		}
+	}
+
+	should_invalidate = { gdp_merchant_should_invalidate_trigger = yes }
+
+	on_invalidated_desc = msg_duchy_conquest_war_invalidated_message #Re-use laamp equivalent
+	on_invalidated = {}
+
+	cost = {
+		prestige = {
+			add = {
+				value = 100
+				desc = CB_BASE_COST
+			}
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+		custom_tooltip = gdp_merchant_seize_realm_declare_war_hooked_ally_header_tt
+		gdp_merchant_seize_realm_spawn_hired_host_toast_effect = {
+			VANGUARD = 2
+			LANCERS = 2
+			SKIRMISHERS = 4
+			ARCHERS = 4
+			PIKES = 4
+		}
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:attacker = { is_local_player = yes } }
+				desc = county_conquest_cb_victory_desc_attacker
+			}
+			desc = county_conquest_cb_victory_desc
+		}
+	}
+
+	on_victory = {
+		gdp_merchant_seize_realm_on_victory_effect = {
+			VICTOR_PRESTIGE_XP = minor_prestige_value
+			ALLY_FAME_BASE = medium_prestige_value
+		}
+	}
+
+	on_white_peace_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = county_conquest_cb_white_peace_desc_defender
+			}
+			desc = county_conquest_cb_white_peace_desc
+		}
+	}
+
+	on_white_peace = {
+		gdp_merchant_seize_realm_on_white_peace_effect = {
+			ATTACKER_PEACE_PRESTIGE_LOSS = minor_prestige_value
+			ALLY_FAME_BASE = minor_prestige_value
+		}
+	}
+
+	on_defeat_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = county_conquest_cb_defeat_desc_defender
+			}
+			desc = county_conquest_cb_defeat_desc
+		}
+	}
+
+	on_defeat = {
+		gdp_merchant_seize_realm_on_defeat_effect = {
+			ATTACKER_DEFEAT_PRESTIGE = medium_prestige_loss
+			DEFENDER_VICTORY_PRESTIGE = medium_prestige_value
+			GOLD_REPARATIONS = 2
+			ALLY_FAME_BASE = minor_prestige_value
+		}
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "SEIZE_REALM_WAR_NAME"
+	war_name_base = "SEIZE_REALM_WAR_NAME_BASE"
+	cb_name = "SEIZE_REALM_COUNTY_CB_NAME"
+
+	interface_priority = 83
+
+	use_de_jure_wargoal_only = yes
+
+	attacker_wargoal_percentage = 0.8
+
+	max_attacker_score_from_battles = 75
+
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+}
+
+seize_realm_duchy_cb = {
+	icon = seize_land
+	group = merchant_seize_realm
+
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+	allow_hostages = no
+
+	allowed_for_character = {
+		gdp_merchant_seize_realm_allowed_for_character_trigger = yes
+		scope:defender.highest_held_title_tier >= tier_duchy
+	}
+
+	allowed_for_character_display_regardless = {
+		has_required_prestige_level_to_declare_war = { LEVEL = 3 }
+		gdp_merchant_seize_realm_allowed_for_character_display_regardless_trigger = yes
+		custom_description = {
+			text = company_purpose_profiteering_law_cb_tt
+			has_realm_law_flag = unlock_seize_realm_county_cb
+		}
+	}
+
+	allowed_against_character = {
+		gdp_merchant_allowed_against_character_trigger = yes
+	}
+
+	target_titles = all
+	target_title_tier = duchy
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+
+	attacker_score_from_occupation_scale = 150
+	attacker_score_from_battles_scale = 150
+	defender_score_from_battles_scale = 150
+
+	ai_can_target_all_titles = { always = yes }
+
+	ai_score_mult = {
+		value = viking_conquest_ai_score_value
+
+		add = common_cb_ai_score_mult_additive
+		multiply = aggressive_cb_ai_score_mult
+		multiply = common_cb_ai_score_mult
+	}
+
+	valid_to_start = {
+		scope:target = {
+			any_in_de_jure_hierarchy = {
+				count >= 1
+				tier = tier_county
+				any_county_province = {
+					OR = {
+						has_holding_type = city_holding
+						has_holding_type = castle_holding
+						has_holding_type = tribal_holding
+					}
+				}
+			}
+			is_landless_type_title = no
+			trigger_if = {
+				limit = { holder.faith ?= root.faith }
+				NOT = {
+					holder ?= { is_theocratic_lessee = yes }
+				}
+			}
+			ai_aggressive_cb_constraints = yes
+		}
+	}
+
+	should_invalidate = { gdp_merchant_should_invalidate_trigger = yes }
+
+	on_invalidated_desc = msg_county_conquest_war_invalidated_message
+	on_invalidated = {}
+
+	cost = {
+		prestige = {
+			add = {
+				value = 250
+				desc = CB_BASE_COST
+			}
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+		custom_tooltip = gdp_merchant_seize_realm_declare_war_hooked_ally_header_tt
+		gdp_merchant_seize_realm_spawn_hired_host_toast_effect = {
+			VANGUARD = 3
+			LANCERS = 3
+			SKIRMISHERS = 6
+			ARCHERS = 6
+			PIKES = 6
+		}
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:attacker = { is_local_player = yes } }
+				desc = county_conquest_cb_victory_desc_attacker
+			}
+			desc = county_conquest_cb_victory_desc
+		}
+	}
+
+	on_victory = {
+		gdp_merchant_seize_realm_on_victory_effect = {
+			VICTOR_PRESTIGE_XP = medium_prestige_value
+			ALLY_FAME_BASE = major_prestige_value
+		}
+	}
+
+	on_white_peace_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = county_conquest_cb_white_peace_desc_defender
+			}
+			desc = county_conquest_cb_white_peace_desc
+		}
+	}
+
+	on_white_peace = {
+		gdp_merchant_seize_realm_on_white_peace_effect = {
+			ATTACKER_PEACE_PRESTIGE_LOSS = medium_prestige_value
+			ALLY_FAME_BASE = medium_prestige_value
+		}
+	}
+
+	on_defeat_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = county_conquest_cb_defeat_desc_defender
+			}
+			desc = county_conquest_cb_defeat_desc
+		}
+	}
+
+	on_defeat = {
+		gdp_merchant_seize_realm_on_defeat_effect = {
+			ATTACKER_DEFEAT_PRESTIGE = major_prestige_loss
+			DEFENDER_VICTORY_PRESTIGE = major_prestige_value
+			GOLD_REPARATIONS = 4
+			ALLY_FAME_BASE = medium_prestige_value
+		}
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "SEIZE_REALM_WAR_NAME"
+	war_name_base = "SEIZE_REALM_WAR_NAME_BASE"
+	cb_name = "SEIZE_REALM_DUCHY_CB_NAME"
+
+	interface_priority = 84
+
+	use_de_jure_wargoal_only = yes
+
+	attacker_wargoal_percentage = 0.8
+
+	max_attacker_score_from_battles = 100
+
+	max_defender_score_from_occupation = 175
+	max_attacker_score_from_occupation = 175
+}
+
+seize_realm_kingdom_cb = {
+	icon = seize_land
+	group = merchant_seize_realm
+
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+	allow_hostages = no
+
+	allowed_for_character = {
+		gdp_merchant_seize_realm_allowed_for_character_trigger = yes
+		scope:defender.highest_held_title_tier >= tier_kingdom
+	}
+
+	allowed_for_character_display_regardless = {
+		has_required_prestige_level_to_declare_war = { LEVEL = 4 }
+		gdp_merchant_seize_realm_allowed_for_character_display_regardless_trigger = yes
+		custom_description = {
+			text = company_purpose_profiteering_law_cb_tt
+			has_realm_law_flag = unlock_seize_realm_county_cb
+		}
+	}
+
+	allowed_against_character = {
+		gdp_merchant_allowed_against_character_trigger = yes
+	}
+
+	target_titles = all
+	target_title_tier = kingdom
+	target_de_jure_regions_above = no
+	ignore_effect = change_title_holder
+
+	attacker_score_from_occupation_scale = 150
+	attacker_score_from_battles_scale = 150
+	defender_score_from_battles_scale = 150
+
+	ai_can_target_all_titles = { always = yes }
+
+	ai_score_mult = {
+		value = viking_conquest_ai_score_value
+
+		add = common_cb_ai_score_mult_additive
+		multiply = aggressive_cb_ai_score_mult
+		multiply = common_cb_ai_score_mult
+	}
+
+	valid_to_start = {
+		scope:target = {
+			any_in_de_jure_hierarchy = {
+				count >= 1
+				tier = tier_county
+				any_county_province = {
+					OR = {
+						has_holding_type = city_holding
+						has_holding_type = castle_holding
+						has_holding_type = tribal_holding
+					}
+				}
+			}
+			is_landless_type_title = no
+			trigger_if = {
+				limit = { holder.faith ?= root.faith }
+				NOT = {
+					holder ?= { is_theocratic_lessee = yes }
+				}
+			}
+			ai_aggressive_cb_constraints = yes
+		}
+	}
+
+	should_invalidate = { gdp_merchant_should_invalidate_trigger = yes }
+
+	on_invalidated_desc = msg_duchy_conquest_war_invalidated_message
+	on_invalidated = {}
+
+	cost = {
+		prestige = {
+			add = {
+				value = 500
+				desc = CB_BASE_COST
+			}
+			multiply = common_cb_prestige_cost_multiplier
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+		custom_tooltip = gdp_merchant_seize_realm_declare_war_hooked_ally_header_tt
+		gdp_merchant_seize_realm_spawn_hired_host_toast_effect = {
+			VANGUARD = 4
+			LANCERS = 4
+			SKIRMISHERS = 8
+			ARCHERS = 8
+			PIKES = 8
+		}
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:attacker = { is_local_player = yes } }
+				desc = county_conquest_cb_victory_desc_attacker
+			}
+			desc = county_conquest_cb_victory_desc
+		}
+	}
+
+	on_victory = {
+		gdp_merchant_seize_realm_on_victory_effect = {
+			VICTOR_PRESTIGE_XP = major_prestige_value
+			ALLY_FAME_BASE = massive_prestige_value
+		}
+	}
+
+	on_white_peace_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = county_conquest_cb_white_peace_desc_defender
+			}
+			desc = county_conquest_cb_white_peace_desc
+		}
+	}
+
+	on_white_peace = {
+		gdp_merchant_seize_realm_on_white_peace_effect = {
+			ATTACKER_PEACE_PRESTIGE_LOSS = major_prestige_value
+			ALLY_FAME_BASE = major_prestige_value
+		}
+	}
+
+	on_defeat_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = county_conquest_cb_defeat_desc_defender
+			}
+			desc = county_conquest_cb_defeat_desc
+		}
+	}
+
+	on_defeat = {
+		gdp_merchant_seize_realm_on_defeat_effect = {
+			ATTACKER_DEFEAT_PRESTIGE = massive_prestige_loss
+			DEFENDER_VICTORY_PRESTIGE = massive_prestige_value
+			GOLD_REPARATIONS = 6
+			ALLY_FAME_BASE = major_prestige_value
+		}
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "SEIZE_REALM_WAR_NAME"
+	war_name_base = "SEIZE_REALM_WAR_NAME_BASE"
+	cb_name = "SEIZE_REALM_KINGDOM_CB_NAME"
+
+	interface_priority = 85
+
+	use_de_jure_wargoal_only = yes
+
+	attacker_wargoal_percentage = 0.8
+
+	max_attacker_score_from_battles = 125
+
+	max_defender_score_from_occupation = 200
+	max_attacker_score_from_occupation = 200
+}

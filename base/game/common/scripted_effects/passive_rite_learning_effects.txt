@@ -8,6 +8,7 @@ passive_rite_learning_pulse_effect = {
 	if = {
 		limit = {
 			is_available_adult = yes
+			is_playable_character = yes # Can stop being playable earlier in the same pulse
 		}
 		passive_rite_learning_pick_source_effect = yes
 		if = {
@@ -883,6 +884,7 @@ passive_rite_learning_travel_province_effect = {
 						trigger = {
 							any_character_tenet = {
 								knowledge_filter = unknown
+								rite_filter = scope:passive_learn_source.rite
 								passive_rite_learning_candidate_tenet_is_core_trigger = { RITE = scope:passive_learn_source.rite }
 								count >= 1
 							}
@@ -893,6 +895,7 @@ passive_rite_learning_travel_province_effect = {
 						trigger = {
 							any_character_doctrine = {
 								knowledge_filter = unknown
+								rite_filter = scope:passive_learn_source.rite
 								passive_rite_learning_candidate_doctrine_is_core_trigger = { RITE = scope:passive_learn_source.rite }
 								passive_rite_learning_doctrine_is_learnable_trigger = yes
 								count >= 1
@@ -913,6 +916,7 @@ passive_rite_learning_travel_province_effect = {
 						trigger = {
 							any_character_tenet = {
 								knowledge_filter = unknown
+								rite_filter = scope:passive_learn_rite
 								passive_rite_learning_candidate_tenet_is_core_trigger = { RITE = scope:passive_learn_rite }
 								count >= 1
 							}
@@ -923,6 +927,7 @@ passive_rite_learning_travel_province_effect = {
 						trigger = {
 							any_character_doctrine = {
 								knowledge_filter = unknown
+								rite_filter = scope:passive_learn_rite
 								passive_rite_learning_candidate_doctrine_is_core_trigger = { RITE = scope:passive_learn_rite }
 								passive_rite_learning_doctrine_is_learnable_trigger = yes
 								count >= 1

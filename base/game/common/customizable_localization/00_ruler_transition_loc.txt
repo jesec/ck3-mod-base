@@ -184,6 +184,10 @@ DeathMessageIntro = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_EASTERN_1
 		trigger = {
+			NAND = { 
+				this = top_liege
+				government_has_flag = government_is_mandala  
+			}
 			OR = {
 				faith.religion = faith:vaishnava_faith.religion
 				faith.religion = faith:theravada_faith.religion
@@ -199,6 +203,149 @@ DeathMessageIntro = {
 				faith.religion = faith:west_african_bori_pagan.religion
 				government_has_flag = government_is_tribal
 			}
+		}
+	}
+	# Asian Relgious
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_BUDDHIST_1
+		trigger = {
+			NAND = { 
+				this = top_liege
+				government_has_flag = government_is_mandala 
+			}
+			faith.religion = religion:buddhism_religion
+		}
+		weight_multiplier = {
+			base = 2
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_MANDALA_RULER_1
+		trigger = {
+			this = top_liege
+			government_has_flag = government_is_mandala
+		}
+		weight_multiplier = {
+			base = 100
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_HINDUISM_1
+		trigger = {
+			NAND = { 
+				this = top_liege
+				government_has_flag = government_is_mandala 
+			}
+			faith.religion = religion:hinduism_religion
+		}
+		weight_multiplier = {
+			base = 2
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_TAOISM_1
+		trigger = {
+			faith.religion = religion:taoism_religion
+		}
+		weight_multiplier = {
+			base = 2
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_SHINTO_1
+		trigger = {
+			faith.religion = religion:shintoism_religion
+		}
+		weight_multiplier = {
+			base = 2
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_SHINTO_2
+		trigger = {
+			faith.religion = religion:shintoism_religion
+		}
+		weight_multiplier = {
+			base = 2
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_SHINTO_3
+		trigger = {
+			faith.religion = religion:shintoism_religion
+		}
+		weight_multiplier = {
+			base = 2
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_CHINESE_1
+		trigger = {
+			OR = { 
+				faith.religion = religion:confucianism_religion
+				faith.religion = religion:bimoism_religion
+				faith.religion = religion:qiangic_religion
+			}
+			any_child = {
+				is_alive = yes
+			}
+		}
+		weight_multiplier = {
+			base = 2
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_CHINESE_2
+		trigger = {
+			OR = { 
+				faith.religion = religion:confucianism_religion
+				faith.religion = religion:bimoism_religion
+				faith.religion = religion:qiangic_religion
+			}
+			NOT = {
+				any_child = {
+					is_alive = yes
+				}
+			}
+		}
+		weight_multiplier = {
+			base = 2
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_CHINESE_EMPEROR_1
+		trigger = {
+			highest_held_title_tier = tier_hegemony
+			culture = {
+				has_cultural_pillar = heritage_chinese
+			}
+			has_government = celestial_government
+			OR = { 
+				faith.religion = religion:confucianism_religion
+				faith.religion = religion:bimoism_religion
+				faith.religion = religion:qiangic_religion
+			}
+		}
+		weight_multiplier = {
+			base = 10
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_INTRO_CHINESE_EMPEROR_2
+		trigger = {
+			highest_held_title_tier = tier_hegemony
+			culture = {
+				has_cultural_pillar = heritage_chinese
+			}
+			has_government = celestial_government
+			OR = { 
+				faith.religion = religion:confucianism_religion
+				faith.religion = religion:bimoism_religion
+				faith.religion = religion:qiangic_religion
+			}
+		}
+		weight_multiplier = {
+			base = 10
 		}
 	}
 }
@@ -465,6 +612,10 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_MIND_DUMB
 		trigger = {
 			has_trait = intellect_bad
+			NOR = {
+				government_has_flag = government_is_merchant
+				government_has_flag = government_is_republic
+			}
 		}
 		weight_multiplier = {
 			base = 2
@@ -663,6 +814,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_LIFESTYLE_GENERAL
 		trigger = {
 			has_martial_lifestyle_trait_trigger = yes
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 	text = {
@@ -687,6 +839,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_LIFESTYLE_ERUDITE
 		trigger = {
 			has_learning_lifestyle_trait_trigger = yes
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 	text = {
@@ -705,6 +858,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_LIFESTYLE_MYSTIC
 		trigger = {
 			has_trait = lifestyle_mystic
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 	text = {
@@ -824,6 +978,7 @@ DeathMessageOutro = {
 		localization_key = SUCCESSION_EVENT_WINDOW_DEAD_OUTRO_PERSONALITY_WRATHFUL
 		trigger = {
 			has_trait = wrathful
+			NOT = { government_has_flag = government_is_merchant }
 		}
 		weight_multiplier = {
 			base = 0.01
@@ -926,6 +1081,15 @@ HeirMessageInterface = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_UNDERAGE
 		trigger = {
 			is_adult = no
+			exists = diarch
+		}
+	}
+	text = {
+		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_UNDERAGE_MERCHANT
+		trigger = {
+			is_adult = no
+			NOT = { exists = diarch }
+			government_has_flag = government_is_merchant
 		}
 	}
 	text = {
@@ -949,6 +1113,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_GENDER
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			OR = {
 				AND = {
 					is_female = yes
@@ -1013,6 +1178,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_DIPLOMACY
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			NOT = {
 				has_trait = deceitful
 			}
@@ -1052,6 +1218,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_REVELER
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = lifestyle_reveler
 		}
@@ -1059,6 +1226,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_ADMINISTRATOR
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_stewardship_lifestyle_trait_trigger = yes
 		}
@@ -1074,6 +1242,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_VARANGIAN
 		trigger = {
+			successor_is_a_landless_patrician_trigger = no
 			is_adult = yes
 			has_trait = varangian
 		}
@@ -1123,6 +1292,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_GLUTTON_GREEDY
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = gluttonous
 			has_trait = greedy
@@ -1139,6 +1309,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_CONTENT_ARBITRARY
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = content
 			has_trait = arbitrary
@@ -1150,6 +1321,7 @@ HeirMessageInterface = {
 			is_adult = yes
 			has_trait = craven
 			has_trait = education_martial
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 	text = {
@@ -1158,6 +1330,7 @@ HeirMessageInterface = {
 			is_adult = yes
 			has_trait = shy
 			has_trait = content
+			successor_is_a_landless_patrician_trigger = no
 		}
 	}
 	text = {
@@ -1187,6 +1360,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_CYNICAL_CRUEL
 		trigger = {
+			successor_is_a_landless_patrician_trigger = no
 			is_adult = yes
 			has_trait = cynical
 			OR = {
@@ -1247,11 +1421,13 @@ HeirMessageInterface = {
 				has_trait = brave
 				has_trait = berserker
 			}
+			NOT = { government_has_flag = government_is_merchant }
 		}
 	}
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_TEMPERATE_LUSTFUL
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = temperate
 			has_trait = lustful
@@ -1276,6 +1452,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_CRAVEN_HONEST
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = craven
 			has_trait = honest
@@ -1300,6 +1477,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_CYNICAL_ARBITRARY
 		trigger = {
+			successor_is_a_landless_patrician_trigger = no
 			is_adult = yes
 			has_trait = cynical
 			OR = {
@@ -1356,6 +1534,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_VENGEFUL
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = vengeful
 		}
@@ -1389,6 +1568,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_CANNIBAL
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = cannibal
 			NOT = {
@@ -1438,6 +1618,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_WITCH
 		trigger = {
+			successor_is_a_landless_patrician_trigger = no
 			is_adult = yes
 			AND = {
 				has_trait = witch
@@ -1451,6 +1632,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_COMPASSIONATE
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = compassionate
 		}
@@ -1474,11 +1656,16 @@ HeirMessageInterface = {
 		trigger = {
 			is_adult = yes
 			has_trait = gregarious
+			NOR = {
+				government_has_flag = government_is_landless_adventurer
+				government_has_flag = government_is_merchant
+			}
 		}
 	}
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_ZEALOUS
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = zealous
 		}
@@ -1517,6 +1704,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_HUMBLE
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = humble
 		}
@@ -1524,6 +1712,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_ARBITRARY
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = arbitrary
 		}
@@ -1549,6 +1738,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_LUSTFUL
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			OR = {
 				has_trait = lustful
@@ -1559,6 +1749,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_CONTENT
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = content
 		}
@@ -1594,6 +1785,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_CALLOUS
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = callous
 		}
@@ -1601,6 +1793,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_CRAVEN
 		trigger = {
+			successor_is_a_landless_patrician_trigger = no
 			is_adult = yes
 			has_trait = craven
 		}
@@ -1608,6 +1801,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_GREEDY
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = greedy
 		}
@@ -1617,6 +1811,10 @@ HeirMessageInterface = {
 		trigger = {
 			is_adult = yes
 			has_trait = sadistic
+			NOR = {
+				government_has_flag = government_is_landless_adventurer
+				government_has_flag = government_is_merchant
+			}
 		}
 	}
 	text = {
@@ -1624,6 +1822,7 @@ HeirMessageInterface = {
 		trigger = {
 			is_adult = yes
 			has_trait = trusting
+			successor_is_a_landless_patrician_trigger = no
 		}
 	}
 	text = {
@@ -1636,6 +1835,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_LAZY
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = lazy
 		}
@@ -1650,6 +1850,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_WRATHFUL
 		trigger = {
+			successor_is_not_a_traditional_feudal_esque_ruler_trigger = no
 			is_adult = yes
 			has_trait = wrathful
 		}
@@ -1657,6 +1858,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_PARANOID
 		trigger = {
+			successor_is_a_landless_patrician_trigger = no
 			is_adult = yes
 			has_trait = paranoid
 		}
@@ -1664,6 +1866,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_TRAIT_STUBBORN
 		trigger = {
+			successor_is_a_landless_patrician_trigger = no
 			is_adult = yes
 			has_trait = stubborn
 		}
@@ -1764,6 +1967,7 @@ HeirMessageInterface = {
 	text = {
 		localization_key = SUCCESSION_EVENT_WINDOW_HEIR_THREE_SKILLS
 		trigger = {
+			successor_is_a_landless_patrician_trigger = no
 			calc_true_if = {
 				amount >= 3
 				amount < 5

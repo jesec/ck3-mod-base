@@ -95,5 +95,79 @@ add_poi_wanderer_experience_effect = {
 }
 
 poi_lifestyle_experience_effect = {
-	add_$LIFESTYLE$_lifestyle_xp = $VALUE$
+	if = {
+		limit = {
+			has_variable = visited_pois_lifestyle_var
+			var:visited_pois_lifestyle_var >= 40
+		}
+		add_$LIFESTYLE$_lifestyle_xp = {
+			value = $VALUE$
+			divide = 5
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = visited_pois_lifestyle_var
+			var:visited_pois_lifestyle_var >= 30
+		}
+		add_$LIFESTYLE$_lifestyle_xp = {
+			value = $VALUE$
+			divide = 4
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = visited_pois_lifestyle_var
+			var:visited_pois_lifestyle_var >= 20
+		}
+		add_$LIFESTYLE$_lifestyle_xp = {
+			value = $VALUE$
+			divide = 3
+		}
+	}
+	else_if = {
+		limit = {
+			has_variable = visited_pois_lifestyle_var
+			var:visited_pois_lifestyle_var >= 10
+		}
+		add_$LIFESTYLE$_lifestyle_xp = {
+			value = $VALUE$
+			divide = 2
+		}
+	}
+	else = {
+		add_$LIFESTYLE$_lifestyle_xp = {
+			value = $VALUE$
+		}
+	}
+	if = {
+		limit = {
+			NOT = { has_variable = visited_pois_lifestyle_var }
+		}
+		set_variable = {
+			name = visited_pois_lifestyle_var
+			value = 1
+		}
+	}
+	else = {
+		change_variable = {
+			name = visited_pois_lifestyle_var
+			add = 1
+		}
+	}
+}
+
+make_local_deals_haggle_risk_effect = {
+	if = {
+		limit = {
+			NOT = { has_character_flag = local_deals_haggle_bandit_cooldown }
+		}
+		random = {
+			chance = make_local_deals_haggle_bandit_chance_value
+			trigger_event = {
+				id = gdp_travel_events.1070
+				days = { 1 5 }
+			}
+		}
+	}
 }

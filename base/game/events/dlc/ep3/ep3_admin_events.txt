@@ -267,6 +267,9 @@ ep3_admin_events.0002 = {
 
 	trigger = {
 		this != top_liege
+		NOT = {
+			government_has_flag = government_is_republic
+		}
 		any_held_title = {
 			tier = root.highest_held_title_tier
 			is_landless_type_title = no
@@ -668,6 +671,15 @@ ep3_admin_events.0010 = {
 		# Finally, let's reset the counter according to building level
 		house = {
 			if = {
+				limit = {
+					house_head.domicile ?= { has_domicile_parameter = reception_hall_legitimacy_loss_05 }
+				}
+				change_variable = {
+					name = ep3_legacy_legitimacy_counter
+					multiply = 1
+				}
+			}
+			else_if = {
 				limit = {
 					house_head.domicile ?= { has_domicile_parameter = reception_hall_legitimacy_loss_04 }
 				}

@@ -134,16 +134,15 @@ empire_faith_gate.0001 = {
 					NOT = { this = root }
 					efg_same_faith_empire_holder_trigger = yes
 					scope:efg_new_holder = {
-						NOR = {
+						NOT = {
 							has_relation_rival = prev
-							has_relation_nemesis = prev
 						}
 					}
 				}
 				scope:efg_new_holder = {
-					set_relation_rival = {
-						target = prev
-						reason = efg_contested_empire_rivalry
+					set_relation_rival_effect = {
+						TARGET = prev
+						REASON = efg_contested_empire_rivalry
 					}
 				}
 			}
@@ -153,14 +152,13 @@ empire_faith_gate.0001 = {
 			limit = {
 				NOT = { this = root }
 				efg_same_faith_empire_holder_trigger = yes
-				NOR = {
+				NOT = {
 					has_relation_rival = scope:efg_new_holder
-					has_relation_nemesis = scope:efg_new_holder
 				}
 			}
-			set_relation_rival = {
-				target = scope:efg_new_holder
-				reason = efg_contested_empire_rivalry
+			set_relation_rival_effect = {
+				TARGET = scope:efg_new_holder
+				REASON = efg_contested_empire_rivalry
 			}
 		}
 		scope:efg_new_holder = {
@@ -240,9 +238,8 @@ empire_faith_gate.0002 = {
 				faith = root.faith
 				highest_held_title_tier >= tier_empire
 				root = {
-					NOR = {
+					NOT = {
 						has_relation_rival = prev
-						has_relation_nemesis = prev
 					}
 				}
 			}

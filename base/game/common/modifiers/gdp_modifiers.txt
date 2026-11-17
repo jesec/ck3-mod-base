@@ -1,0 +1,198 @@
+﻿gdp_market_recently_sieged_capacity_modifier = {
+	icon = market_negative
+	trade_category_non_construction_buy_price_mult = 0.02
+	trade_category_non_construction_sell_price_mult = -0.02
+	trade_category_carpentry_supplies_sell_price_mult = 0.1
+	trade_category_stone_sell_price_mult = 0.1
+	stacking = yes
+}
+gdp_market_recently_raided_capacity_modifier = {
+	icon = flame_negative
+	trade_category_non_construction_buy_price_mult = 0.01
+	trade_category_non_construction_sell_price_mult = -0.01
+	trade_category_carpentry_supplies_sell_price_mult = 0.1
+	stacking = yes
+}
+gdp_market_army_movement_capacity_modifier = {
+	icon = camp_negative
+	trade_category_non_food_buy_price_mult = 0.02
+	trade_category_non_food_sell_price_mult = -0.02
+	trade_category_food_sell_price_mult = 0.1
+	stacking = yes
+}
+gdp_market_smuggling_trade_modifier = {
+	icon = trade_goods_negative
+	trade_category_non_luxury_buy_price_mult = 0.02
+	trade_category_non_luxury_sell_price_mult = -0.02
+	trade_category_luxury_sell_price_mult = 0.01
+	trade_category_comforts_sell_price_mult = 0.01
+	stacking = yes
+}
+gdp_market_banditry_trade_modifier = {
+	icon = mask_negative
+	trade_category_all_buy_price_mult = 0.02
+	trade_category_all_sell_price_mult = -0.02
+	stacking = yes
+}
+gdp_market_bartering_trade_modifier = {
+	icon = trade_goods_positive
+	trade_category_all_buy_price_mult = -0.001
+	trade_category_all_sell_price_mult = 0.001
+	stacking = yes
+}
+
+# DISASTER APPLIED PER COUNTY
+gdp_natural_disaster_1_trade_modifier = {
+	icon = rock_negative
+	trade_category_non_construction_buy_price_mult = 0.02
+	trade_category_non_construction_sell_price_mult = -0.02
+	trade_category_carpentry_supplies_sell_price_mult = 0.05
+	trade_category_stone_sell_price_mult = 0.05
+	stacking = yes
+}
+gdp_natural_disaster_2_trade_modifier = {
+	icon = rock_negative
+	trade_category_non_construction_buy_price_mult = 0.03
+	trade_category_non_construction_sell_price_mult = -0.03
+	trade_category_carpentry_supplies_sell_price_mult = 0.075
+	trade_category_stone_sell_price_mult = 0.075
+	stacking = yes
+}
+gdp_natural_disaster_3_trade_modifier = {
+	icon = rock_negative
+	trade_category_non_construction_buy_price_mult = 0.04
+	trade_category_non_construction_sell_price_mult = -0.04
+	trade_category_carpentry_supplies_sell_price_mult = 0.1
+	trade_category_stone_sell_price_mult = 0.1
+	stacking = yes
+}
+
+# EPIDEMIC APPLIED PER PROVINCE
+gdp_epidemic_1_trade_modifier = {
+	icon = rat_negative
+	trade_category_non_medicinal_buy_price_mult = 0.004
+	trade_category_non_medicinal_sell_price_mult = -0.004
+	trade_category_medicaments_sell_price_mult = 0.01
+	stacking = yes
+}
+gdp_epidemic_2_trade_modifier = {
+	icon = rat_negative
+	trade_category_non_medicinal_buy_price_mult = 0.008
+	trade_category_non_medicinal_sell_price_mult = -0.008
+	trade_category_medicaments_sell_price_mult = 0.025
+	stacking = yes
+}
+gdp_epidemic_3_trade_modifier = {
+	icon = rat_negative
+	trade_category_non_medicinal_buy_price_mult = 0.012
+	trade_category_non_medicinal_sell_price_mult = -0.012
+	trade_category_medicaments_sell_price_mult = 0.05
+	stacking = yes
+}
+
+
+# VISIT HOLDING
+gdp_visit_holding_healer_health_modifier = {
+	icon = treatment_positive
+	health = 0.1
+	fertility = 0.1
+
+	scale = {
+		value = {
+			value = 0
+			if = {
+				limit = { exists = var:1500_healer_aptitude }
+				if = {
+					limit = { var:1500_healer_aptitude = 5 } # 50%
+					add = 5
+				}
+				else_if = {
+					limit = { var:1500_healer_aptitude >= 4 } # 40%
+					add = 4
+				}
+				else_if = {
+					limit = { var:1500_healer_aptitude >= 3 } # 30%
+					add = 3
+				}
+				else_if = {
+					limit = { var:1500_healer_aptitude >= 2 } # 20%
+					add = 2
+				}
+				else = { add = 1 } # No change, 10%
+			}
+		}
+		desc = MODIFIER_DEFINITION_VALUE_PER_HEALER_APTITUDE
+		display_mode = scaled
+	}
+}
+
+gdp_visit_holding_healer_health_partner_modifier = {
+	icon = treatment_positive
+	health = 0.1
+	fertility = 0.1
+
+	scale = {
+		value = {
+			value = 0
+			if = {
+				limit = { exists = var:1500_partner_healer_aptitude }
+				if = {
+					limit = { var:1500_partner_healer_aptitude = 5 }
+					add = 4.5
+				}
+				else_if = {
+					limit = { var:1500_partner_healer_aptitude >= 4 }
+					add = 3.6
+				}
+				else_if = {
+					limit = { var:1500_partner_healer_aptitude >= 3 }
+					add = 2.7
+				}
+				else_if = {
+					limit = { var:1500_partner_healer_aptitude >= 2 }
+					add = 1.8
+				}
+				else = { add = 0.9 }
+			}
+		}
+		desc = MODIFIER_DEFINITION_VALUE_PER_COMPANION_APTITUDE
+		display_mode = scaled
+	}
+}
+
+writing_travelogue = {
+	icon = prestige_mixed
+	monthly_prestige = 0.5
+	stress_gain_mult = 0.1
+
+}
+
+binding_oaths_broke_word_modifier = {
+	icon = diplomacy_negative
+	same_culture_opinion = -25
+}
+
+# MERCHANT COMPANY DIRECTION
+merchant_steady_hand_low_unity_modifier = {
+	icon = capacity_positive
+	trade_capacity_mult = 0.1
+	monthly_prestige = 0.2
+	stacking = no
+}
+
+merchant_house_of_knives_fractious_modifier = {
+	icon = dread_positive
+	dread_baseline_add = 10
+	stacking = no
+}
+
+merchant_house_of_knives_divided_modifier = {
+	icon = dread_positive
+	dread_baseline_add = 20
+	stacking = no
+}
+
+merchant_family_mobilization_promote_diligence_modifier = {
+	icon = capacity_positive
+	trade_capacity_mult = 0.15
+}

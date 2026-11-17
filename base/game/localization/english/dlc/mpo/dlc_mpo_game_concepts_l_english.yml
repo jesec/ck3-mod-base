@@ -1,7 +1,7 @@
 ﻿l_english: 
  game_concept_nomadic_government: "Nomadic Government"
  game_concept_nomadic: "Nomadic"
- game_concept_nomadic_desc: "Nomadic [rulers|E] graze [county_fertility|E] to grow their [herd|E]. They can use Herd as [horde|E], which can be upgraded to [men_at_arms|E]. They have a [yurt|E].\n\nNomads can [migrate|E] to find more fertile lands, though large nomadic [realms|E] can grow their herd through [tributaries|E] or by reaching a high [fertility_equilibrium|E].\n\nNomads have a higher maximum [dread|E]."
+ game_concept_nomadic_desc: "Nomadic [rulers|E] graze [county_fertility|E] to grow their [herd|E]. They can use Herd as [horde|E], which can be upgraded to [men_at_arms|E]. They have a [yurt|E].\n\nNomads can [migrate|E] to find more fertile lands, though large nomadic [realms|E] can grow their herd through [tributaries|E] or by reaching a high [fertility_baseline|E].\n\nNomads have a higher maximum [dread|E].\n\nGovernment sub-type:\n$BULLET_WITH_TAB$[GetGovernment('steppe_admin_government').GetNameWithIcon]\n"
  game_concept_nomad_i: "@government_type_nomad!"
  game_concept_nomads: "Nomads"
  game_concept_nomads_desc: "$game_concept_nomadic_desc$"
@@ -12,19 +12,22 @@
  game_concept_confederation_government: "Confederation Government"
  game_concept_confederation: "Confederation"
  game_concept_confederations: "Confederations"
- game_concept_confederation_desc: "A relation that binds [tribal|E] or [nomadic|E] [rulers|E] in mutual defense, similar to an [alliance|E]. Formed through the #high $call_for_confederation_decision$#! [decision|E], a confederation requires its members to join each other's Defensive [wars|E]. Confederations are visible in the Diplomacy tab.\n\nFellow [confederates|E] also may not attack or [raid|E] one another. They are restricted from high levels of [tribal_authority|E] and [nomadic_authority|E], and may not create new [titles|E].\n\n[confederates|E] may use the #high $leave_confederation_decision$#! [decision|E] or [migrate|E] to become [independent|E]. If a confederation is left with only one member, it is destroyed."
+ game_concept_confederation_desc: "A $game_concept_confederation$ is a formal association of [rulers|E], [houses|E], or [titles|E] that binds its members more closely than an [alliance|E]. Members are expected to come to each other's defense.\n\nWhat a Confederation demands, and what it rewards, depends on its kind:\n$BULLET_WITH_TAB$[nomadic_confederation|E]\n$BULLET_WITH_TAB$[house_bloc|E]\n$BULLET_WITH_TAB$[trade_league|E]\n\nHouse Blocs and Trade Leagues also build [confederation_cohesion|E], granting escalating benefits as their members grow more united."
+
+ game_concept_nomadic_confederation: "Nomadic Confederation"
+ game_concept_nomadic_confederations: "Nomadic Confederations"
+ game_concept_nomadic_confederation_desc: "A $game_concept_nomadic_confederation$ binds [tribal|E] or [nomadic|E] [rulers|E] in mutual defense, similar to an [alliance|E]. Formed through the #high $call_for_confederation_decision$#! [decision|E], it requires its members to join each other's Defensive [wars|E]. Nomadic Confederations are visible in the Diplomacy tab.\n\nFellow [confederates|E] also may not attack or [raid|E] one another. They are restricted from high levels of [tribal_authority|E] and [nomadic_authority|E], and may not create new [titles|E].\n\n[confederates|E] may use the #high $leave_confederation_decision$#! [decision|E] or [migrate|E] to become [independent|E]. If one is left with only a single member, it is destroyed."
 
  game_concept_confederate: "Confederate"
  game_concept_confederates: "Confederates"
  game_concept_confederate_desc: "A [ruler|E] who is in a [confederation|E]. They will automatically join the Defensive [wars|E] of their fellow Confederates, and are restricted from attacking or [raiding|E] them."
 
  game_concept_county_fertility: "County Fertility"
- game_concept_county_fertility_desc: "$game_concept_county_fertility$ exists in [counties|E] located within the [the_great_steppe|E], and can be grazed by [GetGovernment( 'nomad_government' ).GetName] [rulers|E] to increase their [herd|E].\n\nA County's Fertility represents the quality of its pastures.\n\nFertility stabilizes around the [fertility_equilibrium|E], allowing Nomadic Rulers with a large [domain_limit|E] to sustain their Herd growth. Fertility is affected by the [steppe_seasons|E] and slowly replenished by [herders|E].\n\nWhen a [realm|E]'s fertility is low, it is a sign to [migrate|E].\n\n[county_control|E] slows down the rate at which Fertility grows by a percentage equal to the current control."
+ game_concept_county_fertility_desc: "$game_concept_county_fertility$ exists in [counties|E] located within the [the_great_steppe|E], and can be grazed by [GetGovernment( 'nomad_government' ).GetName] [rulers|E] to increase their [herd|E].\n\nA County's Fertility represents the quality of its pastures.\n\nFertility stabilizes around the [fertility_baseline|E], allowing Nomadic Rulers with a large [domain_limit|E] to sustain their Herd growth. Fertility is affected by the [steppe_seasons|E] and slowly replenished by [herders|E].\n\nWhen a [realm|E]'s fertility is low, it is a sign to [migrate|E].\n\n[county_control|E] slows down the rate at which Fertility grows by a percentage equal to the current control."
  game_concept_county_fertility_i: "@county_fertility_icon!"
 
- game_concept_fertility_equilibrium: "Fertility Equilibrium"
- game_concept_fertility_equilibrium_desc: "Fertility Equilibrium is a prediction of how fertile the [county|E] will become over a longer time. It is a value toward which [county_fertility|E] will arrive over time.\n\nIf the current [county_fertility|E] is below the Equilibrium, it will grow, and decline if it's above it.\n\nThe Fertility Equilibrium and the speed of change are mostly dependent on the ratio of Growth and Consumption modifiers for the [county|E]. If both Growth and Consumption are relatively small, any change will have a much greater effect on the Equilibrium."
- game_concept_equilibrium: "Equilibrium"
+ game_concept_fertility_baseline: "Fertility Baseline"
+ game_concept_fertility_baseline_desc: "Fertility Baseline is a prediction of how fertile the [county|E] will become over a longer time. It is a value toward which [county_fertility|E] will arrive over time.\n\nIf the current [county_fertility|E] is below the Baseline, it will grow, and decline if it's above it.\n\nThe Fertility Baseline and the speed of change are mostly dependent on the ratio of Growth and Consumption modifiers for the [county|E]. If both Growth and Consumption are relatively small, any change will have a much greater effect on the Baseline."
 
  game_concept_domain_fertility: "Domain Fertility"
  game_concept_domain_fertility_desc: "Domain Fertility is the total [county_fertility|E] of all your held [counties|E]."
@@ -56,7 +59,7 @@
  game_concept_herders_desc: "$game_concept_herder_desc$"
 
  game_concept_nomadic_holding: "Nomadic Settlement"
- game_concept_nomadic_holding_desc: "$game_concept_nomadic_holdings$ represent the existence of a [yurt|E] on the map. They are a [holding_type|E] used by [GetGovernment( 'nomad_government' ).GetName] [rulers|E] and provide small amounts of [county_control|E] and [county_opinion|E]."
+ game_concept_nomadic_holding_desc: "$game_concept_nomadic_holdings$ represent the existence of a [yurt|E] on the map. They are a [holding_type|E] used by [GetGovernment( 'nomad_government' ).GetName] [rulers|E] and provide small amounts of [county_control|E] and [popular_opinion|E]."
  game_concept_nomadic_holdings: "Nomadic Settlement"
  game_concept_nomadic_holdings_desc: "$game_concept_nomadic_holding_desc$"
 
@@ -71,16 +74,16 @@
  game_concept_unruly_nomadic_desc: "$game_concept_unruly_nomadic$ is the lowest level of [nomadic_authority|E]. At this level, [migration|E] can only target [de_jure|E] [county|E] [titles|E] within the [the_great_steppe|E] and [characters|E] cannot be [imprisoned|E]."
 
  game_concept_limited_nomadic: "Limited"
- game_concept_limited_nomadic_desc: "$game_concept_limited_nomadic$ is the second-lowest level of [nomadic_authority|E]. [migration|E] can target [de_jure|E] [duchy|E] [titles|E] within the [the_great_steppe|E], [titles|E] can be revoked and the liege may now [imprison|E] [characters|E] in their [realm|E].\n\nCan use the #V $step_away_from_the_steppe_decision$#! [decision|E]"
+ game_concept_limited_nomadic_desc: "$game_concept_limited_nomadic$ is the second-lowest level of [nomadic_authority|E]. [migration|E] can target [de_jure|E] [duchy|E] [titles|E] within the [the_great_steppe|E], [titles|E] can be revoked and the liege may now [imprison|E] [characters|E] in their [realm|E].\n\nCan use the [GetDecisionWithKey('step_away_from_the_steppe_decision').GetName] [decision|E]"
 
  game_concept_high_nomadic: "High"
  game_concept_high_nomadic_desc: "$game_concept_high_nomadic$ is the middle level of [nomadic_authority|E]. At this level [migration|E] can target [de_jure|E] [kingdom|E] [titles|E] within the [the_great_steppe|E] and the liege can [retract|E] a [vassal|E]'s vassals."
 
  game_concept_absolute_nomadic: "Absolute"
- game_concept_absolute_nomadic_desc: "$game_concept_absolute_nomadic$ is the second-highest level of [nomadic_authority|E]. At this level [migration|E] can target [de_jure|E] [empire|E] [titles|E] within the [the_great_steppe|E].\n\n[independent|E] [rulers|E] may settle outside of the steppe using the #high $settle_the_steppe_decision$#! [decision|E]"
+ game_concept_absolute_nomadic_desc: "$game_concept_absolute_nomadic$ is the second-highest level of [nomadic_authority|E]. At this level [migration|E] can target [de_jure|E] [empire|E] [titles|E] within the [the_great_steppe|E].\n\n[independent|E] [rulers|E] may settle outside of the steppe using the [GetDecisionWithKey('settle_the_steppe_decision').GetName] [decision|E]"
 
  game_concept_unrestricted_nomadic: "Unrestricted"
- game_concept_unrestricted_nomadic_desc: "$game_concept_unrestricted_nomadic$ is the highest level of [nomadic_authority|E]. This level can only be obtained by one [character|E] in the entire game, and they will become the [GetTrait('greatest_of_khans').GetName( GetNullCharacter )].\n\n[independent|E] [rulers|E] may use the #high $mpo_become_greatest_of_khans_decision$#! and #high $mpo_gok_world_conquest_decision$#! [decisions|E]"
+ game_concept_unrestricted_nomadic_desc: "$game_concept_unrestricted_nomadic$ is the highest level of [nomadic_authority|E]. This level can only be obtained by one [character|E] in the entire game, and they will become the [GetTrait('greatest_of_khans').GetName( GetNullCharacter )].\n\n[independent|E] [rulers|E] may use the [GetDecisionWithKey('mpo_become_greatest_of_khans_decision').GetName] and [GetDecisionWithKey('mpo_gok_world_conquest_decision').GetName] [decisions|E]"
 
  game_concept_the_great_steppe: "The Great Steppe"
  game_concept_the_great_steppe_desc: "$game_concept_the_great_steppe$ represents the endless sea of grass of the Eurasian Steppe, and the climate conditions that shape it, and is divided into three regions: Western, Central and Eastern.\n\nThe different [steppe_seasons|E] depict these both positive and adverse events, offering opportunities for special actions only available during that time, and modifying the [county_fertility|E] of each region.\n\nOnly [GetGovernment( 'nomad_government' ).GetName] and [herder|E] [rulers|E] take part in this [situation|E] and the [gurkhan|E] represents the most powerful ruler in the entire region."
@@ -90,12 +93,16 @@
  game_concept_suzerains: "Suzerains"
  game_concept_suzerains_desc: "$game_concept_suzerain_desc$"
  game_concept_suzerain_possessive: "Suzerain's"
+ game_concept_suzerain_default: "$game_concept_suzerain$"
+ game_concept_suzerain_default_plural: "$game_concept_suzerains$"
 
  game_concept_tributary: "Tributary"
- game_concept_tributary_desc: "A $game_concept_tributary$ is a [ruler|E] who has reached an agreement with another ruler, their [suzerain|E].\n\nThe $game_concept_tributary$ provides a periodic tribute in the form of [herd|E], [taxes|E], [prestige|E] or even [piety|E] (depending on their type) and, in exchange, gains a [truce|E] with the $game_concept_suzerain$.\n\nTributaries are a looser form of subject that cannot join [factions|E], but can break free if their requirements aren't met.\n\nIf the Suzerain is no longer [landed|E] nor [migrating|E], the Tributaries will break free after a short amount of time."
+ game_concept_tributary_desc: "A $game_concept_tributary$ is a character who has reached an agreement with a ruler.\n\nThe $game_concept_tributary$ provides a periodic tribute in the form of [herd|E], [taxes|E], [prestige|E] or even [piety|E] (depending on their type) to their [suzerain|E] and, in exchange, gains a [truce|E] with the ruler they have sworn themselves to.\n\nTributaries are a looser form of subject that cannot join [factions|E], but can break free if their requirements aren't met.\n\nIf a Suzerain is no longer [landed|E] nor [migrating|E], the Tributaries will break free after a short amount of time."
  game_concept_tributaries: "Tributaries"
  game_concept_tributary_possessive: "Tributary's"
  game_concept_tributaries_desc: "$game_concept_tributary_desc$"
+ game_concept_tributary_default: "$game_concept_tributary$"
+ game_concept_tributary_default_plural: "$game_concept_tributaries$"
 
  game_concept_subject: "Subject"
  game_concept_subject_desc: "A $game_concept_subject$ is any [ruler|E] that has sworn loyalty to another ruler. They can be of various types, like [vassals|E] or [tributaries|E], each with their own specifications."
@@ -114,6 +121,14 @@
  game_concept_situation_phase_desc: "Each $game_concept_situation_phase$ has its own modifiers and conditions that affect the involved characters.\n\nSome $game_concept_situation_phases$ are triggered by specific conditions, while others simply follow the passage of time."
  game_concept_situation_phases: "Situation Phases"
  game_concept_situation_phases_desc: "$game_concept_situation_phase_desc$"
+ game_concept_situation_phase_phase: "Phase"
+ game_concept_situation_phase_phase_desc: "$game_concept_situation_phase_desc$"
+ game_concept_situation_phase_phases: "Phases"
+ game_concept_situation_phase_phases_desc: "$game_concept_situation_phase_desc$"
+ game_concept_sub_region: "Region"
+ game_concept_sub_regions: "Regions"
+ game_concept_sub_region_desc: "$game_concept_situation_sub_region_desc$"
+ game_concept_sub_regions_desc: "$game_concept_situation_sub_region_desc$"
  game_concept_situation_sub_region: "Situation Region"
  game_concept_situation_sub_regions: "Situation Regions"
  game_concept_situation_sub_region_desc: "[situation_situations|E] may have more than one region, each of them with independent [situation_phases|E]."
@@ -122,6 +137,7 @@
  game_concept_situation_participant_groups: "Participant Groups"
  game_concept_situation_participant_group_desc: "Participant Groups within a [situation|E] are a collection of characters that share the same effects during each [situation_phase|E]."
  game_concept_situation_catalyst: "Situation Catalyst"
+ game_concept_situation_catalysts: "Situation Catalysts"
  game_concept_situation_catalyst_catalyst: "Catalyst"
  game_concept_situation_catalyst_catalysts: "Catalysts"
  game_concept_situation_catalyst_desc:2 "Certain [situation_situations|E] transition between [situation_phases|E] when a $game_concept_situation_catalyst$ occurs.\n\nA list of which $game_concept_situation_catalyst$ are important in each $game_concept_situation_phase$ can be found in the $game_concept_situation$ window."
@@ -140,6 +156,7 @@
  game_concept_raid_intents_desc: "$game_concept_raid_intent_desc$"
  
  game_concept_gurkhan: "Gurkhan"
+ game_concept_gurkhan_possessive: "Gurkhan's"
  game_concept_gurkhan_desc: "The biggest threat of [the_great_steppe|E]. The $game_concept_gurkhan$ is that [GetGovernment( 'nomad_government' ).GetName] [ruler|E] with the biggest [herd|E] in the entire region, marking them as a powerful ally or a dreadful enemy.\n\nOnly the $game_concept_gurkhan$ may reach the highest level of [nomadic_authority|E], allowing them to become the [GetTrait('greatest_of_khans').GetName( GetNullCharacter )] and marking them as a target."
  
  game_concept_yurt: "Nomadic Capital"
@@ -172,7 +189,10 @@
  game_concept_overlord_possessive: "Overlord's"
 
  game_concept_settlement_issue: "Settlement Issue"
- game_concept_settlement_issue_desc: "Settlement Issues are tasks given to a [nomad|E] [ruler|E] after finishing a [migration|E] to new lands. They give the opportunity to handle conflicts and increase the local [county_control|E] in the new [domain|E].\n\nThese issues will continue to happen for the first years after a ruler has migrated, as long as the county has low county control."
+ game_concept_settlement_issues: "Settlement Issues"
+ game_concept_settlement_issue_possessive: "Settlement Issues"
+ game_concept_settlement_issues_possessive: "Settlement Issues"
+ game_concept_settlement_issue_desc: "$game_concept_settlement_issues$ are tasks given to a [nomad|E] [ruler|E] after finishing a [migration|E] to new lands. They give the opportunity to handle conflicts and increase the local [county_control|E] in the new [domain|E].\n\nThese issues will continue to happen for the first years after a ruler has migrated, as long as the county has low county control."
 
  game_concept_settlement_issue_tier: "Settlement Issue Tier"
  game_concept_settlement_issue_tier_desc: "Every [settlement_issue|E] has a Settlement Issue Tier, which reflects the overall rewards of an Issue when successfully solved. Solving an Issue with with a higher tier will typical in more rewards in addition to the [county_control|E]."
@@ -194,4 +214,5 @@
  game_concept_expand_dominance_desc: "A special war for [GetGovernment( 'nomad_government' ).GetName] [rulers|E] for either an area within their [de_jure|E] lands, or to expand their [de_jure|E] area to new frontiers.\n\nAll Nomadic Rulers of a [duchy|E] [title_tier|E] or higher can start the war within their De Jure. On a victory they will attempt to either [vassalize|E] the defender or force them to become a [tributary|E], or conquer their lands altogether if they hold land outside of the target lands of the war.\n\nTo expand their dominion to foreign lands, a Nomadic Ruler has to be of a [kingdom|E] Tier or higher. On a victory they will still attempt to Vassalize, Tributarize, or conquer the lands, but the lands will also immediately shift De Jure to the primary title of the Nomadic ruler."
 
  game_concept_paiza: "Paiza"
- game_concept_paiza_desc: "Paiza, or a gerege, is a small metal tablet issued by powerful [characters|E] in the [the_great_steppe|E], which extends the Khans' power to the carrier.\n\nMechanically, they are [artifacts|E] that a powerful [GetGovernment( 'nomad_government' ).GetName] ruler issues to their favorites via the #V$mpo_interaction_grant_paiza$#! [character_interaction|E].\nAfter taking the #V $mpo_establish_paiza_system_decision$#! [decision|E], you get access to #V $mpo_call_for_merchants_decision$#! [decision|E] that allows you to engage in trade with settled people, improved by the various [internal_upgrades|E] to the [GetDomicileBuilding('trade_yurt_01').GetName] [yurt_buildings|E]\n\nHowever, [characters|E] carrying Paiza [artifacts|E] bearing the name of a living [gurkhan|E] have access to #V $mpo_abuse_authority_paiza_decision$#! [decision|E] and #V $mpo_interaction_leverage_khan_authority$#! [character_interaction|E]\n\n#weak By the power of Eternal Heaven. By the protection of the Imperial Good Fortune. An edict of the Khan; any person whosoever who does not respect it shall be punished, shall die.#!"
+ game_concept_paizas: "Paizas"
+ game_concept_paiza_desc: "Paiza, or a gerege, is a small metal tablet issued by powerful [characters|E] in the [the_great_steppe|E], which extends the Khans' power to the carrier.\n\nMechanically, they are [artifacts|E] that a powerful [GetGovernment( 'nomad_government' ).GetName] ruler issues to their favorites via the #V $mpo_interaction_grant_paiza$#! [character_interaction|E].\nAfter taking the #V $mpo_establish_paiza_system_decision$#! [decision|E], you get access to #V $mpo_call_for_merchants_decision$#! [decision|E] that allows you to engage in trade with settled people, improved by the various [internal_upgrades|E] to the [GetDomicileBuilding('trade_yurt_01').GetName] [yurt_buildings|E]\n\nHowever, [characters|E] carrying Paiza [artifacts|E] bearing the name of a living [gurkhan|E] have access to #V $mpo_abuse_authority_paiza_decision$#! [decision|E] and #V $mpo_interaction_leverage_khan_authority$#! [character_interaction|E]\n\n#weak By the power of Eternal Heaven. By the protection of the Imperial Good Fortune. An edict of the Khan; any person whosoever who does not respect it shall be punished, shall die.#!"

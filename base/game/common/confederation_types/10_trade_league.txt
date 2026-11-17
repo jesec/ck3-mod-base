@@ -1,0 +1,282 @@
+﻿## Title Confederations (a.k.a. "trade leagues")
+#
+# Confederations mainly centered around titles.
+#
+
+# Default
+trade_league = {
+	diplomatic_icon_frame_index = 6
+
+	confederation_base = title
+
+	is_valid_confederation = {
+		any_confederation_member = { count > 1 }
+	}
+
+	on_confederation_destroyed = {
+		every_confederation_member = {
+			add_to_list = departing_league_members
+		}
+
+		every_in_list = {
+			list = departing_league_members
+			hanseatic_remove_member_benefits_effect = { CHARACTER = this }
+			gdp_clear_league_focused_category_modifiers_effect = yes
+		}
+
+		every_trade_monopoly_for_confederation = {
+			add_to_list = doomed_monopolies
+		}
+
+		every_in_list = {
+			list = doomed_monopolies
+			destroy_trade_monopoly = yes
+		}
+	}
+
+	cohesion_level = {
+		cohesion_threshold = 20
+
+		parameters = {
+			trade_league_can_request_monopolies = yes
+			trade_league_can_set_focused_category = yes
+		}
+
+		leading_title_noble_family = {
+			trade_competitiveness_add = 5
+		}
+		member_title_noble_family = {
+			trade_competitiveness_add = 2
+		}
+	}
+
+	cohesion_level = {
+		cohesion_threshold = 45
+
+		parameters = {
+			trade_league_can_request_monopolies = yes
+			trade_league_can_build_arsenals = yes
+			trade_league_can_set_focused_category = yes
+			trade_league_can_wage_trade_wars = yes
+		}
+
+		leading_title_noble_family = {
+			trade_competitiveness_add = 10
+			trade_category_all_buy_price_mult = -0.0025
+		}
+		member_title_noble_family = {
+			trade_competitiveness_add = 5
+		}
+	}
+
+	cohesion_level = {
+		cohesion_threshold = 70
+
+		parameters = {
+			trade_league_can_request_monopolies = yes
+			trade_league_can_build_arsenals = yes
+			trade_league_can_set_focused_category = yes
+			trade_league_unlocks_casus_bellis = yes
+		}
+
+		leading_title_noble_family = {
+			trade_capacity_mult = 0.06
+			trade_competitiveness_add = 15
+			trade_category_all_buy_price_mult = -0.005
+			max_trade_routes = 1
+		}
+		member_title_noble_family = {
+			trade_capacity_mult = 0.04
+			trade_competitiveness_add = 8
+			trade_category_all_buy_price_mult = -0.002
+		}
+	}
+	
+	cohesion_level = {
+		cohesion_threshold = 95
+
+		parameters = {
+			trade_league_can_request_monopolies = yes
+			trade_league_can_build_arsenals = yes
+			trade_league_can_set_focused_category = yes
+			trade_league_unlocks_casus_bellis = yes
+		}
+
+		leading_title_noble_family = {
+			trade_capacity_mult = 0.12
+			trade_competitiveness_add = 20
+			trade_category_all_buy_price_mult = -0.01
+			max_trade_routes = 1
+		}
+		member_title_noble_family = {
+			trade_capacity_mult = 0.08
+			trade_competitiveness_add = 10
+			trade_category_all_buy_price_mult = -0.004
+			max_trade_routes = 1
+		}
+	}
+
+	# Monthly Cohesion general change
+	cohesion_base_change_monthly = {
+		value = gdp_trade_league_monthly_change_base_value
+	}
+
+	# Monthly Cohesion change per title
+	cohesion_base_change_per_title_monthly = {
+		value = gdp_trade_league_monthly_change_per_title_value
+	}
+
+	# At what point do cohesion growth start slowing down?
+	cohesion_soft_cap = {
+		value = 10
+		add = {
+			value = 7
+			multiply = {
+				value = gdp_confederation_title_member_count_value
+				max = 10
+			}
+		}
+	}
+
+	# Can this character be a member of this trade league?
+	is_valid_member_character = {
+		scope:character = {
+			gdp_is_assembly_head_trigger = yes
+		}
+	}
+
+	# Can this title be a member of this trade league?
+	is_valid_member_title = {
+		scope:title = {
+			tier >= tier_county
+			holder = { gdp_is_assembly_head_trigger = yes }
+		}
+	}
+
+	member_would_join_war = {
+		cohesion >= 20
+		scope:ally = { is_at_war = no }
+	}
+
+	on_member_character_joined = {
+		save_scope_as = confederation
+		scope:character = { save_scope_as = joiner }
+
+		if = {
+			limit = { has_variable = is_hanseatic_league }
+			hanseatic_apply_member_benefits_effect = { CHARACTER = scope:joiner }
+		}
+
+		if = {
+			limit = {
+				exists = var:league_focused_category
+				scope:joiner = {
+					any_held_title = {
+						title_confederation ?= scope:confederation
+					}
+				}
+			}
+			var:league_focused_category = { save_temporary_scope_as = focused_category }
+			gdp_apply_league_focused_category_modifier_effect = {
+				CHARACTER = scope:joiner
+				CATEGORY = scope:focused_category
+			}
+		}
+		# Notify all other members about them joining.
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = rank_change_members
+						target = scope:joiner
+					}
+				}
+			}
+			every_player = {
+				limit = {
+					confederation = scope:confederation
+					this != scope:character
+				}
+				send_interface_message = {
+					type = msg_joined_confederation
+					title = msg_joined_confederation
+					desc = msg_joined_confederation_desc
+					left_icon = scope:character
+					right_icon = scope:character.primary_title
+				}
+			}
+		}
+	}
+
+	on_member_character_left = {
+		save_scope_as = confederation
+		scope:character = { save_scope_as = left_confederation }
+
+		hanseatic_remove_member_benefits_effect = { CHARACTER = scope:left_confederation }
+		scope:left_confederation = {
+			gdp_clear_league_focused_category_modifiers_effect = yes
+		}
+		# Notify all other members about them leaving.
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = rank_change_members
+						target = scope:left_confederation
+					}
+				}
+			}
+			every_player = {
+				limit = {
+					confederation ?= scope:confederation
+					this != scope:left_confederation
+				}
+				send_interface_message = {
+					type = msg_left_confederation
+					title = msg_left_confederation
+					desc = msg_left_confederation_desc
+					left_icon = scope:left_confederation
+					right_icon = scope:left_confederation.primary_title
+				}
+			}
+		}
+	}
+
+	on_member_title_joined = {
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = rank_change_titles
+						target = scope:title
+					}
+				}
+			}
+			change_cohesion = gdp_league_accession_cohesion_value
+		}
+	}
+
+	on_member_title_left = {
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = rank_change_titles
+						target = scope:title
+					}
+				}
+			}
+			if = {
+				limit = {
+					any_confederation_member = { count > 1 }
+				}
+				change_cohesion = gdp_league_departure_cohesion_value
+			}
+			if = {
+				limit = { has_variable = league_expelling_member }
+				remove_variable = league_expelling_member
+			}
+			gdp_trade_league_replace_missing_leader_effect = yes
+		}
+	}
+}

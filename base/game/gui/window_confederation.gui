@@ -31,45 +31,51 @@ window = {
 		on_start = "[GetVariableSystem.Clear( 'hide_bottom_left_HUD' )]"
 	}
 
+	state = {
+		name = auto_set_tab
+		trigger_when = "[Not(GetVariableSystem.Exists('confederation_window_tab'))]"
+		on_finish = "[GetVariableSystem.Set('confederation_window_tab', 'members')]"
+	}
+	
+	state = {
+		name = auto_reset_monopolies_tab
+		trigger_when = "[And(GetVariableSystem.HasValue('confederation_window_tab', 'trade_monopolies'), Not(Confederation.IsTitleBasedConfederation))]"
+		on_finish = "[GetVariableSystem.Set('confederation_window_tab', 'members')]"
+	}
+
 	vbox = {
 		layoutpolicy_vertical = expanding
 
 		using = Window_Margins_Sidebar
 
 		background = {
+			# Bloc BG
 			visible = "[ConfederationType.IsHouseBasedConfederation]"
 			texture = "gfx/interface/illustrations/event_story/tgp_japanese_shogunate.dds"
-			alpha = 0.3
-			fittype = start
 			framesize = { 2800 1030 }
-
-			margin_top = -25
-			margin_right = -18
-			using = Mask_Rough_Edges
-
-			modify_texture = {
-				texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
-				blend_mode = alphamultiply
-				mirror = vertical
-			}
+			margin_top = -28
+			fittype = start
+			using = Confederation_Illustration_Background
 		}
 
 		background = {
-			visible = "[Not(ConfederationType.IsHouseBasedConfederation)]"
-			texture = "gfx/interface/illustrations/decisions/mpo_decision_confederation.dds"
-			alpha = 0.3
+			# Trade League
+			visible = "[ConfederationType.IsTitleBasedConfederation]"
+			texture = "gfx/interface/illustrations/decisions/gdp_republic_trade_ships.dds"
+			framesize = { 1100 400 }
+			margin_top = -28
 			fittype = start
+			using = Confederation_Illustration_Background
+		}
+
+		background = {
+			# Other
+			visible = "[And( Not( ConfederationType.IsHouseBasedConfederation ), Not( ConfederationType.IsTitleBasedConfederation ) )]"
+			texture = "gfx/interface/illustrations/decisions/mpo_decision_confederation.dds"
 			framesize = { 1100 220 }
-
 			margin_top = -31
-			margin_right = -18
-			using = Mask_Rough_Edges
-
-			modify_texture = {
-				texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
-				blend_mode = alphamultiply
-				mirror = vertical
-			}
+			fittype = start
+			using = Confederation_Illustration_Background
 		}
 
 		widget_confederation_window_header = {
@@ -77,12 +83,10 @@ window = {
 		}
 
 		hbox = {
-			visible = "[ConfederationType.IsHouseBasedConfederation]"
+			visible = "[Or(ConfederationType.IsHouseBasedConfederation,ConfederationType.IsTitleBasedConfederation)]"
 			layoutpolicy_horizontal = expanding
 
-
-			margin_bottom = 10
-			margin_top = 15
+			margin_top = 8
 
 			hbox = {
 				bloc_cohesion_complex_bar = {
@@ -92,55 +96,129 @@ window = {
 			}
 		}
 
-		# Confederation member houses
-		scrollbox = {
-			name = "bloc_confederation_holder"
-			visible = "[ConfederationType.IsHouseBasedConfederation]"
+		hbox = {
+			visible = "[Confederation.IsTitleBasedConfederation]"
 			layoutpolicy_horizontal = expanding
-			layoutpolicy_vertical = expanding
-			scrollbarpolicy_horizontal = always_off
+			margin_top = 8
 
-			blockoverride "scrollbox_margins" {
-				margin_top = 20
-				margin_bottom = 15
-				margin_left = 15
+			button_tab = {
+				layoutpolicy_horizontal = expanding
+				shortcut = tab_1
+				onclick = "[GetVariableSystem.Set('confederation_window_tab', 'members')]"
+				down = "[GetVariableSystem.HasValue('confederation_window_tab', 'members')]"
+				alwaystransparent = "[GetVariableSystem.HasValue('confederation_window_tab', 'members')]"
+
+				blockoverride "tab_label"
+				{
+					text = "CONFEDERATION_WINDOW_TAB_MEMBERS"
+				}
+				blockoverride "tab_icon"
+				{
+					visible = no
+				}
 			}
 
-			blockoverride "scrollbox_content" {
-				vbox_member_houses = {
-					layoutpolicy_vertical = expanding
-				}
+			button_tab = {
+				layoutpolicy_horizontal = expanding
+				shortcut = tab_2
+				onclick = "[GetVariableSystem.Set('confederation_window_tab', 'trade_monopolies')]"
+				down = "[GetVariableSystem.HasValue('confederation_window_tab', 'trade_monopolies')]"
+				alwaystransparent = "[GetVariableSystem.HasValue('confederation_window_tab', 'trade_monopolies')]"
 
-				expand = {}
+				blockoverride "tab_label"
+				{
+					text = "CONFEDERATION_WINDOW_TAB_TRADE_MONOPOLIES"
+				}
+				blockoverride "tab_icon"
+				{
+					visible = no
+				}
+				blockoverride "extra_info"
+				{
+					text_single = {
+						text = "[GetDataModelSize( Confederation.GetTradeMonopolies )]"
+						align = nobaseline
+						margin_top = 3
+					}
+				}
 			}
 		}
 
-		# Confederation member characters
 		vbox = {
-			name = "nomadic_confederation_holder"
-			visible = "[Not( ConfederationType.IsHouseBasedConfederation )]"
+			name = "confederation_members_tab"
+			visible = "[GetVariableSystem.HasValue('confederation_window_tab', 'members')]"
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
 
-			margin_top = 10
-
-			vbox_list_of_confederation_members = {
+			# Confederation member houses
+			scrollbox = {
+				name = "bloc_confederation_holder"
+				visible = "[ConfederationType.IsHouseBasedConfederation]"
 				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				scrollbarpolicy_horizontal = always_off
+
+				blockoverride "scrollbox_margins" {
+					margin_top = 20
+					margin_bottom = 15
+					margin_left = 15
+				}
+
+				blockoverride "scrollbox_content" {
+					vbox_member_houses = {
+						layoutpolicy_vertical = expanding
+					}
+
+					expand = {}
+				}
 			}
+
+			# Confederation member titles
+			vbox_member_titles = {
+				visible = "[ConfederationType.IsTitleBasedConfederation]"
+			}
+
+			# Confederation member characters
+			vbox = {
+				name = "nomadic_confederation_holder"
+				visible = "[And( Not( ConfederationType.IsHouseBasedConfederation ), Not( ConfederationType.IsTitleBasedConfederation ) )]"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				margin_top = 10
+
+				vbox_list_of_confederation_members = {
+					layoutpolicy_horizontal = expanding
+				}
+			}
+
+			expand = {}
+		}
+
+		vbox_confederation_trade_monopolies = {
+			name = "confederation_monopolies"
+			margin_top = 16
+			visible = "[GetVariableSystem.HasValue('confederation_window_tab', 'trade_monopolies')]"
 		}
 
 		vbox_nomadic_confederation_decisions = {
-			visible = "[And(Not( ConfederationType.IsHouseBasedConfederation), ConfederationWindow.IsPlayerConfederation )]"
+			visible = "[And( And( Not( ConfederationType.IsHouseBasedConfederation ), Not( ConfederationType.IsTitleBasedConfederation ) ), ConfederationWindow.IsPlayerConfederation )]"
 
 			margin_top = 10
 		}
 
-		spacer = {
-			size = { 0 20 }
+		vbox_trade_league_decisions = {
+			visible = "[ConfederationType.IsTitleBasedConfederation]"
+
+			margin_top = 10
 		}
 
 		hbox_confederation_bloc_leader = {
-			visible = "[And(ConfederationType.IsHouseBasedConfederation, Confederation.HasLeadingHouse)]"
+			visible = "[And( ConfederationType.IsHouseBasedConfederation, Confederation.HasLeadingHouse)]"
+		}
+
+		hbox_confederation_trade_league_leader = {
+			visible = "[And( ConfederationType.IsTitleBasedConfederation, Confederation.HasLeadingTitle )]"
 		}
 
 		expand = {}
@@ -162,23 +240,24 @@ types ConfederationWindow
 				using = confederation_tooltip
 			}
 
-			button = {
+			# Confederation Icon
+			# House based confederations show a coat of arms frame instead, see coa_bloc_big below
+			icon = {
 				visible = "[Not(Confederation.GetType.IsHouseBasedConfederation)]"
-				parentanchor = top|left
+				parentanchor = center
 				alwaystransparent = yes
-				position = { 10 -9 }
-				size = { 75 75 }
+				position = { 0 -32 }
+				size = { 64 28 }
 				texture = "gfx/interface/icons/diplomatic_icons.dds"
-				framesize = { 120 120 }
-				frame = 6
-
+				frame = "[Confederation.GetType.GetDiplomaticIconFrameIndex]"
+				framesize = { 120 60 }
 				tooltip_visible = no
 			}
 
 			coa_confederation_medium = {
 				visible = "[Not(Confederation.GetType.IsHouseBasedConfederation)]"
 				parentanchor = center|center
-				position = { 0 10 }
+				position = { 0 12 }
 			}
 
 			coa_bloc_big = {
@@ -196,21 +275,13 @@ types ConfederationWindow
 		}
 
 		container = {
-			name = "your_header"
-			visible = "[ConfederationWindow.IsPlayerConfederation]"
+			name = "confederation_Type"
 			layoutpolicy_horizontal = expanding
 			parentanchor = top|hcenter
 			position = { 0 40 }
 
 			text_single = {
-				visible = "[Not( Confederation.GetType.IsHouseBasedConfederation )]"
-				text = "CONFEDERATION_YOURS_HEADER"
-				align = nobaseline
-				parentanchor = hcenter
-			}
-			text_single = {
-				visible = "[Confederation.GetType.IsHouseBasedConfederation]"
-				text = "CONFEDERATION_BLOC_YOURS_HEADER"
+				text = "CONFEDERATION_RELATION_HEADER"
 				align = nobaseline
 				parentanchor = hcenter
 			}
@@ -301,6 +372,34 @@ types ConfederationWindow
 		}
 
 		expand = {}
+	}
+
+	# Confederation member titles
+	type vbox_member_titles = vbox {
+
+		name = "title_based_confederation_members"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		margin_top = 15
+		spacing = 10
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			minimumsize = { 0 300 }
+
+			blockoverride "scrollbox_content" {
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					datamodel = "[ConfederationWindow.GetMemberTitles]"
+					spacing = 10
+
+					item = {
+						widget_confederation_title_item = {}
+					}
+				}
+			}
+		}
 	}
 
 	type vbox_nomadic_confederation_decisions = vbox {
@@ -405,14 +504,14 @@ types ConfederationWindow
 			alpha = 0.3
 			fittype = centercrop
 
-			margin = { 0 20 }
+			margin = { 0 4 }
 
 			using = Mask_Rough_Edges
 
 			modify_texture = {
-				texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+				texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
 				blend_mode = alphamultiply
-				mirror = horizontal
+				mirror = vertical
 			}
 		}
 
@@ -743,8 +842,23 @@ types ConfederationWindow
 						layoutpolicy_horizontal = expanding
 						align = nobaseline
 
-						visible = "[Confederation.HasCohesion]"
+						visible = "[And(Confederation.HasCohesion,Confederation.IsHouseBasedConfederation)]"
 						text = CONFEDERATION_WINDOW_COHESION_PER_HOUSE_VALUE
+
+						tooltipwidget = {
+							widget_value_breakdown_tooltip = {}
+						}
+
+						tooltip_visible = "[ValueBreakdown.HasTooltip]"
+						using = tooltip_es
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						align = nobaseline
+
+						visible = "[And(Confederation.HasCohesion,Confederation.IsTitleBasedConfederation)]"
+						text = CONFEDERATION_WINDOW_COHESION_PER_TITLE_VALUE
 
 						tooltipwidget = {
 							widget_value_breakdown_tooltip = {}
@@ -781,8 +895,127 @@ types ConfederationWindow
 		}
 	}
 
+	# Single member of the select confederation.
+	type widget_confederation_title_item = widget {
+		minimumsize = { 0 60 }
+		allow_outside = yes
+
+		onmousehierarchyenter = "[ConfederationWindow.SetHoveredTitle( Title.Self )]"
+		onmousehierarchyleave = "[ConfederationWindow.ClearHoveredTitle]"
+
+		vbox = {
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+			margin = { 8 0 }
+
+			hbox = {
+				datacontext = "[Title.GetHolder]"
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = expanding
+				spacing = 2
+				onmousehierarchyenter = "[GetVariableSystem.Set( 'title_hovered', 'true' )]"
+				onmousehierarchyleave = "[GetVariableSystem.Clear( 'title_hovered' )]"
+
+				hbox = {
+					spacing = 6
+
+					widget = {
+						size = { 40 60}
+						coa_realm_tiny_crown = {
+							position = { 0 -8}
+						}
+					}
+
+					text_single = {
+						size = { 20 20 }
+						text = "CONFEDERATION_WINDOW_TITLE_ENTRY"
+						align = nobaseline|left
+						using = Font_Size_Small
+					}
+
+					icon_flat_standard = {
+						visible = "[Title.IsLeadingTitleInConfederation]"
+						size = { 24 24 }
+						texture = "gfx/interface/icons/flat_icons/star.dds"
+						tooltip = "CONFEDERATION_WINDOW_LEAGUE_LEADER_ICON_TOOLTIP"
+					}
+				}
+
+				expand = {}
+
+				hbox = {
+					tooltip = CONFEDERATION_WINDOW_LEAGUE_MILITARY_STRENGTH_TOOLTIP
+					using = tooltip_es
+
+					icon = {
+						name = "icon_combat_strength"
+						size = { 27 27 }
+						texture = "gfx/interface/icons/icon_soldier.dds"
+					}
+					text_single = {
+						name = "military_total_strength"
+						text = "[Title.GetHolder.GetCurrentMilitaryStrength]"
+						default_format = "#high"
+						align = left|nobaseline
+						fontsize_min = 12
+						min_width = 40
+					}
+				}
+
+				hbox_confederation_realm_trade_posts = {
+					margin = { 6 0 }
+					spacing = 2
+					using = tooltip_es
+				}
+
+				hbox_confederation_realm_profit_routes = {
+					margin = { 6 0 }
+					spacing = 2
+					using = tooltip_es
+				}
+
+				hbox = {
+					spacing = 4
+					allow_outside = yes
+
+					datacontext = "[Title.GetHolder]"
+
+					widget = {
+						size = { 40 40 }
+						allow_outside = yes
+
+						button_interactions_trade_league = {
+							parentanchor = center
+							allow_outside = yes
+						}
+					}
+
+					button_standard = {
+						layoutpolicy_horizontal = expanding
+						visible = "[Title.GetHolder.IsPlayerInteractionShown( 'call_ally_interaction' )]"
+						enabled = "[Title.GetHolder.IsPlayerInteractionValid( 'call_ally_interaction' )]"
+						onclick = "[Title.GetHolder.OpenPlayerInteraction( 'call_ally_interaction' )]"
+						tooltip = "[Title.GetHolder.GetPlayerInteractionTooltip( 'call_ally_interaction' )]"
+
+						text_single = {
+							name = "call_ally_interaction"
+							text = "call_ally_interaction"
+							default_format = "#high"
+							parentanchor = center
+							align = nobaseline
+						}
+					}
+				}
+			}
+			divider_light = {
+				layoutpolicy_horizontal = expanding
+			}
+		}
+
+	}
+
 	type bloc_cohesion_complex_bar = vbox {
-		spacing = 5
+		spacing = 8
 
 		margin_widget = {
 			name = "bloc_cohesion_bar" # tutorial uses this
@@ -794,6 +1027,12 @@ types ConfederationWindow
 			hbox_complex_bar_progress = {
 				layoutpolicy_horizontal = expanding
 				margin_top = 30
+
+				background = {
+					using = Background_Area_Dark
+					margin = { 4 6 }
+					margin_top = -24
+				}
 			}
 
 			hbox_complex_bar_levels = {
@@ -856,12 +1095,12 @@ types ConfederationWindow
 				layoutpolicy_horizontal = expanding
 
 				vbox = {
-					margin_left = 10
+					margin = { 8 8 }
+
 					background = {
 						using = Background_Area_Dark
 						alpha = 0.5
-						margin = { 2 5 }
-						margin_right = 15
+						margin = { 4 2 }
 					}
 
 					hbox = {
@@ -898,6 +1137,7 @@ types ConfederationWindow
 					}
 
 					hbox = {
+						visible = "[ConfederationType.IsHouseBasedConfederation]"
 						layoutpolicy_horizontal = expanding
 
 						text_single = {
@@ -913,12 +1153,27 @@ types ConfederationWindow
 							layoutpolicy_horizontal = expanding
 						}
 					}
+
+					hbox = {
+						visible = "[ConfederationType.IsTitleBasedConfederation]"
+						layoutpolicy_horizontal = expanding
+
+						text_single = {
+							text = "CONFEDERATION_WINDOW_MEMBER_TITLE_COUNT"
+						}
+
+						spacer = {
+							size = { 15 10 }
+						}
+					}
 				}
 
 				expand = {}
 			}
 
 			vbox = {
+				name = "leading_house_aspiration"
+				visible = "[Confederation.HasLeadingHouse]"
 				datacontext = "[Confederation.GetLeadingHouse]"
 				layoutpolicy_vertical = expanding
 
@@ -929,7 +1184,6 @@ types ConfederationWindow
 
 						margin = { 10 10 }
 					}
-
 					powerful_family_bonus = {
 						blockoverride "flat_visible" {
 							visible = no
@@ -1071,5 +1325,629 @@ types ConfederationWindow
 				}
 			}
 		}
+	}
+
+	type hbox_confederation_trade_league_leader = hbox {
+		datacontext = "[Confederation.GetLeadingTitle]"
+		datacontext = "[Confederation.GetLeadingTitle.GetHolder]"
+		layoutpolicy_horizontal = expanding
+
+		margin_left = 15
+		spacing = 16
+
+		background = {
+			texture = "gfx/interface/illustrations/event_scenes/gdp_merchant_domicile.dds"
+			alpha = 0.3
+			fittype = centercrop
+
+			margin = { 0 16 }
+
+			using = Mask_Rough_Edges
+
+			modify_texture = {
+				texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+				blend_mode = alphamultiply
+				mirror = vertical
+			}
+		}
+
+		# Holder of leading title
+		widget = {
+			size = { 195 225 }
+
+			portrait_torso = {
+				name = "leading_title_holder_portrait"
+				datacontext = "[GetIllustration( 'character_view_bg' )]"
+				visible = "[Title.HasHolder]"
+				parentanchor = center
+
+				size = { 195 225 }
+
+				blockoverride "portrait_status_icons"
+				{
+					portrait_status_icons = {
+						parentanchor = bottom|right
+						position = { -15 -15 }
+					}
+				}
+
+				blockoverride "opinion_box"
+				{
+					portrait_opinion = {
+						parentanchor = bottom|hcenter
+						position = { 0 -15 }
+					}
+				}
+
+				blockoverride "coa"
+				{
+					coa_realm_small_crown = {
+						visible = "[Character.HasLandedTitles]"
+						parentanchor = bottom|left
+						position = { 0 -15 }
+					}
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin_top = 16
+			margin_bottom = 36
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				text_label_left = {
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_LEAGUE_LEADER"
+					max_width = 350
+				}
+
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					text = "[Character.GetUINameNotMeNoTooltip]"
+					using = Font_Size_Medium
+					max_width = 350
+				}
+
+				text_single = {
+
+					name = "character_relation_to_you"
+					max_width = 350
+					layoutpolicy_horizontal = expanding
+
+					text = "[Character.GetRelationToString( GetPlayer )]"
+
+					tooltip = "EXTENDED_RELATIONS_TOOLTIP"
+					using = tooltip_se
+					default_format = "#low"
+				}
+			}
+
+			expand = {}
+
+			vbox = {
+
+				layoutpolicy_horizontal = expanding
+				spacing = 8
+
+				vbox_league_focus = {}
+
+				button_standard = {
+					layoutpolicy_horizontal = expanding
+					size = { 0 32 }
+					visible = "[Character.IsPlayerInteractionShown( 'request_trade_league_membership_interaction' )]"
+					enabled = "[Character.IsPlayerInteractionValid( 'request_trade_league_membership_interaction' )]"
+					onclick = "[Character.OpenPlayerInteraction( 'request_trade_league_membership_interaction' )]"
+					tooltip = "[Character.GetPlayerInteractionTooltip( 'request_trade_league_membership_interaction' )]"
+					using = tooltip_se
+
+					text_single = {
+						name = "request_trade_league_membership"
+						layoutpolicy_horizontal = expanding
+						text = "request_trade_league_membership_interaction"
+						default_format = "#high"
+						parentanchor = center|hcenter
+						align = nobaseline
+					}
+				}
+
+				button_standard = {
+					layoutpolicy_horizontal = expanding
+					size = { 0 32 }
+					visible = "[Character.IsPlayerInteractionShown( 'request_league_leadership_interaction' )]"
+					enabled = "[Character.IsPlayerInteractionValid( 'request_league_leadership_interaction' )]"
+					onclick = "[Character.OpenPlayerInteraction( 'request_league_leadership_interaction' )]"
+					tooltip = "[Character.GetPlayerInteractionTooltip( 'request_league_leadership_interaction' )]"
+					using = tooltip_se
+
+					text_single = {
+						name = "request_league_leadership"
+						layoutpolicy_horizontal = expanding
+						text = "request_league_leadership_interaction"
+						default_format = "#high"
+						parentanchor = center|hcenter
+						align = nobaseline
+					}
+				}
+
+			}
+
+		}
+
+		expand = {}
+	}
+
+	type hbox_league_focus_row = hbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 8
+		margin = { 6 6 }
+		using = tooltip_se
+
+		icon = {
+			size = { 36 36 }
+			block "focus_icon" {
+				texture = "gfx/interface/icons/trade/icon_trade_goods.dds"
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			expand = {}
+
+			text_single = {
+				text = "CONFEDERATION_WINDOW_LEAGUE_FOCUS"
+				default_format = "#low"
+				align = nobaseline
+			}
+
+			text_single = {
+				block "focus_value" {
+					text = "CONFEDERATION_WINDOW_LEAGUE_FOCUS_NONE"
+					default_format = "#low"
+				}
+				max_width = 280
+				align = nobaseline
+			}
+
+			expand = {}
+		}
+	}
+
+	type vbox_league_focus = vbox {
+		layoutpolicy_horizontal = expanding
+
+		background = {
+			using = Background_Area_Dark
+			alpha = 0.5
+			margin = { 2 4 }
+		}
+
+		hbox_league_focus_row = {
+			visible = "[Confederation.MakeScope.Var('league_focused_category').IsSet]"
+			datacontext = "[Confederation.MakeScope.Var('league_focused_category').TradeGoodCategoryType]"
+			tooltip = "CONFEDERATION_WINDOW_LEAGUE_FOCUS_TOOLTIP"
+
+			blockoverride "focus_icon" {
+				texture = "[TradeGoodCategory.GetSmallIcon]"
+			}
+
+			blockoverride "focus_value" {
+				text = "[TradeGoodCategory.GetNameNoTooltip]"
+			}
+		}
+
+		hbox_league_focus_row = {
+			visible = "[Not( Confederation.MakeScope.Var('league_focused_category').IsSet )]"
+			tooltip = "CONFEDERATION_WINDOW_LEAGUE_FOCUS_EMPTY_TOOLTIP"
+		}
+	}
+
+	type vbox_trade_league_decisions = vbox {
+		spacing = 5
+
+		button_decision_entry = {
+			name = "gdp_set_league_focus_decision"
+			datacontext = "[GetDecisionWithKey( 'gdp_set_league_focus_decision' )]"
+			visible = "[Decision.IsShownForPlayer]"
+			size = { 560 45 }
+
+			onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+
+			using = tooltip_se
+
+			blockoverride "button_size"
+			{
+				layoutpolicy_horizontal = expanding
+			}
+		}
+
+		button_decision_entry = {
+			name = "found_the_hanseatic_league_decision"
+			datacontext = "[GetDecisionWithKey( 'found_the_hanseatic_league_decision' )]"
+			visible = "[Decision.IsShownForPlayer]"
+			size = { 560 45 }
+
+			onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+
+			using = tooltip_se
+
+			blockoverride "button_size"
+			{
+				layoutpolicy_horizontal = expanding
+			}
+		}
+
+		button_decision_entry = {
+			name = "elevate_confederation_decision"
+			datacontext = "[GetDecisionWithKey( 'confederation_kingdom_decision' )]"
+			visible = "[Decision.IsShownForPlayer]"
+			size = { 560 45 }
+
+			onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+
+			using = tooltip_se
+
+			blockoverride "button_size"
+			{
+				layoutpolicy_horizontal = expanding
+			}
+		}
+
+		button_decision_entry = {
+			name = "leave_confederation_decision"
+			datacontext = "[GetDecisionWithKey( 'leave_confederation_decision' )]"
+			visible = "[Decision.IsShownForPlayer]"
+			size = { 560 45 }
+
+			onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+
+			using = tooltip_se
+
+			blockoverride "button_size"
+			{
+				layoutpolicy_horizontal = expanding
+			}
+		}
+	}
+
+	# Trade Monopolies
+	type vbox_confederation_trade_monopolies = vbox {
+		layoutpolicy_vertical = expanding
+		layoutpolicy_horizontal = expanding
+
+		scrollbox = {
+			name = "confederation_monopolies"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			scrollbarpolicy_horizontal = always_off
+
+			blockoverride "scrollbox_margins" {
+				margin_top = 20
+				margin_bottom = 15
+				margin_left = 15
+			}
+
+			blockoverride "scrollbox_content" {
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					datamodel = "[Confederation.GetTradeMonopolies]"
+					item = {
+						button_trade_monopoly_list_entry = {}
+					}
+				}
+			}
+			
+			blockoverride "scrollbox_empty" {
+				visible = "[Not(Confederation.HasTradeMonopoly)]"
+				text = "CONFEDERATION_WINDOW_LEAGUE_NO_MONOPOLY"
+				align = center
+			}
+		}
+	}
+
+	type button_trade_monopoly_list_entry = button_standard_clean {
+		layoutpolicy_horizontal = expanding
+
+		onclick = "[OpenGameViewData( 'trade_market_window', TradeMonopoly.GetTradeMarket.Self )]"
+
+		hbox = {
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+			restrictparent_min = yes
+
+			margin = { 8 8 }
+			spacing = 4
+
+			tooltipwidget = {
+				using = trade_monopoly_tooltip
+
+				blockoverride "call_to_action" {
+					cooltip_paragraph = {
+						layoutpolicy_horizontal = expanding
+						text = "CLICK_TO_VIEW_MARKET"
+						margin_bottom = 16
+					}
+				}
+			}
+
+			widget_trade_monopoly_icon = {
+				blockoverride "trade_monopoly_tooltip"
+				{
+					#no tooltip
+				}
+			}
+
+			text_single = {
+				name = "trade_monopoly_item"
+				text = "[TradeMonopoly.GetTradeMarket.GetNameNoTooltip]"
+				align = nobaseline
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				default_format = "#clickable"
+			}
+		}
+	}
+
+	# Trade Posts of a trade league member's ruler and their Patricians
+	type hbox_confederation_realm_trade_posts = hbox {
+		margin = { 4 4 }
+		spacing = 4
+
+		tooltipwidget = {
+			container = {
+				using = GeneralTooltipSetup
+				alwaystransparent = no
+
+				object_tooltip_pop_out = {
+					blockoverride "title_text" {
+						default_format = "#T"
+						text = "CONFEDERATION_WINDOW_REALM_TRADE_POSTS_TT"
+					}
+
+					blockoverride "concept_link" {}
+
+					blockoverride "main_description" {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 2
+
+							hbox_confederation_character_trade_posts = {
+								visible = "[GreaterThan_int32( Character.GetNumTradePosts, '(int32)0' )]"
+							}
+
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 2
+								datamodel = "[Character.GetVassals]"
+
+								item = {
+									hbox_confederation_character_trade_posts = {
+										datacontext = "[SubjectContract.GetSubject]"
+										visible = "[GreaterThan_CFixedPoint( Character.MakeScope.ScriptValue( 'gdp_patrician_trade_post_count_value' ), '(CFixedPoint)0' )]"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		icon = {
+			name = "trade_post_icon"
+			size = { 30 30 }
+			texture = "gfx/interface/icons/trade/icon_trade_post.dds"
+		}
+
+		text_single = {
+			name = "trade_post_count"
+			max_width = 50
+			text = "CONFEDERATION_WINDOW_REALM_TRADE_POSTS"
+			align = nobaseline
+			default_format = "#high"
+		}
+	}
+
+	type hbox_confederation_character_trade_posts = hbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 4
+
+		coa_house_microscopic = {
+			datacontext = "[Character.GetHouse]"
+		}
+
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			text = "CONFEDERATION_WINDOW_TRADE_POSTS_OWNER"
+			align = nobaseline
+			using = tooltip_es
+
+			tooltipwidget = {
+				container = {
+					using = GeneralTooltipSetup
+					alwaystransparent = no
+
+					object_tooltip_pop_out = {
+						blockoverride "title_text" {
+							default_format = "#T"
+							text = "CONFEDERATION_WINDOW_TRADE_POSTS_OWNER_TT"
+						}
+
+						blockoverride "concept_link" {}
+
+						blockoverride "main_description" {
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								datamodel = "[Character.GetTradePosts]"
+
+								item = {
+									text_single = {
+										layoutpolicy_horizontal = expanding
+										datacontext = "[District.GetHolding]"
+										datacontext = "[Holding.GetProvince.GetTitle.GetTradeMarket]"
+										text = "CHARACTER_VIEW_TRADE_POST_DISTRICT"
+										align = nobaseline
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# Profit Routes of a trade league member's ruler and their Patricians
+	type hbox_confederation_realm_profit_routes = hbox {
+		margin = { 4 4 }
+		spacing = 4
+
+		tooltipwidget = {
+			container = {
+				using = GeneralTooltipSetup
+				alwaystransparent = no
+
+				object_tooltip_pop_out = {
+					blockoverride "title_text" {
+						default_format = "#T"
+						text = "CONFEDERATION_WINDOW_REALM_PROFIT_ROUTES_TT"
+					}
+
+					blockoverride "concept_link" {}
+
+					blockoverride "main_description" {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 2
+
+							hbox_confederation_character_profit_routes = {
+								visible = "[GreaterThan_int32( Character.GetCurrentProfitRouteCount, '(int32)0' )]"
+							}
+
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 2
+								datamodel = "[Character.GetVassals]"
+
+								item = {
+									hbox_confederation_character_profit_routes = {
+										datacontext = "[SubjectContract.GetSubject]"
+										visible = "[GreaterThan_CFixedPoint( Character.MakeScope.ScriptValue( 'gdp_patrician_profit_route_count_value' ), '(CFixedPoint)0' )]"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		icon = {
+			name = "profit_route_icon"
+			size = { 30 30 }
+			texture = "gfx/interface/icons/trade/icon_trade_route.dds"
+		}
+
+		text_single = {
+			name = "profit_route_count"
+			max_width = 50
+			text = "CONFEDERATION_WINDOW_REALM_PROFIT_ROUTES"
+			align = nobaseline
+			default_format = "#high"
+		}
+	}
+
+	type hbox_confederation_character_profit_routes = hbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 4
+
+		coa_house_microscopic = {
+			datacontext = "[Character.GetHouse]"
+		}
+
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			text = "CONFEDERATION_WINDOW_PROFIT_ROUTES_OWNER"
+			align = nobaseline
+			using = tooltip_es
+
+			tooltipwidget = {
+				container = {
+					using = GeneralTooltipSetup
+					alwaystransparent = no
+
+					object_tooltip_pop_out = {
+						blockoverride "title_text" {
+							default_format = "#T"
+							text = "CONFEDERATION_WINDOW_PROFIT_ROUTES_OWNER_TT"
+						}
+
+						blockoverride "concept_link" {}
+
+						blockoverride "main_description" {
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								datamodel = "[Character.GetTradeRoutes]"
+
+								item = {
+									text_single = {
+										visible = "[TradeRoute.IsProfitRoute]"
+										layoutpolicy_horizontal = expanding
+										text = "CHARACTER_VIEW_PROFIT_ROUTE_NAME"
+										align = nobaseline
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type button_interactions_trade_league = button_round {
+		visible = "[And3( Character.IsValid, Not( IsObserver ), Not( Character.IsLocalPlayer ) )]"
+		tooltip = "CONFEDERATION_WINDOW_TRADE_LEAGUE_MEMBER_INTERACTIONS_TOOLTIP"
+		tooltip_visible = "[Not( IsInteractionMenuOpenForCharacterWithFilter( Character.Self, 'interaction_category_trade_league' ) )]"
+
+		onclick = "[ToggleFilteredCharacterInteractionMenu( Character.Self, 'interaction_category_trade_league' )]"
+
+		button_icon = {
+			alwaystransparent = yes
+			parentanchor = center
+			size = { 24 24 }
+			texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+		}
+
+		text_single = {
+			position = { 0 3 }
+			parentanchor = bottom|hcenter
+
+			background = {
+				margin = { 5 0 }
+				margin_top = -5
+				using = Background_Area_Dark
+			}
+
+			text = "[GetNumberOfValidInteractionsWithFilter( Character.Self, 'interaction_category_trade_league' )]"
+			default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+		}
+	}
+}
+
+local_template Confederation_Illustration_Background
+{
+	margin_right = -18
+	alpha = 0.3
+	using = Mask_Rough_Edges
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+		blend_mode = alphamultiply
+		mirror = vertical
 	}
 }

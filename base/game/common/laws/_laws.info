@@ -39,14 +39,16 @@
 	can_pass = { }
 
 	### brief: potential ( trigger )
-	# If false, the law is not listed in the succession law change window.
-	# Always true if not specified.
+	# Filters which laws are offered in the law change window.
+	# This only hides things in the UI; it does not block the law from being enacted (by NPCs).
+	#
 	# Root scope = ruler for whom we are checking the law
+	# Default: true
 	#
 	potential = { }
 
 	### brief: requires_approve ( trigger )
-	# Whether passing this law is shown as requiring vassal approval in the succession law change window.
+	# Whether passing this law is shown as requiring vassal approval in the law change window.
 	# Always true if not specified.
 	# Root scope = ruler for whom we are checking the law
 	#
@@ -347,6 +349,54 @@
 	# Root scope = ruler in question
 	#
 	ai_will_do = { ... }
+
+	### brief: ai_approval ( value )
+	# Script value in a character (powerful vassal) scope. If above LAW_CHANGE_APPROVAL_THRESHOLD,
+	# the character will approve of passing the law
+	# If not defined, approval will fall back to 'approves_of_law_change'
+	ai_approval = { ... }
+
+		### brief: allow_same_successor (bool, optional)
+		#
+		# Is the current holder of the title a valid candidate for succession?
+		# Mainly relevant for republic succession with limited term lengths.
+		#
+		# default = no
+		#
+		allow_same_successor = no
+
+	### brief: manual_law_change ( bool )
+	# Should the law allow the player to change it manually?
+	# default is true if not defined
+	manual_law_change = { ... }
+
+		### brief: take_realm_capital (bool, optional)
+		#
+		# During or succession, or term ends, if a title has this set,
+		# then the realm capital is also inherited by the same recipient.
+		#
+		# default = no
+		#
+		take_realm_capital = no
+
+	### brief: term_length ( value )
+	# Script value for the term length for republic succession laws.
+	# Value is the number of months until next election.
+	# If not defined or it evaluates to 0, appointment is for life.
+	# Root scope = the title considered for succession
+	#
+	term_length = { ... }
+
+	### brief: voting_session ( bool )
+	#
+	# Determines if changing any law for this realm should done trough a voting session.
+	#
+	# Scopes:
+	#  root (characrer) = realm ruler
+	#
+	# Default: no
+	#
+	voting_session = { ... }
 }
 
 # Multiple laws can be defined in a single file.
@@ -371,7 +421,6 @@ This is primary based on order_of_succession:
 
 	Title only:
 		player_heir
-		election
 		noble_family
 		generate_from_template
 	Realm only:
@@ -382,6 +431,7 @@ This is primary based on order_of_succession:
 	Realm & Title:
 		inheritance ( title_division = single_heir )
 		appointment
+		election
 
 ### Associated Localization ###
 The key of the law will be used as its name. E.G., law_name: "Law Name"

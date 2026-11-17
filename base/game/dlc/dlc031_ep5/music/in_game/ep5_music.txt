@@ -1,0 +1,101 @@
+﻿
+### EP5 Music Defines
+
+### Cue Tracks
+
+mx_cue_the_rise_of_a_nation = {
+    music = "event:/DLC/EP5/MX/Cuetracks/mx_cue_the_rise_of_a_nation"
+    name = "mx_ep5_the_rise_of_a_nation"
+    group = "group_ep5_cue"
+}
+
+
+
+### Mood Tracks
+
+mx_mood_a_path_beyond_the_map = {
+    music = "event:/DLC/EP5/MX/Moodtracks/mx_mood_a_path_beyond_the_map"
+    name = "mx_ep5_a_path_beyond_the_map"
+    group = "group_ep5_mood_west"
+}
+mx_mood_a_merchants_tale = {
+    music = "event:/DLC/EP5/MX/Moodtracks/mx_mood_a_merchants_tale"
+    name = "mx_ep5_a_merchants_tale"
+    group = "group_ep5_mood_west"
+}
+mx_mood_discovering_new_routes = {
+    music = "event:/DLC/EP5/MX/Moodtracks/mx_mood_discovering_new_routes"
+    name = "mx_ep5_discovering_new_routes"
+    group = "group_ep5_mood_west"
+}
+
+mx_mood_rumors_from_the_east = {
+    music = "event:/DLC/EP5/MX/Moodtracks/mx_mood_rumors_from_the_east"
+    name = "mx_ep5_rumors_from_the_east"
+    group = "group_ep5_mood_mena"
+}
+mx_mood_caravan_at_dawn = {
+    music = "event:/DLC/EP5/MX/Moodtracks/mx_mood_caravan_at_dawn"
+    name = "mx_ep5_caravan_at_dawn"
+    group = "group_ep5_mood_mena"
+}
+mx_mood_a_bargain_struck = {
+    music = "event:/DLC/EP5/MX/Moodtracks/mx_mood_a_bargain_struck"
+    name = "mx_ep5_a_bargain_struck"
+    group = "group_ep5_mood_mena"
+}
+
+mx_mood_the_merchant_and_the_emperor = {
+    music = "event:/DLC/EP5/MX/Moodtracks/mx_mood_the_merchant_and_the_emperor"
+    name = "mx_ep5_the_merchant_and_the_emperor"
+    group = "group_ep5_mood_east"
+}
+mx_mood_silk_before_the_throne = {
+    music = "event:/DLC/EP5/MX/Moodtracks/mx_mood_silk_before_the_throne"
+    name = "mx_ep5_silk_before_the_throne"
+    group = "group_ep5_mood_east"
+}
+
+### Group Track Settings
+group_ep5_cue = {
+    pause_factor = 30
+}
+
+group_ep5_mood_west = {
+	pause_factor = 15
+	subsequent_playback_chance = { 0.9 0.6 }
+	mood = yes
+	can_be_interrupted = yes
+    is_prioritized_mood = yes
+    is_valid = {
+        has_gdp_dlc_trigger = yes
+        should_use_broadly_european_music_trigger = yes
+    }
+}
+
+group_ep5_mood_mena = {
+	pause_factor = 15
+	subsequent_playback_chance = { 0.9 0.6 }
+	mood = yes
+	can_be_interrupted = yes
+    is_prioritized_mood = yes
+    is_valid = {
+        has_gdp_dlc_trigger = yes
+        should_use_iranian_music_trigger = yes
+    }
+}
+
+group_ep5_mood_east = {
+	pause_factor = 15
+	subsequent_playback_chance = { 0.9 0.6 }
+	mood = yes
+	can_be_interrupted = yes
+    is_prioritized_mood = yes
+    is_valid = {
+        has_gdp_dlc_trigger = yes
+        OR = {
+            should_use_asian_music_trigger = yes
+            should_use_asian_merchant_music_trigger = yes
+        }
+    }
+}

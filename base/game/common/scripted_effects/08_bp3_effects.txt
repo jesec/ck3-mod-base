@@ -62,375 +62,13 @@ inspection_claim_effects = {
 	}
 }
 
-inspection_fighting_guilds_effect = {
-	scope:city_province = {
-		random_list = {
-			10 = { # Millers Guild (Watermills)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 1 }
-					}
-					building_watermills_requirement_terrain = yes
-					culture = {
-						has_innovation = innovation_windmills
-					}
-					NOT = { has_building_or_higher =  watermills_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 1
-				}
-			}
-			10 = { # Bakers Guild (Windmills)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 2 }
-					}
-					building_windmills_requirement_terrain = yes
-					culture = {
-						has_innovation = innovation_windmills
-					}
-					NOT = { has_building_or_higher =  windmills_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 2
-				}
-			}
-			10 = { # Fishmongers Guild (Port)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 3 }
-					}
-					building_common_tradeport_requirement_terrain = yes
-					NOT = { has_building_or_higher =  common_tradeport_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 3
-				}
-			}
-			10 = { # Shoemakers/Tanners/Tailors/Weavers Guild (Cattle Pastures)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOR = { 
-							var:fighting_guilds_option_1 = 4
-							var:fighting_guilds_option_1 = 5
-							var:fighting_guilds_option_1 = 6
-							var:fighting_guilds_option_1 = 7
-						}
-					}
-					building_pastures_requirement_terrain = yes
-					NOT = { has_building_or_higher = pastures_01 }
-				}
-				random_list = {
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 4
-						}
-					}
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 5
-						}
-					}
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 6
-						}
-					}
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 7
-						}
-					}
-				}
-			}
-			10 = { # Butchers/Furriers/Skinners Guild (Hunting Grounds)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOR = { 
-							var:fighting_guilds_option_1 = 8
-							var:fighting_guilds_option_1 = 9
-							var:fighting_guilds_option_1 = 10
-						}
-					}
-					building_hunting_grounds_requirement_terrain = yes
-					NOT = { has_building_or_higher = hunting_grounds_01 }
-				}
-				random_list = {
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 8
-						}
-					}
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 9
-						}
-					}
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 10
-						}
-					}
-				}
-			}
-			10 = { # Vintners Guild (Orchards)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 11 }
-					}
-					building_orchards_requirement_terrain = yes
-					NOT = { has_building_or_higher = orchards_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 11
-				}
-			}
-			10 = { # Carpenters Guild (Logging Camps)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 12 }
-					}
-					building_logging_camps_requirement_terrain = yes
-					NOT = { has_building_or_higher = logging_camps_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 12
-				}
-			}
-			10 = { # Masons/Miners Guild (Quarries)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOR = { 
-							var:fighting_guilds_option_1 = 13 
-							var:fighting_guilds_option_1 = 14 
-						}
-					}
-					building_quarries_requirement_terrain = yes
-					NOT = { has_building_or_higher = quarries_01 }
-				}
-				random_list = {
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 13
-						}
-					}
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 14
-						}
-					}
-				}
-			}
-			10 = { # Blacksmiths Guild (Blacksmith)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 15 }
-					}
-					building_smiths_requirement_terrain = yes
-					NOT = { has_building_or_higher = smiths_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 15
-				}
-			}
-			10 = { # Saddlers Guild (Stables)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 16 }
-					}
-					building_stables_requirement_terrain = yes
-					NOT = { has_building_or_higher = stables_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 16
-				}
-			}
-			10 = { # Merchants Guild (Guild Halls)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 17 }
-					}
-					has_building_or_higher = city_01
-					NOT = { has_building_or_higher = guild_halls_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 17
-				}
-			}
-			10 = { # Physicians/Pharmacists Guild (Hospices)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOR = {
-							var:fighting_guilds_option_1 = 18
-							var:fighting_guilds_option_1 = 19
-						}
-					}
-					NOT = { has_building_or_higher = hospices_01 }
-				}
-				random_list = {
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 18
-						}
-					}
-					10 = {
-						set_variable = {
-							name = fighting_guilds_option_$VALUE$
-							value = 19
-						}
-					}
-				}
-			}
-			10 = { # Toolmakers Guild (Workshops)
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 20 }
-					}
-					building_workshops_requirement_terrain = yes
-					culture = {
-						has_innovation = innovation_advanced_bowmaking
-					}
-					NOT = { has_building_or_higher = workshops_01 }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 20
-				}
-			}
-			1 = { # Fallback - Innkeepers Guild
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 21 }
-					}
-					NOT = { has_province_modifier = inspection_fighting_guilds_innkeepers_guild_modifier }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 21
-				}
-			}
-			1 = { # Fallback - Artists Guild
-				trigger = {
-					trigger_if = {
-						limit = {
-							has_variable = fighting_guilds_option_1
-						}
-						NOT = { var:fighting_guilds_option_1 = 22 }
-					}
-					NOT = { has_province_modifier = inspection_fighting_guilds_artists_guild_modifier }
-				}
-				set_variable = {
-					name = fighting_guilds_option_$VALUE$
-					value = 22
-				}
-			}
-		}
-	}
-}
-
-inspection_fighting_guilds_setup_reward_effect = {
-	switch = {
-		trigger = var:fighting_guilds_option_$VALUE$
-		1 = { add_building = watermills_01 }
-		2 = { add_building = windmills_01 }
-		3 = { add_building = common_tradeport_01 }
-		4 = { add_building = pastures_01 }
-		5 = { add_building = pastures_01 }
-		6 = { add_building = pastures_01 }
-		7 = { add_building = pastures_01 }
-		8 = { add_building = hunting_grounds_01 }
-		9 = { add_building = hunting_grounds_01 }
-		10 = { add_building = hunting_grounds_01 }
-		11 = { add_building = orchards_01 }
-		12 = { add_building = logging_camps_01 }
-		13 = { add_building = quarries_01 }
-		14 = { add_building = quarries_01 }
-		15 = { add_building = smiths_01 }
-		16 = { add_building = stables_01 }
-		17 = { add_building = guild_halls_01 }
-		18 = { add_building = hospices_01 }
-		19 = { add_building = hospices_01 }
-		20 = { add_building = workshops_01 }
-		21 = {
-			scope:city_province = {
-				add_province_modifier = inspection_fighting_guilds_innkeepers_guild_modifier
-			}
-		}
-		22 = {
-			scope:city_province = {
-				add_province_modifier = inspection_fighting_guilds_artists_guild_modifier
-			}
-		}
-	}
-}
-
-inspection_survey_intent_development = {
+inspection_survey_intent_prosperity = {
 	if = {
 		limit = {
 			has_activity_intent = survey_learning_intent
 		}
 		capital_county = {
-			change_development_progress_with_overflow = $VALUE$
+			change_prosperity_progress_with_overflow = $VALUE$
 		}
 	}
 }
@@ -439,14 +77,14 @@ inspection_survey_intent_control = {
 	if = {
 		limit = {
 			has_activity_intent = survey_learning_intent
-			capital_county = { county_control < 100 }
+			capital_county = { county_control < county_control_baseline }
 		}
 		capital_county = {
 			change_county_control = $VALUE$
 		}
 	}
 	else = {
-		inspection_survey_intent_development = { VALUE = $VALUE$ }
+		inspection_survey_intent_prosperity = { VALUE = $VALUE$ }
 	}
 }
 
@@ -466,7 +104,7 @@ inspection_survey_intent_county_modifier = {
 		}
 	}
 	else = {
-		inspection_survey_intent_development = { VALUE = 5 }
+		inspection_survey_intent_prosperity = { VALUE = 5 }
 	}
 }
 
@@ -486,7 +124,7 @@ inspection_survey_intent_province_modifier = {
 		}
 	}
 	else = {
-		inspection_survey_intent_development = { VALUE = 5 }
+		inspection_survey_intent_prosperity = { VALUE = 5 }
 	}
 }
 
@@ -597,49 +235,6 @@ court_brewmaster_assign_modifier_positive_effect = {
 		add_character_modifier = {
 			modifier = experimental_brew_$MODIFIER$_modifier
 			months = 6
-		}
-	}
-}
-
-brewery_counter_effect = {
-	county = {
-		if = {
-			limit = {
-				has_variable = brewery_counter_var 
-				NOT = {
-					any_county_province = {
-						has_building_or_higher = breweries_01
-					}
-				}
-			}
-			remove_variable = brewery_counter_var
-		}
-		else_if = {
-			limit = {
-				NOT = { has_variable = brewery_counter_var }
-				any_county_province = { has_building_or_higher = breweries_01 }
-			}
-			set_variable = {
-				name = brewery_counter_var
-				value = current_year
-			}
-		}
-	}
-}
-
-brewery_counter_start_effect = {
-	if = {
-		limit = {
-			has_building_or_higher = breweries_01
-		}
-		county = {
-			set_variable = {
-				name = brewery_counter_var
-				value = {
-					value = current_year
-					subtract = { integer_range = { min = 1 max = 80 } }
-				}
-			}
 		}
 	}
 }

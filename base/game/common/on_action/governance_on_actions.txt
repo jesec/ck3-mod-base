@@ -292,21 +292,21 @@ ep3_rampant_bandits = {
 		modifier = { # Significantly reduce the chance if there is no county with reduced control
 			factor = 0.1
 			NOT = {
-				any_sub_realm_county = { county_control <= 90 }
+				any_sub_realm_county = { county_control < county_control_baseline }
 			}
 		}
 		modifier = { # Increased chance if there are multiple counties with low control
 			factor = 1.5
 			any_sub_realm_county = {
 				percent >= 0.25
-				county_control <= 75
+				county_control <= county_control_relative_65
 			}
 		}
 		modifier = { # Increased it more if control is even lower
 			factor = 2
 			any_sub_realm_county = {
 				percent >= 0.5
-				county_control <= 50
+				county_control < county_control_baseline
 			}
 		}
 	}
@@ -323,16 +323,17 @@ ep3_rampant_bandits = {
 				base = 1
 				modifier = { # Prioritize counties with low control
 					add = {
-						value = 100
+						value = county_control_baseline
 						subtract = county_control
 					}
-					county_control < 100
+					county_control < county_control_baseline
 				}
 			}
 			add_county_modifier = {
 				modifier = ep3_governance_rampant_bandits
 				years = 40
 			}
+			change_county_control = -5
 			random_county_province = {
 				limit = {
 					NOT = { this = county.holder.capital_province }
@@ -452,6 +453,7 @@ ep3_inept_mayor = {
 				modifier = ep3_mismanaged_administration_modifier
 				years = 10
 			}
+			change_county_control = -5
 		}
 		
 		# Create the contract
@@ -581,8 +583,7 @@ ep3_wild_predators = {
 		any_sub_realm_county = {
 			any_county_province = {
 				OR = {
-					has_building_or_higher = hunting_grounds_01
-					has_building_or_higher = royal_forest_01
+					has_hunting_district_or_building = yes
 					terrain = forest
 					terrain = jungle
 				}
@@ -596,8 +597,7 @@ ep3_wild_predators = {
 			limit = {
 				any_county_province = {
 					OR = {
-						has_building_or_higher = hunting_grounds_01
-						has_building_or_higher = royal_forest_01
+						has_hunting_district_or_building = yes
 						terrain = forest
 						terrain = jungle
 					}
@@ -609,10 +609,7 @@ ep3_wild_predators = {
 			}
 			random_county_province = {
 				limit = {
-					OR = {
-						has_building_or_higher = hunting_grounds_01
-						has_building_or_higher = royal_forest_01
-					}
+					has_hunting_district_or_building = yes
 				}
 				alternative_limit = {
 					OR = {
@@ -1443,7 +1440,7 @@ tgp_unsafe_highways = {
 	trigger = {
 		NOT = { has_character_flag = task_contract_cooldown_unsafe_highways }
 		any_sub_realm_county = {
-			county_control < 100
+			county_control < county_control_baseline
 			any_county_province = {
 				has_holding = yes
 				NOT = { this = scope:governor.capital_province }
@@ -1455,7 +1452,7 @@ tgp_unsafe_highways = {
 		# Select a suitable location
 		random_sub_realm_county = {
 			limit = {
-				county_control < 100
+				county_control < county_control_baseline
 				any_county_province = {
 					has_holding = yes
 					NOT = { this = scope:governor.capital_province }
@@ -2013,7 +2010,7 @@ tgp_confusion_of_tongues = {
 		}
 		any_county_in_region = {
 			region = world_asia_and_india
-			any_province = { 
+			any_county_province = {
 				is_coastal = yes
 			}
 			culture = { NOT = { has_cultural_pillar = heritage_chinese } }

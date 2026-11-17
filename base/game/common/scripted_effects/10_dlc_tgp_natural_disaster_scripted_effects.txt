@@ -6,7 +6,7 @@ spawn_earthquake_in_region_effect = {
 	random_county_in_region = {
 		region = $REGION$
 		limit = { 
-			development_level >= 10
+			prosperity_level >= 10
 			NOT = {
 				any_county_situation = {
 					situation_type = natural_disaster_earthquake
@@ -14,7 +14,7 @@ spawn_earthquake_in_region_effect = {
 			}
 		}
 		alternative_limit = { 
-			development_level >= 5
+			prosperity_level >= 5
 			NOT = {
 				any_county_situation = {
 					situation_type = natural_disaster_earthquake
@@ -22,7 +22,7 @@ spawn_earthquake_in_region_effect = {
 			}
 		}
 		alternative_limit = { 
-			development_level >= 2
+			prosperity_level >= 2
 			NOT = {
 				any_county_situation = {
 					situation_type = natural_disaster_earthquake
@@ -138,9 +138,9 @@ spawn_flood_in_region_effect = {
 
 	random_county_in_region = {
 		region = $REGION$
-		limit = { development_level >= 10 }
-		alternative_limit = { development_level >= 5 }
-		alternative_limit = { development_level >= 2 }
+		limit = { prosperity_level >= 10 }
+		alternative_limit = { prosperity_level >= 5 }
+		alternative_limit = { prosperity_level >= 2 }
 		weight = {
 			base = 1
 			modifier = {
@@ -877,12 +877,25 @@ natural_disaster_impact_effect = {
 				every_situation_county = {
 					custom = every_disaster_county_custom
 					change_county_control = natural_disaster_earthquake_control_loss_value
+					every_county_province = {
+						limit = { has_holding = yes }
+						change_province_size_progress = natural_disaster_province_size_loss_value
+					}
 					if = {
 						limit = { scope:situation.var:severity >= 2.5 }
 						add_county_modifier = {
 							modifier = tgp_natural_disaster_earthquake_3_county_modifier
 							duration_desc = until_the_disaster_is_over
 							years = 25
+						}
+						hidden_effect = {
+							title_province.barony.trade_market = {
+								add_trade_market_modifier = {
+									modifier = gdp_natural_disaster_3_trade_modifier
+									duration_desc = until_the_disaster_is_over
+									years = 25
+								}
+							}
 						}
 					}
 					else_if = {
@@ -892,12 +905,30 @@ natural_disaster_impact_effect = {
 							duration_desc = until_the_disaster_is_over
 							years = 25
 						}
+						hidden_effect = {
+							title_province.barony.trade_market = {
+								add_trade_market_modifier = {
+									modifier = gdp_natural_disaster_2_trade_modifier
+									duration_desc = until_the_disaster_is_over
+									years = 25
+								}
+							}
+						}
 					}
 					else = {
 						add_county_modifier = {
 							modifier = tgp_natural_disaster_earthquake_1_county_modifier
 							duration_desc = until_the_disaster_is_over
 							years = 25
+						}
+						hidden_effect = {
+							title_province.barony.trade_market = {
+								add_trade_market_modifier = {
+									modifier = gdp_natural_disaster_1_trade_modifier
+									duration_desc = until_the_disaster_is_over
+									years = 25
+								}
+							}
 						}
 					}
 				}
@@ -906,12 +937,25 @@ natural_disaster_impact_effect = {
 				every_situation_county = {
 					custom = every_disaster_county_custom
 					change_county_control = natural_disaster_flood_control_loss_value
+					every_county_province = {
+						limit = { has_holding = yes }
+						change_province_size_progress = natural_disaster_province_size_loss_value
+					}
 					if = {
 						limit = { scope:situation.var:severity >= 2.5 }
 						add_county_modifier = {
 							modifier = tgp_natural_disaster_flood_3_county_modifier
 							duration_desc = until_the_disaster_is_over
 							years = 25
+						}
+						hidden_effect = {
+							title_province.barony.trade_market = {
+								add_trade_market_modifier = {
+									modifier = gdp_natural_disaster_3_trade_modifier
+									duration_desc = until_the_disaster_is_over
+									years = 25
+								}
+							}
 						}
 					}
 					else_if = {
@@ -921,12 +965,30 @@ natural_disaster_impact_effect = {
 							duration_desc = until_the_disaster_is_over
 							years = 25
 						}
+						hidden_effect = {
+							title_province.barony.trade_market = {
+								add_trade_market_modifier = {
+									modifier = gdp_natural_disaster_2_trade_modifier
+									duration_desc = until_the_disaster_is_over
+									years = 25
+								}
+							}
+						}
 					}
 					else = {
 						add_county_modifier = {
 							modifier = tgp_natural_disaster_flood_1_county_modifier
 							duration_desc = until_the_disaster_is_over
 							years = 25
+						}
+						hidden_effect = {
+							title_province.barony.trade_market = {
+								add_trade_market_modifier = {
+									modifier = gdp_natural_disaster_1_trade_modifier
+									duration_desc = until_the_disaster_is_over
+									years = 25
+								}
+							}
 						}
 					}
 				}

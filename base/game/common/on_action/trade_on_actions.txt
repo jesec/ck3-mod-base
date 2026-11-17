@@ -1,0 +1,623 @@
+﻿
+### TRADE ON-ACTIONS
+
+# on_trade_route_created
+#
+# Fired from code whenever a new trade route is created
+# root = the owner of the new trade route
+# scope:trade_route = the new trade route (null when localizing for the trade route planner)
+# scope:trader = the trader assigned to the route, can be null
+#
+on_trade_route_created = {
+	effect = {
+		# Shown in the trade route planner create confirmation
+		show_as_tooltip = {
+			trade_route_created_summary_effect = yes
+		}
+
+		hidden_effect = {
+			save_scope_as = owner
+			if = {
+				limit = { exists = scope:trade_route }
+
+				scope:trade_route = { gdp_trade_route_maturity_start_effect = yes }
+
+				# Send toast notification
+				if = {
+					limit = { exists = scope:trader }
+					send_interface_toast = {
+						title = trade_route_created_toast_title
+						type = msg_trade_route_edited
+						left_icon = scope:owner
+						right_icon = scope:trader
+						desc = trade_route_created_toast_desc_trader
+						trade_route_trader_opinion_effect = { TRADER = scope:trader }
+					}
+					populate_location_with_trade_opportunities_effect = { AMOUNT = 2 }
+				}
+				else = {
+					trigger_event = gdp_merchant.0015
+					send_interface_toast = {
+						title = trade_route_created_toast_title
+						type = msg_trade_route_edited
+						left_icon = scope:owner
+						desc = trade_route_created_toast_desc
+					}
+				}
+				update_merchant_embassies_effect = yes
+				update_company_ledger_perk_effect = yes
+				update_merchant_missionary_network_effect = yes
+				update_merchant_scholastic_exceptions_effect = yes
+				update_merchant_known_along_the_route_effect = yes
+				merchant_inspector_apply_specialized_market_effect = yes
+				# Handle Competition
+				update_merchant_competition_effect = yes
+				league_trade_route_cohesion_effect = {
+					ROUTE = scope:trade_route
+					AMOUNT = 0.5
+				}
+			}
+
+		}
+	}
+}
+
+
+# on_trade_route_edited
+#
+# Fired from code whenever a new trade route is edited
+# root = the owner of the new trade route
+# scope:trade_route = the edited trade route (null when localizing for the trade route planner)
+# scope:trader = the trader assigned to the route, can be null
+# scope:primary_good_changed = yes if the edit changes the route's primary trade good, which restarts the route's age
+#
+on_trade_route_edited = {
+	effect = {
+		# Shown in the trade route planner edit confirmation
+		show_as_tooltip = {
+			trade_route_edited_summary_effect = yes
+		}
+
+		hidden_effect = {
+			save_scope_as = owner
+
+			if = {
+				limit = { exists = scope:trade_route }
+
+				# Return old traders doing schemes back home
+				# We cannot get the old trader as a scope, so we check every courtier
+				every_courtier = {
+					limit = {
+						is_travelling = yes
+						NOT = { exists = assigned_trade_route }
+						current_travel_plan.travel_plan_owner ?= this
+					}
+					return_home = yes
+				}
+				replace_stale_trade_opportunities_effect = yes
+				if = {
+					limit = { scope:primary_good_changed = yes }
+					scope:trade_route = { gdp_trade_route_maturity_reset_effect = yes }
+				}
+				# Send toast notification
+				# Traders no longer assigned lose the opinion gained from being assigned
+				if = {
+					limit = { exists = scope:trader }
+					send_interface_toast = {
+						title = trade_route_edited_toast_title
+						type = msg_trade_route_edited
+						left_icon = scope:owner
+						right_icon = scope:trader
+						desc = trade_route_edited_toast_desc
+						trade_route_trader_opinion_effect = { TRADER = scope:trader }
+						trade_route_unassigned_traders_opinion_effect = yes
+					}
+				}
+				else = {
+					trigger_event = gdp_merchant.0015
+					send_interface_toast = {
+						title = trade_route_edited_toast_title
+						type = msg_trade_route_edited
+						left_icon = scope:owner
+						desc = trade_route_edited_toast_desc
+						trade_route_unassigned_traders_opinion_effect = yes
+					}
+				}
+				update_merchant_embassies_effect = yes
+				update_company_ledger_perk_effect = yes
+				update_merchant_missionary_network_effect = yes
+				update_merchant_scholastic_exceptions_effect = yes
+				update_merchant_known_along_the_route_effect = yes
+				merchant_inspector_apply_specialized_market_effect = yes
+				# Handle Competition
+				update_merchant_competition_effect = yes
+				league_trade_route_cohesion_effect = {
+					ROUTE = scope:trade_route
+					AMOUNT = 0
+				}
+			}
+
+		}
+	}
+}
+
+
+# on_trade_route_destroyed
+#
+# Fired from code right before a trade route is destroyed
+# root = the trade route being destroyed
+# scope:destroyer = the character who destroyed the route, can be null
+#
+on_trade_route_destroyed = {
+	effect = {
+		save_scope_as = destroyed_trade_route
+		trade_route_owner ?= { save_scope_as = trade_route_owner }
+		trader ?= {
+			if = {
+				limit = {
+					is_travelling = yes
+					current_travel_plan.travel_plan_owner ?= this
+				}
+				return_home = yes
+			}
+			if = {
+				limit = {
+					exists = scope:trade_route_owner
+					has_opinion_modifier = {
+						target = scope:trade_route_owner
+						modifier = trader_assigned_opinion
+					}
+				}
+				remove_opinion = {
+					target = scope:trade_route_owner
+					modifier = trader_assigned_opinion
+				}
+			}
+		}
+		if = {
+			limit = { is_commission_route = yes }
+			commissioner ?= {
+				save_scope_as = commissioner
+				if = {
+					limit = {
+						scope:trade_route_owner ?= { has_character_flag = being_evicted }
+					}
+					scope:trade_route_owner.var:evicting_ruler ?= { save_scope_as = expeller }
+					send_interface_message = {
+						type = event_generic_neutral
+						title = msg_commission_merchant_route_invalidated.t
+						desc = msg_commission_merchant_route_invalidated_by_eviction.desc
+						left_icon = scope:trade_route_owner
+						right_icon = scope:expeller
+						show_as_tooltip = {
+							scope:destroyed_trade_route = { destroy_trade_route = yes }
+						}
+					}
+					# Evicted merchants lose commissions without dealbreaker fallout or extra spam
+					scope:trade_route_owner ?= {
+						send_interface_message = {
+							type = event_generic_neutral
+							title = msg_commission_merchant_route_invalidated.t
+							desc = msg_commission_merchant_route_invalidated_for_merchant.desc
+							left_icon = this
+							right_icon = scope:commissioner
+							show_as_tooltip = {
+								scope:destroyed_trade_route = { destroy_trade_route = yes }
+							}
+						}
+					}
+				}
+				else_if = {
+					# Contract ran its full term: notify without dealbreaker or reimbursement
+					limit = {
+						scope:destroyed_trade_route = {
+							NOT = { commission_route_still_under_contract_trigger = yes }
+						}
+					}
+					send_interface_message = {
+						type = event_generic_neutral
+						title = msg_commission_merchant_route_invalidated.t
+						desc = msg_commission_merchant_route_invalidated.desc
+						left_icon = scope:trade_route_owner
+						show_as_tooltip = {
+							scope:destroyed_trade_route = { destroy_trade_route = yes }
+						}
+					}
+					scope:trade_route_owner ?= {
+						send_interface_message = {
+							type = event_generic_neutral
+							title = msg_commission_merchant_route_invalidated.t
+							desc = msg_commission_merchant_route_invalidated_for_merchant.desc
+							left_icon = this
+							right_icon = scope:commissioner
+							show_as_tooltip = {
+								scope:destroyed_trade_route = { destroy_trade_route = yes }
+							}
+						}
+					}
+				}
+				else_if = {
+					limit = {
+						root = {
+							months_since_last_transaction >= define:NTrade|MAX_COMMISSION_IDLE_TIME
+						}
+					}
+					# No dealbreaker fallout if commissioned route was invalidated due to no longer moving any goods
+					send_interface_message = {
+						type = event_generic_neutral
+						title = msg_commission_merchant_route_invalidated.t
+						desc = msg_commission_merchant_route_obsolete.desc
+						left_icon = scope:commissioner
+						right_icon = scope:trade_route_owner
+						show_as_tooltip = {
+							scope:destroyed_trade_route = { destroy_trade_route = yes }
+						}
+					}
+					scope:trade_route_owner ?= {
+						send_interface_message = {
+							type = event_generic_neutral
+							title = msg_commission_merchant_route_invalidated.t
+							desc = msg_commission_merchant_route_obsolete_for_merchant.desc
+							left_icon = this
+							right_icon = scope:commissioner
+							show_as_tooltip = {
+								scope:destroyed_trade_route = { destroy_trade_route = yes }
+							}
+						}
+					}
+				}
+				# Only counts as dealbreaking if the merchant was responsible
+				else_if = {
+					limit = { NOT = { scope:destroyer ?= scope:commissioner } }
+					send_interface_message = {
+						type = event_generic_bad
+						title = msg_commission_merchant_route_invalidated.t
+						desc = msg_commission_merchant_route_invalidated.desc
+						left_icon = scope:commissioner
+						right_icon = scope:trade_route_owner
+						show_as_tooltip = {
+							scope:commissioner = {
+								add_prestige = scope:destroyed_trade_route.gdp_commission_route_reimbursement_value
+							}
+							scope:destroyed_trade_route = { destroy_trade_route = yes }
+						}
+					}
+					scope:trade_route_owner ?= {
+						send_interface_message = {
+							type = event_generic_bad
+							title = msg_commission_merchant_route_invalidated.t
+							desc = msg_commission_merchant_route_invalidated_for_merchant.desc
+							left_icon = this
+							right_icon = scope:commissioner
+							show_as_tooltip = {
+								scope:destroyed_trade_route = { destroy_trade_route = yes }
+							}
+							if = { # apply dealbreaker if the commissioner is still valid
+								limit = {
+									is_landless_merchant = yes
+									NOT = { is_at_war_with = scope:commissioner }
+									scope:commissioner = { commission_trade_route_commissioner_trigger = yes }
+								}
+								merchant_broke_commission_fallout_effect = { ROUTE = scope:destroyed_trade_route }
+							}
+						}
+					}
+				}
+				# Commissioner cancelled the route: notify without dealbreaker or reimbursement
+				else = {
+					send_interface_message = {
+						type = event_generic_neutral
+						title = msg_commission_merchant_route_invalidated.t
+						desc = msg_commission_merchant_route_invalidated.desc
+						left_icon = scope:trade_route_owner
+						show_as_tooltip = {
+							scope:destroyed_trade_route = { destroy_trade_route = yes }
+						}
+					}
+					scope:trade_route_owner ?= {
+						send_interface_message = {
+							type = event_generic_neutral
+							title = msg_commission_merchant_route_invalidated.t
+							desc = msg_commission_merchant_route_invalidated_for_merchant.desc
+							left_icon = this
+							right_icon = scope:commissioner
+							show_as_tooltip = {
+								scope:destroyed_trade_route = { destroy_trade_route = yes }
+							}
+						}
+					}
+				}
+			}
+		}
+		# Code sets scope:lost_trade_market only when a Market leaving the owner's sub-realm dissolved the route
+		if = {
+			limit = { exists = scope:lost_trade_market }
+			scope:lost_trade_market.trade_market_owner ?= { save_scope_as = lost_market_owner }
+			if = {
+				limit = {
+					exists = scope:trade_route_owner
+					exists = scope:lost_market_owner
+				}
+				scope:trade_route_owner = {
+					send_interface_message = {
+						type = msg_distribution_route_market_lost
+						title = msg_distribution_route_market_lost.t
+						desc = msg_distribution_route_market_lost.desc
+						left_icon = this
+						right_icon = scope:lost_market_owner
+					}
+				}
+			}
+		}
+		trade_route_owner ?= {
+			update_merchant_missionary_network_effect = yes
+			update_merchant_scholastic_exceptions_effect = yes
+			update_merchant_known_along_the_route_effect = yes
+			merchant_inspector_apply_specialized_market_effect = yes
+			every_character_task_contract = {
+				limit = {
+					has_task_contract_group = merchant_trade_opportunity_group
+					exists = var:task_contract_route
+					var:task_contract_route = scope:destroyed_trade_route
+				}
+				set_variable = {
+					name = trade_opportunity_lost_reason
+					value = flag:route_destroyed
+				}
+				invalidate_contract = yes
+			}
+			every_scheme = {
+				limit = {
+					OR = {
+						scheme_type = gdp_improve_trade_capacity
+						scheme_type = gdp_improve_trade_competitiveness
+						scheme_type = gdp_improve_trade_expertise
+					}
+					exists = var:focused_trade_route
+					var:focused_trade_route = scope:destroyed_trade_route
+				}
+				gdp_improve_trade_scheme_route_destroyed_effect = yes
+			}
+		}
+
+		league_trade_route_cohesion_effect = {
+			ROUTE = scope:destroyed_trade_route
+			AMOUNT = -0.25
+		}
+	}
+}
+
+
+# on_trade_good_category_level_up
+#
+# Fired from code whenever a new trade category track is leveled up
+# root = the owning landed title
+# scope:trade_good_category_type = the category that leveled up
+#
+on_trade_good_category_level_up = {
+	effect = {
+		if = {
+			limit = {
+				exists = scope:trade_good_category_type
+				holder ?= { is_ai = no }
+			}
+			holder = {
+				save_scope_as = company_owner
+				send_interface_message = {
+					type = msg_trade_good_category_level_up
+					title = msg_trade_good_category_level_up.t
+					desc = msg_trade_good_category_level_up.desc
+					left_icon = this
+				}
+			}
+		}
+	}
+}
+
+# on_trade_good_category_level_down
+#
+# Fired from code whenever a new trade category track is leveled down
+# root = the owning landed title
+# scope:trade_good_category_type = the category that leveled down
+#
+on_trade_good_category_level_down = {
+	effect = {
+		if = {
+			limit = {
+				exists = scope:trade_good_category_type
+				holder ?= { is_ai = no }
+			}
+			holder = {
+				save_scope_as = company_owner
+				send_interface_message = {
+					type = msg_trade_good_category_level_down
+					title = msg_trade_good_category_level_down.t
+					desc = msg_trade_good_category_level_down.desc
+					left_icon = this
+				}
+			}
+		}
+	}
+}
+
+# on_trader_assigned
+#
+# Fired from code whenever a new trader is assigned to a new trade route
+# this runs BEFORE the on actions for the trade route
+#
+# root = the assigned trader character
+# trade_route = the trade route the trader is assigned to
+#
+on_trader_assigned = {
+	effect = {
+		hidden_effect = {
+			if = {
+				limit = {
+					NOT = { has_trait = lifestyle_merchant }
+				}
+				add_trait = lifestyle_merchant
+			}
+			gdp_trader_start_round_effect = yes
+			scope:trade_route.trade_route_owner ?= {
+				replace_stale_trade_opportunities_effect = yes
+			}
+		}
+	}
+}
+
+# Scripted on_action, fired when a trader arrives at their target market after travel
+# root = the trader character
+on_gdp_trader_arrived_at_market = {
+	effect = {
+		hidden_effect = {
+			gdp_trader_start_work_scheme_effect = yes
+		}
+	}
+}
+
+# Scripted on_action, restarts the trader activity loop after a work scheme is gone
+# root = the trader character
+on_gdp_trader_continue_activity = {
+	effect = {
+		hidden_effect = {
+			gdp_trader_start_round_effect = yes
+		}
+	}
+}
+
+# Scripted on_action, fired when the market owner changes the toll level
+# root = the affected market
+# new_toll_level = the new toll level
+# old_toll_level = the old toll level
+on_market_changed_toll_level = {
+	effect = {
+		save_scope_as = trade_market
+		trade_market_owner ?= { holder ?= { save_scope_as = market_owner } }
+		if = {
+			limit = { exists = scope:market_owner }
+			every_character_in_market = {
+				limit = {
+					is_ai = no
+					save_temporary_scope_as = market_trader
+					scope:trade_market = {
+						trade_market_character_liable_for_tolls_trigger = { CHARACTER = scope:market_trader }
+						NOT = { has_toll_exception = scope:market_trader }
+					}
+				}
+				send_interface_message = {
+					type = msg_market_toll_changed
+					title = msg_market_toll_changed.t
+					desc = msg_market_toll_changed.desc
+					left_icon = scope:market_owner
+				}
+			}
+		}
+	}
+}
+
+# Scripted on_action, fired when a toll exception is added or updated for a character
+# root = the affected market
+# new_toll_level = the new toll level
+# old_toll_level = the old toll level
+# character = the affected character
+on_toll_exception_changed = {
+	effect = {
+		save_scope_as = trade_market
+		trade_market_owner ?= { holder ?= { save_scope_as = market_owner } }
+		if = {
+			limit = {
+				exists = scope:market_owner
+				scope:character ?= { is_ai = no }
+			}
+			scope:character = {
+				send_interface_message = {
+					type = msg_toll_exception_changed
+					title = msg_toll_exception_changed.t
+					desc = msg_toll_exception_changed.desc
+					left_icon = scope:market_owner
+				}
+			}
+		}
+	}
+}
+
+# Scripted on_action, fired when a toll exception ends for a character
+# root = the affected market
+# new_toll_level = the new toll level (the market's level)
+# old_toll_level = the old toll level
+# character = the affected character
+on_toll_exception_ended = {
+	effect = {
+		save_scope_as = trade_market
+		if = {
+			limit = { scope:character ?= { is_ai = no } }
+			scope:character = {
+				send_interface_message = {
+					type = msg_toll_exception_ended
+					title = msg_toll_exception_ended.t
+					desc = msg_toll_exception_ended.desc
+					left_icon = this
+				}
+			}
+		}
+	}
+}
+
+
+# gdp_trade_route_maturity_pulse
+#
+# Runs from quarterly_playable_pulse, players only for now
+# root = the character
+gdp_trade_route_maturity_pulse = {
+	trigger = {
+		is_ai = no
+		any_trade_route = { is_profit_route = yes }
+	}
+	effect = {
+		every_trade_route = {
+			limit = { is_profit_route = yes }
+			gdp_trade_route_maturity_update_effect = yes
+		}
+		if = {
+			limit = {
+				any_in_list = {
+					list = gdp_maturity_gained_routes
+					count >= 2
+				}
+			}
+			send_interface_message = {
+				type = msg_trade_route_maturity_gained
+				title = msg_trade_route_maturity_gained.t
+				desc = msg_trade_route_maturity_gained.desc_multiple
+			}
+		}
+		else_if = {
+			limit = {
+				any_in_list = { list = gdp_maturity_gained_routes }
+			}
+			random_in_list = {
+				list = gdp_maturity_gained_routes
+				save_temporary_scope_as = maturity_route
+			}
+			send_interface_message = {
+				type = msg_trade_route_maturity_gained
+				title = msg_trade_route_maturity_gained.t
+				desc = msg_trade_route_maturity_gained.desc
+				right_icon = scope:maturity_route.trader
+			}
+		}
+	}
+}
+
+# Starts traders left idle while envoys are out, such as after a player takes over a company.
+gdp_trade_envoys_resume_pulse = {
+	trigger = {
+		is_ai = no
+		government_has_flag = government_has_merchant_company
+		NOT = { has_character_flag = gdp_trade_envoys_recalled }
+		any_trade_route = { has_trader = yes }
+	}
+	effect = {
+		gdp_trade_envoys_resume_idle_traders_effect = yes
+	}
+}

@@ -1,0 +1,499 @@
+﻿gg_switch_sides = {
+	# Basic Setup
+	skill = intrigue
+	desc = "gg_switch_sides_desc_general"
+	success_desc = "GG_SWITCH_SIDES_SUCCESS_DESC"
+	icon = icon_scheme_gg_switch_sides
+	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
+	category = political
+	target_type = character
+	is_secret = no
+	cooldown = { years = 5 }
+
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	spymaster_speed_per_skill_point = t2_spsp_owner_spy_value
+	target_spymaster_speed_per_skill_point = 0
+	tier_speed = 1
+	base_progress_goal = t3_base_phase_length_value
+	base_maximum_success = t2_base_max_success_value
+	phases_per_agent_charge = 1
+	success_chance_growth_per_skill_point = t2_scgpsp_value
+
+	# Core Triggers
+	allow = {
+		is_adult = yes
+		is_imprisoned = no
+		gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:owner SECOND = scope:target }
+	}
+
+	valid = {
+		scope:target = {
+			is_ai = yes
+			is_alive = yes
+			in_diplomatic_range = scope:owner
+			this != scope:owner
+			#This character is not currently the target of a Displacement War
+			NOR = {
+				any_character_war = {
+					using_cb = displace_guelph_ghibelline_ruler_cb
+					primary_defender = scope:target
+				}
+				any_character_war = {
+					using_cb = reinstate_guelph_ghibelline_ruler_cb
+					primary_defender = scope:target
+				}
+			}
+		}
+		gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:owner SECOND = scope:target }
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_basic_suite_modifier = yes
+		ai_agent_join_chance_personal_general_suite_modifier = yes
+	}
+	valid_agent = {	
+		is_valid_agent_standard_trigger = yes #Is adult, is NOT imprisoned
+		#Don't help the other side
+		NOR = {
+			AND = {
+				scope:owner = { is_ghibelline_trigger = yes }
+				is_guelph_trigger = yes
+			}
+			AND = {
+				scope:owner = { is_guelph_trigger = yes }
+				is_ghibelline_trigger = yes
+			}
+		}
+	} 
+	agent_groups_target_character_perspective = { peer_vassals vassals scripted_relations family }
+
+	odds_prediction = {
+		add = base_odds_prediction_target_is_char_gg_value
+		add = odds_skill_contribution_intrigue_value
+		add = agent_groups_target_character_perspective_value
+		add = odds_gg_is_guelph_leader_negative_value
+		add = odds_gg_is_ghibelline_leader_negative_value
+		add = odds_gg_is_pope_negative_value
+		add = odds_gg_is_theocratic_negative_value
+		add = odds_gg_is_theocratic_positive_value
+		add = odds_gg_you_are_guelph_leader_positive_value
+		add = odds_gg_you_are_ghibelline_leader_positive_value
+		add = odds_gg_switch_sides_scheme_misc_value
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = -10
+
+		#Trait similarity to owner
+		compatibility_modifier = {
+			who = scope:target
+			compatibility_target = scope:owner
+			min = -50
+			max = 50
+			multiplier = 2
+		}
+
+		#Their zeal
+		ai_value_modifier = {
+			who = scope:target
+
+			ai_zeal = {
+				if = {
+					limit = {
+						scope:target.faith = { trait_is_virtue = witch has_doctrine_parameter = witchcraft_accepted }
+					}
+					value = 0.25
+				}
+				else = {
+					value = -1
+				}
+			}
+			max = 50
+			min = -25
+		}
+
+		#Opinion
+		opinion_modifier = {
+			who = scope:target
+			opinion_target = scope:owner
+			min = -50
+			max = 50
+			multiplier = 1.5
+			step = 5
+		}
+
+		#Rank tier difference (landed target/target whose liege doesn't care)
+		modifier = { #3 or more higher rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = 25
+			desc = "HIGHER_RANK_THAN_SCHEME_TARGET"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = no
+				NOT = {
+					is_theocratic_lessee = yes
+				}
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target
+					value >= 3
+				}
+			}
+		}
+		modifier = { #2 higher rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = 10
+			desc = "HIGHER_RANK_THAN_SCHEME_TARGET"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = no
+				NOT = {
+					is_theocratic_lessee = yes
+				}
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target
+					value = 2
+				}
+			}
+		}
+		modifier = { #1 higher rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = 5
+			desc = "HIGHER_RANK_THAN_SCHEME_TARGET"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = no
+				NOT = {
+					is_theocratic_lessee = yes
+				}
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target
+					value = 1
+				}
+			}
+		}
+		modifier = { #1 lower rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = -10
+			desc = "LOWER_RANK_THAN_SCHEME_TARGET"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = no
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target
+					value = -1
+				}
+			}
+		}
+		modifier = { #2 lower rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = -25
+			desc = "LOWER_RANK_THAN_SCHEME_TARGET"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = no
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target
+					value = -2
+				}
+			}
+		}
+		modifier = { #3 or less lower rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = -50
+			desc = "LOWER_RANK_THAN_SCHEME_TARGET"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = no
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target
+					value <= -3
+				}
+			}
+		}
+		#Rank tier difference (unlanded character)
+		modifier = { #3 or more higher rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = 10
+			desc = "HIGHER_RANK_THAN_SCHEME_TARGET_LIEGE"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = yes
+				NOT = {
+					is_theocratic_lessee = yes
+				}
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target.liege
+					value >= 3
+				}
+			}
+		}
+		modifier = { #2 higher rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = 5
+			desc = "HIGHER_RANK_THAN_SCHEME_TARGET_LIEGE"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = yes
+				NOT = {
+					is_theocratic_lessee = yes
+				}
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target.liege
+					value = 2
+				}
+			}
+		}
+		modifier = { #1 higher rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = 2
+			desc = "HIGHER_RANK_THAN_SCHEME_TARGET_LIEGE"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = yes
+				NOT = {
+					is_theocratic_lessee = yes
+				}
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target.liege
+					value = 1
+				}
+			}
+		}
+		modifier = { #1 lower rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = -5
+			desc = "LOWER_RANK_THAN_SCHEME_TARGET_LIEGE"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = yes
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target.liege
+					value = -1
+				}
+			}
+		}
+		modifier = { #2 lower rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = -10
+			desc = "LOWER_RANK_THAN_SCHEME_TARGET_LIEGE"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = yes
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target.liege
+					value = -2
+				}
+			}
+		}
+		modifier = { #3 or less lower rank
+			trigger = { personal_scheme_should_not_evaluate_tier_differences_trigger = yes }
+			add = -15
+			desc = "LOWER_RANK_THAN_SCHEME_TARGET_LIEGE"
+			scope:target = {
+				personal_scheme_success_compare_target_liege_tier_trigger = yes
+			}
+			scope:owner = {
+				tier_difference = {
+					target = scope:target.liege
+					value <= -3
+				}
+			}
+		}
+
+		target_is_theocracy_modifier = yes
+
+		#Positive
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+
+		is_gg_leader_modifier = yes
+
+		#Negative
+		target_is_gg_leader_modifier = yes
+
+		target_is_pope_modifier = yes
+
+		# Countermeasures.
+		apply_political_scheme_success_chance_adjustments_modifier = yes
+	}
+
+	# On Actions
+	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:indirect
+		}
+		# Fallback agents — a balanced config if you start the scheme from script.
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
+				}
+			}
+			add_agent_slot = agent_diplomat
+			add_agent_slot = agent_diplomat
+			add_agent_slot = agent_scribe
+			add_agent_slot = agent_cleric
+			add_agent_slot = agent_cleric
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		gg_switch_sides_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { gg_switch_sides_scheme_prep_effect = yes }
+	on_monthly = {
+		scheme_owner = {
+			trigger_event = {
+				on_action = gg_switch_sides_ongoing
+				days = { 1 30 }
+			}
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			gg_switch_sides_scheme_prep_effect = yes
+			purge_ai_scheme_slots_effect = yes #Leaving this in, for now
+		}
+	}
+
+	## Invalidation
+	on_invalidated = {
+		scheme_target_character = {
+			save_scope_as = target
+		}
+		scheme_owner = {
+			save_scope_as = owner
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = gg_switch_sides_invalidated_title
+				left_icon = scope:target
+				if = { # Invalidation due to death
+					limit = {
+						scope:target = { is_alive = no }
+						NOT = { block_death_event_trigger = { DEAD = scope:target } }
+					}
+					custom_tooltip = scheme_target_died
+				}
+				else_if = { # Diplo range: is it relevant here?
+					limit = {
+						scope:target = { 
+							NOT = { in_diplomatic_range = scope:owner } 
+						}
+					}
+					custom_tooltip = scheme_target_not_in_diplomatic_range
+				}
+				else_if = { # The GG Situation stopped existing!
+					limit = {
+						NOT = { exists = situation:guelph_ghibelline }
+					}
+					custom_tooltip = scheme_gg_situation_ended
+				}
+				else_if = { # You're no longer aligned!
+					limit = {
+						scope:owner = {
+							is_guelph_trigger = no
+							is_ghibelline_trigger = no
+						}
+					}
+					custom_tooltip = scheme_owner_not_aligned
+				}
+				else_if = { # They're no longer aligned!
+					limit = {
+						scope:target = {
+							is_guelph_trigger = no
+							is_ghibelline_trigger = no
+						}
+					}
+					custom_tooltip = scheme_target_not_aligned
+				}
+				else_if = { # You're not part of the GG Situation anymore!
+					limit = {
+						situation:guelph_ghibelline ?= {
+							NOT = { 
+								any_situation_participant = { this = scope:owner } 
+							}
+						}
+					}
+					custom_tooltip = scheme_owner_not_in_gg_situation
+				}
+				else_if = { # They're not part of the GG Situation anymore!
+					limit = {
+						situation:guelph_ghibelline ?= {
+							NOT = { 
+								any_situation_participant = { this = scope:target } 
+							}
+						}
+					}
+					custom_tooltip = scheme_target_not_in_gg_situation
+				}
+				else_if = { # They're already your side
+					limit = {
+						OR = {
+							AND = {
+								scope:owner = { is_guelph_trigger = yes }
+								scope:target = { is_guelph_trigger = yes }
+							}
+							AND = {
+								scope:owner = { is_ghibelline_trigger = yes }
+								scope:target = { is_ghibelline_trigger = yes }
+							}
+						}
+					}
+					custom_tooltip = scheme_target_already_your_side
+				}
+				else_if = { # They actually don't own anything anymore
+					limit = {
+						scope:target = { is_landless_adventurer = yes }
+					}
+					custom_tooltip = scheme_target_is_titleless
+				}
+				else_if = { #This character is currently the target of a Displacement War
+					limit = {
+						scope:target = { 
+							any_character_war = {
+								using_cb = displace_guelph_ghibelline_ruler_cb
+								primary_defender = scope:target
+							}
+						}
+					}
+					custom_tooltip = scheme_target_might_get_displaced
+				}
+				else_if = { #This character is currently the target of a Reinstatement War
+					limit = {
+						scope:target = { 
+							any_character_war = {
+								using_cb = reinstate_guelph_ghibelline_ruler_cb
+								primary_defender = scope:target
+							}
+						}
+					}
+					custom_tooltip = scheme_target_might_get_reinstated
+				}
+				else = {
+					custom_tooltip = scheme_cancelled
+				}
+			}
+		}
+	}
+}

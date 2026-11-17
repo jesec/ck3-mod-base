@@ -352,6 +352,17 @@ conqueror_safe_spending_gold = { # Conquerors generally want to keep more gold t
 	multiply = 2
 }
 
+ai_baron_excess_gold_purge_amount = {
+	value = gold
+	subtract = {
+		integer_range = {
+			min = medium_gold_value
+			max = major_gold_value
+		}
+	}
+	min = 0
+}
+
 # Treasury budgets
 
 ai_war_chest_treasury_minus_100 = {
@@ -1771,6 +1782,13 @@ ai_men_at_arms_expense_gold_ideal = {
 			value = 0.5
 		}
 	}
+	if = {
+		limit = {
+			government_has_flag = government_is_republic
+			is_landless_ruler = yes
+		}
+		value = gdp_ai_landless_republic_maa_expense_gold_ideal_share_value
+	}
 
 	min = 0
 	max = 0.9
@@ -1793,60 +1811,55 @@ ai_men_at_arms_expense_gold_max = {
 		value = 0.6
 		desc = "default value"
 	}
-	if = {
+	if = { # Late medieval also counts as high medieval
 		limit = {
 			culture ?= {
 				has_cultural_era_or_later = culture_era_high_medieval
 			}
-			primary_title ?= {
-				tier >= tier_kingdom
+		}
+		if = {
+			limit = {
+				primary_title ?= {
+					tier >= tier_kingdom
+				}
+			}
+			add = {
+				desc = "significant ruler, high medieval"
+				value = 0.2
+			}
+			if = {
+				limit = {
+					culture ?= {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add = {
+					desc = "significant ruler, late medieval"
+					value = 0.2
+				}
 			}
 		}
-		add = {
-			desc = "significant ruler, high medieval"
-			value = 0.2
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_late_medieval
+		else_if = {
+			limit = {
+				primary_title ?= {
+					tier < tier_kingdom
+				}
 			}
-			primary_title ?= {
-				tier >= tier_kingdom
+			add = {
+				desc = "lesser ruler, high medieval"
+				value = 0.05
 			}
-		}
-		add = {
-			desc = "significant ruler, late medieval"
-			value = 0.2
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_high_medieval
+			if = {
+				limit = {
+					culture ?= {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add = {
+					desc = "lesser ruler, late medieval"
+					value = 0.1
+				}
 			}
-			primary_title ?= {
-				tier < tier_kingdom
-			}
-		}
-		add = {
-			desc = "lesser ruler, high medieval"
-			value = 0.05
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_late_medieval
-			}
-			primary_title ?= {
-				tier < tier_kingdom
-			}
-		}
-		add = {
-			desc = "lesser ruler, late medieval"
-			value = 0.1
 		}
 	}
 	if = {
@@ -1867,6 +1880,13 @@ ai_men_at_arms_expense_gold_max = {
 			desc = ai_admin_vassal
 			value = 0.3
 		}
+	}
+	if = {
+		limit = {
+			government_has_flag = government_is_republic
+			is_landless_ruler = yes
+		}
+		value = gdp_ai_landless_republic_maa_expense_gold_share_value
 	}
 
 	min = 0
@@ -2085,60 +2105,55 @@ ai_men_at_arms_expense_prestige_max = {
 		value = 0.6
 		desc = "default value"
 	}
-	if = {
+	if = { # Late medieval also counts as high medieval
 		limit = {
 			culture ?= {
 				has_cultural_era_or_later = culture_era_high_medieval
 			}
-			primary_title ?= {
-				tier >= tier_kingdom
+		}
+		if = {
+			limit = {
+				primary_title ?= {
+					tier >= tier_kingdom
+				}
+			}
+			add = {
+				desc = "significant ruler, high medieval"
+				value = 0.2
+			}
+			if = {
+				limit = {
+					culture ?= {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add = {
+					desc = "significant ruler, high medieval"
+					value = 0.2
+				}
 			}
 		}
-		add = {
-			desc = "significant ruler, high medieval"
-			value = 0.2
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_late_medieval
+		else_if = {
+			limit = {
+				primary_title ?= {
+					tier < tier_kingdom
+				}
 			}
-			primary_title ?= {
-				tier >= tier_kingdom
+			add = {
+				desc = "lesser ruler, high medieval"
+				value = 0.05
 			}
-		}
-		add = {
-			desc = "significant ruler, high medieval"
-			value = 0.2
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_high_medieval
+			if = {
+				limit = {
+					culture ?= {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add = {
+					desc = "lesser ruler, late medieval"
+					value = 0.1
+				}
 			}
-			primary_title ?= {
-				tier < tier_kingdom
-			}
-		}
-		add = {
-			desc = "lesser ruler, high medieval"
-			value = 0.05
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_late_medieval
-			}
-			primary_title ?= {
-				tier < tier_kingdom
-			}
-		}
-		add = {
-			desc = "lesser ruler, late medieval"
-			value = 0.1
 		}
 	}
 	if = {
@@ -2444,60 +2459,55 @@ ai_men_at_arms_expense_treasury_max = {
 		value = 0.6
 		desc = "default value"
 	}
-	if = {
+	if = { # Late medieval also counts as high medieval
 		limit = {
 			culture ?= {
 				has_cultural_era_or_later = culture_era_high_medieval
 			}
-			primary_title ?= {
-				tier >= tier_kingdom
+		}
+		if = {
+			limit = {
+				primary_title ?= {
+					tier >= tier_kingdom
+				}
+			}
+			add = {
+				desc = "significant ruler, high medieval"
+				value = 0.2
+			}
+			if = {
+				limit = {
+					culture ?= {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add = {
+					desc = "significant ruler, late medieval"
+					value = 0.2
+				}
 			}
 		}
-		add = {
-			desc = "significant ruler, high medieval"
-			value = 0.2
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_late_medieval
+		else_if = {
+			limit = {
+				primary_title ?= {
+					tier < tier_kingdom
+				}
 			}
-			primary_title ?= {
-				tier >= tier_kingdom
+			add = {
+				desc = "lesser ruler, high medieval"
+				value = 0.05
 			}
-		}
-		add = {
-			desc = "significant ruler, late medieval"
-			value = 0.2
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_high_medieval
+			if = {
+				limit = {
+					culture ?= {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add = {
+					desc = "lesser ruler, late medieval"
+					value = 0.1
+				}
 			}
-			primary_title ?= {
-				tier < tier_kingdom
-			}
-		}
-		add = {
-			desc = "lesser ruler, high medieval"
-			value = 0.05
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_late_medieval
-			}
-			primary_title ?= {
-				tier < tier_kingdom
-			}
-		}
-		add = {
-			desc = "lesser ruler, late medieval"
-			value = 0.1
 		}
 	}
 	if = {
@@ -2737,60 +2747,55 @@ ai_men_at_arms_expense_barter_goods_max = {
 		value = 0.6
 		desc = "default value"
 	}
-	if = {
+	if = { # Late medieval also counts as high medieval
 		limit = {
 			culture ?= {
 				has_cultural_era_or_later = culture_era_high_medieval
 			}
-			primary_title ?= {
-				tier >= tier_kingdom
+		}
+		if = {
+			limit = {
+				primary_title ?= {
+					tier >= tier_kingdom
+				}
+			}
+			add = {
+				desc = "significant ruler, high medieval"
+				value = 0.2
+			}
+			if = {
+				limit = {
+					culture ?= {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add = {
+					desc = "significant ruler, high medieval"
+					value = 0.2
+				}
 			}
 		}
-		add = {
-			desc = "significant ruler, high medieval"
-			value = 0.2
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_late_medieval
+		else_if = {
+			limit = {
+				primary_title ?= {
+					tier < tier_kingdom
+				}
 			}
-			primary_title ?= {
-				tier >= tier_kingdom
+			add = {
+				desc = "lesser ruler, high medieval"
+				value = 0.05
 			}
-		}
-		add = {
-			desc = "significant ruler, high medieval"
-			value = 0.2
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_high_medieval
+			if = {
+				limit = {
+					culture ?= {
+						has_cultural_era_or_later = culture_era_late_medieval
+					}
+				}
+				add = {
+					desc = "lesser ruler, late medieval"
+					value = 0.1
+				}
 			}
-			primary_title ?= {
-				tier < tier_kingdom
-			}
-		}
-		add = {
-			desc = "lesser ruler, high medieval"
-			value = 0.05
-		}
-	}
-	if = {
-		limit = {
-			culture ?= {
-				has_cultural_era_or_later = culture_era_late_medieval
-			}
-			primary_title ?= {
-				tier < tier_kingdom
-			}
-		}
-		add = {
-			desc = "lesser ruler, late medieval"
-			value = 0.1
 		}
 	}
 	if = {

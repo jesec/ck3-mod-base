@@ -288,11 +288,10 @@ bp2_yearly.3010 = {
 
 	trigger = {
 		has_bp2_dlc_trigger = yes
-		is_available_adult = yes
 		is_landless_adventurer = no
 		any_child = {
 			age >= 12
-			location = root.location
+			location ?= root.location
 			NOT = { has_relation_ward = root } # Your ward grew up here
 			any_memory = {
 				memory_type = hostage_returned_hostage
@@ -303,6 +302,7 @@ bp2_yearly.3010 = {
 				memory_age_years >= 6
 			}
 		}
+		is_available_adult = yes
 	}
 
 	weight_multiplier = {

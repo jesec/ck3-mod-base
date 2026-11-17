@@ -1,0 +1,354 @@
+﻿namespace = craft_artifact_scheme
+
+######################
+# Maintenance
+# 0001-0999
+######################
+craft_artifact_scheme.0001 = {
+	hidden = yes
+
+	immediate = {
+		scope:scheme = {
+			scheme_owner = {
+				save_scope_as = owner
+				random = {
+					chance = scope:scheme.scheme_success_chance
+					save_scope_value_as = {
+						name = scheme_successful
+						value = yes
+					}
+				}
+				if = {
+					limit = { exists = scope:scheme_successful }
+					trigger_event = craft_artifact_scheme.1000
+				}
+				else = {
+					trigger_event = craft_artifact_scheme.2000
+				}
+			}
+		}
+	}
+}
+
+######################
+# Positive Outcomes
+# 1000-1999
+######################
+
+# Success!
+craft_artifact_scheme.1000 = {
+	type = character_event
+	window = scheme_successful_event
+	title = craft_artifact_scheme.1000.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:scheme.var:artifact_type ?= flag:curio }
+				desc = craft_artifact_scheme.1000.desc.curio
+			}
+			desc = craft_artifact_scheme.1000.desc.library
+		}
+		triggered_desc = {
+			trigger = { exists = scope:curator }
+			desc = craft_artifact_scheme.1000.desc.curator
+		}
+	}
+	theme = merchant
+	left_portrait = {
+		character = root
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:curator
+		triggered_animation = {
+			trigger = {
+				scope:newly_created_artifact = { artifact_slot_type = library }
+			}
+			animation = page_flipping
+		}
+		triggered_animation = {
+			trigger = {
+				scope:newly_created_artifact = { artifact_slot_type = curio }
+			}
+			animation = merchant_box
+		}
+	}
+	artifact = {
+		trigger = { exists = scope:newly_created_artifact }
+		target = scope:newly_created_artifact
+		position = lower_right_portrait
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	override_background = {
+		trigger = { is_travelling = yes }
+		reference = terrain_travel
+	}
+	override_background = {
+		trigger = { scope:scheme.var:artifact_type ?= flag:curio }
+		reference = gdp_carpentry_workshop
+	}
+	override_background = {
+		trigger = { scope:scheme.var:artifact_type ?= flag:library }
+		reference = study
+	}
+
+	immediate = {
+		court_position:antiquarian_court_position ?= { save_scope_as = curator }
+		save_scope_value_as = {
+			name = quality
+			value = {
+				value = { 0 25 }
+				# Stewardship
+				add = {
+					value = stewardship
+					multiply = 2
+				}
+				# Expertise
+				add = {
+					value = "primary_title.trade_good_category_level(trade_good_category:trade_category_luxury_items)"
+					divide = 5
+					floor = yes
+				}
+				# Acumen
+				add = {
+					value = domicile.acumen
+					multiply = 0.005 # 25 at max
+					min = 1
+					max = 25
+				}
+				# Trait XP
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 10 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 20 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 30 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 40 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 50 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 60 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 70 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 80 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value > 90 }
+					}
+					add = 2
+				}
+				if = {
+					limit = {
+						has_trait_xp = { trait = lifestyle_merchant track = artisan value = 100 }
+					}
+					add = 2
+				}
+				# Traits
+				if = {
+					limit = { has_trait = stubborn }
+					add = 3
+				}
+				if = {
+					limit = { has_trait = diligent }
+					add = 3
+				}
+				if = {
+					limit = { has_trait = ambitious }
+					add = 3
+				}
+				# Curator
+				if = {
+					limit = { exists = court_position:antiquarian_court_position }
+					add = {
+						value = court_position:antiquarian_court_position.aptitude:antiquarian_court_position
+						multiply = 3 # max 15
+					}
+				}
+				round = yes
+				max = 100
+			}
+		}
+		scope:scheme = {
+			hidden_effect = {
+				switch = {
+					trigger = var:artifact_type
+					flag:curio = {
+						scheme_owner = {
+							create_curio_artifact_effect = {
+								OWNER = root
+								CREATOR = root
+							}
+						}
+						scope:new_trinket ?= {
+							save_scope_as = newly_created_artifact
+							set_artifact_description = craft_artifact_desc_curio
+						}
+					}
+					fallback = {
+						scheme_owner = {
+							create_library_artifact_effect = {
+								OWNER = root
+								CREATOR = root
+								SUBJECT = flag:no
+								TOPIC = flag:no
+							}
+						}
+						scope:newly_created_artifact = { set_artifact_description = craft_artifact_desc_library }
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = craft_artifact_scheme.1000.a
+		show_as_tooltip = {
+			scope:newly_created_artifact ?= { set_owner = root }
+		}
+		add_trait_xp = {
+			trait = lifestyle_merchant
+			track = artisan
+			value = {
+				value = scope:scheme.scheme_duration_days
+				divide = 60
+				min = 1
+				max = 5
+			}
+		}
+		scope:scheme = {
+			end_scheme = yes
+		}
+		ai_chance = {
+			base = 100
+		}
+	}
+}
+
+#################################
+# Negative Outcomes
+# 2000-2999
+#################################
+
+# Failure
+craft_artifact_scheme.2000 = {
+	type = character_event
+	window = scheme_failed_event
+	title = craft_artifact_scheme.2000.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:scheme.var:artifact_type ?= flag:curio }
+				desc = craft_artifact_scheme.2000.desc.curio
+			}
+			desc = craft_artifact_scheme.2000.desc.library
+		}
+		triggered_desc = {
+			trigger = { exists = scope:curator }
+			desc = craft_artifact_scheme.2000.desc.curator
+		}
+	}
+	theme = merchant
+	left_portrait = {
+		character = root
+		animation = disapproval
+	}
+	right_portrait = {
+		character = scope:curator
+		animation = shame
+	}
+	widget = {
+		gui = "event_window_widget_scheme"
+		container = "custom_widgets_container"
+	}
+	override_background = {
+		trigger = { is_travelling = yes }
+		reference = terrain_travel
+	}
+	override_background = {
+		trigger = { scope:scheme.var:artifact_type ?= flag:curio }
+		reference = gdp_carpentry_workshop
+	}
+	override_background = {
+		trigger = { scope:scheme.var:artifact_type ?= flag:library }
+		reference = study
+	}
+
+	immediate = {
+		court_position:antiquarian_court_position ?= { save_scope_as = curator }
+	}
+
+	option = {
+		name = craft_artifact_scheme.2000.a
+		add_trait_xp = {
+			trait = lifestyle_merchant
+			track = artisan
+			value = {
+				value = scope:scheme.scheme_duration_days
+				divide = 120
+				min = 1
+				max = 5
+			}
+		}
+		scope:scheme = {
+			end_scheme = yes
+		}
+		ai_chance = {
+			base = 40
+		}
+	}
+
+	option = {
+		name = craft_artifact_scheme.2000.b
+		add_stress = major_stress_gain
+		scope:scheme = {
+			add_scheme_progress = {
+				value = scheme_progress_loss
+				multiply = 5
+			}
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				stress_level > 1
+				add = -100
+			}
+		}
+	}
+}

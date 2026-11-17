@@ -31,11 +31,41 @@ set_grand_wedding_betrothal_variables = {
 }
 
 clean_grand_wedding_betrothal_variables = {
-	scope:spouse_1 ?= { remove_variable ?= promised_grand_wedding_by } # in case the countdown expired during activity
-	scope:spouse_2 ?= { remove_variable ?= promised_grand_wedding_by }
+	scope:spouse_1 ?= { # in case the countdown expired during activity
+		if = {
+			limit = {
+				is_alive = yes
+				has_variable = promised_grand_wedding_by
+			}
+			remove_variable = promised_grand_wedding_by
+		}
+	}
+	scope:spouse_2 ?= {
+		if = {
+			limit = {
+				is_alive = yes
+				has_variable = promised_grand_wedding_by
+			}
+			remove_variable = promised_grand_wedding_by
+		}
+	}
 	var:promised_grand_wedding_marriage_countdown ?= {
-		remove_variable ?= promised_grand_wedding_by
-		betrothed ?= { remove_variable ?= promised_grand_wedding_by }
+		if = {
+			limit = {
+				is_alive = yes
+				has_variable = promised_grand_wedding_by
+			}
+			remove_variable = promised_grand_wedding_by
+		}
+		betrothed ?= {
+			if = {
+				limit = {
+					is_alive = yes
+					has_variable = promised_grand_wedding_by
+				}
+				remove_variable = promised_grand_wedding_by
+			}
+		}
 	}
 	if = {
 		limit = { exists = var:promised_grand_wedding_marriage_countdown }

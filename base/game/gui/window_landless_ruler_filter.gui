@@ -1,0 +1,139 @@
+﻿######################################################
+############### LANDLESS RULER FILTER ################
+######################################################
+
+window = {
+	name = "window_landless_ruler_filter"
+	widgetid = "window_landless_ruler_filter"
+
+	allow_outside = yes
+	movable = no
+	layer = bottom
+
+	size = { 100% 100% }
+	alwaystransparent = yes
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Standard
+		using = Sound_WindowShow_Standard
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Standard
+		using = Sound_WindowHide_Standard
+	}
+
+	widget = {
+		parentanchor = hcenter|bottom
+		position = { 0 -80 }
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			ignoreinvisible = yes
+			restrictparent_min = yes
+			minimumsize = { 400 0 }
+			spacing = 4
+
+			expand = {}
+
+			landless_ruler_filter_bar = {
+				visible = "[Not( And( IsGameViewOpen( 'the_great_steppe' ), IsMapMode( 'landless_rulers' ) ) )]"
+			}
+		}
+	}
+}
+
+types LandlessRulerFilter
+{
+	## One button per filter entry. The invalid government leads the bar as the "show all landless rulers" entry.
+	type button_landless_government = widget {
+		size = { 42 42 }
+
+		icon = {
+			visible = "[ObjectsEqual( LandlessRulerFilterWindow.GetSelectedGovernment, GovernmentType.Self )]"
+			size = { 100% 100% }
+			texture = "gfx/interface/component_masks/mask_circle.dds"
+
+			glow = {
+				color = { 0.93 0.65 0.45 1.0 }
+				glow_radius = 6
+
+				glow_generation_rules = {
+					glow_alpha_mask = 0
+					glow_blur_passes = 15
+					glow_texture_downscale = 5.5f
+					glow_ignore_inside_pixels = yes
+				}
+			}
+
+			using = Animation_Glow_Pulse
+		}
+
+		button_round = {
+			size = { 100% 100% }
+
+			onclick = "[LandlessRulerFilterWindow.SetSelectedGovernment( GovernmentType.Self )]"
+			down = "[ObjectsEqual( LandlessRulerFilterWindow.GetSelectedGovernment, GovernmentType.Self )]"
+
+			tooltip = "[SelectLocalization( GovernmentType.IsValid, 'LANDLESS_RULER_FILTER_GOVERNMENT_TOOLTIP', 'LANDLESS_RULER_NO_FILTER_TOOLTIP' )]"
+			using = tooltip_ne
+
+			highlight_icon = {
+				visible = "[GovernmentType.IsValid]"
+				size = { 28 28 }
+				parentanchor = center
+				alwaystransparent = yes
+				texture = "[GovernmentType.GetIcon]"
+			}
+
+			highlight_icon = {
+				visible = "[Not( GovernmentType.IsValid )]"
+				size = { 28 28 }
+				parentanchor = center
+				alwaystransparent = yes
+				texture = "gfx/interface/icons/government_types/landless_government.dds"
+			}
+		}
+	}
+
+	type landless_ruler_filter_bar = hbox {
+		allow_outside = yes
+		filter_mouse = all
+		alwaystransparent = yes
+		ignoreinvisible = yes
+		margin = { 8 8 }
+		spacing = 16
+		datacontext = "[AccessLandlessRulerFilterWindow]"
+		
+		background = {
+			alpha = 0.8
+			margin = { 40 -15 }
+
+			texture = "gfx/interface/component_tiles/tile_title_bg_01.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 40 8 }
+			texture_density = 2
+
+			modify_texture = {
+				name = "mask"
+				texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_thick.dds"
+				spriteType = Corneredstretched
+				spriteborder = { 0 0 }
+				blend_mode = alphamultiply
+			}
+		}
+
+		hbox = {
+			name = "government_filter_list"
+			datamodel = "[LandlessRulerFilterWindow.GetGovernmentFilters]"
+
+			item = {
+				button_landless_government = {}
+			}
+		}
+	}
+}

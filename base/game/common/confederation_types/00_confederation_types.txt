@@ -3,6 +3,7 @@
 ## Nomadic Confederation
 #
 nomadic_confederation = {
+	diplomatic_icon_frame_index = 5
 
 	# Fired when a character joins the nomadic confederation
 	#
@@ -45,7 +46,10 @@ nomadic_confederation = {
 		}
 		# Notify all other members about them joining.
 		every_player = {
-			limit = { confederation = scope:confederation }
+			limit = { 
+				confederation = scope:confederation
+				this != scope:character
+			}
 			send_interface_message = {
 				type = msg_joined_confederation
 				title = msg_joined_confederation
@@ -110,9 +114,9 @@ nomadic_confederation = {
 					this != scope:left_confederation
 				}
 				send_interface_message = {
-					type = msg_joined_confederation
-					title = msg_joined_confederation
-					desc = msg_joined_confederation_desc
+					type = msg_left_confederation
+					title = msg_left_confederation
+					desc = msg_left_confederation_desc
 					left_icon = scope:left_confederation
 				}
 			}
@@ -122,6 +126,108 @@ nomadic_confederation = {
 					title = msg_broken_confederation_no_migrate_root
 					desc = msg_broken_confederation_desc_no_migrate_root
 				}
+			}
+		}
+	}
+}
+
+#Lombard League
+lombard_league = {
+	diplomatic_icon_frame_index = 7
+
+	is_valid_confederation = {
+		exists = situation:guelph_ghibelline
+	}
+
+	member_would_join_war = {
+		OR = {
+			AND = {
+				exists = title:e_hre.holder
+				scope:enemy = title:e_hre.holder
+			}
+			exists = scope:enemy.var:ghibelline_leader
+		}
+	}
+
+	on_confederation_destroyed = {
+	}
+
+	# Can this character be a member of this trade league?
+	is_valid_member_character = {
+		scope:character = {
+			is_landed = yes
+			primary_title.tier >= tier_barony
+			situation:guelph_ghibelline ?= { 
+				any_situation_participant = { this = scope:character }
+			}
+			#If you're trying to figure out Lombard League issues, consider this trigger
+			is_ghibelline_trigger = no
+		}
+	}
+
+	# Fired when a character joins the trade league
+	on_member_character_joined = {
+		save_scope_as = confederation
+		# Mark character and their vassals as new confederates.
+		scope:character = { save_scope_as = joiner }
+		# Notify all other members about them joining.
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = rank_change_members
+						target = scope:joiner
+					}
+				}
+			}
+			every_player = {
+				limit = {
+					confederation = scope:confederation
+					this != scope:character
+				}
+				send_interface_message = {
+					type = msg_joined_confederation
+					title = msg_joined_confederation
+					desc = msg_joined_confederation_desc
+					left_icon = scope:character
+				}
+			}
+		}
+	}
+
+	# Fired when a character leaves the trade league
+	on_member_character_left = {
+		save_scope_as = confederation
+		scope:character = { save_scope_as = left_confederation }
+		if = {
+			limit = {
+				NOT = {
+					is_target_in_variable_list = {
+						name = rank_change_members
+						target = scope:left_confederation
+					}
+				}
+			}
+			# Notify all members about them leaving.
+			every_player = {
+				limit = {
+					confederation ?= scope:confederation
+					this != scope:left_confederation
+				}
+				send_interface_message = {
+					type = msg_left_confederation
+					title = msg_left_confederation
+					desc = msg_left_confederation_desc
+					left_icon = scope:left_confederation
+				}
+			}
+			scope:left_confederation = {
+			   send_interface_message = {
+					type = msg_broken_confederation
+					title = msg_broken_confederation_no_migrate_root
+					desc = msg_broken_confederation_desc_no_migrate_root
+					left_icon = confederation
+			   }
 			}
 		}
 	}

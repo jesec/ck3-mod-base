@@ -2219,6 +2219,7 @@ types PortraitTypes
 			spriteborder = { 20 20 }
 			margin = { 3 1 }
 			texture_density = 2
+			block "opinion_bg_alpha" {}
 		}
 
 		block "schism_stance" {}
@@ -2249,7 +2250,9 @@ types PortraitTypes
 			max_width = 45
 			align = nobaseline
 			margin = { 3 0 }
-			tooltipwidget = character_opinion_tooltip
+			block "opinion_tooltip" {
+				tooltipwidget = character_opinion_tooltip
+			}
 			using = tooltip_es
 			default_format = "#true_white"
 
@@ -2583,6 +2586,54 @@ types PortraitTypes
 					}
 				}
 
+				flowcontainer = {
+					visible = "[And( HasDlcFeature( 'silk_and_silver' ), GetSituation( 'guelph_ghibelline' ).IsParticipant( Character.Self ) )]"
+					ignoreinvisible = yes
+					direction = vertical
+					datacontext = "[Character]"
+					datacontext = "[GetSituation('guelph_ghibelline')]"
+
+					icon = {
+						name = "guelph_leader"
+						visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), Situation.GetTopParticipantGroupByKey( 'guelph_leader' ).Self )]"
+						size = { 14 14 }
+
+						texture = "gfx/interface/icons/portraits/guelph_leader_small.dds"
+
+						tooltip = "FRAME_GUELPH_LEADER"
+					}
+
+					icon = {
+						name = "guelph_member"
+						visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), Situation.GetTopParticipantGroupByKey( 'guelph_member' ).Self )]"
+						size = { 14 14 }
+
+						texture = "gfx/interface/icons/portraits/guelph_member_small.dds"
+
+						tooltip = "FRAME_GUELPH_MEMBER"
+					}
+
+					icon = {
+						name = "ghibelline_leader"
+						visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), Situation.GetTopParticipantGroupByKey( 'ghibelline_leader' ).Self )]"
+						size = { 14 14 }
+
+						texture = "gfx/interface/icons/portraits/ghibelline_leader_small.dds"
+
+						tooltip = "FRAME_GHIBELLINE_LEADER"
+					}
+
+					icon = {
+						name = "ghibelline_member"
+						visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), Situation.GetTopParticipantGroupByKey( 'ghibelline_member' ).Self )]"
+						size = { 14 14 }
+
+						texture = "gfx/interface/icons/portraits/ghibelline_member_small.dds"
+
+						tooltip = "FRAME_GHIBELLINE_MEMBER"
+					}
+				}
+
 				icon = {
 					name = "unpredictable_small"
 					visible = "[Character.IsOtherPlayer]"
@@ -2821,6 +2872,8 @@ types PortraitTypes
 			}
 
 			container_dynastic_cycle_group_icons = {}
+
+			container_guelph_ghibelline_group_icons = {}
 
 			icon = {
 				name = "unpredictable"
@@ -3417,6 +3470,54 @@ types portrait_icons
 				tooltip = "FRAME_UNDECIDED_MOVEMENT"
 			}
 		}
+	}
+
+	type container_guelph_ghibelline_group_icons = container {
+		name = "container_guelph_ghibelline_group_icons"
+		visible = "[And( HasDlcFeature( 'silk_and_silver' ), GetSituation( 'guelph_ghibelline' ).IsParticipant( Character.Self ) )]"
+		datacontext = "[Character]"
+		datacontext = "[GetSituation('guelph_ghibelline')]"
+		ignoreinvisible = yes
+
+		icon = {
+			name = "guelph_leader"
+			visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), Situation.GetTopParticipantGroupByKey( 'guelph_leader' ).Self )]"
+			size = { 20 20 }
+
+			texture = "gfx/interface/icons/portraits/guelph_leader.dds"
+
+			tooltip = "FRAME_GUELPH_LEADER"
+		}
+
+		icon = {
+			name = "guelph_member"
+			visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), Situation.GetTopParticipantGroupByKey( 'guelph_member' ).Self )]"
+			size = { 20 20 }
+
+			texture = "gfx/interface/icons/portraits/guelph_member.dds"
+
+			tooltip = "FRAME_GUELPH_MEMBER"
+		}
+
+		icon = {
+			name = "ghibelline_leader"
+			visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), Situation.GetTopParticipantGroupByKey( 'ghibelline_leader' ).Self )]"
+			size = { 20 20 }
+
+			texture = "gfx/interface/icons/portraits/ghibelline_leader.dds"
+
+			tooltip = "FRAME_GHIBELLINE_LEADER"
+		}
+
+		icon = {
+			name = "ghibelline_member"
+			visible = "[ObjectsEqual( Situation.GetParticipantGroupByCharacter( Character.Self ), Situation.GetTopParticipantGroupByKey( 'ghibelline_member' ).Self )]"
+			size = { 20 20 }
+
+			texture = "gfx/interface/icons/portraits/ghibelline_member.dds"
+
+			tooltip = "FRAME_GHIBELLINE_MEMBER"
+		}	
 	}
 }
 

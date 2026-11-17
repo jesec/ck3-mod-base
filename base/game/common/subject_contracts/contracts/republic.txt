@@ -2,101 +2,96 @@
 	obligation_levels = {
 		default = {
 			levies = {
-				scope:liege = {
-					if = {
-						limit = {
-							scope:vassal = {
-								primary_title.tier >= tier_county
-							}
-							culture = {
-								has_cultural_parameter = republican_vassals_pay_more
-							}
-						}
-						value = {
-							add = 0.15
-							# Add an extra with the right perk
-							if = {
-								limit = {
-									dynasty ?= {
-										has_dynasty_perk = fp2_urbanism_legacy_3
-									}
-								}
-								add = 0.15
-							}
+				# Determine base levy
+				if = {
+					limit = { # Republic lieges take no levy by default
+						scope:liege = {
+							government_has_flag = government_is_republic
 						}
 					}
-					else = {
-						value = {
-							add = 0.1
-							# Add an extra with the right perk
-							if = {
-								limit = {
-									dynasty ?= {
-										has_dynasty_perk = fp2_urbanism_legacy_3
-									}
-								}
-								add = 0.15
-							}
+					value = 0
+				}
+				else = {
+					value = 0.1
+				}
+
+				# If the liege's culture makes republics provide more levies, increase it accordingly
+				if = {
+					limit = {
+						scope:liege.culture = {
+							has_cultural_parameter = republican_vassals_pay_more
+						}
+						scope:subject = {
+							primary_title.tier >= tier_county
 						}
 					}
+					add = 0.05
+				}
+
+				# Provide more if liege has unlocked relevant legacy perk(s)
+				if = {
+					limit = {
+						scope:liege.dynasty ?= {
+							has_dynasty_perk = fp2_urbanism_legacy_3
+						}
+					}
+					add = 0.15
 				}
 			}
 			tax = {
-				scope:liege = {
-					if = {
-						limit = { government_has_flag = government_is_tribal }
-						value = {
-							add = 0.05
-							# Add an extra with the right perk
-
-							if = {
-								limit = {
-									dynasty ?= {
-										has_dynasty_perk = fp2_urbanism_legacy_3
-									}
-								}
-								add = 0.15
-							}
+				# Determine the base tax
+				if = { # Tribal lieges have a penalty
+					limit = {
+						scope:liege = {
+							government_has_flag = government_is_tribal
 						}
 					}
-					else_if = {
+					value = 0.05
+				}
+				else_if = { # Republic lieges have a higher base than normal
+					limit = {
+						scope:liege = {
+							government_has_flag = government_is_republic
+						}
+					}
+					# Landed vassals pay a bit more compared to landless patricians
+					if = {
 						limit = {
 							scope:subject = {
-								primary_title.tier >= tier_county
-							}
-							culture = {
-								has_cultural_parameter = republican_vassals_pay_more
+								is_landed = no
 							}
 						}
-						value = {
-							add = 0.3
-							# Add an extra with the right perk
-
-							if = {
-								limit = {
-									dynasty ?= {
-										has_dynasty_perk = fp2_urbanism_legacy_3
-									}
-								}
-								add = 0.15
-							}
-						}
+						value = 0.3
 					}
 					else = {
-						value = {
-							add = 0.2
-							# Add an extra with the right perk
+						value = 0.5
+					}
+				}
+				else = { # Everyone else
+					value = 0.4
+				}
 
-							if = {
-								limit = {
-									dynasty ?= {
-										has_dynasty_perk = fp2_urbanism_legacy_3
-									}
-								}
-								add = 0.15
-							}
+				# If the liege's culture makes republics pay more, increase taxes accordingly
+				if = {
+					limit = {
+						scope:liege.culture = {
+							has_cultural_parameter = republican_vassals_pay_more
+						}
+						scope:subject = {
+							primary_title.tier >= tier_county
 						}
 					}
+					add = 0.1
+				}
+
+				# Pay more if liege has unlocked relevant legacy perk(s)
+				if = {
+					limit = {
+						scope:liege.dynasty ?= {
+							has_dynasty_perk = fp2_urbanism_legacy_3
+						}
+					}
+					add = 0.15
 				}
 			}
 			contribution_desc = {
@@ -117,6 +112,421 @@
 						desc = "republican_vassals_pay_more_parameter"
 					}
 				}
+			}
+		}
+	}
+}
+
+republic_government_salaries = {
+	display_mode = radiobutton
+	icon = gold_icon
+	is_shown = {
+		scope:liege ?= {
+			gdp_is_assembly_head_trigger = yes
+		}
+	}
+
+	can_be_changed = {
+		always = no
+	}
+
+	defaults_to_highest_valid_level = yes
+
+	obligation_levels = {
+		republic_government_salary_none = {
+			position = { 0 0 }
+			default = yes
+
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 0
+		}
+		republic_government_salary_normal = {
+			position = { 1 0 }
+			is_valid = {
+				scope:subject = {
+					highest_held_title_tier >= tier_county
+					trigger_if = {
+						limit = {
+							domicile ?= { is_domicile_type = merchant_company }
+						}
+						NOT = {
+							custom_description = {
+								text = has_patrician_rating_threshold_desc
+								object = scope:subject
+								value = gdp_patrician_house_score_threshold_1_value
+								house ?= {
+									house_power_score >= gdp_patrician_house_score_threshold_1_value
+								}
+							}
+						}
+					}
+				}
+			}
+
+			parent = republic_government_salary_none
+			
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 1
+
+			subject_modifier = {
+				monthly_treasury_from_salary_budget_base = 1.0
+			}
+		}
+		republic_government_salary_high = {
+			position = { 2 0 }
+			is_valid = {
+				scope:subject = {
+					custom_tooltip = {
+						text = subject_not_a_patrician_desc
+						highest_held_title_tier >= tier_county
+						domicile ?= { # I.e. is a patrician
+							is_domicile_type = merchant_company
+						}
+					}
+					custom_description = {
+						text = has_patrician_rating_threshold_desc
+						object = scope:subject
+						value = gdp_patrician_house_score_threshold_1_value
+						house ?= {
+							house_power_score >= gdp_patrician_house_score_threshold_1_value
+						}
+					}
+					NOT = {
+						custom_description = {
+							text = has_patrician_rating_threshold_desc
+							object = scope:subject
+							value = gdp_patrician_house_score_threshold_2_value
+							house ?= {
+								house_power_score >= gdp_patrician_house_score_threshold_2_value
+							}
+						}
+					}
+				}
+			}
+
+			parent = republic_government_salary_normal
+			
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 2
+
+			subject_modifier = {
+				monthly_treasury_from_salary_budget_base = 1.25
+			}
+		}
+		republic_government_salary_generous = {
+			position = { 3 0 }
+			is_valid = {
+				scope:subject = {
+					custom_tooltip = {
+						text = subject_not_a_patrician_desc
+						highest_held_title_tier >= tier_county
+						domicile ?= { # I.e. is a patrician
+							is_domicile_type = merchant_company
+						}
+					}
+					custom_description = {
+						text = has_patrician_rating_threshold_desc
+						object = scope:subject
+						value = gdp_patrician_house_score_threshold_2_value
+						house ?= {
+							house_power_score >= gdp_patrician_house_score_threshold_2_value
+						}
+					}
+					NOT = {
+						custom_description = {
+							text = has_patrician_rating_threshold_desc
+							object = scope:subject
+							value = gdp_patrician_house_score_threshold_3_value
+							house ?= {
+								house_power_score >= gdp_patrician_house_score_threshold_3_value
+							}
+						}
+					}
+				}
+			}
+
+			parent = republic_government_salary_high
+			
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 3
+
+			subject_modifier = {
+				monthly_treasury_from_salary_budget_base = 1.5
+			}
+		}
+		republic_government_salary_exceptional = {
+			position = { 4 0 }
+			is_valid = {
+				scope:subject = {
+					custom_tooltip = {
+						text = subject_not_a_patrician_desc
+						highest_held_title_tier >= tier_county
+						domicile ?= { # I.e. is a patrician
+							is_domicile_type = merchant_company
+						}
+					}
+					custom_description = {
+						text = has_patrician_rating_threshold_desc
+						object = scope:subject
+						value = gdp_patrician_house_score_threshold_3_value
+						house ?= {
+							house_power_score >= gdp_patrician_house_score_threshold_3_value
+						}
+					}
+				}
+			}
+
+			parent = republic_government_salary_generous
+			
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 4
+
+			subject_modifier = {
+				monthly_treasury_from_salary_budget_base = 2
+			}
+		}
+	}
+}
+
+republic_government_treasury_conversion = {
+	display_mode = hidden
+
+	can_be_changed = {
+		always = no
+	}
+
+	defaults_to_highest_valid_level = yes
+
+	obligation_levels = {
+		republic_government_treasury_conversion_none = {
+			position = { 0 0 }
+			default = yes
+
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 0
+		}
+		republic_government_treasury_conversion_extra = {
+			position = { 1 0 }
+			is_valid = {
+				scope:liege ?= {
+					NOT = { government_has_flag = government_is_republic }
+				}
+			}
+
+			parent = republic_government_treasury_conversion_none
+
+			ai_liege_desire = 1
+			ai_subject_desire = 1
+			score = 1
+
+			subject_modifier = {
+			}
+		}
+	}
+}
+
+republic_government_free_city = {
+	display_mode = tree
+	icon = free_city_icon
+	is_shown = {
+		scope:liege ?= {
+			NOT = { government_has_flag = government_is_republic }
+		}
+	}
+
+	#can_be_changed = {
+	#	#always = no
+	#}
+
+	obligation_levels = {
+		republic_government_free_city_unset = {
+			position = { 0 0 }
+			default = yes
+
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 0
+		}
+		republic_government_free_city_chartered = {
+			position = { 1 0 }
+			is_valid = {
+				scope:subject = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+				}
+				scope:liege = {
+					NOT = { government_has_flag = government_is_republic }
+				}
+			}
+
+			parent = republic_government_free_city_unset
+
+			flag = chartered_city_obligation
+
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 1
+
+			tax_factor = -0.25
+			levies_factor = -0.5
+			subject_opinion = 10
+
+			liege_modifier = {
+				character_capital_county_monthly_prosperity_growth_add = 0.1
+			}
+			subject_modifier = {
+				character_capital_county_monthly_prosperity_growth_add = 0.5
+				max_trade_goods_on_route = 1
+			}
+		}
+		republic_government_free_city_granted = {
+			position = { 2 0 }
+			is_valid = {
+				scope:subject = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+				}
+				custom_tooltip = {
+					text = liege_cannot_grant_free_city_desc
+					scope:liege = { gdp_can_have_free_cities_trigger = yes }
+				}
+			}
+
+			parent = republic_government_free_city_chartered
+
+			flag = free_city_obligation
+			
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 2
+
+			tax_factor = -0.5
+			levies_factor = -1
+			subject_opinion = 20
+
+			liege_modifier = {
+				character_capital_county_monthly_prosperity_growth_add = 0.2
+			}
+			subject_modifier = {
+				character_capital_county_monthly_prosperity_growth_add = 1
+				max_trade_goods_on_route = 1
+				max_trade_routes = 1
+			}
+		}
+	}
+}
+
+republic_government_defensive_obligation = {
+	display_mode = checkbox
+	is_shown = {
+		scope:liege ?= {
+			NOT = { government_has_flag = government_is_republic }
+		}
+	}
+
+	obligation_levels = {
+		republic_government_defensive_obligation_none = {
+			position = { 0 0 }
+			default = yes
+
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 0
+		}
+		republic_government_defensive_obligation_enforced = {
+			position = { 1 0 }
+			is_valid = {
+				scope:subject = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+					custom_tooltip = {
+						text = subject_title_is_free_city_desc
+						NOT = { subject_contract_has_flag = free_city_obligation }
+					}
+				}
+			}
+
+			parent = republic_government_defensive_obligation_none
+			
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = -1
+
+			tax_factor = -0.2
+			subject_opinion = -10
+
+			liege_modifier = {
+				garrison_size = 0.1
+				additional_fort_level = 1
+			}
+			subject_modifier = {
+			}
+		}
+	}
+}
+
+republic_government_war_aids = {
+	display_mode = checkbox
+	is_shown = {
+		scope:liege ?= {
+			NOT = { government_has_flag = government_is_republic }
+		}
+	}
+
+	obligation_levels = {
+		republic_government_war_aids_none = {
+			position = { 0 0 }
+			default = yes
+
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = 0
+		}
+		republic_government_war_aids_enforced = {
+			position = { 1 0 }
+			is_valid = {
+				scope:subject = {
+					is_landed = yes
+					highest_held_title_tier >= tier_county
+					custom_tooltip = {
+						text = subject_title_is_free_city_desc
+						NOT = { subject_contract_has_flag = free_city_obligation }
+					}
+				}
+			}
+
+			parent = republic_government_war_aids_none
+			
+			ai_liege_desire = 0
+			ai_subject_desire = 0
+			score = -1
+
+			tax_factor = {
+				value = 0
+				if = {
+					limit = {
+						scope:liege = {
+							is_at_war = yes
+							NOT = { is_at_war_with = scope:subject }
+						}
+					}
+					add = gdp_republic_government_war_aids_enforced_value
+				}
+				else = {
+					add = -1
+				}
+			}
+			subject_opinion = -10
+
+			liege_modifier = {
+			}
+			subject_modifier = {
 			}
 		}
 	}

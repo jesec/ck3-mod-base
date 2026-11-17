@@ -1,0 +1,205 @@
+﻿##################################################
+# Trader Learning Schemes
+# Knowledge, expertise, and study.
+##################################################
+
+### Learning from Locals
+# Gain expertise progress in the primary trade category of this market.
+# Requires: market trades at least one good with a recognizable need category.
+gdp_trader_learning_from_locals_scheme = {
+	skill = learning
+	desc = gdp_trader_learning_from_locals_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = LEARNING }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		location.barony.trade_market = {
+			any_trade_good_with_surplus = { always = yes }
+		}
+		# Same category check as the success reward, so the scheme is not started when it would grant nothing.
+		gdp_trader_learning_from_locals_allowed_trigger = yes
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			# No message unless the district resolves to a category this route owner trades.
+			gdp_trader_save_district_trade_category_effect = { LOCATION = scope:trader.location }
+			if = {
+				limit = {
+					exists = scope:gdp_district_trade_category
+					scope:route_owner.primary_title = {
+						exists = holder
+						holder = {
+							any_trade_route = {
+								any_traded_good = {
+									any_trade_category = { this = scope:gdp_district_trade_category }
+								}
+							}
+						}
+					}
+				}
+				scope:route_owner = {
+					send_interface_message = {
+						type = msg_trader_activity_success
+						title = gdp_trader_learning_from_locals_scheme_success_title
+						desc = gdp_trader_learning_from_locals_scheme_success_desc
+						left_icon = scope:trader
+						scope:route_owner.primary_title = {
+							add_trade_good_category_xp = {
+								target = scope:gdp_district_trade_category
+								value = trade_expertise_xp_minor_value
+							}
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Studying Local Crafts
+# Small lifestyle XP gain multiplier on the trader for 5 years.
+# Requires: market's location province must have at least one resource production district.
+gdp_trader_studying_local_crafts_scheme = {
+	skill = learning
+	desc = gdp_trader_studying_local_crafts_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = LEARNING }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		exists = location.resource_district
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_studying_local_crafts_scheme_success_title
+					desc = gdp_trader_studying_local_crafts_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader = {
+						add_character_modifier = {
+							modifier = gdp_trader_studying_local_crafts_modifier
+							years = 5
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}
+
+### Appraising Goods
+# Sell price bonus (competitiveness) for a good category for 5 years.
+# Requires: route must be actively buying or selling goods in this market.
+# Requires: competitiveness is still contested in this market.
+gdp_trader_appraising_goods_scheme = {
+	skill = learning
+	desc = gdp_trader_appraising_goods_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = LEARNING }
+	}
+
+	allow = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+		gdp_trader_needs_competitiveness_trigger = yes
+		assigned_trade_route = {
+			any_trade_market_on_route = {
+				this = root.location.barony.trade_market
+			}
+		}
+	}
+	valid = {
+		gdp_trader_is_valid_for_scheme_trigger = yes
+	}
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_appraising_goods_scheme_success_title
+					desc = gdp_trader_appraising_goods_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader.location.barony.trade_market = {
+						add_trade_market_modifier = {
+							modifier = gdp_trader_negotiate_deals_modifier
+							years = 5
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}

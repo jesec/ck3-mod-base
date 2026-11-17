@@ -33,3 +33,78 @@ province_id = {
 	effect = { ... }
 }
 
+culture = norse
+faith = norse_pagan
+terrain = arctic
+
+== Main Province History ==
+(These entries will NOT get copied to mapped provinces.)
+
+# Set which holding type to use in the province. Default = auto.
+# <holding_type> can be any holding type in common/holdings.
+# none will not auto-generate any holding in that province
+# auto will select a holding for the province automatically to fill the county with different holdings. See required_county_holdings in common/governments.
+holding = <holding type> / none / auto
+
+# To script Special Districts, use 'special_district_slot = district_type' for just the slot, or 'districts = { district { type = district_type } }' for actually building the district.
+
+# Set districts in the holding (requires an explicit holding to be present - auto doesn't work).
+# Can also be used to specify buildings in the district
+# Will add new district slots and building slots (inside relevant districts) as necessary
+# Automatically creates the correct primary building in the district.
+# In a later history entry, this overrides all previous regular districts and buildings in them
+# Can be used for regular, holding, duchy capital, resource, special and entrepot districts
+# Level is for the primary building line of the district, default is 1
+# The holding district must be the one belonging to the holding set for the province (see primary_district in common/holdings) - history will not change the holding type, a mismatched entry is skipped and logs an error
+# Scripting the holding district replaces all its buildings except the primary one, and leaving out 'level' puts it back to level 1
+# Unlike the other districts, the holding district is not reset by a later history entry that leaves it out - it keeps the level and buildings it was last given
+districts = { 
+    district = {
+        type = castle_holding_district
+        level = 3
+        buildings = {
+            castle_garrison_1
+        }
+    }
+    district = {
+        type = guild_district
+        level = 3
+        buildings = {
+            agricultural_guilds_5
+            seafarers_guilds_1
+        }
+    }
+    district = {
+        type = mine_district
+        level = 2
+        buildings = {
+            iron_freeminers_1
+            small_winery_2
+        }
+    }
+    district = {
+        type = religious_duchy_capital_district
+    }
+}
+
+# Add a trade post in the province
+# Requires the province to have a slot available for trade posts and an owner who can hold trade posts at game start
+# If the holder is not alive at a given start date, the district will not be constructed and not exist in that start date
+# If multiple entries are defined for the province, only the latest entry will be executed
+# Level will default to 1 if not defined and buildings are optional
+# Other fields are required
+#
+trade_post = {
+	type = trade_post_location_district
+	level = 1
+	owner = 1437
+	buildings = {
+		trade_consulate_01
+	}
+}
+
+special_district_slot = X		# Enables and sets the special district slot for district X.
+
+entrepot_district_slot = X		# Enables and sets the entrepot district slot for district X.
+
+province_size = value           # Sets the starting size of a province to the given value. Default starting size is 1

@@ -102,6 +102,31 @@ name_of_the_task_type = {
 	#  scope:liege - Employer character
 	on_yearly = { <effect> }
 
+	# Chance gates
+	# Aptitude is expensive to calculate, so random effects in on_monthly/on_yearly
+	# with an aptitude-based chance are split into two rolls. A flat outer chance
+	# runs first, and aptitude is only calculated if it passes.
+	#
+	# Example:
+	#	random = {
+	#		chance = 10
+	#		random = {
+	#			chance = {
+	#				value = 4
+	#				add = "aptitude(bodyguard_court_position)" # 0 to 4
+	#				multiply = 10
+	#			}
+	#			<effect>
+	#		}
+	#	}
+	#	At aptitude 4 the inner chance is (4 + 4) x 10 = 80%, so the overall chance
+	#	is 10% x 80% = 8%, same as the unsplit chance of 4 + 4 = 8%.
+	#
+	# Note: The outer chance must be at least the inner chance's max before the
+	#       multiply. Aptitude 4 (excellent) is the highest level.
+	# Note: Outer chance x multiply must equal 100.
+	# Note: Recheck both when raising the inner chance, e.g. max 5 = outer 5, multiply 20.
+
 	# How likely is the AI to pick/switch task. Tasks will be selected using best scoring first.
 	# AI will not start tasks unless
 	#

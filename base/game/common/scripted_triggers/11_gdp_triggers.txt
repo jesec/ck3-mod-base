@@ -1,0 +1,420 @@
+﻿# GDP Triggers
+
+house_unity_is_positive_trigger = {
+	OR = {
+		has_house_unity_stage = harmonious
+		has_house_unity_stage = friendly
+		has_house_unity_stage = ennobled_cs
+		has_house_unity_stage = grasping_cs
+	}
+}
+
+house_unity_is_negative_trigger = {
+	OR = {
+		has_house_unity_stage = antagonistic
+		has_house_unity_stage = competitive
+		has_house_unity_stage = rapacious_cs
+		has_house_unity_stage = opportunistic_cs
+	}
+}
+
+valid_merchant_contract_basic_trigger = {
+	government_has_flag = government_is_merchant
+	is_available_quick = {
+		adult = yes
+		alive = yes
+		incapable = no
+		imprisoned = no
+	}
+}
+
+valid_to_accept_trade_opportunity_trigger = {
+	custom_tooltip = {
+		text = valid_to_accept_trade_opportunity_trigger
+		save_temporary_scope_as = contract_owner_temp
+		OR = {
+			any_character_active_contract = {
+				count = 0
+				NOT = { exists = var:contract_partner }
+			}
+			trigger_if = {
+				limit = { exists = court_position:partner_court_position }
+				court_position:partner_court_position = {
+					NOT = { exists = var:partner_contract }
+					is_available_quick = {
+						adult = yes
+						travel = no
+						imprisoned = no
+						incapable = no
+					}
+					is_trader = no
+				}
+			}
+			trigger_else = {
+				can_employ_court_position_type = partner_court_position
+				any_courtier = {
+					would_be_valid_for_court_position = {
+						employer = scope:contract_owner_temp
+						court_position = partner_court_position
+					}
+					NOT = { exists = var:partner_contract }
+					is_available_quick = {
+						adult = yes
+						imprisoned = no
+						incapable = no
+					}
+					trigger_if = {
+						limit = { is_travelling = yes }
+						merchant_trade_opportunity_partner_in_entourage_trigger = { TAKER = scope:contract_owner_temp }
+					}
+					is_trader = no
+				}
+			}
+		}
+	}
+}
+
+can_accept_trade_opportunity_while_traveling_trigger = {
+	custom_tooltip = {
+		text = can_accept_trade_opportunity_while_traveling_trigger
+		save_temporary_scope_as = task_contract
+		task_contract_taker = {
+			save_temporary_scope_as = contract_owner_temp
+			location != scope:task_contract.task_contract_location
+			trigger_if = {
+				limit = { exists = court_position:partner_court_position }
+				court_position:partner_court_position = {
+					save_temporary_scope_as = partner
+					merchant_trade_opportunity_partner_available_trigger = yes
+				}
+			}
+			trigger_else = {
+				can_employ_court_position_type = partner_court_position
+				any_courtier = {
+					would_be_valid_for_court_position = {
+						employer = scope:contract_owner_temp
+						court_position = partner_court_position
+					}
+					merchant_trade_opportunity_partner_candidate_available_trigger = { TAKER = scope:contract_owner_temp }
+				}
+			}
+			merchant_trade_opportunity_partner_send_blocked_trigger = no
+		}
+	}
+}
+
+gdp_merchant_task_contract_group_trigger = {
+	OR = {
+		has_task_contract_group = merchant_trade_opportunity_group
+		has_task_contract_group = merchant_patron_contract_group
+		has_task_contract_group = merchant_luxury_contract_group
+		has_task_contract_group = merchant_unity_contract_group
+	}
+}
+
+gdp_landless_adventurer_task_contract_group_trigger = {
+	OR = {
+		has_task_contract_group = laamp_contracts_criminal_group
+		has_task_contract_group = laamp_contracts_diplomacy_group
+		has_task_contract_group = laamp_contracts_hireling_group
+		has_task_contract_group = laamp_contracts_hunting_group
+		has_task_contract_group = laamp_contracts_intrigue_group
+		has_task_contract_group = laamp_contracts_learning_group
+		has_task_contract_group = laamp_contracts_martial_group
+		has_task_contract_group = laamp_contracts_stewardship_group
+		has_task_contract_group = laamp_contracts_justicar_group
+		has_task_contract_group = laamp_contracts_war_group
+		has_task_contract_group = laamp_contracts_transport_group
+		has_task_contract_group = laamp_contracts_noticeboard_group
+		has_task_contract_group = laamp_contracts_legitimist_group
+	}
+}
+
+merchant_trade_opportunity_invalidated_message_trigger = {
+	task_contract_employer ?= {
+		NOT = { root.task_contract_taker ?= this }
+		OR = {
+			is_available_quick = { incapable = yes }
+			is_imprisoned = yes
+			is_alive = no
+		}
+	}
+}
+
+valid_trade_opportunity_to_continue_trigger = {
+	save_temporary_scope_as = task_contract
+	task_contract_taker = { valid_merchant_contract_basic_trigger = yes }
+	var:task_contract_route.trader ?= task_contract_employer
+}
+
+gdp_merchant_ai_logic_valid_trigger = {
+	is_alive = yes
+	is_ai = yes
+	government_has_flag = government_is_merchant
+	domicile ?= { is_domicile_type = merchant_company }
+}
+
+gdp_is_trade_opportunity_scheme_trigger = {
+	OR = {
+		scheme_type = merchant_challenge_competitor_trade_opportunity_scheme
+		scheme_type = merchant_promote_goods_trade_opportunity_scheme
+		scheme_type = merchant_market_investment_trade_opportunity_scheme
+		scheme_type = merchant_exploit_upheaval_trade_opportunity_scheme
+		scheme_type = merchant_alleviate_upheaval_trade_opportunity_scheme
+		scheme_type = merchant_support_guilds_trade_opportunity_scheme
+		scheme_type = merchant_seek_debtors_trade_opportunity_scheme
+		scheme_type = merchant_sabotage_competition_trade_opportunity_scheme
+		scheme_type = merchant_build_category_connections_trade_opportunity_scheme
+		scheme_type = merchant_disrupt_charter_trade_opportunity_scheme
+		scheme_type = merchant_silk_road_network_trade_opportunity_scheme
+		scheme_type = merchant_silk_road_caravan_trade_opportunity_scheme
+		scheme_type = merchant_entrepot_buy_trade_opportunity_scheme
+		scheme_type = merchant_entrepot_sell_trade_opportunity_scheme
+	}
+}
+
+luxury_contract_creature_elephant_trigger = {
+	geographical_region = world_innovation_elephants
+}
+
+luxury_contract_creature_peacock_trigger = {
+	geographical_region = world_india
+}
+
+luxury_contract_creature_parrot_trigger = {
+	geographical_region = world_africa
+}
+
+luxury_contract_creature_cockatoo_trigger = {
+	OR = {
+		geographical_region = world_asia_philippines
+		geographical_region = sea_gulf_of_guinea
+		geographical_region = world_asia_indonesia
+	}
+}
+
+luxury_contract_creature_crane_trigger = {
+	OR = {
+		geographical_region = world_asia_china
+		geographical_region = world_central_asia
+		geographical_region = world_asia_korea
+		geographical_region = world_tibet
+		geographical_region = dlc_fp3_greater_persian_frontier_regions
+		geographical_region = ghw_region_northern_india
+	}
+}
+
+luxury_contract_creature_monkey_trigger = {
+	geographical_region = monkey_region
+}
+
+# For fetching luxury danger contract locations
+luxury_contract_dangerous_creature_location_trigger = {
+	OR = {
+		hunt_animal_lion_trigger = yes
+		hunt_animal_caracal_trigger = yes
+		hunt_animal_lynx_trigger = yes
+		hunt_animal_tiger_trigger = yes
+		hunt_animal_leopard_trigger = yes
+		luxury_contract_creature_elephant_trigger = yes
+		hunt_animal_bear_trigger = yes
+	}
+}
+
+# For checking if a harmless creature can be created
+luxury_contract_harmless_creature_location_trigger = {
+	OR = {
+		luxury_contract_creature_peacock_trigger = yes
+		luxury_contract_creature_parrot_trigger = yes
+		luxury_contract_creature_cockatoo_trigger = yes
+		luxury_contract_creature_crane_trigger = yes
+		luxury_contract_creature_monkey_trigger = yes
+	}
+}
+
+# can a title be purchased in an interaction?
+is_title_purchasable_shared_trigger = {
+	$TITLE$ ?= { save_temporary_scope_as = title_temp }
+	$BUYER$ ?= { save_temporary_scope_as = buyer_temp }
+	$SELLER$ ?= { save_temporary_scope_as = seller_temp }
+	scope:title_temp ?= {
+		# Only counties/duchies
+		custom_tooltip = {
+			text = purchase_land_tier_tt
+			tier >= tier_county
+			tier <= tier_duchy
+		}
+		# Not capital county of seller
+		custom_tooltip = {
+			text = purchase_land_capital_tt
+			this != scope:seller_temp.capital_county
+		}
+		# Not primary title of seller
+		custom_tooltip = {
+			text = purchase_land_primary_tt
+			this != scope:seller_temp.primary_title
+		}
+		# Prestige req for duchies
+		custom_tooltip = {
+			text = purchase_land_duchy_tt
+			trigger_if = {
+				limit = { tier = tier_duchy }
+				scope:buyer_temp.prestige_level >= 3
+			}
+		}
+		# Duchies only allowed if seller completely controls the duchy
+		custom_tooltip = {
+			text = PURCHASE_LAND_COMPLETE_CONTROL_TT
+			trigger_if = {
+				limit = { scope:target = { tier = tier_duchy } }
+				scope:recipient = {
+					completely_controls = scope:target
+				}
+			}
+		}
+		# Must be held by seller
+		trigger_if = {
+			limit = { exists = holder }
+			holder = scope:seller_temp
+		}
+	}
+}
+
+is_title_purchase_valid_shared_trigger = {
+	$BUYER$ ?= { save_temporary_scope_as = buyer_temp }
+	$SELLER$ ?= { save_temporary_scope_as = seller_temp }
+	$TITLE$ ?= { save_temporary_scope_as = title_temp }
+	scope:seller_temp ?= {
+		is_at_war = no
+		NOT = { has_strong_hook = scope:buyer_temp }
+		trigger_if = {
+			limit = {
+				any_held_county = { count < 2 }
+			}
+			custom_description = {
+				text = purchase_land_minimum_county_tt
+				object = scope:seller_temp
+				always = no
+			}
+		}
+	}
+	scope:title_temp ?= {
+		### TIER
+		trigger_if = { # Can't purchase Baronies
+			limit = { tier = tier_barony }
+			custom_description = {
+				text = purchase_land_barony_tt
+				always = no
+			}
+		}
+		trigger_if = { # Can't purchase Kingdoms or Empires
+			limit = { tier >= tier_kingdom }
+			custom_description = {
+				text = purchase_land_kingdom_tt
+				always = no
+			}
+		}
+		trigger_if = { # Can't purchase HoF titles
+			limit = { is_head_of_faith = yes }
+			custom_description = {
+				text = purchase_land_religious_tt
+				always = no
+			}
+		}
+		### TYPE
+		trigger_if = { # Can't purchase nf titles
+			limit = { is_noble_family_title = yes }
+			custom_description = {
+				text = purchase_land_noble_family_tt
+				always = no
+			}
+		}
+		trigger_if = { # Can't purchase laamp titles
+			limit = { has_variable = adventurer_creation_reason }
+			custom_description = {
+				text = purchase_land_landless_adventurer_tt
+				always = no
+			}
+		}
+		trigger_if = { # Can't purchase merchant titles
+			limit = { has_variable = merchant_creation_reason }
+			custom_description = {
+				text = purchase_land_merchant_tt
+				always = no
+			}
+		}
+		trigger_if = { # Can't purchase laamp titles
+			limit = { is_landless_type_title = yes }
+			always = no
+		}
+	}
+}
+
+character_merchant_law_allows_inspiration_sponsorship_trigger = {
+	scope:character = {
+		trigger_if = {
+			limit = { government_has_flag = government_is_merchant }
+			has_realm_law = company_purpose_artisan
+		}
+	}
+}
+
+shared_hostile_takeover_participant_valid_trigger = {
+	government_has_flag = government_is_merchant
+	is_house_head = yes
+	domicile ?= { is_domicile_type = merchant_company }
+}
+
+republic_can_grant_county_to_landed_trigger = {
+	custom_tooltip = {
+		text = republic_title_must_be_neighboring_or_de_jure_vassal_desc
+		OR = {
+			# Holds county neighboring target county
+			scope:target = {
+				any_title_to_title_neighboring_county = { holder = scope:recipient }
+			}
+			scope:recipient = { 
+				OR = {
+					# Holds duchy or higher that target county belongs to
+					any_held_title = { is_de_jure_liege_or_above_target = scope:target }
+					# Holds barony that belongs to target county
+					AND = { 
+						highest_held_title_tier = tier_barony
+						capital_province.county = scope:target
+					}
+				}
+			}
+		}
+	}
+}
+
+republic_can_grant_duchy_or_higher_to_landed_trigger = {
+	custom_tooltip = {
+		text = republic_title_must_be_de_jure_vassal_desc
+		any_held_county = { target_is_de_jure_liege_or_above = scope:target }
+	}
+}
+
+republic_can_grant_duchy_or_higher_to_landless_trigger = {
+	custom_tooltip = {
+		text = republic_title_must_be_de_jure_liege_desc
+		trigger_if = {
+			limit = {
+				any_in_list = {
+					list = target_titles
+					count > 0
+				}
+			}
+			scope:target = {
+				OR = {
+					any_in_de_jure_hierarchy = {
+						tier = tier_county
+						is_in_list = target_titles
+					}
+					is_in_list = target_titles
+				}	
+			}
+		}
+		trigger_else = { always = no }
+	}
+}

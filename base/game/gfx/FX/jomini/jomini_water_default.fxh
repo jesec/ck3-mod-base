@@ -503,7 +503,11 @@ PixelShader =
 		SWaterOutput CalcWater( in SWaterParameters Input, float ShadowTerm )
 		{
 			float4 WaterColorAndSpec = PdxTex2D( WaterColorTexture, Input._WorldUV );
-			float GlossMap = WaterColorAndSpec.a;
+			#if defined( RIVER )
+				float GlossMap = 0.5f;
+			#else
+				float GlossMap = WaterColorAndSpec.a;
+			#endif
 
 			float3 ToCamera = CameraPosition.xyz - Input._WorldSpacePos;
 			float3 ToCameraDir = normalize( ToCamera );

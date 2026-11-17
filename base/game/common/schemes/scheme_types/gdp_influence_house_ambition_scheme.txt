@@ -1,0 +1,404 @@
+﻿influence_house_ambition = {
+	# Basic Setup
+	skill = diplomacy
+	desc = influence_house_ambition_desc_general 
+	success_desc = "INFLUNCE_HOUSE_AMBITION_SUCCESS_DESC"
+	icon = icon_influence_house_ambition
+	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
+	target_type = character
+	is_secret = no
+	is_basic = yes
+	
+	# Parameters
+	speed_per_skill_point = -2.5
+	spymaster_speed_per_skill_point = 0	
+	uses_resistance = no
+	base_progress_goal = 182
+	base_maximum_success = 95
+	minimum_success = 15
+	
+	# Core Triggers
+	allow = {
+		age >= 12
+		scope:target = {
+			is_adult = yes
+			is_imprisoned = no
+		}
+		is_imprisoned = no
+
+		#AI blockers
+		trigger_if = {
+			limit = { is_ai = yes }
+
+			scope:target = {
+				OR = {
+					opinion = {
+						target = scope:owner
+						value <= 50
+					}
+					AND = {
+						is_vassal_of = scope:owner
+						is_a_faction_member = yes
+					}
+				}
+				trigger_if = { #So players don't get spammed by AI sway
+					limit = {
+						is_ai = no
+					}
+					NOT = {
+						any_targeting_scheme = {
+							scheme_type = influence_house_ambition
+						}
+					}
+				}
+			}
+		}
+	}
+	valid = {
+		is_incapable = no
+		NOT = { is_at_war_with = scope:target }
+	}
+
+	odds_prediction = {
+		add = base_odds_prediction_target_is_char_value
+		add = odds_skill_contribution_diplomacy_value
+		add = influence_house_ambition_scheme_misc_value
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 30
+		
+
+		modifier = {
+			scope:owner.gold > scope:target.gold
+			add = 5
+			desc = SCHEME_WEALTHIER
+		}
+		## Diplomacy score
+		modifier = {
+			add = {
+				value = scope:owner.diplomacy
+				multiply = 2
+				floor = yes
+			}
+			desc = SCHEME_YOUR_DIPLOMACY
+		}
+		
+		#Language
+		modifier = {
+			add = -5
+			desc = YOU_DONT_SPEAK_THE_LANGUAGE
+			scope:owner = { 
+				NOR = {
+					knows_language_of_culture = scope:target.culture
+					culture = scope:target.culture
+				}
+			}
+		}
+		
+		# House Relation modifier
+		# Feuding
+		modifier = {
+			exists = scope:target.house
+			scope:owner.house ?= {
+				has_house_relation_with = scope:target.house
+				any_house_relation = {
+					any_relation_house = { scope:target.house ?= this }
+					has_house_relation_level = feud
+				}
+			}
+			add = -40
+			desc = SCHEME_HOUSE_RELATIONS
+		}
+		# Rivalry
+		modifier = {
+			exists = scope:target.house
+			scope:owner.house ?= {
+				has_house_relation_with = scope:target.house
+				any_house_relation = {
+					any_relation_house = { scope:target.house ?= this }
+					has_house_relation_level = rivalry
+				}
+			}
+			add = -20
+			desc = SCHEME_HOUSE_RELATIONS
+		}
+		# Quarreling
+		modifier = {
+			exists = scope:target.house
+			scope:owner.house ?= {
+				has_house_relation_with = scope:target.house
+				any_house_relation = {
+					any_relation_house = { scope:target.house ?= this }
+					has_house_relation_level = quarrel
+				}
+			}
+			add = -10
+			desc = SCHEME_HOUSE_RELATIONS
+		}
+		# Cordial
+		modifier = {
+			exists = scope:target.house
+			scope:owner.house ?= {
+				has_house_relation_with = scope:target.house
+				any_house_relation = {
+					any_relation_house = { scope:target.house ?= this }
+					has_house_relation_level = cordial
+				}
+			}
+			add = 5
+			desc = SCHEME_HOUSE_RELATIONS
+		}
+		# Friendly
+		modifier = {
+			exists = scope:target.house
+			scope:owner.house ?= {
+				has_house_relation_with = scope:target.house
+				any_house_relation = {
+					any_relation_house = { scope:target.house ?= this }
+					has_house_relation_level = friendly
+				}
+			}
+			add = 15
+			desc = SCHEME_HOUSE_RELATIONS
+		}
+		# Faithful
+		modifier = {
+			exists = scope:target.house
+			scope:owner.house ?= {
+				has_house_relation_with = scope:target.house
+				any_house_relation = {
+					any_relation_house = { scope:target.house ?= this }
+					has_house_relation_level = amity
+				}
+			}
+			add = 30
+			desc = SCHEME_HOUSE_RELATIONS
+		}
+
+		# Target's inclination towards the Ambition
+		modifier = {
+			AND = {
+				scope:owner.house = {
+					has_house_aspiration_parameter = republic_commerce 
+				}
+				scope:target = {
+					OR = {
+						has_trait = impatient
+						has_trait = wrathful
+						has_trait = arbitrary
+					}
+				}
+			}
+			add = -15
+			desc = SCHEME_NO_INCLINATION
+		}
+		modifier = {
+			trigger_if = {
+				AND = {
+					scope:owner.house = {
+						has_house_aspiration_parameter = republic_aggrandizement
+					}
+					scope:target = {
+						OR = {
+							has_trait = humble
+							has_trait = zealous
+							has_trait = honest
+						}
+					}
+				}
+			} 
+			add = -15
+			desc = SCHEME_NO_INCLINATION
+		}
+		modifier = {
+			trigger_if = {
+				AND = {
+					scope:owner.house = {
+						has_house_aspiration_parameter = republic_communal
+					}
+					scope:target = {
+						OR = {
+							has_trait = arrogant
+							has_trait = greedy
+							has_trait = cynical
+						}
+					}
+				}
+			} 
+			add = -15
+			desc = SCHEME_NO_INCLINATION
+		}
+		modifier = {
+			trigger_if = {
+				AND = {
+					scope:owner.house = {
+						has_house_aspiration_parameter = republic_signorial
+					}
+					scope:target = {
+						OR = {
+							has_trait = shy
+							has_trait = humble
+							has_trait = content
+						}
+					}
+				}
+			} 
+			add = -15
+			desc = SCHEME_NO_INCLINATION
+		}
+		modifier = {
+			trigger_if = {
+				AND = {
+					scope:owner.house = {
+						has_house_aspiration_parameter = republic_agitation
+					}
+					scope:target = {
+						OR = {
+							has_trait = craven
+							has_trait = calm
+							has_trait = content
+						}
+					}
+				}
+			} 
+			add = -15
+			desc = SCHEME_NO_INCLINATION
+		}
+
+		# Traits
+		modifier = {
+			add = 8
+			scope:owner = { has_trait = diplomat }
+			desc = SCHEME_BEFRIEND_MY_LIFESTYLE
+		}
+
+		modifier = {
+			add = 8
+			scope:owner = { has_trait = administrator }
+			desc = SCHEME_ADMINISTRATOR_LIFESTYLE
+		}
+
+		modifier = {
+			add = 8
+			scope:owner = { has_trait = architect }
+			desc = SCHEME_ARCHITECT_LIFESTYLE
+		}
+		
+		#Reduction of power against foreign rulers
+		modifier = {
+			desc = sway_foreign_target
+			add = -20
+			scope:target.top_liege != scope:owner.top_liege
+			NOT = {
+				scope:owner = {
+					government_has_flag = government_is_merchant
+					suzerain.top_liege ?= scope:target.top_liege
+				}
+			}
+		}
+
+		#Rival penalty
+		modifier = {
+			add = -30
+			desc = sway_my_rival
+			scope:owner = { has_relation_rival = scope:target }
+		}
+
+		#Rival penalty
+		modifier = {
+			add = 10
+			desc = SCHEME_FRIEND
+			scope:owner = { has_relation_friend = scope:target }
+		}
+	}
+
+	# On Actions
+	on_phase_completed = {
+		# Grab our scopes.
+		save_scope_as = scheme
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = { save_scope_as = owner }
+		# Roll our result.
+		random = {
+			chance = scope:scheme.scheme_success_chance
+			save_scope_value_as = {
+				name = scheme_successful
+				value = yes
+			}
+		}
+		# How'd we do?
+		scope:owner = {
+			if = {
+				limit = { exists = scope:scheme_successful }
+				trigger_event = { on_action = influence_house_ambition_success }
+			}
+			else = {
+				trigger_event = { on_action = influence_house_ambition_failure }
+			}
+		}
+	}
+
+	on_monthly = {
+		save_scope_as = scheme
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = {
+			save_scope_as = owner
+			trigger_event = { on_action = influence_house_ambition_ongoing }
+		}
+	}
+	on_invalidated = {
+		scheme_target_character = {
+			save_scope_as = target
+		}
+		scheme_owner = {
+			save_scope_as = owner
+		}
+		if = {
+			limit = {
+				scope:target = { is_alive = no }
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = sway_invalidated_title
+					left_icon = scope:target
+					custom_tooltip = sway_invalidated_dead
+				}
+			}
+		}
+		else_if = {	
+			limit = {
+				scope:owner = {
+					is_at_war_with = scope:target
+				}
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = sway_invalidated_title
+					left_icon = scope:target
+					custom_tooltip = sway_invalidated_war
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				scope:target = { 
+					NOT = { in_diplomatic_range = scope:owner } 
+				}
+			}
+			scope:owner = {
+				send_interface_toast = {
+					title = sway_invalidated_title
+					left_icon = scope:target
+					custom_description_no_bullet = {
+						object = scope:target
+						text = scheme_target_not_in_diplomatic_range
+					}
+				}
+			}
+		}
+	}
+}

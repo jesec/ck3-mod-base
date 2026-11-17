@@ -3,13 +3,9 @@
 # For mods that want to intercept all cases where a player changes character from one to another
 # Root is the new player character
 # scope:previous_player_character is the old player character
+# NOTE: This happens for all player character changes, meaning it happens twice if you "Choose a New Destiny" after dying, once from your previous character to your heir, and then once more from your heir to the New Destiny character you chose.
+# Debug mode's CTRL+Click to change character is a character change so that triggers the on_action.
+# Any effects put in here should therefore be made such that this on_action triggering for A -> B and then B -> C is identical in every way as it triggering for A -> C, to keep behavior consistent.
 on_player_character_change = {
-	effect = {
-		if = {
-			limit = { exists = puppeteer }
-			clear_puppet_status = yes
-			remove_puppet_modifiers_effect = yes
-		}
-		pam_offer_great_schism_stance_to_new_player_effect = yes
-	}
+	# For modder usage; any vanilla feature that might make use of this is better implemented with specific code support
 }

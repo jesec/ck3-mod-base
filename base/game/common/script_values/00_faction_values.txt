@@ -71,10 +71,10 @@ total_county_levies = {
 		# 100% Levy Base
 		value = 1
 
-		# Adds bonus levies from Development (at base 20 development, +20% levies).
+		# Adds bonus levies from Settlement Size
 		add = {
-			add = development_level
-			multiply = 0.01
+			add = title_province.province_size_level
+			multiply = 0.1
 		}
 
 		# Adds bonus levies from cultural innovations.
@@ -94,7 +94,7 @@ county_levies_to_raise = {
 
 	# Will summon between 75% and 175% of total county levy strength, depending on how much they hate you (most commonly will be 95-110% though, scores between -20 and -35 are the most common)
 	multiply = {
-		value = county_opinion
+		value = popular_opinion
 		multiply = -0.01
 		add = 0.5
 	}
@@ -126,7 +126,7 @@ county_horde_riders_to_raise = {
 
 	# Will summon between 75% and 175% of total county levy strength, depending on how much they hate you (most commonly will be 95-110% though, scores between -20 and -35 are the most common)
 	multiply = {
-		value = county_opinion
+		value = popular_opinion
 		multiply = -0.01
 		add = 0.5
 	}
@@ -146,7 +146,7 @@ county_maa_to_raise = {
 	
 	# Based on county levy strength, summon an appropiate number of MAAs that scales with popular opinion.
 	multiply = {
-		value = county_opinion
+		value = popular_opinion
 		multiply = -0.00003
 	}
 	round = yes
@@ -195,4 +195,32 @@ peasant_leader_xp_value = {
 		multiply = 1.5
 	}
 	max = 80
+}
+
+#################################
+# COUNTY REVOLT SUPPRESSION     #
+#################################
+
+high_county_control_faction_threshold = 75
+
+faction_county_high_control_suppression = {
+	value = county_control
+	subtract = high_county_control_faction_threshold
+	min = 0
+	multiply = 0.6
+}
+
+faction_county_garrison_suppression = {
+	value = 0
+	holder = {
+		every_maa_regiment = {
+			limit = {
+				exists = regiment_station
+				regiment_station.county = root
+			}
+			add = maa_current_troops_count
+		}
+	}
+	divide = 100
+	max = 15
 }

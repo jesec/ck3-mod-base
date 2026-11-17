@@ -1,0 +1,2300 @@
+﻿##########################
+# Luxury Contracts Scripted Effects
+##########################
+
+merchant_luxury_contract_travel_or_progress_effect = {
+	if = {
+		limit = { location != $DESTINATION$ }
+		start_travel_plan = {
+			destination = $DESTINATION$
+			on_arrival_event = $ARRIVAL_EVENT$
+			on_travel_planner_cancel_event = gdp_merchant_trade_opportunity.9000
+			on_arrival_destinations = all_but_last
+		}
+	}
+	else = { trigger_event = $ARRIVAL_EVENT$ }
+}
+
+manage_new_luxury_contract_effect = {
+	if = {
+		limit = { exists = scope:destination }
+		if = {
+			limit = {
+				NOT = { has_character_flag = luxury_contract_frequency_cooldown }
+			}
+			add_character_flag = { flag = luxury_contract_frequency_cooldown years = 6 }
+		}
+		send_interface_message = {
+			type = msg_merchant_contracts
+			title = msg_luxury_contract_appear.t
+			desc = msg_luxury_contract_appear.desc
+			right_icon = scope:destination.county
+		}
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			exists = scope:luxury_contract
+		}
+		accept_task_contract = scope:luxury_contract
+	}
+}
+
+save_random_region_province_effect = {
+	if = {
+		limit = { exists = scope:find_curio }
+		random_county_in_region = {
+			region = $REGION$
+			limit = {
+				duchy.title_capital_county ?= this
+				any_county_province = { gdp_find_curio_poi_province_trigger = yes }
+			}
+			alternative_limit = { duchy.title_capital_county ?= this }
+			weight = {
+				base = 1
+				modifier = { add = prosperity_level }
+				modifier = {
+					factor = holder.highest_held_title_tier
+					exists = holder
+				}
+				modifier = {
+					add = {
+						value = 0
+						every_de_jure_county = {
+							limit = {
+								any_county_province = { gdp_find_curio_poi_province_trigger = yes }
+							}
+							add = 150
+						}
+					}
+				}
+				modifier = {
+					title_province ?= { has_holding_type = tribal_holding }
+					factor = 0.25
+				}
+			}
+			duchy.title_capital_county.title_province = { save_scope_as = destination }
+		}
+	}
+	else = {
+		random_county_in_region = {
+			region = $REGION$
+			limit = {
+				duchy.title_capital_county ?= this
+				exists = root.var:target_animal_type
+				title_province ?= {  
+					switch = {
+						trigger = root.var:target_animal_type 
+						flag:lion = {
+							hunt_animal_lion_trigger = yes
+						}
+						flag:tiger = {
+							hunt_animal_tiger_trigger = yes
+						}
+						flag:leopard = {
+							hunt_animal_leopard_trigger = yes
+						}
+						flag:caracal = {
+							hunt_animal_caracal_trigger = yes
+						}
+						flag:lynx = {
+							hunt_animal_lynx_trigger = yes
+						}
+						flag:bear = {
+							hunt_animal_bear_trigger = yes
+						}
+						flag:elephant = {
+							luxury_contract_creature_elephant_trigger = yes
+						}
+						fallback = { always = no }
+					}
+				}
+			}
+			weight = {
+				base = 1
+				modifier = { add = prosperity_level }
+				modifier = {
+					factor = holder.highest_held_title_tier
+					exists = holder
+				}
+				modifier = {
+					title_province ?= { has_holding_type = tribal_holding }
+					factor = 0.25
+				}
+			}
+			title_province = { save_scope_as = destination }
+		}
+	}
+}
+
+luxury_contract_save_destination_effect = {
+	hidden_effect = {
+		if = {
+			limit = { exists = scope:find_curio }
+			random_list = {
+				#North Europe
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_europe_east
+								geographical_region = world_europe_west
+							}
+							NOT = { geographical_region = world_europe_north }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_europe_north }
+					save_random_region_province_effect = { REGION = world_europe_north }
+				}
+				#West Europe
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_europe
+								geographical_region = world_africa_north_west
+							}
+							NOT = { geographical_region = world_europe_west }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_europe_west }
+					save_random_region_province_effect = { REGION = world_europe_west }
+				}
+				#East Europe
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_europe
+								geographical_region = world_steppe_west
+								geographical_region = world_asia_minor
+							}
+							NOT = { geographical_region = world_europe_east }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_europe_east }
+					save_random_region_province_effect = { REGION = world_europe_east }
+				}
+				#South East Europe
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_europe_west_francia
+								geographical_region = world_europe_west_iberia
+								geographical_region = world_steppe_west
+								geographical_region = world_africa_north_west
+								geographical_region = world_middle_east_arabia
+							}
+							NOT = { geographical_region = world_europe_south }
+							NOT = { geographical_region = custom_carpathia }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_europe_south_east }
+					save_random_region_province_effect = { REGION = world_europe_south_east }
+				}
+				#South Europe - Italy
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_europe_west_britannia
+								geographical_region = world_europe_west_iberia
+								geographical_region = world_europe_east
+								geographical_region = world_asia_minor
+								geographical_region = world_africa_north_east
+								geographical_region = world_middle_east_jerusalem
+								geographical_region = world_middle_east_arabia
+							}
+							NOT = { geographical_region = world_europe_south }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_europe_south_italy }
+					save_random_region_province_effect = { REGION = world_europe_south_italy }
+				}
+				#Asia Minor
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_africa_north_east
+								geographical_region = world_europe_east
+								geographical_region = world_europe_south
+								geographical_region = world_middle_east
+								geographical_region = world_steppe_central
+								geographical_region = world_steppe_west
+							}
+							NOT = { geographical_region = world_asia_minor }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_minor }
+					save_random_region_province_effect = { REGION = world_asia_minor }
+				}
+				#Jerusalem
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_europe_south
+								geographical_region = world_steppe_west
+								geographical_region = world_middle_east_persia
+								geographical_region = world_africa_north_west
+								geographical_region = world_africa_east
+								geographical_region = world_africa_sahara_central
+							}
+							NOT = { geographical_region = world_middle_east_jerusalem }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_middle_east_jerusalem }
+					save_random_region_province_effect = { REGION = world_middle_east_jerusalem }
+				}
+				#Arabia
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_africa_north_west
+								geographical_region = world_africa_west
+								geographical_region = world_africa_sahara_central
+								geographical_region = world_europe_south
+								geographical_region = world_steppe_central
+								geographical_region = world_steppe_west
+								geographical_region = world_steppe_tarim
+								geographical_region = world_india
+							}
+							NOT = { geographical_region = world_middle_east_arabia }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_middle_east_arabia }
+					save_random_region_province_effect = { REGION = world_middle_east_arabia }
+				}
+				#Persia
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_africa_north_east
+								geographical_region = world_africa_east
+								geographical_region = world_india_bengal
+								geographical_region = world_india_deccan
+								geographical_region = world_europe_south
+								geographical_region = world_steppe_east
+								geographical_region = world_steppe_west
+								geographical_region = world_siberia
+							}
+							NOT = { geographical_region = world_middle_east_persia }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_middle_east_persia }
+					save_random_region_province_effect = { REGION = world_middle_east_persia }
+				}
+				# India - Deccan
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_burma
+								geographical_region = world_asia_indonesia
+								geographical_region = world_asia_southeast_mainland
+								geographical_region = world_middle_east_arabia
+								geographical_region = world_middle_east_persia
+								geographical_region = world_steppe_tarim
+								geographical_region = world_tibet
+								geographical_region = world_africa_east
+							}
+							NOT = { geographical_region = world_india_deccan }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_india_deccan }
+					save_random_region_province_effect = { REGION = world_india_deccan }
+				}
+				# India - Rajastan
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_burma
+								geographical_region = world_middle_east_arabia
+								geographical_region = world_middle_east_jerusalem
+								geographical_region = world_asia_minor
+								geographical_region = world_steppe_tarim
+								geographical_region = world_steppe_central
+								geographical_region = world_africa_east
+							}
+							NOT = { geographical_region = world_india_rajastan }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_india_rajastan }
+					save_random_region_province_effect = { REGION = world_india_rajastan }
+				}
+				# India - Bengal
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_indonesia
+								geographical_region = world_asia_southeast_mainland
+								geographical_region = world_middle_east_persia
+								geographical_region = world_steppe_tarim
+							}
+							NOT = { geographical_region = world_india_bengal }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_india_bengal }
+					save_random_region_province_effect = { REGION = world_india_bengal }
+				}
+				#North East Africa
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_europe_west
+								geographical_region = world_europe_east
+								geographical_region = world_africa_west
+								geographical_region = world_middle_east_persia
+								geographical_region = world_steppe_west
+							}
+							NOT = { geographical_region = world_africa_north_east }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_africa_north_east }
+					save_random_region_province_effect = { REGION = world_africa_north_east }
+				}
+				#North West Africa
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_europe_east
+								geographical_region = world_europe_south_east
+								geographical_region = world_europe_west_francia
+								geographical_region = world_europe_west_germania
+								geographical_region = world_asia_minor
+								geographical_region = world_middle_east_jerusalem
+								geographical_region = world_middle_east_arabia
+								geographical_region = world_africa_west
+							}
+							NOT = { geographical_region = world_africa_north_west }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_africa_north_west }
+					save_random_region_province_effect = { REGION = world_africa_north_west }
+				}
+				#West Africa
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_africa_east
+								geographical_region = world_africa_north_east
+							}
+							NOT = { geographical_region = world_africa_west }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_africa_west }
+					save_random_region_province_effect = { REGION = world_africa_west }
+				}
+				#East Africa
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_africa_north_west
+								geographical_region = world_africa_west
+								geographical_region = world_middle_east_persia
+								geographical_region = world_india_deccan
+								geographical_region = world_india_rajastan
+							}
+							NOT = { geographical_region = world_africa_east }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_africa_east }
+					save_random_region_province_effect = { REGION = world_africa_east }
+				}
+				#West Sahara
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_africa_north_west
+								geographical_region = world_africa_west
+							}
+							NOT = { geographical_region = world_africa_sahara }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_africa_sahara_west }
+					save_random_region_province_effect = { REGION = world_africa_sahara_west }
+				}
+				#Central Sahara
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_africa_north
+								geographical_region = world_africa_west
+							}
+							NOT = { geographical_region = world_africa_sahara }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_africa_sahara_central }
+					save_random_region_province_effect = { REGION = world_africa_sahara_central }
+				}
+				#Siberia
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_steppe_west
+								geographical_region = world_steppe_central
+								geographical_region = world_steppe_east
+							}
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_siberia }
+					save_random_region_province_effect = { REGION = world_siberia }
+				}
+				#West Steppe
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_steppe_central
+								geographical_region = world_europe_east
+								geographical_region = world_asia_minor
+								geographical_region = world_siberia
+							}
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_steppe_west }
+					save_random_region_province_effect = { REGION = world_steppe_west }
+				}
+				#Central Steppe
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_minor
+								geographical_region = world_middle_east_arabia
+								geographical_region = world_siberia
+								geographical_region = world_europe_east
+								geographical_region = world_india_rajastan
+								geographical_region = world_tibet
+								geographical_region = world_asia_china
+								geographical_region = world_asia_north_east
+							}
+							NOT = { geographical_region = world_steppe_central }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_steppe_central }
+					save_random_region_province_effect = { REGION = world_steppe_central }
+				}
+				#East Steppe
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_steppe_west
+								geographical_region = world_steppe_tarim
+								geographical_region = world_tibet
+								geographical_region = world_asia_korea
+								geographical_region = world_asia_japan
+								geographical_region = world_asia_sakhalin_hokkaido
+							}
+							NOT = { geographical_region = world_steppe_east }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_steppe_east }
+					save_random_region_province_effect = { REGION = world_steppe_east }
+				}
+				#Tarim
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_china
+								geographical_region = world_asia_minor
+								geographical_region = world_india_rajastan
+								geographical_region = world_india_bengal
+								geographical_region = world_middle_east_arabia
+								geographical_region = world_steppe_east
+								geographical_region = world_steppe_west
+								geographical_region = world_burma
+								geographical_region = world_asia_southeast_mainland
+								geographical_region = world_siberia
+							}
+							NOT = { geographical_region = world_steppe_tarim }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_steppe_tarim }
+					save_random_region_province_effect = { REGION = world_steppe_tarim }
+				}
+				#Tibet
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_china
+								geographical_region = world_burma
+								geographical_region = world_middle_east_persia
+								geographical_region = world_steppe_tarim
+								geographical_region = world_india
+							}
+							NOT = { geographical_region = world_tibet }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_tibet }
+					save_random_region_province_effect = { REGION = world_tibet }
+				}
+				# Burma
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_china
+								geographical_region = world_asia_southeast_mainland
+								geographical_region = world_india
+								geographical_region = world_tibet
+							}
+							NOT = { geographical_region = world_burma }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_burma }
+					save_random_region_province_effect = { REGION = world_burma }
+				}
+				# Mainland SE Asia
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_borneo
+								geographical_region = world_asia_china
+								geographical_region = world_asia_indonesia
+								geographical_region = world_asia_philippines
+								geographical_region = world_india_deccan
+								geographical_region = world_india_bengal
+								geographical_region = world_burma
+								geographical_region = world_india
+								geographical_region = world_tibet
+							}
+							NOT = { geographical_region = world_asia_southeast_mainland }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_southeast_mainland }
+					save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+				}
+				# Philippines
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_borneo
+								geographical_region = world_asia_china
+								geographical_region = world_asia_japan
+								geographical_region = world_asia_korea
+								geographical_region = world_asia_southeast_mainland
+								geographical_region = world_asia_southeast_islands
+							}
+							NOT = { geographical_region = world_asia_philippines }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_philippines }
+					save_random_region_province_effect = { REGION = world_asia_philippines }
+				}
+				# Borneo
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_china
+								geographical_region = world_asia_southeast_mainland
+								geographical_region = world_asia_southeast_islands
+							}
+							NOT = { geographical_region = world_asia_borneo }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_borneo }
+					save_random_region_province_effect = { REGION = world_asia_borneo }
+				}
+				# Sulawesi-Maluku
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_southeast_islands
+							}
+							NOT = { geographical_region = world_asia_sulawesi_maluku }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_sulawesi_maluku }
+					save_random_region_province_effect = { REGION = world_asia_sulawesi_maluku }
+				}
+				# Indonesia
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_china
+								geographical_region = world_india_deccan
+								geographical_region = world_india_bengal
+								geographical_region = world_asia_southeast_mainland
+								geographical_region = world_asia_southeast_islands
+							}
+							NOT = { geographical_region = world_asia_indonesia }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_indonesia }
+					save_random_region_province_effect = { REGION = world_asia_indonesia }
+				}
+				#China
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_japan
+								geographical_region = world_asia_korea
+								geographical_region = world_asia_north_east
+								geographical_region = world_asia_philippines
+								geographical_region = world_asia_southeast_mainland
+								geographical_region = world_steppe_east
+								geographical_region = world_steppe_tarim
+								geographical_region = world_tibet
+							}
+							NOT = { geographical_region = world_asia_china }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_china }
+					save_random_region_province_effect = { REGION = world_asia_china }
+				}
+				#Japan
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_china
+								geographical_region = world_asia_korea
+								geographical_region = world_asia_philippines
+								geographical_region = world_asia_north_east
+								geographical_region = world_asia_sakhalin_hokkaido
+							}
+							NOT = { geographical_region = world_asia_japan }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_japan }
+					save_random_region_province_effect = { REGION = world_asia_japan }
+				}
+				#Korea
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_china
+								geographical_region = world_asia_japan
+								geographical_region = world_asia_philippines
+								geographical_region = world_asia_north_east
+								geographical_region = world_asia_sakhalin_hokkaido
+								geographical_region = world_steppe_east
+							}
+							NOT = { geographical_region = world_asia_korea }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_korea }
+					save_random_region_province_effect = { REGION = world_asia_korea }
+				}
+				#Sakhalin-Hokkaido
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_japan
+								geographical_region = world_asia_korea
+								geographical_region = world_asia_north_east
+							}
+							NOT = { geographical_region = world_asia_sakhalin_hokkaido }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_sakhalin_hokkaido }
+					save_random_region_province_effect = { REGION = world_asia_sakhalin_hokkaido }
+				}
+				#North East Asia
+				10 = {
+					trigger = {
+						$ORIGIN$ = {
+							OR = {
+								geographical_region = world_asia_china
+								geographical_region = world_asia_japan
+								geographical_region = world_asia_korea
+								geographical_region = world_asia_sakhalin_hokkaido
+								geographical_region = world_steppe_east
+							}
+							NOT = { geographical_region = world_asia_north_east }
+						}
+					}
+					merchant_find_curio_poi_modifier = { REGION = world_asia_north_east }
+					save_random_region_province_effect = { REGION = world_asia_north_east }
+				}
+			}
+		}
+		else = {
+			# world_europe
+			if = {
+				limit = { $ORIGIN$ = { geographical_region = world_europe } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_north }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_west }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_north }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_iberia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_germania }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_francia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_south }
+							}
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_asia_minor
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_asia_minor } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india_rajastan }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_germania }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_south }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_africa
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_africa } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_west }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_north }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_iberia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_south }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_middle_east
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_middle_east } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india_rajastan }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_iberia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_germania }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_south }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_steppe_central/tarim
+			else_if = {
+				limit = {
+					$ORIGIN$ = {
+						OR = {
+							geographical_region = world_steppe_central
+							geographical_region = world_steppe_tarim
+						}
+					}
+				}
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_steppe_west
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_steppe_west } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_west }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_iberia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_siberia }
+							}
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_steppe_east
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_steppe_east } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india_rajastan }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_sakhalin_hokkaido }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_siberia }
+							}
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_siberia
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_siberia } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_tibet
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_tibet } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india_rajastan }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_india
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_india } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_indonesia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_indonesia }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india_rajastan }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# world_asia
+			else_if = {
+				limit = { $ORIGIN$ = { geographical_region = world_asia } }
+				random_list = {
+					# Lion
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_arabia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+						}
+					}
+					# Tiger
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_borneo }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_sulawesi_maluku }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_indonesia }
+							}
+						}
+					}
+					# Leopard
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_borneo }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_sulawesi_maluku }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_indonesia }
+							}
+						}
+					}
+					# Caracal
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_india_rajastan }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+						}
+					}
+					# Lynx
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_sakhalin_hokkaido }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+						}
+					}
+					# Bear
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+
+						}
+					}
+					# Elephant
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+			# Fallback
+			else = {
+				random_list = {
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lion }
+						set_variable = { name = target_animal_type value = flag:lion years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+						}
+					}
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = tiger }
+						set_variable = { name = target_animal_type value = flag:tiger years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east_persia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_borneo }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_sulawesi_maluku }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_indonesia }
+							}
+						}
+					}
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = leopard }
+						set_variable = { name = target_animal_type value = flag:leopard years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_southeast_mainland }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_borneo }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_sulawesi_maluku }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_indonesia }
+							}
+						}
+					}
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = caracal }
+						set_variable = { name = target_animal_type value = flag:caracal years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india_rajastan }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+						}
+					}
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = lynx }
+						set_variable = { name = target_animal_type value = flag:lynx years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_north }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_china }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_korea }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_sakhalin_hokkaido }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_north_east }
+							}
+						}
+					}
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = bear }
+						set_variable = { name = target_animal_type value = flag:bear years = 3 }
+						random_list = {
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_north }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_iberia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_germania }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_west_francia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_europe_south }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_africa_north_west }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_middle_east }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia_minor }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_steppe }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_tibet }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_asia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_siberia }
+							}
+							10 = {
+								save_random_region_province_effect = { REGION = world_india }
+							}
+
+						}
+					}
+					10 = {
+						luxury_contract_owned_creature_modifier = { TYPE = elephant }
+						set_variable = { name = target_animal_type value = flag:elephant years = 3 }
+						save_random_region_province_effect = { REGION = world_innovation_elephants }
+					}
+				}
+			}
+		}
+	}
+}
+
+luxury_contract_task_contract_scopes_effect = {
+	# save contract tier
+	random_list = {
+		10 = {
+			trigger = { scope:destination.county.prosperity_level < 25 }
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_county
+			}
+		}
+		10 = {
+			trigger = { scope:destination.county.prosperity_level >= 10 }
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_duchy
+			}
+		}
+		10 = {
+			trigger = { scope:destination.county.prosperity_level >= 25 }
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_kingdom
+			}
+		}
+	}
+}

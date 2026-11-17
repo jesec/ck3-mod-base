@@ -7,6 +7,19 @@ on_alliance_added = {
 		scope:first = { update_embassies_effect = yes }
 		scope:second = { update_embassies_effect = yes }
 
+		league_pair_cohesion_effect = {
+			FIRST = scope:first
+			SECOND = scope:second
+			AMOUNT = 2
+		}
+
+		gg_reconciliation_catalyst_effect = {
+			ACTOR = scope:first
+			RECIPIENT = scope:second
+			CATALYST = catalyst_gg_cross_party_alliance
+			ONCE_A_YEAR = yes
+		}
+
 		# If players are fighting a war, let them know new allies can be called in soon.
 		if = {
 			limit = {
@@ -298,6 +311,12 @@ on_alliance_broken = {
 		# Embassies modifier removal:
 		scope:first = { update_embassies_effect = yes }
 		scope:second = { update_embassies_effect = yes }
+
+		league_pair_cohesion_effect = {
+			FIRST = scope:first
+			SECOND = scope:second
+			AMOUNT = -3
+		}
 
 		# Remove the opinion modifier from having proposed an alliance via the perk:
 		scope:first = { try_remove_perk_alliance_opinion_effect = { TARGET = scope:second } }

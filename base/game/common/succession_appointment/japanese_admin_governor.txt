@@ -20,12 +20,12 @@
 			add = appointment_score_non_military
 			add = appointment_score_non_merit
 			add = appointment_score_governor
-
+			
 			# PETITION
 			if = {
 				limit = {
 					exists = house.var:petition_liege_appointment_support
-					top_liege.primary_title.var:administrative_ui_special_title.holder ?= house.var:petition_liege_appointment_support
+					ceremonial_liege ?= house.var:petition_liege_appointment_support
 					NOT = { scope:title = top_liege.primary_title } # Only governorships
 				}
 				multiply = {
@@ -43,14 +43,6 @@
 				add = {
 					value = -1000
 					desc = ceremonial_liege_desc
-				}
-			}
-			# PERKS
-			if = {
-				limit = { has_title = title:e_japan }
-				add = {
-					value = -1000
-					desc = is_kampaku_tt
 				}
 			}
 			# Age
@@ -156,11 +148,12 @@ japanese_military_governor = {
 					desc = PRESTIGE_LEVEL_CONCEPT
 				}
 			}
+
 			# PETITION
 			if = {
 				limit = {
 					exists = house.var:petition_liege_appointment_support
-					top_liege.primary_title.var:administrative_ui_special_title.holder ?= house.var:petition_liege_appointment_support
+					ceremonial_liege ?= house.var:petition_liege_appointment_support
 					NOT = { scope:title = top_liege.primary_title } # Only governorships
 				}
 				multiply = {

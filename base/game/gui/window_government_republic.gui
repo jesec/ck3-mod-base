@@ -1,0 +1,2390 @@
+﻿window = {
+	name = "government_republic_window"
+	widgetid = "government_republic_window"
+	parentanchor = top|right
+	layer = windows_layer
+	movable = no
+	allow_outside = yes
+
+	visible = "[And( IsGameViewOpen('government_republic'), IsDefaultGUIMode )]"
+
+	datacontext = "[GovernmentRepublicWindow.GetTopRepublicTitle]"
+	datacontext = "[GovernmentRepublicWindow.GetTopRepublicRuler]"
+
+	using = Window_Size_MainTab
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+		using = Window_Position_MainTab
+
+		on_start = "[GetVariableSystem.Set('government_republic_assembly', 'decrees')]"
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+		using = Window_Position_MainTab_Hide
+		on_start = "[CloseGameView( 'assembly_window' )]"
+		on_finish = "[GetVariableSystem.Clear('change_republic_type')]"
+	}
+
+	state = {
+		name = auto_set_tab
+		trigger_when = "[Not(GetVariableSystem.Exists('government_republic_tab'))]"
+		on_finish = "[GetVariableSystem.Set('government_republic_tab', 'overview')]"
+	}
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin_top = 30
+		margin_bottom = 12
+		margin_right = 13
+
+		widget = {
+			size = { 100% 100% }
+
+			vbox = {
+				spacing = 5
+				using = Window_Margins
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = -10
+					margin_bottom = -10
+
+					header_pattern = {
+						layoutpolicy_horizontal = expanding
+						allow_outside = yes
+
+						blockoverride "header_text"
+						{
+							text = "REPUBLIC_GOVERNMENT_HEADER"
+						}
+
+						blockoverride "button_close"
+						{
+							onclick = "[GovernmentRepublicWindow.Close]"
+							onclick = "[CloseGameView( 'assembly_window' )]"
+						}
+					}
+
+
+				}
+
+				hbox = {
+					name = "republic_tabs"
+					layoutpolicy_horizontal = expanding
+
+					button_tab = {
+						name = "republic_overview_tab_tutorial_uses_this"
+						shortcut = "tab_1"
+
+						onclick = "[GetVariableSystem.Set('government_republic_tab', 'overview')]"
+						down = "[GetVariableSystem.HasValue('government_republic_tab', 'overview')]"
+						alwaystransparent = "[GetVariableSystem.HasValue('government_republic_tab', 'overview')]"
+
+						blockoverride "tab_label"
+						{
+							text = "republic_tab_overview"
+							max_width = 220
+						}
+
+						blockoverride "icon_visible" {}
+
+						blockoverride "tab_icon"
+						{
+							texture = "gfx/interface/icons/flat_icons/outliner.dds"
+							down = "[GetVariableSystem.HasValue('government_republic_tab', 'overview')]"
+						}
+					}
+
+					button_tab = {
+						name = "republic_assembly_tab_tutorial_uses_this"
+						shortcut = "tab_2"
+
+						onclick = "[GetVariableSystem.Set('government_republic_tab', 'assembly')]"
+						down = "[GetVariableSystem.HasValue('government_republic_tab', 'assembly')]"
+						alwaystransparent = "[GetVariableSystem.HasValue('government_republic_tab', 'assembly')]"
+
+						blockoverride "tab_label"
+						{
+							alwaystransparent = yes
+							text = "republic_tab_assembly"
+							max_width = 220
+						}
+
+						blockoverride "icon_visible" {}
+
+						blockoverride "tab_icon"
+						{
+							texture = "gfx/interface/icons/flat_icons/council.dds"
+							down = "[GetVariableSystem.HasValue('government_republic_tab', 'assembly')]"
+						}
+					}
+
+					button_tab = {
+						name = "republic_families_tab_tutorial_uses_this"
+						shortcut = "tab_3"
+
+						onclick = "[GetVariableSystem.Set('government_republic_tab', 'families')]"
+						down = "[GetVariableSystem.HasValue('government_republic_tab', 'families')]"
+						alwaystransparent = "[GetVariableSystem.HasValue('government_republic_tab', 'families')]"
+
+						blockoverride "tab_label"
+						{
+							text = "republic_tab_families"
+							max_width = 220
+						}
+
+						blockoverride "icon_visible" {}
+
+						blockoverride "tab_icon"
+						{
+							texture = "gfx/interface/icons/flat_icons/multiple_people.dds"
+							down = "[GetVariableSystem.HasValue('government_republic_tab', 'families')]"
+						}
+					}
+				}
+
+				vbox_republic_overview_tab = {
+					widgetid = "republic_overview_body_tutorial_uses_this"
+					visible = "[GetVariableSystem.HasValue('government_republic_tab', 'overview')]"
+					layoutpolicy_vertical = expanding
+					layoutpolicy_horizontal = expanding
+				}
+
+				vbox_republic_assembly_tab = {
+					widgetid = "republic_assembly_body_tutorial_uses_this"
+					visible = "[GetVariableSystem.HasValue('government_republic_tab', 'assembly')]"
+					layoutpolicy_vertical = expanding
+					layoutpolicy_horizontal = expanding
+				}
+
+				vbox_republic_families_tab = {
+					widgetid = "republic_families_body_tutorial_uses_this"
+					visible = "[GetVariableSystem.HasValue('government_republic_tab', 'families')]"
+					layoutpolicy_vertical = expanding
+					layoutpolicy_horizontal = expanding
+				}
+			}
+		}
+	}
+
+	window_instant_law_picker = {
+		blockoverride "instant_law_visible"
+		{
+			visible = "[GetVariableSystem.Exists('change_republic_type')]"
+		}
+
+		blockoverride "instant_law_on_hide"
+		{
+			on_finish = "[GetVariableSystem.Clear('selected_republic_type')]"
+		}
+
+		blockoverride "instant_law_common_desc"
+		{
+			text = "SHORT_REPUBLIC_ADMINISTRATION_DESC"
+		}
+
+		blockoverride "header_text" {
+			datacontext = "[GovernmentRepublicWindow.GetRepublicTypeLaws]"
+			text = "MRW_CHANGE_LAW_TT"
+		}
+		blockoverride "button_close" {
+			onclick = "[GetVariableSystem.Clear('change_republic_type')]"
+		}
+
+		blockoverride "instant_law_laws_datamodel"
+		{
+			datacontext = "[GovernmentRepublicWindow.GetRepublicTypeLaws]"
+			datamodel = "[GuiLawGroup.GetLaws]"
+		}
+
+		blockoverride "instant_law_item_visible"
+		{
+			visible = "[EqualTo_int32( PdxGuiWidget.GetIndexInDataModel, '(int32)0' )]"
+		}
+
+		blockoverride "instant_law_selected_law_check"
+		{
+			visible = "[Or( EqualTo_string( GuiLaw.GetLaw.GetKey, GetVariableSystem.Get( 'selected_republic_type' ) ), And(Not(GetVariableSystem.Exists( 'selected_republic_type') ), GuiLaw.IsEnacted ))]"
+		}
+
+		blockoverride "instant_law_cancel_button"
+		{
+			onclick = "[GetVariableSystem.Clear('change_republic_type')]"
+		}
+
+		blockoverride "instant_law_confirm_button"
+		{
+			onclick = "[GetVariableSystem.Clear('change_republic_type')]"
+			text = "MRW_CHANGE_LAW"
+			tooltip_when_disabled = "[GuiLaw.GetCanEnactDescription][AddLocalizationIf( Not( GovernmentRepublicWindow.IsTopRuler( GetPlayer.Self ) ), 'REPUBLIC_CHANGE_TYPE_NOT_HEAD_TT' )]"
+		}
+
+		blockoverride "instant_law_item_button"
+		{
+			alwaystransparent = "[GetVariableSystem.HasValue('selected_republic_type', GuiLaw.GetLaw.GetKey)]"
+			down = "[GetVariableSystem.HasValue('selected_republic_type', GuiLaw.GetLaw.GetKey)]"
+			onclick = "[GetVariableSystem.Set('selected_republic_type', GuiLaw.GetLaw.GetKey)]"
+		}
+
+		blockoverride "instant_law_item_extra_space"
+		{
+			visible = "[And( EqualTo_int32( PdxGuiWidget.GetIndexInDataModel, '(int32)3' ), EqualTo_int32( GetDataModelSize( GuiLawGroup.GetLaws ), '(int32)5' ) )]"
+		}
+	}
+
+}
+
+types RepublicDataTypes
+{
+	### Assembly (tab)
+	#
+	type vbox_republic_assembly_tab = vbox {
+
+		using = Animation_Tab_Switch
+		text_single = {
+			visible = "[EqualTo_int32(GovernmentRepublicWindow.GetTotalAssemblyCount, '(int32)0')]"
+			text = "REPUBLIC_ASSEMBLY_NO_MEMBERS"
+			margin = { 0 8 }
+			align = nobaseline
+			default_format = "#low;italic"
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			margin = { 10 4 }
+			margin_top = 8
+			spacing = 8
+
+			background = {
+				spriteType = Corneredtiled
+				alpha = 0.3
+				texture = "gfx/interface/colors/gold.dds"
+				using = Mask_Rough_Edges
+
+				margin_top = 3
+
+				modify_texture = {
+					name = "mask"
+					texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_inverse.dds"
+					spriteborder = { 0 0 }
+					blend_mode = alphamultiply
+				}
+
+				modify_texture = {
+					name = "mask"
+					texture = "gfx/interface/component_masks/mask_fade_halfcircle_inverted.dds"
+					spriteborder = { 0 0 }
+					blend_mode = alphamultiply
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/patterns/mask_pattern_floral.dds"
+					spriteType = Corneredtiled
+					blend_mode = alphamultiply
+					alpha = 0.8
+					texture_density = 2
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/colors/gold.dds"
+					blend_mode = normal
+
+					block "can_not_create"
+					{
+					}
+				}
+			}
+
+			vbox = {
+				name = "republic_assembly_ambitions_tutorial_uses_this"
+				visible = "[GreaterThan_int32(GovernmentRepublicWindow.GetTotalAssemblyCount, '(int32)0')]"
+				layoutpolicy_horizontal = expanding
+				spacing = 8
+
+				text_label_center = {
+					text = "REPUBLIC_AMBITIONS_HEADER"
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 12
+
+					widget_republic_ambitions = {
+						layoutpolicy_horizontal = expanding
+					}
+
+					button_standard = {
+						size = { 280 44 }
+
+						onclick = "[GovernmentRepublicWindow.ShowAssembly]"
+						tooltip = VIEW_ASSEMBLY_MEMBERS_TT
+
+						using = tooltip_ws
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 12
+							expand = {}
+
+							text_single = {
+								text = "VIEW_ASSEMBLY_MEMBERS"
+								align = nobaseline
+								default_format = "#clickable"
+							}
+
+							text_single = {
+								text = "[GovernmentRepublicWindow.GetTotalAssemblyCount]"
+								align = nobaseline
+								default_format = "#clickable"
+							}
+
+							expand = {}
+						}
+					}
+
+				}
+			}
+
+			hbox = {
+				datacontext = "[GovernmentRepublicWindow.GetOngoingVotingSession]"
+				layoutpolicy_horizontal = expanding
+
+				hbox = {
+					visible = "[GovernmentRepublicWindow.HasOngoingVotingSession]"
+					layoutpolicy_horizontal = expanding
+					margin = { 0 4 }
+					spacing = 12
+
+					button_primary = {
+						name = "view_voting_session"
+						layoutpolicy_horizontal = expanding
+						size = { 0 76 }
+
+						onclick = "[ToggleGameViewData( 'law_change', VotingSession.Self )]"
+						down = "[IsGameViewOpen('law_change')]"
+
+						tooltipwidget = voting_session_tooltip
+						using = tooltip_se
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							margin = { 10 0 }
+							margin_right = 12
+							spacing = 8
+
+							widget = {
+								size = { 62 62 }
+
+								icon = {
+									texture = "gfx/interface/icons/activity_phases/button_activity_base.dds"
+									size = { 100% 100% }
+								}
+
+								icon = {
+									name = "progress_frame"
+									texture = "gfx/interface/progressbars/action_progress_frame.dds"
+									size = { 100% 100% }
+								}
+
+								progresspie = {
+									size = { 54 54 }
+									parentanchor = center
+
+									texture = "gfx/interface/progressbars/action_progress_thick.dds"
+
+									framesize = { 128 128 }
+									frame = 2
+
+									min = 0
+									max = 1
+									value = "[VotingSession.GetProgress]"
+								}
+
+								# TODO_GDP_ART: Appropriate voting icon?
+								icon = {
+									size = { 30 30 }
+									texture = "gfx/interface/icons/voting_session.dds"
+									alwaystransparent = yes
+									parentanchor = center
+								}
+
+								icon = {
+									visible = "[VotingSession.IsApprovingChange( GetPlayer )]"
+									parentanchor = bottom|hcenter
+									block "icon_size"
+									{
+										size = { 30% 30% }
+									}
+
+									texture = "gfx/interface/icons/laws/law_approve.dds"
+								}
+
+								icon = {
+									visible = "[VotingSession.IsRejectingChange( GetPlayer )]"
+									parentanchor = bottom|hcenter
+									block "icon_size"
+									{
+										size = { 30% 30% }
+									}
+
+									texture = "gfx/interface/icons/laws/law_dissent.dds"
+								}
+
+							}
+
+							text_multi = {
+								text = "REPUBLIC_WINDOW_VOTING_SESSION_IN_PROGRESS"
+								default_format = "#high" # TODO_CD_TGP: investigate why this was debug pink
+								max_width = 290
+								autoresize = yes
+								alwaystransparent = yes
+							}
+
+							expand = {}
+
+							widget_assembly_approval = {
+								blockoverride "approval_text"
+								{
+									text = REPUBLIC_WINDOW_VOTING_SESSION_APPROVAL
+								}
+							}
+						}
+					}
+				}
+
+				text_multi = {
+					visible = "[Not( GovernmentRepublicWindow.HasOngoingVotingSession )]"
+					text = "REPUBLIC_WINDOW_VOTING_NO_SESSION"
+					max_width = 280
+					autoresize = yes
+					margin_right = 5
+					default_format = "#weak"
+				}
+			}
+		}
+
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+
+			button_tab = {
+				onclick = "[GetVariableSystem.Set('government_republic_assembly', 'decrees')]"
+				down = "[GetVariableSystem.HasValue('government_republic_assembly', 'decrees')]"
+				shortcut = "sub_tab_1"
+
+				alwaystransparent = "[GetVariableSystem.HasValue('government_republic_assembly', 'decrees')]"
+
+				blockoverride "tab_label"
+				{
+					text = "REPUBLIC_WINDOW_DECREES_HEADER"
+					max_width = 130
+				}
+
+				blockoverride "icon_visible"
+				{
+					visible = no
+				}
+			}
+
+			button_tab = {
+				onclick = "[GetVariableSystem.Set('government_republic_assembly', 'laws')]"
+				down = "[GetVariableSystem.HasValue('government_republic_assembly', 'laws')]"
+				shortcut = "sub_tab_2"
+
+				alwaystransparent = "[GetVariableSystem.HasValue('government_republic_assembly', 'laws')]"
+
+				blockoverride "tab_label"
+				{
+					text = "REPUBLIC_WINDOW_LAWS"
+					max_width = 130
+				}
+
+				blockoverride "icon_visible"
+				{
+					visible = no
+				}
+			}
+		}
+
+		scrollbox = {
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+			blockoverride "scrollbox_content" {
+				vbox = {
+					layoutpolicy_horizontal = expanding
+
+					vbox = {
+						visible = "[GetVariableSystem.HasValue('government_republic_assembly', 'decrees')]"
+						layoutpolicy_horizontal = expanding
+						using = Animation_Tab_Switch
+
+						vbox_republic_decrees = {}
+					}
+
+					vbox = {
+						visible = "[GetVariableSystem.HasValue('government_republic_assembly', 'laws')]"
+						layoutpolicy_horizontal = expanding
+						spacing = 5
+						using = Animation_Tab_Switch
+
+						text_single = {
+							text = "REPUBLIC_WINDOW_LAW_EXPLAIN"
+							align = hcenter|nobaseline
+							default_format = "#weak"
+							layoutpolicy_horizontal = expanding
+							autoresize = no
+						}
+
+						text_label_left = {
+							layoutpolicy_horizontal = expanding
+							text = "REPUBLIC_WINDOW_ASSEMBLY"
+							margin_left = 15
+							align = left
+						}
+
+						flowcontainer = {
+							datamodel = "[GovernmentRepublicWindow.GetRepublicLaws]"
+							ignoreinvisible = yes
+							wrap_count = 2
+							spacing = 15
+
+							item = {
+								widget_republic_law = {
+									visible = "[And( GuiLawGroup.IsAvailable, GuiLawGroup.GetLawGroup.HasFlag( 'republican_assembly_law' ) )]"
+								}
+							}
+						}
+
+						text_label_left = {
+							layoutpolicy_horizontal = expanding
+							text = "REPUBLIC_WINDOW_REALM"
+							margin_left = 15
+							align = left
+						}
+
+						flowcontainer = {
+							datamodel = "[GovernmentRepublicWindow.GetRepublicLaws]"
+							ignoreinvisible = yes
+							wrap_count = 2
+							spacing = 15
+
+							item = {
+								widget_republic_law = {
+									visible = "[And3( GuiLawGroup.IsAvailable, Not( GuiLawGroup.GetLawGroup.HasFlag( 'republic_tier_law' ) ), Not( GuiLawGroup.GetLawGroup.HasFlag( 'republican_assembly_law' ) ) )]"
+								}
+							}
+						}
+
+						text_label_left = {
+							layoutpolicy_horizontal = expanding
+							text = "REPUBLIC_WINDOW_SUCCESSION"
+							margin_left = 15
+							align = left
+						}
+
+						flowcontainer = {
+							datamodel = "[GovernmentRepublicWindow.GetSuccessionLaws]"
+							ignoreinvisible = yes
+							wrap_count = 2
+							spacing = 15
+
+							item = {
+								widget_republic_law = {}
+							}
+						}
+
+						flowcontainer = {
+							datamodel = "[GovernmentRepublicWindow.GetTitleLaws]"
+							ignoreinvisible = yes
+							wrap_count = 2
+
+							item = {
+								widget_republic_title_law = {}
+							}
+						}
+
+						# END TODO
+					}
+				}
+			}
+		}
+
+		expand = {}
+	}
+
+	### Overview (tab)
+	#
+	type vbox_republic_overview_tab = vbox {
+
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		spacing = 10
+		
+		
+		vbox = {
+			name = "republic_overview_rank_tutorial_uses_this"
+			background = {
+				spriteType = Corneredtiled
+				alpha = 0.25
+				texture = "gfx/interface/colors/gold.dds"
+				using = Mask_Rough_Edges
+
+				margin_top = 3
+				margin_left = 1
+				margin_right = -1
+				margin_bottom = 13
+
+				modify_texture = {
+					name = "mask"
+					texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_inverse.dds"
+					spriteborder = { 0 0 }
+					blend_mode = alphamultiply
+				}
+
+				modify_texture = {
+					name = "mask"
+					texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+					spriteborder = { 0 0 }
+					blend_mode = alphamultiply
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/patterns/mask_pattern_floral.dds"
+					spriteType = Corneredtiled
+					blend_mode = alphamultiply
+					alpha = 0.8
+					texture_density = 2
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/colors/gold.dds"
+					blend_mode = normal
+
+					block "can_not_create"
+					{
+					}
+				}
+			}
+			
+			flowcontainer = {
+				datamodel = "[GovernmentRepublicWindow.GetRepublicLaws]"
+				ignoreinvisible = yes
+				wrap_count = 4
+				margin_bottom = 10
+
+				item = {
+					widget = {
+						visible = "[GuiLawGroup.GetLawGroup.HasFlag( 'republic_tier_law' )]"
+						size = { 560 160 }
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+
+							text_label_center = {
+								datacontext = "[GuiLawGroup.GetCurrentLevel.GetLaw]"
+								text = "[Law.GetNameNoTooltip]"
+							}
+
+							fixedgridbox = {
+								name = "republic_tier_law_levels"
+
+								addcolumn = 120
+								addrow = 96
+								setitemsizefromcell = yes
+								datamodel_wrap = 5
+								flipdirection = yes
+								layoutanchor = bottomleft
+
+								datamodel = "[GuiLawGroup.GetLaws]"
+
+								item = {
+									button_republic_tier_law = {
+										datacontext = "[GuiLawGroup.GetLevelByIndex( PdxGuiWidget.GetIndexInDataModel ).GetLaw]"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			spacer = {
+				size = { 0 5 }
+			}
+			
+			button_standard = {
+				datacontext = "[GovernmentRepublicWindow.GetTopRepublicRuler.GetActiveLawInGroupWithFlag('republican_type_law')]"
+				onclick = "[GetVariableSystem.Toggle('change_republic_type')]"
+				down = "[GetVariableSystem.Exists('change_republic_type')]"
+
+				blockoverride "call_to_action" {
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						text = "CHANGE_REPUBLIC_ADMINISTRATION"
+						margin_bottom = 16
+					}
+				}
+
+				datacontext = "[Law.GetLawGroup]"
+				size = { 460 100 }
+
+				tooltipwidget = {
+					general_law_tooltip = {}
+				}
+
+				using = tooltip_ws
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					margin = { 8 8 }
+					margin_right = 16
+					spacing = 16
+
+					background = {
+						texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+						blend_mode = alphamultiply
+						mirror = horizontal
+						alpha = 0.3
+						margin = { -5 -5 }
+
+						modify_texture = {
+							texture = "gfx/interface/colors/black.dds"
+							blend_mode = normal
+						}
+					}
+
+					icon = {
+						size = { 90 90 }
+						texture = "[Law.GetIcon]"
+					}
+
+					vbox = {
+						layoutpolicy_vertical = expanding
+						layoutpolicy_horizontal = expanding
+						margin_bottom = 10
+
+						expand = {}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							text = "MY_REALM_WINDOW_LAW_GROUP_NAME"
+							autoresize = no
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							text = "[Law.GetNameNoTooltip]"
+							autoresize = no
+							using = Font_Size_Medium
+							default_format = "#clickable"
+						}
+
+						expand = {}
+					}
+
+					button_change = {
+						size = { 30 30 }
+						alwaystransparent = yes
+					}
+				}
+			}
+		
+		}
+		
+		
+
+		
+	
+		vbox = {
+			layoutpolicy_horizontal = expanding
+
+			vbox = {
+				name = "republic_overview_ruler_tutorial_uses_this"
+				layoutpolicy_horizontal = expanding
+				spacing = 8
+
+				background = {
+					using = Background_Area
+					margin = { 5 0 }
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					scissor = yes
+					allow_outside = no
+
+					background = {
+						texture = "gfx/interface/illustrations/event_scenes/councilchamber.dds"
+						using = Mask_Rough_Edges
+						alpha = 0.5
+						fittype = centercrop
+
+						modify_texture = {
+							texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+							blend_mode = alphamultiply
+							mirror = vertical
+						}
+					}
+
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						margin_top = 15
+						spacing = 40
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							margin = { 20 0 }
+							background = {
+								texture = "gfx/interface/component_decoration/banner_rep.dds"
+								margin = {14 14}
+								margin_right = 132
+
+								modify_texture = {
+									texture = "gfx/interface/component_masks/mask_fade_horizontal_extended.dds"
+									blend_mode = alphamultiply
+								}
+
+								modify_texture = {
+									texture = "gfx/interface/component_masks/mask_header_lines.dds"
+									blend_mode = alphamultiply
+									mirror = horizontal
+									alpha = 0.4
+								}
+							}
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								autoresize = no
+								text = "REPUBLIC_TITLE_RULER"
+								align = nobaseline
+							}
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								autoresize = no
+								text = "[Character.GetUINameNotMeNoTooltip]"
+								align = nobaseline
+							}
+
+						}
+
+						hbox = {
+							datacontext = "[GovernmentRepublicWindow.GetCapitalCounty]"
+
+							background = {
+								using = Background_Area_Dark
+								margin = { 10 10 }
+								margin_right = 20
+								alpha = 0.8
+							}
+
+							spacing = 5
+
+							icon_popular_opinion_level = {
+								size = { 50 50 }
+								datacontext = "[GovernmentRepublicWindow.AccessCapitalOpinionBar]"
+
+								tooltipwidget = {
+									county_opinion_cooltip = {
+										blockoverride "popular_opinion_monthly_breakdown_context"
+										{
+											datacontext = "[GovernmentRepublicWindow.GetCapitalMonthlyOpinionBreakdown]"
+										}
+										blockoverride "popular_opinion_base_breakdown_context"
+										{
+											datacontext = "[GovernmentRepublicWindow.GetCapitalBaseOpinionBreakdown]"
+										}
+									}
+								}
+								using = tooltip_se
+							}
+
+							vbox = {
+								text_single = {
+									text = "REPUBLIC_WINDOW_CAPITAL_POPULAR_OPINION"
+									align = nobaseline
+								}
+
+								text_single = {
+									text = "[GetPopularOpinionLevelNameNoTooltip( County.GetOpinionLevel )]"
+									default_format = "#high"
+									layoutpolicy_horizontal = expanding
+									autoresize = no
+									align = nobaseline
+								}
+							}
+						}
+
+						expand = {}
+					}
+
+					widget = {
+						size = { 200 180 }
+						allow_outside = no
+
+						portrait_button = {
+							parentanchor = top|hcenter
+							size = { 210 270 }
+							position = {0 -50}
+
+							using = portrait_base
+
+							portrait_texture = "[Character.GetAnimatedPortrait( 'environment_hud', 'camera_torso', 'war_over_win', PdxGetWidgetScreenSize( PdxGuiWidget.Self ) )]"
+							background_texture = "gfx/portraits/portrait_transparent.dds"
+							effectname = "NoHighlight"
+							texture = "gfx/portraits/portrait_transparent.dds"
+							mask = "gfx/portraits/portrait_mask_torso.dds"
+						}
+
+						portrait_status_icons = {
+							parentanchor = bottom|right
+							position = { -5 -5 }
+						}
+
+						coa_realm_small_crown = {
+							visible = "[Character.HasLandedTitles]"
+							parentanchor = bottom|left
+							position = { 5 -5 }
+						}
+					}
+
+					spacer = {
+						size = { 10 0 }
+					}
+				}
+				
+				hbox = {
+					visible = "[Character.HasRealmTermEndDate]"
+					layoutpolicy_horizontal = expanding
+					margin = { 4 0 }
+
+					progressbar_republic_term = {
+						value = "[Character.GetRealmTermProgressPercent]"
+					}
+				}
+
+				hbox_republic_top_candidate = {
+					datacontext = "[Title.GetHeir]"
+					datacontext = "[Character.GetHouse]"
+				}
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+			margin_bottom = 10
+
+			background = {
+				using = Background_Area
+				margin = { 5 0 }
+			}
+
+			text_label_center = {
+				layoutpolicy_horizontal = expanding
+				text = "[treasury|E]"
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+				margin_bottom = 10
+
+				flowcontainer = {
+					datamodel = "[GovernmentRepublicWindow.GetTreasuryLaws]"
+					ignoreinvisible = yes
+					wrap_count = 2
+
+					item = {
+						widget_republic_law = {}
+					}
+				}
+
+				button_standard = {
+					enabled = "[GovernmentRepublicWindow.IsTopRuler( GetPlayer.Self )]"
+					size = { 280 44 }
+
+					tooltip = "TREASURY_BUDGET_TT"
+					tooltip_when_disabled = "REPUBLIC_WINDOW_CANNOT_CHANGE_LAW"
+					onclick = "[OpenGameViewData( 'treasury_budget_change', GetPlayer.Self )]"
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 12
+
+						expand = {}
+
+						icon = {
+							size = { 32 32 }
+							texture = "gfx/interface/icons/icon_imperial_treasury.dds"
+						}
+
+						text_single = {
+							text = "MY_REALM_WINDOW_MANAGE_TREASURY_BUDGET"
+							align = nobaseline
+							default_format = "#clickable"
+						}
+						expand = {}
+					}
+				}
+			}
+		}
+
+		expand = {}
+	}
+
+	### Families (tab)
+	#
+	type vbox_republic_families_tab = vbox {
+		widget_republic_houses = {}
+		layoutpolicy_vertical = expanding
+		layoutpolicy_horizontal = expanding
+	}
+
+	# requires value
+	type progressbar_republic_term = progressbar_green {
+		layoutpolicy_horizontal = expanding
+		size = { 0 28 }
+
+		text_single = {
+			margin = { 10 0 }
+			autoresize = no
+			size = { 100% 22 }
+
+			block "term_text" {
+				text = "REPUBLIC_TERM_END_DATE"
+			}
+			default_format = "#weak;weak_glow"
+			align = center
+		}
+	}
+
+	## Realm Laws
+	#
+	type widget_republic_law = widget_my_realm_law_item {
+		visible = "[And( GuiLawGroup.IsAvailable, Not( GuiLawGroup.GetLawGroup.HasFlag( 'republic_tier_law' ) ) )]"
+		datacontext = "[GuiLawGroup.GetCurrentLevel.GetLaw]"
+
+		blockoverride "law_name" {
+			text = "[Law.GetName]"
+		}
+
+		blockoverride "law_enabled" {
+			enabled = "[LawGroup.CanProposeNewLaw( GetPlayer )]"
+		}
+
+		blockoverride "law_number_visible" {
+			visible = "[LawGroup.CanProposeNewLaw( GetPlayer )]"
+		}
+	}
+
+	## Republic Types
+	#
+	type flowcontainer_republic_type_law = flowcontainer {
+		ignoreinvisible = yes
+
+		#spacing to make a nice layout for 5 options
+		widget = {
+			visible = "[EqualTo_int32( PdxGuiWidget.GetIndexInDataModel, '(int32)3' )]"
+			size = {80 0}
+		}
+
+		button_standard_clean = {
+			enabled = "[Or(GuiLaw.CanEnact, GuiLaw.IsEnacted)]"
+			datacontext = "[GuiLaw.GetLaw]"
+			datacontext = "[Law.GetLawGroup]"
+
+			background = {
+				using = Background_Area_Dark
+				alpha = 1.2
+
+				margin = { 8 4 }
+			}
+
+			tooltipwidget = {
+				pass_law_tooltip = {}
+			}
+			tooltip_offset = { 0 40 }
+			using = tooltip_ws
+			size = { 160 160 }
+
+			down = "[GuiLaw.IsEnacted]"
+			onclick = "[GuiLaw.Enact]"
+
+			icon = {
+				parentanchor = center
+				size = { 155 155 }
+				texture = "[Law.GetIcon]"
+				widget = {
+					parentanchor = bottom
+					size = { 100% 30 }
+
+					background = {
+						using = Background_Area_Dark
+					}
+
+					text_single = {
+						parentanchor = center
+						position = { 3 -2 }
+
+						text = "[Law.GetNameNoTooltip]"
+						default_format = "#high;EMP"
+						max_width = 150
+
+						margin = { 5 0 }
+					}
+				}
+
+				highlight_icon = {
+					parentanchor = center
+					size = { 160 160 }
+
+					texture = "gfx/interface/skinned/tooltip_frame.dds"
+
+					modify_texture = {
+						visible = "[GuiLaw.IsEnacted]"
+						texture = "gfx/interface/colors/gold_darker.dds"
+					}
+				}
+			}
+			selection_glow = {
+				visible = "[GuiLaw.IsEnacted]"
+			}
+		}
+
+	}
+
+	type button_republic_tier_law = button {
+		size = { 125 125 }
+		allow_outside = yes
+
+		down = "[GuiLaw.IsEnacted]"
+		onclick = "[GuiLaw.Enact]"
+		enabled = "[Or( GuiLaw.CanEnact, GuiLaw.IsEnacted )]"
+
+		tooltipwidget = {
+			pass_law_tooltip = {}
+		}
+		tooltip_offset = { 0 40 }
+
+		using = tooltip_ws
+
+		icon = {
+			visible = "[GuiLaw.IsEnacted]"
+			parentanchor = center
+			size = { 98 98 }
+
+			texture = "gfx/interface/icons/flat_icons/circle.dds"
+
+			using = Animation_Glow_Pulse
+
+			glow = {
+				glow_radius = 16
+				using = Glow_Standard
+				using = Color_Bright_Yellow
+			}
+		}
+
+		icon_round_button_base = {
+			parentanchor = center
+			size = { 98 98 }
+		}
+
+		highlight_icon = {
+			visible = "[GuiLaw.IsEnacted]"
+			parentanchor = center
+			size = { 110 110 }
+
+			texture = "gfx/interface/window_realm/merchant_frame_active.dds"
+		}
+
+		highlight_icon = {
+			parentanchor = center
+			size = { 90 90 }
+			texture = "[Law.GetIcon]"
+		}
+
+		widget = {
+			parentanchor = bottom
+			position = { 0 3 }
+			size = { 94 16 }
+			allow_outside = yes
+
+			flowcontainer = {
+				parentanchor = center
+				position = { 13 0 }
+				spacing = 9
+				allow_outside = yes
+
+				widget = {
+					size = { 10 10 }
+
+					icon_button_decorative = {
+						size = { 43 43 }
+						parentanchor = center
+						alwaystransparent = yes
+					}
+
+					icon = {
+						visible = "[EqualTo_int32( Law.GetIndexInLawGroup, '(int32)0')]"
+						parentanchor = center
+						texture = "gfx/interface/icons/county_crown.dds"
+						size = { 28 28 }
+					}
+
+					icon = {
+						visible = "[EqualTo_int32( Law.GetIndexInLawGroup, '(int32)1')]"
+						parentanchor = center
+						texture = "gfx/interface/icons/duchy_crown.dds"
+						size = { 28 28 }
+					}
+
+					icon = {
+						visible = "[EqualTo_int32( Law.GetIndexInLawGroup, '(int32)2')]"
+						parentanchor = center
+						texture = "gfx/interface/icons/kingdom_crown.dds"
+						size = { 28 28 }
+					}
+
+					icon = {
+						visible = "[EqualTo_int32( Law.GetIndexInLawGroup, '(int32)3')]"
+						parentanchor = center
+						texture = "gfx/interface/icons/empire_crown.dds"
+						size = { 28 28 }
+					}
+				}
+			}
+		}
+	}
+
+	## Title Laws
+	#
+	type widget_republic_title_law = widget {
+		datacontext = "[Law.GetLawGroup]"
+
+		size = { 246 55 }
+
+		background = {
+			using = Background_Area
+		}
+
+		hbox = {
+			margin = { 10 0 }
+
+			vbox = {
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					raw_text = "[LawGroup.GetNameSingular]:"
+					align = center
+					max_width = 170
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "[Law.GetName]"
+					align = center
+					default_format = "#high"
+					max_width = 170
+				}
+			}
+
+			button_round = {
+				visible = "[Not( LawGroup.HasFlag( 'treasury_budget_law' ) )]"
+				enabled = "[LawGroup.CanProposeNewLaw( GetPlayer )]"
+
+				size = { 30 30 }
+
+				onclick = "[OpenLawChangeWindow( GuiLawGroup.Self )]"
+
+				button_change = {
+					alwaystransparent = yes
+					size = { 24 24 }
+					parentanchor = center
+				}
+			}
+		}
+	}
+
+	type hbox_republic_family_head_portrait = hbox {
+		background = {
+			using = Background_Area
+			alpha = 1.2
+
+			margin = { 8 4 }
+		}
+
+		vbox = {
+			spacing = 2
+			layoutpolicy_vertical = expanding
+
+			expand = {}
+		}
+
+		block "portrait_head"
+		{
+			portrait_head_small = {
+				blockoverride "coa"
+				{
+
+				}
+			}
+		}
+	}
+
+	## Bars showing assembly member ambitions
+	# Index of ambition follows definition order in gdp_republic_ambitions.txt
+	# Starts from 0
+	#
+	# TODO_GDP: Better textures/masks to make bars look less garish.
+	# Maybe a better data structure instead of needing to add an entry for each ambition type
+	#
+	type widget_republic_ambitions = widget {
+		size = { 400 50 }
+
+		background = {
+			using = Background_Area_Dark
+			margin = {8 8}
+			alpha = 0.4
+		}
+
+		hbox = {
+			hbox_ambition_members_bar = {
+				datacontext = "[GetHouseAspiration( 'republic_no_ambition' )]"
+				visible = "[GreaterThanOrEqualTo_int32( GovernmentRepublicWindow.GetNoAmbitionMembers, '(int32)1' )]"
+				minimumsize = { 35 -1 }
+				layoutstretchfactor_horizontal = "[GovernmentRepublicWindow.GetNoAmbitionMembers]"
+				tooltip = REPUBLIC_AMBITION_NONE
+			}
+
+			hbox_ambition_members_bar = {
+				datacontext = "[GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)0' )]"
+				visible = "[GreaterThanOrEqualTo_int32( GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)0' ), '(int32)1')]"
+				minimumsize = { 35 -1 }
+				layoutstretchfactor_horizontal = "[GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)0' )]"
+				tooltip = REPUBLIC_AMBITION_COMMERCE
+
+				blockoverride "color" {
+					using = Color_Commerce
+				}
+			}
+
+			hbox_ambition_members_bar = {
+				datacontext = "[GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)1' )]"
+				visible = "[GreaterThanOrEqualTo_int32( GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)1' ), '(int32)1')]"
+				minimumsize = { 35 -1 }
+				layoutstretchfactor_horizontal = "[GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)1' )]"
+				tooltip = REPUBLIC_AMBITION_AGGRANDIZEMENT
+
+				blockoverride "color" {
+					using = Color_Aggrandizement
+				}
+			}
+
+			hbox_ambition_members_bar = {
+				datacontext = "[GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)2' )]"
+				visible = "[GreaterThanOrEqualTo_int32( GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)2' ), '(int32)1')]"
+				minimumsize = { 35 -1 }
+				layoutstretchfactor_horizontal = "[GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)2' )]"
+				tooltip = REPUBLIC_AMBITION_COMMUNAL
+
+				blockoverride "color" {
+					using = Color_Communal
+				}
+			}
+
+			hbox_ambition_members_bar = {
+				datacontext = "[GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)3' )]"
+				visible = "[GreaterThanOrEqualTo_int32( GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)3' ), '(int32)1')]"
+				minimumsize = { 35 -1 }
+				layoutstretchfactor_horizontal = "[GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)3' )]"
+				tooltip = REPUBLIC_AMBITION_SIGNORIAL
+
+				blockoverride "color" {
+					using = Color_Signorial
+				}
+			}
+
+			hbox_ambition_members_bar = {
+				datacontext = "[GovernmentRepublicWindow.GetAmbitionFromIndex( '(int32)4' )]"
+				visible = "[GreaterThanOrEqualTo_int32( GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)4' ), '(int32)1')]"
+				minimumsize = { 35 -1 }
+				layoutstretchfactor_horizontal = "[GovernmentRepublicWindow.GetAmbitionMembersFromIndex( '(int32)4' )]"
+				tooltip = REPUBLIC_AMBITION_AGITATION
+
+				blockoverride "color" {
+					using = Color_Agitation
+				}
+			}
+		}
+	}
+
+	type hbox_ambition_members_bar = hbox {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		allow_outside = yes
+
+		widget = {
+			size = { 28 28 }
+			background = {
+				margin = {10 10}
+				texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 20 20 }
+				color = { 0 0 0 0.6 }
+				texture_density = 2
+				alpha = 0.3
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_glow.dds"
+					blend_mode = alphamultiply
+				}
+			}
+
+			highlight_icon = {
+				block "icon_visible" {}
+				size = { 28 28 }
+				texture = "[HouseAspiration.GetSmallIcon]"
+
+			}
+		}
+
+		background = {
+			spriteType = Corneredstretched
+			texture = "gfx/interface/colors/grey.dds"
+			alpha = 0.85
+
+			modify_texture = {
+				block "color" {
+					using = Color_Grey
+				}
+				blend_mode = normal
+			}
+
+			block "color_mask" {}
+
+			modify_texture = {
+				texture = "gfx/interface/component_masks/mask_brushed.dds"
+				blend_mode = alphamultiply
+				spriteType = Corneredtiled
+				spriteborder = { 3 3}
+			}
+
+			modify_texture = {
+				texture = "gfx/interface/component_masks/patterns/mask_pattern_01.dds"
+				blend_mode = alphamultiply
+				alpha = 0.2
+				spriteType = Corneredtiled
+				texture_density = 0.58
+			}
+		}
+		using = tooltip_nw
+	}
+
+	## Patrician rating progress bar
+	#
+	type widget_patrician_rating_threshold_marker = widget_level_marker_no_anchor {
+		allow_outside = yes
+
+		blockoverride "highlight_size" {
+			size = { 75 75 }
+		}
+
+		blockoverride "marker_size" {
+			size = { 45 45 }
+		}
+
+		blockoverride "marker_size_inactive" {
+			size = { 45 45 }
+		}
+
+		blockoverride "marker_addon" {
+			container = {
+				position = { 0 30 }
+				parentanchor = hcenter
+
+				icon = {
+					texture = "gfx/interface/colors/white.dds"
+					using = Mask_Rough_Edges
+					size = { 6 30 }
+					alpha = 0.75
+				}
+			}
+		}
+	}
+
+	type widget_patrician_rating_progressbar = widget {
+		size = { 450 120 }
+		allow_outside = yes
+
+		datacontext = "[GetPlayer.GetHouse]"
+
+		vbox = {
+
+			text_label_center = {
+				text = "YOUR_FAMILY_RATING_HEADER"
+			}
+
+			margin_widget = {
+				size = { 450 60 }
+
+				widget = {
+					name = "republic_patrician_rating_tutorial_uses_this"
+					size = { 100% 100% }
+					allow_outside = yes
+
+					progressbar_standard = {
+						name = "patrician_rating_bar_tutorial_uses_this"
+						parentanchor = bottom|hcenter
+						size = { 438 20 }
+
+						value = "[FixedPointToFloat( DynastyHouse.GetHousePower )]"
+						max = "[FixedPointToFloat( EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_3_value' ) )]"
+
+						tooltipwidget = {
+							widget_value_breakdown_tooltip = {
+								datacontext = "[DynastyHouse.GetHousePowerBreakdown]"
+								datacontext = "[DynastyHouse.GetHeadOfHouse]"
+								blockoverride "header_text" {
+									text = republic_patrician_families_header
+								}
+							}
+						}
+						using = tooltip_ws
+					}
+
+					widget = {
+						parentanchor = bottom|left
+						position = { 12 0 }
+						size = { 426 45 }
+						allow_outside = yes
+
+						hbox = {
+							parentanchor = bottom|left
+							size = { 426 20 }
+							layoutpolicy_horizontal = expanding
+							alwaystransparent = yes
+							allow_outside = yes
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								layoutstretchfactor_horizontal = "[GetProgressBarValueMaxScaled( FixedPointToFloat( EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_1_value' ) ), FixedPointToFloat( EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_3_value' ) ), '(int32)1000' )]"
+								allow_outside = yes
+
+								expand = {}
+
+								widget = {
+									size = { 0 0 }
+									allow_outside = yes
+
+									widget_patrician_rating_threshold_marker = {
+										parentanchor = hcenter|bottom
+
+										blockoverride "visible_active" {
+											visible = "[GreaterThanOrEqualTo_CFixedPoint( DynastyHouse.GetHousePower, EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_1_value' ) )]"
+										}
+
+										blockoverride "visible_inactive" {
+											visible = "[LessThan_CFixedPoint( DynastyHouse.GetHousePower, EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_1_value' ) )]"
+										}
+
+										blockoverride "marker_text" {
+											icon_flat_standard_white = {
+												parentanchor = center
+												block "icon_texture" {
+													texture = "gfx/interface/icons/building_types/building_level_01.dds"
+												}
+												size = { 20 20 }
+											}
+										}
+
+										blockoverride "marker_tooltip" {
+											alwaystransparent = no
+											tooltip = "REPUBLIC_PATRICIAN_RATING_THRESHOLD_1_TT"
+											using = tooltip_below
+										}
+									}
+								}
+							}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								layoutstretchfactor_horizontal = "[GetProgressBarValueMaxScaled( FixedPointToFloat( Subtract_CFixedPoint( EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_2_value' ), EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_1_value' ) ) ), FixedPointToFloat( EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_3_value' ) ), '(int32)1000' )]"
+								allow_outside = yes
+
+								expand = {}
+
+								widget = {
+									size = { 0 0 }
+									allow_outside = yes
+
+									widget_patrician_rating_threshold_marker = {
+										parentanchor = hcenter|bottom
+
+										blockoverride "visible_active" {
+											visible = "[GreaterThanOrEqualTo_CFixedPoint( DynastyHouse.GetHousePower, EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_2_value' ) )]"
+										}
+
+										blockoverride "visible_inactive" {
+											visible = "[LessThan_CFixedPoint( DynastyHouse.GetHousePower, EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_2_value' ) )]"
+										}
+
+										blockoverride "marker_text" {
+											icon_flat_standard_white = {
+												parentanchor = center
+												block "icon_texture" {
+													texture = "gfx/interface/icons/building_types/building_level_02.dds"
+												}
+												size = { 20 20 }
+											}
+										}
+
+										blockoverride "marker_tooltip" {
+											alwaystransparent = no
+											tooltip = "REPUBLIC_PATRICIAN_RATING_THRESHOLD_2_TT"
+											using = tooltip_below
+										}
+									}
+								}
+							}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								layoutstretchfactor_horizontal = "[GetProgressBarValueMaxOtherScaled( FixedPointToFloat( EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_2_value' ) ), FixedPointToFloat( EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_3_value' ) ), '(int32)1000' )]"
+								allow_outside = yes
+
+								expand = {}
+
+								widget = {
+									size = { 0 0 }
+									allow_outside = yes
+
+									widget_patrician_rating_threshold_marker = {
+										parentanchor = hcenter|bottom
+
+										blockoverride "visible_active" {
+											visible = "[GreaterThanOrEqualTo_CFixedPoint( DynastyHouse.GetHousePower, EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_3_value' ) )]"
+										}
+
+										blockoverride "visible_inactive" {
+											visible = "[LessThan_CFixedPoint( DynastyHouse.GetHousePower, EmptyScope.ScriptValue( 'gdp_patrician_house_score_threshold_3_value' ) )]"
+										}
+
+										blockoverride "marker_text" {
+											icon_flat_standard_white = {
+												parentanchor = center
+												block "icon_texture" {
+													texture = "gfx/interface/icons/building_types/building_level_03.dds"
+												}
+												size = { 20 20 }
+											}
+										}
+
+										blockoverride "marker_tooltip" {
+											alwaystransparent = no
+											tooltip = "REPUBLIC_PATRICIAN_RATING_THRESHOLD_3_TT"
+											using = tooltip_below
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	## Noble families/houses in the 'families' tab
+	#
+	type widget_republic_houses = widget {
+		layoutpolicy_vertical = expanding
+		layoutpolicy_horizontal = expanding
+
+		vbox = {
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin_bottom = 5
+
+				background = {
+					spriteType = Corneredtiled
+					alpha = 0.3
+					texture = "gfx/interface/colors/gold.dds"
+					using = Mask_Rough_Edges
+
+					margin = { 0 3 }
+
+					modify_texture = {
+						name = "mask"
+						texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_inverse.dds"
+						spriteborder = { 0 0 }
+						blend_mode = alphamultiply
+					}
+
+					modify_texture = {
+						name = "mask"
+						texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+						spriteborder = { 0 0 }
+						blend_mode = alphamultiply
+					}
+
+					modify_texture = {
+						texture = "gfx/interface/component_masks/patterns/mask_pattern_floral.dds"
+						spriteType = Corneredtiled
+						blend_mode = alphamultiply
+						alpha = 0.8
+						texture_density = 2
+					}
+
+					modify_texture = {
+						texture = "gfx/interface/colors/gold.dds"
+						blend_mode = normal
+
+						block "can_not_create"
+						{
+						}
+					}
+				}
+
+				widget_patrician_rating_progressbar = {}
+			}
+
+			spacer = {
+				size = { 0 10 }
+			}
+
+			text_label_center = {
+				text = "REPUBLIC_FAMILIES_HEADER"
+			}
+
+			spacer = {
+				size = { 0 2 }
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 5
+				margin_bottom = 3
+				margin_left = 10
+
+				text_single = {
+					text = "REPUBLIC_WINDOW_SORT_OPTIONS"
+				}
+
+				dropdown_menu_standard = {
+					blockoverride "dropdown_size"
+					{
+						size = { 200 35 }
+					}
+					blockoverride "dropdown_properties"
+					{
+						datamodel = "[GovernmentRepublicWindow.GetHouseSortOptions]"
+						onselectionchanged = "[GovernmentRepublicWindow.OnSelectHouseSort]"
+						selectedindex = "[GovernmentRepublicWindow.GetCurrentHouseSortIndex]"
+					}
+
+					blockoverride "dropdown_active_item_properties"
+					{
+						text = "[CString.GetString]"
+					}
+
+					blockoverride "dropdown_item_properties"
+					{
+						text = "[CString.GetString]"
+					}
+				}
+
+				button_standard = {
+					name = "sort_order"
+					size = { 25 25 }
+					onclick = "[GovernmentRepublicWindow.ReverseHouseSortOrder]"
+
+					tooltip = "REPUBLIC_WINDOW_HOUSE_SORT_DIRECTION"
+					using = tooltip_nw
+
+					button_icon = {
+						alwaystransparent = yes
+						parentanchor = center
+						size = { 25 25 }
+						texture = "gfx/interface/icons/flat_icons/sort_icon.dds"
+						framesize = { 66 66 }
+
+						frame = "[BoolTo1And2(GovernmentRepublicWindow.IsHouseSortReversed)]"
+
+						blockoverride "button_frames"
+						{
+							effectname = "NoHighlight"
+						}
+					}
+				}
+				expand = {}
+			}
+
+			scrollbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				blockoverride "scrollbox_content"
+				{
+					vbox = {
+						datamodel = "[GovernmentRepublicWindow.GetHouses]"
+						layoutpolicy_horizontal = expanding
+
+						spacing = 5
+
+						item = {
+							widget_republic_house_item = {
+								datacontext = "[RepublicHouse.GetHouse]"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type widget_republic_house_item = widget {
+		size = { 520 110 }
+
+		using = Background_Area_Republic_Decoration
+
+		hbox = {
+			datacontext = "[DynastyHouse.GetHeadOfHouse]"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			margin_top = 6
+			margin_left = 5
+			spacing = 8
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				vbox = {
+					margin_right = 10
+					margin_top = -15
+					layoutpolicy_vertical = expanding
+
+					coa_house_medium = {
+						allow_outside = yes
+						using = tooltip_ws
+
+						widget = {
+							size = { 92% 32 }
+							parentanchor = bottom|hcenter
+							position = { 0 5 }
+
+							background = {
+								texture = "gfx/interface/window_theme_administration/rating_banner.dds"
+							}
+
+							text_single = {
+								parentanchor = center
+								position = { 0 -1 }
+								max_width = 250
+
+								text = "[DynastyHouse.GetHousePower]"
+								default_format = "#light_background"
+								align = nobaseline
+							}
+						}
+
+						tooltipwidget = {
+							widget_value_breakdown_tooltip = {
+								datacontext = "[DynastyHouse.GetHousePowerBreakdown]"
+								datacontext = "[DynastyHouse.GetHeadOfHouse]"
+
+								blockoverride "header_text" {
+									text = republic_patrician_families_header
+								}
+							}
+						}
+					}
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					ignoreinvisible = no
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								text_single = {
+									layoutpolicy_horizontal = expanding
+
+									text = REPUBLIC_WINDOW_FAMILY_TITLE
+									align = nobaseline
+									using = Font_Size_Medium
+								}
+
+								expand = {}
+
+								text_single = {
+									visible = "[And( DynastyHouse.IsImperial, Not( DynastyHouse.IsPlayerMember ) )]"
+									layoutpolicy_horizontal = expanding
+
+									text = REPUBLIC_WINDOW_DOGE_HOUSE
+									align = right
+									margin_right = 10
+									default_format = "#weak"
+								}
+
+								text_single = {
+									visible = "[DynastyHouse.IsPlayerMember]"
+									layoutpolicy_horizontal = expanding
+
+									text = REPUBLIC_WINDOW_OWN_HOUSE
+									align = right
+									margin_right = 10
+									default_format = "#weak"
+								}
+							}
+
+							hbox = {
+								spacing = 5
+								layoutpolicy_horizontal = expanding
+
+								text_single = {
+									text = REPUBLIC_HOUSE_AMBITION_CONCEPT
+								}
+
+								highlight_icon = {
+									size = { 24 24 }
+									texture = "[DynastyHouse.GetHouseAspiration.GetSmallIcon]"
+								}
+
+								text_single = {
+									text = REPUBLIC_HOUSE_AMBITION
+								}
+
+								expand = {}
+							}
+
+							hbox = {
+								datacontext = "[DynastyHouse.GetHouseRelationWith( GetPlayer.GetHouse )]"
+								layoutpolicy_horizontal = expanding
+
+								ignoreinvisible = yes
+
+								icon = {
+									visible = "[HouseRelation.IsValid]"
+									size = { 28 28 }
+									texture = "[HouseRelation.GetLevel.GetRenderedIcon]"
+								}
+
+								text_single = {
+									visible = "[HouseRelation.IsValid]"
+									layoutpolicy_horizontal = expanding
+									max_width = 100
+									margin_left = 4
+
+									text = REPUBLIC_WINDOW_HOUSE_RELATION
+									align = nobaseline
+								}
+
+								expand = {}
+
+								hbox = {
+									text_single = {
+										layoutpolicy_horizontal = expanding
+
+										text = REPUBLIC_WINDOW_HOUSE_ASSEMBLY_MEMBERS
+										align = right|nobaseline
+										default_format = "#weak"
+										using = Font_Size_Small
+										margin_right = 10
+									}
+
+									hbox_trade_posts = {
+										visible = "[Character.CanOwnTradePosts]"
+										margin = { 32 4 }
+										spacing = 4
+									}
+								}
+							}
+						}
+
+						expand = {}
+					}
+
+					expand = {}
+				}
+
+				expand = {}
+			}
+		}
+	}
+
+	## Available Decrees
+	# Defined in gdp_republic_decisions.txt
+	#
+	type vbox_republic_decrees = vbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 5
+
+		text_single = {
+			text = "REPUBLIC_WINDOW_DECREE_EXPLAIN"
+			align = hcenter|nobaseline
+			default_format = "#weak"
+			layoutpolicy_horizontal = expanding
+			autoresize = no
+		}
+		button_decree_entry = {
+			name = "war_permission_decree"
+			datacontext = "[GetDecisionWithKey('gdp_war_approval_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "banishment_permission_decree"
+			datacontext = "[GetDecisionWithKey('gdp_banishment_approval_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "proscription_permission_decree"
+			datacontext = "[GetDecisionWithKey('gdp_proscription_approval_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "execution_permission_decree"
+			datacontext = "[GetDecisionWithKey('gdp_execution_approval_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "finance_war_decree"
+			datacontext = "[GetDecisionWithKey('gdp_finance_war_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "tax_relief"
+			datacontext = "[GetDecisionWithKey('gdp_tax_holiday_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "fund_alms_decree"
+			datacontext = "[GetDecisionWithKey('gdp_fund_alms_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "debt_forgiveness_decree"
+			datacontext = "[GetDecisionWithKey('gdp_debt_forgiveness_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "quarantine_ship_decree"
+			datacontext = "[GetDecisionWithKey('gdp_quarantine_ship_decree_decision')]"
+		}
+
+		button_decree_entry = {
+			name = "enforce_curfew_decree"
+			datacontext = "[GetDecisionWithKey('gdp_enforce_curfew_decree_decision')]"
+		}
+		button_decree_entry = {
+			name = "gdp_sponsor_craft_guild_decree"
+			datacontext = "[GetDecisionWithKey('gdp_sponsor_craft_guild_decision')]"
+		}
+		button_decree_entry = {
+			name = "gdp_request_noble_magistracy_decree"
+			datacontext = "[GetDecisionWithKey('gdp_request_noble_magistracy_decision')]"
+		}
+		button_decree_entry = {
+			name = "gdp_request_relief_from_bankruptcy_decree"
+			datacontext = "[GetDecisionWithKey('gdp_request_relief_from_bankruptcy_decision')]"
+		}
+		button_decree_entry = {
+			name = "gdp_petition_for_state_protection_decree"
+			datacontext = "[GetDecisionWithKey('gdp_petition_for_state_protection_decision')]"
+		}
+	}
+
+	type button_decree_entry = button_decision_entry {
+		visible = "[Decision.IsShownForPlayer]"
+		layoutpolicy_horizontal = expanding
+
+		onclick = "[GovernmentRepublicWindow.OnDecreeClick(Decision.Self)]"
+
+		blockoverride "title_not_possible_check" {
+			visible = no
+		}
+
+		blockoverride "decision_illustration_position" {
+			parentanchor = hcenter|top
+			position = { 50 0 }
+		}
+
+		blockoverride "decision_texture_fade" {
+			texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_thick.dds"
+		}
+
+		blockoverride "size_illustration" {
+			margin_left = -50
+			size = { 100% 100% }
+		}
+
+		blockoverride "decision_icon" {
+			hbox = {
+				# only show approval thumb if the assembly actually has a say.
+				visible = "[GetScriptedGui('gdp_assembly_approval_for_decrees_trigger_gui').IsValid( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+				
+				spacing = 8
+				widget_assembly_approval = {
+					blockoverride "approval_text" {
+						text = REPUBLIC_WINDOW_DECREE_APPROVAL
+					}
+					blockoverride "approval_possible_check" {
+						visible = "[Decision.IsPossibleForPlayer]"
+					}
+					blockoverride "approval_not_possible_check" {
+						visible = "[Not(Decision.IsPossibleForPlayer)]"
+					}
+				}
+			}
+		}
+	}
+
+	type widget_assembly_approval = widget {
+		size = { 60 22 }
+
+		icon = {
+			block "approval_possible_check" {
+				visible = yes
+			}
+			size = { 22 22 }
+			parentanchor = left
+			texture = "gfx/interface/icons/laws/law_approve.dds"
+		}
+
+		icon = {
+			block "approval_not_possible_check" {
+				visible = no
+			}
+			enabled = no
+			size = { 22 22 }
+			parentanchor = left
+			texture = "gfx/interface/icons/laws/law_approve.dds"
+		}
+
+		text_single = {
+			block "approval_possible_check" {
+				visible = yes
+			}
+			size = { 35 22 }
+			position = {25 0}
+			block "approval_text" {
+				text = REPUBLIC_WINDOW_VOTING_SESSION_APPROVAL
+			}
+			align = nobaseline
+		}
+
+		text_single = {
+			block "approval_not_possible_check" {
+				visible = no
+			}
+			size = { 35 22 }
+			position = {25 0}
+			block "approval_text" {
+				text = REPUBLIC_WINDOW_VOTING_SESSION_APPROVAL
+			}
+			align = nobaseline
+			default_format = "#low"
+		}
+	}
+
+	## Current top election candidate
+	#
+	type hbox_republic_top_candidate = hbox {
+		layoutpolicy_horizontal = expanding
+		margin_bottom = 10
+
+		portrait_head = {
+			blockoverride "coa"	{}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin_bottom = 6
+			
+			text_label_left = {
+				layoutpolicy_horizontal = expanding
+				text = "REPUBLIC_TITLE_TOP_CANDIDATE"
+				margin_left = 8
+			}
+
+			text_single = {
+				text = "[Character.GetUINameNoTooltip|U]"
+
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				align = nobaseline
+				margin_left = 8
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				default_format = "#low"
+
+				text = "[Character.GetRelationToString( GetPlayer )]"
+				tooltip = "[Character.GetRelationToStringExtended( GetPlayer )]"
+				align = nobaseline
+				margin_left = 8
+			}
+
+			expand = {}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin_left = 8
+
+				button_standard = {
+					visible = "[Title.HasSuccessionOrder( 'election' )]"
+					name = "republic_view_election_tutorial_uses_this"
+
+					onclick = "[ToggleGameViewData('title_election', Title.GetID )]"
+
+					text = "REPUBLIC_WINDOW_VIEW_ELECTION"
+					down = "[IsGameViewOpen('title_election')]"
+				}
+
+				expand = {}
+			}
+		}
+	}
+}
+
+template Background_Area_Republic_Decoration {
+	background = {
+		visible = "[DynastyHouse.IsImperial]"
+		margin = { 4 4 }
+
+		using = Background_Area_Republic_Red
+
+		alpha = 1
+	}
+
+	background = {
+		visible = "[And( DynastyHouse.GetHeadOfHouse.IsPlayer, Not( DynastyHouse.IsImperial ) )]"
+		using = Background_Area_Border
+		margin = { 4 4 }
+
+		using = Background_Area_Republic_Green
+	}
+
+	background = {
+		texture = "gfx/interface/window_administrative_government/family_decoration.dds"
+		spriteType = Corneredtiled
+		margin_bottom = 2
+		spriteborder_bottom = 14
+		texture_density = 1.5
+		alpha = 0.1
+		using = Mask_Rough_Edges
+	}
+
+	background = {
+		texture = "gfx/interface/window_administrative_government/family_decoration.dds"
+		spriteType = Corneredtiled
+		margin_top = 2
+		spriteborder_top = 14
+		texture_density = 1.5
+		alpha = 0.1
+		using = Mask_Rough_Edges
+	}
+
+	background = {
+		texture = "gfx/interface/skinned/mask_pattern.dds"
+		texture_density = 3
+		spriteType = corneredtiled
+		color = { 0.1 0.1 0.12 1 }
+		margin = { 0 -10 }
+		alpha = 0.2
+
+		using = Mask_Rough_Edges
+
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_clouds.dds"
+			blend_mode = alphamultiply
+			spriteType = corneredTiled
+			alpha = 0.5
+		}
+
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_scratches.dds"
+			blend_mode = alphamultiply
+			spriteType = corneredTiled
+		}
+	}
+
+	
+}
+
+template Background_Area_Republic_Red {
+	texture = "gfx/interface/colors/grey.dds"
+
+	using = Mask_Rough_Edges
+	color = { 0.7 0.1 0.1 0.65 }
+
+	modify_texture = {
+		blend_mode = alphaMultiply
+		texture = "gfx/interface/component_masks/mask_fade_horizontal_extended.dds"
+		alpha = 0.25
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_clouds.dds"
+		blend_mode = alphamultiply
+		spriteType = corneredTiled
+		alpha = 0.25
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_scratches.dds"
+		blend_mode = alphamultiply
+		spriteType = corneredTiled
+	}
+}
+
+
+template Background_Area_Republic_Green {
+	texture = "gfx/interface/colors/grey.dds"
+
+	using = Mask_Rough_Edges
+	color = { 0.3 0.7 0.6 0.65 }
+
+	modify_texture = {
+		blend_mode = alphaMultiply
+		texture = "gfx/interface/component_masks/mask_fade_horizontal_extended.dds"
+		alpha = 0.25
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_clouds.dds"
+		blend_mode = alphamultiply
+		spriteType = corneredTiled
+		alpha = 0.25
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_scratches.dds"
+		blend_mode = alphamultiply
+		spriteType = corneredTiled
+	}
+}
+
+

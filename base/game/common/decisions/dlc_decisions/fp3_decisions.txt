@@ -83,6 +83,8 @@ struggle_persia_ending_assertion_decision = {
 			completely_controls = title:e_arabia
 		}
 		trigger_else = {
+			is_landless_adventurer = no
+			highest_held_title_tier >= tier_duchy
 			custom_tooltip = {
 				text = struggle_persia_strengthen_decision_right_hof_tt
 				faith.religious_head = title:d_sunni.holder
@@ -1099,6 +1101,8 @@ fp3_become_clan_government_decision = {
 	}
 	desc = fp3_become_clan_government_decision_desc
 	selection_tooltip = fp3_become_clan_government_decision_tooltip
+	decision_group_type = realm
+	sort_order = 40
 
 	ai_check_interval_by_tier = {
 		barony = 0
@@ -1152,7 +1156,7 @@ fp3_become_clan_government_decision = {
 			change_government = clan_government
 			# Increase unity, uses this effect since both chars are not clan when script is evaluated
 			house.house_head = {
-				apply_clan_unity_interaction_effect = {
+				apply_house_unity_interaction_effect = {
 					CHARACTER = root
 					TARGET = root.house.house_head
 					DESC = clan_unity_adopt_clan.desc

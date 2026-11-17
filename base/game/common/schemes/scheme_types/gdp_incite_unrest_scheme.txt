@@ -1,0 +1,235 @@
+﻿############################
+# Incite Unrest Scheme
+# (For Republic Vassals against their direct liege)
+############################
+
+gdp_incite_unrest_scheme = {
+	# Basic Setup
+	skill = intrigue
+	desc = gdp_incite_unrest_scheme_desc_general
+	success_desc = "GDP_INCITE_UNREST_SUCCESS_DESC"
+	discovery_desc = "GDP_INCITE_UNREST_DISCOVERY_DESC"
+	icon = icon_scheme_incite_unrest
+	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
+	target_type = character
+	category = political
+	is_secret = yes
+	is_basic = no
+	maximum_breaches = 5
+	cooldown = { years = 5 }
+
+	# Parameters
+	speed_per_skill_point = -2.5
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+	base_progress_goal = 180
+	base_maximum_success = 25
+	minimum_success = 5
+	phases_per_agent_charge = 1
+	success_chance_growth_per_skill_point = t1_scgpsp_value
+
+	# Only for republic vassals against their direct liege
+	allow = {
+		is_available_quick = {
+			adult = yes
+			imprisoned = no
+		}
+		government_has_flag = government_is_republic
+		scope:target = {
+			this = root.liege
+		}
+	}
+
+	# Core Triggers
+	valid = {
+		is_available_quick = {
+			adult = yes
+			alive = yes
+			imprisoned = no
+			incapable = no
+		}
+		government_has_flag = government_is_republic
+		liege = scope:target
+		scope:target = {
+			is_alive = yes
+		}
+	}
+
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+
+		ai_agent_join_chance_basic_suite_modifier = yes
+		ai_agent_join_chance_hostile_general_suite_modifier = yes
+		ai_agent_join_chance_republican_political_modifier = yes
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers guests scripted_relations }
+	agent_groups_target_character_perspective = { courtiers vassals }
+
+	odds_prediction = {
+		add = base_odds_prediction_target_is_char_value
+		add = odds_skill_contribution_intrigue_value
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+
+		# Skill
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+
+		# Tier and scheme reset penalties
+		hostile_scheme_base_chance_modifier = yes
+
+		# Countermeasures
+		apply_political_scheme_success_chance_adjustments_modifier = yes
+
+		# Popular Opinion of Target's Capital: high opinion means the populace is content and harder to agitate
+		compare_modifier = {
+			desc = "SCHEME_LIEGE_POPULAR_OPINION"
+			value = scope:target.capital_county.popular_opinion
+			multiplier = -1
+		}
+
+		# Traits
+		modifier = {
+			add = 10
+			desc = overseer_trait_desc
+			scope:owner = {
+				has_trait = schemer
+			}
+		}
+		modifier = {
+			add = political_scheme_variable_list_value
+			scope:owner = {
+				has_variable_list = supporting_political_schemes
+			}
+			desc = HOUSE_HEAD_SCHEME_SUPPORT_DESC
+		}
+		modifier = {
+			add = -10
+			scope:owner = { has_character_modifier = political_schemes_distracted_modifier }
+			desc = political_schemes_distracted_modifier
+		}
+	}
+
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
+	}
+
+	# On Actions
+	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:political
+		}
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
+				}
+			}
+			add_agent_slot = agent_conspirator
+			add_agent_slot = agent_demagogue
+			add_agent_slot = agent_financier
+			add_agent_slot = agent_financier
+			add_agent_slot = agent_alibi
+		}
+	}
+
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		gdp_incite_unrest_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+
+	on_hud_click = { gdp_incite_unrest_scheme_prep_effect = yes }
+
+	on_monthly = {
+		hostile_scheme_monthly_discovery_chance_effect = yes
+		if = {
+			limit = {
+				exists = scope:discovery_event_happening
+				scheme_owner = {
+					NOT = { has_character_modifier = gdp_caught_inciting_unrest_modifier }
+				}
+			}
+			scheme_owner = { save_scope_as = owner }
+			scheme_target_character = { save_scope_as = target }
+			scope:owner = {
+				trigger_event = { on_action = gdp_incite_unrest_scheme_discovered }
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = scope:discovery_event_happening }
+			}
+			scheme_owner = {
+				trigger_event = { on_action = gdp_incite_unrest_ongoing }
+			}
+		}
+	}
+
+	## Invalidation
+	on_invalidated = {
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = { save_scope_as = owner }
+
+		# Target died
+		if = {
+			limit = {
+				scope:target = { is_alive = no }
+				scope:owner = { is_alive = yes }
+			}
+			scope:owner = {
+				send_interface_toast = {
+					type = event_toast_effect_neutral
+					title = gdp_incite_unrest_scheme_invalidated_title
+					left_icon = scope:target
+					custom_description_no_bullet = {
+						object = scope:target
+						text = scheme_target_died
+					}
+				}
+			}
+		}
+		# No longer your liege
+		else_if = {
+			limit = {
+				scope:target = {
+					this != scope:owner.liege
+				}
+			}
+			scope:owner = {
+				send_interface_toast = {
+					type = event_toast_effect_neutral
+					title = gdp_incite_unrest_scheme_invalidated_title
+					left_icon = scope:target
+					custom_description_no_bullet = {
+						object = scope:target
+						text = scheme_target_not_liege
+					}
+				}
+			}
+		}
+		# Lost republic government
+		else_if = {
+			limit = {
+				scope:owner = {
+					NOT = { government_has_flag = government_is_republic }
+				}
+			}
+			scope:owner = {
+				send_interface_toast = {
+					type = event_toast_effect_neutral
+					title = gdp_incite_unrest_scheme_invalidated_title
+					left_icon = scope:target
+					custom_tooltip = gdp_incite_unrest_scheme_owner_not_republic
+				}
+			}
+		}
+	}
+}

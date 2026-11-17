@@ -164,24 +164,36 @@ types TutorialWindow {
 						layoutstretchfactor_horizontal = 1
 					}
 
-					text_single = {
+					vbox = {
 						layoutpolicy_horizontal = expanding
-						layoutstretchfactor_horizontal = 1
-						text = "[Tutorial.GetStepName]"
-						max_width = 420
-						align = nobaseline|center
 
-						using = Font_Type_Flavor
-						using = Font_Size_Big
-					}
+						text_single = {
+							text = "[Tutorial.GetStepName]"
+							align = nobaseline|center
 
-					button_standard = {
-						visible = "[InDebugMode]"
-						raw_text = "Debug"
-						default_format = "#D"
-						onclick = "[ExecuteConsoleCommand('tutorial.debugwindow')]"
-						max_width = 80
+							using = Font_Type_Flavor
+							using = Font_Size_Big
+						}
+
+						hbox = {
+							visible = "[InDebugMode]"
+							text_single = {
+								raw_text = "[Tutorial.GetStepKey]"
+								default_format = "#D"
+								align = nobaseline|center
+								using = Font_Size_Small
+							}
+
+							button_standard = {
+								
+								raw_text = "Debug"
+								default_format = "#D"
+								onclick = "[ExecuteConsoleCommand('tutorial.debugwindow')]"
+								max_width = 80
+							}
+						}
 					}
+				
 
 					hbox = {
 						layoutpolicy_horizontal = expanding

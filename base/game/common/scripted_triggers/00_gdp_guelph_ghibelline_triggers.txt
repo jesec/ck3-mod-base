@@ -1,0 +1,520 @@
+﻿
+is_suitable_gg_leader_trigger = {
+	is_available_quick = {
+		adult = yes
+		incapable = no
+		imprisoned = no
+	}
+	NOT = { 
+		any_held_title = { this = title:k_papal_state }
+	}
+}
+
+
+is_ghibelline_with_advantage_trigger = {
+	is_ghibelline_trigger = yes
+	situation:guelph_ghibelline ?= { situation_current_phase = ghibelline_advantage }
+}
+
+is_ghibelline_leader_with_advantage_trigger = {
+	is_ghibelline_with_advantage_trigger = yes
+	is_ghibelline_leader_trigger = yes
+}
+
+is_guelph_with_advantage_trigger = {
+	is_guelph_trigger = yes
+	situation:guelph_ghibelline ?= { situation_current_phase = guelph_advantage }
+}
+
+is_guelph_leader_with_advantage_trigger = {
+	is_guelph_with_advantage_trigger = yes
+	is_guelph_leader_trigger = yes
+}
+
+is_guelph_leader_trigger = {
+	top_participant_group:guelph_ghibelline ?= { participant_group_type = guelph_leader }
+}
+
+is_guelph_trigger = {
+	top_participant_group:guelph_ghibelline ?= { 
+		OR = { 
+			participant_group_type = guelph_leader
+			participant_group_type = guelph_member
+		}
+	}
+}
+
+is_ghibelline_leader_trigger = {
+	top_participant_group:guelph_ghibelline ?= { participant_group_type = ghibelline_leader }
+}
+
+is_ghibelline_trigger = {
+	top_participant_group:guelph_ghibelline ?= { 
+		OR = { 
+			participant_group_type = ghibelline_leader
+			participant_group_type = ghibelline_member
+		}
+	}
+}
+
+is_ghibelline_or_close_family_of_ghibelline_leader_trigger = {
+	OR = {
+		is_ghibelline_trigger = yes
+		is_family_of_ghibelline_leader_trigger = yes
+	}
+}
+
+is_family_of_ghibelline_leader_trigger = {
+	any_close_family_member = { is_ghibelline_leader_trigger = yes }
+}
+
+is_guelph_or_ghibelline_trigger = {
+	top_participant_group:guelph_ghibelline ?= { 
+		OR = { 
+			participant_group_type = guelph_leader
+			participant_group_type = guelph_member
+			participant_group_type = ghibelline_leader
+			participant_group_type = ghibelline_member
+		}
+	}
+}
+
+is_gg_undecided_trigger = {
+	top_participant_group:guelph_ghibelline ?= { participant_group_type = undecided }
+}
+
+gg_first_and_second_are_opposite_sides_trigger = {
+	OR = {
+		AND = {
+			$FIRST$ = { is_guelph_trigger = yes }
+			$SECOND$ = { is_ghibelline_trigger = yes }
+		}
+		AND = {
+			$FIRST$ = { is_ghibelline_trigger = yes }
+			$SECOND$ = { is_guelph_trigger = yes }
+		}
+	}
+}
+
+gg_target_house_head_is_opposite_side_trigger = {
+	exists = $TARGET$.house.house_head
+	gg_first_and_second_are_opposite_sides_trigger = {
+		FIRST = $ACTOR$
+		SECOND = $TARGET$.house.house_head
+	}
+}
+
+gg_first_and_second_are_same_side_trigger = {
+	OR = {
+		AND = {
+			$FIRST$ = { is_guelph_trigger = yes }
+			$SECOND$ = { is_guelph_trigger = yes }
+		}
+		AND = {
+			$FIRST$ = { is_ghibelline_trigger = yes }
+			$SECOND$ = { is_ghibelline_trigger = yes }
+		}
+	}
+}
+
+
+gg_phase_is_pre_gg_trigger = {
+	situation:guelph_ghibelline ?= { 
+		OR = {
+			situation_current_phase = in_nomine_domini
+			situation_current_phase = dictatus_papae
+			situation_current_phase = ad_interim
+		}
+	}
+}
+
+gg_phase_has_catalysts_trigger = {
+	situation:guelph_ghibelline ?= { 
+		OR = {
+			situation_current_phase = in_nomine_domini
+			situation_current_phase = dictatus_papae
+			situation_current_phase = repose
+		}
+	}
+}
+
+gg_phase_is_in_dictatus_papae_trigger = {
+	situation:guelph_ghibelline ?= { situation_current_phase = dictatus_papae }
+}
+
+gg_excommunicated_ghibelline_leader_in_dictatus_papae_trigger = {
+	gg_phase_is_in_dictatus_papae_trigger = yes
+	is_ghibelline_leader_trigger = yes
+	has_trait = excommunicated
+}
+
+gg_phase_has_cheaper_opposite_party_wars_trigger = {
+	situation:guelph_ghibelline ?= {
+		OR = {
+			situation_current_phase = dictatus_papae
+			situation_current_phase = ad_interim
+			situation_current_phase = agitation
+		}
+	}
+}
+
+gg_phase_gives_involvement_trigger = {
+	exists = situation:guelph_ghibelline
+	situation:guelph_ghibelline ?= { 
+		NOT = { situation_current_phase = in_nomine_domini }
+	}
+}
+
+gg_phase_gives_half_involvement_trigger = {
+	exists = situation:guelph_ghibelline #Script values can get cranky otherwise
+	situation:guelph_ghibelline ?= { situation_current_phase = dictatus_papae }
+}
+
+gg_phase_gives_double_involvement_trigger = {
+	exists = situation:guelph_ghibelline #Script values can get cranky otherwise
+	situation:guelph_ghibelline ?= { 
+		OR = {
+			situation_current_phase = agitation
+			situation_current_phase = guelph_advantage
+			situation_current_phase = ghibelline_advantage
+		}
+	}
+}
+
+should_get_involvement_trigger = {
+	exists = var:gg_involvement
+	gg_phase_gives_involvement_trigger = yes
+}
+
+
+gg_hre_causes_additional_tyranny_trigger = {
+	save_temporary_scope_as = gg_tyranny_hre
+	situation:guelph_ghibelline ?= { 
+		NOT = { situation_current_phase = ghibelline_advantage }
+	}
+	has_variable = ghibelline_leader
+	any_held_title = { this = title:e_hre }
+	$TARGET$ = {
+		is_ghibelline_trigger = no
+		OR = {
+			is_vassal_of = scope:gg_tyranny_hre
+			liege ?= { is_vassal_of = scope:gg_tyranny_hre }
+		}
+		primary_title = {
+			title_province = { geographical_region = gdp_guelph_ghibelline_northern_italy_region }
+		}
+	}
+}
+
+gg_can_create_northern_italian_titles_trigger = {
+	trigger_if = {
+		limit = { this = title:e_hre.holder }
+		custom_tooltip = {
+			text = gg_hre_may_not_create_north_italian_titles_tt
+			NOT = { exists = situation:guelph_ghibelline }
+		}	
+	}
+	trigger_else = { always = yes }
+}
+
+
+1178_house_or_dynasty_should_be_ghibelline_trigger = {
+	OR = {
+		house = house:house_pallavicino
+		house = house:house_pallavicino_genoa
+		dynasty = dynasty:529 # Hohenstaufen
+		dynasty = dynasty:italian_amidei
+		#dynasty = dynasty:234 # Visconti from Milan #Hmm maybe not in 1178
+		dynasty = dynasty:1042027 # Guidi - BOOKMARK
+		dynasty = dynasty:12248 # Ubaldini
+		#dynasty = dynasty:12252 # Torelli #Hmm maybe not in 1178, kicks them from the Lombard League
+		dynasty = dynasty:514 # Faliero (later on Ordelaffi)
+		dynasty = dynasty:13031 # della Gherhardesca
+		dynasty = dynasty:206 # Aleramici
+		dynasty = dynasty:italian_piccolomini
+		dynasty = dynasty:13032 # della Scala (Scaligeri)
+		dynasty = dynasty:12480 #von Urslingen - BOOKMARK
+		
+	}
+}
+
+1178_titles_should_be_ghibelline_trigger = {
+	OR = {
+		this = title:c_como.holder
+		this = title:c_monferrato.holder
+		this = title:k_pisa.holder
+		this = title:c_lucca.holder
+		this = title:c_urbino.holder
+		this = title:b_saluzzo.holder
+		this = title:c_arezzo.holder
+	}
+}
+
+1178_house_or_dynasty_should_be_guelph_trigger = {
+	OR = {
+		house = house:house_welf
+		house = house:house_fieschi
+		house = house:house_este
+		house = house:house_malaspina #For the 1178 setup, at least
+		dynasty = dynasty:italian_medici
+		dynasty = dynasty:italian_buondelmonti
+		dynasty = dynasty:cisalpine_asinelli
+		dynasty = dynasty:101849 # della Torre
+		dynasty = dynasty:8721 # Turchi
+		dynasty = dynasty:adelardi
+		dynasty = dynasty:13059 # Malatesta
+		dynasty = dynasty:italian_cavalcanti
+		dynasty = dynasty:italian_pazzi
+		dynasty = dynasty:8726 # Rangoni
+		dynasty = dynasty:sambonifazio
+		dynasty = dynasty:italian_crescenzi
+		dynasty = dynasty:italian_massimo
+		dynasty = dynasty:italian_albizzi
+		dynasty = dynasty:cisalpine_dalesmanni #Dalesmanni - BOOKMARK
+		dynasty = dynasty:240 #de Savoie - BOOKMARK
+	}
+}
+
+1178_titles_should_be_guelph_trigger = {
+	OR = {
+		this = title:b_acqui.holder #Technically Alessandria, but Piedmonte is the duchy for both
+		this = title:c_ancona.holder
+		this = title:b_rieti.holder #Technically Aquila, in Abruzzi, but that's already held by the Pope
+		this = title:c_bologna.holder
+		this = title:c_brescia.holder
+		this = title:b_chambery.holder
+		this = title:b_crema.holder
+		this = title:c_cremona.holder
+		this = title:b_forli.holder #Technically Faenza
+		this = title:k_genoa.holder
+		this = title:b_monza.holder #Technically Lecco
+		this = title:b_lodi.holder
+		this = title:c_mantua.holder
+		this = title:c_orvieto.holder
+		this = title:b_perugia.holder
+	}
+}
+
+1178_variable_allegiance_titles_trigger = {
+	OR = {
+		this = title:b_bergamo.holder
+		this = title:b_gubbio.holder
+		this = title:b_piacenza.holder
+		this = title:b_pistoia.holder
+	}
+}
+
+1178_house_or_dynasty_variable_allegiance_trigger = {
+	dynasty = dynasty:vicenza
+}
+
+1066_house_or_dynasty_should_be_ghibelline_trigger = {
+	OR = {
+		dynasty = dynasty:529 # Hohenstaufen
+		dynasty = dynasty:italian_amidei
+		dynasty = dynasty:234 # Visconti from Milan
+		dynasty = dynasty:1042027 # Guidi
+		dynasty = dynasty:12248 # Ubaldini
+		dynasty = dynasty:12252 # Torelli
+		dynasty = dynasty:514 # Faliero (later on Ordelaffi)
+		dynasty = dynasty:13031 # della Gherhardesca
+		dynasty = dynasty:13025 # da Romano
+		dynasty = dynasty:206 # Aleramici
+		dynasty = dynasty:italian_piccolomini
+		dynasty = dynasty:13032 # della Scala (Scaligeri)
+		house = house:house_pallavicino
+		house = house:house_pallavicino_genoa
+	}
+}
+
+1066_house_or_dynasty_should_be_guelph_trigger = {
+	OR = {
+		house = house:house_welf
+		house = house:house_fieschi
+		house = house:house_este
+		dynasty = dynasty:italian_medici
+		dynasty = dynasty:italian_buondelmonti
+		dynasty = dynasty:cisalpine_asinelli
+		dynasty = dynasty:101849 # della Torre
+		dynasty = dynasty:8721 # Turchi
+		dynasty = dynasty:adelardi
+		dynasty = dynasty:13059 # Malatesta
+		dynasty = dynasty:italian_cavalcanti
+		dynasty = dynasty:italian_pazzi
+		dynasty = dynasty:8726 # Rangoni
+		dynasty = dynasty:sambonifazio
+		dynasty = dynasty:italian_crescenzi
+		dynasty = dynasty:italian_massimo
+		dynasty = dynasty:italian_albizzi
+	}
+}
+
+1066_titles_should_be_ghibelline_trigger = {
+	OR = {
+		this = title:c_verona.holder
+		this = title:c_padua.holder
+		this = title:c_treviso.holder
+		this = title:c_modena.holder
+		this = title:c_cremona.holder
+		this = title:c_novara.holder
+		this = title:c_parma.holder
+		this = title:b_vicenza.holder
+	}
+}
+
+1066_titles_should_be_guelph_trigger = {
+	OR = {
+		this = title:k_venice.holder
+		this = title:c_bologna.holder
+		this = title:c_brescia.holder
+		this = title:c_tortona.holder
+		this = title:c_piacenza.holder
+		this = title:c_genoa.holder
+		this = title:b_milano.holder
+	}
+}
+
+1066_variable_allegiance_titles_trigger = {
+	OR = {
+		this = title:k_venice.holder
+		this = title:c_ferrara.holder
+		this = title:c_mantua.holder
+	}
+}
+
+
+title_province_is_part_of_gg_in_northern_italy_trigger = {
+	any_character_situation = { this ?= situation:guelph_ghibelline }
+	primary_title = {
+		title_province = { geographical_region = gdp_guelph_ghibelline_northern_italy_region }
+	}
+	is_independent_ruler = no
+	title:e_hre.holder ?= root.liege
+}
+
+is_either_hre_vassal_or_independent_duke_or_less_trigger = {
+	is_landed = yes
+	primary_title ?= { tier <= tier_duchy }
+	is_hre_vassal_or_independent_trigger = yes
+}
+
+is_either_hre_vassal_or_independent_king_trigger = {
+	is_landed = yes
+	primary_title ?= { tier = tier_kingdom }
+	is_hre_vassal_or_independent_trigger = yes
+}
+
+is_hre_vassal_or_independent_trigger = {
+	OR = {
+		is_independent_ruler = yes
+		trigger_if = {
+			limit = { 
+				exists = title:e_hre.holder
+				exists = liege
+			}
+			top_liege = title:e_hre.holder
+		}
+	}
+}
+
+
+title_is_able_to_join_lombard_league_via_decision_trigger = {
+	$TITLE$.holder ?= { 
+		OR = {
+			primary_title.tier = $TITLE$.tier
+			primary_title = $TITLE$
+		}
+	}
+}
+
+holder_would_join_lombard_league_via_decision_trigger = {
+	OR = {
+		opinion = {
+			target = scope:league_creator
+			value >= 50
+		}
+		has_relation_friend = scope:league_creator
+		is_guelph_trigger = yes
+		trigger_if = {
+			limit = { exists = title:e_hre.holder }
+			has_relation_rival = title:e_hre.holder
+		}
+	}
+}
+
+has_lombard_league_title_trigger = {
+	trigger_if = {
+		limit = { 
+			any_held_title = { this = title:k_venice }
+		}
+		primary_title.tier <= tier_kingdom
+	}
+	trigger_else = { primary_title.tier <= tier_duchy }
+	OR = {
+		any_held_title = { this = title:k_venice }
+		any_held_title = { this = title:c_verona }
+		any_held_title = { this = title:c_padua }
+		any_held_title = { this = title:c_treviso }
+		any_held_title = { this = title:c_bologna }
+		any_held_title = { this = title:c_ferrara }
+		any_held_title = { this = title:c_modena }
+		any_held_title = { this = title:c_mantua }
+		any_held_title = { this = title:c_cremona }
+		any_held_title = { this = title:c_brescia }
+		any_held_title = { this = title:c_novara }
+		any_held_title = { this = title:c_tortona }
+		any_held_title = { this = title:c_piacenza }
+		any_held_title = { this = title:c_parma }
+		any_held_title = { this = title:c_genoa }
+	}
+}
+
+
+gg_available_displaced_guelph_rulers_exist = {
+	situation:guelph_ghibelline ?= {
+		any_in_list = { 
+			variable = displaced_guelph_rulers
+			is_available_quick = {
+				alive = yes
+				travel = no
+				imprisoned = no
+				incapable = no
+				landed = no
+			}
+			NOT = { exists = liege }
+		}
+	}
+}
+
+gg_available_displaced_ghibelline_rulers_exist = {
+	situation:guelph_ghibelline ?= {
+		any_in_list = { 
+			variable = displaced_ghibelline_rulers
+			is_available_quick = {
+				alive = yes
+				travel = no
+				imprisoned = no
+				incapable = no
+				landed = no
+			}
+			NOT = { exists = liege }
+		}
+	}
+}
+
+
+gg_has_minor_involvement_trigger = {
+	exists = var:gg_involvement
+	custom_tooltip = {
+		text = gg_has_minor_involvement_trigger.tt
+		var:gg_involvement >= gg_involvement_minor_value
+	}
+}
+
+gg_has_medium_involvement_trigger = {
+	exists = var:gg_involvement
+	custom_tooltip = {
+		text = gg_has_medium_involvement_trigger.tt
+		var:gg_involvement >= gg_involvement_medium_value
+	}
+}

@@ -33,7 +33,7 @@ start_slander_interaction = {
 			limit = { is_ai = yes }
 			ai_honor <= 20
 			OR = {
-				primary_title.tier >= tier_duchy
+				primary_title.tier >= main_administrative_tier
 				is_landless_administrative = yes
 			}
 			OR = { # So that the cycle doesn't get nuked by having too many landless families
@@ -3153,6 +3153,15 @@ start_raid_estate_interaction = {
 		}
 		trigger_if = {
 			limit = { is_ai = yes }
+			is_available_adult = yes
+			shared_raid_estate_participant_valid_trigger = yes
+			trigger_if = {
+				limit = {
+					government_has_flag = government_is_celestial
+					exists = var:movement_power
+				}
+				var:movement_power >= extremely_high_movement_power_value
+			}
 			NOT = {
 				any_scheme = { is_hostile = yes }
 			}

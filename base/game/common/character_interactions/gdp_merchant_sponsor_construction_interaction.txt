@@ -1,0 +1,252 @@
+﻿# Merchant-sponsored Construction
+# THE NAME ITSELF (merchant_sponsor_construction_interaction) IS REFERENCED IN CODE AND SHOULD NOT BE CHANGED!
+# A character with the can_sponsor_construction government rule can pay another ruler to start or upgrade a building in one of that ruler's baronies, if the holding has no construction in progress
+# Contract:
+#   scope:actor                  = the merchant proposing the deal
+#   scope:recipient              = the holder of the targeted barony
+#   scope:barony                 = the targeted barony title
+#   scope:building_type          = the building type the merchant wants built
+#   scope:gold_cost              = the building's gold construction cost
+
+merchant_sponsor_construction_interaction = {
+	category = interaction_category_diplomacy
+	filter_tags = { market_owner }
+	interface_priority = 80
+	icon = icon_construction
+	desc = merchant_sponsor_construction_interaction_desc
+	greeting = positive
+
+	notification_text = merchant_sponsor_construction_notification
+
+	common_interaction = no
+
+	popup_on_receive = yes
+	pause_on_receive = yes
+
+	cooldown_against_recipient = { years = 5 }
+
+	is_shown = {
+		scope:actor = {
+			government_allows = can_sponsor_construction
+			this != scope:recipient
+			is_ai = no
+		}
+		exists = scope:barony
+		exists = scope:building_type
+		exists = scope:gold_cost
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			is_available_quick = {
+				adult = yes
+				imprisoned = no
+				incapable = no
+			}
+			gold >= merchant_sponsor_construction_actor_cost_value
+			has_realm_law = company_purpose_artisan
+		}
+		scope:recipient = {
+			is_available_quick = {
+				imprisoned = no
+				incapable = no
+			}
+			NOR = {
+				is_at_war_with = scope:actor
+				has_relation_rival = scope:actor
+				house_has_feud_relation_with_trigger = { TARGET = scope:actor }
+				has_execute_reason = scope:actor
+				has_imprisonment_reason = scope:actor
+				has_banish_reason = scope:actor
+			}
+		}
+		scope:barony ?= {
+			tier = tier_barony
+			holder = scope:recipient
+			title_province = {
+				custom_tooltip = {
+					text = merchant_sponsor_construction_can_build_tt
+					can_start_building_construction_for_owner = scope:building_type
+				}
+				NOR = {
+					exists = var:merchant_construction_sponsor
+					exists = var:merchant_construction_cost
+				}
+			}
+		}
+		scope:building_type ?= {
+			# Prevent overwriting existing districts and buildings or filling slots with things the holder might not want
+			custom_tooltip = {
+				text = merchant_sponsor_construction_only_existing_tt
+				has_previous_building_level = yes
+			}
+			# Prevent upgrading special buildings
+			custom_tooltip = {
+				text = merchant_sponsor_construction_not_special_tt
+				NOT = { building_type_has_flag = holy_building }
+			}
+			custom_tooltip = {
+				text = merchant_sponsor_construction_not_duchy_tt
+				NOT = { building_type_has_flag = duchy_building }
+			}
+			custom_tooltip = {
+				text = merchant_sponsor_construction_not_great_tt
+				NOT = { building_type_has_flag = mandala_capital_building }
+			}
+			# Prevent upgrading holdings
+			custom_tooltip = {
+				text = merchant_sponsor_construction_not_holding_tt
+				NOR = {
+					building_type_has_flag = castle
+					building_type_has_flag = city
+					building_type_has_flag = herder_camp
+					building_type_has_flag = nomadic_camp
+					building_type_has_flag = temple
+					building_type_has_flag = temple_citadel
+					building_type_has_flag = tribe
+				}
+			}
+		}
+	}
+
+	cost = {
+		# The actor pays the building's gold cost, and the holder pays nothing
+		# Construction starts with no stored cost, so a cancel does not refund the holder
+		gold = {
+			value = merchant_sponsor_construction_actor_cost_value
+		}
+	}
+
+	on_accept = {
+		if = { # Suppressor
+			limit = { always = no }
+			save_scope_value_as = {
+				name = barony
+				value = yes
+			}
+			save_scope_value_as = {
+				name = building_type
+				value = yes
+			}
+			save_scope_value_as = {
+				name = gold_cost
+				value = 0
+			}
+		}
+		scope:actor = {
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = merchant_sponsor_construction_accept_toast
+				left_icon = scope:recipient
+				right_icon = scope:barony
+				add_prestige = merchant_sponsor_construction_prestige_gain_value
+				if = {
+					limit = { scope:gold_cost > 100 }
+					if = {
+						limit = {
+							NOT = {
+								has_hook_of_type = {
+									target = scope:recipient
+									type = strong_indebted_hook
+								}
+							}
+							can_add_hook = {
+								target = scope:recipient
+								type = indebted_hook
+							}
+						}
+						add_hook = {
+							target = scope:recipient
+							type = indebted_hook
+						}
+						scope:recipient = {
+							set_variable = {
+								name = merchant_sponsor_hook_payer
+								value = scope:actor
+								years = 10
+							}
+							set_variable = {
+								name = merchant_sponsor_hook_gold
+								value = merchant_sponsor_construction_actor_cost_value
+								years = 10
+							}
+						}
+					}
+				}
+				custom_tooltip = merchant_sponsor_construction_accept_tt
+				custom_tooltip = merchant_sponsor_construction_xp_tt
+				if = {
+					limit = {
+						scope:recipient = { is_ai = yes }
+					}
+					reverse_add_opinion = {
+						modifier = merchant_sponsored_construction_opinion
+						target = scope:recipient
+						opinion = 15
+					}
+				}
+			}
+		}
+		hidden_effect = {
+			scope:recipient = {
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = merchant_sponsor_construction_accept_toast
+					left_icon = scope:actor
+					right_icon = scope:barony
+					scope:actor = { custom_tooltip = merchant_sponsor_construction_accept_tt }
+				}
+			}
+			scope:actor = {
+				gdp_merchant_patron_fund_buildings_fulfill_promise_if_matching_effect = yes
+			}
+			scope:barony.title_province = {
+				set_variable = {
+					name = merchant_construction_sponsor
+					value = scope:actor
+				}
+				set_variable = {
+					name = merchant_construction_cost
+					value = scope:gold_cost
+				}
+				start_building_construction_for_holder = scope:building_type
+			}
+		}
+	}
+
+	on_decline = {
+		# Refund the merchant.
+		hidden_effect = {
+			scope:actor = {
+				send_interface_toast = {
+					type = event_toast_effect_neutral
+					title = merchant_sponsor_construction_decline_toast
+					left_icon = scope:actor
+					right_icon = scope:recipient
+					add_gold = merchant_sponsor_construction_actor_cost_value
+				}
+			}
+		}
+	}
+
+	auto_accept = {
+		scope:actor = { has_usable_hook = scope:recipient }
+	}
+
+	ai_accept = {
+		base = 100
+
+		opinion_modifier = {
+			who = scope:recipient
+			opinion_target = scope:actor
+			multiplier = 0.5
+			desc = AI_OPINION_REASON
+		}
+
+		ai_value_modifier = {
+			ai_greed = 0.5
+			ai_zeal = 0
+			ai_compassion = 0.25
+		}
+	}
+}

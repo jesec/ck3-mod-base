@@ -1,0 +1,728 @@
+﻿####################
+# Republic Modifiers
+####################
+
+##################################################
+# Republican Elective
+
+# Holder specific voting modifiers
+elector_voting_pattern_republican_elective_modifier = {
+	# How much the ruler wants to be re-elected
+	modifier = {
+		add = {
+			value = 25 # It's safe to assume that most would like to be re-elected to some extent
+			add = {
+				value = ai_boldness
+				multiply = 0.5
+			}
+			add = {
+				value = ai_energy
+				multiply = 0.5
+			}
+			add = {
+				value = ai_greed
+				multiply = 0.5
+			}
+			if = {
+				limit = {
+					has_trait = ambitious
+				}
+				add = 10
+			}
+			if = {
+				limit = {
+					has_trait = brave
+				}
+				add = 10
+			}
+			if = {
+				limit = { # Aggrandizement wants to be re-elected more
+					house ?= {
+						has_house_aspiration_parameter = republic_aggrandizement
+					}
+				}
+				add = 25 # Double dipping with the regular aggrandizement bonus is intended here
+			}
+			if = {
+				limit = { # We'll subtract some score for being old
+					age > 60
+				}
+				subtract = {
+					value = age
+					subtract = 60
+				}
+			}
+		}
+		desc = elector_wants_reelection_desc
+		OR = {
+			this = top_liege
+			liege = {
+				NOT = { government_has_flag = government_is_republic }
+			}
+		}
+		this = scope:candidate
+	}
+	# If the candidate is the family heir of the current holder
+	modifier = { # Prefer own family to inherit
+		add = {	
+			value = 50
+			if = {
+				limit = {
+					scope:title.holder = { has_realm_law = republic_assembly_term_length_indefinite }
+				}
+				add = 50
+			}
+		}
+		desc = tooltip_feudal_elector_vote_relative
+		exists = scope:candidate
+		scope:title.holder = this
+		scope:title.holder.player_heir ?= scope:candidate
+	}
+}
+
+# General elector voting modifiers
+elector_voting_pattern_circumstances_republican_elective_modifier = {
+	# Opinion of candidate
+	modifier = {
+		add = {
+			value = "opinion(scope:candidate)"
+			multiply = 0.5
+		}
+		desc = tooltip_feudal_elector_vote_opinion_positive
+		exists = scope:candidate
+		this != scope:candidate
+		opinion = {
+			target = scope:candidate
+			value > 0
+		}
+	}
+	modifier = {
+		add = {
+			value = "opinion(scope:candidate)"
+			multiply = 0.5
+		}
+		desc = tooltip_feudal_elector_vote_opinion_negative
+		exists = scope:candidate
+		this != scope:candidate
+		opinion = {
+			target = scope:candidate
+			value < 0
+		}
+	}
+
+	# House relation to candidate
+	modifier = {
+		add = {
+			value = 0
+			house ?= {
+				every_house_relation = {
+					limit = {
+						any_relation_house = {
+							this = scope:candidate.house
+						}
+					}
+					switch = {
+						trigger = has_house_relation_level
+						feud = { add = -25 }
+						rivalry = { add = -15 }
+						quarrel = { add = -5 }
+						cordial = { add = 5 }
+						friendly = { add = 15 }
+						amity = { add = 25 }
+					}
+				}
+			}
+		}
+		exists = scope:candidate.house
+		this != scope:candidate
+		house ?= {
+			any_house_relation = {
+				OR = {
+					has_house_relation_level = feud
+					has_house_relation_level = rivalry
+					has_house_relation_level = quarrel
+					has_house_relation_level = cordial
+					has_house_relation_level = friendly
+					has_house_relation_level = amity
+				}
+				any_relation_house = {
+					this = scope:candidate.house
+				}
+			}
+		}
+		desc = tooltip_elector_house_relation_desc
+	}
+
+	# If the candidate is also the holder, have they been sitting longer than one term?
+	modifier = {
+		add = {
+			value = -10
+			scope:title = {
+				if = {
+					limit = {
+						title_held_years > { value = title_held_for_term_length_value multiply = 2 }
+					}
+					add = -15
+				}
+				if = {
+					limit = {
+						title_held_years > { value = title_held_for_term_length_value multiply = 3 }
+					}
+					add = -25
+				}
+			}
+			if = {
+				limit = {
+					house ?= { has_house_aspiration_parameter = republic_communal } # Communal really dislike consecutive terms
+				}
+				multiply = 2
+			}
+		}
+		desc = consecutive_terms_penalty_value_desc
+		house ?= {
+			NOT = { has_house_aspiration_parameter = republic_signorial } # Signorial don't care, they WANT this type of rulership
+		}
+		this != scope:candidate
+		scope:holder = {
+			this = scope:candidate
+			NOT = { has_realm_law = republic_assembly_term_length_indefinite } # Not relevant if terms are unlimited
+		}
+		scope:title = {
+			title_held_years > title_held_for_term_length_value
+		}
+	}
+
+	# If the candidate is the family heir of the current holder
+	modifier = { # Like the current ruler
+		add = {
+			value = "opinion(scope:title.holder)"
+			multiply = 0.25
+		}
+		desc = tooltip_feudal_elector_pro_vote_ruler_opinion_positive
+		exists = scope:candidate
+		scope:title.holder != this
+		scope:title.holder.player_heir ?= scope:candidate
+		"opinion(scope:title.holder)" > 0
+	}
+	modifier = { # Dislike the current Ruler
+		add = {
+			value = "opinion(scope:title.holder)"
+			multiply = 0.5 # more
+		}
+		desc = tooltip_feudal_elector_anti_vote_ruler_opinion_negative
+		exists = scope:candidate
+		scope:title.holder != this
+		scope:title.holder.player_heir ?= scope:candidate
+		"opinion(scope:title.holder)" <= 0
+	}
+	modifier = { # Prefer variety of families
+		add = -50
+		desc = tooltip_republic_elector_vote_against_ruler_heir
+		exists = scope:candidate.house
+		scope:title.holder != this
+		scope:title.holder.player_heir ?= scope:candidate
+	}
+	modifier = { # Current holder is not past their prime/dying
+		add = -50
+		desc = tooltip_republic_elector_vote_oldtimer_heir
+		exists = scope:candidate
+		scope:title.holder != this
+		scope:title.holder = {
+			player_heir ?= scope:candidate
+			health >= fine_health
+			age < 60
+		}
+	}
+
+	# House Ambitions
+	# We share house ambition (unless they have Agitation or Aggrandizement)
+	modifier = {
+		add = 10
+		desc = share_house_ambition_value_desc
+		exists = scope:candidate.house
+		house ?= {
+			NOR = {
+				has_house_aspiration_parameter = republic_agitation
+				has_house_aspiration_parameter = republic_aggrandizement
+			}
+			has_same_house_aspiration_as = scope:candidate.house
+			this != scope:candidate.house
+		}
+	}
+	# Voters with Agitation are less likely to re-elect the current ruler
+	modifier = {
+		add = -100
+		desc = agitation_wants_change_desc
+		house ?= { has_house_aspiration_parameter = republic_agitation }
+		this != liege
+		scope:candidate ?= { this = root.liege }
+	}
+	# Voters with Aggrandizement are more likely to vote on themselves or other house members
+	modifier = {
+		add = 20
+		desc = aggrandizement_family_preference_desc
+		house ?= { has_house_aspiration_parameter = republic_aggrandizement }
+		scope:candidate ?= {
+			house ?= { this = root.house }
+			this != root
+		}
+	}
+	modifier = {
+		add = 25
+		desc = aggrandizement_self_preference_desc
+		house ?= { has_house_aspiration_parameter = republic_aggrandizement }
+		scope:candidate = root
+	}
+
+	# Patrician rating
+	modifier = {
+		add = {
+			value = scope:candidate.house.house_power_score
+			multiply = 0.2
+		}
+		desc = patrician_rating_value_desc
+		exists = scope:candidate.house
+		scope:candidate = {
+			gdp_has_patrician_rating_trigger = { THRESHOLD = gdp_patrician_house_score_threshold_1_value }
+		}
+	}
+
+	# Popular opinion
+	modifier = {
+		add = { # When positive, only a portion of popular opinion is added
+			value = scope:candidate.capital_county.popular_opinion
+			if = {
+				limit = { # Communal cares more about popular opinion
+					house ?= {
+						has_house_aspiration_parameter = republic_communal
+					}
+				}
+				multiply = 0.5
+			}
+			else = {
+				multiply = 0.25
+			}
+			round = yes
+			min = 1
+		}
+		desc = candidate_has_popular_opinion_desc
+		scope:candidate = {
+			is_landed = yes
+			capital_county = {
+				popular_opinion > 0
+			}
+			this != root
+		}
+	}
+	modifier = {
+		add = { # When negative, we add a larger portion as a penalty
+			value = scope:candidate.capital_county.popular_opinion
+			if = {
+				limit = { # Communal cares more about popular opinion (who gets the full value)
+					house ?= {
+						NOT = { has_house_aspiration_parameter = republic_communal }
+					}
+				}
+				multiply = 0.5
+			}
+			round = yes
+			max = -1
+		}
+		desc = candidate_lacks_popular_opinion_desc
+		scope:candidate = {
+			is_landed = yes
+			capital_county = {
+				popular_opinion < 0
+			}
+			this != root
+		}
+	}
+
+	# Traits
+	# Overall trait compatibility between elector and candidate
+	compatibility_modifier = {
+		who = root
+		compatibility_target = scope:candidate
+		min = -50
+		max = 50
+		trigger = {
+			root != scope:candidate
+		}
+	}
+	# If they have high zeal, they care greatly about sinful/virtuous traits
+	modifier = {
+		add = {
+			subtract = 5
+			if = {
+				limit = {
+					scope:candidate = { num_sinful_traits >= 2 }
+				}
+				subtract = 5
+			}
+			if = {
+				limit = {
+					scope:candidate = { num_sinful_traits >= 3 }
+				}
+				subtract = 5
+			}
+			if = {
+				limit = {
+					scope:candidate = { num_sinful_traits >= 4 }
+				}
+				subtract = 5
+			}
+			if = {
+				limit = {
+					scope:candidate = { num_sinful_traits >= 5 }
+				}
+				subtract = 5
+			}
+			multiply = ai_zeal
+			multiply = 0.1 # Reduce overall to avoid extreme numbers.
+		}
+		desc = tooltip_feudal_elector_vote_sinful
+		this != scope:candidate # Do not judge yourself.
+		NOT = { has_trait = cynical }
+		ai_zeal > 0
+		scope:candidate = { num_sinful_traits >= 1 }
+	}
+	modifier = {
+		add = {
+			add = 5
+			if = {
+				limit = {
+					scope:candidate = { num_virtuous_traits >= 2 }
+				}
+				add = 5
+			}
+			if = {
+				limit = {
+					scope:candidate = { num_virtuous_traits >= 3 }
+				}
+				add = 5
+			}
+			if = {
+				limit = {
+					scope:candidate = { num_virtuous_traits >= 4 }
+				}
+				add = 5
+			}
+			if = {
+				limit = {
+					scope:candidate = { num_virtuous_traits >= 5 }
+				}
+				add = 5
+			}
+			multiply = ai_zeal
+			multiply = 0.1 # Reduce overall to avoid extreme numbers.
+		}
+		desc = tooltip_feudal_elector_vote_virtuous
+		NOR = {
+			this = scope:candidate	# Do not judge yourself.
+			has_trait = cynical
+		}
+		ai_zeal > 0
+		scope:candidate = { num_virtuous_traits >= 1 }
+	}
+	# Excommunication
+	modifier = {
+		add = {
+			subtract = 25
+			if = { # Religious gradients.
+				limit = { ai_zeal > 0 }
+				subtract = {
+					value = ai_zeal
+					multiply = 0.5
+				}
+			}
+		}
+		desc = tooltip_feudal_elector_vote_excommunication
+		this != scope:candidate # Do not judge yourself.
+		faith = { has_doctrine_parameter = excommunication_active }
+		faith = scope:candidate.faith
+		root.faith.religious_head = scope:candidate.faith.religious_head # Must have been excommunicated by the same religious head
+		OR = {
+			NOT = { has_trait = excommunicated }
+			has_trait = arbitrary # No need for consistency
+		}
+		scope:candidate = { has_trait = excommunicated }
+	}
+	# Some traits make them more likely to vote on themselves
+	modifier = {
+		add = 20
+		desc = elector_arrogant_likes_self_desc
+		this = scope:candidate
+		has_trait = arrogant
+	}
+	modifier = {
+		add = 20
+		desc = elector_ambitious_likes_self_desc
+		this = scope:candidate
+		has_trait = ambitious
+	}
+	# House ambitions likes particular traits
+	modifier = {
+		add = 20
+		desc = elector_communal_likes_just_desc
+		this != scope:candidate
+		scope:candidate = {
+			has_trait = just
+		}
+		house ?= { has_house_aspiration_parameter = republic_communal }
+	}
+	modifier = {
+		add = 20
+		desc = elector_communal_likes_honest_desc
+		this != scope:candidate
+		scope:candidate = {
+			has_trait = honest
+		}
+		house ?= { has_house_aspiration_parameter = republic_communal }
+	}
+
+	# Dynasty legacy
+	modifier = {
+		add = gdp_republic_legacy_elective_support_value
+		desc = gdp_republic_legacy_4_perk_value_desc
+		this != scope:candidate
+		scope:candidate = {
+			dynasty ?= {
+				has_dynasty_perk = gdp_republic_legacy_4
+			}
+		}
+	}
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = {
+					scope:candidate.house = { has_house_modifier = gdp_gather_popular_support_house_t3_modifier }
+				}
+				add = gdp_gather_popular_support_house_t3_elective_bonus_value
+			}
+			else_if = {
+				limit = {
+					scope:candidate.house = { has_house_modifier = gdp_gather_popular_support_house_t2_modifier }
+				}
+				add = gdp_gather_popular_support_house_t2_elective_bonus_value
+			}
+			else = {
+				add = gdp_gather_popular_support_house_t1_elective_bonus_value
+			}
+		}
+		desc = candidate_has_popular_support_house_desc
+		scope:candidate = {
+			house ?= {
+				OR = {
+					has_house_modifier = gdp_gather_popular_support_house_t1_modifier
+					has_house_modifier = gdp_gather_popular_support_house_t2_modifier
+					has_house_modifier = gdp_gather_popular_support_house_t3_modifier
+				}
+			}
+		}
+	}
+
+	# Cultural considerations
+	modifier = { # We are of the capital's culture, but the candidate is not
+		add = -20
+		desc = candidate_is_of_different_culture_capital_value_desc
+		exists = scope:holder.capital_county
+		culture = scope:holder.capital_county.culture
+		culture != scope:candidate.culture
+	}
+	modifier = { # We AND the candidate are both of a different culture from the capital
+		add = -10
+		desc = candidate_is_of_different_culture_value_desc
+		exists = scope:holder.capital_county
+		culture != scope:holder.capital_county.culture
+		culture != scope:candidate.culture
+	}
+
+	# Religious considerations
+	modifier = { # We share rite with the capital, but the candidate does not
+		add = -20
+		desc = candidate_is_of_different_rite_capital_value_desc
+		exists = scope:holder.capital_county
+		rite = scope:holder.capital_county.rite
+		rite != scope:candidate.rite
+	}
+	modifier = { # We AND the candidate are both of a different rite from the capital
+		add = -10
+		desc = candidate_is_of_different_rite_value_desc
+		exists = scope:holder.capital_county
+		rite != scope:holder.capital_county.rite
+		rite != scope:candidate.rite
+	}
+
+	#GG Situation: Guelphs like Guelphs, Ghibellines like Ghibellines
+	modifier = {
+		add = 10
+		desc = same_gg_side_desc
+		this != scope:candidate
+		exists = situation:guelph_ghibelline
+		gg_first_and_second_are_same_side_trigger = { FIRST = this SECOND = scope:candidate }
+	}
+	modifier = {
+		add = -20
+		desc = opposite_gg_side_desc
+		this != scope:candidate
+		exists = situation:guelph_ghibelline
+		gg_first_and_second_are_opposite_sides_trigger = { FIRST = this SECOND = scope:candidate }
+	}
+
+	# Slander
+	modifier = {
+		add = republic_slander_election_value
+		desc = tooltip_republic_elector_vote_slander_desc
+		scope:candidate.house ?= { has_house_modifier = gdp_patrician_slandered_house_modifier }
+		this != scope:candidate
+		trigger_if = {
+			limit = { exists = house }
+			house != scope:candidate.house
+		}
+	}
+}
+
+# Acceptance bonus for having a high patrician rating - used for interactions
+actor_patrician_rating_modifier = {
+	modifier = {
+		add = {
+			value = 5
+			if = {
+				limit = {
+					scope:actor.house = {
+						house_power_score >= gdp_patrician_house_score_threshold_3_value
+					}
+				}
+				add = 10
+			}
+			else_if = {
+				limit = {
+					scope:actor.house = {
+						house_power_score >= gdp_patrician_house_score_threshold_2_value
+					}
+				}
+				add = 5
+			}
+		}
+		scope:actor.house ?= {
+			house_power_score >= gdp_patrician_house_score_threshold_1_value
+		}
+		desc = ACTOR_PATRICIAN_RATING_BONUS_REASON
+	}
+}
+
+# Request monopoly/monopolize trade acceptance modifiers for republic and trade leagues
+request_trade_monopoly_common_republic_modifier = {
+	# Some characters prefer gold
+	modifier = {
+		add = {
+			value = 10
+			if = {
+				limit = {
+					debt_level > 0
+				}
+				add = {
+					value = 5
+					multiply = debt_level
+				}
+			}
+			if = {
+				limit = {
+					has_trait = greedy
+				}
+				multiply = 2
+			}
+		}
+		scope:offer_gold = yes
+		desc = GOLD_POSITIVE_REASON
+	}
+
+	# Hooks are useful
+	modifier = {
+		add = {
+			value = 10
+			if = {
+				limit = { # Decietful characters enjoy hooks more
+					has_trait = deceitful
+				}
+				add = 5
+			}
+			if = {
+				limit = {
+					liege = scope:actor
+				}
+				multiply = 2 # Twice as good if you get it on your liege
+			}
+		}
+		scope:offer_hook = yes
+		desc = FAVOR_POSITIVE_REASON
+	}
+
+	# Spending a hook
+	modifier = {
+		add = 30
+		scope:hook = yes
+		scope:actor = {
+			NOT = { has_strong_hook = scope:recipient }
+		}
+		desc = SCHEME_WEAK_HOOK_USED
+	}
+	modifier = {
+		add = 60
+		scope:hook = yes
+		scope:actor = {
+			has_strong_hook = scope:recipient
+		}
+		desc = SCHEME_STRONG_HOOK_USED
+	}
+
+	# Trade Expertise Level
+	modifier = {
+		add = merchant_monopoly_trade_expertise_acceptance_value
+		desc = request_monopoly_trade_expertise_acceptance
+		exists = scope:trade_good_category_type
+	}
+
+	# Perks
+	## Forced Vassalage
+	modifier = {
+		add = gdp_republic_flexible_truces_perk_value
+		desc = actor_has_flexible_truces_perk_desc
+		scope:actor = { has_perk = flexible_truces_perk }
+	}
+
+	# Monopoly options
+	modifier = {
+		add = -100
+		scope:is_exploitative_monopoly = yes
+		desc = MONOPOLY_EXPLOITATIVE_REASON
+	}
+	modifier = {
+		add = -50
+		scope:is_complete_monopoly = yes
+		desc = MONOPOLY_COMPLETE_REASON
+	}
+
+	# Dread
+	modifier = {
+		scope:recipient = {
+			has_dread_level_towards = {
+				target = scope:actor
+				level = 1
+			}
+		}
+		add = intimidated_external_reason_value
+		desc = INTIMIDATED_REASON
+	}
+	modifier = {
+		scope:recipient = {
+			has_dread_level_towards = {
+				target = scope:actor
+				level = 2
+			}
+		}
+		add = cowed_external_reason_value
+		desc = COWED_REASON
+	}
+}

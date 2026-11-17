@@ -60,14 +60,19 @@ ConstantBuffer( GameSharedConstants )
 	float _StartColorOverlayHeightBlend;
 	float _FullyColorOverlayHeightBlend;
 	float _RefractionCullHeight;
-	float _Alignment1;
+	float _TerrainEffectsEnabled;
 
 	float3 _UnderwaterTerrainColor;
 
 	float _RiteDivergenceHostilityThreshold;
 	float _RiteDivergenceHereticalThreshold;
 
-	float _Alignment2; // Alignment
-	float _Alignment3; // Alignment
-	float _Alignment4; // Alignment
+	float _IsRouteEditMode;
+	float _RoadJunctionBlendRadius;
+	int _HasMapBuildingColorOverlayEnabled;
+
+	float _AutumnValue;
+	float _Alignment2;
+	float _Alignment3;
+	float _Alignment4;
 };

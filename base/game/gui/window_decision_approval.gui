@@ -1,0 +1,138 @@
+window = {
+	datacontext = "[DecisionApprovalWindow.GetDecisionDetailView]"
+	name = "decision_approval_window"
+	widgetid = "decision_approval_window"
+	parentanchor = left
+	size = { 600 750 }
+	position = { 60 180 }
+	layer = windows_layer
+	movable = yes
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	using = Window_Background_Subwindow
+
+	visible = "[And( IsGameViewOpen('decision_approval'), IsDefaultGUIMode )]"
+
+	vbox = {
+		header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "REPUBLIC_ASSEMBLY_WINDOW_HEADER"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[DecisionApprovalWindow.Close]"
+				}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			vbox_decision_approving_assembly_members = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+			}
+
+			vbox_decision_dissenting_assembly_members = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+			}
+		}
+	}
+}
+
+types DecisionApprovalTypes
+{
+	type vbox_decision_approving_assembly_members = vbox {
+
+		text_label_center = {
+				text = "DECISIONS_VIEW_APPROVALS"
+		}
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			blockoverride "scrollbox_content"
+			{
+				fixedgridbox = {
+					datamodel_wrap = 2
+					addcolumn = 125
+					addrow = 150
+					flipdirection = yes
+					datamodel = "[DecisionDetailView.GetApprovingMembers]"
+
+					item = {
+						widget_approving_member = {}
+					}
+				}
+			}
+		}
+	}
+
+	type vbox_decision_dissenting_assembly_members = vbox {
+
+		text_label_center = {
+				text = "DECISIONS_VIEW_DISAPPROVALS"
+		}
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			blockoverride "scrollbox_content"
+			{
+				fixedgridbox = {
+					datamodel_wrap = 2
+					addcolumn = 125
+					addrow = 150
+					flipdirection = yes
+					datamodel = "[DecisionDetailView.GetDissentingMembers]"
+
+					item = {
+						widget_dissenting_member = {}
+					}
+				}
+			}
+		}
+	}
+
+	type widget_approving_member = widget {
+		allow_outside = yes
+		vbox = {
+			portrait_head = {}
+
+			text_single = {
+				text = "LAW_CHANGE_WINDOW_POWERFUL_APPROVE"
+
+				tooltip = "[DecisionDetailView.GetAiApprovalDesc( Character.Self )]"
+				using = tooltip_se
+			}
+		}
+	}
+
+	type widget_dissenting_member = widget {
+		allow_outside = yes
+		vbox = {
+			portrait_head = {}
+
+			text_single = {
+				text = "LAW_CHANGE_WINDOW_POWERFUL_OPPOSE"
+
+				tooltip = "[DecisionDetailView.GetAiApprovalDesc( Character.Self )]"
+				using = tooltip_se
+			}
+		}
+	}
+}

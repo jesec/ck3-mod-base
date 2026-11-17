@@ -50,7 +50,7 @@ eparch_appease_populace = {
 		remove_other_eparch_modifiers_effect = yes
 		scope:liege ?= {
 			capital_province = {
-				add_province_modifier = ep3_eparch_county_opinion_modifier
+				add_province_modifier = ep3_eparch_popular_opinion_modifier
 			}
 		}
 	}
@@ -61,21 +61,21 @@ eparch_appease_populace = {
 				limit = {
 					any_realm_county = {
 						any_county_province = {
-							has_province_modifier = ep3_eparch_county_opinion_modifier
+							has_province_modifier = ep3_eparch_popular_opinion_modifier
 						}
 					}
 				}
 				every_realm_county = {
 					limit = {
 						any_county_province = {
-							has_province_modifier = ep3_eparch_county_opinion_modifier
+							has_province_modifier = ep3_eparch_popular_opinion_modifier
 						}
 					}
 					every_county_province = {
 						limit = {
-							has_province_modifier = ep3_eparch_county_opinion_modifier
+							has_province_modifier = ep3_eparch_popular_opinion_modifier
 						}
-						remove_province_modifier = ep3_eparch_county_opinion_modifier
+						remove_province_modifier = ep3_eparch_popular_opinion_modifier
 					}
 				}
 			}
@@ -89,7 +89,7 @@ eparch_appease_populace = {
 		
 		if = {
 			limit = {
-				capital_county ?= { county_opinion < 0 }
+				capital_county ?= { popular_opinion < 0 }
 			}
 			# Personality
 			if = {
@@ -356,7 +356,7 @@ eparch_enforce_public_order = {
 		
 		if = {
 			limit = { # Don't bother unless we need to increase control
-				capital_county ?= { county_control < 90 }
+				capital_county ?= { county_control < county_control_baseline }
 			}
 			# Personality
 			if = {
@@ -424,7 +424,7 @@ eparch_enforce_public_order = {
 	}
 }
 
-eparch_development = {
+eparch_prosperity = {
 	court_position_types = { eparch_court_position }
 	
 	# When task is made available
@@ -474,7 +474,7 @@ eparch_development = {
 		remove_other_eparch_modifiers_effect = yes
 		scope:liege ?= {
 			capital_province = {
-				add_province_modifier = ep3_eparch_development_modifier
+				add_province_modifier = ep3_eparch_prosperity_modifier
 			}
 		}
 	}
@@ -485,21 +485,21 @@ eparch_development = {
 				limit = {
 					any_realm_county = {
 						any_county_province = {
-							has_province_modifier = ep3_eparch_development_modifier
+							has_province_modifier = ep3_eparch_prosperity_modifier
 						}
 					}
 				}
 				every_realm_county = {
 					limit = {
 						any_county_province = {
-							has_province_modifier = ep3_eparch_development_modifier
+							has_province_modifier = ep3_eparch_prosperity_modifier
 						}
 					}
 					every_county_province = {
 						limit = {
-							has_province_modifier = ep3_eparch_development_modifier
+							has_province_modifier = ep3_eparch_prosperity_modifier
 						}
-						remove_province_modifier = ep3_eparch_development_modifier
+						remove_province_modifier = ep3_eparch_prosperity_modifier
 					}
 				}
 			}
@@ -531,7 +531,7 @@ eparch_development = {
 		
 		# Other
 		if = {
-			limit = { # Rulers with a stewardship education has an overall preference for development
+			limit = { # Rulers with a stewardship education has an overall preference for prosperity
 				has_trait = education_stewardship
 			}
 			add = 15

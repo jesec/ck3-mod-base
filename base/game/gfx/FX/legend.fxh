@@ -60,6 +60,10 @@ PixelShader =
 			#ifdef LOW_SPEC_SHADERS
 				return;
 			#endif
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				return;
+			}
 			const float LegendIntensity = LegendBilinearColorSample( Coordinate );
 			if( LegendIntensity < 0.00001f )
 			{
@@ -74,6 +78,10 @@ PixelShader =
 			#ifdef LOW_SPEC_SHADERS
 				return;
 			#endif
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				return;
+			}
 			const float LegendIntensity = LegendColorSample( Coordinate );
 			if( LegendIntensity < 0.00001f )
 			{

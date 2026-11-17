@@ -674,7 +674,7 @@
 	dynasty = 7212
 	rite = "roman_rite"
 	culture = "cisalpine"
-
+	father = castro_6 # Folco
 	1185.1.1 = {
 		birth = yes
 	}
@@ -1221,10 +1221,31 @@
 	dynasty = 100472
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_stewardship_1
+	diplomacy = 5
+	martial = 2
+	stewardship = 15
+	intrigue = 15
+	learning = 6
+	prowess = 1
+	health = 5.25
+	trait = education_stewardship_2
+	trait = lazy
+	trait = compassionate
+	trait = wrathful
+	trait = comfort_eater
+	disallow_random_traits = yes
 
 	1145.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 42 }
+		}
 	}
 	1180.1.1 = {
 		death = "1180.1.1"
@@ -1969,7 +1990,7 @@
 
 70634 = {
 	name = "Oberto" # Oberto Obertenghi
-	dynasty_house = house_obertenghi
+	dynasty_house = house_massa
 	martial = 5
 	diplomacy = 5
 	intrigue = 5
@@ -2316,10 +2337,10 @@
 
 	father = 223597
 	
-	1185.1.1 = {
+	1151.1.1 = {
 		birth = yes
 	}
-	1228.6.7 = {
+	1228.1.1 = {
 		death = yes
 	}
 }
@@ -2339,11 +2360,12 @@
 	trait = education_intrigue_1
 
 	father = 223597
+	mother = cattaneo_4
 	
-	1187.1.1 = {
+	1127.1.1 = {
 		birth = yes
 	}
-	1237.1.1 = {
+	1180.1.1 = {
 		death = yes
 	}
 }
@@ -2363,11 +2385,12 @@
 	trait = education_stewardship_1
 
 	father = 223597
+	mother = cattaneo_4
 	
-	1189.1.1 = {
+	1129.1.1 = {
 		birth = yes
 	}
-	1239.1.1 = {
+	1179.1.1 = {
 		death = yes
 	}
 }
@@ -2387,11 +2410,12 @@
 	trait = education_intrigue_2
 
 	father = 223597
+	mother = cattaneo_4
 	
-	1191.1.1 = {
+	1131.1.1 = {
 		birth = yes
 	}
-	1241.1.1 = {
+	1181.1.1 = {
 		death = yes
 	}
 }
@@ -2411,17 +2435,198 @@
 	trait = education_diplomacy_2
 
 	father = 223597
+	mother = cattaneo_4
 	
-	1193.1.1 = {
+	1133.1.1 = {
 		birth = yes
 	}
-	1243.1.1 = {
+	1184.1.1 = {
+		death = yes
+	}
+}
+
+dalesmanni_dalesmano = {
+	name = "Dalesmano"
+	dynasty = cisalpine_dalesmanni
+	rite = "roman_rite"
+	culture = "cisalpine"
+	1110.1.1 = {
+		birth = "1110.1.1"
+	}
+	1145.1.1 = {
+		add_spouse = dalesmanni_mabilia
+	}
+	1175.1.1 = {
+		death = "1175.1.1"
+	}
+}
+
+dalesmanni_mabilia = {
+	name = "Mabilia"
+	female = yes
+	dynasty = cisalpine_curano
+	rite = "roman_rite"
+	culture = "cisalpine"
+	1115.1.1 = {
+		birth = "1115.1.1"
+	}
+	1180.1.1 = {
+		death = "1180.1.1"
+	}
+}
+
+dalesmanni_dalesmannino = {
+	name = "Dalesmannino"
+	dynasty = cisalpine_dalesmanni
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = dalesmanni_dalesmano
+	mother = dalesmanni_mabilia
+	1152.1.1 = {
+		birth = "1152.1.1"
+	}
+	1215.1.1 = {
+		death = "1215.1.1"
+	}
+}
+
+carrara_jacopino = {
+	name = "Jacopino" # Jacopino da Carrara, first husband of Speronella
+	dynasty = 101823 # da Carrara
+	rite = "roman_rite"
+	culture = "cisalpine"
+	1135.1.1 = {
+		birth = "1135.1.1"
+	}
+	1190.1.1 = {
+		death = "1190.1.1"
+	}
+}
+
+gennaro_pietro = {
+	name = "Pietro" # Pietro da Gennaro
+	dynasty = cisalpine_gennaro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	1136.1.1 = {
+		birth = "1136.1.1"
+	}
+	1195.1.1 = {
+		death = "1195.1.1"
+	}
+}
+
+fontana_olderico = {
+	name = "Olderico" # Olderico Fontana da Monselice, last companion of Speronella
+	rite = "roman_rite"
+	culture = "cisalpine"
+	dynasty = cisalpine_fontana
+	1140.1.1 = {
+		birth = "1140.1.1"
+	}
+	1200.1.1 = {
+		death = "1200.1.1"
+	}
+}
+
+dalesmanni_jacopo = {
+	name = "Jacopo"
+	dynasty = cisalpine_dalesmanni
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = fontana_olderico
+	mother = dalesmanni_1
+	trait = bastard
+	1175.1.1 = {
+		birth = "1175.1.1"
+	}
+	1239.2.13 = {
+		death = "1239.2.13"
+	}
+}
+
+dalesmanni_1 = {
+	name = "Speronella"
+	dna = bookmark_dna_speronella_dalesmanni
+	female = yes
+	dynasty = cisalpine_dalesmanni
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = dalesmanni_dalesmano
+	mother = dalesmanni_mabilia
+	diplomacy = 6
+	intrigue = 7
+	stewardship = 7
+	martial = 2
+	learning = 4
+	disallow_random_traits = yes
+	sexuality = heterosexual
+	trait = education_intrigue_3
+	trait = ambitious
+	trait = gregarious
+	trait = brave
+	trait = beauty_good_2
+	trait = adulterer
+	1149.1.1 = {
+		birth = yes
+	}
+	1163.1.1 = {
+		add_spouse = carrara_jacopino
+	}
+	1164.1.1 = {
+		remove_spouse = carrara_jacopino
+	}
+	1164.6.1 = {
+		add_spouse = cisalpine0535 # Pagano della Torre, The Rocca Pendice abduction
+	}
+	1165.1.1 = {
+		remove_spouse = cisalpine0535
+	}
+	1166.1.1 = {
+		add_spouse = 73547 # Pietro III Traversari
+	}
+	1168.1.1 = {
+		remove_spouse = 73547
+	}
+	1169.1.1 = {
+		add_spouse = gennaro_pietro
+	}
+	1170.1.1 = {
+		remove_spouse = gennaro_pietro
+		add_spouse = 70655 # Ezzelino II da Romano
+	}
+	1174.1.1 = {
+		effect = {
+			set_relation_lover = { reason = lover_history target = character:fontana_olderico }
+		}
+	}
+	1177.1.1 = {
+		remove_spouse = 70655
+	}
+	1199.12.24 = {
+		death = yes
+	}
+}
+
+dalesmanni_2 = {
+	name = "Zamponia"
+	female = yes
+	dynasty = cisalpine_dalesmanni
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = cisalpine0535
+	mother = dalesmanni_1
+	1165.6.1 = {
+		birth = yes
+	}
+	1235.1.1 = {
 		death = yes
 	}
 }
 
 70655 = {
 	name = "Ezzelino" # Ezzelino (II) da Romano 'the Monk', Podestà of Treviso (1190-1192 and 1219-1223)
+	dna = bookmark_dna_ezzelino_ii
 	dynasty = 13025
 	martial = 8
 	diplomacy = 7
@@ -3307,17 +3512,21 @@
 70716 = {
 	name = "Oberto" # Oberto Pallavicino
 	dynasty_house = house_pallavicino
-	martial = 6
-	diplomacy = 5
-	intrigue = 4
-	stewardship = 7
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = humble
-	trait = wrathful
-	trait = education_stewardship_2
 
 	father = 70714
+	diplomacy = 11
+	martial = 3
+	stewardship = 12
+	intrigue = 7
+	learning = 4
+	prowess = 3
+	trait = education_stewardship_2
+	trait = humble
+	trait = wrathful
+	trait = ambitious
+	disallow_random_traits = yes
 
 	1132.1.1 = {
 		birth = yes
@@ -3330,17 +3539,34 @@
 70717 = {
 	name = "Adalberto" # Adalberto Pallavicino
 	dynasty_house = house_pallavicino
-	martial = 6
-	diplomacy = 4
-	intrigue = 5
-	stewardship = 7
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = greedy
-	trait = education_stewardship_4
 	father = 70716
+	diplomacy = 16
+	martial = 4
+	stewardship = 8
+	intrigue = 5
+	learning = 5
+	prowess = 5
+	trait = education_stewardship_3
+	trait = greedy
+	trait = stubborn
+	trait = craven
+	trait = lifestyle_physician
+	trait = irritable
+	disallow_random_traits = yes
 	1155.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -25 }
+			learn_language = language_high_german
+		}
 	}
 	1212.1.1 = {
 		death = yes
@@ -4869,20 +5095,35 @@
 70769 = {
 	name = "Ottone" # Ottone Visconti
 	dynasty = 234
-	martial = 5
-	diplomacy = 4
-	intrigue = 5
-	stewardship = 4
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = ambitious
-	trait = gregarious
-	trait = education_intrigue_1
 
 	father = 71169
+	diplomacy = 6
+	martial = 6
+	stewardship = 9
+	intrigue = 12
+	learning = 4
+	prowess = 5
+	health = 5.25
+	trait = education_intrigue_1
+	trait = ambitious
+	trait = gregarious
+	trait = diligent
+	trait = drunkard
+	disallow_random_traits = yes
 
 	1160.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 6 }
+		}
 	}
 	1211.1.1 = {
 		death = yes
@@ -11139,7 +11380,7 @@
 
 71282 = {
 	name = "Alberto" # Alberto Obertenghi
-	dynasty_house = house_obertenghi
+	dynasty_house = house_massa
 	martial = 7
 	diplomacy = 5
 	intrigue = 4
@@ -11530,7 +11771,7 @@
 
 71305 = {
 	name = "Ugonino" # Ugonino Obertenghi
-	dynasty_house = house_obertenghi
+	dynasty_house = house_massa
 	martial = 3
 	diplomacy = 4
 	intrigue = 5
@@ -11864,9 +12105,10 @@
 
 73549 = {
 	name = "Guido"
-	dynasty = 101835
+	dynasty_house = house_geremia
 	rite = "roman_rite"
 	culture = "cisalpine"
+	father = polenta_5 # Lamberto
 	1240.1.1 = {
 		birth = "1240.1.1"
 	}
@@ -11877,7 +12119,7 @@
 
 73550 = {
 	name = "Lamberto"
-	dynasty = 101835
+	dynasty_house = house_geremia
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = 73549
@@ -11891,7 +12133,7 @@
 
 73551 = {
 	name = "Guido"
-	dynasty = 101835
+	dynasty_house = house_geremia
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = 73549
@@ -11905,7 +12147,7 @@
 
 73552 = {
 	name = "Bernardino"
-	dynasty = 101835
+	dynasty_house = house_geremia
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = 463210
@@ -11919,7 +12161,7 @@
 
 73553 = {
 	name = "Pandolfo"
-	dynasty = 101835
+	dynasty_house = house_geremia
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = 463210
@@ -11933,7 +12175,7 @@
 
 73554 = {
 	name = "Lamberto"
-	dynasty = 101835
+	dynasty_house = house_geremia
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = 463210
@@ -11947,7 +12189,7 @@
 
 73555 = {
 	name = "Guido"
-	dynasty = 101835
+	dynasty_house = house_geremia
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = 73552
@@ -12254,9 +12496,30 @@
 		
 	father = 91413
 	mother = 73706
+	diplomacy = 3
+	martial = 2
+	stewardship = 8
+	intrigue = 11
+	learning = 6
+	prowess = 6
+	trait = education_stewardship_4
+	trait = diligent
+	trait = ambitious
+	trait = patient
+	disallow_random_traits = yes
 	
 	1133.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 31 }
+			learn_language = language_greek
+		}
 	}
 	1189.1.1 = {
 		death = yes
@@ -12270,9 +12533,29 @@
 	culture = "cisalpine"
 		
 	father = 91416
+	diplomacy = 8
+	martial = 4
+	stewardship = 11
+	intrigue = 8
+	learning = 3
+	prowess = 7
+	trait = education_diplomacy_2
+	trait = trusting
+	trait = forgiving
+	trait = humble
+	disallow_random_traits = yes
 	
 	1160.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 23 }
+		}
 	}
 	1224.1.1 = {
 		death = yes
@@ -13069,9 +13352,19 @@
 	dynasty_house = house_fieschi	
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_diplomacy_3
 
 	father = 167569
+	diplomacy = 10
+	martial = 2
+	stewardship = 11
+	intrigue = 7
+	learning = 8
+	prowess = 9
+	trait = education_diplomacy_3
+	trait = trusting
+	trait = cynical
+	trait = temperate
+	disallow_random_traits = yes
 
 	1136.1.1 = {
 		birth = yes
@@ -14812,18 +15105,29 @@
 213007 = {
 	name = "Ruggero" # Ruggero Visconti, Podestà of Lombardia (1176-1180)
 	dynasty = 234
-	martial = 4
-	diplomacy = 4
-	intrigue = 5
-	stewardship = 6
 	rite = "ambrosian_rite"
 	culture = "cisalpine"
-	trait = education_intrigue_2
 
 	father = 71169
+	diplomacy = 6
+	martial = 4
+	stewardship = 13
+	intrigue = 16
+	learning = 4
+	prowess = 8
+	trait = education_intrigue_3
+	trait = arrogant
+	trait = fickle
+	trait = honest
+	disallow_random_traits = yes
 
 	1158.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_occitano_romance
+		}
 	}
 	1189.1.1 = {
 		death = yes
@@ -15415,20 +15719,37 @@
 223595 = {
 	name = "Azzo" # Azzo d'Este
 	dynasty_house = house_este
-	martial = 6
-	diplomacy = 7
-	intrigue = 7
-	stewardship = 6
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = arrogant
-	trait = diligent
-	trait = education_diplomacy_3
 
 	father = 223597
+	mother = cattaneo_4
+	diplomacy = 8
+	martial = 3
+	stewardship = 8
+	intrigue = 6
+	learning = 7
+	prowess = 4
+	trait = education_diplomacy_3
+	trait = arrogant
+	trait = diligent
+	trait = gregarious
+	trait = lifestyle_traveler
+	trait = comfort_eater
+	disallow_random_traits = yes
 
 	1125.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 1 }
+			learn_language = language_occitano_romance
+		}
 	}
 	1193.1.1 = {
 		death = {
@@ -15471,20 +15792,32 @@
 223597 = {
 	name = "Obizzo" # Obizzo (I) d'Este, Duke of Lombardia (1128-1193), Count of Luni (1128-1193) and Podestá of Padua (1177-1178)
 	dynasty_house = house_este
-	martial = 7
-	diplomacy = 7
-	intrigue = 7
-	stewardship = 7
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = zealous
-	trait = diligent
-	trait = education_intrigue_1
 
 	father = 20299
+	diplomacy = 4
+	martial = 3
+	stewardship = 11
+	intrigue = 14
+	learning = 4
+	prowess = 8
+	trait = education_intrigue_3
+	trait = zealous
+	trait = diligent
+	trait = gregarious
+	disallow_random_traits = yes
 
 	1109.1.1 = {
 		birth = yes
+	}
+	1124.1.1 = {
+		add_spouse = cattaneo_4
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
 	}
 	1193.12.25 = {
 		death = {
@@ -15749,9 +16082,19 @@
 	dynasty = 1062032
 	rite = "ambrosian_rite"
 	culture = "cisalpine"
-	trait = education_martial_3
 
 	father = 259001
+	diplomacy = 5
+	martial = 13
+	stewardship = 12
+	intrigue = 7
+	learning = 6
+	prowess = 7
+	trait = education_martial_3
+	trait = calm
+	trait = forgiving
+	trait = eccentric
+	disallow_random_traits = yes
 
 	1121.1.1 = {
 		birth = yes
@@ -15783,12 +16126,34 @@
 	dynasty = 1062032
 	rite = "ambrosian_rite"
 	culture = "cisalpine"
-	trait = education_stewardship_2
 
 	father = 259002
+	diplomacy = 9
+	martial = 5
+	stewardship = 14
+	intrigue = 3
+	learning = 7
+	prowess = 3
+	trait = education_stewardship_2
+	trait = impatient
+	trait = arrogant
+	trait = content
+	trait = lifestyle_reveler
+	trait = comfort_eater
+	disallow_random_traits = yes
 
 	1144.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+			learn_language = language_high_german
+		}
 	}
 	1205.1.1 = {
 		death = yes
@@ -15998,7 +16363,7 @@
 		add_spouse = 462698
 	}
 	1336.6.29 = {
-		add_pressed_claim = title:c_cuneo
+		add_pressed_claim = title:c_saluzzo
 		employer = 461700
 	}
 	1392.8.8 = {
@@ -16651,7 +17016,7 @@
 
 463210 = {
 	name = "Ostisio"
-	dynasty = 101835
+	dynasty_house = house_geremia
 	martial = 5
 	diplomacy = 4
 	intrigue = 6
@@ -16794,10 +17159,31 @@ cisalpine0002 = {
 	rite = "roman_rite"
 	culture = "cisalpine"
 
-	father = cisalpine0001
+	father = 70715
+	diplomacy = 5
+	martial = 7
+	stewardship = 9
+	intrigue = 15
+	learning = 7
+	prowess = 8
+	trait = education_stewardship_3
+	trait = calm
+	trait = just
+	trait = patient
+	disallow_random_traits = yes
 
 	1133.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 8 }
+			learn_language = language_arabic
+		}
 	}
 	1187.1.1 = {
 		death = yes
@@ -16809,12 +17195,33 @@ cisalpine0003 = {
 	dynasty_house = house_pallavicino_genoa
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_diplomacy_1
 
 	father = cisalpine0002
+	diplomacy = 8
+	martial = 4
+	stewardship = 11
+	intrigue = 8
+	learning = 3
+	prowess = 5
+	trait = education_diplomacy_1
+	trait = generous
+	trait = patient
+	trait = trusting
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
 
 	1150.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 18 }
+			learn_language = language_occitano_romance
+		}
 	}
 	1214.1.1 = {
 		death = yes
@@ -19154,9 +19561,31 @@ cisalpine0140 = {
 	culture = "cisalpine"
 
 	father = cisalpine0139
+	diplomacy = 5
+	martial = 2
+	stewardship = 9
+	intrigue = 17
+	learning = 3
+	prowess = 7
+	trait = education_stewardship_3
+	trait = gregarious
+	trait = just
+	trait = diligent
+	trait = beauty_bad_1
+	disallow_random_traits = yes
 
 	1120.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -17 }
+			learn_language = language_high_german
+		}
 	}
 	1185.1.1 = {
 		death = yes
@@ -19170,9 +19599,31 @@ cisalpine0141 = {
 	culture = "cisalpine"
 
 	father = cisalpine0139
+	diplomacy = 7
+	martial = 3
+	stewardship = 9
+	intrigue = 7
+	learning = 8
+	prowess = 6
+	trait = education_stewardship_3
+	trait = paranoid
+	trait = greedy
+	trait = ambitious
+	trait = shrewd
+	disallow_random_traits = yes
 
 	1122.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 33 }
+			learn_language = language_occitano_romance
+		}
 	}
 	1185.1.1 = {
 		death = yes
@@ -19359,12 +19810,33 @@ cisalpine0152 = {
 	dynasty = 12252
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_stewardship_2
 
 	father = cisalpine0153
+	diplomacy = 9
+	martial = 7
+	stewardship = 11
+	intrigue = 8
+	learning = 4
+	prowess = 7
+	trait = education_stewardship_2
+	trait = diligent
+	trait = chaste
+	trait = ambitious
+	trait = comfort_eater
+	disallow_random_traits = yes
 
 	1140.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 11 }
+			learn_language = language_occitano_romance
+		}
 	}
 	1192.1.1 = {
 		death = yes
@@ -19376,15 +19848,25 @@ cisalpine0153 = {
 	dynasty = 12252
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_intrigue_3
-
 	father = cisalpine0154
-
-	1120.1.1 = {
+	diplomacy = 5
+	martial = 6
+	stewardship = 9
+	intrigue = 3
+	learning = 6
+	prowess = 9
+	trait = education_martial_4
+	trait = brave
+	trait = wrathful
+	trait = stubborn
+	disallow_random_traits = yes
+	1105.1.1 = {
 		birth = yes
 	}
-	1146.1.1 = {
-		name = "Salinguerra"
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
 	}
 	1194.1.1 = {
 		death = yes
@@ -19396,14 +19878,123 @@ cisalpine0154 = {
 	dynasty = 12252
 	rite = "roman_rite"
 	culture = "cisalpine"
-
-	1096.1.1 = {
+	1089.1.1 = {
 		birth = yes
 	}
-	1115.1.1 = {
-		name = "Torello"
-	}
 	1146.1.1 = {
+		death = yes
+	}
+}
+
+torelli_1 = {
+	name = "Pietro"
+	dynasty = 12252
+	rite = "roman_rite"
+	culture = "cisalpine"
+	trait = education_intrigue_3
+	father = cisalpine0154
+	1106.1.1 = {
+		birth = yes
+	}
+	1180.1.1 = {
+		death = yes
+	}
+}
+
+torelli_2 = {
+	name = "Torello"
+	dynasty = 12252
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = torelli_1
+	1126.1.1 = {
+		birth = yes
+	}
+	1205.1.1 = {
+		death = yes
+	}
+}
+
+torelli_3 = {
+	name = "Azzo"
+	dynasty = 12252
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = torelli_2
+	1147.1.1 = {
+		birth = yes
+	}
+	1218.1.1 = {
+		death = yes
+	}
+}
+
+torelli_4 = {
+	name = "Pietro"
+	dynasty = 12252
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = torelli_2
+	1165.1.1 = {
+		birth = yes
+	}
+	1235.1.1 = {
+		death = yes
+	}
+}
+
+torelli_5 = {
+	name = "Jacopo"
+	dynasty = 12252
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = torelli_2
+	1168.1.1 = {
+		birth = yes
+	}
+	1240.1.1 = {
+		death = yes
+	}
+}
+
+torelli_6 = {
+	name = "Maccagnano"
+	dynasty = 12252
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = torelli_2
+	1172.1.1 = {
+		birth = yes
+	}
+	1230.1.1 = {
+		death = yes
+	}
+}
+
+torelli_7 = {
+	name = "Viviano"
+	dynasty = 12252
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = torelli_1
+	1130.1.1 = {
+		birth = yes
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+torelli_8 = {
+	name = "Azzolino"
+	dynasty = 12252
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = torelli_7
+	1150.1.1 = {
+		birth = yes
+	}
+	1225.1.1 = {
 		death = yes
 	}
 }
@@ -19451,9 +20042,30 @@ cisalpine0157 = {
 	culture = "cisalpine"
 
 	father = cisalpine0158
+	diplomacy = 7
+	martial = 7
+	stewardship = 9
+	intrigue = 8
+	learning = 6
+	prowess = 7
+	trait = education_stewardship_3
+	trait = patient
+	trait = honest
+	trait = just
+	disallow_random_traits = yes
 
 	1158.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 18 }
+			learn_language = language_high_german
+		}
 	}
 	1215.1.1 = {
 		death = yes
@@ -19467,6 +20079,18 @@ cisalpine0158 = {
 	culture = "cisalpine"
 
 	father = cisalpine0160
+	diplomacy = 5
+	martial = 7
+	stewardship = 9
+	intrigue = 19
+	learning = 5
+	prowess = 5
+	trait = education_stewardship_3
+	trait = just
+	trait = diligent
+	trait = honest
+	trait = journaller
+	disallow_random_traits = yes
 
 	1135.1.1 = {
 		birth = yes
@@ -19865,14 +20489,14 @@ cisalpine0181 = {
 	dynasty = baone
 	rite = "roman_rite"
 	culture = "cisalpine"
-	
+	father = baone_4 # Albertino
 	1188.1.1 = {
 		birth = yes
 	}
 	1216.1.1 = {
 		add_spouse = cisalpine0180
 	}
-	1238.1.1 = {
+	1200.1.1 = {
 		death = yes
 	}
 }
@@ -20258,9 +20882,31 @@ cisalpine0204 = {
 	culture = "cisalpine"
 
 	father = cisalpine0202
+	diplomacy = 7
+	martial = 5
+	stewardship = 11
+	intrigue = 6
+	learning = 6
+	prowess = 3
+	trait = education_intrigue_4
+	trait = stubborn
+	trait = callous
+	trait = paranoid
+	trait = lifestyle_reveler
+	trait = lisping
+	disallow_random_traits = yes
 	
 	1146.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 43 }
+		}
 	}
 	1179.1.1 = {
 		death = yes
@@ -20274,9 +20920,31 @@ cisalpine0205 = {
 	culture = "cisalpine"
 
 	father = cisalpine0202
+	diplomacy = 11
+	martial = 5
+	stewardship = 13
+	intrigue = 4
+	learning = 8
+	prowess = 5
+	trait = education_diplomacy_2
+	trait = gregarious
+	trait = arrogant
+	trait = arbitrary
+	trait = lifestyle_blademaster
+	disallow_random_traits = yes
 	
 	1144.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 8 }
+			learn_language = language_high_german
+		}
 	}
 	1189.5.13 = {
 		death = {
@@ -20323,12 +20991,31 @@ cisalpine0208 = {
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = cisalpine0222
+	diplomacy = 7
+	martial = 11
+	stewardship = 9
+	intrigue = 4
+	learning = 8
+	prowess = 8
 	trait = education_martial_3
+	trait = ambitious
+	trait = stubborn
+	trait = brave
+	trait = stuttering
+	disallow_random_traits = yes
 	1115.1.1 = {
 		birth = yes
 	}
+	1147.1.1 = {
+		add_spouse = baone_3 # Auria
+	}
 	1173.1.1 = {
 		give_nickname = nick_the_bald
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
 	}
 	1183.1.1 = {
 		death = yes
@@ -20342,6 +21029,7 @@ cisalpine0209 = {
 	culture = "cisalpine"
 
 	father = cisalpine0208
+	mother = baone_3
 	
 	1148.1.1 = {
 		birth = yes
@@ -20360,6 +21048,7 @@ cisalpine0210 = {
 	trait = education_stewardship_1
 
 	father = cisalpine0208
+	mother = baone_3
 	
 	1152.1.1 = {
 		birth = yes
@@ -20374,15 +21063,34 @@ cisalpine0211 = {
 	dynasty = camposampiero
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_martial_2
 
 	father = cisalpine0212
+	diplomacy = 5
+	martial = 13
+	stewardship = 11
+	intrigue = 4
+	learning = 7
+	prowess = 9
+	trait = education_martial_2
+	trait = gregarious
+	trait = content
+	trait = arrogant
+	disallow_random_traits = yes
 	
 	1144.1.1 = {
 		birth = yes
 	}
 	1170.1.1 = {
 		add_spouse = cisalpine0210
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 23 }
+		}
 	}
 	1191.1.1 = {
 		death = yes
@@ -20447,6 +21155,7 @@ cisalpine0215 = {
 	trait = education_diplomacy_1
 
 	father = cisalpine0208
+	mother = baone_3
 	
 	1154.1.1 = {
 		birth = yes
@@ -21743,10 +22452,8 @@ cisalpine0291 = {
 	rite = "roman_rite"
 	culture = "cisalpine"
 	trait = education_martial_2
-
 	father = cisalpine0296
-
-	1183.1.1 = {
+	1177.1.1 = {
 		birth = yes
 	}
 	1207.1.1 = {
@@ -21829,16 +22536,35 @@ cisalpine0295 = {
 }
 
 cisalpine0296 = {
-	name = "Bartolomeo" # Bartolomeo Ghisi
+	name = "Marco"
 	dynasty = 7218
 	rite = "roman_rite"
 	culture = "cisalpine"
-
+	diplomacy = 16
+	martial = 2
+	stewardship = 13
+	intrigue = 7
+	learning = 8
+	prowess = 8
+	trait = education_stewardship_3
+	trait = vengeful
+	trait = greedy
+	trait = cynical
+	trait = lifestyle_reveler
+	trait = pilgrim
+	disallow_random_traits = yes
 	1160.1.1 = {
 		birth = yes
 	}
-	1187.1.1 = {
-		employer = 213600
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 18 }
+			learn_language = language_greek
+		}
 	}
 	1210.1.1 = {
 		death = yes
@@ -21851,10 +22577,8 @@ cisalpine0297 = {
 	rite = "roman_rite"
 	culture = "cisalpine"
 	trait = education_martial_2
-
 	father = cisalpine0296
-
-	1185.1.1 = {
+	1178.1.1 = {
 		birth = yes
 	}
 	1207.1.1 = {
@@ -25771,7 +26495,7 @@ cisalpine0526 = {
 		birth = yes
 	}
 	1148.1.1 = {
-		death = yes
+		death = { death_reason = death_battle }
 	}
 }
 
@@ -25912,13 +26636,23 @@ cisalpine0534 = {
 }
 
 cisalpine0535 = {
-	name = "Pagano" # Pagano della Torre, Podestà of Lombardia (1192-1197)
+	name = "Pagano" # Pagano della Torre, Podestà of Lombardia (1192-1197), second husband of Speronella
 	dynasty = 101849
 	rite = "ambrosian_rite"
 	culture = "cisalpine"
-	trait = education_stewardship_2
 
 	father = cisalpine0526
+	diplomacy = 11
+	martial = 4
+	stewardship = 15
+	intrigue = 6
+	learning = 8
+	prowess = 4
+	trait = education_stewardship_2
+	trait = lustful
+	trait = impatient
+	trait = fickle
+	disallow_random_traits = yes
 
 	1145.1.1 = {
 		birth = yes
@@ -28100,13 +28834,35 @@ cisalpine0661 = {
 	dynasty = carcano
 	rite = ambrosian_rite
 	culture = "cisalpine"
-	trait = education_stewardship_2
+	diplomacy = 13
+	martial = 6
+	stewardship = 15
+	intrigue = 8
+	learning = 3
+	prowess = 3
+	health = 5.25
+	trait = education_stewardship_3
+	trait = gluttonous
+	trait = calm
+	trait = arrogant
+	trait = lifestyle_reveler
+	trait = beauty_bad_1
+	disallow_random_traits = yes
 
 	1023.1.1 = {
 		birth = yes
 	}
 	1054.7.16 = {
 		rite = ambrosian_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			learn_language = language_high_german
+		}
 	}
 	1075.1.1 = {
 		death = yes
@@ -28528,7 +29284,7 @@ cisalpine0684 = {
 }
 
 cisalpine0685 = {
-	name = "Niccolò" # Niccolò da Dovara
+	name = "NiccolO_" # Niccolò da Dovara
 	dynasty = 8683
 	rite = "roman_rite"
 	culture = "cisalpine"
@@ -28583,12 +29339,27 @@ cisalpine0688 = {
 	dynasty = 8683
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_diplomacy_1
 
 	father = cisalpine0689
+	diplomacy = 13
+	martial = 2
+	stewardship = 7
+	intrigue = 7
+	learning = 4
+	prowess = 4
+	trait = education_diplomacy_2
+	trait = patient
+	trait = ambitious
+	trait = just
+	disallow_random_traits = yes
 
 	1147.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
 	}
 	1199.1.1 = {
 		death = yes
@@ -29145,10 +29916,31 @@ cisalpine0720 = {
 	dynasty = vitanis
 	rite = "ambrosian_rite"
 	culture = "cisalpine"
+	diplomacy = 15
+	martial = 7
+	stewardship = 13
+	intrigue = 7
+	learning = 7
+	prowess = 3
+	health = 5.25
 	trait = education_stewardship_4
+	trait = gluttonous
+	trait = lustful
+	trait = callous
+	disallow_random_traits = yes
 
 	1160.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 17 }
+			learn_language = language_occitano_romance
+		}
 	}
 	1246.1.1 = {
 		death = yes
@@ -30163,12 +30955,32 @@ cisalpine0778 = {
 	dynasty = 101841
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_diplomacy_2
 
 	father = cisalpine0776
+	diplomacy = 11
+	martial = 2
+	stewardship = 14
+	intrigue = 4
+	learning = 5
+	prowess = 7
+	trait = education_diplomacy_3
+	trait = gregarious
+	trait = humble
+	trait = chaste
+	disallow_random_traits = yes
 
 	1136.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 23 }
+			learn_language = language_occitano_romance
+		}
 	}
 	1190.1.1 = {
 		death = yes
@@ -30216,12 +31028,32 @@ cisalpine0781 = {
 	dynasty = 101841
 	rite = "roman_rite"
 	culture = "cisalpine"
-	trait = education_martial_2
 
 	father = cisalpine0778
+	diplomacy = 4
+	martial = 11
+	stewardship = 8
+	intrigue = 7
+	learning = 5
+	prowess = 9
+	trait = education_martial_2
+	trait = humble
+	trait = zealous
+	trait = just
+	disallow_random_traits = yes
 
 	1162.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 38 }
+			learn_language = language_occitano_romance
+		}
 	}
 	1215.1.1 = {
 		death = yes
@@ -33156,6 +33988,17 @@ cisalpine0944 = {
 	rite = roman_rite
 	culture = cisalpine
 	father = 167600
+	diplomacy = 7
+	martial = 6
+	stewardship = 6
+	intrigue = 7
+	learning = 4
+	prowess = 7
+	trait = education_stewardship_4
+	trait = diligent
+	trait = ambitious
+	trait = cynical
+	disallow_random_traits = yes
 	
 	1130.1.1 = {
 		birth = yes
@@ -33171,9 +34014,30 @@ cisalpine0944 = {
 	rite = roman_rite
 	culture = cisalpine
 	father = 167601
+	diplomacy = 6
+	martial = 2
+	stewardship = 9
+	intrigue = 10
+	learning = 5
+	prowess = 7
+	trait = education_stewardship_3
+	trait = gregarious
+	trait = diligent
+	trait = patient
+	disallow_random_traits = yes
 	
 	1160.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 26 }
+			learn_language = language_south_slavic
+		}
 	}
 	1215.1.1 = {
 		death = yes
@@ -33601,20 +34465,36 @@ cisalpine0944 = {
 7800 = {
 	name = "Domenico"
 	dynasty = 516
-	martial = 4
-	diplomacy = 7
-	intrigue = 6
-	stewardship = 5
 	rite = roman_rite
 	culture = cisalpine
-	trait = education_diplomacy_3
 	father = 167594
+	diplomacy = 9
+	martial = 5
+	stewardship = 9
+	intrigue = 8
+	learning = 4
+	prowess = 5
+	trait = education_diplomacy_4
+	trait = zealous
+	trait = diligent
+	trait = calm
+	disallow_random_traits = yes
 	
 	1008.1.1 = {
 		birth = yes
 	}
 	1054.7.16 = {
 		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 36 }
+			learn_language = language_south_slavic
+		}
 	}
 	1071.1.1 = {
 		death = yes
@@ -33628,12 +34508,33 @@ cisalpine0944 = {
 	rite = roman_rite
 	culture = cisalpine
 	father = 7800
+	diplomacy = 7
+	martial = 5
+	stewardship = 11
+	intrigue = 6
+	learning = 8
+	prowess = 6
+	trait = education_stewardship_3
+	trait = zealous
+	trait = generous
+	trait = compassionate
+	trait = pilgrim
+	disallow_random_traits = yes
 	
 	1030.1.1 = {
 		birth = yes
 	}
 	1054.7.16 = {
 		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 43 }
+		}
 	}
 	1085.1.1 = {
 		death = yes
@@ -33793,6 +34694,17 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 184024
 	mother = 184025
+	diplomacy = 11
+	martial = 2
+	stewardship = 9
+	intrigue = 3
+	learning = 4
+	prowess = 6
+	trait = education_diplomacy_4
+	trait = zealous
+	trait = diligent
+	trait = just
+	disallow_random_traits = yes
 	800.1.1 = {
 		birth = 800.1.1
 	}
@@ -33802,6 +34714,11 @@ cisalpine0944 = {
 	865.1.1 = {
 		effect = {
 			add_gold = 200
+		}
+	}
+	867.1.1 = {
+		effect = {
+			learn_language = language_greek
 		}
 	}
 	881.1.1 = {
@@ -33827,11 +34744,30 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 184026
 	mother = 184027
+	diplomacy = 8
+	martial = 6
+	stewardship = 14
+	intrigue = 7
+	learning = 5
+	prowess = 2
+	health = 5.25
+	trait = education_diplomacy_4
 	trait = ambitious
 	trait = gregarious
+	trait = gluttonous
 	trait = weak
+	disallow_random_traits = yes
 	822.1.1 = {
 		birth = 822.1.1
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -18 }
+		}
 	}
 	890.1.1 = {
 		death = 890.1.1
@@ -33997,7 +34933,7 @@ cisalpine0944 = {
 		birth = 800.1.1
 	}
 	864.7.13 = { #assassinated by someone
-		death = 864.7.13
+		death = { death_reason = death_assassination }
 	}
 }
 184074 = {
@@ -34034,6 +34970,18 @@ cisalpine0944 = {
 	culture = cisalpine #istrian
 	father = 184074
 	mother = 184075
+	diplomacy = 7
+	martial = 2
+	stewardship = 13
+	intrigue = 4
+	learning = 13
+	prowess = 4
+	trait = education_learning_3
+	trait = deceitful
+	trait = greedy
+	trait = lustful
+	trait = pilgrim
+	disallow_random_traits = yes
 	805.1.1 = {
 		birth = 805.1.1
 	}
@@ -34063,8 +35011,29 @@ cisalpine0944 = {
 	culture = cisalpine #istrian
 	father = 184076
 	mother = 184077
+	diplomacy = 7
+	martial = 5
+	stewardship = 5
+	intrigue = 12
+	learning = 6
+	prowess = 9
+	trait = education_stewardship_4
+	trait = diligent
+	trait = patient
+	trait = temperate
+	disallow_random_traits = yes
 	826.1.1 = {
 		birth = 826.1.1
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 5 }
+			learn_language = language_greek
+		}
 	}
 	890.1.1 = {
 		death = 890.1.1
@@ -34134,11 +35103,28 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 184034
 	mother = 184035
+	diplomacy = 8
+	martial = 9
+	stewardship = 11
+	intrigue = 8
+	learning = 3
+	prowess = 12
+	trait = education_martial_3
+	trait = brave
+	trait = ambitious
+	trait = impatient
+	trait = scarred
+	disallow_random_traits = yes
 	815.1.1 = {
 		birth = 815.1.1
 	}
 	840.1.1 = {
 		add_spouse = 184037
+	}
+	867.1.1 = {
+		effect = {
+			learn_language = language_greek
+		}
 	}
 	888.1.1 = { #died in battle with pirates
 		death = 888.1.1
@@ -34179,11 +35165,33 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 184036
 	mother = 184037
+	diplomacy = 7
+	martial = 7
+	stewardship = 9
+	intrigue = 4
+	learning = 6
+	prowess = 11
+	trait = education_martial_3
+	trait = brave
+	trait = wrathful
+	trait = gregarious
+	trait = lifestyle_traveler
+	trait = scarred
+	disallow_random_traits = yes
 	842.1.1 = {
 		birth = 842.1.1
 	}
 	860.1.1 = {
 		add_spouse = 184040
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -20 }
+		}
 	}
 	900.1.1 = {
 		death = 900.1.1
@@ -34377,6 +35385,18 @@ cisalpine0944 = {
 	dynasty = 1042810
 	rite = roman_rite
 	culture = cisalpine
+	diplomacy = 6
+	martial = 3
+	stewardship = 12
+	intrigue = 14
+	learning = 5
+	prowess = 5
+	trait = education_intrigue_3
+	trait = cynical
+	trait = impatient
+	trait = honest
+	trait = scarred
+	disallow_random_traits = yes
 	820.1.1 = {
 		birth = 820.1.1
 	}
@@ -34394,11 +35414,32 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 184053
 	mother = 184038
+	diplomacy = 8
+	martial = 2
+	stewardship = 10
+	intrigue = 8
+	learning = 5
+	prowess = 7
+	trait = education_stewardship_1
+	trait = diligent
+	trait = patient
+	trait = trusting
+	disallow_random_traits = yes
 	841.1.1 = {
 		birth = 841.1.1
 	}
 	860.1.1 = {
 		add_spouse = 184055
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -22 }
+			learn_language = language_greek
+		}
 	}
 	912.1.1 = {
 		death = 912.1.1
@@ -34694,11 +35735,32 @@ cisalpine0944 = {
 	rite = roman_rite
 	culture = cisalpine
 	father = 145914
+	diplomacy = 6
+	martial = 5
+	stewardship = 13
+	intrigue = 7
+	learning = 12
+	prowess = 8
+	trait = education_learning_3
+	trait = generous
+	trait = arrogant
+	trait = shy
+	trait = comfort_eater
+	disallow_random_traits = yes
 	820.1.1 = {
 		birth = 820.1.1
 	}
 	840.1.1 = {
 		add_spouse = 184061
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+		}
 	}
 	910.1.1 = {
 		death = 910.1.1
@@ -34723,11 +35785,32 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 184060
 	mother = 184061
+	diplomacy = 4
+	martial = 3
+	stewardship = 13
+	intrigue = 4
+	learning = 4
+	prowess = 3
+	trait = education_stewardship_1
+	trait = zealous
+	trait = generous
+	trait = compassionate
+	trait = pilgrim
+	disallow_random_traits = yes
 	841.1.1 = {
 		birth = 841.1.1
 	}
 	860.1.1 = {
 		add_spouse = 184063
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 43 }
+		}
 	}
 	920.1.1 = {
 		death = 920.1.1
@@ -34870,13 +35953,15 @@ cisalpine0944 = {
 # Start of non-noble
 184070 = {
 	name = "Pietro" #Barbolano
+	dynasty = cisalpine_barbolano
 	rite = roman_rite
 	culture = cisalpine
+	father = barbolano_1
 	980.1.1 = {
-		birth = 980.1.1
+		birth = yes
 	}
 	1035.1.1 = {
-		death = 1035.1.1
+		death = yes
 	}
 }
 184071 = {
@@ -34896,31 +35981,59 @@ cisalpine0944 = {
 7802 = {
 	name = "Domenico"
 	dynasty = 515
-	martial = 8
-	diplomacy = 5
-	intrigue = 5
-	stewardship = 4
 	rite = roman_rite
 	culture = cisalpine
+	diplomacy = 5
+	martial = 12
+	stewardship = 10
+	intrigue = 8
+	learning = 3
+	prowess = 13
+	trait = education_martial_3
 	trait = humble
-	trait = education_martial_2
-	1028.1.2 = {
-		birth = "1028.1.2"
+	trait = generous
+	trait = gregarious
+	disallow_random_traits = yes
+	1028.1.1 = {
+		birth = yes
 	}
 	1054.7.16 = {
 		rite = roman_rite
 	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
 	1074.1.1 = {
 		add_spouse = 9812
 	}
-	1087.1.2 = {
-		death = "1087.1.2"
+	1087.1.1 = {
+		death = yes
 	}
+}
+cisalpine_selvo_1 = {
+	name = "Domenico"
+	dynasty = 515
+	rite = roman_rite
+	culture = cisalpine
+	father = 7802
+	1051.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1085.1.1 = {
+		death = yes
+	}
+	
 }
 # End of Selvo
 # Start of Faliero
 7804 = {
 	name = "Vitale"
+	dna = bookmark_dna_vitale_faliero
 	dynasty = 514
 	martial = 5
 	diplomacy = 6
@@ -35009,8 +36122,25 @@ cisalpine0944 = {
 	rite = "roman_rite"
 	culture = cisalpine
 	father = 167573
+	diplomacy = 6
+	martial = 2
+	stewardship = 9
+	intrigue = 8
+	learning = 6
+	prowess = 7
+	trait = education_stewardship_3
+	trait = diligent
+	trait = impatient
+	trait = honest
+	trait = strong
+	disallow_random_traits = yes
 	1140.1.1 = {
 		birth = "1140.1.1"
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_arabic
+		}
 	}
 	1200.1.1 = {
 		death = "1200.1.1"
@@ -35163,6 +36293,9 @@ cisalpine0944 = {
 	1054.7.16 = {
 		rite = roman_rite
 	}
+	1066.1.1 = {
+		employer = 7804
+	}
 	1090.1.1 = {
 		death = "1090.1.1"
 	}
@@ -35297,16 +36430,89 @@ cisalpine0944 = {
 }
 # End of Faliero
 # Start of Michele
+michele_1 = {
+	name = "Pietro"
+	dynasty = 7235
+	rite = roman_rite
+	culture = cisalpine
+	1010.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1060.1.1 = {
+		death = yes
+	}
+}
+
+michele_2 = {
+	name = "Pietro"
+	dynasty = 7235
+	rite = roman_rite
+	culture = cisalpine
+	father = michele_1
+	diplomacy = 10
+	martial = 6
+	stewardship = 14
+	intrigue = 4
+	learning = 6
+	prowess = 1
+	health = 5.25
+	trait = education_stewardship_2
+	trait = gluttonous
+	trait = trusting
+	trait = vengeful
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1045.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 12 }
+			learn_language = language_greek
+		}
+	}
+	1095.1.1 = {
+		death = yes
+	}
+}
+
 32133 = {
 	name = "Vitale"
 	dynasty = 7235
 	rite = roman_rite
 	culture = cisalpine
+	father = michele_1
+	diplomacy = 10
+	martial = 2
+	stewardship = 12
+	intrigue = 5
+	learning = 3
+	prowess = 10
+	trait = education_diplomacy_3
+	trait = zealous
+	trait = ambitious
+	trait = brave
+	disallow_random_traits = yes
 	1040.1.2 = {
 		birth = "1040.1.2"
 	}
 	1054.7.16 = {
 		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_greek
+		}
 	}
 	1102.1.2 = {
 		death = "1102.1.2"
@@ -35348,11 +36554,82 @@ cisalpine0944 = {
 	rite = "roman_rite"
 	culture = cisalpine
 	father = 32115
-	1105.1.2 = {
-		birth = "1105.1.2"
+	1105.1.1 = {
+		birth = yes
 	}
 	1172.3.28 = {
-		death = "1172.3.28"
+		death = { death_reason = death_murder }
+	}
+}
+michele_5 = {
+	name = "Leonardo"
+	dynasty = 7235
+	rite = "roman_rite"
+	culture = cisalpine
+	father = 32118
+	diplomacy = 14
+	martial = 6
+	stewardship = 9
+	intrigue = 7
+	learning = 4
+	prowess = 3
+	trait = education_diplomacy_3
+	trait = generous
+	trait = patient
+	trait = stubborn
+	trait = pilgrim
+	trait = disfigured
+	disallow_random_traits = yes
+	1130.1.1 = {
+		birth = yes
+	}
+	1160.1.1 = {
+		add_spouse = nemanjic_1
+	}
+	1172.1.1 = {
+		add_spouse = cattaneo_9 # Adelasina
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	1182.1.1 = {
+		death = yes
+	}
+}
+michele_6 = {
+	name = "NicolO_"
+	dynasty = 7235
+	rite = "roman_rite"
+	culture = cisalpine
+	father = 32118
+	diplomacy = 3
+	martial = 3
+	stewardship = 11
+	intrigue = 6
+	learning = 11
+	prowess = 5
+	trait = education_learning_3
+	trait = patient
+	trait = zealous
+	trait = callous
+	disallow_random_traits = yes
+	1133.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 23 }
+			learn_language = language_greek
+		}
+	}
+	1193.1.1 = {
+		death = yes
 	}
 }
 # End of Michele
@@ -35363,17 +36640,17 @@ cisalpine0944 = {
 	rite = "roman_rite"
 	culture = cisalpine
 	father = 170060
-	1093.1.2 = {
-		birth = "1093.1.2"
+	1098.1.1 = {
+		birth = yes
 	}
 	1122.8.1 = {
 		trait = faith_warrior
 	}
-	1125.1.2 = {
+	1125.1.1 = {
 		add_spouse = 170084
 	}
-	1147.1.2 = {
-		death = "1147.1.2"
+	1147.1.1 = {
+		death = yes
 	}
 }
 170058 = {
@@ -35410,6 +36687,7 @@ cisalpine0944 = {
 	dynasty = 7236
 	rite = "roman_rite"
 	culture = cisalpine
+	father = polani_1
 	1060.1.2 = {
 		birth = "1060.1.2"
 	}
@@ -35423,11 +36701,23 @@ cisalpine0944 = {
 	rite = "roman_rite"
 	culture = cisalpine
 	father = 32116
-	1127.1.2 = {
-		birth = "1127.1.2"
+	mother = 170084
+	diplomacy = 8
+	martial = 6
+	stewardship = 10
+	intrigue = 3
+	learning = 10
+	prowess = 7
+	trait = education_learning_4
+	trait = deceitful
+	trait = forgiving
+	trait = craven
+	disallow_random_traits = yes
+	1127.1.1 = {
+		birth = yes
 	}
-	1185.1.2 = {
-		death = "1185.1.2"
+	1185.1.1 = {
+		death = yes
 	}
 }
 # End of Polani
@@ -35538,11 +36828,28 @@ cisalpine0944 = {
 	rite = roman_rite
 	culture = cisalpine
 	father = 182010
+	diplomacy = 3
+	martial = 5
+	stewardship = 10
+	intrigue = 9
+	learning = 8
+	prowess = 5
+	trait = education_intrigue_2
+	trait = gregarious
+	trait = lustful
+	trait = cynical
+	trait = beauty_good_2
+	disallow_random_traits = yes
 	1030.1.1 = {
 		birth = "1030.1.1"
 	}
 	1054.7.16 = {
 		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_greek
+		}
 	}
 	1090.1.1 = {
 		death = "1090.1.1"
@@ -35565,19 +36872,69 @@ cisalpine0944 = {
 }
 
 182013 = {
-	name = "Ruggiero"
-	#placeholder
+	name = "Domenico"
 	dynasty = 13070
 	rite = "roman_rite"
 	culture = cisalpine
 	father = 32117
+	diplomacy = 8
+	martial = 14
+	stewardship = 14
+	intrigue = 6
+	learning = 4
+	prowess = 7
+	health = 5.25
+	trait = education_martial_3
+	trait = gluttonous
+	trait = arrogant
+	trait = greedy
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
 	1115.1.1 = {
 		birth = "1115.1.1"
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -23 }
+		}
 	}
 	1180.1.1 = {
 		death = "1180.1.1"
 	}
 }
+
+morosini_3 = {
+	name = "Marco"
+	dynasty = 13070
+	rite = "roman_rite"
+	culture = cisalpine
+	father = 32117
+	1122.1.1 = {
+		birth = yes
+	}
+	1194.1.1 = {
+		death = yes
+	}
+}
+
+morosini_4 = {
+	name = "Roberto"
+	dynasty = 13070
+	rite = "roman_rite"
+	culture = cisalpine
+	father = 32117
+	1126.1.1 = {
+		birth = yes
+	}
+	1201.1.1 = {
+		death = yes
+	}
+}
+
 182014 = {
 	name = "Giacopo"
 	#placeholder
@@ -35586,6 +36943,18 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 182013
 	#son is Marino
+	diplomacy = 6
+	martial = 3
+	stewardship = 14
+	intrigue = 12
+	learning = 8
+	prowess = 7
+	trait = education_stewardship_2
+	trait = craven
+	trait = impatient
+	trait = honest
+	trait = pilgrim
+	disallow_random_traits = yes
 	1135.1.1 = {
 		birth = "1135.1.1"
 	}
@@ -36004,6 +37373,17 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 167668
 	mother = 167669
+	diplomacy = 7
+	martial = 7
+	stewardship = 13
+	intrigue = 7
+	learning = 4
+	prowess = 6
+	trait = education_stewardship_3
+	trait = eccentric
+	trait = patient
+	trait = paranoid
+	disallow_random_traits = yes
 	1040.1.1 = {
 		birth = "1040.1.1"
 	}
@@ -36012,6 +37392,16 @@ cisalpine0944 = {
 	}
 	1066.1.1 = {
 		add_spouse = 167659
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 43 }
+			learn_language = language_greek
+		}
 	}
 	1100.1.1 = {
 		death = "1100.1.1"
@@ -36186,11 +37576,28 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 167668
 	mother = 167669
+	diplomacy = 3
+	martial = 2
+	stewardship = 7
+	intrigue = 10
+	learning = 3
+	prowess = 5
+	trait = education_intrigue_3
+	trait = callous
+	trait = stubborn
+	trait = wrathful
+	trait = lisping
+	disallow_random_traits = yes
 	1045.1.1 = {
 		birth = "1045.1.1"
 	}	
 	1054.7.16 = {
 		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_arabic
+		}
 	}
 	1095.1.1 = {
 		death = "1095.1.1"
@@ -36340,9 +37747,30 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 32119
 	mother = 167661
+	diplomacy = 12
+	martial = 4
+	stewardship = 14
+	intrigue = 6
+	learning = 5
+	prowess = 3
+	health = 5.25
+	trait = education_stewardship_3
+	trait = gluttonous
+	trait = vengeful
+	trait = craven
+	disallow_random_traits = yes
 	1132.1.1 = {
 		birth = "1132.1.1"
 	}	
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 32 }
+		}
+	}
 	1190.1.1 = {
 		death = "1190.1.1"
 	}
@@ -36356,6 +37784,17 @@ cisalpine0944 = {
 	culture = cisalpine
 	father = 32119
 	mother = 167661
+	diplomacy = 6
+	martial = 7
+	stewardship = 7
+	intrigue = 3
+	learning = 5
+	prowess = 5
+	trait = education_stewardship_4
+	trait = gregarious
+	trait = diligent
+	trait = patient
+	disallow_random_traits = yes
 	1135.1.1 = {
 		birth = "1135.1.1"
 	}	
@@ -36702,15 +38141,20 @@ cisalpine0944 = {
 213600 = {
 	name = "Orio"
 	dynasty = 13076
-	martial = 4
-	diplomacy = 8
-	intrigue = 5
-	stewardship = 8
 	rite = "roman_rite"
 	culture = cisalpine
+	diplomacy = 5
+	martial = 6
+	stewardship = 8
+	intrigue = 13
+	learning = 6
+	prowess = 4
+	trait = education_stewardship_4
 	trait = just
-	trait = education_stewardship_3
+	trait = deceitful
+	trait = diligent
 	trait = diplomat
+	disallow_random_traits = yes
 	1120.1.1 = {
 		birth = "1120.1.1"
 	}
@@ -36723,8 +38167,27 @@ cisalpine0944 = {
 }
 # End of Mastropiero
 # Start of Dandolo
+dandolo_agnese = {
+	name = "Agnese" # Sister of Enrico Dandolo, mother of Marco I Sanudo
+	female = yes
+	dynasty = 13027
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = 170044
+	1120.1.1 = {
+		birth = "1120.1.1"
+	}
+	1150.1.1 = {
+		add_spouse = 31420 # Pietro Sanudo
+	}
+	1180.1.1 = {
+		death = "1180.1.1"
+	}
+}
+
 213601 = {
 	name = "Enrico"
+	dna = bookmark_dna_enrico_dandolo
 	dynasty = 13027
 	martial = 6
 	diplomacy = 6
@@ -36732,14 +38195,49 @@ cisalpine0944 = {
 	stewardship = 7
 	rite = "roman_rite"
 	culture = cisalpine
+	disallow_random_traits = yes
 	trait = cynical
 	trait = wrathful
+	trait = stubborn
 	trait = education_diplomacy_4
+	trait = whole_of_body
+	trait = shrewd
 	father = 170044
-	1107.1.2 = {
-		birth = "1107.1.2"
+	1107.1.1 = {
+		birth = yes
+		# Sort his perk tree out.
+		effect = {
+			if = {
+				limit = { NOT = { has_perk = anatomical_studies_perk } }
+				add_perk = anatomical_studies_perk
+			}
+			if = {
+				limit = { NOT = { has_perk = restraint_perk } }
+				add_perk = restraint_perk
+			}
+			if = {
+				limit = { NOT = { has_perk = know_thyself_perk } }
+				add_perk = know_thyself_perk
+			}
+			if = {
+				limit = { NOT = { has_perk = wash_your_hands_perk } }
+				add_perk = wash_your_hands_perk
+			}
+			if = {
+				limit = { NOT = { has_perk = iron_constitution_perk } }
+				add_perk = iron_constitution_perk
+			}
+			if = {
+				limit = { NOT = { has_perk = healthy_perk } }
+				add_perk = healthy_perk
+			}
+			if = {
+				limit = { NOT = { has_perk = whole_of_body_perk } }
+				add_perk = whole_of_body_perk
+			}
+		}
 	}
-	1150.1.2 = {
+	1150.1.1 = {
 		add_spouse = 170047 #Contessa Minotto
 	}
 	1176.10.1 = {
@@ -36749,7 +38247,7 @@ cisalpine0944 = {
 		trait = faith_warrior
 	}
 	1205.6.21 = {
-		death = "1205.6.21"
+		death = yes
 	}
 }
 463600 = {
@@ -36872,11 +38370,32 @@ cisalpine0944 = {
 	rite = roman_rite
 	culture = cisalpine
 	father = 170040
+	diplomacy = 5
+	martial = 4
+	stewardship = 7
+	intrigue = 9
+	learning = 5
+	prowess = 10
+	trait = education_intrigue_3
+	trait = cynical
+	trait = diligent
+	trait = ambitious
+	trait = clubfooted
+	disallow_random_traits = yes
 	1045.1.2 = {
 		birth = "1045.1.2"
 	}
 	1054.7.16 = {
 		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -12 }
+		}
 	}
 	1112.1.2 = {
 		death = "1112.1.2"
@@ -37202,11 +38721,14 @@ cisalpine0944 = {
 	rite = "roman_rite"
 	culture = cisalpine
 	father = 170044
-	1115.1.2 = {
-		birth = "1115.1.2"
+	1115.1.1 = {
+		birth = yes
 	}
-	1187.1.2 = {
-		death = "1187.1.2"
+	1155.1.1 = {
+		add_spouse = michele_3 # Agnese
+	}
+	1187.1.1 = {
+		death = yes
 	}
 }
 
@@ -37442,11 +38964,34 @@ cisalpine0944 = {
 	rite = roman_rite
 	culture = cisalpine
 	father = 170040
+	diplomacy = 8
+	martial = 2
+	stewardship = 6
+	intrigue = 3
+	learning = 4
+	prowess = 3
+	trait = education_diplomacy_3
+	trait = diligent
+	trait = brave
+	trait = cynical
+	trait = lifestyle_reveler
+	trait = shrewd
+	disallow_random_traits = yes
 	1047.1.2 = {
 		birth = "1047.1.2"
 	}
 	1054.7.16 = {
 		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 36 }
+			learn_language = language_greek
+		}
 	}
 	1115.1.2 = {
 		death = "1115.1.2"
@@ -37471,18 +39016,192 @@ cisalpine0944 = {
 }
 # End of Dandolo
 # Start of Tiepolo
-32124 = {
-	name = "Iacopo"
+
+tiepolo_1 = {
+	name = "Bortolo"
 	dynasty = 13006
 	rite = "roman_rite"
 	culture = cisalpine
-	1170.1.2 = {
-		birth = "1170.1.2"
+	1010.1.1 = {
+		birth = yes
 	}
-	1249.7.19 = {
-		death = "1249.7.19"
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1062.1.1 = {
+		death = yes
 	}
 }
+
+tiepolo_2 = {
+	name = "Orso"
+	dynasty = 13006
+	rite = "roman_rite"
+	culture = cisalpine
+	father = tiepolo_1
+	diplomacy = 6
+	martial = 3
+	stewardship = 13
+	intrigue = 8
+	learning = 3
+	prowess = 3
+	trait = education_intrigue_3
+	trait = lustful
+	trait = arbitrary
+	trait = content
+	disallow_random_traits = yes
+	1045.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_arabic
+		}
+	}
+	1115.1.1 = {
+		death = yes
+	}
+}
+
+tiepolo_3 = {
+	name = "Marco"
+	dynasty = 13006
+	rite = "roman_rite"
+	culture = cisalpine
+	father = tiepolo_1
+	diplomacy = 11
+	martial = 2
+	stewardship = 9
+	intrigue = 4
+	learning = 4
+	prowess = 10
+	trait = education_stewardship_2
+	trait = gregarious
+	trait = cynical
+	trait = eccentric
+	trait = shrewd
+	trait = beauty_bad_1
+	disallow_random_traits = yes
+	1050.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1135.1.1 = {
+		death = yes
+	}
+}
+
+tiepolo_4 = {
+	name = "Carlo"
+	dynasty = 13006
+	rite = "roman_rite"
+	culture = cisalpine
+	father = tiepolo_1
+	1055.1.1 = {
+		birth = yes
+	}
+	1120.1.1 = {
+		death = yes
+	}
+}
+
+tiepolo_5 = {
+	name = "Giacomo"
+	dynasty = 13006
+	rite = "roman_rite"
+	culture = cisalpine
+	father = tiepolo_3
+	1110.1.1 = {
+		birth = yes
+	}
+	1162.1.1 = {
+		death = yes
+	}
+}
+
+tiepolo_6 = {
+	name = "Lorenzo"
+	dynasty = 13006
+	rite = "roman_rite"
+	culture = cisalpine
+	father = tiepolo_3
+	diplomacy = 8
+	martial = 2
+	stewardship = 13
+	intrigue = 15
+	learning = 7
+	prowess = 3
+	health = 5.25
+	trait = education_stewardship_3
+	trait = gluttonous
+	trait = gregarious
+	trait = just
+	trait = comfort_eater
+	disallow_random_traits = yes
+	1120.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			learn_language = language_greek
+		}
+	}
+	1200.1.1 = {
+		death = yes
+	}
+}
+
+tiepolo_7 = {
+	name = "Daniele"
+	dynasty = 13006
+	rite = "roman_rite"
+	culture = cisalpine
+	father = tiepolo_6
+	1169.1.1 = {
+		birth = yes
+	}
+	1238.1.1 = {
+		death = yes
+	}
+}
+
+32124 = {
+	name = "Jacopo"
+	dynasty = 13006
+	rite = "roman_rite"
+	culture = cisalpine
+	father = tiepolo_6
+	1170.1.2 = {
+		birth = yes
+	}
+	1249.7.19 = {
+		death = yes
+	}
+}
+
+tiepolo_8 = {
+	name = "Giovanni"
+	dynasty = 13006
+	rite = "roman_rite"
+	culture = cisalpine
+	father = tiepolo_6
+	1171.1.1 = {
+		birth = yes
+	}
+	1242.1.1 = {
+		death = yes
+	}
+}
+
 32127 = {
 	name = "Lorenzo"
 	dynasty = 13006
@@ -37506,11 +39225,58 @@ cisalpine0944 = {
 	dynasty = 7237
 	rite = "roman_rite"
 	culture = cisalpine
-	1200.1.2 = {
-		birth = "1200.1.2"
+	father = zen_1
+	1200.1.1 = {
+		birth = yes
 	}
 	1268.7.7 = {
-		death = "1268.7.7"
+		death = yes
+	}
+}
+zen_1 = {
+	name = "Pietro"
+	dynasty = 7237
+	rite = "roman_rite"
+	culture = cisalpine
+	father = zen_2
+	1167.1.1 = {
+		birth = yes
+	}
+	1233.1.1 = {
+		death = yes
+	}
+}
+zen_2 = {
+	name = "Antonio"
+	dynasty = 7237
+	rite = "roman_rite"
+	culture = cisalpine
+	diplomacy = 10
+	martial = 3
+	stewardship = 10
+	intrigue = 3
+	learning = 5
+	prowess = 7
+	trait = education_stewardship_3
+	trait = impatient
+	trait = greedy
+	trait = diligent
+	disallow_random_traits = yes
+	1132.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -7 }
+			learn_language = language_arabic
+		}
+	}
+	1195.1.1 = {
+		death = yes
 	}
 }
 # End of Zeno
@@ -37625,8 +39391,29 @@ marcellino_1 = {
 	dynasty = cisalpine_marcellino
 	rite = roman_rite
 	culture = cisalpine
+	diplomacy = 7
+	martial = 2
+	stewardship = 12
+	intrigue = 7
+	learning = 7
+	prowess = 3
+	health = 5.25
+	trait = education_diplomacy_4
+	trait = gluttonous
+	trait = honest
+	trait = trusting
+	disallow_random_traits = yes
 	1127.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -13 }
+		}
 	}
 	1188.1.1 = {
 		death = yes
@@ -37638,8 +39425,29 @@ beccaria_1 = {
 	dynasty = 101819 # Beccaria
 	rite = ambrosian_rite
 	culture = cisalpine
+	diplomacy = 8
+	martial = 5
+	stewardship = 7
+	intrigue = 3
+	learning = 6
+	prowess = 6
+	trait = education_stewardship_5
+	trait = diligent
+	trait = gregarious
+	trait = humble
+	trait = scarred
+	disallow_random_traits = yes
 	1136.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -7 }
+		}
 	}
 	1183.1.1 = {
 		death = yes
@@ -37651,8 +39459,29 @@ bonacolsi_1 = {
 	dynasty = 101820 # Bonacolsi
 	rite = roman_rite
 	culture = cisalpine
+	diplomacy = 11
+	martial = 4
+	stewardship = 14
+	intrigue = 8
+	learning = 5
+	prowess = 8
+	trait = education_diplomacy_4
+	trait = forgiving
+	trait = lustful
+	trait = brave
+	disallow_random_traits = yes
 	1148.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 23 }
+			learn_language = language_occitano_romance
+		}
 	}
 	1233.1.1 = {
 		death = yes
@@ -37678,10 +39507,83 @@ asinelli_1 = {
 	dynasty = cisalpine_asinelli
 	rite = roman_rite
 	culture = cisalpine
+	diplomacy = 7
+	martial = 12
+	stewardship = 8
+	intrigue = 8
+	learning = 6
+	prowess = 11
+	trait = education_martial_4
+	trait = cynical
+	trait = stubborn
+	trait = just
+	trait = lifestyle_reveler
+	trait = one_eyed
+	disallow_random_traits = yes
 	1133.1.1 = {
 		birth = yes
 	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 18 }
+			learn_language = language_high_german
+		}
+	}
 	1186.1.1 = {
+		death = yes
+	}
+}
+
+asinelli_2 = {
+	name = "Munso"
+	dynasty = cisalpine_asinelli
+	rite = roman_rite
+	culture = cisalpine
+	father = asinelli_1
+	diplomacy = 13
+	martial = 6
+	stewardship = 9
+	intrigue = 4
+	learning = 4
+	prowess = 6
+	trait = education_diplomacy_2
+	trait = trusting
+	trait = just
+	trait = deceitful
+	trait = pilgrim
+	disallow_random_traits = yes
+	1153.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+			learn_language = language_high_german
+		}
+	}
+	1203.1.1 = {
+		death = yes
+	}
+}
+
+asinelli_3 = {
+	name = "Bonacosa"
+	dynasty = cisalpine_asinelli
+	rite = roman_rite
+	culture = cisalpine
+	father = asinelli_1
+	1154.1.1 = {
+		birth = yes
+	}
+	1204.1.1 = {
 		death = yes
 	}
 }
@@ -37691,8 +39593,31 @@ osa_1 = {
 	dynasty = cisalpine_osa
 	rite = ambrosian_rite
 	culture = cisalpine
+	diplomacy = 12
+	martial = 3
+	stewardship = 12
+	intrigue = 4
+	learning = 6
+	prowess = 2
+	health = 5.25
+	trait = education_stewardship_3
+	trait = greedy
+	trait = arrogant
+	trait = ambitious
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
 	1136.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 42 }
+			learn_language = language_high_german
+		}
 	}
 	1199.1.1 = {
 		death = yes
@@ -37704,8 +39629,29 @@ carpineto_1 = {
 	dynasty = cisalpine_carpineto
 	rite = ambrosian_rite
 	culture = cisalpine
+	diplomacy = 12
+	martial = 5
+	stewardship = 14
+	intrigue = 8
+	learning = 5
+	prowess = 3
+	trait = education_diplomacy_5
+	trait = impatient
+	trait = arrogant
+	trait = content
+	trait = beauty_bad_1
+	disallow_random_traits = yes
 	1129.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 43 }
+		}
 	}
 	1186.1.1 = {
 		death = yes
@@ -37718,8 +39664,32 @@ mastropiero_1 = {
 	rite = roman_rite
 	culture = cisalpine
 	father = 213600
+	diplomacy = 12
+	martial = 6
+	stewardship = 10
+	intrigue = 5
+	learning = 4
+	prowess = 2
+	health = 5.25
+	trait = education_diplomacy_3
+	trait = deceitful
+	trait = patient
+	trait = trusting
+	trait = lifestyle_reveler
+	trait = irritable
+	disallow_random_traits = yes
 	1155.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 27 }
+			learn_language = language_arabic
+		}
 	}
 	1206.1.1 = {
 		death = yes
@@ -37755,6 +39725,6231 @@ mastropiero_3 = {
 	}
 }
 
+mastropiero_5 = {
+	name = "Tommaso"
+	dynasty = 13076 # Mastropiero
+	rite = roman_rite
+	culture = cisalpine
+	father = mastropiero_1
+	1177.1.1 = {
+		birth = yes
+	}
+	1227.1.1 = {
+		death = yes
+	}
+}
+
+dolfin_1 = {
+	name = "Luigi" # Procurator of San Marco in 1084
+	dynasty = cisalpine_dolfin
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 7
+	martial = 3
+	stewardship = 9
+	intrigue = 3
+	learning = 3
+	prowess = 8
+	trait = education_stewardship_3
+	trait = diligent
+	trait = forgiving
+	trait = calm
+	disallow_random_traits = yes
+	1037.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1112.1.1 = {
+		death = yes
+	}
+}
+
+sanudo_1 = {
+	name = "Paulo"
+	dynasty = 102020 # Sanudo
+	rite = roman_rite
+	culture = cisalpine
+	1034.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1106.1.1 = {
+		death = yes
+	}
+}
+
+sanudo_2 = {
+	name = "Pietro"
+	dynasty = 102020 #Sanudo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = sanudo_1 # Paulo
+	1065.1.1 = {
+		birth = yes
+	}
+	1128.1.1 = {
+		death = yes
+	}
+}
+
+sanudo_3 = {
+	name = "Marco"
+	dynasty = 102020 #Sanudo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = sanudo_2 # Paulo
+	1094.1.1 = {
+		birth = yes
+	}
+	1155.1.1 = {
+		death = yes
+	}
+}
+
+sanudo_4 = {
+	name = "Bernardo"
+	dynasty = 102020 #Sanudo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = 31420 # Pietro
+	mother = dandolo_agnese
+	1156.1.1 = {
+		birth = yes
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+sanudo_5 = {
+	name = "Lunardo"
+	dynasty = 102020 #Sanudo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = 31420 # Pietro
+	mother = dandolo_agnese
+	1159.1.1 = {
+		birth = yes
+	}
+	1217.1.1 = {
+		death = yes
+	}
+}
+
+
+badoer_1 = {
+	name = "Troilo" # Procurator of San Marco in 1050
+	dynasty = 1040023 # Badoer
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 3
+	martial = 5
+	stewardship = 14
+	intrigue = 10
+	learning = 6
+	prowess = 2
+	health = 5.25
+	trait = education_stewardship_3
+	trait = gregarious
+	trait = generous
+	trait = gluttonous
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1018.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 17 }
+			learn_language = language_arabic
+		}
+	}
+	1092.1.1 = {
+		death = yes
+	}
+}
+
+zorzi_1 = {
+	name = "Marco" # Procurator of San Marco in 1036
+	dynasty = 8734 # Zorzi
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 7
+	stewardship = 11
+	intrigue = 9
+	learning = 8
+	prowess = 6
+	trait = education_intrigue_3
+	trait = callous
+	trait = lustful
+	trait = forgiving
+	trait = lifestyle_blademaster
+	disallow_random_traits = yes
+	1004.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 23 }
+			learn_language = language_greek
+		}
+	}
+	1073.1.1 = {
+		death = yes
+	}
+}
+
+zorzi_2 = {
+	name = "Cipriano" # Procurator of San Marco in 1075
+	dynasty = 8734 # Zorzi
+	rite = roman_rite
+	culture = cisalpine
+	father = zorzi_1
+	diplomacy = 8
+	martial = 6
+	stewardship = 10
+	intrigue = 7
+	learning = 8
+	prowess = 4
+	trait = education_diplomacy_3
+	trait = zealous
+	trait = just
+	trait = gregarious
+	disallow_random_traits = yes
+	1042.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	1121.1.1 = {
+		death = yes
+	}
+}
+
+bembo_1 = {
+	name = "Pasquale" # Procurator of San Marco in 1089
+	dynasty = cisalpine_bembo
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 12
+	martial = 3
+	stewardship = 11
+	intrigue = 7
+	learning = 3
+	prowess = 5
+	health = 5.25
+	trait = education_stewardship_3
+	trait = greedy
+	trait = ambitious
+	trait = arrogant
+	disallow_random_traits = yes
+	1040.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 27 }
+		}
+	}
+	1115.1.1 = {
+		death = yes
+	}
+}
+
+corner_1 = {
+	name = "Teseo" # Procurator of San Marco in 1065
+	dynasty = cisalpine_corner
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 14
+	martial = 3
+	stewardship = 11
+	intrigue = 5
+	learning = 5
+	prowess = 3
+	trait = education_diplomacy_3
+	trait = lustful
+	trait = vengeful
+	trait = craven
+	disallow_random_traits = yes
+	1026.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	1101.1.1 = {
+		death = yes
+	}
+}
+
+franco_1 = {
+	name = "Leonardo" # Procurator of San Marco in 1040
+	dynasty = cisalpine_franco
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 8
+	martial = 2
+	stewardship = 9
+	intrigue = 8
+	learning = 5
+	prowess = 10
+	trait = education_stewardship_3
+	trait = gregarious
+	trait = just
+	trait = zealous
+	trait = one_eyed
+	disallow_random_traits = yes
+	1012.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1084.1.1 = {
+		death = yes
+	}
+}
+
+salamon_1 = {
+	name = "Antonio" # Procurator of San Marco in 1057
+	dynasty_house = house_salamon
+	rite = roman_rite
+	culture = cisalpine
+	father = salamon_7 # Vitale
+	diplomacy = 4
+	martial = 2
+	stewardship = 12
+	intrigue = 8
+	learning = 4
+	prowess = 5
+	trait = education_intrigue_3
+	trait = arbitrary
+	trait = arrogant
+	trait = generous
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1028.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 28 }
+		}
+	}
+	1105.1.1 = {
+		death = yes
+	}
+}
+
+salamon_2 = {
+	name = "Giovanni"
+	dynasty_house = house_salamon
+	rite = roman_rite
+	culture = cisalpine
+	father = salamon_3 # Pietro
+	diplomacy = 4
+	martial = 4
+	stewardship = 11
+	intrigue = 3
+	learning = 6
+	prowess = 7
+	trait = education_stewardship_2
+	trait = compassionate
+	trait = fickle
+	trait = diligent
+	trait = lifestyle_mystic
+	trait = scarred
+	disallow_random_traits = yes
+	1155.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+salamon_3 = {
+	name = "Pietro"
+	dynasty_house = house_salamon
+	rite = roman_rite
+	culture = cisalpine
+	father = salamon_4 # Vitale
+	diplomacy = 3
+	martial = 13
+	stewardship = 8
+	intrigue = 6
+	learning = 3
+	prowess = 7
+	trait = education_martial_3
+	trait = cynical
+	trait = gregarious
+	trait = stubborn
+	trait = lifestyle_traveler
+	disallow_random_traits = yes
+	1129.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+			learn_language = language_greek
+		}
+	}
+	1180.1.1 = {
+		death = yes
+	}
+}
+
+salamon_4 = {
+	name = "Vitale"
+	dynasty_house = house_salamon
+	rite = roman_rite
+	culture = cisalpine
+	father = salamon_5 # Cristoforo
+	1101.1.1 = {
+		birth = yes
+	}
+	1168.1.1 = {
+		death = yes
+	}
+}
+
+salamon_5 = {
+	name = "Cristoforo"
+	dynasty_house = house_salamon
+	rite = roman_rite
+	culture = cisalpine
+	father = salamon_6 # Giovanni
+	1079.1.1 = {
+		birth = yes
+	}
+	1146.1.1 = {
+		death = yes
+	}
+}
+
+salamon_6 = {
+	name = "Giovanni"
+	dynasty_house = house_salamon
+	rite = roman_rite
+	culture = cisalpine
+	father = salamon_1 # Antonio
+	diplomacy = 11
+	martial = 7
+	stewardship = 9
+	intrigue = 3
+	learning = 6
+	prowess = 5
+	trait = education_stewardship_3
+	trait = arbitrary
+	trait = greedy
+	trait = diligent
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1049.1.1 = {
+		birth = yes
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 26 }
+			learn_language = language_arabic
+		}
+	}
+	1106.1.1 = {
+		death = yes
+	}
+}
+
+salamon_7 = {
+	name = "Vitale"
+	dynasty_house = house_salamon
+	rite = roman_rite
+	culture = cisalpine
+	father = salamon_8 # Vitale
+	1005.1.1 = {
+		birth = yes
+	}
+	1065.1.1 = {
+		death = yes
+	}
+}
+
+salamon_8 = {
+	name = "Antonio"
+	dynasty_house = house_salamon
+	rite = roman_rite
+	culture = cisalpine
+	father = barbolano_1 # Vitale
+	990.1.1 = {
+		birth = yes
+	}
+	1055.1.1 = {
+		death = yes
+	}
+}
+
+querini_1 = {
+	name = "Zaccaria" # Procurator of San Marco in 1093
+	dynasty = cisalpine_querini
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 3
+	martial = 6
+	stewardship = 13
+	intrigue = 13
+	learning = 4
+	prowess = 6
+	trait = education_stewardship_2
+	trait = content
+	trait = trusting
+	trait = patient
+	disallow_random_traits = yes
+	1043.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 23 }
+		}
+	}
+	1128.1.1 = {
+		death = yes
+	}
+}
+
+polani_1 = {
+	name = "Vitale"
+	dynasty = 7236
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 8
+	stewardship = 13
+	intrigue = 8
+	learning = 6
+	prowess = 17
+	trait = education_martial_4
+	trait = brave
+	trait = impatient
+	trait = honest
+	trait = lifestyle_traveler
+	trait = scarred
+	disallow_random_traits = yes
+	1030.1.2 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_south_slavic
+		}
+	}
+	1082.1.2 = {
+		death = yes
+	}
+}
+
+bortelli_1 = {
+	name = "Giovanni" # Procurator of San Marco in 843
+	dynasty = cisalpine_bortelli
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 18
+	martial = 6
+	stewardship = 11
+	intrigue = 7
+	learning = 3
+	prowess = 8
+	trait = education_stewardship_3
+	trait = paranoid
+	trait = greedy
+	trait = temperate
+	trait = beauty_bad_2
+	disallow_random_traits = yes
+	822.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+			learn_language = language_south_slavic
+		}
+	}
+	890.1.1 = {
+		death = yes
+	}
+}
+
+capoan_1 = {
+	name = "Paolo" # Procurator of San Marco in 848
+	dynasty = cisalpine_capoan
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 11
+	stewardship = 11
+	intrigue = 3
+	learning = 4
+	prowess = 8
+	trait = education_martial_4
+	trait = honest
+	trait = humble
+	trait = just
+	disallow_random_traits = yes
+	826.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	892.1.1 = {
+		death = yes
+	}
+}
+
+contarini_1 = {
+	name = "Luigi" # Procurator of San Marco in 864
+	dynasty = cisalpine_contarini
+	rite = roman_rite
+	culture = cisalpine
+	840.1.1 = {
+		birth = yes
+	}
+	910.1.1 = {
+		death = yes
+	}
+}
+
+contarini_2 = {
+	name = "Antonio" # Procurator of San Marco in 867
+	dynasty = cisalpine_contarini
+	rite = roman_rite
+	culture = cisalpine
+	842.1.1 = {
+		birth = yes
+	}
+	915.1.1 = {
+		death = yes
+	}
+}
+
+corner_2 = {
+	name = "Luigi" # Procurator of San Marco in 867
+	dynasty = cisalpine_corner
+	rite = roman_rite
+	culture = cisalpine
+	841.1.1 = {
+		birth = yes
+	}
+	912.1.1 = {
+		death = yes
+	}
+}
+
+corner_3 = {
+	name = "Andrea"
+	dynasty = cisalpine_corner
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 4
+	stewardship = 8
+	intrigue = 10
+	learning = 3
+	prowess = 10
+	trait = education_stewardship_4
+	trait = diligent
+	trait = gregarious
+	trait = zealous
+	trait = lifestyle_traveler
+	disallow_random_traits = yes
+	1141.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -12 }
+		}
+	}
+	1208.1.1 = {
+		death = yes
+	}
+}
+
+faraon_1 = {
+	name = "Paolo" # Procurator of San Marco in 870
+	dynasty = cisalpine_faraon
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 6
+	stewardship = 11
+	intrigue = 10
+	learning = 4
+	prowess = 6
+	trait = education_stewardship_3
+	trait = greedy
+	trait = zealous
+	trait = ambitious
+	disallow_random_traits = yes
+	845.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+			learn_language = language_greek
+		}
+	}
+	920.1.1 = {
+		death = yes
+	}
+}
+
+badoer_2 = {
+	name = "Paolo" # Procurator of San Marco in 871
+	dynasty = cisalpine_badoer
+	rite = roman_rite
+	culture = cisalpine
+	846.1.1 = {
+		birth = yes
+	}
+	923.1.1 = {
+		death = yes
+	}
+}
+
+fontana_1 = {
+	name = "Gierolomo" # Procurator of San Marco in 872
+	dynasty = cisalpine_fontana
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 12
+	martial = 6
+	stewardship = 9
+	intrigue = 3
+	learning = 7
+	prowess = 9
+	trait = education_diplomacy_3
+	trait = deceitful
+	trait = ambitious
+	trait = cynical
+	trait = beauty_good_2
+	disallow_random_traits = yes
+	847.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	925.1.1 = {
+		death = yes
+	}
+}
+
+da_mar_1 = {
+	name = "Marco" # Procurator of San Marco in 873
+	dynasty = cisalpine_da_mar
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 13
+	martial = 5
+	stewardship = 14
+	intrigue = 3
+	learning = 7
+	prowess = 4
+	health = 5.25
+	trait = education_diplomacy_2
+	trait = forgiving
+	trait = zealous
+	trait = lazy
+	disallow_random_traits = yes
+	848.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 42 }
+			learn_language = language_greek
+		}
+	}
+	926.1.1 = {
+		death = yes
+	}
+}
+
+giulio_1 = {
+	name = "Pietro" # Procurator of San Marco in 881
+	dynasty = cisalpine_giulio
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 10
+	martial = 3
+	stewardship = 10
+	intrigue = 8
+	learning = 8
+	prowess = 9
+	trait = education_diplomacy_3
+	trait = calm
+	trait = patient
+	trait = brave
+	disallow_random_traits = yes
+	849.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -35 }
+		}
+	}
+	930.1.1 = {
+		death = yes
+	}
+}
+
+mastropiero_4 = {
+	name = "Leonardo" # Procurator of San Marco in 889
+	dynasty = 13076
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 14
+	martial = 6
+	stewardship = 11
+	intrigue = 4
+	learning = 3
+	prowess = 6
+	trait = education_stewardship_3
+	trait = callous
+	trait = paranoid
+	trait = cynical
+	disallow_random_traits = yes
+	850.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 5 }
+		}
+	}
+	935.1.1 = {
+		death = yes
+	}
+}
+
+maragrin_1 = {
+	name = "Pietro" # Procurator of San Marco in 891
+	dynasty = cisalpine_maragrin
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 8
+	martial = 4
+	stewardship = 8
+	intrigue = 7
+	learning = 5
+	prowess = 4
+	trait = education_stewardship_4
+	trait = lustful
+	trait = diligent
+	trait = patient
+	disallow_random_traits = yes
+	851.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 36 }
+		}
+	}
+	940.1.1 = {
+		death = yes
+	}
+}
+
+lambrevelli_1 = {
+	name = "Niccolo" # Procurator of San Marco in 893
+	dynasty = cisalpine_lambrevelli
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 6
+	martial = 6
+	stewardship = 11
+	intrigue = 6
+	learning = 6
+	prowess = 9
+	trait = education_diplomacy_4
+	trait = cynical
+	trait = honest
+	trait = arrogant
+	trait = shrewd
+	disallow_random_traits = yes
+	851.1.1 = {
+		birth = yes
+	}
+	942.1.1 = {
+		death = yes
+	}
+}
+
+gradenigo_1 = {
+	name = "Mose" # Procurator of San Marco in 1149
+	dynasty = 13007 # Gradenigo
+	rite = roman_rite
+	culture = cisalpine
+	1125.1.1 = {
+		birth = yes
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+querini_2 = {
+	name = "Leonardo" # Procurator of San Marco in 1150
+	dynasty = cisalpine_querini
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 4
+	martial = 12
+	stewardship = 13
+	intrigue = 8
+	learning = 7
+	prowess = 12
+	trait = education_martial_3
+	trait = callous
+	trait = greedy
+	trait = cynical
+	trait = lifestyle_traveler
+	disallow_random_traits = yes
+	1126.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	1198.1.1 = {
+		death = yes
+	}
+}
+
+querini_3 = {
+	name = "Ottaviano"
+	dynasty = cisalpine_querini
+	rite = roman_rite
+	culture = cisalpine
+	father = querini_2 # Leonardo
+	diplomacy = 4
+	martial = 10
+	stewardship = 8
+	intrigue = 4
+	learning = 5
+	prowess = 12
+	trait = education_martial_3
+	trait = humble
+	trait = just
+	trait = gregarious
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1155.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+dolfin_2 = {
+	name = "Vielmo" # Procurator of San Marco in 1156
+	dynasty = cisalpine_dolfin
+	rite = roman_rite
+	culture = cisalpine
+	1130.1.1 = {
+		birth = yes
+	}
+	1200.1.1 = {
+		death = yes
+	}
+}
+
+michele_3 = {
+	name = "Agnese"
+	female = yes
+	dynasty = 7235 # Michele
+	rite = roman_rite
+	culture = cisalpine
+	father = 32118
+	1136.1.1 = {
+		birth = yes
+	}
+	1219.1.1 = {
+		death = yes
+	}
+}
+
+michele_4 = {
+	name = "Richelda"
+	female = yes
+	dynasty = 7235 # Michele
+	rite = roman_rite
+	culture = cisalpine
+	father = 32118
+	1140.1.1 = {
+		birth = yes
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+fradello_1 = {
+	name = "Leonardo" # Procurator of San Marco in 1164
+	dynasty = cisalpine_fradello
+	rite = roman_rite
+	culture = cisalpine
+	1138.1.1 = {
+		birth = yes
+	}
+	1208.1.1 = {
+		death = yes
+	}
+}
+
+zane_1 = {
+	name = "Renier" # Procurator of San Marco in 1178
+	dynasty = 7237 # Zen/Zeno
+	rite = roman_rite
+	culture = cisalpine
+	1152.1.1 = {
+		birth = yes
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+basegio_1 = {
+	name = "Giovanni" # Procurator of San Marco in 1205
+	dynasty = cisalpine_basegio
+	rite = roman_rite
+	culture = cisalpine
+	1158.1.1 = {
+		birth = yes
+	}
+	1230.1.1 = {
+		death = yes
+	}
+}
+
+marcelino_1 = {
+	name = "Ruggero"
+	dynasty = cisalpine_marcelino
+	rite = roman_rite
+	culture = cisalpine
+	1150.1.1 = {
+		birth = yes
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+boltraffio_1 = {
+	name = "Adobado"
+	dynasty = cisalpine_boltraffio
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 10
+	martial = 3
+	stewardship = 9
+	intrigue = 6
+	learning = 8
+	prowess = 8
+	trait = education_diplomacy_3
+	trait = calm
+	trait = deceitful
+	trait = compassionate
+	trait = shrewd
+	disallow_random_traits = yes
+	1149.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+			learn_language = language_high_german
+		}
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+borri_1 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_borri
+	rite = roman_rite
+	culture = cisalpine
+	1152.1.1 = {
+		birth = yes
+	}
+	1226.1.1 = {
+		death = yes
+	}
+}
+
+dell_osa_1 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_dell_osa
+	rite = roman_rite
+	culture = cisalpine
+	1151.1.1 = {
+		birth = yes
+	}
+	1219.1.1 = {
+		death = yes
+	}
+}
+
+calzagrigia_1 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_calzagrigia
+	rite = roman_rite
+	culture = cisalpine
+	1154.1.1 = {
+		birth = yes
+	}
+	1230.1.1 = {
+		death = yes
+	}
+}
+
+da_melegnano_1 = {
+	name = "Guidone"
+	dynasty = cisalpine_da_melegnano
+	rite = roman_rite
+	culture = cisalpine
+	1148.1.1 = {
+		birth = yes
+	}
+	1216.1.1 = {
+		death = yes
+	}
+}
+
+landriani_1 = {
+	name = "Guidone"
+	dynasty = cisalpine_landriani
+	rite = roman_rite
+	culture = cisalpine
+	1147.1.1 = {
+		birth = yes
+	}
+	1213.1.1 = {
+		death = yes
+	}
+}
+
+vimercati_1 = {
+	name = "Pinamonte"
+	dynasty = cisalpine_vimercati
+	rite = roman_rite
+	culture = cisalpine
+	1146.1.1 = {
+		birth = yes
+	}
+	1212.1.1 = {
+		death = yes
+	}
+}
+
+dell_ostiolo_1 = {
+	name = "Guercio"
+	dynasty = cisalpine_dell_ostiolo
+	rite = roman_rite
+	culture = cisalpine
+	1153.1.1 = {
+		birth = yes
+	}
+	1228.1.1 = {
+		death = yes
+	}
+}
+
+zendadario_1 = {
+	name = "Ottone"
+	dynasty = cisalpine_zendadario
+	rite = roman_rite
+	culture = cisalpine
+	1150.1.1 = {
+		birth = yes
+	}
+	1222.1.1 = {
+		death = yes
+	}
+}
+
+porrenzione_1 = {
+	name = "Borgo"
+	dynasty = cisalpine_porrenzione
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 10
+	martial = 2
+	stewardship = 8
+	intrigue = 5
+	learning = 4
+	prowess = 4
+	trait = education_stewardship_4
+	trait = just
+	trait = ambitious
+	trait = craven
+	disallow_random_traits = yes
+	1149.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -20 }
+			learn_language = language_occitano_romance
+		}
+	}
+	1218.1.1 = {
+		death = yes
+	}
+}
+
+borro_1 = {
+	name = "Bellotto"
+	dynasty = cisalpine_borro
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 9
+	martial = 6
+	stewardship = 13
+	intrigue = 5
+	learning = 3
+	prowess = 8
+	trait = education_diplomacy_3
+	trait = honest
+	trait = ambitious
+	trait = lazy
+	disallow_random_traits = yes
+	1152.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 8 }
+			learn_language = language_high_german
+		}
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+trivulzio_1 = {
+	name = "Enrico"
+	dynasty = cisalpine_trivulzio
+	rite = roman_rite
+	culture = cisalpine
+	1148.1.1 = {
+		birth = yes
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+da_carate_1 = {
+	name = "Alberto"
+	dynasty = cisalpine_da_carate
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 6
+	martial = 13
+	stewardship = 9
+	intrigue = 8
+	learning = 4
+	prowess = 10
+	trait = education_martial_3
+	trait = diligent
+	trait = trusting
+	trait = gregarious
+	trait = lifestyle_poet
+	disallow_random_traits = yes
+	1142.1.1 = {
+		birth = yes
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+longhi_1 = {
+	name = "Alberto"
+	dynasty = cisalpine_longhi
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 10
+	martial = 4
+	stewardship = 9
+	intrigue = 6
+	learning = 4
+	prowess = 4
+	trait = education_stewardship_3
+	trait = zealous
+	trait = just
+	trait = calm
+	disallow_random_traits = yes
+	1140.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1222.1.1 = {
+		death = yes
+	}
+}
+
+aliate_1 = {
+	name = "Confalonieri"
+	dynasty = cisalpine_aliate
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 12
+	martial = 4
+	stewardship = 12
+	intrigue = 6
+	learning = 5
+	prowess = 2
+	health = 5.25
+	trait = education_diplomacy_2
+	trait = gluttonous
+	trait = just
+	trait = gregarious
+	disallow_random_traits = yes
+	1138.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -13 }
+			learn_language = language_occitano_romance
+		}
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+pisto_1 = {
+	name = "Girardo"
+	dynasty = cisalpine_pisto
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 3
+	martial = 5
+	stewardship = 11
+	intrigue = 13
+	learning = 6
+	prowess = 4
+	health = 5.25
+	trait = education_stewardship_4
+	trait = ambitious
+	trait = trusting
+	trait = shy
+	trait = lifestyle_reveler
+	trait = comfort_eater
+	disallow_random_traits = yes
+	1145.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 27 }
+		}
+	}
+	1228.1.1 = {
+		death = yes
+	}
+}
+
+ermenulfi_1 = {
+	name = "Malfigliozzo"
+	dynasty = cisalpine_ermenulfi
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 6
+	stewardship = 14
+	intrigue = 8
+	learning = 4
+	prowess = 2
+	health = 5.25
+	trait = education_stewardship_3
+	trait = gregarious
+	trait = generous
+	trait = gluttonous
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1135.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 17 }
+			learn_language = language_high_german
+		}
+	}
+	1208.1.1 = {
+		death = yes
+	}
+}
+
+da_sesto_1 = {
+	name = "Manfredo"
+	dynasty = cisalpine_da_sesto
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 15
+	martial = 6
+	stewardship = 10
+	intrigue = 6
+	learning = 5
+	prowess = 5
+	trait = education_stewardship_3
+	trait = brave
+	trait = just
+	trait = vengeful
+	trait = scarred
+	disallow_random_traits = yes
+	1143.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 33 }
+			learn_language = language_high_german
+		}
+	}
+	1230.1.1 = {
+		death = yes
+	}
+}
+
+cavriano_1 = {
+	name = "Alberico"
+	dynasty = cisalpine_cavriano
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 6
+	stewardship = 11
+	intrigue = 12
+	learning = 4
+	prowess = 7
+	trait = education_stewardship_3
+	trait = zealous
+	trait = generous
+	trait = compassionate
+	trait = pilgrim
+	disallow_random_traits = yes
+	1137.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 43 }
+		}
+	}
+	1209.1.1 = {
+		death = yes
+	}
+}
+
+gambara_1 = {
+	name = "Alberto"
+	dynasty = cisalpine_gambara
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 11
+	stewardship = 8
+	intrigue = 5
+	learning = 7
+	prowess = 6
+	trait = education_martial_3
+	trait = just
+	trait = eccentric
+	trait = diligent
+	disallow_random_traits = yes
+	1141.1.1 = {
+		birth = yes
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+gongolato_1 = {
+	name = "Rogerio" # Bergamo
+	dynasty = cisalpine_gongolato
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 6
+	martial = 6
+	stewardship = 14
+	intrigue = 8
+	learning = 8
+	prowess = 5
+	trait = education_stewardship_3
+	trait = arbitrary
+	trait = greedy
+	trait = zealous
+	disallow_random_traits = yes
+	1139.1.1 = {
+		birth = yes
+	}
+	1216.1.1 = {
+		death = yes
+	}
+}
+
+carcere_1 = {
+	name = "Ubertino" # Bergamo
+	dynasty = cisalpine_del_carcere
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 11
+	martial = 4
+	stewardship = 12
+	intrigue = 7
+	learning = 6
+	prowess = 5
+	trait = education_stewardship_3
+	trait = humble
+	trait = diligent
+	trait = arbitrary
+	trait = scarred
+	disallow_random_traits = yes
+	1135.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1204.1.1 = {
+		death = yes
+	}
+}
+
+terzi_1 = {
+	name = "Pietro" # Bergamo
+	dynasty = cisalpine_terzi
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 7
+	martial = 4
+	stewardship = 8
+	intrigue = 6
+	learning = 10
+	prowess = 9
+	trait = education_learning_2
+	trait = humble
+	trait = calm
+	trait = diligent
+	trait = lifestyle_traveler
+	disallow_random_traits = yes
+	1144.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1227.1.1 = {
+		death = yes
+	}
+}
+
+crasso_1 = {
+	name = "Nero"
+	dynasty = cisalpine_crasso
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 8
+	martial = 6
+	stewardship = 12
+	intrigue = 11
+	learning = 7
+	prowess = 3
+	trait = education_intrigue_2
+	trait = stubborn
+	trait = gregarious
+	trait = arbitrary
+	disallow_random_traits = yes
+	1134.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1202.1.1 = {
+		death = yes
+	}
+}
+
+bonifacio_1 = {
+	name = "Giovanni" # Piacenza
+	dynasty = cisalpine_di_bonifacio
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 9
+	martial = 5
+	stewardship = 10
+	intrigue = 5
+	learning = 7
+	prowess = 5
+	trait = education_diplomacy_3
+	trait = diligent
+	trait = vengeful
+	trait = gregarious
+	disallow_random_traits = yes
+	1140.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -7 }
+		}
+	}
+	1221.1.1 = {
+		death = yes
+	}
+}
+
+arcelli_1 = {
+	name = "Pagano" # Piacenza
+	dynasty = cisalpine_arcelli
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 13
+	martial = 4
+	stewardship = 13
+	intrigue = 5
+	learning = 6
+	prowess = 3
+	health = 5.25
+	trait = education_diplomacy_3
+	trait = gluttonous
+	trait = gregarious
+	trait = deceitful
+	disallow_random_traits = yes
+	1138.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -13 }
+			learn_language = language_high_german
+		}
+	}
+	1213.1.1 = {
+		death = yes
+	}
+}
+
+san_nagario_1 = {
+	name = "Rainerio"
+	dynasty = cisalpine_da_san_nagario
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 12
+	martial = 7
+	stewardship = 11
+	intrigue = 5
+	learning = 8
+	prowess = 6
+	trait = education_diplomacy_4
+	trait = greedy
+	trait = trusting
+	trait = callous
+	disallow_random_traits = yes
+	1136.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -40 }
+			learn_language = language_high_german
+		}
+	}
+	1208.1.1 = {
+		death = yes
+	}
+}
+
+sannazzaro_1 = {
+	name = "Borgonzo"
+	dynasty = cisalpine_sannazzaro
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 4
+	martial = 3
+	stewardship = 6
+	intrigue = 8
+	learning = 7
+	prowess = 3
+	trait = education_learning_3
+	trait = humble
+	trait = diligent
+	trait = cynical
+	trait = lifestyle_gardener
+	trait = irritable
+	trait = stuttering
+	disallow_random_traits = yes
+	1141.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1223.1.1 = {
+		death = yes
+	}
+}
+
+gavazzo_1 = {
+	name = "Alberto" # Lodi
+	dynasty = cisalpine_gavazzo
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 7
+	martial = 7
+	stewardship = 7
+	intrigue = 13
+	learning = 8
+	prowess = 8
+	trait = education_stewardship_4
+	trait = trusting
+	trait = stubborn
+	trait = humble
+	disallow_random_traits = yes
+	1138.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 23 }
+			learn_language = language_high_german
+		}
+	}
+	1212.1.1 = {
+		death = yes
+	}
+}
+
+ariosti_1 = {
+	name = "Ugo" # Bologna
+	dynasty = cisalpine_ariosti
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 14
+	martial = 6
+	stewardship = 14
+	intrigue = 3
+	learning = 5
+	prowess = 6
+	trait = education_stewardship_2
+	trait = deceitful
+	trait = vengeful
+	trait = calm
+	disallow_random_traits = yes
+	1135.1.1 = {
+		birth = yes
+	}
+	1202.1.1 = {
+		death = yes
+	}
+}
+
+lambertazzi_1 = {
+	name = "Lamberto" # Bologna
+	dynasty = cisalpine_lambertazzi
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 3
+	stewardship = 10
+	intrigue = 11
+	learning = 3
+	prowess = 6
+	trait = education_intrigue_3
+	trait = wrathful
+	trait = ambitious
+	trait = arrogant
+	trait = scarred
+	disallow_random_traits = yes
+	1134.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -20 }
+		}
+	}
+	1204.1.1 = {
+		death = yes
+	}
+}
+
+geremia_1 = {
+	name = "Rambertino" # Bologna
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_6 # Pietro
+	diplomacy = 4
+	martial = 7
+	stewardship = 9
+	intrigue = 10
+	learning = 8
+	prowess = 4
+	trait = education_intrigue_2
+	trait = vengeful
+	trait = ambitious
+	trait = arrogant
+	disallow_random_traits = yes
+	1136.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_occitano_romance
+		}
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+geremia_2 = {
+	name = "Graidano"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = onesti_2 # Pietro
+	1017.1.1 = {
+		birth = yes
+	}
+	1080.1.1 = {
+		death = yes
+	}
+}
+
+geremia_3 = { # bishop of Bologna
+	name = "Enrico"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_8 # Pietro
+	trait = education_learning_3
+	trait = devoted
+	1085.1.1 = {
+		birth = yes
+	}
+	1144.1.1 = {
+		death = yes
+	}
+}
+
+geremia_4 = { # bishop of Bologna
+	name = "Rodolfo"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_9 # Geremia
+	trait = education_learning_3
+	trait = devoted
+	1095.1.1 = {
+		birth = yes
+	}
+	1163.1.1 = {
+		death = yes
+	}
+}
+
+geremia_5 = { # cardinal of San Teodoro
+	name = "Ugo"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_2 # Graidano
+	trait = education_learning_4
+	trait = devoted
+	1058.1.1 = {
+		birth = yes
+	}
+	1129.1.1 = {
+		death = yes
+	}
+}
+
+geremia_6 = {
+	name = "Pietro"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_7 # Sergio
+	1107.1.1 = {
+		birth = yes
+	}
+	1169.1.1 = {
+		death = yes
+	}
+}
+
+geremia_7 = {
+	name = "Sergio"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_8 # Pietro
+	1082.1.1 = {
+		birth = yes
+	}
+	1144.1.1 = {
+		death = yes
+	}
+}
+
+geremia_8 = {
+	name = "Pietro"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_2 # Graidano
+	1055.1.1 = {
+		birth = yes
+	}
+	1117.1.1 = {
+		death = yes
+	}
+}
+
+geremia_9 = {
+	name = "Geremia"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_2 # Graidano
+	1060.1.1 = {
+		birth = yes
+	}
+	1124.1.1 = {
+		death = yes
+	}
+}
+
+geremia_10 = {
+	name = "Graidano"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_1 # Rambertino
+	diplomacy = 6
+	martial = 2
+	stewardship = 6
+	intrigue = 5
+	learning = 3
+	prowess = 5
+	trait = education_stewardship_3
+	trait = diligent
+	trait = ambitious
+	trait = patient
+	disallow_random_traits = yes
+	1161.1.1 = {
+		birth = yes
+	}
+	1229.1.1 = {
+		death = yes
+	}
+}
+
+geremia_11 = {
+	name = "Pietro"
+	dynasty_house = house_geremia
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_1 # Rambertino
+	1164.1.1 = {
+		birth = yes
+	}
+	1231.1.1 = {
+		death = yes
+	}
+}
+
+onesti_1 = {
+	name = "Sergio"
+	dynasty = cisalpine_onesti
+	rite = roman_rite
+	culture = cisalpine
+	father = onesti_3 # Giovanni
+	921.1.1 = {
+		birth = yes
+	}
+	995.1.1 = {
+		death = yes
+	}
+}
+
+onesti_2 = {
+	name = "Pietro"
+	dynasty = cisalpine_onesti
+	rite = roman_rite
+	culture = cisalpine
+	father = onesti_3 # Giovanni
+	924.1.1 = {
+		birth = yes
+	}
+	989.1.1 = {
+		death = yes
+	}
+}
+
+onesti_3 = {
+	name = "Giovanni"
+	dynasty = cisalpine_onesti
+	rite = roman_rite
+	culture = cisalpine
+	893.1.1 = {
+		birth = yes
+	}
+	965.1.1 = {
+		death = yes
+	}
+}
+
+onesti_4 = {
+	name = "Romualdo"
+	dynasty = cisalpine_onesti
+	rite = roman_rite
+	culture = cisalpine
+	father = onesti_1 # Sergio
+	trait = humble
+	trait = zealous
+	trait = generous
+	trait = education_learning_4
+	trait = devoted
+	953.1.1 = {
+		birth = yes
+	}
+	1027.6.19 = {
+		death = yes
+	}
+}
+
+polenta_1 = {
+	name = "Geremia"
+	dynasty_house = house_polenta
+	rite = roman_rite
+	culture = cisalpine
+	father = geremia_7 # Sergio
+	1120.1.1 = {
+		birth = yes
+	}
+	1175.1.1 = {
+		death = yes
+	}
+}
+
+polenta_2 = {
+	name = "Guido"
+	dynasty_house = house_polenta
+	rite = roman_rite
+	culture = cisalpine
+	father = polenta_1 # Geremia
+	diplomacy = 7
+	martial = 3
+	stewardship = 12
+	intrigue = 8
+	learning = 7
+	prowess = 3
+	health = 5.25
+	trait = education_stewardship_2
+	trait = greedy
+	trait = arrogant
+	trait = ambitious
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1145.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 42 }
+			learn_language = language_occitano_romance
+		}
+	}
+	1217.1.1 = {
+		death = yes
+	}
+}
+
+polenta_3 = {
+	name = "Geremia"
+	dynasty_house = house_polenta
+	rite = roman_rite
+	culture = cisalpine
+	father = polenta_2 # Guido
+	1174.1.1 = {
+		birth = yes
+	}
+	1247.1.1 = {
+		death = yes
+	}
+}
+
+polenta_4 = {
+	name = "Requilizia"
+	female = yes
+	dynasty_house = house_polenta
+	rite = roman_rite
+	culture = cisalpine
+	father = polenta_2 # Guido
+	1177.1.1 = {
+		birth = yes
+	}
+	1247.1.1 = {
+		death = yes
+	}
+}
+
+polenta_5 = {
+	name = "Lamberto"
+	dynasty_house = house_polenta
+	rite = roman_rite
+	culture = cisalpine
+	father = polenta_2 # Guido
+	1190.1.1 = {
+		birth = yes
+	}
+	1241.1.1 = {
+		death = yes
+	}
+}
+
+mariscotti_1 = {
+	name = "Mariscotto" # Bologna
+	dynasty = cisalpine_mariscotti
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 14
+	martial = 7
+	stewardship = 11
+	intrigue = 7
+	learning = 6
+	prowess = 1
+	health = 5.25
+	trait = education_stewardship_3
+	trait = greedy
+	trait = arrogant
+	trait = ambitious
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1112.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 42 }
+			learn_language = language_high_german
+		}
+	}
+	1182.1.1 = {
+		death = yes
+	}
+}
+
+mariscotti_2 = {
+	name = "Pietro" # Bologna
+	dynasty = cisalpine_mariscotti
+	rite = roman_rite
+	culture = cisalpine
+	father = mariscotti_1
+	diplomacy = 10
+	martial = 6
+	stewardship = 13
+	intrigue = 4
+	learning = 5
+	prowess = 2
+	health = 5.25
+	trait = education_stewardship_4
+	trait = arbitrary
+	trait = arrogant
+	trait = patient
+	trait = lifestyle_reveler
+	trait = comfort_eater
+	disallow_random_traits = yes
+	1132.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 7 }
+		}
+	}
+	1192.1.1 = {
+		death = yes
+	}
+}
+
+mariscotti_3 = {
+	name = "Corrado" # Bologna
+	dynasty = cisalpine_mariscotti
+	rite = roman_rite
+	culture = cisalpine
+	father = mariscotti_2
+	1152.1.1 = {
+		birth = yes
+	}
+	12022.1.1 = {
+		death = yes
+	}
+}
+
+malvezzi_1 = {
+	name = "Malvezzo" # Bologna
+	dynasty = cisalpine_malvezzi
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 11
+	martial = 7
+	stewardship = 9
+	intrigue = 5
+	learning = 4
+	prowess = 2
+	health = 5.25
+	trait = education_stewardship_4
+	trait = greedy
+	trait = arrogant
+	trait = ambitious
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1137.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 42 }
+			learn_language = language_high_german
+		}
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+pepoli_2 = {
+	name = "Giacobino"
+	dynasty = cisalpine_pepoli
+	rite = roman_rite
+	culture = italian
+	father = pepoli_1
+	diplomacy = 6
+	martial = 3
+	stewardship = 9
+	intrigue = 14
+	learning = 3
+	prowess = 4
+	trait = education_stewardship_2
+	trait = patient
+	trait = just
+	trait = ambitious
+	disallow_random_traits = yes
+	1159.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1209.1.1 = {
+		death = yes
+	}
+}
+
+pepoli_3 = {
+	name = "Alberto"
+	dynasty = cisalpine_pepoli
+	rite = roman_rite
+	culture = italian
+	father = pepoli_4
+	1109.1.1 = {
+		birth = yes
+	}
+	1159.1.1 = {
+		death = yes
+	}
+}
+
+pepoli_4 = {
+	name = "Ugolino"
+	dynasty = cisalpine_pepoli
+	rite = roman_rite
+	culture = italian
+	father = pepoli_6
+	1079.1.1 = {
+		birth = yes
+	}
+	1129.1.1 = {
+		death = yes
+	}
+}
+
+pepoli_6 = {
+	name = "Guido"
+	dynasty = cisalpine_pepoli
+	rite = roman_rite
+
+	culture = italian
+	1049.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1099.1.1 = {
+		death = yes
+	}
+}
+
+pepoli_1 = {
+	name = "Pepolo"
+	dynasty = cisalpine_pepoli
+	rite = roman_rite
+	culture = italian
+	father = pepoli_3
+	diplomacy = 11
+	martial = 6
+	stewardship = 14
+	intrigue = 6
+	learning = 3
+	prowess = 3
+	health = 5.25
+	trait = education_stewardship_2
+	trait = greedy
+	trait = ambitious
+	trait = gluttonous
+	disallow_random_traits = yes
+	1139.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -18 }
+		}
+	}
+	1218.1.1 = {
+		death = yes
+	}
+}
+
+pepoli_7 = {
+	name = "Romeo"
+	dynasty = cisalpine_pepoli
+	rite = roman_rite
+	culture = italian
+	father = pepoli_1
+	1161.1.1 = {
+		birth = yes
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+ramberti_1 = {
+	name = "Enrico" # Ferrara
+	dynasty = cisalpine_ramberti
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 12
+	martial = 3
+	stewardship = 12
+	intrigue = 6
+	learning = 5
+	prowess = 9
+	trait = education_diplomacy_3
+	trait = trusting
+	trait = vengeful
+	trait = greedy
+	trait = lifestyle_traveler
+	disallow_random_traits = yes
+	1130.1.1 = {
+		birth = yes
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+grillo_1 = {
+	name = "Amico" # Genoa
+	dynasty = cisalpine_grillo
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 12
+	martial = 3
+	stewardship = 11
+	intrigue = 4
+	learning = 4
+	prowess = 10
+	trait = education_stewardship_2
+	trait = paranoid
+	trait = arrogant
+	trait = just
+	disallow_random_traits = yes
+	1150.1.1 = {
+		birth = yes
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+fornario_1 = {
+	name = "Ottone" # Genoa
+	dynasty = cisalpine_fornario
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 6
+	martial = 6
+	stewardship = 12
+	intrigue = 5
+	learning = 11
+	prowess = 5
+	trait = education_learning_3
+	trait = paranoid
+	trait = humble
+	trait = ambitious
+	disallow_random_traits = yes
+	1149.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 10 }
+		}
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+negrone_1 = {
+	name = "Guglielmo" # Genoa
+	dynasty = cisalpine_negrone
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 12
+	martial = 6
+	stewardship = 10
+	intrigue = 6
+	learning = 7
+	prowess = 9
+	trait = education_diplomacy_3
+	trait = temperate
+	trait = eccentric
+	trait = ambitious
+	disallow_random_traits = yes
+	1151.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_occitano_romance
+		}
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+modiferro_1 = {
+	name = "Guglielmo" # Genoa
+	dynasty = cisalpine_modiferro
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 8
+	martial = 2
+	stewardship = 11
+	intrigue = 8
+	learning = 5
+	prowess = 4
+	health = 5.25
+	trait = education_intrigue_3
+	trait = lustful
+	trait = ambitious
+	trait = arrogant
+	disallow_random_traits = yes
+	1148.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 37 }
+		}
+	}
+	1212.1.1 = {
+		death = yes
+	}
+}
+
+della_volta_1 = {
+	name = "Ingo" # Genoa
+	dynasty = cisalpine_della_volta
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 10
+	martial = 3
+	stewardship = 11
+	intrigue = 6
+	learning = 6
+	prowess = 7
+	trait = education_diplomacy_3
+	trait = patient
+	trait = gregarious
+	trait = just
+	trait = pilgrim
+	disallow_random_traits = yes
+	1152.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -35 }
+		}
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+vento_1 = {
+	name = "Guglielmo" # Genoa
+	dynasty = cisalpine_vento
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 3
+	martial = 4
+	stewardship = 13
+	intrigue = 12
+	learning = 5
+	prowess = 4
+	trait = education_intrigue_2
+	trait = content
+	trait = craven
+	trait = patient
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1150.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 33 }
+			learn_language = language_arabic
+		}
+	}
+	1218.1.1 = {
+		death = yes
+	}
+}
+
+lungo_1 = {
+	name = "Guglielmo" # Genoa
+	dynasty = cisalpine_lungo
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 5
+	martial = 5
+	stewardship = 9
+	intrigue = 4
+	learning = 8
+	prowess = 8
+	trait = education_stewardship_3
+	trait = callous
+	trait = ambitious
+	trait = deceitful
+	trait = shrewd
+	disallow_random_traits = yes
+	1149.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -25 }
+		}
+	}
+	1216.1.1 = {
+		death = yes
+	}
+}
+
+bisaccia_1 = {
+	name = "Rubaldo" # Genoa
+	dynasty = cisalpine_bisaccia
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 3
+	martial = 9
+	stewardship = 10
+	intrigue = 3
+	learning = 5
+	prowess = 9
+	trait = education_martial_3
+	trait = deceitful
+	trait = forgiving
+	trait = brave
+	disallow_random_traits = yes
+	1153.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_arabic
+		}
+	}
+	1228.1.1 = {
+		death = yes
+	}
+}
+
+sardena_1 = {
+	name = "Guglielmo" # Genoa
+	dynasty = cisalpine_sardena
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 12
+	martial = 6
+	stewardship = 7
+	intrigue = 5
+	learning = 8
+	prowess = 3
+	trait = education_diplomacy_3
+	trait = temperate
+	trait = diligent
+	trait = greedy
+	disallow_random_traits = yes
+	1151.1.1 = {
+		birth = yes
+	}
+	1222.1.1 = {
+		death = yes
+	}
+}
+
+recalcato_1 = {
+	name = "Oberto" # Genoa
+	dynasty = cisalpine_recalcato
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 3
+	martial = 2
+	stewardship = 7
+	intrigue = 5
+	learning = 10
+	prowess = 3
+	trait = education_learning_3
+	trait = arrogant
+	trait = diligent
+	trait = greedy
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1148.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 21 }
+		}
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+pevere_1 = {
+	name = "Lanfranco"
+	dynasty = cisalpine_pevere
+	rite = roman_rite
+	culture = cisalpine
+	diplomacy = 13
+	martial = 6
+	stewardship = 14
+	intrigue = 6
+	learning = 6
+	prowess = 7
+	trait = education_diplomacy_3
+	trait = greedy
+	trait = honest
+	trait = lazy
+	disallow_random_traits = yes
+	1152.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 3 }
+		}
+	}
+	1224.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_1 = {
+	name = "Oprando"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	740.1.1 = {
+		birth = yes
+	}
+	820.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_2 = {
+	name = "Goizone"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_1
+	820.1.1 = {
+		birth = yes
+	}
+	900.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_3 = {
+	name = "Oprando"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_2
+	900.1.1 = {
+		birth = yes
+	}
+	980.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_4 = {
+	name = "Uguccio"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_3
+	940.1.1 = {
+		birth = yes
+	}
+	990.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_5 = {
+	name = "Lanfranco"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_4
+	960.1.1 = {
+		birth = yes
+	}
+	1032.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_6 = {
+	name = "Goizone"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_5
+	980.1.1 = {
+		birth = yes
+	}
+	1032.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_7 = {
+	name = "Lanfranco"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_6
+	1002.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1055.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_8 = {
+	name = "Giacomo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_6
+	1004.1.1 = {
+		birth = yes
+	}
+	1054.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_9 = {
+	name = "Alberto"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_6
+	1006.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1063.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_10 = {
+	name = "Oprando"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_6
+	1009.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1062.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_11 = {
+	name = "Pietro"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_6
+	1011.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1061.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_12 = {
+	name = "Prevosto"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_6
+	1013.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1070.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_13 = {
+	name = "Milone"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_6
+	1015.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1073.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_14 = {
+	name = "Loderenghino"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_6
+	1018.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1068.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_15 = {
+	name = "Premolino"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_7
+	1027.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1091.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_16 = {
+	name = "Peioto"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_7
+	1029.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1091.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_17 = {
+	name = "Plebano"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_7
+	1030.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1083.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_18 = {
+	name = "Alberto"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_8
+	1028.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1091.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_19 = {
+	name = "Pietro"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_8
+	1031.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1081.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_20 = {
+	name = "Graziadio"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_8
+	1034.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1098.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_21 = {
+	name = "Uguccione"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_10
+	1032.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1082.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_22 = {
+	name = "Loderengo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_10
+	1033.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1083.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_23 = {
+	name = "Spalla"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_10
+	1036.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1086.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_24 = {
+	name = "Monaco"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_10
+	1038.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1094.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_25 = {
+	name = "Manfredo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_11
+	1032.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1096.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_26 = {
+	name = "Arico"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_11
+	1034.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1091.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_27 = {
+	name = "Antonio"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_12
+	1034.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1098.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_28 = {
+	name = "Bertolotto"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_12
+	1037.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1098.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_29 = {
+	name = "Emmanuele"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_27
+	1056.1.1 = {
+		birth = yes
+	}
+	1106.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_30 = {
+	name = "Antonio"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_27
+	1058.1.1 = {
+		birth = yes
+	}
+	1111.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_31 = {
+	name = "Prevosto"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_30
+	1078.1.1 = {
+		birth = yes
+	}
+	1137.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_32 = {
+	name = "Antonio"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_31
+	1097.1.1 = {
+		birth = yes
+	}
+	1157.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_33 = {
+	name = "Pietro"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_31
+	1100.1.1 = {
+		birth = yes
+	}
+	1163.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_34 = {
+	name = "Gerardo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_33
+	1121.1.1 = {
+		birth = yes
+	}
+	1180.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_35 = {
+	name = "Prevosto"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_33
+	1123.1.1 = {
+		birth = yes
+	}
+	1184.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_36 = {
+	name = "Lorenzo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_33
+	1125.1.1 = {
+		birth = yes
+	}
+	1176.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_37 = {
+	name = "Antonio"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_33
+	1128.1.1 = {
+		birth = yes
+	}
+	1183.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_38 = {
+	name = "Tommaso"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_33
+	1130.1.1 = {
+		birth = yes
+	}
+	1191.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_39 = {
+	name = "Luigi"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_35
+	1142.1.1 = {
+		birth = yes
+	}
+	1206.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_40 = {
+	name = "Giovanni"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_35
+	1145.1.1 = {
+		birth = yes
+	}
+	1198.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_41 = {
+	name = "Giacomo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_35
+	1148.1.1 = {
+		birth = yes
+	}
+	1198.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_42 = {
+	name = "Cesare"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_34
+	1143.1.1 = {
+		birth = yes
+	}
+	1208.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_43 = {
+	name = "Carlo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_37
+	1148.1.1 = {
+		birth = yes
+	}
+	1205.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_44 = {
+	name = "Bartolomeo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_37
+	1149.1.1 = {
+		birth = yes
+	}
+	1205.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_45 = {
+	name = "Taddeo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_37
+	1152.1.1 = {
+		birth = yes
+	}
+	1209.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_46 = {
+	name = "Valentina"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_34
+	1146.1.1 = {
+		birth = yes
+	}
+	1208.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_47 = {
+	name = "Marco"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_34
+	1149.1.1 = {
+		birth = yes
+	}
+	1200.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_48 = {
+	name = "Giovanni"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_36
+	1147.1.1 = {
+		birth = yes
+	}
+	1209.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_49 = {
+	name = "Luigi"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_34
+	1151.1.1 = {
+		birth = yes
+	}
+	1206.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_50 = {
+	name = "Leonardo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_40
+	1165.1.1 = {
+		birth = yes
+	}
+	1227.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_51 = {
+	name = "Antonio"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_40
+	1167.1.1 = {
+		birth = yes
+	}
+	1232.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_55 = {
+	name = "Giovanni"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_47
+	1174.1.1 = {
+		birth = yes
+	}
+	1231.1.1 = {
+		death = yes
+	}
+}
+
+martinengo_56 = {
+	name = "Gherardo"
+	dynasty = cisalpine_martinengo
+	rite = roman_rite
+	culture = cisalpine
+	father = martinengo_47
+	1177.1.1 = {
+		birth = yes
+	}
+	1239.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_1 = {
+	name = "Giovanni"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	1004.1.1 = {
+		birth = yes
+	}
+	1054.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_2 = {
+	name = "Valerio"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_1
+	1024.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1076.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_3 = {
+	name = "Sigifredo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_1
+	1026.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1079.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_4 = {
+	name = "Antonio"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_3
+	1051.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1115.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_5 = {
+	name = "Palamede"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_3
+	1052.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1105.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_6 = {
+	name = "Valerio"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_4
+	1076.1.1 = {
+		birth = yes
+	}
+	1138.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_7 = {
+	name = "Nicolo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_5
+	1077.1.1 = {
+		birth = yes
+	}
+	1127.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_8 = {
+	name = "Vitaliano"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_5
+	1079.1.1 = {
+		birth = yes
+	}
+	1142.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_9 = {
+	name = "Gaboardo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_8
+	1097.1.1 = {
+		birth = yes
+	}
+	1161.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_10 = {
+	name = "Gherardo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_8
+	1099.1.1 = {
+		birth = yes
+	}
+	1156.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_11 = {
+	name = "Vitaliano"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_10
+	1118.1.1 = {
+		birth = yes
+	}
+	1178.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_12 = {
+	name = "Pietro"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_10
+	1119.1.1 = {
+		birth = yes
+	}
+	1169.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_13 = {
+	name = "Matteo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_10
+	1122.1.1 = {
+		birth = yes
+	}
+	1177.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_15 = {
+	name = "Vitaliano"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_12
+	1137.1.1 = {
+		birth = yes
+	}
+	1187.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_16 = {
+	name = "Giacobino"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_12
+	1139.1.1 = {
+		birth = yes
+	}
+	1201.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_17 = {
+	name = "Matteo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_15
+	1161.1.1 = {
+		birth = yes
+	}
+	1217.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_18 = {
+	name = "Bartolomeo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_17
+	1185.1.1 = {
+		birth = yes
+	}
+	1235.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_19 = {
+	name = "Giovanni"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_17
+	1188.1.1 = {
+		birth = yes
+	}
+	1245.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_20 = {
+	name = "Giulio"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_17
+	1190.1.1 = {
+		birth = yes
+	}
+	1255.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_21 = {
+	name = "Giovanni"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_17
+	1193.1.1 = {
+		birth = yes
+	}
+	1250.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_22 = {
+	name = "Giacobino"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_17
+	1194.1.1 = {
+		birth = yes
+	}
+	1254.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_23 = {
+	name = "Vitaliano"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_17
+	1196.1.1 = {
+		birth = yes
+	}
+	1257.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_24 = {
+	name = "Pietro"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_17
+	1197.1.1 = {
+		birth = yes
+	}
+	1261.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_25 = {
+	name = "Gaboardo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_17
+	1199.1.1 = {
+		birth = yes
+	}
+	1249.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_26 = {
+	name = "Gherardo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_21
+	1216.1.1 = {
+		birth = yes
+	}
+	1273.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_27 = {
+	name = "Palamede"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_22
+	1218.1.1 = {
+		birth = yes
+	}
+	1274.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_28 = {
+	name = "Vitaliano"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_22
+	1220.1.1 = {
+		birth = yes
+	}
+	1279.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_29 = {
+	name = "Gherardo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_24
+	1216.1.1 = {
+		birth = yes
+	}
+	1271.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_30 = {
+	name = "Gherardo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_25
+	1224.1.1 = {
+		birth = yes
+	}
+	1275.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_31 = {
+	name = "Pietro"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_26
+	1237.1.1 = {
+		birth = yes
+	}
+	1301.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_32 = {
+	name = "Giacobino"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_28
+	1245.1.1 = {
+		birth = yes
+	}
+	1307.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_33 = {
+	name = "Nicolò"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_28
+	1248.1.1 = {
+		birth = yes
+	}
+	1299.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_34 = {
+	name = "Francesco"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_28
+	1250.1.1 = {
+		birth = yes
+	}
+	1307.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_35 = {
+	name = "Giovanni"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_29
+	1240.1.1 = {
+		birth = yes
+	}
+	1301.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_36 = {
+	name = "Geronimo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_31
+	1259.1.1 = {
+		birth = yes
+	}
+	1309.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_37 = {
+	name = "Ruggero"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_34
+	1274.1.1 = {
+		birth = yes
+	}
+	1337.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_38 = {
+	name = "Francesco"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_34
+	1277.1.1 = {
+		birth = yes
+	}
+	1332.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_39 = {
+	name = "Giacomo"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_36
+	1283.1.1 = {
+		birth = yes
+	}
+	1336.1.1 = {
+		death = yes
+	}
+}
+
+borromeo_40 = {
+	name = "Vitaliano"
+	dynasty = cisalpine_borromeo
+	rite = roman_rite
+	culture = cisalpine
+	father = borromeo_39
+	1303.1.1 = {
+		birth = yes
+	}
+	1362.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_1 = {
+	name = "Filippo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	1110.1.1 = {
+		birth = yes
+	}
+	1160.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_2 = {
+	name = "Corbellino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_1
+	1130.1.1 = {
+		birth = yes
+	}
+	1182.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_3 = {
+	name = "Abramino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_1
+	1132.1.1 = {
+		birth = yes
+	}
+	1182.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_4 = {
+	name = "Bellancorio"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_1
+	1133.1.1 = {
+		birth = yes
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_5 = {
+	name = "Gualtieri"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_1
+	1136.1.1 = {
+		birth = yes
+	}
+	1191.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_6 = {
+	name = "Guiscardo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_1
+	1137.1.1 = {
+		birth = yes
+	}
+	1194.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_7 = {
+	name = "Corrado"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_1
+	1140.1.1 = {
+		birth = yes
+	}
+	1197.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_8 = {
+	name = "Guido"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_2
+	1152.1.1 = {
+		birth = yes
+	}
+	1205.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_9 = {
+	name = "Gherardo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_2
+	1155.1.1 = {
+		birth = yes
+	}
+	1208.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_10 = {
+	name = "Guidone"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_3
+	1150.1.1 = {
+		birth = yes
+	}
+	1200.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_11 = {
+	name = "Gherardo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_4
+	1156.1.1 = {
+		birth = yes
+	}
+	1221.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_12 = {
+	name = "Corrado"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_4
+	1159.1.1 = {
+		birth = yes
+	}
+	1209.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_13 = {
+	name = "Gaddo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_4
+	1161.1.1 = {
+		birth = yes
+	}
+	1212.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_14 = {
+	name = "Gualtiero"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_4
+	1163.1.1 = {
+		birth = yes
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_15 = {
+	name = "Canosino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_6
+	1155.1.1 = {
+		birth = yes
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_16 = {
+	name = "Gualtiero"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_7
+	1164.1.1 = {
+		birth = yes
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_17 = {
+	name = "Antonio"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_8
+	1177.1.1 = {
+		birth = yes
+	}
+	1241.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_18 = {
+	name = "Bonaventura"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_8
+	1180.1.1 = {
+		birth = yes
+	}
+	1230.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_19 = {
+	name = "Bartolomeo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_10
+	1168.1.1 = {
+		birth = yes
+	}
+	1230.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_20 = {
+	name = "Antonio"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_10
+	1170.1.1 = {
+		birth = yes
+	}
+	1229.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_21 = {
+	name = "Bonaventura"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_10
+	1173.1.1 = {
+		birth = yes
+	}
+	1226.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_22 = {
+	name = "Corrado"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_16
+	1187.1.1 = {
+		birth = yes
+	}
+	1251.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_23 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_16
+	1190.1.1 = {
+		birth = yes
+	}
+	1246.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_24 = {
+	name = "Gigliolo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_16
+	1192.1.1 = {
+		birth = yes
+	}
+	1253.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_25 = {
+	name = "Federico"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_17
+	1202.1.1 = {
+		birth = yes
+	}
+	1264.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_26 = {
+	name = "Corbellino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_17
+	1203.1.1 = {
+		birth = yes
+	}
+	1256.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_27 = {
+	name = "Lancillotto"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_18
+	1205.1.1 = {
+		birth = yes
+	}
+	1263.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_28 = {
+	name = "Paganino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_18
+	1208.1.1 = {
+		birth = yes
+	}
+	1265.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_29 = {
+	name = "Albertino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_19
+	1189.1.1 = {
+		birth = yes
+	}
+	1252.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_30 = {
+	name = "Abramino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_19
+	1191.1.1 = {
+		birth = yes
+	}
+	1256.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_31 = {
+	name = "Filippino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_19
+	1192.1.1 = {
+		birth = yes
+	}
+	1249.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_32 = {
+	name = "Bonaventura"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_20
+	1188.1.1 = {
+		birth = yes
+	}
+	1251.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_33 = {
+	name = "Giulio"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_20
+	1191.1.1 = {
+		birth = yes
+	}
+	1244.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_34 = {
+	name = "Guido"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_20
+	1192.1.1 = {
+		birth = yes
+	}
+	1251.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_35 = {
+	name = "Bartolomeo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_20
+	1194.1.1 = {
+		birth = yes
+	}
+	1249.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_36 = {
+	name = "Federico"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_20
+	1196.1.1 = {
+		birth = yes
+	}
+	1257.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_37 = {
+	name = "Alberto"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_20
+	1197.1.1 = {
+		birth = yes
+	}
+	1261.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_39 = {
+	name = "Gherardo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_22
+	1209.1.1 = {
+		birth = yes
+	}
+	1259.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_40 = {
+	name = "Filippo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_22
+	1211.1.1 = {
+		birth = yes
+	}
+	1265.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_41 = {
+	name = "Giovanni"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_23
+	1214.1.1 = {
+		birth = yes
+	}
+	1265.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_42 = {
+	name = "Riccardo"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_26
+	1228.1.1 = {
+		birth = yes
+	}
+	1278.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_43 = {
+	name = "Domenico"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_26
+	1230.1.1 = {
+		birth = yes
+	}
+	1293.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_44 = {
+	name = "Sagramoro"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_29
+	1207.1.1 = {
+		birth = yes
+	}
+	1264.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_45 = {
+	name = "Federico"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_30
+	1212.1.1 = {
+		birth = yes
+	}
+	1273.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_46 = {
+	name = "Abramino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_34
+	1211.1.1 = {
+		birth = yes
+	}
+	1271.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_47 = {
+	name = "Luigi"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_34
+	1214.1.1 = {
+		birth = yes
+	}
+	1277.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_48 = {
+	name = "Gualtiero"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_34
+	1217.1.1 = {
+		birth = yes
+	}
+	1273.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_49 = {
+	name = "Petronio"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_34
+	1220.1.1 = {
+		birth = yes
+	}
+	1271.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_50 = {
+	name = "Gentile"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_34
+	1222.1.1 = {
+		birth = yes
+	}
+	1279.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_51 = {
+	name = "Mabelona"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_34
+	1225.1.1 = {
+		birth = yes
+	}
+	1287.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_52 = {
+	name = "Abramino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_48
+	1239.1.1 = {
+		birth = yes
+	}
+	1298.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_53 = {
+	name = "Alidusio"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_48
+	1242.1.1 = {
+		birth = yes
+	}
+	1307.1.1 = {
+		death = yes
+	}
+}
+
+gonzaga_54 = {
+	name = "Filippino"
+	dynasty = cisalpine_gonzaga
+	rite = roman_rite
+	culture = cisalpine
+	father = gonzaga_48
+	1245.1.1 = {
+		birth = yes
+	}
+	1307.1.1 = {
+		death = yes
+	}
+}
+
+guasco_1 = {
+	name = "Ruffino"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	1090.1.1 = {
+		birth = yes
+	}
+	1179.1.1 = {
+		death = yes
+	}
+}
+
+guasco_2 = {
+	name = "Enrico"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_1
+	1110.1.1 = {
+		birth = yes
+	}
+	1162.1.1 = {
+		death = yes
+	}
+}
+
+guasco_3 = {
+	name = "Pietro"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_1
+	1112.1.1 = {
+		birth = yes
+	}
+	1165.1.1 = {
+		death = yes
+	}
+}
+
+guasco_4 = {
+	name = "Manfredo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_1
+	1114.1.1 = {
+		birth = yes
+	}
+	1169.1.1 = {
+		death = yes
+	}
+}
+
+guasco_5 = {
+	name = "Bonifazio"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_1
+	1116.1.1 = {
+		birth = yes
+	}
+	1177.1.1 = {
+		death = yes
+	}
+}
+
+guasco_6 = {
+	name = "Ugo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_1
+	1118.1.1 = {
+		birth = yes
+	}
+	1169.1.1 = {
+		death = yes
+	}
+}
+
+guasco_7 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_1
+	1120.1.1 = {
+		birth = yes
+	}
+	1182.1.1 = {
+		death = yes
+	}
+}
+
+guasco_8 = {
+	name = "Giovanni"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_1
+	1123.1.1 = {
+		birth = yes
+	}
+	1177.1.1 = {
+		death = yes
+	}
+}
+
+guasco_9 = {
+	name = "Ruffino"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_3
+	1137.1.1 = {
+		birth = yes
+	}
+	1201.1.1 = {
+		death = yes
+	}
+}
+
+guasco_10 = {
+	name = "Giacomo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_3
+	1138.1.1 = {
+		birth = yes
+	}
+	1191.1.1 = {
+		death = yes
+	}
+}
+
+guasco_11 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_5
+	1135.1.1 = {
+		birth = yes
+	}
+	1199.1.1 = {
+		death = yes
+	}
+}
+
+guasco_12 = {
+	name = "Ruffino"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_5
+	1138.1.1 = {
+		birth = yes
+	}
+	1191.1.1 = {
+		death = yes
+	}
+}
+
+guasco_13 = {
+	name = "Bernardo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_7
+	1140.1.1 = {
+		birth = yes
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+guasco_14 = {
+	name = "Ruffino"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_7
+	1143.1.1 = {
+		birth = yes
+	}
+	1204.1.1 = {
+		death = yes
+	}
+}
+
+guasco_16 = {
+	name = "Pietro"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_9
+	1162.1.1 = {
+		birth = yes
+	}
+	1224.1.1 = {
+		death = yes
+	}
+}
+
+guasco_17 = {
+	name = "Pietro"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_10
+	1163.1.1 = {
+		birth = yes
+	}
+	1213.1.1 = {
+		death = yes
+	}
+}
+
+guasco_18 = {
+	name = "Ferrario"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_10
+	1165.1.1 = {
+		birth = yes
+	}
+	1221.1.1 = {
+		death = yes
+	}
+}
+
+guasco_19 = {
+	name = "Giacomo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_10
+	1167.1.1 = {
+		birth = yes
+	}
+	1224.1.1 = {
+		death = yes
+	}
+}
+
+guasco_20 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_10
+	1170.1.1 = {
+		birth = yes
+	}
+	1235.1.1 = {
+		death = yes
+	}
+}
+
+guasco_21 = {
+	name = "Giacomo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_12
+	1158.1.1 = {
+		birth = yes
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+guasco_22 = {
+	name = "Bonifazio"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_12
+	1160.1.1 = {
+		birth = yes
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+guasco_23 = {
+	name = "Bellengerio"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_12
+	1163.1.1 = {
+		birth = yes
+	}
+	1213.1.1 = {
+		death = yes
+	}
+}
+
+guasco_24 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_13
+	1161.1.1 = {
+		birth = yes
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+guasco_25 = {
+	name = "Uberto"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_13
+	1162.1.1 = {
+		birth = yes
+	}
+	1219.1.1 = {
+		death = yes
+	}
+}
+
+guasco_26 = {
+	name = "Bernardo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_13
+	1164.1.1 = {
+		birth = yes
+	}
+	1225.1.1 = {
+		death = yes
+	}
+}
+
+guasco_27 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_14
+	1168.1.1 = {
+		birth = yes
+	}
+	1226.1.1 = {
+		death = yes
+	}
+}
+
+guasco_28 = {
+	name = "Giacomo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_17
+	1187.1.1 = {
+		birth = yes
+	}
+	1250.1.1 = {
+		death = yes
+	}
+}
+
+guasco_29 = {
+	name = "Uberto"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_17
+	1190.1.1 = {
+		birth = yes
+	}
+	1240.1.1 = {
+		death = yes
+	}
+}
+
+guasco_30 = {
+	name = "Ruffino"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_18
+	1189.1.1 = {
+		birth = yes
+	}
+	1239.1.1 = {
+		death = yes
+	}
+}
+
+guasco_31 = {
+	name = "Giacomo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_19
+	1190.1.1 = {
+		birth = yes
+	}
+	1247.1.1 = {
+		death = yes
+	}
+}
+
+guasco_32 = {
+	name = "Ottone"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_19
+	1192.1.1 = {
+		birth = yes
+	}
+	1251.1.1 = {
+		death = yes
+	}
+}
+
+guasco_33 = {
+	name = "Florio"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_20
+	1194.1.1 = {
+		birth = yes
+	}
+	1245.1.1 = {
+		death = yes
+	}
+}
+
+guasco_34 = {
+	name = "Pietro"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_20
+	1196.1.1 = {
+		birth = yes
+	}
+	1253.1.1 = {
+		death = yes
+	}
+}
+
+guasco_35 = {
+	name = "Giacomo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_20
+	1199.1.1 = {
+		birth = yes
+	}
+	1261.1.1 = {
+		death = yes
+	}
+}
+
+guasco_37 = {
+	name = "Risbaldo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_29
+	1215.1.1 = {
+		birth = yes
+	}
+	1273.1.1 = {
+		death = yes
+	}
+}
+
+guasco_38 = {
+	name = "Pietro"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_29
+	1217.1.1 = {
+		birth = yes
+	}
+	1267.1.1 = {
+		death = yes
+	}
+}
+
+guasco_39 = {
+	name = "Enrico"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_29
+	1220.1.1 = {
+		birth = yes
+	}
+	1270.1.1 = {
+		death = yes
+	}
+}
+
+guasco_40 = {
+	name = "Ferrario"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_30
+	1210.1.1 = {
+		birth = yes
+	}
+	1274.1.1 = {
+		death = yes
+	}
+}
+
+guasco_41 = {
+	name = "Obizzo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_31
+	1211.1.1 = {
+		birth = yes
+	}
+	1275.1.1 = {
+		death = yes
+	}
+}
+
+guasco_42 = {
+	name = "Ottone"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_31
+	1213.1.1 = {
+		birth = yes
+	}
+	1266.1.1 = {
+		death = yes
+	}
+}
+
+guasco_43 = {
+	name = "Giacomo"
+	dynasty = cisalpine_guasco
+	rite = roman_rite
+	culture = cisalpine
+	father = guasco_31
+	1214.1.1 = {
+		birth = yes
+	}
+	1274.1.1 = {
+		death = yes
+	}
+}
+
+nepitella_1 = {
+	name = "Enrico"
+	dynasty = cisalpine_nepitella
+	rite = roman_rite
+	culture = cisalpine
+	1140.1.1 = {
+		birth = yes
+	}
+	1202.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_1 = {
+	name = "Tazio"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	933.1.1 = {
+		birth = yes
+	}
+	983.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_2 = {
+	name = "Ottone"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_1
+	953.1.1 = {
+		birth = yes
+	}
+	1005.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_3 = {
+	name = "Guidone"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_2
+	975.1.1 = {
+		birth = yes
+	}
+	1028.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_4 = {
+	name = "Anselmo"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_3
+	1000.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1064.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_5 = {
+	name = "Ottone"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_4
+	1060.1.1 = {
+		birth = yes
+	}
+	1120.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_6 = {
+	name = "Tazio"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_5
+	1080.1.1 = {
+		birth = yes
+	}
+	1158.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_7 = {
+	name = "Anselmo"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_5
+	1082.1.1 = {
+		birth = yes
+	}
+	1161.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_8 = {
+	name = "Robaconte"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_6
+	1102.1.1 = {
+		birth = yes
+	}
+	1155.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_9 = {
+	name = "Guidone"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_6
+	1103.1.1 = {
+		birth = yes
+	}
+	1156.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_10 = {
+	name = "Anselmo"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_7
+	1106.1.1 = {
+		birth = yes
+	}
+	1169.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_11 = {
+	name = "Antonio"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_7
+	1108.1.1 = {
+		birth = yes
+	}
+	1165.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_12 = {
+	name = "Tazio"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_7
+	1111.1.1 = {
+		birth = yes
+	}
+	1164.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_13 = {
+	name = "Enrico"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_8
+	1127.1.1 = {
+		birth = yes
+	}
+	1191.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_14 = {
+	name = "Pietro"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_8
+	1129.1.1 = {
+		birth = yes
+	}
+	1191.1.1 = {
+		death = yes
+	}
+}
+
+mandelli_15 = {
+	name = "Alberto"
+	dynasty = cisalpine_mandelli
+	rite = roman_rite
+	culture = cisalpine
+	father = mandelli_10
+	1124.1.1 = {
+		birth = yes
+	}
+	1188.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_1 = {
+	name = "Garlando"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	1070.1.1 = {
+		birth = yes
+	}
+	1120.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_2 = {
+	name = "Orlando"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_1
+	1088.1.1 = {
+		birth = yes
+	}
+	1140.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_3 = {
+	name = "Poltrone"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_2
+	diplomacy = 10
+	martial = 6
+	stewardship = 8
+	intrigue = 3
+	learning = 6
+	prowess = 8
+	trait = education_stewardship_3
+	trait = just
+	trait = diligent
+	trait = calm
+	trait = journaller
+	disallow_random_traits = yes
+	1115.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 31 }
+			learn_language = language_occitano_romance
+		}
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_4 = {
+	name = "Guglielmino"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_2
+	1120.1.1 = {
+		birth = yes
+	}
+	1170.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_5 = {
+	name = "Bolso"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_3
+	diplomacy = 5
+	martial = 7
+	stewardship = 10
+	intrigue = 8
+	learning = 4
+	prowess = 4
+	trait = education_stewardship_1
+	trait = generous
+	trait = just
+	trait = ambitious
+	disallow_random_traits = yes
+	1150.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 33 }
+			learn_language = language_high_german
+		}
+	}
+	1210.8.22 = {
+		death = yes
+	}
+}
+
+poltroni_6 = {
+	name = "Egidio"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_5
+	1180.1.1 = {
+		birth = yes
+	}
+	1212.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_7 = {
+	name = "Bonifacio"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_6
+	1200.1.1 = {
+		birth = yes
+	}
+	1255.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_8 = {
+	name = "Federico"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_6
+	1202.1.1 = {
+		birth = yes
+	}
+	1260.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_9 = {
+	name = "Corrado"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_6
+	1205.1.1 = {
+		birth = yes
+	}
+	1265.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_10 = {
+	name = "Compagnone"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_9
+	1235.1.1 = {
+		birth = yes
+	}
+	1290.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_11 = {
+	name = "Pagano"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_5
+	1185.1.1 = {
+		birth = yes
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_12 = {
+	name = "Compagnone"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_11
+	1205.1.1 = {
+		birth = yes
+	}
+	1265.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_13 = {
+	name = "Bellotino"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_11
+	1208.1.1 = {
+		birth = yes
+	}
+	1260.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_14 = {
+	name = "Rambaldo"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_11
+	1210.1.1 = {
+		birth = yes
+	}
+	1270.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_15 = {
+	name = "Pulsolino"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_11
+	1212.1.1 = {
+		birth = yes
+	}
+	1275.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_16 = {
+	name = "Poltrone"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_5
+	1190.1.1 = {
+		birth = yes
+	}
+	1245.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_17 = {
+	name = "Boso"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_3
+	1165.1.1 = {
+		birth = yes
+	}
+	1219.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_18 = {
+	name = "Savia"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_17
+	female = yes
+	1195.1.1 = {
+		birth = yes
+	}
+	1250.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_19 = {
+	name = "Cherlino"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_17
+	1197.1.1 = {
+		birth = yes
+	}
+	1260.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_20 = {
+	name = "Vivaldo"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_17
+	1200.1.1 = {
+		birth = yes
+	}
+	1248.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_21 = {
+	name = "Vivaldino"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_20
+	1210.1.1 = {
+		birth = yes
+	}
+	1270.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_22 = {
+	name = "Ayguina"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_20
+	female = yes
+	1212.1.1 = {
+		birth = yes
+	}
+	1275.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_23 = {
+	name = "Paganino"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_20
+	1215.1.1 = {
+		birth = yes
+	}
+	1273.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_24 = {
+	name = "Giliolo"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_20
+	1218.1.1 = {
+		birth = yes
+	}
+	1280.1.1 = {
+		death = yes
+	}
+}
+
+poltroni_25 = {
+	name = "Mantovano"
+	dynasty = cisalpine_poltroni
+	rite = roman_rite
+	culture = cisalpine
+	father = poltroni_17
+	1202.1.1 = {
+		birth = yes
+	}
+	1260.1.1 = {
+		death = yes
+	}
+}
+
+buonaparte_1 = {
+	name = "Gianfaldo"
+	dynasty = cisalpine_buonaparte
+	rite = roman_rite
+	culture = cisalpine
+	1160.1.1 = {
+		birth = yes
+	}
+	1230.1.1 = {
+		death = yes
+	}
+}
+
+cadalo_1 = {
+	name = "Pietro"
+	dynasty = cisalpine_cadalo
+	rite = roman_rite
+	culture = cisalpine
+	1010.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1072.1.1 = {
+		death = yes
+	}
+}
+
 #Abbot of Nonantola
 benedictine_3 = {
 	name = "Landolfo"
@@ -37770,6 +45965,21 @@ benedictine_3 = {
 	}
 }
 
+dionigi_1 = {
+	name = "Dionigi"
+	rite = roman_rite
+	culture = cisalpine
+	1000.1.1 = {
+		birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1075.1.1 = {
+		death = yes
+	}
+}
+
 #Abbot of Nonantola
 benedictine_4 = {
 	name = "Alberto"
@@ -37781,6 +45991,25 @@ benedictine_4 = {
 		birth = yes
 	}
 	1179.1.1 = {
+		death = yes
+	}
+}
+
+cisalpine_contarini_1 = {
+	name = "Enrico"
+	dynasty = 516
+	rite = roman_rite
+	culture = cisalpine
+	father = 7800
+	trait = education_learning_3
+	trait = devoted
+	1038.1.1 = {
+			birth = yes
+	}
+	1054.7.16 = {
+		rite = roman_rite
+	}
+	1108.11.15 = {
 		death = yes
 	}
 }
@@ -38096,6 +46325,144 @@ cattaneo_2 = {
 	}
 }
 
+cattaneo_3 = {
+	name = "Adelardo" 
+	dynasty = cattaneo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = cattaneo_2 # Uberto
+	1093.1.1 = {
+		birth = yes
+	}
+	1171.1.1 = {
+		death = yes
+	}
+}
+
+cattaneo_4 = {
+	name = "Sofia"
+	female = yes
+	dynasty = cattaneo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = cattaneo_2 # Uberto
+	1109.1.1 = {
+		birth = yes
+	}
+	1180.1.1 = {
+		death = yes
+	}
+}
+
+cattaneo_5 = {
+	name = "Uberto" 
+	dynasty = cattaneo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = cattaneo_3 # Adelardo
+	diplomacy = 13
+	martial = 3
+	stewardship = 9
+	intrigue = 4
+	learning = 4
+	prowess = 4
+	trait = education_diplomacy_3
+	trait = chaste
+	trait = ambitious
+	trait = just
+	trait = scarred
+	disallow_random_traits = yes
+	1125.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 18 }
+			learn_language = language_high_german
+		}
+	}
+	1180.1.1 = {
+		death = yes
+	}
+}
+
+cattaneo_6 = {
+	name = "Pietro"
+	dynasty = cattaneo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = cattaneo_5 # Uberto
+	diplomacy = 5
+	martial = 4
+	stewardship = 10
+	intrigue = 3
+	learning = 5
+	prowess = 5
+	trait = education_stewardship_1
+	trait = diligent
+	trait = compassionate
+	trait = trusting
+	disallow_random_traits = yes
+	1152.1.1 = {
+		birth = yes
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+cattaneo_7 = { # cardinal of San Marcello
+	name = "Adelardo"
+	dynasty = cattaneo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = cattaneo_5 # Uberto
+	trait = devoted
+	trait = education_learning_3
+	trait = calm
+	trait = chaste
+	trait = diligent
+	1155.1.1 = {
+		birth = yes
+	}
+	1228.8.24 = {
+		death = yes
+	}
+}
+
+cattaneo_8 = {
+	name = "Isnardino"
+	dynasty = cattaneo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = cattaneo_3 # Adelardo
+	1128.1.1 = {
+		birth = yes
+	}
+	1171.1.1 = {
+		death = yes
+	}
+}
+
+cattaneo_9 = {
+	name = "Adelasina"
+	female = yes
+	dynasty = cattaneo
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = cattaneo_8 # Isnardino
+	1149.1.1 = {
+		birth = yes
+	}
+	1202.1.1 = {
+		death = yes
+	}
+}
+
 collalto_1 = {
 	name = "Rambaldo" # III
 	dynasty = 100357
@@ -38247,8 +46614,30 @@ collalto_11 = {
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = collalto_6 # Ensedisio I
+	diplomacy = 13
+	martial = 5
+	stewardship = 13
+	intrigue = 7
+	learning = 6
+	prowess = 3
+	health = 5.25
+	trait = education_diplomacy_2
+	trait = gluttonous
+	trait = greedy
+	trait = gregarious
+	trait = lifestyle_reveler
+	trait = comfort_eater
+	disallow_random_traits = yes
 	1127.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+		}
 	}
 	1193.1.1 = {
 		death = yes
@@ -38303,8 +46692,30 @@ collalto_15 = {
 	rite = "roman_rite"
 	culture = "cisalpine"
 	father = collalto_11 # Schinella I
+	diplomacy = 15
+	martial = 5
+	stewardship = 10
+	intrigue = 5
+	learning = 5
+	prowess = 3
+	trait = education_stewardship_2
+	trait = paranoid
+	trait = greedy
+	trait = temperate
+	trait = beauty_bad_2
+	disallow_random_traits = yes
 	1161.1.1 = {
 		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+			learn_language = language_high_german
+		}
 	}
 	1250.1.1 = {
 		death = yes
@@ -38694,4 +47105,2057 @@ castiglione_4 = {
 		rite = ambrosian_rite
 	}
 	1100.1.1 = { death = yes }
+}
+
+baone_2 = {
+	name = "Guglielmo" # Richard
+	dynasty = baone
+	rite = "roman_rite"
+	culture = "cisalpine"
+	1105.1.1 = {
+		birth = yes
+	}
+	1171.1.1 = {
+		death = yes
+	}
+}
+
+baone_3 = {
+	name = "Auria"
+	female = yes
+	dynasty = baone
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = baone_2 # Guglielmo/Richard
+	1130.1.1 = {
+		birth = yes
+	}
+	1197.1.1 = {
+		death = yes
+	}
+}
+
+baone_4 = {
+	name = "Albertino"
+	dynasty = baone
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = baone_7 # Alberto
+	diplomacy = 9
+	martial = 6
+	stewardship = 8
+	intrigue = 6
+	learning = 3
+	prowess = 8
+	trait = education_stewardship_3
+	trait = arrogant
+	trait = diligent
+	trait = paranoid
+	trait = comfort_eater
+	disallow_random_traits = yes
+	1157.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 36 }
+			learn_language = language_high_german
+		}
+	}
+	1218.1.1 = {
+		death = yes
+	}
+}
+
+baone_6 = {
+	name = "Maria"
+	female = yes
+	dynasty = baone
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = baone_4 # Albertino
+	1186.1.1 = {
+		birth = yes
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+baone_7 = {
+	name = "Alberto"
+	dynasty = baone
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = baone_2 # Guglielmo/Richard
+	diplomacy = 7
+	martial = 7
+	stewardship = 8
+	intrigue = 10
+	learning = 7
+	prowess = 3
+	trait = education_intrigue_4
+	trait = arrogant
+	trait = gregarious
+	trait = diligent
+	disallow_random_traits = yes
+	1133.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -22 }
+		}
+	}
+	1205.1.1 = {
+		death = yes
+	}
+}
+
+boccanegra_1 = {
+	name = "Edigio"
+	dynasty = 13001
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = boccanegra_2 # Guglielmo
+	1191.1.1 = {
+		birth = yes
+	}
+	1255.1.1 = {
+		death = yes
+	}
+}
+
+boccanegra_2 = {
+	name = "Guglielmo"
+	dynasty = 13001
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = boccanegra_3 # Edigio
+	1166.1.1 = {
+		birth = yes
+	}
+	1236.1.1 = {
+		death = yes
+	}
+}
+
+boccanegra_3 = {
+	name = "Edigio"
+	dynasty = 13001
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 9
+	martial = 6
+	stewardship = 10
+	intrigue = 4
+	learning = 3
+	prowess = 3
+	trait = education_diplomacy_3
+	trait = just
+	trait = gregarious
+	trait = honest
+	trait = albino
+	disallow_random_traits = yes
+	1133.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_occitano_romance
+		}
+	}
+	1196.1.1 = {
+		death = yes
+	}
+}
+
+carmadino_1 = {
+	name = "Ido"
+	dynasty_house = house_obertenghi
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = 70629 # Oberto II Obertenghi
+	976.1.1 = {
+		birth = yes
+	}
+	1055.1.1 = {
+		death = yes
+	}
+}
+
+carmadino_2 = { # 1st visconte di Carmadino
+	name = "Raimundo"
+	dynasty_house = house_carmadino
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = carmadino_1 # Ido
+	1007.1.1 = {
+		birth = yes
+	}
+	1065.1.1 = {
+		death = yes
+	}
+}
+
+carmadino_3 = {
+	name = "Guglielmo"
+	dynasty_house = house_carmadino
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = carmadino_2 # Raimundo
+	1036.1.1 = {
+		birth = yes
+	}
+	1096.1.1 = {
+		death = yes
+	}
+}
+
+carmadino_5 = {
+	name = "Goffredo"
+	dynasty_house = house_carmadino
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = carmadino_3 # Guglielmo
+	1056.1.1 = {
+		birth = yes
+	}
+	1127.1.1 = {
+		death = yes
+	}
+}
+
+carmadino_6 = { # Ido di Carmadino, consul of Genoa 1102
+	name = "Ido"
+	dynasty_house = house_carmadino
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = carmadino_5 # Oberto
+	1081.1.1 = {
+		birth = yes
+	}
+	1145.1.1 = {
+		death = yes
+	}
+}
+
+carmadino_7 = { # Rolando di Carmadino, admiral
+	name = "Rolando"
+	dynasty_house = house_carmadino
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = carmadino_9 # Guglielmo
+	diplomacy = 8
+	martial = 5
+	stewardship = 10
+	intrigue = 8
+	learning = 5
+	prowess = 17
+	trait = education_martial_3
+	trait = brave
+	trait = wrathful
+	trait = ambitious
+	trait = lifestyle_traveler
+	trait = one_legged
+	disallow_random_traits = yes
+	1151.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -15 }
+		}
+	}
+	1217.1.1 = {
+		death = yes
+	}
+}
+
+carmadino_8 = { # Enrico di Carmadino, admiral
+	name = "Enrico"
+	dynasty_house = house_carmadino
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = carmadino_9 # Guglielmo
+	diplomacy = 6
+	martial = 10
+	stewardship = 14
+	intrigue = 7
+	learning = 7
+	prowess = 10
+	trait = education_martial_3
+	trait = cynical
+	trait = patient
+	trait = fickle
+	disallow_random_traits = yes
+	1155.1.1 = {
+		birth = yes
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+carmadino_9 = { 
+	name = "Guglielmo"
+	dynasty_house = house_carmadino
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = carmadino_6 # Ido
+	1114.1.1 = {
+		birth = yes
+	}
+	1172.1.1 = {
+		death = yes
+	}
+}
+
+mari_1 = { # Ogerio de' Mari, consul of Genoa 1130
+	name = "Ogerio"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_4 # Ottone
+	1082.1.1 = {
+		birth = yes
+	}
+	1144.1.1 = {
+		death = yes
+	}
+}
+
+mari_2 = { # Boccuccio de' Mari, consul of Genoa 1166
+	name = "Boccuccio"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_12 # Ansaldo
+	1110.1.1 = {
+		birth = yes
+	}
+	1171.1.1 = {
+		death = yes
+	}
+}
+
+mari_3 = { # Angelerio de' Mari, consul of Genoa 1183
+	name = "Angelerio"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_2 # Boccuccio
+	diplomacy = 8
+	martial = 6
+	stewardship = 12
+	intrigue = 15
+	learning = 4
+	prowess = 4
+	health = 5.25
+	trait = education_stewardship_3
+	trait = chaste
+	trait = lazy
+	trait = honest
+	trait = irritable
+	disallow_random_traits = yes
+	1131.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 37 }
+		}
+	}
+	1187.1.1 = {
+		death = { death_reason = death_assassination }
+	}
+}
+
+mari_4 = { # Ottone de' Mari, Mari founder
+	name = "Ottone"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = carmadino_3 # Guglielmo
+	1059.1.1 = {
+		birth = yes
+	}
+	1131.1.1 = {
+		death = yes
+	}
+}
+
+mari_6 = { # Lanfranco de' Mari, consul of Genoa 1187
+	name = "Lanfranco"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_2 # Boccucio
+	1134.1.1 = {
+		birth = yes
+	}
+	1196.1.1 = {
+		death = yes
+	}
+}
+
+mari_7 = { # Niccolo de' Mari, consul of Genoa 1189
+	name = "NiccolO_"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_2 # Boccucio
+	1137.1.1 = {
+		birth = yes
+	}
+	1194.1.1 = {
+		death = yes
+	}
+}
+
+mari_8 = { # Erode de' Mari, consul of Genoa 1213
+	name = "Erode"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_3 # Angelerio
+	diplomacy = 5
+	martial = 3
+	stewardship = 6
+	intrigue = 16
+	learning = 7
+	prowess = 8
+	trait = education_stewardship_2
+	trait = just
+	trait = stubborn
+	trait = trusting
+	disallow_random_traits = yes
+	1158.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+		}
+	}
+	1222.1.1 = {
+		death = yes
+	}
+}
+
+mari_9 = { # Guglielmo de' Mari, ambassador of Federico II
+	name = "Guglielmo"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_6 # Lanfranco
+	1165.1.1 = {
+		birth = yes
+	}
+	1227.1.1 = {
+		death = yes
+	}
+}
+
+mari_10 = { # Ansaldo de' Mari, consul of Genoa 1214
+	name = "Ansaldo"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_3 # Angelerio
+	1176.1.1 = {
+		birth = yes
+	}
+	1254.1.1 = {
+		death = yes
+	}
+}
+
+mari_12 = { # Ansaldo de' Mari
+	name = "Ansaldo"
+	dynasty_house = house_mari
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_4 # Ottone
+	1080.1.1 = {
+		birth = yes
+	}
+	1141.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_0 = { # Guglielmo de' Mari/Usodimare, Usodimare ancestor
+	name = "Guglielmo"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_4 # Ottone
+	1084.1.1 = {
+		birth = yes
+	}
+	1148.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_1 = { # Baldizzone Usodimare, consul of Placiti 1154
+	name = "Baldizzone"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = usodimare_0 # Guglielmo
+	1115.1.1 = {
+		birth = yes
+	}
+	1174.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_2 = { # Rubaldo Usodimare, consul of Genoa 1174
+	name = "Rubaldo"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = usodimare_8 # Oberto
+	diplomacy = 8
+	martial = 13
+	stewardship = 13
+	intrigue = 6
+	learning = 6
+	prowess = 9
+	health = 5.25
+	trait = education_martial_2
+	trait = craven
+	trait = gregarious
+	trait = wrathful
+	trait = comfort_eater
+	disallow_random_traits = yes
+	1142.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 27 }
+			learn_language = language_arabic
+		}
+	}
+	1202.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_3 = { # Bonvasallo Usodimare, captain of galleys 1165
+	name = "Bonvasallo"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = usodimare_0 # Guglielmo
+	1120.1.1 = {
+		birth = yes
+	}
+	1176.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_4 = { # Guglielmo Usodimare, consul of Genoa 1181
+	name = "Guglielmo"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = usodimare_8 # Oberto
+	1146.1.1 = {
+		birth = yes
+	}
+	1209.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_5 = { # Oberto Usodimare, consul of Genoa 1192
+	name = "Oberto"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = usodimare_8 # Oberto
+	1149.1.1 = {
+		birth = yes
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_6 = { # Guglielmo Usodimare, consul of Genoa 1199
+	name = "Guglielmo"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = usodimare_2 # Rubaldo
+	1169.1.1 = {
+		birth = yes
+	}
+	1245.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_7 = { # Bonvasallo Usodimare, ambassador to John III Doukas 1238
+	name = "Bonvasallo"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = usodimare_5 # Oberto
+	1175.1.1 = {
+		birth = yes
+	}
+	1245.1.1 = {
+		death = yes
+	}
+}
+
+usodimare_8 = { # Oberto Usodimare, consul of Genoa 1131
+	name = "Oberto"
+	dynasty_house = house_usodimare
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = usodimare_0 # Guglielmo
+	1107.1.1 = {
+		birth = yes
+	}
+	1172.1.1 = {
+		death = yes
+	}
+}
+
+serra_1 = { # Serra de' Mari/di Serra, Serra founder
+	name = "Serra"
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = mari_4 # Ottone
+	1104.1.1 = {
+		birth = yes
+	}
+	1167.1.1 = {
+		death = yes
+	}
+}
+
+serra_2 = { # Corso di Serra, consul of Placiti 1156, 1163
+	name = "Corso"
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = serra_1 # Serra
+	diplomacy = 8
+	martial = 7
+	stewardship = 10
+	intrigue = 8
+	learning = 7
+	prowess = 7
+	trait = education_diplomacy_3
+	trait = calm
+	trait = ambitious
+	trait = gregarious
+	disallow_random_traits = yes
+	1127.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -2 }
+			learn_language = language_arabic
+		}
+	}
+	1184.1.1 = {
+		death = yes
+	}
+}
+
+serra_3 = { # Bernicio di Serra
+	name = "Bernicio" # AKA Bernissone
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = serra_1 # Serra
+	1130.1.1 = {
+		birth = yes
+	}
+	1185.1.1 = {
+		death = yes
+	}
+}
+
+serra_4 = { # Gionata di Serra, consul of Placiti 1188
+	name = "Gionata"
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = serra_1 # Serra
+	1133.1.1 = {
+		birth = yes
+	}
+	1194.1.1 = {
+		death = yes
+	}
+}
+
+serra_5 = { # Nicola di Serra
+	name = "Nicola"
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = serra_1 # Serra
+	1136.1.1 = {
+		birth = yes
+	}
+	1190.1.1 = {
+		death = yes
+	}
+}
+
+serra_6 = { # Martino di Serra
+	name = "Martino"
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = serra_2 # Corso
+	diplomacy = 5
+	martial = 2
+	stewardship = 10
+	intrigue = 4
+	learning = 3
+	prowess = 5
+	trait = education_stewardship_3
+	trait = cynical
+	trait = callous
+	trait = ambitious
+	disallow_random_traits = yes
+	1153.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 18 }
+		}
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+serra_7 = { # Lanfranco di Serra
+	name = "Lanfranco"
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = serra_2 # Corso
+	1156.1.1 = {
+		birth = yes
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+serra_8 = { # Enrico di Serra
+	name = "Enrico"
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = serra_2 # Corso
+	1159.1.1 = {
+		birth = yes
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+serra_9 = { # Guglielmo di Serra
+	name = "Guglielmo"
+	dynasty_house = house_serra
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = serra_4 # Gionata
+	1158.1.1 = {
+		birth = yes
+	}
+	1216.1.1 = {
+		death = yes
+	}
+}
+
+collone_1 = {
+	name = "Luigi"
+	dynasty = cisalpine_collone
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 11
+	martial = 6
+	stewardship = 13
+	intrigue = 3
+	learning = 5
+	prowess = 6
+	trait = education_diplomacy_2
+	trait = arrogant
+	trait = lustful
+	trait = fickle
+	disallow_random_traits = yes
+	1122.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -15 }
+			learn_language = language_greek
+		}
+	}
+	1179.1.1 = {
+		death = yes
+	}
+}
+
+lercaro_1 = {
+	name = "NiccolO_"
+	dynasty = cisalpine_lercaro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 3
+	martial = 5
+	stewardship = 8
+	intrigue = 15
+	learning = 5
+	prowess = 3
+	trait = education_stewardship_3
+	trait = diligent
+	trait = gregarious
+	trait = honest
+	disallow_random_traits = yes
+	1122.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -17 }
+			learn_language = language_arabic
+		}
+	}
+	1186.1.1 = {
+		death = yes
+	}
+}
+
+cicala_1 = {
+	name = "Guglielmo"
+	dynasty = cisalpine_cicala
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 6
+	martial = 6
+	stewardship = 12
+	intrigue = 11
+	learning = 4
+	prowess = 3
+	health = 5.25
+	trait = education_stewardship_4
+	trait = content
+	trait = gluttonous
+	trait = greedy
+	trait = gout_ridden
+	disallow_random_traits = yes
+	1116.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 22 }
+		}
+	}
+	1179.1.1 = {
+		death = yes
+	}
+}
+
+castro_1 = {
+	name = "Primo"
+	dynasty_house = house_castro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = 167283
+	1065.1.1 = {
+		birth = yes
+	}
+	1096.1.1 = {
+		trait = faith_warrior	#The First Crusade
+	}
+	1125.1.1 = {
+		death = yes
+	}
+}
+
+castro_2 = {
+	name = "Bonvasallo"
+	dynasty_house = house_castro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = castro_1 # Primo
+	1096.1.1 = {
+		birth = yes
+	}
+	1123.1.1 = {
+		death = yes
+	}
+}
+
+castro_3 = {
+	name = "Merlo"
+	dynasty_house = house_castro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = castro_1 # Primo
+	1100.1.1 = {
+		birth = yes
+	}
+	1167.1.1 = {
+		death = yes
+	}
+}
+
+castro_4 = {
+	name = "Villano"
+	dynasty_house = house_castro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = castro_1 # Primo
+	1104.1.1 = {
+		birth = yes
+	}
+	1167.1.1 = {
+		death = yes
+	}
+}
+
+castro_5 = {
+	name = "Guglielmo"
+	dynasty_house = house_castro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = castro_4 # Villano
+	diplomacy = 13
+	martial = 4
+	stewardship = 10
+	intrigue = 7
+	learning = 3
+	prowess = 4
+	trait = education_diplomacy_2
+	trait = lustful
+	trait = callous
+	trait = honest
+	disallow_random_traits = yes
+	1133.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -20 }
+			learn_language = language_greek
+		}
+	}
+	1196.1.1 = {
+		death = yes
+	}
+}
+
+castro_6 = {
+	name = "Folco"
+	dynasty_house = house_castro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = castro_5 # Guglielmo
+	diplomacy = 4
+	martial = 3
+	stewardship = 8
+	intrigue = 0
+	learning = 3
+	prowess = 4
+	trait = education_stewardship_2
+	trait = callous
+	trait = ambitious
+	trait = deceitful
+	trait = shrewd
+	disallow_random_traits = yes
+	1156.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -25 }
+			learn_language = language_arabic
+		}
+	}
+	1211.1.1 = {
+		death = yes
+	}
+}
+
+castro_7 = {
+	name = "Baldovino"
+	dynasty_house = house_castro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = castro_2 # Bonvasallo
+	1120.1.1 = {
+		birth = yes
+	}
+	1171.1.1 = {
+		death = yes
+	}
+}
+
+lomello_1 = {
+	name = "Gandolfo"
+	dynasty = cisalpine_lomello
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 14
+	martial = 2
+	stewardship = 12
+	intrigue = 3
+	learning = 5
+	prowess = 6
+	trait = education_stewardship_3
+	trait = callous
+	trait = paranoid
+	trait = cynical
+	trait = beauty_bad_1
+	disallow_random_traits = yes
+	1135.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 5 }
+			learn_language = language_occitano_romance
+		}
+	}
+	1180.1.1 = {
+		death = yes
+	}
+}
+
+san_benedetto_1 = {
+	name = "Ruggero"
+	dynasty = cisalpine_san_benedetto
+	rite = "ambrosian_rite"
+	culture = "cisalpine"
+	diplomacy = 11
+	martial = 7
+	stewardship = 14
+	intrigue = 3
+	learning = 5
+	prowess = 9
+	trait = education_diplomacy_3
+	trait = arbitrary
+	trait = content
+	trait = arrogant
+	trait = one_eyed
+	disallow_random_traits = yes
+	1148.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+lucino_1 = {
+	name = "Atto"
+	dynasty = cisalpine_lucino
+	rite = "ambrosian_rite"
+	culture = "cisalpine"
+	diplomacy = 11
+	martial = 7
+	stewardship = 8
+	intrigue = 4
+	learning = 5
+	prowess = 5
+	trait = education_stewardship_4
+	trait = trusting
+	trait = just
+	trait = content
+	disallow_random_traits = yes
+	1150.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 28 }
+		}
+	}
+	1212.1.1 = {
+		death = yes
+	}
+}
+
+boschetti_1 = {
+	name = "Boschetto"
+	dynasty = cisalpine_boschetti
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 8
+	martial = 2
+	stewardship = 15
+	intrigue = 3
+	learning = 3
+	prowess = 6
+	trait = education_stewardship_3
+	trait = zealous
+	trait = trusting
+	trait = fickle
+	trait = lifestyle_traveler
+	disallow_random_traits = yes
+	1130.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -15 }
+		}
+	}
+	1190.1.1 = {
+		death = yes
+	}
+}
+
+savignano_1 = {
+	name = "Guido"
+	dynasty = cisalpine_savignano
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 10
+	martial = 6
+	stewardship = 8
+	intrigue = 7
+	learning = 5
+	prowess = 5
+	trait = education_diplomacy_4
+	trait = patient
+	trait = diligent
+	trait = shy
+	disallow_random_traits = yes
+	1140.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1200.1.1 = {
+		death = yes
+	}
+}
+
+pio_1 = {
+	name = "Pio"
+	dynasty = 8724
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 10
+	martial = 7
+	stewardship = 7
+	intrigue = 4
+	learning = 4
+	prowess = 4
+	trait = education_stewardship_3
+	trait = stubborn
+	trait = just
+	trait = trusting
+	disallow_random_traits = yes
+	1135.1.1 = {
+		birth = yes
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+pico_1 = {
+	name = "Manfredo"
+	dynasty = 101834
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 5
+	martial = 5
+	stewardship = 10
+	intrigue = 5
+	learning = 9
+	prowess = 6
+	health = 5.25
+	trait = education_learning_4
+	trait = ambitious
+	trait = generous
+	trait = calm
+	trait = comfort_eater
+	disallow_random_traits = yes
+	1145.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 22 }
+			learn_language = language_high_german
+		}
+	}
+	1210.1.1 = {
+		death = yes
+	}
+}
+
+sommi_1 = {
+	name = "Alberto"
+	dynasty = cisalpine_sommi
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 15
+	martial = 5
+	stewardship = 10
+	intrigue = 5
+	learning = 7
+	prowess = 5
+	trait = education_stewardship_3
+	trait = paranoid
+	trait = greedy
+	trait = temperate
+	trait = beauty_bad_2
+	disallow_random_traits = yes
+	1130.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 13 }
+			learn_language = language_high_german
+		}
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+ponzoni_1 = {
+	name = "Ponzio"
+	dynasty = cisalpine_ponzoni
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 6
+	martial = 4
+	stewardship = 9
+	intrigue = 5
+	learning = 3
+	prowess = 7
+	trait = education_intrigue_3
+	trait = arbitrary
+	trait = diligent
+	trait = craven
+	trait = shrewd
+	disallow_random_traits = yes
+	1135.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_high_german
+		}
+	}
+	1198.1.1 = {
+		death = yes
+	}
+}
+
+turchi_1 = {
+	name = "Rodolfo"
+	dynasty = 8721
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 5
+	martial = 10
+	stewardship = 4
+	intrigue = 6
+	learning = 5
+	prowess = 13
+	trait = education_martial_4
+	trait = gregarious
+	trait = diligent
+	trait = stubborn
+	trait = beauty_bad_1
+	disallow_random_traits = yes
+	1120.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -17 }
+			learn_language = language_occitano_romance
+		}
+	}
+	1190.1.1 = {
+		death = yes
+	}
+}
+
+giocoli_1 = {
+	name = "Giocolo"
+	dynasty = cisalpine_giocoli
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 6
+	martial = 12
+	stewardship = 8
+	intrigue = 8
+	learning = 5
+	prowess = 7
+	trait = education_martial_3
+	trait = trusting
+	trait = just
+	trait = honest
+	disallow_random_traits = yes
+	1125.1.1 = {
+		birth = yes
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+avvocati_1 = {
+	name = "Uguccione"
+	dynasty = cisalpine_avvocati
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 12
+	martial = 3
+	stewardship = 10
+	intrigue = 5
+	learning = 3
+	prowess = 3
+	trait = education_diplomacy_3
+	trait = vengeful
+	trait = ambitious
+	trait = cynical
+	trait = comfort_eater
+	disallow_random_traits = yes
+	1130.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 3 }
+		}
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+arlotti_1 = {
+	name = "Arlotto"
+	dynasty = cisalpine_arlotti
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 7
+	martial = 6
+	stewardship = 3
+	intrigue = 5
+	learning = 9
+	prowess = 7
+	trait = education_learning_2
+	trait = temperate
+	trait = diligent
+	trait = just
+	trait = lifestyle_traveler
+	disallow_random_traits = yes
+	1130.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = -30
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 10 }
+		}
+	}
+	1190.1.1 = {
+		death = yes
+	}
+}
+
+onesti_5 = {
+	name = "Giovanni"
+	dynasty = cisalpine_onesti
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 7
+	martial = 7
+	stewardship = 11
+	intrigue = 10
+	learning = 7
+	prowess = 6
+	health = 5.25
+	trait = education_intrigue_3
+	trait = arrogant
+	trait = gregarious
+	trait = ambitious
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1135.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 22 }
+			learn_language = language_high_german
+		}
+	}
+	1200.1.1 = {
+		death = yes
+	}
+}
+
+tempesta_1 = {
+	name = "Guglielmino"
+	dynasty = cisalpine_tempesta
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 12
+	martial = 4
+	stewardship = 13
+	intrigue = 6
+	learning = 5
+	prowess = 7
+	trait = education_diplomacy_3
+	trait = impatient
+	trait = wrathful
+	trait = lustful
+	trait = scarred
+	disallow_random_traits = yes
+	1135.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 43 }
+			learn_language = language_occitano_romance
+		}
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+monticoli_1 = {
+	name = "Guido"
+	dynasty = cisalpine_monticoli
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 7
+	martial = 12
+	stewardship = 10
+	intrigue = 3
+	learning = 8
+	prowess = 7
+	trait = education_martial_3
+	trait = vengeful
+	trait = gregarious
+	trait = ambitious
+	trait = pilgrim
+	disallow_random_traits = yes
+	1140.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 18 }
+		}
+	}
+	1200.1.1 = {
+		death = yes
+	}
+}
+
+turrisendi_1 = {
+	name = "Tebaldo"
+	dynasty = cisalpine_turrisendi
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 8
+	martial = 9
+	stewardship = 10
+	intrigue = 4
+	learning = 5
+	prowess = 10
+	trait = education_martial_4
+	trait = arrogant
+	trait = brave
+	trait = honest
+	trait = pilgrim
+	trait = one_eyed
+	disallow_random_traits = yes
+	1145.1.1 = {
+		birth = yes
+	}
+	1212.1.1 = {
+		death = yes
+	}
+}
+
+barbolano_1 = {
+	name = "Vitale"
+	dynasty = cisalpine_barbolano
+	rite = roman_rite
+	culture = cisalpine
+	950.1.1 = {
+		birth = yes
+	}
+	1009.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_1 = {
+	name = "Paolo"
+	dynasty = cisalpine_magadesi
+	rite = "carolingian_christianity"
+	culture = "cisalpine"
+	790.1.1 = {
+		birth = yes
+	}
+	855.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_2 = {
+	name = "Marco"
+	dynasty = cisalpine_magadesi
+	rite = "carolingian_christianity"
+	culture = "cisalpine"
+	father = magadesi_1
+	diplomacy = 9
+	martial = 2
+	stewardship = 13
+	intrigue = 4
+	learning = 7
+	prowess = 6
+	trait = education_diplomacy_3
+	trait = honest
+	trait = cynical
+	trait = humble
+	trait = lifestyle_herbalist
+	disallow_random_traits = yes
+	826.1.1 = {
+		birth = yes
+	}
+	867.1.1 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	894.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_3 = {
+	name = "Paolo"
+	dynasty = cisalpine_magadesi
+	rite = "carolingian_christianity"
+	culture = "cisalpine"
+	father = magadesi_2
+	854.1.1 = {
+		birth = yes
+	}
+	918.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_4 = {
+	name = "Marco"
+	dynasty = cisalpine_magadesi
+	rite = "carolingian_christianity"
+	culture = "cisalpine"
+	father = magadesi_3
+	879.1.1 = {
+		birth = yes
+	}
+	941.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_5 = {
+	name = "Paolo"
+	dynasty = cisalpine_magadesi
+	rite = "carolingian_christianity"
+	culture = "cisalpine"
+	father = magadesi_4
+	901.1.1 = {
+		birth = yes
+	}
+	966.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_6 = {
+	name = "Antonio"
+	dynasty = cisalpine_magadesi
+	rite = "carolingian_christianity"
+	culture = "cisalpine"
+	father = magadesi_5
+	928.1.1 = {
+		birth = yes
+	}
+	991.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_7 = {
+	name = "Marco"
+	dynasty = cisalpine_magadesi
+	rite = "carolingian_christianity"
+	culture = "cisalpine"
+	father = magadesi_6
+	952.1.1 = {
+		birth = yes
+	}
+	1011.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_8 = {
+	name = "Antonio"
+	dynasty = cisalpine_magadesi
+	rite = "carolingian_christianity"
+	culture = "cisalpine"
+	father = magadesi_7
+	980.1.1 = {
+		birth = yes
+	}
+	1044.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_9 = {
+	name = "Marco"
+	dynasty = cisalpine_magadesi
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_8
+	diplomacy = 6
+	martial = 2
+	stewardship = 10
+	intrigue = 6
+	learning = 10
+	prowess = 7
+	trait = education_learning_3
+	trait = deceitful
+	trait = ambitious
+	trait = brave
+	disallow_random_traits = yes
+	1010.1.1 = {
+		birth = yes
+	}
+	1066.9.15 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	1071.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_10 = {
+	name = "Antonio"
+	dynasty = cisalpine_magadesi
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_9
+	diplomacy = 5
+	martial = 5
+	stewardship = 13
+	intrigue = 5
+	learning = 4
+	prowess = 2
+	health = 5.25
+	trait = education_stewardship_3
+	trait = gregarious
+	trait = generous
+	trait = gluttonous
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1034.1.1 = {
+		birth = yes
+	}
+	1066.9.15 = {
+		effect = {
+			change_current_weight = {
+				value = 100
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 17 }
+		}
+	}
+	1098.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_11 = {
+	name = "Pietro"
+	dynasty = cisalpine_magadesi
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_10
+	1060.1.1 = {
+		birth = yes
+	}
+	1120.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_12 = {
+	name = "Antonio"
+	dynasty = cisalpine_magadesi
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_11
+	1081.1.1 = {
+		birth = yes
+	}
+	1148.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_13 = {
+	name = "Marco"
+	dynasty_house = house_barbaro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_11
+	trait = education_martial_3
+	trait = brave
+	1084.1.1 = {
+		birth = yes
+	}
+	1141.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_14 = {
+	name = "Pietro"
+	dynasty_house = house_barbaro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_13
+	1105.1.1 = {
+		birth = yes
+	}
+	1167.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_15 = {
+	name = "Marco"
+	dynasty_house = house_barbaro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_14
+	diplomacy = 5
+	martial = 5
+	stewardship = 15
+	intrigue = 11
+	learning = 8
+	prowess = 2
+	health = 5.25
+	trait = education_intrigue_3
+	trait = gluttonous
+	trait = vengeful
+	trait = trusting
+	disallow_random_traits = yes
+	1133.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 70
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = -3 }
+		}
+	}
+	1195.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_16 = {
+	name = "Pietro"
+	dynasty_house = house_barbaro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_15
+	diplomacy = 3
+	martial = 5
+	stewardship = 13
+	intrigue = 8
+	learning = 5
+	prowess = 3
+	trait = education_intrigue_2
+	trait = craven
+	trait = deceitful
+	trait = lazy
+	disallow_random_traits = yes
+	1158.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			change_current_weight = {
+				value = 35
+				subtract = current_weight
+			}
+			target_weight_modifier_effect = { VALUE = 18 }
+		}
+	}
+	1215.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_17 = {
+	name = "Marco"
+	dynasty_house = house_barbaro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_15
+	1161.1.1 = {
+		birth = yes
+	}
+	1222.1.1 = {
+		death = yes
+	}
+}
+
+magadesi_18 = {
+	name = "Antonio"
+	dynasty_house = house_barbaro
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = magadesi_15
+	1164.1.1 = {
+		birth = yes
+	}
+	1220.1.1 = {
+		death = yes
+	}
+}
+
+correr_1 = {
+	name = "Filippo"
+	dynasty = cisalpine_correr
+	rite = "roman_rite"
+	culture = "cisalpine"
+	diplomacy = 12
+	martial = 3
+	stewardship = 10
+	intrigue = 7
+	learning = 4
+	prowess = 10
+	trait = education_diplomacy_3
+	trait = cynical
+	trait = vengeful
+	trait = honest
+	trait = lifestyle_reveler
+	disallow_random_traits = yes
+	1130.1.1 = {
+		birth = yes
+	}
+	1178.10.1 = {
+		effect = {
+			learn_language = language_greek
+		}
+	}
+	1209.1.1 = {
+		death = yes
+	}
+}
+
+correr_2 = {
+	name = "Angelo"
+	dynasty = cisalpine_correr
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = correr_1
+	1192.1.1 = {
+		birth = yes
+	}
+	1268.7.2 = {
+		death = yes
+	}
+}
+
+correr_3 = {
+	name = "Filippo"
+	dynasty = cisalpine_correr
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = correr_1
+	1185.1.1 = {
+		birth = yes
+	}
+	1240.1.1 = {
+		death = yes
+	}
+}
+
+correr_4 = {
+	name = "Pietro"
+	dynasty = cisalpine_correr
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = correr_1
+	1170.1.1 = {
+		birth = yes
+	}
+	1234.1.1 = {
+		death = yes
+	}
+}
+
+correr_5 = {
+	name = "Antonio"
+	dynasty = cisalpine_correr
+	rite = "roman_rite"
+	culture = "cisalpine"
+	father = correr_1
+	1166.1.1 = {
+		birth = yes
+	}
+	1234.1.1 = {
+		death = yes
+	}
 }

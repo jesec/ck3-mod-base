@@ -1,0 +1,409 @@
+﻿# 01. By Gold Alone
+ep5_01_by_gold_alone_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_01_by_gold_alone_achievement_trigger
+			government_has_flag = government_is_merchant
+			has_realm_law = company_size_huge
+		}
+	}
+}
+
+# 02. Multi-Track Merchanting
+ep5_02_multi_track_merchanting_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_02_multi_track_merchanting_achievement_trigger
+			has_trait = lifestyle_merchant
+			has_trait_xp = {
+				trait = lifestyle_merchant
+				track = caravaneer
+				value >= 100
+			}
+			has_trait_xp = {
+				trait = lifestyle_merchant
+				track = artisan
+				value >= 100
+			}
+			has_trait_xp = {
+				trait = lifestyle_merchant
+				track = creditor
+				value >= 100
+			}
+		}
+	}
+}
+
+# 03. Venetian League
+ep5_03_venetian_league_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_03_venetian_league_achievement_trigger
+			government_has_flag = government_is_republic
+			capital_county ?= title:c_venezia
+			completely_controls = title:c_venezia
+			completely_controls = title:c_veneto
+			completely_controls = title:c_pula
+			completely_controls = title:c_zadar
+			completely_controls = title:c_cherso
+			completely_controls = title:c_ragusa
+			completely_controls = title:c_dyrrachion
+			completely_controls = title:c_corfu
+			completely_controls = title:c_cephalonia
+			completely_controls = title:c_messenia
+			completely_controls = title:c_euboea
+			completely_controls = title:c_naxos
+			completely_controls = title:d_krete
+		}
+	}
+}
+
+# 04. There Can Be Only One
+ep5_04_there_can_be_only_one_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_04_there_can_be_only_one_achievement_trigger
+			ep5_04_there_can_be_only_one_achievement_monopoly_count_value >= 7
+		}
+	}
+}
+
+# 05. City of Marbles
+ep5_05_city_of_marbles_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_05_city_of_marbles_achievement_trigger
+			domicile ?= {
+				is_domicile_type = merchant_company
+				has_domicile_building_or_higher = merchant_company_main_06
+				OR = {
+					has_domicile_building_or_higher = merchant_company_building_trade_06_competition
+					has_domicile_building_or_higher = merchant_company_building_trade_06_revenue
+				}
+				OR = {
+					has_domicile_building_or_higher = merchant_company_building_warehouse_06_markets
+					has_domicile_building_or_higher = merchant_company_building_warehouse_06_goods
+				}
+				OR = {
+					has_domicile_building_or_higher = merchant_company_building_civic_06_stress
+					has_domicile_building_or_higher = merchant_company_building_civic_06_knights
+				}
+				OR = {
+					has_domicile_building_or_higher = merchant_company_building_production_06_prestige
+					has_domicile_building_or_higher = merchant_company_building_production_06_income
+				}
+			}
+		}
+	}
+}
+
+# 06. Senatus Populusque Romanus
+ep5_06_senatus_populusque_romanus_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_06_senatus_populusque_romanus_achievement_trigger
+			exists = global_var:ep5_06_senatus_populusque_romanus_achievement_unlocked
+		}
+	}
+}
+
+# 07. I Love Democracy
+ep5_07_i_love_democracy_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_07_i_love_democracy_achievement_trigger
+			gdp_is_assembly_head_trigger = yes
+			has_realm_law = republican_despot_succession_law
+			has_realm_law = republic_assembly_authority_ceremonial
+			has_realm_law = republic_assembly_term_length_indefinite
+			has_realm_law = republic_banishment_3_unrestricted
+			has_realm_law = republic_execution_3_unrestricted
+			has_realm_law = republic_title_revocation_2_allowed
+			has_realm_law = republic_retract_vassal_2_allowed
+			has_realm_law = republic_vassal_refusal_2_treason
+		}
+	}
+}
+
+# 08. Medieval Skylines
+ep5_08_medieval_skylines_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_08_medieval_skylines_achievement_trigger
+			any_directly_owned_province = {
+				count >= 3
+				province_size_level >= 10
+			}
+		}
+	}
+}
+
+# 09. Wearer of Many Hats
+# The live government checks cover a hat worn since the last recording pulse
+ep5_09_wearer_of_many_hats_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_09_wearer_of_many_hats_achievement_trigger
+			OR = {
+				has_character_flag = ep5_09_wearer_of_many_hats_achievement_landed_flag
+				government_has_flag = government_is_feudal
+				government_has_flag = government_is_clan
+				government_has_flag = government_is_ecclesiastical
+			}
+			OR = {
+				has_character_flag = ep5_09_wearer_of_many_hats_achievement_republic_flag
+				government_has_flag = government_is_republic
+			}
+			OR = {
+				has_character_flag = ep5_09_wearer_of_many_hats_achievement_merchant_flag
+				government_has_flag = government_is_merchant
+			}
+			OR = {
+				has_character_flag = ep5_09_wearer_of_many_hats_achievement_adventurer_flag
+				government_has_flag = government_is_landless_adventurer
+			}
+		}
+	}
+}
+
+# 10. The Spice Must Flow
+ep5_10_the_spice_must_flow_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_10_the_spice_must_flow_achievement_trigger
+			ep5_10_the_spice_must_flow_achievement_volume_value >= 200
+		}
+	}
+}
+
+# 11. Burgher King
+ep5_11_burgher_king_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+		NOT = {
+			is_target_in_global_variable_list = {
+				name = unavailable_achievements
+				target = flag:rd_character_blocked_ep5_11_burgher_king_achievement
+			}
+		}
+	}
+	happened = {
+		custom_description = {
+			text = ep5_11_burgher_king_achievement_trigger
+			ep5_achievement_is_burgher_king_trigger = yes
+		}
+	}
+}
+
+# 12. Would You Like Fries With That?
+ep5_12_would_you_like_fries_with_that_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_12_would_you_like_fries_with_that_achievement_trigger
+			exists = global_var:ep5_12_would_you_like_fries_with_that_achievement_unlocked
+		}
+	}
+}
+
+# 13. Bazaar Adventure
+ep5_13_bazaar_adventure_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_13_bazaar_adventure_achievement_trigger
+			any_trade_route = {
+				any_trade_market_on_route = {
+					trade_market_owner.duchy ?= title:d_kinai
+				}
+			}
+			any_trade_route = {
+				any_trade_market_on_route = {
+					trade_market_owner.duchy ?= title:d_cairo
+				}
+			}
+		}
+	}
+}
+
+# 14. League of Ledgers
+ep5_14_league_of_ledgers_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_14_league_of_ledgers_achievement_trigger
+			exists = global_var:ep5_14_league_of_ledgers_achievement_unlocked
+		}
+	}
+}
+
+# 15. In Sweden we have a System...
+# Wine and Beer share the Alcohol category, so one expertise track and one monopoly cover both
+ep5_15_in_sweden_we_have_a_system_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_15_in_sweden_we_have_a_system_achievement_trigger
+			any_held_title = {
+				trade_good_category_level = {
+					target = trade_good_category:trade_category_alcohol
+					value >= merchant_monopoly_trade_expertise_level_max_value
+				}
+			}
+			capital_barony.trade_market ?= {
+				any_trade_monopoly_for_market = {
+					is_trade_monopoly_for_trade_good_category = trade_category_alcohol
+					ep5_achievement_monopoly_owned_by_trigger = { OWNER = root }
+				}
+			}
+		}
+	}
+}
+
+# 16. Bridge of Sighs
+ep5_16_bridge_of_sighs_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_16_bridge_of_sighs_achievement_trigger
+			gdp_is_assembly_head_trigger = yes
+			any_vassal = {
+				count >= 7
+				gdp_is_patrician_trigger = yes
+			}
+			NOT = {
+				any_vassal = {
+					gdp_is_patrician_trigger = yes
+					NOT = { is_imprisoned_by = root }
+				}
+			}
+		}
+	}
+}
+
+# 17. Cheesing the Competition
+ep5_17_cheesing_the_competition_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_17_cheesing_the_competition_achievement_trigger
+			ep5_achievement_owns_monopoly_in_duchy_market_trigger = {
+				CATEGORY = trade_category_comforts
+				DUCHY = d_latium
+			}
+			ep5_achievement_owns_monopoly_in_duchy_market_trigger = {
+				CATEGORY = trade_category_comforts
+				DUCHY = d_sardinia
+			}
+			ep5_achievement_owns_monopoly_in_duchy_market_trigger = {
+				CATEGORY = trade_category_comforts
+				DUCHY = d_emilia
+			}
+			ep5_achievement_owns_monopoly_in_duchy_market_trigger = {
+				CATEGORY = trade_category_comforts
+				DUCHY = d_capua
+			}
+		}
+	}
+}
+
+# 18. Loan Shark
+ep5_18_loan_shark_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+		exists = global_var:started_ep5_18_loan_shark_achievement
+	}
+	happened = {
+		custom_description = {
+			text = ep5_18_loan_shark_achievement_trigger
+			exists = global_var:started_ep5_18_loan_shark_achievement
+			trigger_if = {
+				limit = { has_variable_list = owes_me_money }
+				variable_list_size = {
+					name = owes_me_money
+					value >= 10
+				}
+			}
+			trigger_else = { always = no }
+		}
+	}
+}
+
+# 19. Family Business
+ep5_19_family_business_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+		exists = global_var:started_ep5_19_family_business_achievement
+		NOT = { has_game_rule = historicity_frankokratia_blocked }
+	}
+	happened = {
+		custom_description = {
+			text = ep5_19_family_business_achievement_trigger
+			exists = global_var:ep5_19_family_business_achievement_unlocked
+		}
+	}
+}
+
+# 20. Silk & Silver
+ep5_20_silk_and_silver_achievement = {
+	possible = {
+		has_gdp_dlc_trigger = yes
+	}
+	happened = {
+		custom_description = {
+			text = ep5_20_silk_and_silver_achievement_trigger
+			any_held_title = {
+				trade_good_category_level = {
+					target = trade_good_category:trade_category_luxury_items
+					value >= merchant_monopoly_trade_expertise_level_max_value
+				}
+				trade_good_category_level = {
+					target = trade_good_category:trade_category_precious_metals
+					value >= merchant_monopoly_trade_expertise_level_max_value
+				}
+			}
+		}
+	}
+}

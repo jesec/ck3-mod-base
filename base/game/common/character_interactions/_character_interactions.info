@@ -157,14 +157,17 @@ my_interaction = {
 	extra_icon = "gfx/<...>/hook_icon.dds"
 
 	# Possible types:
-	# 	title
+	#	title
 	#	artifact
 	#	men_at_arms
 	#	court_position_type
+	#	trade_market
+	#	trade_good_type
+	#	trade_good_category
 	#	(not set by default)
 
 	# Object type of the target
-	target_type = title/artifact/men_at_arms/court_position_type
+	target_type = title/artifact/men_at_arms/court_position_type/trade_market/trade_good_type/trade_good_category
 
 	# Source character that provides the target
 	target_source = actor/secondary_actor/recipient/secondary_recipient/intermediary/puppet_or_actor
@@ -285,6 +288,15 @@ my_interaction = {
 
 	# Can this regiment be picked as a valid target
 	can_be_picked_regiment = trigger
+
+	# Can this trade market be picked as a valid target
+	can_be_picked_trade_market = trigger
+
+	# Can this trade good be picked as a valid target
+	can_be_picked_trade_good_type = trigger
+
+	# Can this trade good category be picked as a valid target
+	can_be_picked_trade_good_category_type = trigger
 
 	# Whether to bother opening a confirmation window to players when selected at all; true if not specified
 	# If evaluated false, will proceed to run on_send / on_accept immediately when selected
@@ -515,6 +527,7 @@ my_interaction = {
 	# Set scope:target to make the AI target
 	# something specific. Title targeting
 	# interactions don't need this
+	# For trade market interactions, can also set scope:trade_market
 	ai_set_target = {}
 
 	ai_targets = {
@@ -572,6 +585,18 @@ my_interaction = {
 		kingdom = 1
 		empire = 1
 		hegemony = 1
+	}
+
+	# Government-specific override for 'ai_frequency_by_tier'. Characters with one of the listed governments use these frequencies instead. Requires 'ai_frequency' or 'ai_frequency_by_tier' as fallback for all other governments. 
+	# All tiers are required to be defined. Can be added multiple times, but a government can only be part of one override. Add 'government' multiple times to share one override between several governments.
+	ai_frequency_by_tier_government_override = {
+		government = merchant_government
+		barony = 0
+		county = 100
+		duchy = 20
+		kingdom = 10
+		empire = 10
+		hegemony = 10
 	}
 
 	# Will the ai consider trying this interaction.
@@ -671,6 +696,14 @@ A:	Possible types:
 	- men_at_arms - All owned personal and controlled title Men-at-Arms of character
 	- personal_maa - All owned personal Men-at-Arms of character
 	- title_maa - All controlled title Men-at-Arms of character
+	- domain_trade_markets - All trade markets that the character owns land inside
+	- trade_markets_traded_in - All trade markets the character has a trade route in
+	- all_trade_goods - All trade goods in the game (doesn't use target source)
+	- all_trade_goods_traded_in - All trade goods the character has at least one trade route for
+	- all_trade_good_categories - All trade good need categories in the game (doesn't use target source)
+	- all_trade_good_categories_traded_in - All trade good need categories the character has at least one trade route for
+	- trade_post - All trade post districts owned by the target character
+	- all_landed - All titles owned by the character without landless = yes
 
 	Old possible types, those still work, but please don't use them anymore:
 	- actor_domain_titles - All domain titles, excluding leased titles and capital baronies
@@ -838,3 +871,5 @@ puppets - Puppets of the character
 religious_head_challenger - the challenger followed by the character, if any
 religious_head_challengers - the holders of all challenger titles (antipopes) of the character's faith
 papabile - the current candidates (papabile) in the character's faith's clerical/theocratic elective succession, the same candidates shown in the College of Cardinals window (usually the top 3). Empty for faiths without a religious head title
+merchants_in_owned_markets - Merchants trading in any of the caracter's owned markets
+market_owners_on_routes - Market owners of any markets on character's trade routes

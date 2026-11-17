@@ -1,0 +1,2057 @@
+﻿#Script values for resource district buildings and their side-building chains.
+#
+#Layout:
+#  SHARED SCAFFOLDING            - need sizes, price ladders, output and income
+#                                  tiers, district costs. Referenced by many districts.
+#  CROSS-DISTRICT SIDE BUILDINGS - buildings that appear in several good districts.
+#  PER-DISTRICT VALUES           - one block per file in common/buildings, alphabetical.
+#  RESERVED                      - defined but not referenced anywhere yet.
+#
+#A value belongs to the district block of the building file that consumes it.
+#Ladders written as `x_income_tier_1 = resource_tier_1_main_income` are deliberate pass-throughs, so one building can be retuned without touching the rest
+
+########## SHARED SCAFFOLDING ##########
+
+#General needs
+rural_resource_need = 5
+rural_iron_need = 3 #Iron needs of village and manor buildings
+low_resource_district_need = 5
+butcher_resource_need = 10 #Double the rural need, used only by the village butcher line.
+wanua_barter_resource_need = 10
+basic_resource_need = 10
+metal_resource_need = 5
+massive_metal_need = 15
+guild_resource_need = 30
+luxury_resource_need = 5
+precious_stones_resource_need = 5
+precious_metals_resource_need = 5
+guild_precious_stones_resource_need = 15
+guild_precious_metals_resource_need = 15
+major_basic_resource_need = 30
+food_resource_need = 3
+holding_district_resource_need = 5 #Shared by every need in the castle, city and temple holding district buildings.
+holding_district_iron_need = 3 #Iron needs of holding district buildings
+
+
+amber_rosary_need = holding_district_resource_need #Amber needs of churches and Religious Fairs.
+amber_medicinal_need = rural_resource_need #Amber need of Herbal Gardens.
+amber_amulet_need = rural_resource_need #Amber need of Feasting Grounds.
+herbal_gardens_medicaments_per_amber_need = 5
+amber_amulet_prestige = 0.05
+fur_finery_need = holding_district_resource_need #Fur need of castles and cities under fur_trimmed_finery.
+fur_finery_price_mult = 0.005
+fur_finery_prestige = 0.02
+#Regional demand pockets: heritage-gated needs and their rewards.
+regional_demand_price_mult = 0.005
+regional_tax_mult_per_need = 0.02
+tea_herder_need = 5
+tea_monastery_need = holding_district_resource_need
+tea_herd_output_mult = 0.05
+sahel_salt_need = rural_resource_need
+cloth_alum_need = 3
+alum_cloth_output_mult = 0.03
+war_horse_castle_need = holding_district_resource_need
+war_horse_military_need = basic_resource_need
+imported_horses_cavalry_mult = 0.03
+training_grounds_cavalry_horse_damage_mult = 0.03
+temple_silver_need = 3
+northern_wine_need = holding_district_resource_need
+northern_wine_prestige = 0.02
+northern_beer_need = holding_district_resource_need
+northern_beer_prestige = 0.02
+saharan_gold_need = holding_district_resource_need
+steppe_silk_need = 15
+steppe_grain_need = 15
+steppe_sable_need = 15
+steppe_silk_herd_contribution_mult = 0.05
+steppe_grain_herd_gain_mult = 0.05
+steppe_sable_prestige = 0.02
+song_horse_need = 5
+rus_silver_need = holding_district_resource_need
+gilded_temple_gold_need = holding_district_resource_need
+gilded_temple_piety = 0.02
+island_ceramics_need = 5
+west_african_copper_need = basic_resource_need
+spiced_cuisine_need = holding_district_resource_need #Spice need of castles and cities under spiced_cuisine.
+spiced_cuisine_prestige = 0.02
+imported_porcelain_need = holding_district_resource_need
+imported_porcelain_prestige = 0.02
+glass_bead_need = holding_district_resource_need
+glass_bead_prestige = 0.02
+saharan_cloth_need = holding_district_resource_need
+saharan_cloth_prestige = 0.02
+fustian_cotton_need = holding_district_resource_need
+fustian_textiles_output_mult = 0.03
+ivory_carving_need = 2
+ivory_carving_prestige = 0.02
+fleet_timber_need = holding_district_resource_need
+arsenal_hemp_need = holding_district_resource_need
+cattle_wealth_need = holding_district_resource_need
+cattle_wealth_prestige = 0.02
+temple_medicaments_need = 3
+temple_medicaments_epidemic_resistance = 1
+ritsuryo_medicaments_need = holding_district_resource_need
+ritsuryo_medicaments_influence_mult = 0.01
+soryo_ceramics_need = holding_district_resource_need
+soryo_ceramics_prestige = 0.02
+tiefutu_iron_need = holding_district_resource_need
+tiefutu_iron_cavalry_mult = 0.03
+castle_wine_need = holding_district_resource_need
+castle_wine_prestige = 0.02
+housing_comfort_need = basic_resource_need #Comfort needs of Housing Districts under the housing_*_demand culture parameters.
+housing_comfort_popular_opinion = 1
+housing_comfort_price_mult = 0.015
+manor_comfort_need = rural_resource_need #Comfort needs of Manor Houses under the housing_*_demand culture parameters.
+votive_offering_need = luxury_resource_need #Votive offering needs under the votive_*_demand culture parameters.
+votive_offering_popular_opinion = 1
+votive_offering_price_mult = 0.015
+
+#Smaller needs, used by the luxury needs of buildings under a rite with the luxury_forbidden parameter.
+ascetic_rural_resource_need = 2
+ascetic_basic_resource_need = 5
+
+#We keep price modifiers the same at every level, because merchants already gain from the bigger volume
+#Only the market district and the buildings that copy it still climb a ladder
+#The ladders below stop at the highest rung those buildings use, so extend a ladder if a market building needs more rungs
+
+#Basic Resource needs
+@price_basic_resource_need_base = 0.005
+@price_increase_per_basic_resource_need = 0.0025
+@price_basic_1 = @[price_basic_resource_need_base]
+@price_basic_2 = @[price_basic_1 + price_increase_per_basic_resource_need]
+@price_basic_3 = @[price_basic_2 + price_increase_per_basic_resource_need]
+@price_basic_4 = @[price_basic_3 + price_increase_per_basic_resource_need]
+@price_basic_5 = @[price_basic_4 + price_increase_per_basic_resource_need]
+
+price_basic_building_1 = @[price_basic_1]
+price_basic_building_2 = @[price_basic_2]
+price_basic_building_3 = @[price_basic_3]
+price_basic_building_4 = @[price_basic_4]
+price_basic_building_5 = @[price_basic_5]
+
+#Major Basic Resource Need
+price_major_basic_building = 0.005
+
+#Metal Resource Needs
+@price_metal_resource_need_base = 0.005
+@price_increase_per_metal_resource_need = 0.01
+@price_metal_1 = @[price_metal_resource_need_base]
+@price_metal_2 = @[price_metal_1 + price_increase_per_metal_resource_need]
+
+price_metal_building_1 = @[price_metal_1]
+price_metal_building_2 = @[price_metal_2]
+
+#Luxury Resource Need
+price_luxury_building = 0.01
+
+#Fibre Sources for Textiles
+#textiles_flax_need_per_level
+#textiles_wool_need_per_level
+#textiles_cotton_need_per_level
+@price_textiles_need_resource_need_base = 0.0025
+@price_increase_textiles_need_resource_need = 0.0025
+@price_textiles_need_1 = @[price_textiles_need_resource_need_base]
+@price_textiles_need_2 = @[price_textiles_need_1 + price_increase_textiles_need_resource_need]
+@price_textiles_need_3 = @[price_textiles_need_2 + price_increase_textiles_need_resource_need]
+@price_textiles_need_4 = @[price_textiles_need_3 + price_increase_textiles_need_resource_need]
+@price_textiles_need_5 = @[price_textiles_need_4 + price_increase_textiles_need_resource_need]
+@price_textiles_need_6 = @[price_textiles_need_5 + price_increase_textiles_need_resource_need]
+price_textiles_building_1 = @[price_textiles_need_1]
+price_textiles_building_2 = @[price_textiles_need_2]
+price_textiles_building_3 = @[price_textiles_need_3]
+price_textiles_building_4 = @[price_textiles_need_4]
+price_textiles_building_5 = @[price_textiles_need_5]
+price_textiles_building_6 = @[price_textiles_need_6]
+
+#textiles_silk_need_per_level
+price_textiles_silk_building = 0.0075
+
+#Holding district building needs, flat across all levels
+price_holding_district_need = 0.01
+
+#Needs of village district buildings, flat across all levels
+price_village_building_need = 0.002
+
+#Price decrease Modifiers
+tier_1_buy_price_reduction = -0.01
+tier_2_buy_price_reduction = -0.02
+tier_3_buy_price_reduction = -0.03
+tier_4_buy_price_reduction = -0.04
+tier_5_buy_price_reduction = -0.05
+village_producer_buy_price_reduction = -0.001 #Per potential good of a village production building, flat across all levels
+low_buy_price_reduction_tier_1 = -0.01
+low_buy_price_reduction_tier_2 = -0.0125
+low_buy_price_reduction_tier_3 = -0.015
+low_buy_price_reduction_tier_4 = -0.0175
+low_buy_price_reduction_tier_5 = -0.02
+
+#Village Market needs
+village_market_need_commerce_tax = 0.03
+village_market_need_buy_price_reduction = -0.002 #Per fulfilled need instance
+
+#Villages main building textiles need
+villages_textiles_need = 3
+villages_textiles_need_agricultural_tax = 0.02
+villages_textiles_need_agricultural_goods_buy_price_reduction = -0.002 #Per fulfilled need instance
+
+#Price premium charged by producers of precious goods, flat across all levels
+precious_producer_buy_price_mult = 0.01
+
+#Rural Raw Material Output Per Level
+tier_1_rural_resource = 15
+tier_2_rural_resource = 30
+tier_3_rural_resource = 45
+tier_4_rural_resource = 60
+tier_5_rural_resource = 75
+
+#General Output Per Level
+tier_1_main_resource = 60
+tier_2_main_resource = 105
+tier_3_main_resource = 150
+tier_4_main_resource = 195
+tier_5_main_resource = 240
+tier_6_main_resource = 285
+tier_7_main_resource = 330
+tier_8_main_resource = 375
+tier_9_main_resource = 420
+tier_10_main_resource = 465
+
+#Minimum Production for the Map Resource Building
+minimum_produced_default = 100
+
+#Small Quantity Output Per Level
+small_quantity_refined_production = 20
+
+#Cereal Output Per Level
+tier_1_main_food_resource = tier_1_main_resource
+tier_2_main_food_resource = tier_2_main_resource
+tier_3_main_food_resource = tier_3_main_resource
+tier_4_main_food_resource = tier_4_main_resource
+tier_5_main_food_resource = tier_5_main_resource
+tier_6_main_food_resource = tier_6_main_resource
+tier_7_main_food_resource = tier_7_main_resource
+tier_8_main_food_resource = tier_8_main_resource
+tier_9_main_food_resource = tier_9_main_resource
+tier_10_main_food_resource = tier_10_main_resource
+
+#Millet Output Per Level
+#Kept separate because it used to be lower than Grain and Rice, might remove this.
+tier_1_millet_food_resource = tier_1_main_resource
+tier_2_millet_food_resource = tier_2_main_resource
+tier_3_millet_food_resource = tier_3_main_resource
+tier_4_millet_food_resource = tier_4_main_resource
+tier_5_millet_food_resource = tier_5_main_resource
+tier_6_millet_food_resource = tier_6_main_resource
+tier_7_millet_food_resource = tier_7_main_resource
+tier_8_millet_food_resource = tier_8_main_resource
+tier_9_millet_food_resource = tier_9_main_resource
+tier_10_millet_food_resource = tier_10_main_resource
+
+#Mine Output Per Level
+#Alum, Salt
+#Higher due to rarity and high demand.
+mine_pit_mine_1 = 10
+mine_pit_mine_2 = 20
+mine_pit_mine_3 = 30
+mine_pit_mine_4 = 40
+mine_pit_mine_5 = 50
+
+mine_tier_1_main_resource = 80
+mine_tier_2_main_resource = 130
+mine_tier_3_main_resource = 180
+mine_tier_4_main_resource = 230
+mine_tier_5_main_resource = 280
+mine_tier_6_main_resource = 330
+mine_tier_7_main_resource = 380
+mine_tier_8_main_resource = 430
+mine_tier_9_main_resource = 480
+mine_tier_10_main_resource = 530
+
+#Copper: kept scarce so merchants compete for it
+copper_mine_pit_mine_1 = 5
+copper_mine_pit_mine_2 = 10
+copper_mine_pit_mine_3 = 15
+copper_mine_pit_mine_4 = 20
+copper_mine_pit_mine_5 = 25
+
+copper_mine_tier_1_main_resource = 30
+copper_mine_tier_2_main_resource = 60
+copper_mine_tier_3_main_resource = 90
+copper_mine_tier_4_main_resource = 120
+copper_mine_tier_5_main_resource = 150
+copper_mine_tier_6_main_resource = 180
+copper_mine_tier_7_main_resource = 210
+copper_mine_tier_8_main_resource = 240
+copper_mine_tier_9_main_resource = 270
+copper_mine_tier_10_main_resource = 300
+
+#Gold, Silver, Gems
+precious_mine_pit_mine_1 = 2
+precious_mine_pit_mine_2 = 5
+precious_mine_pit_mine_3 = 7
+precious_mine_pit_mine_4 = 8
+precious_mine_pit_mine_5 = 10
+
+precious_mine_tier_1_main_resource = 25
+precious_mine_tier_2_main_resource = 50
+precious_mine_tier_3_main_resource = 75
+precious_mine_tier_4_main_resource = 100
+precious_mine_tier_5_main_resource = 125
+precious_mine_tier_6_main_resource = 150
+precious_mine_tier_7_main_resource = 200
+precious_mine_tier_8_main_resource = 240
+precious_mine_tier_9_main_resource = 260
+precious_mine_tier_10_main_resource = 280
+
+#Jade: kept scarce so merchants compete for it
+jade_mine_tier_1_main_resource = 12
+jade_mine_tier_2_main_resource = 24
+jade_mine_tier_3_main_resource = 36
+jade_mine_tier_4_main_resource = 48
+jade_mine_tier_5_main_resource = 60
+jade_mine_tier_6_main_resource = 72
+jade_mine_tier_7_main_resource = 84
+jade_mine_tier_8_main_resource = 96
+jade_mine_tier_9_main_resource = 108
+jade_mine_tier_10_main_resource = 120
+
+#Sugar, Spices
+precious_crops_tier_1_main_resource = 40
+precious_crops_tier_2_main_resource = 60
+precious_crops_tier_3_main_resource = 80
+precious_crops_tier_4_main_resource = 100
+precious_crops_tier_5_main_resource = 120
+precious_crops_tier_6_main_resource = 140
+precious_crops_tier_7_main_resource = 160
+precious_crops_tier_8_main_resource = 180
+precious_crops_tier_9_main_resource = 200
+precious_crops_tier_10_main_resource = 240
+
+#Iron: kept scarce so merchants compete for it
+iron_mine_pit_mine_1 = 5
+iron_mine_pit_mine_2 = 10
+iron_mine_pit_mine_3 = 15
+iron_mine_pit_mine_4 = 20
+iron_mine_pit_mine_5 = 25
+
+iron_mine_tier_1_main_resource = 30
+iron_mine_tier_2_main_resource = 60
+iron_mine_tier_3_main_resource = 90
+iron_mine_tier_4_main_resource = 180
+iron_mine_tier_5_main_resource = 240
+iron_mine_tier_6_main_resource = 300
+iron_mine_tier_7_main_resource = 360
+iron_mine_tier_8_main_resource = 420
+iron_mine_tier_9_main_resource = 480
+iron_mine_tier_10_main_resource = 540
+
+stone_mine_tier_1_main_resource = mine_tier_1_main_resource
+stone_mine_tier_2_main_resource = mine_tier_2_main_resource
+stone_mine_tier_3_main_resource = mine_tier_3_main_resource
+stone_mine_tier_4_main_resource = mine_tier_4_main_resource
+stone_mine_tier_5_main_resource = mine_tier_5_main_resource
+stone_mine_tier_6_main_resource = mine_tier_6_main_resource
+stone_mine_tier_7_main_resource = mine_tier_7_main_resource
+stone_mine_tier_8_main_resource = mine_tier_8_main_resource
+stone_mine_tier_9_main_resource = mine_tier_9_main_resource
+stone_mine_tier_10_main_resource = mine_tier_10_main_resource
+
+#Mint:
+tax_per_silver = 0.1
+tax_per_gold = 0.2
+
+#General Output of Income:
+#Replace with Specific as needed
+#Base
+resource_tier_1_main_income = 0.1
+resource_tier_2_main_income = 0.2
+resource_tier_3_main_income = 0.3
+resource_tier_4_main_income = 0.4
+resource_tier_5_main_income = 0.5
+resource_tier_6_main_income = 0.6
+resource_tier_7_main_income = 0.7
+resource_tier_8_main_income = 0.8
+resource_tier_9_main_income = 0.9
+resource_tier_10_main_income = 1
+
+#Luxuries & Precious Metals
+luxuries_resource_tier_1_main_income = 0.2
+luxuries_resource_tier_2_main_income = 0.4
+luxuries_resource_tier_3_main_income = 0.6
+luxuries_resource_tier_4_main_income = 0.8
+luxuries_resource_tier_5_main_income = 1
+luxuries_resource_tier_6_main_income = 1.2
+luxuries_resource_tier_7_main_income = 1.4
+luxuries_resource_tier_8_main_income = 1.6
+luxuries_resource_tier_9_main_income = 1.8
+luxuries_resource_tier_10_main_income = 2
+
+#Mines
+mine_resource_tier_1_main_income = 0.175
+mine_resource_tier_2_main_income = 0.35
+mine_resource_tier_3_main_income = 0.525
+mine_resource_tier_4_main_income = 0.7
+mine_resource_tier_5_main_income = 0.875
+mine_resource_tier_6_main_income = 1.05
+mine_resource_tier_7_main_income = 1.225
+mine_resource_tier_8_main_income = 1.4
+mine_resource_tier_9_main_income = 1.575
+mine_resource_tier_10_main_income = 1.75
+
+#Shared by every need that only multiplies the production of the building it sits in
+tax_mult_per_production_need = 0.02
+
+industrious_tradition_tax_bonus_low = 0.025
+industrious_tradition_tax_bonus_mid = 0.05
+industrious_tradition_tax_bonus_high = 0.075
+
+#Secondary building income:
+secondary_resource_building_income_1 = resource_tier_1_main_income
+secondary_resource_building_income_2 = resource_tier_2_main_income
+secondary_resource_building_income_3 = resource_tier_3_main_income
+
+cereal_terrain_major = 1.0
+cereal_terrain_medium = 0.5
+cereal_terrain_minor = 0.25
+
+holy_site_pilgrim_sell_price_mult = 0.01
+holy_site_mandatory_pilgrimage_sell_price_mult = 0.01
+
+resource_district_normal_tier_1_cost = 15
+resource_district_normal_tier_2_cost = 25
+resource_district_normal_tier_3_cost = 40
+resource_district_normal_tier_4_cost = 60
+resource_district_normal_tier_5_cost = 90
+resource_district_normal_tier_6_cost = 135
+resource_district_normal_tier_7_cost = 200
+resource_district_normal_tier_8_cost = 300
+resource_district_normal_tier_9_cost = 450
+resource_district_normal_tier_10_cost = 675
+
+resource_district_cheap_tier_1_cost = 10
+resource_district_cheap_tier_2_cost = 10
+resource_district_cheap_tier_3_cost = 15
+resource_district_cheap_tier_4_cost = 20
+resource_district_cheap_tier_5_cost = 30
+
+resource_district_expensive_tier_1_cost = 25
+resource_district_expensive_tier_2_cost = 35
+resource_district_expensive_tier_3_cost = 45
+resource_district_expensive_tier_4_cost = 60
+resource_district_expensive_tier_5_cost = 90
+resource_district_expensive_tier_6_cost = 130
+resource_district_expensive_tier_7_cost = 185
+resource_district_expensive_tier_8_cost = 260
+resource_district_expensive_tier_9_cost = 350
+resource_district_expensive_tier_10_cost = 460
+
+########## CROSS-DISTRICT SIDE BUILDINGS ##########
+
+#Brewery
+brewery_income_tier_1 = luxuries_resource_tier_1_main_income
+brewery_income_tier_2 = luxuries_resource_tier_2_main_income
+brewery_income_tier_3 = luxuries_resource_tier_3_main_income
+brewery_income_tier_4 = luxuries_resource_tier_4_main_income
+brewery_income_tier_5 = luxuries_resource_tier_5_main_income
+brewery_output_per_level = 10
+guild_brewery_output_per_need = 40
+monthly_tax_per_beer_level = 0.05
+
+#Textiles
+textiles_flax_need_per_level = 40
+textiles_wool_need_per_level = 60
+textiles_cotton_need_per_level = 40
+textiles_silk_need_per_level = 10
+guild_textiles_alum_dyes_need = 5
+weavers_guild_fabrics_need = 60
+textiles_output_per_level = 20
+guild_textiles_output_per_need = 40
+weavers_guild_textiles_output_per_need = 80
+monthly_tax_per_textiles_level = 0.025
+
+textiles_mult_per_oil_need = 0.05
+
+textiles_income_tier_1 = luxuries_resource_tier_1_main_income
+textiles_income_tier_2 = luxuries_resource_tier_2_main_income
+textiles_income_tier_3 = luxuries_resource_tier_3_main_income
+textiles_income_tier_4 = luxuries_resource_tier_4_main_income
+textiles_income_tier_5 = luxuries_resource_tier_5_main_income
+textiles_income_tier_6 = luxuries_resource_tier_6_main_income
+textiles_income_tier_7 = luxuries_resource_tier_7_main_income
+textiles_income_tier_8 = luxuries_resource_tier_8_main_income
+textiles_income_tier_9 = luxuries_resource_tier_9_main_income
+textiles_income_tier_10 = luxuries_resource_tier_10_main_income
+
+tanning_leather_mult_per_wood_need = 0.10
+
+##### Guild district #####
+
+#Guilds
+guild_prosperity_per_production_need = 0.01
+
+##### Market district #####
+
+#Tailors
+tailor_per_textiles_income = 0.4
+tailor_alum_dyes_mult = 0.025
+
+##### Special mines #####
+
+special_mine_tier_1_mult = 0.25
+special_mine_tier_2_mult = 0.4
+special_mine_tier_3_mult = 0.55
+special_mine_tier_4_mult = 0.7
+
+special_iron_mine_tier_1_mult = 0.5
+special_iron_mine_tier_2_mult = 0.8
+special_iron_mine_tier_3_mult = 1.1
+special_iron_mine_tier_4_mult = 1.4
+
+exceptional_mine_tier_1_mult = 0.4
+exceptional_mine_tier_2_mult = 0.55
+exceptional_mine_tier_3_mult = 0.7
+exceptional_mine_tier_4_mult = 0.85
+
+#Generic mines
+generic_copper_mine_tier_1_output = 30
+generic_copper_mine_tier_2_output = 60
+generic_copper_mine_tier_3_output = 90
+generic_copper_mine_tier_4_output = 120
+
+generic_silver_mine_tier_1_output = 25
+generic_silver_mine_tier_2_output = 50
+generic_silver_mine_tier_3_output = 75
+generic_silver_mine_tier_4_output = 100
+
+generic_gold_mine_tier_1_output = 25
+generic_gold_mine_tier_2_output = 50
+generic_gold_mine_tier_3_output = 75
+generic_gold_mine_tier_4_output = 100
+
+##### Temple district #####
+
+#Minor Paper
+minor_paper_output_1 = 10
+minor_paper_output_2 = 15
+minor_paper_output_3 = 20
+minor_paper_output_4 = 25
+minor_paper_output_5 = 30
+#minor_paper_output_1 is also repeated in needs for a grand total of 50 output from the scriptorium building
+
+##### Tribal economy and prestige district #####
+
+# Tribal Economic District
+tribal_economic_production_tier_1 = 5
+tribal_economic_production_tier_2 = 10
+tribal_economic_production_tier_3 = 15
+tribal_economic_production_tier_4 = 20
+tribal_economic_production_tier_5 = 25
+tribal_economic_tax_mult_tier_1 = 0.025
+tribal_economic_tax_mult_tier_2 = 0.05
+tribal_economic_tax_mult_tier_3 = 0.075
+tribal_economic_tax_mult_tier_4 = 0.1
+tribal_economic_tax_mult_tier_5 = 0.125
+tribal_economic_direct_tax_tier_1 = 0.055
+tribal_economic_direct_tax_tier_2 = 0.11
+tribal_economic_direct_tax_tier_3 = 0.165
+tribal_economic_direct_tax_tier_4 = 0.22
+tribal_economic_direct_tax_tier_5 = 0.275
+tribal_economic_prestige_tier_1 = 0.1
+tribal_economic_prestige_tier_2 = 0.1
+tribal_economic_prestige_tier_3 = 0.15
+tribal_economic_prestige_tier_4 = 0.2
+tribal_economic_prestige_tier_5 = 0.25
+tribal_economic_piety_tier_1 = 0.1
+tribal_economic_piety_tier_2 = 0.1
+tribal_economic_piety_tier_3 = 0.15
+tribal_economic_piety_tier_4 = 0.2
+tribal_economic_piety_tier_5 = 0.25
+tribal_economic_prestige_per_need = 0.1
+tribal_economic_piety_per_need = 0.05
+tribal_economic_goods_production_mult_per_need = 0.05
+tribal_economic_textiles_output_per_need = 5
+tribal_economic_food_supply_per_need = 5
+tribal_economic_control_per_need = building_negligible_monthly_control_below_baseline_gain
+tribal_economic_province_size_growth_per_need = 0.02
+
+##### Villages district #####
+
+#Rural Refined Output Per Level
+rural_refined_goods_per_need = 15
+butcher_leather_output_per_need = 15
+
+#Cheese made alongside the cattle raised by Meadowlands and Pastures
+pastures_cheese_output_1 = 10
+pastures_cheese_output_2 = 15
+pastures_cheese_output_3 = 20
+pastures_cheese_output_4 = 25
+pastures_cheese_output_5 = 30
+
+##### Alum #####
+
+#Minor Alum Mine
+minor_alum_output_1 = 10
+minor_alum_output_2 = 20
+minor_alum_output_3 = 30
+
+#Alum Apothecaries
+alum_apothecary_income_tier_1 = luxuries_resource_tier_1_main_income
+alum_apothecary_income_tier_2 = luxuries_resource_tier_2_main_income
+alum_apothecary_income_tier_3 = luxuries_resource_tier_3_main_income
+alum_apothecary_income_tier_4 = luxuries_resource_tier_4_main_income
+alum_apothecary_income_tier_5 = luxuries_resource_tier_5_main_income
+medicaments_output_from_alum_per_level = 10
+monthly_tax_per_medicament_from_alum_level = 0.05
+
+##### Amber #####
+
+#Minor Amber Collectors
+minor_amber_output_1 = 10
+minor_amber_output_2 = 20
+minor_amber_output_3 = 30
+
+amber_tier_1_main_resource = 40
+amber_tier_2_main_resource = 75
+amber_tier_3_main_resource = 115
+amber_tier_4_main_resource = 150
+amber_tier_5_main_resource = 190
+amber_tier_6_main_resource = 225
+amber_tier_7_main_resource = 300
+amber_tier_8_main_resource = 360
+amber_tier_9_main_resource = 390
+amber_tier_10_main_resource = 420
+amber_source_buy_price_mult = -0.02
+
+bead_turner_piety_tier_1 = 0.02
+bead_turner_piety_tier_2 = 0.04
+bead_turner_piety_tier_3 = 0.06
+bead_turner_piety_tier_4 = 0.08
+bead_turner_piety_tier_5 = 0.10
+bead_turner_woodland_tax_per_amber_need = 0.03
+amber_oil_maker_woodland_tax_tier_1 = resource_tier_1_main_income
+amber_oil_maker_woodland_tax_tier_2 = resource_tier_2_main_income
+amber_oil_maker_woodland_tax_tier_3 = resource_tier_3_main_income
+amber_oil_maker_woodland_tax_tier_4 = resource_tier_4_main_income
+amber_oil_maker_woodland_tax_tier_5 = resource_tier_5_main_income
+amber_oil_maker_medicaments_output_per_amber_need = 5
+amber_oil_maker_prosperity_per_amber_need = 0.01
+amber_carver_prosperity_tier_1 = 0.010
+amber_carver_prosperity_tier_2 = 0.020
+amber_carver_prosperity_tier_3 = 0.030
+amber_carver_prosperity_tier_4 = 0.040
+amber_carver_prosperity_tier_5 = 0.050
+amber_carver_woodland_tax_per_amber_need = 0.04
+
+##### Cattle #####
+
+cattle_tier_1_main_income = resource_tier_1_main_income
+cattle_tier_2_main_income = resource_tier_2_main_income
+cattle_tier_3_main_income = resource_tier_3_main_income
+cattle_tier_4_main_income = resource_tier_4_main_income
+cattle_tier_5_main_income = resource_tier_5_main_income
+cattle_tier_6_main_income = resource_tier_6_main_income
+cattle_tier_7_main_income = resource_tier_7_main_income
+cattle_tier_8_main_income = resource_tier_8_main_income
+cattle_tier_9_main_income = resource_tier_9_main_income
+cattle_tier_10_main_income = resource_tier_10_main_income
+
+#Base Output of Cattle:
+cattle_tier_1_main_resource = tier_1_main_food_resource
+cattle_tier_2_main_resource = tier_2_main_food_resource
+cattle_tier_3_main_resource = tier_3_main_food_resource
+cattle_tier_4_main_resource = tier_4_main_food_resource
+cattle_tier_5_main_resource = tier_5_main_food_resource
+cattle_tier_6_main_resource = tier_6_main_food_resource
+cattle_tier_7_main_resource = tier_7_main_food_resource
+cattle_tier_8_main_resource = tier_8_main_food_resource
+cattle_tier_9_main_resource = tier_9_main_food_resource
+cattle_tier_10_main_resource = tier_10_main_food_resource
+
+#Cured Meat from Cattle Main Buildings:
+cattle_tier_1_main_meat = 10
+cattle_tier_2_main_meat = 20
+cattle_tier_3_main_meat = 30
+cattle_tier_4_main_meat = 40
+cattle_tier_5_main_meat = 50
+cattle_tier_6_main_meat = 60
+cattle_tier_7_main_meat = 70
+cattle_tier_8_main_meat = 80
+cattle_tier_9_main_meat = 90
+cattle_tier_10_main_meat = 100
+
+cattle_grain_need_per_level = basic_resource_need
+monthly_tax_per_cattle_level = 0.05
+
+#Cattle Side Buildings
+butchery_income_tier_1 = luxuries_resource_tier_1_main_income
+butchery_income_tier_2 = luxuries_resource_tier_2_main_income
+butchery_income_tier_3 = luxuries_resource_tier_3_main_income
+butchery_income_tier_4 = luxuries_resource_tier_4_main_income
+butchery_income_tier_5 = luxuries_resource_tier_5_main_income
+butchery_meat_mult_per_salt = 0.10
+guild_butchery_meat_output_per_need = tier_1_main_resource
+butchery_meat_output_per_need = 30 #Matches major_basic_resource_need so butcheries yield one meat per cattle consumed.
+butchery_income_for_needs = 0.05
+
+#Cheese
+cheese_income_tier_1 = resource_tier_1_main_income
+cheese_income_tier_2 = resource_tier_2_main_income
+cheese_income_tier_3 = resource_tier_3_main_income
+cheese_income_tier_4 = resource_tier_4_main_income
+cheese_income_tier_5 = resource_tier_5_main_income
+
+cheese_output_from_salt_per_level = 10
+monthly_tax_per_cheese_level = 0.05
+
+#Secondary Cattle Buildings:
+minor_cattle_output_1 = 10
+minor_cattle_output_2 = 20
+minor_cattle_output_3 = 30
+
+tallow_size_growth_tier_1 = 0.01
+tallow_size_growth_tier_2 = 0.02
+tallow_size_growth_tier_3 = 0.03
+tallow_size_growth_tier_4 = 0.04
+tallow_size_growth_tier_5 = 0.05
+tallow_income_per_cattle_need = 0.04
+
+#Manure Piles
+manure_piles_agri_tax_mult_tier_1 = 0.02
+manure_piles_agri_tax_mult_tier_2 = 0.04
+manure_piles_agri_tax_mult_tier_3 = 0.06
+manure_piles_agri_tax_mult_tier_4 = 0.08
+manure_piles_agri_tax_mult_tier_5 = 0.10
+manure_piles_agricultural_goods_mult_tier_1 = 0.02
+manure_piles_agricultural_goods_mult_tier_2 = 0.04
+manure_piles_agricultural_goods_mult_tier_3 = 0.06
+manure_piles_agricultural_goods_mult_tier_4 = 0.08
+manure_piles_agricultural_goods_mult_tier_5 = 0.10
+
+#Cheese Cave
+cheese_cave_cheese_mult_tier_1 = 0.05
+cheese_cave_cheese_mult_tier_2 = 0.10
+cheese_cave_cheese_mult_tier_3 = 0.15
+cheese_cave_cheese_mult_tier_4 = 0.20
+cheese_cave_cheese_mult_tier_5 = 0.25
+cheese_cave_agricultural_tax_tier_1 = 0.05
+cheese_cave_agricultural_tax_tier_2 = 0.10
+cheese_cave_agricultural_tax_tier_3 = 0.15
+cheese_cave_agricultural_tax_tier_4 = 0.20
+cheese_cave_agricultural_tax_tier_5 = 0.25
+
+##### Ceramics #####
+
+#Minor Ceramics
+minor_ceramics_output_1 = 10
+minor_ceramics_output_2 = 20
+minor_ceramics_output_3 = 30
+ceramics_salt_artisan_tax_per_need = 0.05
+ceramics_salt_ceramics_mult_per_need = 0.05
+
+ceramics_fuel_charcoal_prosperity_tier_1 = 0.010
+ceramics_fuel_charcoal_prosperity_tier_2 = 0.020
+ceramics_fuel_charcoal_prosperity_tier_3 = 0.030
+ceramics_fuel_charcoal_prosperity_tier_4 = 0.040
+ceramics_fuel_charcoal_prosperity_tier_5 = 0.050
+ceramics_fuel_charcoal_artisan_tax_per_wood_need = 0.03
+ceramics_fuel_charcoal_ceramics_mult_per_wood_need = 0.05
+
+ceramics_glazeworks_prosperity_tier_1 = 0.010
+ceramics_glazeworks_prosperity_tier_2 = 0.020
+ceramics_glazeworks_prosperity_tier_3 = 0.030
+ceramics_glazeworks_prosperity_tier_4 = 0.040
+ceramics_glazeworks_prosperity_tier_5 = 0.050
+ceramics_glazeworks_artisan_tax_per_dyes_need = 0.04
+ceramics_glazeworks_ceramics_mult_per_dyes_need = 0.05
+
+luxury_ceramics_court_grandeur_per_ceramics_need = 1
+
+ceramics_dragon_kiln_prosperity_tier_1 = 0.010
+ceramics_dragon_kiln_prosperity_tier_2 = 0.020
+ceramics_dragon_kiln_prosperity_tier_3 = 0.030
+ceramics_dragon_kiln_prosperity_tier_4 = 0.040
+ceramics_dragon_kiln_prosperity_tier_5 = 0.050
+ceramics_dragon_kiln_artisan_tax_per_wood_need = 0.06
+ceramics_dragon_kiln_ceramics_mult_per_wood_need = 0.05
+
+ceramic_tile_workshops_prosperity_per_size_tier_1 = 0.001
+ceramic_tile_workshops_prosperity_per_size_tier_2 = 0.002
+ceramic_tile_workshops_prosperity_per_size_tier_3 = 0.003
+ceramic_tile_workshops_prosperity_per_size_tier_4 = 0.004
+ceramic_tile_workshops_prosperity_per_size_tier_5 = 0.005
+ceramic_tile_workshops_district_cost_per_ceramics_need = -0.02
+
+fritware_workshops_artisan_tax_per_ceramics_need = 0.04
+fritware_workshops_glass_output_per_ceramics_need = 5
+
+pipe_making_shops_artisan_tax_tier_1 = 0.05
+pipe_making_shops_artisan_tax_tier_2 = 0.10
+pipe_making_shops_artisan_tax_tier_3 = 0.15
+pipe_making_shops_artisan_tax_tier_4 = 0.20
+pipe_making_shops_artisan_tax_tier_5 = 0.25
+
+##### Copper #####
+
+#Minor Copper Mine
+minor_copper_output_1 = 10
+minor_copper_output_2 = 20
+minor_copper_output_3 = 30
+
+##### Cotton #####
+
+#80% of tier_N_main_resource
+cotton_tier_1_main_resource = 50
+cotton_tier_2_main_resource = 85
+cotton_tier_3_main_resource = 120
+cotton_tier_4_main_resource = 155
+cotton_tier_5_main_resource = 190
+cotton_tier_6_main_resource = 230
+cotton_tier_7_main_resource = 265
+cotton_tier_8_main_resource = 300
+cotton_tier_9_main_resource = 335
+cotton_tier_10_main_resource = 370
+
+#Minor Cotton
+minor_cotton_output_1 = 10
+minor_cotton_output_2 = 20
+minor_cotton_output_3 = 30
+
+#Wickmaker
+wickmaker_income_tier_1 = resource_tier_1_main_income
+wickmaker_income_tier_2 = resource_tier_2_main_income
+wickmaker_income_tier_3 = resource_tier_3_main_income
+wickmaker_income_tier_4 = resource_tier_4_main_income
+wickmaker_income_tier_5 = resource_tier_5_main_income
+wickmaker_artisan_tax_per_cotton_need = 0.05
+
+#Quilting Workshop
+quilting_workshop_income_tier_1 = 0.05
+quilting_workshop_income_tier_2 = 0.10
+quilting_workshop_income_tier_3 = 0.15
+quilting_workshop_income_tier_4 = 0.20
+quilting_workshop_income_tier_5 = 0.25
+quilting_workshop_maa_maintenance_per_cotton_need = -0.02
+
+#Cottonseed Mill
+cottonseed_mill_cotton_mult_tier_1 = 0.05
+cottonseed_mill_cotton_mult_tier_2 = 0.10
+cottonseed_mill_cotton_mult_tier_3 = 0.15
+cottonseed_mill_cotton_mult_tier_4 = 0.20
+cottonseed_mill_cotton_mult_tier_5 = 0.25
+cottonseed_mill_agricultural_tax_tier_1 = resource_tier_1_main_income
+cottonseed_mill_agricultural_tax_tier_2 = resource_tier_2_main_income
+cottonseed_mill_agricultural_tax_tier_3 = resource_tier_3_main_income
+cottonseed_mill_agricultural_tax_tier_4 = resource_tier_4_main_income
+cottonseed_mill_agricultural_tax_tier_5 = resource_tier_5_main_income
+cottonseed_mill_agricultural_tax_per_cotton_need = 0.05
+
+#Mixed Fabric Weaver
+mixed_fabric_weaver_textiles_mult_tier_1 = 0.08
+mixed_fabric_weaver_textiles_mult_tier_2 = 0.16
+mixed_fabric_weaver_textiles_mult_tier_3 = 0.24
+mixed_fabric_weaver_textiles_mult_tier_4 = 0.32
+mixed_fabric_weaver_textiles_mult_tier_5 = 0.40
+mixed_fabric_weaver_income_tier_1 = 0.05
+mixed_fabric_weaver_income_tier_2 = 0.10
+mixed_fabric_weaver_income_tier_3 = 0.15
+mixed_fabric_weaver_income_tier_4 = 0.20
+mixed_fabric_weaver_income_tier_5 = 0.25
+mixed_fabric_weaver_prestige_per_silk_need = 0.02
+mixed_fabric_weaver_artisan_tax_per_flax_need = 0.03
+mixed_fabric_weaver_artisan_tax_per_wool_need = 0.03
+
+##### Dyes #####
+
+#Minor Dyes
+minor_dyes_output_1 = 10
+minor_dyes_output_2 = 20
+minor_dyes_output_3 = 30
+
+#Lake Pigment Workshop
+lake_pigment_artisan_tax_per_dyes_need = 0.05
+lake_pigment_books_mult_per_dyes_need = 0.05
+lake_pigment_artisan_tax_mult_per_alum_need = tax_mult_per_production_need
+
+#Dyeing Pits
+dyeing_pits_income_tier_1 = resource_tier_1_main_income
+dyeing_pits_income_tier_2 = resource_tier_2_main_income
+dyeing_pits_income_tier_3 = resource_tier_3_main_income
+dyeing_pits_income_tier_4 = resource_tier_4_main_income
+dyeing_pits_income_tier_5 = resource_tier_5_main_income
+dyeing_pits_artisan_tax_per_dyes_need = 0.05
+dyeing_pits_textiles_output_per_fabrics_need = textiles_output_per_level
+dyeing_pits_artisan_tax_per_fabrics_need = monthly_tax_per_textiles_level
+dyeing_pits_textiles_mult_per_alum_need = textiles_mult_per_oil_need
+dyeing_pits_artisan_tax_per_alum_need = 0.05
+
+#Packing Warehouse
+dyes_packing_warehouse_agricultural_tax_tier_1 = resource_tier_1_main_income
+dyes_packing_warehouse_agricultural_tax_tier_2 = resource_tier_2_main_income
+dyes_packing_warehouse_agricultural_tax_tier_3 = resource_tier_3_main_income
+dyes_packing_warehouse_agricultural_tax_tier_4 = resource_tier_4_main_income
+dyes_packing_warehouse_agricultural_tax_tier_5 = resource_tier_5_main_income
+dyes_packing_warehouse_dyes_mult_per_hemp_need = 0.05
+dyes_packing_warehouse_agricultural_tax_per_hemp_need = 0.03
+
+#Illumination Workshop
+illumination_workshop_prestige_tier_1 = 0.02
+illumination_workshop_prestige_tier_2 = 0.04
+illumination_workshop_prestige_tier_3 = 0.06
+illumination_workshop_prestige_tier_4 = 0.08
+illumination_workshop_prestige_tier_5 = 0.10
+illumination_workshop_artisan_tax_per_dyes_need = 0.05
+illumination_workshop_books_output_per_dyes_need = small_quantity_refined_production
+
+##### Fish #####
+
+fishermen_tier_1_tradition_tax_bonus = 0.025
+fishermen_tier_2_tradition_tax_bonus = 0.05
+fishermen_tier_3_tradition_tax_bonus = 0.075
+fishermen_tier_4_tradition_tax_bonus = 0.1
+fishermen_tier_5_tradition_tax_bonus = 0.125
+fishermen_tier_6_tradition_tax_bonus = 0.15
+fishermen_tier_7_tradition_tax_bonus = 0.175
+fishermen_tier_8_tradition_tax_bonus = 0.2
+fishermen_tier_9_tradition_tax_bonus = 0.225
+fishermen_tier_10_tradition_tax_bonus = 0.25
+
+#Minor Fish
+minor_fish_output_1 = 10
+minor_fish_output_2 = 20
+minor_fish_output_3 = 30
+
+#Fish Salteries
+fish_saltery_income_tier_1 = resource_tier_1_main_income
+fish_saltery_income_tier_2 = resource_tier_2_main_income
+fish_saltery_income_tier_3 = resource_tier_3_main_income
+fish_saltery_income_tier_4 = resource_tier_4_main_income
+fish_saltery_income_tier_5 = resource_tier_5_main_income
+fish_multiplier_per_salt_need = 0.10
+northern_fish_salt_price_mult = 0.01
+salted_fish_buy_price_mult = -0.005
+
+netmakers_income_tier_1 = resource_tier_1_main_income
+netmakers_income_tier_2 = resource_tier_2_main_income
+netmakers_income_tier_3 = resource_tier_3_main_income
+netmakers_income_tier_4 = resource_tier_4_main_income
+netmakers_income_tier_5 = resource_tier_5_main_income
+netmakers_fish_mult_per_fibre_need = 0.08
+netmakers_maritime_tax_per_fibre_need = 0.03
+
+#Fish Oil Putrefaction Vats
+fish_oil_maritime_tax_per_fish_need = 0.05
+
+#Glue Boiling Cauldrons
+glue_cauldrons_income_tier_1 = resource_tier_1_main_income
+glue_cauldrons_income_tier_2 = resource_tier_2_main_income
+glue_cauldrons_income_tier_3 = resource_tier_3_main_income
+glue_cauldrons_income_tier_4 = resource_tier_4_main_income
+glue_cauldrons_income_tier_5 = resource_tier_5_main_income
+glue_cauldrons_production_mult_tier_1 = 0.02
+glue_cauldrons_production_mult_tier_2 = 0.04
+glue_cauldrons_production_mult_tier_3 = 0.06
+glue_cauldrons_production_mult_tier_4 = 0.08
+glue_cauldrons_production_mult_tier_5 = 0.10
+glue_maritime_tax_per_fish_need = 0.02
+
+#Garum Vats
+garum_prestige_tier_1 = 0.02
+garum_prestige_tier_2 = 0.04
+garum_prestige_tier_3 = 0.06
+garum_prestige_tier_4 = 0.08
+garum_prestige_tier_5 = 0.10
+garum_artisan_tax_per_fish_need = 0.05
+
+#Pearl Fishery
+pearl_fishery_income_tier_1 = resource_tier_1_main_income
+pearl_fishery_income_tier_2 = resource_tier_2_main_income
+pearl_fishery_income_tier_3 = resource_tier_3_main_income
+pearl_fishery_income_tier_4 = resource_tier_4_main_income
+pearl_fishery_income_tier_5 = resource_tier_5_main_income
+pearl_fishery_gems_tier_1 = precious_mine_tier_1_main_resource
+pearl_fishery_gems_tier_2 = precious_mine_tier_2_main_resource
+pearl_fishery_gems_tier_3 = precious_mine_tier_3_main_resource
+pearl_fishery_gems_tier_4 = precious_mine_tier_4_main_resource
+pearl_fishery_gems_tier_5 = precious_mine_tier_5_main_resource
+
+#Walrus Hunting Camp
+walrus_hunting_camp_income_tier_1 = resource_tier_1_main_income
+walrus_hunting_camp_income_tier_2 = resource_tier_2_main_income
+walrus_hunting_camp_income_tier_3 = resource_tier_3_main_income
+walrus_hunting_camp_income_tier_4 = resource_tier_4_main_income
+walrus_hunting_camp_income_tier_5 = resource_tier_5_main_income
+walrus_hunting_camp_ivory_tier_1 = 20
+walrus_hunting_camp_ivory_tier_2 = 40
+walrus_hunting_camp_ivory_tier_3 = 60
+walrus_hunting_camp_ivory_tier_4 = 80
+walrus_hunting_camp_ivory_tier_5 = 100
+
+#Naphta Pit
+naphta_pit_income_tier_1 = resource_tier_1_main_income
+naphta_pit_income_tier_2 = resource_tier_2_main_income
+naphta_pit_income_tier_3 = resource_tier_3_main_income
+naphta_pit_income_tier_4 = resource_tier_4_main_income
+naphta_pit_income_tier_5 = resource_tier_5_main_income
+naphta_pit_medicaments_tier_1 = 10
+naphta_pit_medicaments_tier_2 = 20
+naphta_pit_medicaments_tier_3 = 30
+naphta_pit_medicaments_tier_4 = 40
+naphta_pit_medicaments_tier_5 = 50
+
+##### Flax #####
+
+#80% of tier_N_main_resource
+flax_tier_1_main_resource = 50
+flax_tier_2_main_resource = 85
+flax_tier_3_main_resource = 120
+flax_tier_4_main_resource = 155
+flax_tier_5_main_resource = 190
+flax_tier_6_main_resource = 230
+flax_tier_7_main_resource = 265
+flax_tier_8_main_resource = 300
+flax_tier_9_main_resource = 335
+flax_tier_10_main_resource = 370
+
+#Minor Flax
+minor_flax_output_1 = 10
+minor_flax_output_2 = 20
+minor_flax_output_3 = 30
+
+#Varnishing Workshop
+varnishing_workshop_income_tier_1 = resource_tier_1_main_income
+varnishing_workshop_income_tier_2 = resource_tier_2_main_income
+varnishing_workshop_income_tier_3 = resource_tier_3_main_income
+varnishing_workshop_income_tier_4 = resource_tier_4_main_income
+varnishing_workshop_income_tier_5 = resource_tier_5_main_income
+varnishing_workshop_artisan_tax_per_flax_need = 0.05
+varnishing_workshop_artisan_tax_per_carpentry_need = 0.05
+
+#Linseed Press
+linseed_oil_cattle_mult_per_flax_need = 0.05
+
+##### Fruit #####
+
+#Minor Fruit Gardens
+minor_fruit_output_1 = 10
+minor_fruit_output_2 = 20
+minor_fruit_output_3 = 30
+
+#Drying Terraces
+drying_terraces_agricultural_tax_tier_1 = resource_tier_1_main_income
+drying_terraces_agricultural_tax_tier_2 = resource_tier_2_main_income
+drying_terraces_agricultural_tax_tier_3 = resource_tier_3_main_income
+drying_terraces_agricultural_tax_tier_4 = resource_tier_4_main_income
+drying_terraces_agricultural_tax_tier_5 = resource_tier_5_main_income
+drying_terraces_fruit_mult_tier_1 = 0.05
+drying_terraces_fruit_mult_tier_2 = 0.10
+drying_terraces_fruit_mult_tier_3 = 0.15
+drying_terraces_fruit_mult_tier_4 = 0.20
+drying_terraces_fruit_mult_tier_5 = 0.25
+
+#Preserved Fruit Workshops
+preserved_fruit_workshops_income_tier_1 = resource_tier_1_main_income
+preserved_fruit_workshops_income_tier_2 = resource_tier_2_main_income
+preserved_fruit_workshops_income_tier_3 = resource_tier_3_main_income
+preserved_fruit_workshops_income_tier_4 = resource_tier_4_main_income
+preserved_fruit_workshops_income_tier_5 = resource_tier_5_main_income
+preserved_fruit_agricultural_tax_per_fruit_need = 0.05
+preserved_fruit_food_supply_per_fruit_need = 5
+preserved_fruit_artisan_tax_per_sugar_need = 0.1
+
+#Syrup Boiling Vats
+syrup_boiling_vats_income_tier_1 = resource_tier_1_main_income
+syrup_boiling_vats_income_tier_2 = resource_tier_2_main_income
+syrup_boiling_vats_income_tier_3 = resource_tier_3_main_income
+syrup_boiling_vats_income_tier_4 = resource_tier_4_main_income
+syrup_boiling_vats_income_tier_5 = resource_tier_5_main_income
+syrup_boiling_vats_agricultural_tax_per_fruit_need = 0.05
+syrup_boiling_vats_agricultural_tax_per_wine_need = 0.05
+
+##### Furs #####
+
+#Minor Furs
+minor_furs_output_1 = 10
+minor_furs_output_2 = 20
+minor_furs_output_3 = 30
+furriers_prosperity_per_fur_need = 0.01
+
+#Fur Trading Post
+furs_trade_post_income_tier_1 = resource_tier_1_main_income
+furs_trade_post_income_tier_2 = resource_tier_2_main_income
+furs_trade_post_income_tier_3 = resource_tier_3_main_income
+furs_trade_post_income_tier_4 = resource_tier_4_main_income
+furs_trade_post_income_tier_5 = resource_tier_5_main_income
+furs_trade_post_furs_mult_per_need = 0.02
+furs_trade_post_woodland_tax_per_need = 0.03
+
+#Musk Processing Shop
+musk_processing_shop_income_tier_1 = resource_tier_1_main_income
+musk_processing_shop_income_tier_2 = resource_tier_2_main_income
+musk_processing_shop_income_tier_3 = resource_tier_3_main_income
+musk_processing_shop_income_tier_4 = resource_tier_4_main_income
+musk_processing_shop_income_tier_5 = resource_tier_5_main_income
+musk_processing_shop_woodland_tax_per_furs_need = 0.05
+musk_processing_shop_incense_output_per_furs_need = 10
+
+#Smokehouse
+smokehouse_income_tier_1 = resource_tier_1_main_income
+smokehouse_income_tier_2 = resource_tier_2_main_income
+smokehouse_income_tier_3 = resource_tier_3_main_income
+smokehouse_income_tier_4 = resource_tier_4_main_income
+smokehouse_income_tier_5 = resource_tier_5_main_income
+smokehouse_meat_output_per_furs_need = 10
+smokehouse_woodland_tax_per_furs_need = 0.05
+smokehouse_meat_mult_per_salt_need = 0.05
+smokehouse_woodland_tax_per_salt_need = 0.03
+
+#Noble Hunting Lodges
+noble_hunting_lodges_prestige_tier_1 = 0.02
+noble_hunting_lodges_prestige_tier_2 = 0.04
+noble_hunting_lodges_prestige_tier_3 = 0.06
+noble_hunting_lodges_prestige_tier_4 = 0.08
+noble_hunting_lodges_prestige_tier_5 = 0.10
+noble_hunting_lodges_prestige_per_furs_need = 0.02
+
+##### Gems #####
+
+#Minor Gems Mine
+minor_gems_output_1 = 10
+minor_gems_output_2 = 20
+minor_gems_output_3 = 30
+
+##### Gold #####
+
+#Minor Gold Mine
+minor_gold_output_1 = 10
+minor_gold_output_2 = 20
+minor_gold_output_3 = 30
+
+##### Grain #####
+
+grain_tier_1_main_income = resource_tier_1_main_income
+grain_tier_2_main_income = resource_tier_2_main_income
+grain_tier_3_main_income = resource_tier_3_main_income
+grain_tier_4_main_income = resource_tier_4_main_income
+grain_tier_5_main_income = resource_tier_5_main_income
+grain_tier_6_main_income = resource_tier_6_main_income
+grain_tier_7_main_income = resource_tier_7_main_income
+grain_tier_8_main_income = resource_tier_8_main_income
+grain_tier_9_main_income = resource_tier_9_main_income
+grain_tier_10_main_income = resource_tier_10_main_income
+
+#Base Output of Grain:
+grain_tier_1_main_resource = tier_1_main_food_resource
+grain_tier_2_main_resource = tier_2_main_food_resource
+grain_tier_3_main_resource = tier_3_main_food_resource
+grain_tier_4_main_resource = tier_4_main_food_resource
+grain_tier_5_main_resource = tier_5_main_food_resource
+grain_tier_6_main_resource = tier_6_main_food_resource
+grain_tier_7_main_resource = tier_7_main_food_resource
+grain_tier_8_main_resource = tier_8_main_food_resource
+grain_tier_9_main_resource = tier_9_main_food_resource
+grain_tier_10_main_resource = tier_10_main_food_resource
+
+#Needs
+grain_multiplier_per_iron_need = 0.15
+grain_multiplier_per_beast_need = 0.05 #Fillable once more every second level, so up to 25% at the top of the chain
+
+#Secondary Grain Buildings:
+minor_grain_output_1 = 10
+minor_grain_output_2 = 20
+minor_grain_output_3 = 30
+
+#Biscuit Bakery
+biscuit_bakery_maa_maintenance_per_grain_need = -0.02
+
+#Straw Weavery
+straw_weavery_income_tier_1 = resource_tier_1_main_income
+straw_weavery_income_tier_2 = resource_tier_2_main_income
+straw_weavery_income_tier_3 = resource_tier_3_main_income
+straw_weavery_income_tier_4 = resource_tier_4_main_income
+straw_weavery_income_tier_5 = resource_tier_5_main_income
+straw_weavery_rural_district_cost_per_grain_need = -0.02
+
+#Pasta Mill
+pasta_mill_grain_mult_tier_1 = 0.08
+pasta_mill_grain_mult_tier_2 = 0.16
+pasta_mill_grain_mult_tier_3 = 0.24
+pasta_mill_grain_mult_tier_4 = 0.32
+pasta_mill_grain_mult_tier_5 = 0.40
+pasta_mill_agricultural_tax_tier_1 = resource_tier_1_main_income
+pasta_mill_agricultural_tax_tier_2 = resource_tier_2_main_income
+pasta_mill_agricultural_tax_tier_3 = resource_tier_3_main_income
+pasta_mill_agricultural_tax_tier_4 = resource_tier_4_main_income
+pasta_mill_agricultural_tax_tier_5 = resource_tier_5_main_income
+
+#Bran Mill
+bran_mill_grain_mult_tier_1 = 0.05
+bran_mill_grain_mult_tier_2 = 0.10
+bran_mill_grain_mult_tier_3 = 0.15
+bran_mill_grain_mult_tier_4 = 0.20
+bran_mill_grain_mult_tier_5 = 0.25
+bran_mill_agricultural_tax_tier_1 = resource_tier_1_main_income
+bran_mill_agricultural_tax_tier_2 = resource_tier_2_main_income
+bran_mill_agricultural_tax_tier_3 = resource_tier_3_main_income
+bran_mill_agricultural_tax_tier_4 = resource_tier_4_main_income
+bran_mill_agricultural_tax_tier_5 = resource_tier_5_main_income
+
+#Grain Stores
+grain_stores_income_tier_1 = resource_tier_1_main_income
+grain_stores_income_tier_2 = resource_tier_2_main_income
+grain_stores_income_tier_3 = resource_tier_3_main_income
+grain_stores_income_tier_4 = resource_tier_4_main_income
+grain_stores_income_tier_5 = resource_tier_5_main_income
+grain_stores_control_per_grain_need = building_negligible_monthly_control_below_baseline_gain
+
+#Communal Bread Ovens
+communal_bread_ovens_income_tier_1 = resource_tier_1_main_income
+communal_bread_ovens_income_tier_2 = resource_tier_2_main_income
+communal_bread_ovens_income_tier_3 = resource_tier_3_main_income
+communal_bread_ovens_income_tier_4 = resource_tier_4_main_income
+communal_bread_ovens_income_tier_5 = resource_tier_5_main_income
+communal_bread_ovens_size_change_tier_1 = 0.02
+communal_bread_ovens_size_change_tier_2 = 0.04
+communal_bread_ovens_size_change_tier_3 = 0.06
+communal_bread_ovens_size_change_tier_4 = 0.08
+communal_bread_ovens_size_change_tier_5 = 0.1
+communal_bread_ovens_popular_opinion_per_grain_need = building_tiny_popular_opinion_gain
+
+##### Hemp #####
+
+#Minor Hemp
+minor_hemp_output_1 = 10
+minor_hemp_output_2 = 20
+minor_hemp_output_3 = 30
+hemp_thatching_district_cost_per_need = -0.02
+ropeworks_artisan_tax_per_hemp_need = 0.03
+hemp_weaving_textiles_output_per_need = 5
+hemp_naval_supplies_maritime_tax_mult_per_need = 0.02
+
+ropeworks_income_tier_1 = resource_tier_1_main_income
+ropeworks_income_tier_2 = resource_tier_2_main_income
+ropeworks_income_tier_3 = resource_tier_3_main_income
+ropeworks_income_tier_4 = resource_tier_4_main_income
+ropeworks_income_tier_5 = resource_tier_5_main_income
+breaking_mill_hemp_mult_tier_1 = 0.08
+breaking_mill_hemp_mult_tier_2 = 0.16
+breaking_mill_hemp_mult_tier_3 = 0.24
+breaking_mill_hemp_mult_tier_4 = 0.32
+breaking_mill_hemp_mult_tier_5 = 0.40
+breaking_mill_agricultural_tax_mult_tier_1 = 0.02
+breaking_mill_agricultural_tax_mult_tier_2 = 0.04
+breaking_mill_agricultural_tax_mult_tier_3 = 0.06
+breaking_mill_agricultural_tax_mult_tier_4 = 0.08
+breaking_mill_agricultural_tax_mult_tier_5 = 0.10
+
+##### Honey #####
+
+#Minor Honey
+minor_honey_output_1 = 10
+minor_honey_output_2 = 20
+minor_honey_output_3 = 30
+
+#Honey Apothecaries
+honey_apothecary_income_tier_1 = luxuries_resource_tier_1_main_income
+honey_apothecary_income_tier_2 = luxuries_resource_tier_2_main_income
+honey_apothecary_income_tier_3 = luxuries_resource_tier_3_main_income
+honey_apothecary_income_tier_4 = luxuries_resource_tier_4_main_income
+honey_apothecary_income_tier_5 = luxuries_resource_tier_5_main_income
+medicaments_output_from_honey_per_level = 10
+monthly_tax_per_medicament_from_honey_level = 0.05
+
+honey_wax_size_growth_tier_1 = 0.01
+honey_wax_size_growth_tier_2 = 0.02
+honey_wax_size_growth_tier_3 = 0.03
+honey_wax_size_growth_tier_4 = 0.04
+honey_wax_size_growth_tier_5 = 0.05
+honey_wax_artisan_income_per_honey_need = 0.05
+
+##### Horse #####
+
+horse_breeder_tier_1_tradition_tax_bonus = 0.025
+horse_breeder_tier_2_tradition_tax_bonus = 0.05
+horse_breeder_tier_3_tradition_tax_bonus = 0.075
+horse_breeder_tier_4_tradition_tax_bonus = 0.1
+horse_breeder_tier_5_tradition_tax_bonus = 0.125
+horse_breeder_tier_6_tradition_tax_bonus = 0.15
+horse_breeder_tier_7_tradition_tax_bonus = 0.175
+horse_breeder_tier_8_tradition_tax_bonus = 0.2
+horse_breeder_tier_9_tradition_tax_bonus = 0.225
+horse_breeder_tier_10_tradition_tax_bonus = 0.25
+
+#Minor Horses
+minor_horses_output_1 = 10
+minor_horses_output_2 = 20
+minor_horses_output_3 = 30
+
+warhorse_training_income_tier_1 = resource_tier_1_main_income
+warhorse_training_income_tier_2 = resource_tier_2_main_income
+warhorse_training_income_tier_3 = resource_tier_3_main_income
+warhorse_training_income_tier_4 = resource_tier_4_main_income
+warhorse_training_income_tier_5 = resource_tier_5_main_income
+horse_studfarm_horse_mult_per_grain_need = 0.08
+
+##### Incense #####
+
+#Minor Incense
+minor_incense_output_1 = 10
+minor_incense_output_2 = 20
+minor_incense_output_3 = 30
+
+#Compound Perfumery
+compound_perfumery_income_tier_1 = resource_tier_1_main_income
+compound_perfumery_income_tier_2 = resource_tier_2_main_income
+compound_perfumery_income_tier_3 = resource_tier_3_main_income
+compound_perfumery_income_tier_4 = resource_tier_4_main_income
+compound_perfumery_income_tier_5 = resource_tier_5_main_income
+compound_perfumery_artisan_tax_per_incense_need = 0.05
+
+#Sorting and Packaging Warehouse
+incense_warehouse_agricultural_tax_tier_1 = resource_tier_1_main_income
+incense_warehouse_agricultural_tax_tier_2 = resource_tier_2_main_income
+incense_warehouse_agricultural_tax_tier_3 = resource_tier_3_main_income
+incense_warehouse_agricultural_tax_tier_4 = resource_tier_4_main_income
+incense_warehouse_agricultural_tax_tier_5 = resource_tier_5_main_income
+incense_warehouse_incense_mult_tier_1 = 0.1
+incense_warehouse_incense_mult_tier_2 = 0.15
+incense_warehouse_incense_mult_tier_3 = 0.2
+incense_warehouse_incense_mult_tier_4 = 0.25
+incense_warehouse_incense_mult_tier_5 = 0.3
+
+#Distillation Workshop
+incense_distillation_income_tier_1 = resource_tier_1_main_income
+incense_distillation_income_tier_2 = resource_tier_2_main_income
+incense_distillation_income_tier_3 = resource_tier_3_main_income
+incense_distillation_income_tier_4 = resource_tier_4_main_income
+incense_distillation_income_tier_5 = resource_tier_5_main_income
+incense_distillation_incense_mult_per_spices_need = 0.08
+incense_distillation_artisan_tax_per_spices_need = 0.05
+incense_distillation_artisan_tax_per_glass_need = 0.05
+
+#Cosmetic Shop
+cosmetic_shop_artisan_tax_per_incense_need = 0.03
+
+##### Iron #####
+
+blast_furnace_income_tier_1 = resource_tier_5_main_income
+blast_furnace_income_tier_2 = resource_tier_6_main_income
+blast_furnace_income_tier_3 = resource_tier_7_main_income
+blast_furnace_income_tier_4 = resource_tier_8_main_income
+blast_furnace_income_tier_5 = resource_tier_9_main_income
+
+#Minor Iron Mine
+minor_iron_output_1 = 25
+minor_iron_output_2 = 50
+minor_iron_output_3 = 75
+
+##### Ivory #####
+
+#Minor Ivory
+minor_ivory_output_1 = 10
+minor_ivory_output_2 = 20
+minor_ivory_output_3 = 30
+
+#Sacred Elephant Compound
+sacred_elephant_compound_income_tier_1 = resource_tier_1_main_income
+sacred_elephant_compound_income_tier_2 = resource_tier_2_main_income
+sacred_elephant_compound_income_tier_3 = resource_tier_3_main_income
+sacred_elephant_compound_income_tier_4 = resource_tier_4_main_income
+sacred_elephant_compound_income_tier_5 = resource_tier_5_main_income
+sacred_elephant_compound_piety_per_ivory_need = 0.02
+
+#Military Elephant Compound
+military_elephant_compound_income_tier_1 = resource_tier_1_main_income
+military_elephant_compound_income_tier_2 = resource_tier_2_main_income
+military_elephant_compound_income_tier_3 = resource_tier_3_main_income
+military_elephant_compound_income_tier_4 = resource_tier_4_main_income
+military_elephant_compound_income_tier_5 = resource_tier_5_main_income
+ivory_labor_elephants_income_tier_1 = resource_tier_1_main_income
+ivory_labor_elephants_income_tier_2 = resource_tier_2_main_income
+ivory_labor_elephants_income_tier_3 = resource_tier_3_main_income
+ivory_labor_elephants_income_tier_4 = resource_tier_4_main_income
+ivory_labor_elephants_income_tier_5 = resource_tier_5_main_income
+ivory_labor_elephant_district_cost_per_need = -0.02
+
+ivory_carvers_income_tier_1 = resource_tier_1_main_income
+ivory_carvers_income_tier_2 = resource_tier_2_main_income
+ivory_carvers_income_tier_3 = resource_tier_3_main_income
+ivory_carvers_income_tier_4 = resource_tier_4_main_income
+ivory_carvers_income_tier_5 = resource_tier_5_main_income
+ivory_carvers_prosperity_per_ivory_need = 0.05
+
+##### Jade #####
+
+#Minor Jade Mine
+minor_jade_output_1 = 10
+minor_jade_output_2 = 20
+minor_jade_output_3 = 30
+
+##### Medicaments #####
+
+#Minor Medicaments
+minor_medicaments_output_1 = 10
+minor_medicaments_output_2 = 20
+minor_medicaments_output_3 = 30
+
+local_hospital_epidemic_resistance_tier_1 = 1
+local_hospital_epidemic_resistance_tier_2 = 2
+local_hospital_epidemic_resistance_tier_3 = 3
+local_hospital_epidemic_resistance_tier_4 = 4
+local_hospital_epidemic_resistance_tier_5 = 5
+local_hospital_province_size_per_medicaments_need = 5
+apothecary_prosperity_tier_1 = 0.010
+apothecary_prosperity_tier_2 = 0.020
+apothecary_prosperity_tier_3 = 0.030
+apothecary_prosperity_tier_4 = 0.040
+apothecary_prosperity_tier_5 = 0.050
+apothecary_artisan_tax_per_medicaments_need = 0.04
+
+#Theriac Workshop
+theriac_workshop_artisan_tax_per_need = 0.03
+theriac_workshop_medicaments_mult_per_need = 0.03
+
+#Perfumery
+perfumery_income_tier_1 = resource_tier_1_main_income
+perfumery_income_tier_2 = resource_tier_2_main_income
+perfumery_income_tier_3 = resource_tier_3_main_income
+perfumery_income_tier_4 = resource_tier_4_main_income
+perfumery_income_tier_5 = resource_tier_5_main_income
+perfumery_artisan_tax_per_medicaments_need = 0.05
+perfumery_incense_output_per_medicaments_need = 10
+
+#Stupefactives Apothecary
+stupefactives_apothecary_income_tier_1 = resource_tier_1_main_income
+stupefactives_apothecary_income_tier_2 = resource_tier_2_main_income
+stupefactives_apothecary_income_tier_3 = resource_tier_3_main_income
+stupefactives_apothecary_income_tier_4 = resource_tier_4_main_income
+stupefactives_apothecary_income_tier_5 = resource_tier_5_main_income
+stupefactives_apothecary_artisan_tax_per_medicaments_need = 0.05
+stupefactives_apothecary_popular_opinion_per_medicaments_need = building_tiny_popular_opinion_gain
+
+##### Millet #####
+
+#Minor Millet Fields
+minor_millet_output_1 = 10
+minor_millet_output_2 = 20
+minor_millet_output_3 = 30
+
+double_cropping_agricultural_tax_tier_1 = resource_tier_1_main_income
+double_cropping_agricultural_tax_tier_2 = resource_tier_2_main_income
+double_cropping_agricultural_tax_tier_3 = resource_tier_3_main_income
+double_cropping_agricultural_tax_tier_4 = resource_tier_4_main_income
+double_cropping_agricultural_tax_tier_5 = resource_tier_5_main_income
+double_cropping_potential_crop_mult_tier_1 = 0.05
+double_cropping_potential_crop_mult_tier_2 = 0.10
+double_cropping_potential_crop_mult_tier_3 = 0.15
+double_cropping_potential_crop_mult_tier_4 = 0.20
+double_cropping_potential_crop_mult_tier_5 = 0.25
+
+sorghum_stalk_builder_woodland_tax_tier_1 = resource_tier_1_main_income
+sorghum_stalk_builder_woodland_tax_tier_2 = resource_tier_2_main_income
+sorghum_stalk_builder_woodland_tax_tier_3 = resource_tier_3_main_income
+sorghum_stalk_builder_woodland_tax_tier_4 = resource_tier_4_main_income
+sorghum_stalk_builder_woodland_tax_tier_5 = resource_tier_5_main_income
+sorghum_stalk_builder_wood_output_per_millet_need = 5
+sorghum_stalk_builder_prosperity_per_millet_need = 0.01
+
+millet_distillery_income_tier_1 = resource_tier_1_main_income
+millet_distillery_income_tier_2 = resource_tier_2_main_income
+millet_distillery_income_tier_3 = resource_tier_3_main_income
+millet_distillery_income_tier_4 = resource_tier_4_main_income
+millet_distillery_income_tier_5 = resource_tier_5_main_income
+millet_distillery_income_per_millet_need = resource_tier_2_main_income
+
+fodder_stores_agricultural_tax_tier_1 = resource_tier_1_main_income
+fodder_stores_agricultural_tax_tier_2 = resource_tier_2_main_income
+fodder_stores_agricultural_tax_tier_3 = resource_tier_3_main_income
+fodder_stores_agricultural_tax_tier_4 = resource_tier_4_main_income
+fodder_stores_agricultural_tax_tier_5 = resource_tier_5_main_income
+
+#Millet Brewery
+millet_brewery_income_tier_1 = resource_tier_1_main_income
+millet_brewery_income_tier_2 = resource_tier_2_main_income
+millet_brewery_income_tier_3 = resource_tier_3_main_income
+millet_brewery_income_tier_4 = resource_tier_4_main_income
+millet_brewery_income_tier_5 = resource_tier_5_main_income
+millet_brewery_agricultural_tax_per_millet_need = 0.05
+millet_brewery_beer_output_per_millet_need = 10
+
+#Millet Granaries
+millet_granaries_size_change_per_millet_need = 0.02
+
+##### Mine #####
+
+#Needs
+mine_multiplier_per_beast_need = 0.05
+
+#Jewelers
+jewelry_output_from_precious_metals_per_level = 30
+jewelry_output_from_jewelry_materials_per_level = 30
+jewelry_outpout_per_need_mines = small_quantity_refined_production
+
+##### Oil #####
+
+#Oil Side Buildings
+soap_artisan_income_per_oil_need = 0.03
+soap_epidemic_resistance_tier_1 = 2
+soap_epidemic_resistance_tier_2 = 4
+soap_epidemic_resistance_tier_3 = 6
+soap_epidemic_resistance_tier_4 = 8
+soap_epidemic_resistance_tier_5 = 10
+olive_mill_oil_mult_per_stone_need = 0.05
+olive_mill_agri_tax_mult_tier_1 = 0.03
+olive_mill_agri_tax_mult_tier_2 = 0.06
+olive_mill_agri_tax_mult_tier_3 = 0.09
+olive_mill_agri_tax_mult_tier_4 = 0.12
+olive_mill_agri_tax_mult_tier_5 = 0.15
+oil_apothecary_income_tier_1 = luxuries_resource_tier_1_main_income
+oil_apothecary_income_tier_2 = luxuries_resource_tier_2_main_income
+oil_apothecary_income_tier_3 = luxuries_resource_tier_3_main_income
+oil_apothecary_income_tier_4 = luxuries_resource_tier_4_main_income
+oil_apothecary_income_tier_5 = luxuries_resource_tier_5_main_income
+medicaments_output_from_oil_per_level = 10
+monthly_tax_per_medicament_from_oil_level = 0.05
+wax_artisan_income_per_oil_need = 0.02
+wax_size_growth_tier_1 = 0.01
+wax_size_growth_tier_2 = 0.02
+wax_size_growth_tier_3 = 0.03
+wax_size_growth_tier_4 = 0.04
+wax_size_growth_tier_5 = 0.05
+
+#Minor Oil
+minor_oil_output_1 = 10
+minor_oil_output_2 = 20
+minor_oil_output_3 = 30
+
+##### Rice #####
+
+#Rice Winery
+rice_winery_income_tier_1 = luxuries_resource_tier_1_main_income
+rice_winery_income_tier_2 = luxuries_resource_tier_2_main_income
+rice_winery_income_tier_3 = luxuries_resource_tier_3_main_income
+rice_winery_income_tier_4 = luxuries_resource_tier_4_main_income
+rice_winery_income_tier_5 = luxuries_resource_tier_5_main_income
+rice_winery_output_per_level = 10
+rice_winery_wine_mult_from_ceramics_need = 0.05
+rice_straw_textiles_output_per_need = 5
+rice_thatching_district_cost_per_need = -0.02
+
+#Bran Mill
+rice_bran_mill_agricultural_tax_tier_1 = resource_tier_1_main_income
+rice_bran_mill_agricultural_tax_tier_2 = resource_tier_2_main_income
+rice_bran_mill_agricultural_tax_tier_3 = resource_tier_3_main_income
+rice_bran_mill_agricultural_tax_tier_4 = resource_tier_4_main_income
+rice_bran_mill_agricultural_tax_tier_5 = resource_tier_5_main_income
+rice_bran_mill_rice_mult_tier_1 = 0.05
+rice_bran_mill_rice_mult_tier_2 = 0.10
+rice_bran_mill_rice_mult_tier_3 = 0.15
+rice_bran_mill_rice_mult_tier_4 = 0.20
+rice_bran_mill_rice_mult_tier_5 = 0.25
+
+#Husk Warehouse
+husk_warehouse_income_tier_1 = resource_tier_1_main_income
+husk_warehouse_income_tier_2 = resource_tier_2_main_income
+husk_warehouse_income_tier_3 = resource_tier_3_main_income
+husk_warehouse_income_tier_4 = resource_tier_4_main_income
+husk_warehouse_income_tier_5 = resource_tier_5_main_income
+husk_warehouse_size_change_tier_1 = 0.02
+husk_warehouse_size_change_tier_2 = 0.04
+husk_warehouse_size_change_tier_3 = 0.06
+husk_warehouse_size_change_tier_4 = 0.08
+husk_warehouse_size_change_tier_5 = 0.1
+
+#Fine Flour Mills
+fine_flour_mills_agricultural_tax_per_rice_need = 0.05
+
+#Rice Confectionary
+rice_confectionary_income_tier_1 = resource_tier_1_main_income
+rice_confectionary_income_tier_2 = resource_tier_2_main_income
+rice_confectionary_income_tier_3 = resource_tier_3_main_income
+rice_confectionary_income_tier_4 = resource_tier_4_main_income
+rice_confectionary_income_tier_5 = resource_tier_5_main_income
+rice_confectionary_artisan_tax_per_rice_need = 0.05
+
+#Minor Rice Paddies
+minor_rice_output_1 = 10
+minor_rice_output_2 = 20
+minor_rice_output_3 = 30
+
+##### Salt #####
+
+#Minor Salt
+minor_salt_output_1 = 10
+minor_salt_output_2 = 20
+minor_salt_output_3 = 30
+
+#Salt Production
+salt_wood_salt_mult_per_need = 0.05
+
+salt_district_buy_price_mult = -0.02
+
+#Pan-Smiths
+pan_smith_income_tier_1 = resource_tier_1_main_income
+pan_smith_income_tier_2 = resource_tier_2_main_income
+pan_smith_income_tier_3 = resource_tier_3_main_income
+pan_smith_income_tier_4 = resource_tier_4_main_income
+pan_smith_income_tier_5 = resource_tier_5_main_income
+pan_smith_salt_mult_per_iron_need = 0.05
+
+#Sack & Basket Weavers
+sack_basket_weavers_prosperity_tier_1 = 0.010
+sack_basket_weavers_prosperity_tier_2 = 0.020
+sack_basket_weavers_prosperity_tier_3 = 0.030
+sack_basket_weavers_prosperity_tier_4 = 0.040
+sack_basket_weavers_prosperity_tier_5 = 0.050
+sack_basket_weavers_prosperity_per_hemp_need = 0.002
+sack_basket_weavers_salt_buy_price_mult = -0.02
+
+#Salt Taxation Office
+salt_taxation_office_civic_tax_tier_1 = luxuries_resource_tier_1_main_income
+salt_taxation_office_civic_tax_tier_2 = luxuries_resource_tier_2_main_income
+salt_taxation_office_civic_tax_tier_3 = luxuries_resource_tier_3_main_income
+salt_taxation_office_civic_tax_tier_4 = luxuries_resource_tier_4_main_income
+salt_taxation_office_civic_tax_tier_5 = luxuries_resource_tier_5_main_income
+salt_taxation_office_civic_tax_per_salt_need = 0.05
+
+##### Shared resource district #####
+
+#Coopers
+cooper_multiplier_per_wood_need = 0.05
+cooper_income_tier_1 = 0.03
+cooper_income_tier_2 = 0.04
+cooper_income_tier_3 = 0.05
+cooper_income_tier_4 = 0.06
+cooper_income_tier_5 = 0.07
+
+leather_income_tier_1 = resource_tier_1_main_income
+leather_income_tier_2 = resource_tier_2_main_income
+leather_income_tier_3 = resource_tier_4_main_income
+leather_income_tier_4 = resource_tier_5_main_income
+leather_income_tier_5 = resource_tier_5_main_income
+
+guild_tannery_leather_output_per_need = tier_1_main_resource
+tannery_leather_output_per_need = small_quantity_refined_production
+monthly_tax_per_leather_level = 0.05
+
+paper_income_tier_1 = luxuries_resource_tier_1_main_income
+paper_income_tier_2 = luxuries_resource_tier_2_main_income
+paper_income_tier_3 = luxuries_resource_tier_3_main_income
+paper_income_tier_4 = luxuries_resource_tier_4_main_income
+paper_income_tier_5 = luxuries_resource_tier_5_main_income
+paper_output_from_leather_per_level = tier_1_main_resource
+paper_workshop_paper_output_per_need = small_quantity_refined_production
+monthly_tax_per_paper_level = 0.05
+
+#Murex Fisheries
+murex_dyes_output_1 = 10
+murex_dyes_output_2 = 15
+murex_dyes_output_3 = 20
+murex_dyes_output_4 = 25
+murex_dyes_output_5 = 30
+murex_maritime_tax_tier_1 = resource_tier_1_main_income
+murex_maritime_tax_tier_2 = resource_tier_2_main_income
+murex_maritime_tax_tier_3 = resource_tier_3_main_income
+murex_maritime_tax_tier_4 = resource_tier_4_main_income
+murex_maritime_tax_tier_5 = resource_tier_5_main_income
+murex_influence_tier_1 = 0.5
+murex_influence_tier_2 = 1
+murex_influence_tier_3 = 1.5
+murex_influence_tier_4 = 2
+murex_influence_tier_5 = 3
+
+dyehouse_income_tier_1 = luxuries_resource_tier_1_main_income
+dyehouse_income_tier_2 = luxuries_resource_tier_2_main_income
+dyehouse_income_tier_3 = luxuries_resource_tier_3_main_income
+dyehouse_income_tier_4 = luxuries_resource_tier_4_main_income
+dyehouse_income_tier_5 = luxuries_resource_tier_5_main_income
+dyehouse_textiles_mult_per_need = 0.08
+dyehouse_artisan_tax_mult_per_need = 0.01
+
+seasonal_labor_shared_agri_mult_tier_1 = 0.10
+seasonal_labor_shared_agri_mult_tier_2 = 0.15
+seasonal_labor_shared_agri_mult_tier_3 = 0.20
+seasonal_labor_shared_agri_mult_tier_4 = 0.25
+seasonal_labor_shared_agri_mult_tier_5 = 0.30
+seasonal_labor_size_growth_tier_1 = -0.01
+seasonal_labor_size_growth_tier_2 = -0.010
+seasonal_labor_size_growth_tier_3 = -0.015
+seasonal_labor_size_growth_tier_4 = -0.020
+seasonal_labor_size_growth_tier_5 = -0.025
+seasonal_labor_shared_agri_tax_mult_tier_1 = 0.03
+seasonal_labor_shared_agri_tax_mult_tier_2 = 0.06
+seasonal_labor_shared_agri_tax_mult_tier_3 = 0.09
+seasonal_labor_shared_agri_tax_mult_tier_4 = 0.12
+seasonal_labor_shared_agri_tax_mult_tier_5 = 0.15
+
+cordwainers_income_tier_1 = resource_tier_1_main_income
+cordwainers_income_tier_2 = resource_tier_2_main_income
+cordwainers_income_tier_3 = resource_tier_3_main_income
+cordwainers_income_tier_4 = resource_tier_4_main_income
+cordwainers_income_tier_5 = resource_tier_5_main_income
+cordwainers_leather_output_mult_tier_1 = -0.05
+cordwainers_leather_output_mult_tier_2 = -0.10
+cordwainers_leather_output_mult_tier_3 = -0.15
+cordwainers_leather_output_mult_tier_4 = -0.20
+cordwainers_leather_output_mult_tier_5 = -0.25
+cordwainers_size_growth_tier_1 = 0.01
+cordwainers_size_growth_tier_2 = 0.02
+cordwainers_size_growth_tier_3 = 0.03
+cordwainers_size_growth_tier_4 = 0.04
+cordwainers_size_growth_tier_5 = 0.05
+saddlers_income_tier_1 = resource_tier_1_main_income
+saddlers_income_tier_2 = resource_tier_2_main_income
+saddlers_income_tier_3 = resource_tier_3_main_income
+saddlers_income_tier_4 = resource_tier_4_main_income
+saddlers_income_tier_5 = resource_tier_5_main_income
+saddlers_artisan_income_per_leather_need = 0.04
+
+##### Silk #####
+
+#Minor Silk
+minor_silk_output_1 = 10
+minor_silk_output_2 = 20
+minor_silk_output_3 = 30
+
+#Mulberry Paper Mill
+mulberry_paper_mill_income_tier_1 = luxuries_resource_tier_1_main_income
+mulberry_paper_mill_income_tier_2 = luxuries_resource_tier_2_main_income
+mulberry_paper_mill_income_tier_3 = luxuries_resource_tier_3_main_income
+mulberry_paper_mill_income_tier_4 = luxuries_resource_tier_4_main_income
+mulberry_paper_mill_income_tier_5 = luxuries_resource_tier_5_main_income
+mulberry_paper_output_per_silk_need = small_quantity_refined_production
+mulberry_paper_artisan_tax_per_silk_need = 0.05
+
+#Floss Spinnery
+floss_spinnery_income_tier_1 = resource_tier_1_main_income
+floss_spinnery_income_tier_2 = resource_tier_2_main_income
+floss_spinnery_income_tier_3 = resource_tier_3_main_income
+floss_spinnery_income_tier_4 = resource_tier_4_main_income
+floss_spinnery_income_tier_5 = resource_tier_5_main_income
+
+#Pupae Grinder
+pupae_grinder_agri_tax_mult_tier_1 = 0.02
+pupae_grinder_agri_tax_mult_tier_2 = 0.04
+pupae_grinder_agri_tax_mult_tier_3 = 0.06
+pupae_grinder_agri_tax_mult_tier_4 = 0.08
+pupae_grinder_agri_tax_mult_tier_5 = 0.10
+pupae_grinder_silk_mult_tier_1 = 0.05
+pupae_grinder_silk_mult_tier_2 = 0.075
+pupae_grinder_silk_mult_tier_3 = 0.10
+pupae_grinder_silk_mult_tier_4 = 0.125
+pupae_grinder_silk_mult_tier_5 = 0.15
+
+#Half-Silk Weavery
+half_silk_artisan_tax_per_fabrics_need = 0.05
+half_silk_prestige_per_silk_need = 0.02
+
+##### Silver #####
+
+#Minor Silver Mine
+minor_silver_output_1 = 10
+minor_silver_output_2 = 20
+minor_silver_output_3 = 30
+
+##### Spices #####
+
+#Minor Spices
+minor_spices_output_1 = 10
+minor_spices_output_2 = 20
+minor_spices_output_3 = 30
+
+#Spice Apothecaries
+spice_apothecary_income_tier_1 = luxuries_resource_tier_1_main_income
+spice_apothecary_income_tier_2 = luxuries_resource_tier_2_main_income
+spice_apothecary_income_tier_3 = luxuries_resource_tier_3_main_income
+spice_apothecary_income_tier_4 = luxuries_resource_tier_4_main_income
+spice_apothecary_income_tier_5 = luxuries_resource_tier_5_main_income
+medicaments_output_from_spices_per_level = 10
+monthly_tax_per_medicament_from_spices_level = 0.05
+
+#Compound Powder Grinder
+compound_powder_grinder_spices_mult_tier_1 = 0.05
+compound_powder_grinder_spices_mult_tier_2 = 0.10
+compound_powder_grinder_spices_mult_tier_3 = 0.15
+compound_powder_grinder_spices_mult_tier_4 = 0.20
+compound_powder_grinder_spices_mult_tier_5 = 0.25
+
+#Comfit Maker
+comfit_maker_income_tier_1 = luxuries_resource_tier_1_main_income
+comfit_maker_income_tier_2 = luxuries_resource_tier_2_main_income
+comfit_maker_income_tier_3 = luxuries_resource_tier_3_main_income
+comfit_maker_income_tier_4 = luxuries_resource_tier_4_main_income
+comfit_maker_income_tier_5 = luxuries_resource_tier_5_main_income
+comfit_maker_spices_mult_per_sugar_need = 0.05
+comfit_maker_spices_buy_price_mult_per_sugar_need = -0.004
+
+#Garbler Office
+garbler_office_income_tier_1 = resource_tier_1_main_income
+garbler_office_income_tier_2 = resource_tier_2_main_income
+garbler_office_income_tier_3 = resource_tier_3_main_income
+garbler_office_income_tier_4 = resource_tier_4_main_income
+garbler_office_income_tier_5 = resource_tier_5_main_income
+garbler_office_artisan_tax_per_spices_need = 0.05
+garbler_office_spices_buy_price_mult_tier_1 = -0.01
+garbler_office_spices_buy_price_mult_tier_2 = -0.02
+garbler_office_spices_buy_price_mult_tier_3 = -0.03
+garbler_office_spices_buy_price_mult_tier_4 = -0.04
+garbler_office_spices_buy_price_mult_tier_5 = -0.05
+
+##### Stone #####
+
+#Minor Stone Cutters
+minor_stone_output_1 = 25
+minor_stone_output_2 = 50
+minor_stone_output_3 = 75
+
+#Stone Masons
+stone_masons_income_tier_1 = resource_tier_1_main_income
+stone_masons_income_tier_2 = resource_tier_2_main_income
+stone_masons_income_tier_3 = resource_tier_3_main_income
+stone_masons_income_tier_4 = resource_tier_4_main_income
+stone_masons_income_tier_5 = resource_tier_5_main_income
+district_build_cost_from_stone_per_level = -0.02
+
+#Stone Statue Workshops
+stone_statue_workshop_income_tier_1 = resource_tier_1_main_income
+stone_statue_workshop_income_tier_2 = resource_tier_2_main_income
+stone_statue_workshop_income_tier_3 = resource_tier_3_main_income
+stone_statue_workshop_income_tier_4 = resource_tier_4_main_income
+stone_statue_workshop_income_tier_5 = resource_tier_5_main_income
+statue_workshop_prestige_per_stone_need = 0.02
+
+#Millstone Workshop
+millstone_workshop_mining_tax_mult_tier_1 = 0.02
+millstone_workshop_mining_tax_mult_tier_2 = 0.04
+millstone_workshop_mining_tax_mult_tier_3 = 0.06
+millstone_workshop_mining_tax_mult_tier_4 = 0.08
+millstone_workshop_mining_tax_mult_tier_5 = 0.10
+millstone_workshop_mining_tax_per_stone_need = 0.05
+
+#Whetstone Workshop
+whetstone_workshop_mining_tax_per_stone_need = 0.05
+
+#Mortar Workshop
+mortar_workshop_build_cost_per_stone_need = -0.01
+
+#Quarry Port
+quarry_port_stone_mult_tier_1 = 0.05
+quarry_port_stone_mult_tier_2 = 0.10
+quarry_port_stone_mult_tier_3 = 0.15
+quarry_port_stone_mult_tier_4 = 0.20
+quarry_port_stone_mult_tier_5 = 0.25
+
+#Grindstone Maker
+grindstone_maker_income_tier_1 = 0.05
+grindstone_maker_income_tier_2 = 0.10
+grindstone_maker_income_tier_3 = 0.15
+grindstone_maker_income_tier_4 = 0.20
+grindstone_maker_income_tier_5 = 0.25
+grindstone_maker_artisan_tax_mult_per_stone_need = tax_mult_per_production_need
+
+##### Sugar #####
+
+#Minor Sugar
+minor_sugar_output_1 = 10
+minor_sugar_output_2 = 20
+minor_sugar_output_3 = 30
+
+confectionary_artisan_income_per_sugar_need = 0.05
+
+##### Tea #####
+
+#Minor Tea
+minor_tea_output_1 = 10
+minor_tea_output_2 = 20
+minor_tea_output_3 = 30
+
+#Tea Production
+tea_wood_tea_mult_per_need = 0.05
+
+#Tea Charcoal Burners
+tea_charcoal_burners_woodland_tax_tier_1 = resource_tier_1_main_income
+tea_charcoal_burners_woodland_tax_tier_2 = resource_tier_2_main_income
+tea_charcoal_burners_woodland_tax_tier_3 = resource_tier_3_main_income
+tea_charcoal_burners_woodland_tax_tier_4 = resource_tier_4_main_income
+tea_charcoal_burners_woodland_tax_tier_5 = resource_tier_5_main_income
+tea_charcoal_burners_tea_mult_per_wood_need = 0.05
+tea_charcoal_burners_woodland_tax_per_wood_need = 0.03
+
+#Tea Houses
+local_tea_house_popular_opinion_tier_1 = 1
+local_tea_house_popular_opinion_tier_2 = 2
+local_tea_house_popular_opinion_tier_3 = 3
+local_tea_house_popular_opinion_tier_4 = 4
+local_tea_house_popular_opinion_tier_5 = 5
+local_tea_house_popular_opinion_per_tea_need = 1
+
+#Jar Packing Workshops
+jar_packing_workshops_prosperity_tier_1 = 0.010
+jar_packing_workshops_prosperity_tier_2 = 0.020
+jar_packing_workshops_prosperity_tier_3 = 0.030
+jar_packing_workshops_prosperity_tier_4 = 0.040
+jar_packing_workshops_prosperity_tier_5 = 0.050
+jar_packing_workshops_agricultural_tax_per_ceramics_need = 0.03
+jar_packing_workshops_tea_buy_price_mult = -0.05
+
+##### Wine #####
+
+#Minor Winery
+minor_wine_output_1 = 10
+minor_wine_output_2 = 20
+minor_wine_output_3 = 30
+
+beam_press_wine_mult_tier_1 = 0.08
+beam_press_wine_mult_tier_2 = 0.16
+beam_press_wine_mult_tier_3 = 0.24
+beam_press_wine_mult_tier_4 = 0.32
+beam_press_wine_mult_tier_5 = 0.40
+beam_press_agricultural_tax_tier_1 = resource_tier_1_main_income
+beam_press_agricultural_tax_tier_2 = resource_tier_2_main_income
+beam_press_agricultural_tax_tier_3 = resource_tier_3_main_income
+beam_press_agricultural_tax_tier_4 = resource_tier_4_main_income
+beam_press_agricultural_tax_tier_5 = resource_tier_5_main_income
+long_term_wine_storage_prosperity_tier_1 = 0.010
+long_term_wine_storage_prosperity_tier_2 = 0.020
+long_term_wine_storage_prosperity_tier_3 = 0.030
+long_term_wine_storage_prosperity_tier_4 = 0.040
+long_term_wine_storage_prosperity_tier_5 = 0.050
+long_term_wine_storage_popular_opinion_per_wine_need = 1
+
+#Vinegar Stores
+vinegar_stores_income_tier_1 = resource_tier_1_main_income
+vinegar_stores_income_tier_2 = resource_tier_2_main_income
+vinegar_stores_income_tier_3 = resource_tier_3_main_income
+vinegar_stores_income_tier_4 = resource_tier_4_main_income
+vinegar_stores_income_tier_5 = resource_tier_5_main_income
+vinegar_stores_agricultural_tax_per_wine_need = 0.05
+
+#Wine Distillery
+wine_distillery_income_tier_1 = 0.05
+wine_distillery_income_tier_2 = 0.10
+wine_distillery_income_tier_3 = 0.15
+wine_distillery_income_tier_4 = 0.20
+wine_distillery_income_tier_5 = 0.25
+wine_distillery_artisan_tax_per_wine_need = 0.05
+wine_distillery_medicaments_output_per_wine_need = 10
+
+#Tartar Collector
+tartar_collector_income_tier_1 = 0.05
+tartar_collector_income_tier_2 = 0.10
+tartar_collector_income_tier_3 = 0.15
+tartar_collector_income_tier_4 = 0.20
+tartar_collector_income_tier_5 = 0.25
+tartar_collector_alum_output_per_wine_need = 10
+tartar_collector_artisan_tax_per_wine_need = 0.05
+
+##### Wood #####
+
+wood_tier_1_main_income = resource_tier_1_main_income
+wood_tier_2_main_income = resource_tier_2_main_income
+wood_tier_3_main_income = resource_tier_3_main_income
+wood_tier_4_main_income = resource_tier_4_main_income
+wood_tier_5_main_income = resource_tier_5_main_income
+wood_tier_6_main_income = resource_tier_6_main_income
+wood_tier_7_main_income = resource_tier_7_main_income
+wood_tier_8_main_income = resource_tier_8_main_income
+wood_tier_9_main_income = resource_tier_9_main_income
+wood_tier_10_main_income = resource_tier_10_main_income
+
+#Wood
+#Base Output of Wood:
+wood_tier_1_main_resource = tier_1_main_resource
+wood_tier_2_main_resource = tier_2_main_resource
+wood_tier_3_main_resource = tier_3_main_resource
+wood_tier_4_main_resource = tier_4_main_resource
+wood_tier_5_main_resource = tier_5_main_resource
+wood_tier_6_main_resource = tier_6_main_resource
+wood_tier_7_main_resource = tier_7_main_resource
+wood_tier_8_main_resource = tier_8_main_resource
+wood_tier_9_main_resource = tier_9_main_resource
+wood_tier_10_main_resource = tier_10_main_resource
+
+#Needs
+wood_multiplier_per_iron_need = 0.1 #Max 30%
+
+#Wood side buildings
+charcoal_income_tier_1 = 0.15
+charcoal_income_tier_2 = 0.25
+charcoal_income_tier_3 = 0.35
+charcoal_income_tier_4 = 0.45
+charcoal_income_tier_5 = 0.55
+charcoal_woodland_tax_per_wood_need = 0.05
+
+firewood_income_tier_1 = resource_tier_1_main_income
+firewood_income_tier_2 = resource_tier_2_main_income
+firewood_income_tier_3 = resource_tier_3_main_income
+firewood_income_tier_4 = resource_tier_4_main_income
+firewood_income_tier_5 = resource_tier_5_main_income
+
+forest_glass_income_tier_1 = 0.2
+forest_glass_income_tier_2 = 0.4
+forest_glass_income_tier_3 = 0.6
+forest_glass_income_tier_4 = 0.8
+forest_glass_income_tier_5 = 1
+forest_glass_output_per_level = 5
+guild_glass_output_per_level = 10
+monthly_tax_per_glass_level = 0.05
+
+lacquerware_output_per_wood = 10
+lacquerware_mult_per_dyes = 0.1 #50%
+monthly_tax_per_lacquerware_level = 0.05
+
+hunting_lodges_income_tier_1 = resource_tier_1_main_income
+hunting_lodges_income_tier_2 = resource_tier_2_main_income
+hunting_lodges_income_tier_3 = resource_tier_3_main_income
+hunting_lodges_income_tier_4 = resource_tier_4_main_income
+hunting_lodges_income_tier_5 = resource_tier_5_main_income
+meat_output_from_wood_per_level = 10
+monthly_tax_per_meat_from_wood_level = 0.05
+
+#Secondary Wood Buildings:
+minor_wood_output_1 = 10
+minor_wood_output_2 = 20
+minor_wood_output_3 = 30
+
+##### Wool #####
+
+#Covers the full textiles_wool_building need at each district level
+wool_tier_1_main_resource = 60
+wool_tier_2_main_resource = 120
+wool_tier_3_main_resource = 165
+wool_tier_4_main_resource = 210
+wool_tier_5_main_resource = 250
+wool_tier_6_main_resource = 270
+wool_tier_7_main_resource = 300
+wool_tier_8_main_resource = 330
+wool_tier_9_main_resource = 360
+wool_tier_10_main_resource = 390
+
+#Lanolin Ointment Making
+ointment_maker_income_1 = 0.1
+ointment_maker_income_2 = 0.2
+medicaments_output_from_wool_per_level = 10
+monthly_tax_per_medicament_level = 0.05
+
+#Minor Wool
+minor_wool_output_1 = 10
+minor_wool_output_2 = 20
+minor_wool_output_3 = 30
+
+#Fulling Mills
+fulling_mill_textiles_mult_tier_1 = 0.08
+fulling_mill_textiles_mult_tier_2 = 0.16
+fulling_mill_textiles_mult_tier_3 = 0.24
+fulling_mill_textiles_mult_tier_4 = 0.32
+fulling_mill_textiles_mult_tier_5 = 0.40
+fulling_mill_artisan_tax_mult_tier_1 = 0.02
+fulling_mill_artisan_tax_mult_tier_2 = 0.04
+fulling_mill_artisan_tax_mult_tier_3 = 0.06
+fulling_mill_artisan_tax_mult_tier_4 = 0.08
+fulling_mill_artisan_tax_mult_tier_5 = 0.10
+
+wool_cheesemaker_income_tier_1 = resource_tier_1_main_income
+wool_cheesemaker_income_tier_2 = resource_tier_2_main_income
+wool_cheesemaker_income_tier_3 = resource_tier_3_main_income
+wool_cheesemaker_income_tier_4 = resource_tier_4_main_income
+wool_cheesemaker_income_tier_5 = resource_tier_5_main_income
+wool_cheese_output_from_salt_per_level = 10

@@ -117,6 +117,7 @@ stress_threshold.0001 = {
 			if = {
 				limit = {
 					has_trait_xp = { trait = faltering_heart track = faltering_heart value >= 100 }
+					is_alive = yes # The stress outcome above can already have killed them
 				}
 				death = { death_reason = death_heart_attack }
 			}
@@ -202,6 +203,7 @@ stress_threshold.0002 = {
 			if = {
 				limit = {
 					has_trait_xp = { trait = faltering_heart track = faltering_heart value >= 100 }
+					is_alive = yes
 				}
 				death = { death_reason = death_heart_attack }
 			}
@@ -393,19 +395,19 @@ stress_threshold.1001 = {
 		calc_true_if = {
 			amount >= 2
 
-			can_be_contrite = yes
 			has_trait = contrite
-			can_be_flagellant = yes
 			has_trait = flagellant
-			can_be_improvident = yes
 			has_trait = improvident
-			can_be_journaller = yes
 			has_trait = journaller
+			can_be_journaller = yes
+			can_be_improvident = yes
+			can_be_flagellant = yes
+			can_be_contrite = yes
 			OR = { # While picking either of these is fine, we don't want to have the player chose between only these two.
-				can_be_drunkard = yes
 				has_trait = drunkard
-				can_be_hashishiyah = yes
 				has_trait = hashishiyah
+				can_be_drunkard = yes
+				can_be_hashishiyah = yes
 			}
 		}
 	}
@@ -436,6 +438,7 @@ stress_threshold.1001 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = contrite }
 				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
@@ -614,7 +617,7 @@ stress_threshold.1001 = {
 			has_character_flag = stress_threshold_option_improvident
 			OR = {
 				is_ai = no
-				short_term_gold >= major_gold_value
+				short_term_gold >= medium_gold_value
 			}
 		}
 		name = {
@@ -640,7 +643,7 @@ stress_threshold.1001 = {
 		add_trait = improvident
 		trait = improvident
 
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 		add_stress = medium_stress_impact_loss
 	}
 	
@@ -828,22 +831,22 @@ stress_threshold.1011 = {
 	}
 	
 	trigger = {
-		# Character must meet the criteria for at least two event options to qualify for this event (don't want to fire the event if the player has no choices!).
-		calc_true_if = {
-			amount >= 2
-
-			can_be_rakish = yes
-			has_trait = rakish
-			can_be_reclusive = yes
-			has_trait = reclusive
-			can_do_lustful_stress_conversion = yes
-			can_be_athletic = yes
-			has_trait = athletic
-		}
 		is_adult = yes
 		NOR = {
 			has_trait = chaste
 			has_trait = celibate
+		}
+		# Character must meet the criteria for at least two event options to qualify for this event (don't want to fire the event if the player has no choices!).
+		calc_true_if = {
+			amount >= 2
+
+			has_trait = rakish
+			has_trait = reclusive
+			has_trait = athletic
+			can_be_reclusive = yes
+			can_be_rakish = yes
+			can_be_athletic = yes
+			can_do_lustful_stress_conversion = yes
 		}
 	}
 
@@ -872,6 +875,7 @@ stress_threshold.1011 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = athletic }
@@ -918,6 +922,129 @@ stress_threshold.1011 = {
 				can_do_lustful_stress_conversion = yes
 			}
 			hidden_effect = {
+				# Best fulfillment tier among fitting rites (0: none above 25, 1: above 25, 2: above 50, 3: above 75)
+				save_temporary_scope_value_as = {
+					name = lustful_conversion_forbidding_fit
+					value = 0
+				}
+				if = {
+					limit = {
+						any_available_rite = {
+							this != root.rite
+							rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
+							save_temporary_scope_as = rite_temp
+							root = {
+								rite_fulfillment_score = {
+									target = scope:rite_temp
+									value > 25
+								}
+							}
+						}
+					}
+					save_temporary_scope_value_as = {
+						name = lustful_conversion_forbidding_fit
+						value = 1
+					}
+					if = {
+						limit = {
+							any_available_rite = {
+								this != root.rite
+								rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
+								save_temporary_scope_as = rite_temp
+								root = {
+									rite_fulfillment_score = {
+										target = scope:rite_temp
+										value > 50
+									}
+								}
+							}
+						}
+						save_temporary_scope_value_as = {
+							name = lustful_conversion_forbidding_fit
+							value = 2
+						}
+						if = {
+							limit = {
+								any_available_rite = {
+									this != root.rite
+									rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
+									save_temporary_scope_as = rite_temp
+									root = {
+										rite_fulfillment_score = {
+											target = scope:rite_temp
+											value > 75
+										}
+									}
+								}
+							}
+							save_temporary_scope_value_as = {
+								name = lustful_conversion_forbidding_fit
+								value = 3
+							}
+						}
+					}
+				}
+				save_temporary_scope_value_as = {
+					name = lustful_conversion_embracing_fit
+					value = 0
+				}
+				if = {
+					limit = {
+						any_available_rite = {
+							this != root.rite
+							rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
+							save_temporary_scope_as = rite_temp
+							root = {
+								rite_fulfillment_score = {
+									target = scope:rite_temp
+									value > 25
+								}
+							}
+						}
+					}
+					save_temporary_scope_value_as = {
+						name = lustful_conversion_embracing_fit
+						value = 1
+					}
+					if = {
+						limit = {
+							any_available_rite = {
+								this != root.rite
+								rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
+								save_temporary_scope_as = rite_temp
+								root = {
+									rite_fulfillment_score = {
+										target = scope:rite_temp
+										value > 50
+									}
+								}
+							}
+						}
+						save_temporary_scope_value_as = {
+							name = lustful_conversion_embracing_fit
+							value = 2
+						}
+						if = {
+							limit = {
+								any_available_rite = {
+									this != root.rite
+									rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
+									save_temporary_scope_as = rite_temp
+									root = {
+										rite_fulfillment_score = {
+											target = scope:rite_temp
+											value > 75
+										}
+									}
+								}
+							}
+							save_temporary_scope_value_as = {
+								name = lustful_conversion_embracing_fit
+								value = 3
+							}
+						}
+					}
+				}
 				random_list = {
 					#Pick a faith that CONDEMNS THE LOVIN
 					1 = {
@@ -928,49 +1055,21 @@ stress_threshold.1011 = {
 							}
 						}
 						modifier = {
-							any_available_rite = {
-								this != root.rite
-								rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
-								save_temporary_scope_as = rite_temp
-								root = {
-									rite_fulfillment_score = {
-										target = scope:rite_temp
-										value > 75
-									}
-								}
-							}
+							scope:lustful_conversion_forbidding_fit >= 3
 							add = 10
 						}
 						modifier = {
-							any_available_rite = {
-								this != root.rite
-								rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
-								save_temporary_scope_as = rite_temp
-								root = {
-									rite_fulfillment_score = {
-										target = scope:rite_temp
-										value > 50
-									}
-								}
-							}
+							scope:lustful_conversion_forbidding_fit >= 2
 							add = 5
 						}
 						modifier = {
-							any_available_rite = {
-								this != root.rite
-								rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
-								save_temporary_scope_as = rite_temp
-								root = {
-									rite_fulfillment_score = {
-										target = scope:rite_temp
-										value > 25
-									}
-								}
-							}
+							scope:lustful_conversion_forbidding_fit >= 1
 							add = 1
 						}
+						# Fit guards must stay in step with the tiers saved above
 						random_available_rite = {
 							limit = {
+								scope:lustful_conversion_forbidding_fit >= 3
 								this != root.rite
 								rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
 								save_temporary_scope_as = rite_temp
@@ -982,6 +1081,7 @@ stress_threshold.1011 = {
 								}
 							}
 							alternative_limit = {
+								scope:lustful_conversion_forbidding_fit >= 2
 								this != root.rite
 								rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
 								save_temporary_scope_as = rite_temp
@@ -993,6 +1093,7 @@ stress_threshold.1011 = {
 								}
 							}
 							alternative_limit = {
+								scope:lustful_conversion_forbidding_fit >= 1
 								this != root.rite
 								rite_forbids_the_secular_flesh_trigger = { CHARACTER = root }
 								save_temporary_scope_as = rite_temp
@@ -1024,49 +1125,20 @@ stress_threshold.1011 = {
 							}
 						}
 						modifier = {
-							any_available_rite = {
-								this != root.rite
-								rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
-								save_temporary_scope_as = rite_temp
-								root = {
-									rite_fulfillment_score = {
-										target = scope:rite_temp
-										value > 75
-									}
-								}
-							}
+							scope:lustful_conversion_embracing_fit >= 3
 							add = 10
 						}
 						modifier = {
-							any_available_rite = {
-								this != root.rite
-								rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
-								save_temporary_scope_as = rite_temp
-								root = {
-									rite_fulfillment_score = {
-										target = scope:rite_temp
-										value > 50
-									}
-								}
-							}
+							scope:lustful_conversion_embracing_fit >= 2
 							add = 5
 						}
 						modifier = {
-							any_available_rite = {
-								this != root.rite
-								rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
-								save_temporary_scope_as = rite_temp
-								root = {
-									rite_fulfillment_score = {
-										target = scope:rite_temp
-										value > 25
-									}
-								}
-							}
+							scope:lustful_conversion_embracing_fit >= 1
 							add = 1
 						}
 						random_available_rite = {
 							limit = {
+								scope:lustful_conversion_embracing_fit >= 3
 								this != root.rite
 								rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
 								save_temporary_scope_as = rite_temp
@@ -1078,6 +1150,7 @@ stress_threshold.1011 = {
 								}
 							}
 							alternative_limit = {
+								scope:lustful_conversion_embracing_fit >= 2
 								this != root.rite
 								rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
 								save_temporary_scope_as = rite_temp
@@ -1089,6 +1162,7 @@ stress_threshold.1011 = {
 								}
 							}
 							alternative_limit = {
+								scope:lustful_conversion_embracing_fit >= 1
 								this != root.rite
 								rite_embraces_the_secular_flesh_trigger = { CHARACTER = root }
 								save_temporary_scope_as = rite_temp
@@ -1535,11 +1609,18 @@ stress_threshold.1501 = {
 		# Character must meet the criteria for at least two event options to qualify for this event.
 		calc_true_if = {
 			amount >= 2
-			can_be_reclusive = yes
-			can_be_inappetetic = yes
 			has_trait = reclusive
 			has_trait = inappetetic
-			stress_rite_conversion_trigger = yes
+			can_be_reclusive = yes
+			can_be_inappetetic = yes
+			AND = {
+				stress_rite_conversion_trigger = yes
+				OR = {
+					has_trait = cynical
+					has_trait = eccentric
+					has_trait = fickle
+				}
+			}
 		}
 	}
 
@@ -1567,6 +1648,7 @@ stress_threshold.1501 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = inappetetic }
@@ -1655,6 +1737,11 @@ stress_threshold.1501 = {
 		if = { #Pick the rite to convert to, best fit first.
 			limit = {
 				stress_rite_conversion_trigger = yes
+				OR = {
+					has_trait = cynical
+					has_trait = eccentric
+					has_trait = fickle
+				}
 			}
 			# The last tier still needs some fit on purpose
 			# An unfiltered fallback could be worse than the abandoned rite
@@ -1842,7 +1929,6 @@ stress_threshold.1501 = {
 		trait = cynical
 		trait = eccentric
 		trait = fickle
-
 		add_piety = major_piety_loss
 		set_character_rite = scope:new_faith
 		if = {
@@ -1916,14 +2002,14 @@ stress_threshold.1502 = {
 		# Character must meet the criteria for at least two event options to qualify for this event.
 		calc_true_if = {
 			amount >= 2
-			can_be_irritable = yes
 			can_be_journaller = yes
-			can_be_drunkard = yes
-			any_prisoner = { is_ai = yes }
 			AND = {
 				has_trait = irritable
 				any_courtier = { is_available_ai_adult = yes }
 			}
+			any_prisoner = { is_ai = yes }
+			can_be_drunkard = yes
+			can_be_irritable = yes
 		}
 	}
 
@@ -1955,6 +2041,7 @@ stress_threshold.1502 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
 				has_witnessed_stress_coping_trait = { TRAIT = journaller }
@@ -2304,6 +2391,7 @@ stress_threshold.1503 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = profligate }
 				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
@@ -2363,7 +2451,7 @@ stress_threshold.1503 = {
 		name = stress_threshold.1503.a.d
 		trigger = { has_trait = profligate }
 		trait = profligate
-		remove_short_term_gold = major_gold_value_check
+		remove_short_term_gold = minor_gold_value
 		add_stress = minor_stress_loss
 		ai_chance = {
 			base = 20
@@ -2430,7 +2518,7 @@ stress_threshold.1503 = {
 			has_character_flag = stress_threshold_option_profligate
 		}
 		add_trait = profligate
-		remove_short_term_gold = medium_gold_value
+		remove_short_term_gold = minor_gold_value
 		add_stress = medium_stress_loss
 		ai_chance = {
 			base = 20
@@ -2515,18 +2603,18 @@ stress_threshold.1504 = {
 			amount >= 2
 			has_trait = reclusive
 			can_be_reclusive = yes
-			OR = {
-				has_trait = hashishiyah
-				has_trait = drunkard
-				can_be_hashishiyah = yes
-				can_be_drunkard = yes
-			}
+			can_be_journaller = yes
 			OR = {
 				can_be_burdened = yes
 				can_be_irritable = yes
 			}
-			can_be_journaller = yes
 			can_be_athletic = yes
+			OR = {
+				has_trait = hashishiyah
+				has_trait = drunkard
+				can_be_drunkard = yes
+				can_be_hashishiyah = yes
+			}
 		}
 	}
 
@@ -2561,6 +2649,7 @@ stress_threshold.1504 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = hashishiyah }
@@ -3750,7 +3839,7 @@ stress_threshold.1601 = {
 		}
 		add_trait = profligate
 		trait = profligate
-		remove_short_term_gold = medium_gold_value
+		remove_short_term_gold = minor_gold_value
 		add_stress = medium_stress_loss
 
 		ai_chance = {
@@ -4126,7 +4215,7 @@ stress_threshold.1601 = {
 			has_character_flag = stress_threshold_option_improvident
 			OR = {
 				is_ai = no
-				short_term_gold >= major_gold_value
+				short_term_gold >= medium_gold_value
 			}
 		}
 		name = {
@@ -4141,7 +4230,7 @@ stress_threshold.1601 = {
 		add_trait = improvident
 		trait = improvident
 
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 		add_stress = medium_stress_impact_loss
 
 		ai_chance = {
@@ -4370,7 +4459,7 @@ stress_threshold.1602 = {
 		}
 		add_trait = profligate
 		trait = profligate
-		remove_short_term_gold = medium_gold_value
+		remove_short_term_gold = minor_gold_value
 		add_stress = medium_stress_loss
 
 		ai_chance = {
@@ -4744,7 +4833,7 @@ stress_threshold.1602 = {
 			has_character_flag = stress_threshold_option_improvident
 			OR = {
 				is_ai = no
-				short_term_gold >= major_gold_value
+				short_term_gold >= medium_gold_value
 			}
 		}
 		name = {
@@ -4759,7 +4848,7 @@ stress_threshold.1602 = {
 		add_trait = improvident
 		trait = improvident
 
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 		add_stress = medium_stress_impact_loss
 
 		ai_chance = {
@@ -4974,9 +5063,9 @@ scripted_effect jealousy_at_court_effect = {
 							any_consort = { this = scope:friend }
 						}
 					}
-					set_relation_rival = {
-						target = scope:friend
-						reason = rival_jealousy_at_court
+					set_relation_rival_effect = {
+					    TARGET = scope:friend
+					    REASON = rival_jealousy_at_court
 					}
 				}
 				else_if = {
@@ -5170,6 +5259,7 @@ stress_threshold.1701 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
 				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
@@ -5490,7 +5580,7 @@ stress_threshold.1701 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 
 		ai_chance = {
 			base = 25
@@ -5889,9 +5979,6 @@ stress_threshold.1711 = {
 		#Barons don't need fancy events.
 		is_playable_character = yes
 		primary_title.tier >= tier_county
-		any_courtier = {
-			is_available_adult = yes
-		}
 		#Must match at least one appropriate personality trait.
 		OR = {
 			has_trait = greedy
@@ -5901,6 +5988,9 @@ stress_threshold.1711 = {
 			has_trait = ambitious
 			has_trait = just
 			has_trait = zealous
+		}
+		any_courtier = {
+			is_available_adult = yes
 		}
 		#Characters must meet the criteria for at least two event options to qualify for this event (we don't want to fire the event if the player has no choices!).
 		calc_true_if = {
@@ -5963,6 +6053,7 @@ stress_threshold.1711 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
@@ -6230,7 +6321,7 @@ stress_threshold.1711 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 
 		ai_chance = {
 			base = 25
@@ -6264,7 +6355,7 @@ stress_threshold.1711 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 
 		ai_chance = {
 			base = 25
@@ -6764,6 +6855,7 @@ stress_threshold.1721 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
@@ -7152,7 +7244,7 @@ stress_threshold.1721 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 
 		ai_chance = {
 			base = 25
@@ -7186,7 +7278,7 @@ stress_threshold.1721 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 
 		ai_chance = {
 			base = 25
@@ -7847,6 +7939,7 @@ stress_threshold.1731 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = profligate }
@@ -8150,7 +8243,7 @@ stress_threshold.1731 = {
 
 		#Account for stress.
 		add_stress = minor_stress_impact_loss
-		remove_short_term_gold = major_gold_value
+		remove_short_term_gold = medium_gold_value
 
 		ai_chance = {
 			base = 25
@@ -9046,9 +9139,9 @@ stress_threshold.2201 = {
 				NOT = { has_relation_rival = scope:character_to_yell_at }
 			}
 			show_as_tooltip = {
-				set_relation_rival = {
-					target = scope:character_to_yell_at
-					reason = rival_lashed_out_against
+				set_relation_rival_effect = {
+				    TARGET = scope:character_to_yell_at
+				    REASON = rival_lashed_out_against
 				}
 			}
 			save_scope_value_as = {
@@ -9256,9 +9349,9 @@ stress_threshold.2202 = {
 			limit = {
 				exists = scope:rival
 			}
-			set_relation_rival = {
-				target = scope:stress_character
-				reason = rival_lashed_out_against
+			set_relation_rival_effect = {
+			    TARGET = scope:stress_character
+			    REASON = rival_lashed_out_against
 			}
 		}
 	}
@@ -9390,6 +9483,7 @@ stress_threshold.2301 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = profligate }
 				has_witnessed_stress_coping_trait = { TRAIT = comfort_eater }
@@ -9570,7 +9664,7 @@ stress_threshold.2301 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		#You buy a veritable glut of furniture.
 		add_character_modifier = {
@@ -9989,6 +10083,7 @@ stress_threshold.2311 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
 				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
@@ -10376,7 +10471,7 @@ stress_threshold.2311 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		#Add regret coping modifier.
 		add_character_modifier = {
@@ -10988,6 +11083,7 @@ stress_threshold.2321 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
 				has_witnessed_stress_coping_trait = { TRAIT = profligate }
@@ -11283,7 +11379,7 @@ stress_threshold.2321 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		#Court reacts to your little upset.
 		if = {
@@ -11350,7 +11446,7 @@ stress_threshold.2321 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		#Court reacts to your little upset.
 		if = {
@@ -12021,6 +12117,7 @@ stress_threshold.2331 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
@@ -12332,7 +12429,7 @@ stress_threshold.2331 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		#This excess spending is unbecoming of you.
 		add_prestige = medium_prestige_loss
@@ -12369,7 +12466,7 @@ stress_threshold.2331 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		capital_province.county = {
 			add_county_modifier = {
@@ -12864,6 +12961,7 @@ stress_threshold.2341 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = profligate }
@@ -13109,7 +13207,7 @@ stress_threshold.2341 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		#Your new cloak becomes a symbol of your shirked duty.
 		add_character_modifier = {
@@ -13657,6 +13755,7 @@ stress_threshold.2351 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
@@ -13921,7 +14020,7 @@ stress_threshold.2351 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		#You try to buy your way to feeling better.
 		add_character_modifier = {
@@ -13961,7 +14060,7 @@ stress_threshold.2351 = {
 
 		#Account for stress.
 		add_stress = medium_stress_impact_loss
-		remove_short_term_gold = massive_gold_value
+		remove_short_term_gold = major_gold_value
 		
 		#Giving everyone who needs it access to the treasury is generally bad practice for feudal societies.
 		add_stewardship_skill = -1
@@ -15094,6 +15193,7 @@ stress_threshold.3401 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
@@ -15938,6 +16038,7 @@ stress_threshold.3411 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = flagellant }
@@ -16320,7 +16421,7 @@ stress_threshold.3411 = {
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		remove_short_term_gold = monumental_gold_value
+		remove_short_term_gold = massive_gold_value
 		
 		#You begin work on a series of self-aggrandising monuments, attempting to fool others.
 		add_character_modifier = {
@@ -16360,7 +16461,7 @@ stress_threshold.3411 = {
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		remove_short_term_gold = monumental_gold_value
+		remove_short_term_gold = massive_gold_value
 		
 		#You declare that literally anyone can take whatever they want from the treasury.
 		add_character_modifier = {
@@ -17068,6 +17169,7 @@ stress_threshold.3421 = {
 		}
 		#One of your parents/guardian has issues
 		modifier = {
+			has_variable = witnessed_trait
 			OR = {
 				has_witnessed_stress_coping_trait = { TRAIT = reclusive }
 				has_witnessed_stress_coping_trait = { TRAIT = irritable }
@@ -17457,7 +17559,7 @@ stress_threshold.3421 = {
 
 		#Account for stress.
 		add_stress = major_stress_impact_loss
-		remove_short_term_gold = monumental_gold_value
+		remove_short_term_gold = massive_gold_value
 		
 		#Other effects: the fires are doused successfully at huge cost but with minimal damage.
 		scope:burning_holding.county = {

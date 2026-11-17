@@ -1,0 +1,111 @@
+﻿#######################################################################
+# Structure 
+#######################################################################
+
+### brief: any_database_key
+# Name for the trade good type
+#
+# Localization keys should be: 
+#	category_key
+#	category_key_desc
+#
+category_key = {
+
+	### brief: need (bool)
+	# This describes if this category has the "need type" flag.
+	# A Trade Good Type can only exist in one need-type Category, no more.
+	# It can exist in one need-type and several other non-need type categories.
+	# no by default
+	#
+	# Valid values: 
+	#	yes
+	#	no
+	#
+	# Example:
+	#	need = yes
+	#
+
+	### brief: color (color block)
+	# RGBA tint used for category UI elements such as trade expertise banners.
+	# Defaults to white if omitted.
+	#
+	# Example:
+	#	color = { 0.8 0.6 0.2 1 }
+	#
+
+	### brief: key (database key)
+	# This only includes a list of database keys. They must be defined in
+	# common/trade/trade_good_types
+	#
+	# Valid values: 
+	#	database key
+	#
+	# pizza
+	# fish
+	# ...
+	#
+
+	### brief: per_level_interval (modifier block)
+	# A character modifier that is applied once per current XP level.
+	# Requires the category to have an XP track (levels defined).
+	# At level 3, the modifier is applied with a multiplier of 3.
+	#
+	# Example:
+	#	per_level_interval = {
+	#		trade_route_length_mult = 0.05
+	#	}
+	#
+
+	### brief: milestone_interval (modifier block)
+	# A character modifier applied once for every N levels reached.
+	# Requires the category to have an XP track (levels defined).
+	# A category can have any number of milestone intervals or none at all.
+	#
+	# every_level (int32): interval between milestones of levels. 1 by default.
+	#
+	# Example:
+	#	milestone_interval = {
+	#		every_level = 5
+	#		trade_route_length_mult = 0.1
+	#	}
+	#	milestone_interval = {
+	#		every_level = 10
+	#		trade_route_length_mult = 0.3
+	#		trade_category_<category>_sell_price_mult = 0.02
+	#   }
+	#
+
+	### brief: levels (block)
+	# Defines the named XP levels for this category.
+	# Each level can grant a character modifier when the holder reaches it.
+	# The number of levels determines the XP cap
+	# (max XP = level count * TRADE_CATEGORY_XP_LEVEL_THRESHOLD).
+	#
+	# Valid values:
+	#	named level blocks, each containing an optional character_modifier
+	#
+	# Example:
+	#	levels = {
+	#		beginner = {
+	#			character_modifier = {
+	#				trade_route_length_mult = 0.1
+	#			}
+	#		}
+	#		expert = {
+	#			character_modifier = {
+	#				trade_route_length_mult = 0.5
+	#			}
+	#		}
+	#	}
+}
+
+
+#######################################################################
+# Example 
+#######################################################################
+tasty_foods = {
+	pizza
+	cookies
+	bagels
+}
+

@@ -27,6 +27,8 @@ light_footmen = {
 	pursuit = 10
 	screen = 16
 
+	control_value = 2
+
 	terrain_bonus = {
 		forest = { damage = 4 toughness = 6 }
 		taiga = { damage = 4 toughness = 6 }
@@ -76,6 +78,8 @@ bowmen = {
 	pursuit = 0
 	screen = 0
 
+	control_value = 2
+
 	terrain_bonus = {
 		hills = { damage = 10 toughness = 4 }
 		forest = { toughness = 4 screen = 4 }
@@ -87,7 +91,10 @@ bowmen = {
 	}
 
 	can_recruit = {
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 	}
 
 	should_show_when_unavailable = {
@@ -128,6 +135,8 @@ light_horsemen = {
 	pursuit = 30
 	screen = 30
 
+	control_value = 4
+
 	terrain_bonus = {
 		plains = { damage = 15 }
 		drylands = { damage = 15 }
@@ -143,7 +152,10 @@ light_horsemen = {
 	}
 
 	can_recruit = {
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 	}
 
 	should_show_when_unavailable = {
@@ -193,6 +205,8 @@ pikemen_unit = {
 	pursuit = 0
 	screen = 0
 
+	control_value = 4
+
 	terrain_bonus = {
 		mountains = { toughness = 12 }
 		desert_mountains = { toughness = 12 }
@@ -207,7 +221,10 @@ pikemen_unit = {
 	}
 
 	can_recruit = {
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 	}
 
 	should_show_when_unavailable = {
@@ -249,6 +266,8 @@ armored_footmen = {
 	pursuit = 0
 	screen = 0
 
+	control_value = 4
+
 	counters = {
 		pikemen = 1
 		peasant_militia = 2
@@ -261,7 +280,10 @@ armored_footmen = {
 		NOT = {
 			culture = { has_cultural_parameter = strength_in_numbers_heavy_maa_ban }
 		}
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 	}
 
 	should_show_when_unavailable = {
@@ -309,7 +331,10 @@ onager = {
 			has_innovation = innovation_catapult
 			culture_uses_eastern_siege_weapons_trigger = no
 		}
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 	}
 
 	should_show_when_unavailable = {
@@ -334,6 +359,8 @@ armored_horsemen = {
 	pursuit = 20
 	screen = 0
 
+	control_value = 8
+
 	terrain_bonus = {
 		plains = { damage = 30 }
 		drylands = { damage = 30 }
@@ -352,7 +379,10 @@ armored_horsemen = {
 		culture = {
 			has_innovation = innovation_arched_saddle
 		}
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 		NOT = {
 			culture = { has_cultural_parameter = strength_in_numbers_heavy_maa_ban }
 		}
@@ -409,7 +439,10 @@ mangonel = {
 			has_innovation = innovation_mangonel
 			culture_uses_eastern_siege_weapons_trigger = no
 		}
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 	}
 
 	should_show_when_unavailable = {
@@ -435,6 +468,8 @@ crossbowmen = {
 	pursuit = 0
 	screen = 0
 
+	control_value = 4
+
 	terrain_bonus = {
 		hills = { damage = 10 }
 		plains = { toughness = -8 }
@@ -452,7 +487,10 @@ crossbowmen = {
 		culture = {
 			has_innovation = innovation_advanced_bowmaking
 		}
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 	}
 
 	should_show_when_unavailable = {
@@ -499,7 +537,10 @@ trebuchet = {
 			has_innovation = innovation_trebuchet
 			culture_uses_eastern_siege_weapons_trigger = no
 		}
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 		
 	}
 
@@ -534,7 +575,10 @@ bombard = {
 			has_cultural_parameter = unlock_late_medieval_gunpowder_units
 			culture_uses_eastern_siege_weapons_trigger = no
 		}
-		NOT = { government_has_flag = government_is_in_steppe }
+		NOR = {
+			government_has_flag = government_is_in_steppe
+			government_has_flag = government_is_merchant
+		}
 	}
 
 	should_show_when_unavailable = {
@@ -559,9 +603,12 @@ handgunners = {
 	pursuit = 0
 	screen = 5
 
+	control_value = 4
+
 	can_recruit = {
 		gunpowder_raise_limit_existing_gunpowder_units < gunpowder_raise_limit_existing_gunpowder_buildings	# one powder magazine must be owned to support three handgunner regiments, regardless of maa size
 		culture = { has_cultural_parameter = unlock_late_medieval_gunpowder_units }
+		NOT = { government_has_flag = government_is_merchant }
 	}
 
 	terrain_bonus = {
@@ -595,7 +642,8 @@ house_guard = {
 		dynasty ?= {
 			has_dynasty_perk = warfare_legacy_5
 		}
-		NOT = {
+		NOR = {
+			government_has_flag = government_is_merchant
 			culture = { has_cultural_parameter = strength_in_numbers_heavy_maa_ban }
 		}
 	}
@@ -604,6 +652,8 @@ house_guard = {
 	toughness = 32
 	pursuit = 0
 	screen = 24
+
+	control_value = 4
 
 	counters = {
 		pikemen = 2
@@ -641,6 +691,8 @@ pikemen_militia = {
 	toughness = 16
 	pursuit = 10
 	screen = 0
+
+	control_value = 4
 
 	terrain_bonus = {
 		mountains = { toughness = 8 }

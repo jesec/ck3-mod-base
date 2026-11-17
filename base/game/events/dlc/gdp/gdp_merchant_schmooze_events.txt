@@ -1,0 +1,1357 @@
+﻿namespace = gdp_schmooze_events
+
+# Butter up a noble
+gdp_schmooze_events.1000 = {
+	type = activity_event
+	title = gdp_schmooze_events.1000.t
+	desc = gdp_schmooze_events.1000.desc
+	theme = trade
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:schmoozee
+		animation = war_over_tie
+	}
+	cooldown = { months = 1 }
+	override_background = { reference = ep2_involved_activity }
+
+	trigger = {
+		has_activity_intent = schmooze_intent
+		scope:activity = {
+			any_attending_character = {
+				is_landed = yes
+				NOT = { government_has_flag = government_is_merchant }
+				save_temporary_scope_as = schmoozee_temp
+				NOT = {
+					root = {
+						is_target_in_variable_list = {
+							name = schmoozed
+							target = scope:schmoozee_temp
+						}
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		save_scope_as = schmoozer
+		scope:activity = {
+			random_attending_character = {
+				limit = {
+					is_landed = yes
+					NOT = { government_has_flag = government_is_merchant }
+					save_temporary_scope_as = schmoozee_temp
+					NOT = {
+						scope:schmoozer = {
+							is_target_in_variable_list = {
+								name = schmoozed
+								target = scope:schmoozee_temp
+							}
+						}
+					}
+				}
+				save_scope_as = schmoozee
+			}
+		}
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				any_trade_route_with_goods_category_trigger = { CATEGORY = luxury_items }
+			}
+			save_random_trade_route_with_goods_category_effect = { CATEGORY = luxury_items }
+			scope:goods_route ?= {
+				random_trade_market_on_route = {
+					limit = {
+						NOT = { has_trade_market_modifier = activity_used_trade_market_luxury_items_modifier }
+						trade_market_production_of_trade_good_need_category = {
+							target = trade_good_category:trade_category_luxury_items
+							value > 0
+						}
+					}
+					alternative_limit = {
+						trade_market_production_of_trade_good_need_category = {
+							target = trade_good_category:trade_category_luxury_items
+							value > 0
+						}
+					}
+					alternative_limit = { always = yes }
+					save_scope_as = goods_market
+				}
+			}
+		}
+	}
+
+	option = { #I am an luxury merchant!
+		name = gdp_schmooze_events.1000.d
+		trigger = {
+			custom_tooltip = {
+				text = trade_category_luxury_items_trade_route_trigger
+				exists = scope:goods_market
+			}
+		}
+		reason = have_luxury_items_route
+		show_as_unavailable = { government_has_flag = government_is_merchant }
+		reverse_add_opinion = {
+			target = scope:schmoozee
+			modifier = impressed_opinion
+			opinion = 20
+		}
+		scope:goods_market ?= {
+			add_trade_market_modifier = {
+				modifier = activity_used_trade_market_luxury_items_modifier
+				years = 10
+			}
+		}
+		gdp_log_schmooze_successful_effect = {
+			CHAR = scope:schmoozer
+			TARGET = scope:schmoozee
+			MARKET = scope:province.barony.trade_market
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		ai_chance = {
+			base = 50
+			modifier = {
+				add = 50
+				has_trait = ambitious
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.5
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1000.a
+		trigger = { gold >= scope:schmoozee.minor_gold_value }
+		show_as_unavailable = { gold < scope:schmoozee.minor_gold_value }
+		pay_short_term_gold = {
+			gold = scope:schmoozee.minor_gold_value
+			target = scope:schmoozee
+		}
+		reverse_add_opinion = {
+			target = scope:schmoozee
+			modifier = impressed_opinion
+			opinion = 20
+		}
+		gdp_log_schmooze_successful_effect = {
+			CHAR = scope:schmoozer
+			TARGET = scope:schmoozee
+			MARKET = scope:province.barony.trade_market
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				gold < scope:schmoozee.medium_gold_value
+				factor = 0
+			}
+			ai_value_modifier = {
+				ai_greed = -0.5
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1000.b
+		duel = {
+			skill = diplomacy
+			value = decent_skill_rating
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1000.b.success
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = gdp_schmooze_events.1000.b.success
+					right_icon = scope:schmoozee
+					gdp_log_schmooze_successful_effect = {
+						CHAR = scope:schmoozer
+						TARGET = scope:schmoozee
+						MARKET = scope:province.barony.trade_market
+					}
+					reverse_add_opinion = {
+						target = scope:schmoozee
+						modifier = impressed_opinion
+						opinion = 10
+					}
+				}
+			}
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1000.b.failure
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = gdp_schmooze_events.1000.b.failure
+					right_icon = scope:schmoozee
+					add_prestige = miniscule_prestige_loss
+				}
+			}
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				add = 50
+				diplomacy >= decent_skill_rating
+			}
+			ai_value_modifier = {
+				ai_sociability = 0.5
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1000.c
+		add_prestige = minor_prestige_value
+		ai_chance = {
+			base = 25
+			ai_value_modifier = {
+				ai_energy = -0.5
+			}
+		}
+	}
+}
+
+# Butter up a merchant
+gdp_schmooze_events.1010 = {
+	type = activity_event
+	title = gdp_schmooze_events.1010.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					involved_activity = { has_activity_type = activity_feast }
+				}
+				desc = gdp_schmooze_events.1010.feast
+			}
+			desc = gdp_schmooze_events.1010.hunt
+		}
+		desc = gdp_schmooze_events.1010.outro
+	}
+	theme = trade
+	left_portrait = {
+		character = root
+		animation = admiration
+	}
+	right_portrait = {
+		character = scope:schmoozee
+		animation = war_over_tie
+	}
+	cooldown = { months = 1 }
+	override_background = { reference = ep2_involved_activity }
+
+	trigger = {
+		has_activity_intent = schmooze_intent
+		num_trade_routes > 0
+		scope:activity = {
+			any_attending_character = {
+				NOT = { this = root }
+				exists = domicile
+				government_has_flag = government_is_merchant
+				any_trade_route = {}
+				save_temporary_scope_as = schmoozee_temp
+				NOT = {
+					root = {
+						is_target_in_variable_list = {
+							name = schmoozed
+							target = scope:schmoozee_temp
+						}
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		save_scope_as = schmoozer
+		scope:activity = {
+			random_attending_character = {
+				limit = {
+					NOT = { this = root }
+					exists = domicile
+					government_has_flag = government_is_merchant
+					save_temporary_scope_as = schmoozee_temp
+					NOT = {
+						root = {
+							is_target_in_variable_list = {
+								name = schmoozed
+								target = scope:schmoozee_temp
+							}
+						}
+					}
+				}
+				weight = {
+					base = 100
+					modifier = {
+						gold < medium_gold_value
+						add = -99
+					}
+				}
+				save_scope_as = schmoozee
+			}
+		}
+		scope:schmoozee = {
+			random_trade_route = {
+				limit = {
+					any_trade_market_on_route = { save_temporary_scope_as = market_temp }
+					scope:schmoozer = {
+						any_trade_route = {
+							any_trade_market_on_route = { scope:market_temp ?= this }
+						}
+					}
+				}
+				save_scope_as = shared_route
+				scope:market_temp = { save_scope_as = shared_market }
+			}
+		}
+		if = {
+			limit = {
+				NOT = { exists = scope:shared_market }
+			}
+			random_trade_route = {
+				random_trade_market_on_route = { save_scope_as = schmoozer_market }
+			}
+			scope:schmoozee = {
+				random_trade_route = {
+					random_trade_market_on_route = { save_scope_as = schmoozee_market }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1010.a
+		trigger = {
+			scope:schmoozee = { gold >= medium_gold_value }
+		}
+		show_as_unavailable = {
+			scope:schmoozee = { gold < medium_gold_value }
+		}
+		scope:schmoozee = {
+			pay_short_term_gold = {
+				gold = medium_gold_value
+				target = scope:schmoozer
+			}
+		}
+		if = {
+			limit = { exists = scope:shared_market }
+			gdp_log_schmooze_successful_effect = {
+				CHAR = scope:schmoozee
+				TARGET = scope:schmoozer
+				MARKET = scope:shared_market
+			}
+		}
+		else = {
+			gdp_log_schmooze_successful_effect = {
+				CHAR = scope:schmoozee
+				TARGET = scope:schmoozer
+				MARKET = scope:schmoozee_market
+			}
+		}
+		house = {
+			change_house_relation_effect = {
+				HOUSE = scope:schmoozee.house
+				VALUE = house_relation_improve_minor_value 
+				REASON = trade_opportunity_cooperation
+				CHAR = scope:schmoozer
+				TARGET_CHAR = scope:schmoozee
+				TITLE = dummy_female
+			}
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				short_term_gold < minor_gold_value
+				add = 50
+			}
+			ai_value_modifier = {
+				ai_greed = 0.5
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1010.b
+		trigger = { gold >= medium_gold_value }
+		show_as_unavailable = { gold < medium_gold_value }
+		pay_short_term_gold = {
+			gold = medium_gold_value
+			target = scope:schmoozee
+		}
+		if = {
+			limit = { exists = scope:shared_market }
+			gdp_log_schmooze_successful_effect = {
+				CHAR = scope:schmoozer
+				TARGET = scope:schmoozee
+				MARKET = scope:shared_market
+			}
+		}
+		else = {
+			gdp_log_schmooze_successful_effect = {
+				CHAR = scope:schmoozer
+				TARGET = scope:schmoozee
+				MARKET = scope:schmoozer_market
+			}
+		}
+		house = {
+			change_house_relation_effect = {
+				HOUSE = scope:schmoozee.house
+				VALUE = house_relation_improve_minor_value 
+				REASON = trade_opportunity_cooperation
+				CHAR = scope:schmoozer
+				TARGET_CHAR = scope:schmoozee
+				TITLE = scope:dummy_gender
+			}
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				short_term_gold < minor_gold_value
+				factor = 0
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.5
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1010.c
+		duel = {
+			skill = diplomacy
+			value = decent_skill_rating
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1010.c.success
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = gdp_schmooze_events.1010.c.success
+					right_icon = scope:schmoozee
+					if = {
+						limit = { exists = scope:shared_market }
+						gdp_log_schmooze_successful_effect = {
+							CHAR = scope:schmoozer
+							TARGET = scope:schmoozee
+							MARKET = scope:shared_market
+						}
+						gdp_log_schmooze_successful_effect = {
+							CHAR = scope:schmoozee
+							TARGET = scope:schmoozer
+							MARKET = scope:shared_market
+						}
+					}
+					else = {
+						gdp_log_schmooze_successful_effect = {
+							CHAR = scope:schmoozer
+							TARGET = scope:schmoozee
+							MARKET = scope:schmoozer_market
+						}
+						gdp_log_schmooze_successful_effect = {
+							CHAR = scope:schmoozee
+							TARGET = scope:schmoozer
+							MARKET = scope:schmoozee_market
+						}
+					}
+					house = {
+						change_house_relation_effect = {
+							HOUSE = scope:schmoozee.house
+							VALUE = house_relation_improve_minor_value 
+							REASON = trade_opportunity_cooperation
+							CHAR = scope:schmoozer
+							TARGET_CHAR = scope:schmoozee
+							TITLE = scope:dummy_gender
+						}
+					}
+				}
+			}
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1010.c.failure
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = gdp_schmooze_events.1010.c.failure
+					right_icon = scope:schmoozee
+					reverse_add_opinion = {
+						target = scope:schmoozee
+						modifier = insulted_opinion
+					}
+					house = {
+						change_house_relation_effect = {
+							HOUSE = scope:schmoozee.house
+							VALUE = house_relation_damage_minor_value 
+							REASON = trade_opportunity_friction
+							CHAR = scope:schmoozer
+							TARGET_CHAR = scope:schmoozee
+							TITLE = scope:dummy_gender
+						}
+					}
+				}
+			}
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				diplomacy >= decent_skill_rating
+				add = 50
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1010.d
+		stress_and_fulfillment_impact = {
+			base = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 25
+			ai_value_modifier = {
+				ai_energy = -0.5
+			}
+		}
+	}
+}
+
+# Pick a noble to side with
+gdp_schmooze_events.1030 = {
+	type = activity_event
+	title = gdp_schmooze_events.1030.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					involved_activity = { has_activity_type = activity_feast }
+				}
+				desc = gdp_schmooze_events.1030.feast
+			}
+			desc = gdp_schmooze_events.1030.hunt
+		}
+		desc = gdp_schmooze_events.1030.outro
+	}
+	theme = trade
+	left_portrait = {
+		character = scope:schmoozee_1
+		animation = dismissal
+	}
+	center_portrait = {
+		character = root
+		animation = war_over_tie
+	}
+	right_portrait = {
+		character = scope:schmoozee_2
+		animation = disgust
+	}
+	cooldown = { months = 1 }
+	override_background = { reference = ep2_involved_activity }
+
+	trigger = {
+		has_activity_intent = schmooze_intent
+		scope:activity = {
+			any_attending_character = {
+				count >= 2
+				NOT = { government_has_flag = government_is_merchant }
+				is_ruler = yes
+				save_temporary_scope_as = schmoozee_temp
+				root = {
+					NOT = {
+						is_target_in_variable_list = {
+							name = schmoozed
+							target = scope:schmoozee_temp
+						}
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		save_scope_as = schmoozer
+		scope:activity = {
+			ordered_attending_character = {
+				limit = {
+					NOR = {
+						government_has_flag = government_is_merchant
+						scope:schmoozee_1 ?= this
+					}
+					is_ruler = yes
+					save_temporary_scope_as = schmoozee_temp
+					NOT = {
+						root = {
+							is_target_in_variable_list = {
+								name = schmoozed
+								target = scope:schmoozee_temp
+							}
+						}
+					}
+				}
+				order_by = highest_held_title_tier
+				check_range_bounds = no
+				max = 2
+				if = {
+					limit = { exists = scope:schmoozee_1 }
+					save_scope_as = schmoozee_2
+				}
+				else = { save_scope_as = schmoozee_1 }
+			}
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee_1
+			months = 6
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee_2
+			months = 6
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1030.c
+		duel = {
+			value = decent_skill_rating
+			skill = diplomacy
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1030.c.success
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = gdp_schmooze_events.1030.c.success
+					left_icon = scope:schmoozee_1
+					right_icon = scope:schmoozee_2
+					gdp_log_schmooze_successful_empty_effect = {
+						CHAR = scope:schmoozer
+						MARKET = scope:province.barony.trade_market
+					}
+					reverse_add_opinion = {
+						target = scope:schmoozee_1
+						modifier = impressed_opinion
+						opinion = 10
+					}
+					reverse_add_opinion = {
+						target = scope:schmoozee_2
+						modifier = impressed_opinion
+						opinion = 10
+					}
+				}
+			}
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1030.c.failure
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = gdp_schmooze_events.1030.c.failure
+					left_icon = scope:schmoozee_1
+					right_icon = scope:schmoozee_2
+					add_prestige = miniscule_prestige_loss
+					reverse_add_opinion = {
+						target = scope:schmoozee_1
+						modifier = insulted_opinion
+						opinion = -20
+					}
+					reverse_add_opinion = {
+						target = scope:schmoozee_2
+						modifier = insulted_opinion
+						opinion = -20
+					}
+				}
+			}
+			
+		}
+		ai_chance = {
+			base = 5
+			modifier = {
+				diplomacy >= high_skill_rating
+				add = 45
+			}
+		}
+	}
+
+	option = { # Favor 1
+		name = gdp_schmooze_events.1030.a
+		add_prestige = minor_prestige_gain
+		reverse_add_opinion = {
+			target = scope:schmoozee_1
+			modifier = pleased_opinion
+			opinion = 15
+		}
+		reverse_add_opinion = {
+			target = scope:schmoozee_2
+			modifier = insulted_opinion
+			opinion = -15
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				suzerain ?= scope:schmoozee_1
+				add = 20
+			}
+		}
+	}
+
+	option = { # Favor 2
+		name = gdp_schmooze_events.1030.b
+		add_prestige = minor_prestige_gain
+		reverse_add_opinion = {
+			target = scope:schmoozee_2
+			modifier = pleased_opinion
+			opinion = 15
+		}
+		reverse_add_opinion = {
+			target = scope:schmoozee_1
+			modifier = insulted_opinion
+			opinion = -15
+		}
+		ai_chance = {
+			base = 10
+			modifier = {
+				suzerain ?= scope:schmoozee_2
+				add = 20
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1030.d
+		stress_and_fulfillment_impact = {
+			base = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 0
+		}
+	}
+}
+
+scripted_trigger gdp_schmooze_events_1050_schmoozee_trigger = {
+	is_landed = yes
+	NOR = {
+		this = root
+		scope:schmoozee_1 ?= this
+		scope:schmoozee_2 ?= this
+	}
+	any_held_trade_market = {
+		any_character_in_market = { this = root }
+	}
+	save_temporary_scope_as = schmoozee_temp
+	NOT = {
+		root = {
+			is_target_in_variable_list = {
+				name = schmoozed
+				target = scope:schmoozee_temp
+			}
+		}
+	}
+}
+
+scripted_effect gdp_schmooze_events_1050_scope_effect = {
+	save_scope_as = schmoozee_$NUM$
+	random_held_trade_market = {
+		limit = {
+			NOR = {
+				scope:market_1 ?= this
+				scope:market_2 ?= this
+			}
+			any_character_in_market = { this = root }
+		}
+		alternative_limit = {
+			any_character_in_market = { this = root }
+		}
+		add_to_list = markets_list
+		save_scope_as = market_$NUM$
+		root = {
+			random_trade_route = {
+				limit = {
+					NOR = {
+						scope:route_1 ?= this
+						scope:route_2 ?= this
+					}
+					any_trade_market_on_route = { this = scope:market_$NUM$ }
+				}
+				alternative_limit = {
+					any_trade_market_on_route = { this = scope:market_$NUM$ }
+				}
+				save_scope_as = route_$NUM$
+			}
+		}
+	}
+}
+
+scripted_effect gdp_schmooze_events_1050_schmooze_effect = {
+	reverse_add_opinion = {
+		target = scope:schmoozee_$NUM$
+		modifier = impressed_opinion
+		opinion = 15
+	}
+	gdp_log_schmooze_successful_effect = {
+		CHAR = scope:schmoozer
+		TARGET = scope:schmoozee_$NUM$
+		MARKET = scope:market_$NUM$
+	}
+	add_to_variable_list = {
+		name = schmoozed
+		target = scope:schmoozee_$NUM$
+		months = 6
+	}
+}
+
+# Butter up market (dude)
+gdp_schmooze_events.1050 = {
+	type = activity_event
+	title = gdp_schmooze_events.1050.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					involved_activity = { has_activity_type = activity_feast }
+				}
+				desc = gdp_schmooze_events.1050.feast
+			}
+			desc = gdp_schmooze_events.1050.hunt
+		}
+		desc = gdp_schmooze_events.1050.outro
+		triggered_desc = {
+			trigger = { exists = scope:schmoozee_3 }
+			desc = gdp_schmooze_events.1050.three
+		}
+	}
+	theme = trade
+	left_portrait = {
+		character = scope:schmoozee_1
+		animation = happiness
+	}
+	center_portrait = {
+		character = root
+		animation = thinking
+	}
+	right_portrait = {
+		character = scope:schmoozee_2
+		animation = admiration
+	}
+	lower_right_portrait = scope:schmoozee_3
+	cooldown = { months = 1 }
+	override_background = { reference = ep2_involved_activity }
+
+	trigger = {
+		has_activity_intent = schmooze_intent
+		scope:activity = {
+			any_attending_character = {
+				count >= 2
+				gdp_schmooze_events_1050_schmoozee_trigger = yes
+			}
+		}
+	}
+
+	immediate = {
+		save_scope_as = schmoozer
+		scope:activity = {
+			hidden_effect = {
+				while = {
+					count = 3
+					random_attending_character = {
+						limit = {
+							gdp_schmooze_events_1050_schmoozee_trigger = yes
+							any_held_trade_market = {
+								any_character_in_market = {	this = root }
+								NOR = {
+									scope:market_1 ?= this
+									scope:market_2 ?= this
+								}
+							}
+						}
+						alternative_limit = { gdp_schmooze_events_1050_schmoozee_trigger = yes }
+						weight = {
+							base = 1
+							modifier = { add = highest_held_title_tier }
+						}
+						if = {
+							limit = { exists = scope:schmoozee_2 }
+							gdp_schmooze_events_1050_scope_effect = { NUM = 3 }
+						}
+						else_if = {
+							limit = { exists = scope:schmoozee_1 }
+							gdp_schmooze_events_1050_scope_effect = { NUM = 2 }
+						}
+						else = {
+							gdp_schmooze_events_1050_scope_effect = { NUM = 1 }
+						}
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1050.a
+		add_prestige = minor_prestige_loss
+		gdp_schmooze_events_1050_schmooze_effect = { NUM = 1 }
+		ai_chance = {
+			base = 1
+			modifier = { add = scope:route_1.age_in_months }
+			modifier = { add = scope:route_1.last_tick_profit }
+			ai_value_modifier = {
+				ai_energy = 0.25
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1050.b
+		add_prestige = minor_prestige_loss
+		gdp_schmooze_events_1050_schmooze_effect = { NUM = 2 }
+		ai_chance = {
+			base = 1
+			modifier = { add = scope:route_2.age_in_months }
+			modifier = { add = scope:route_2.last_tick_profit }
+			ai_value_modifier = {
+				ai_energy = 0.25
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1050.c
+		trigger = { exists = scope:schmoozee_3 }
+		add_prestige = minor_prestige_loss
+		gdp_schmooze_events_1050_schmooze_effect = { NUM = 3 }
+		ai_chance = {
+			base = 1
+			modifier = { add = scope:route_3.age_in_months }
+			modifier = { add = scope:route_3.last_tick_profit }
+			ai_value_modifier = {
+				ai_energy = 0.25
+			}
+		}
+	}
+
+	option = {
+		name = gdp_schmooze_events.1050.d
+		stress_and_fulfillment_impact = {
+			lazy = minor_stress_impact_loss
+			content = minor_stress_impact_loss
+			diligent = minor_stress_impact_gain
+			ambitious = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 5
+			ai_value_modifier = {
+				ai_energy = -0.5
+			}
+		}
+	}
+}
+
+# Clash with other schmoozer
+gdp_schmooze_events.1060 = {
+	type = activity_event
+	title = gdp_schmooze_events.1060.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					involved_activity = { has_activity_type = activity_feast }
+				}
+				desc = gdp_schmooze_events.1060.feast
+			}
+			desc = gdp_schmooze_events.1060.hunt
+		}
+		desc = gdp_schmooze_events.1060.outro
+	}
+	theme = trade
+	left_portrait = {
+		character = root
+		animation = war_over_win
+	}
+	center_portrait = {
+		character = scope:schmoozee
+		animation = happiness
+	}
+	right_portrait = {
+		character = scope:rival
+		animation = admiration
+	}
+	cooldown = { months = 1 }
+	override_background = { reference = ep2_involved_activity }
+
+	trigger = {
+		has_activity_intent = schmooze_intent
+		scope:activity = {
+			any_attending_character = {
+				NOT = { this = root }
+				has_activity_intent = schmooze_intent
+				exists = domicile
+				government_has_flag = government_is_merchant
+				save_temporary_scope_as = rival_temp
+				NOT = {
+					root = {
+						is_target_in_variable_list = {
+							name = schmoozed
+							target = scope:rival_temp
+						}
+					}
+				}
+			}
+			any_attending_character = {
+				NOT = { this = root }
+				is_landed = yes
+				NOT = { government_has_flag = government_is_merchant }
+				save_temporary_scope_as = schmoozee_temp
+				NOT = {
+					root = {
+						is_target_in_variable_list = {
+							name = schmoozed
+							target = scope:schmoozee_temp
+						}
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		save_scope_as = schmoozer
+		scope:activity = {
+			random_attending_character = {
+				limit = {
+					NOT = { this = root }
+					has_activity_intent = schmooze_intent
+					exists = domicile
+					government_has_flag = government_is_merchant
+					save_temporary_scope_as = rival_temp
+					NOT = {
+						root = {
+							is_target_in_variable_list = {
+								name = schmoozed
+								target = scope:rival_temp
+							}
+						}
+					}
+				}
+				save_scope_as = rival
+			}
+			random_attending_character = {
+				limit = {
+					NOR = {
+						this = root
+						scope:rival ?= this
+					}
+					is_landed = yes
+					NOT = { government_has_flag = government_is_merchant }
+					save_temporary_scope_as = schmoozee_temp
+					NOT = {
+						root = {
+							is_target_in_variable_list = {
+								name = schmoozed
+								target = scope:schmoozee_temp
+							}
+						}
+					}
+				}
+				save_scope_as = schmoozee
+			}
+		}
+	}
+
+	option = { # Detract
+		name = gdp_schmooze_events.1060.a
+		trigger = {
+			has_bigger_company_than_trigger = { OTHER = scope:rival }
+		}
+		reason = have_bigger_company
+		gdp_log_schmooze_successful_effect = {
+			CHAR = scope:schmoozer
+			TARGET = scope:schmoozee
+			MARKET = scope:province.barony.trade_market
+		}
+		scope:schmoozee = {
+			add_opinion = {
+				target = scope:rival
+				modifier = disrespect_opinion
+				opinion = -15
+			}
+		}
+		reverse_add_opinion = {
+			target = scope:rival
+			modifier = disrespect_opinion
+			opinion = -15
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:rival
+			months = 6
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		ai_chance = {
+			base = 150
+		}
+	}
+
+	option = { # Detract duel
+		name = gdp_schmooze_events.1060.a
+		trigger = {
+			NOT = {
+				has_bigger_company_than_trigger = { OTHER = scope:rival }
+			}
+		}
+		duel = {
+			skill = diplomacy
+			target = scope:rival
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1060.a.success
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = gdp_schmooze_events.1060.a.success
+					left_icon = scope:schmoozee
+					right_icon = scope:rival
+					gdp_log_schmooze_successful_effect = {
+						CHAR = scope:schmoozer
+						TARGET = scope:schmoozee
+						MARKET = scope:province.barony.trade_market
+					}
+					scope:schmoozee = {
+						add_opinion = {
+							target = scope:rival
+							modifier = disrespect_opinion
+							opinion = -15
+						}
+					}
+				}
+			}
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				modifier = {
+					add = 10
+					has_smaller_company_than_trigger = { OTHER = scope:rival }
+				}
+				min = 5
+				desc = gdp_schmooze_events.1060.a.failure
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = gdp_schmooze_events.1060.a.failure
+					left_icon = scope:schmoozee
+					right_icon = scope:rival
+					gdp_log_schmooze_successful_effect = {
+						CHAR = scope:rival
+						TARGET = scope:schmoozee
+						MARKET = scope:province.barony.trade_market
+					}
+					scope:schmoozee = {
+						add_opinion = {
+							target = root
+							modifier = disrespect_opinion
+							opinion = -15
+						}
+					}
+				}
+			}
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:rival
+			months = 6
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		stress_and_fulfillment_impact = {
+			humble = minor_stress_impact_gain
+			forgiving = minor_stress_impact_gain
+			vengeful = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				diplomacy >= decent_skill_rating
+				add = 25
+			}
+			ai_value_modifier = {
+				ai_boldness = 0.5
+			}
+		}
+	}
+
+	option = { # Show acumen
+		name = gdp_schmooze_events.1060.b
+		duel = {
+			skill = stewardship
+			value = decent_skill_rating
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1060.b.success
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = gdp_schmooze_events.1060.b.success
+					left_icon = scope:schmoozee
+					right_icon = scope:rival
+					gdp_log_schmooze_successful_effect = {
+						CHAR = scope:schmoozer
+						TARGET = scope:schmoozee
+						MARKET = scope:province.barony.trade_market
+					}
+					reverse_add_opinion = {
+						target = scope:schmoozee
+						modifier = impressed_opinion
+						opinion = 15
+					}
+					reverse_add_opinion = {
+						target = scope:rival
+						modifier = annoyed_opinion
+						opinion = -15
+					}
+				}
+			}
+			10 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				min = 5
+				desc = gdp_schmooze_events.1060.b.failure
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = gdp_schmooze_events.1060.b.failure
+					left_icon = scope:schmoozee
+					right_icon = scope:rival
+					add_prestige = minor_prestige_loss
+					gdp_log_schmooze_successful_effect = {
+						CHAR = scope:rival
+						TARGET = scope:schmoozee
+						MARKET = scope:province.barony.trade_market
+					}
+					reverse_add_opinion = {
+						target = scope:schmoozee
+						modifier = contempt_opinion
+						opinion = -15
+					}
+				}
+			}
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:rival
+			months = 6
+		}
+		add_to_variable_list = {
+			name = schmoozed
+			target = scope:schmoozee
+			months = 6
+		}
+		stress_and_fulfillment_impact = {
+			diligent = minor_stress_impact_loss
+			humble = minor_stress_impact_gain
+			just = minor_stress_impact_loss
+		}
+		ai_chance = {
+			base = 25
+			modifier = {
+				stewardship >= decent_skill_rating
+				add = 25
+			}
+			ai_value_modifier = {
+				ai_energy = 0.5
+			}
+		}
+	}
+
+	option = { # Cut short (opt out)
+		name = gdp_schmooze_events.1060.c
+		add_prestige = minor_prestige_gain
+		gdp_log_schmooze_successful_effect = {
+			CHAR = scope:rival
+			TARGET = scope:schmoozee
+			MARKET = scope:province.barony.trade_market
+		}
+		stress_and_fulfillment_impact = {
+			greedy = minor_stress_impact_gain
+			arrogant = minor_stress_impact_gain
+			deceitful = minor_stress_impact_loss
+			shy = minor_stress_impact_gain
+		}
+		ai_chance = {
+			base = 25
+			ai_value_modifier = {
+				ai_boldness = -0.25
+				ai_energy = -0.25
+			}
+		}
+	}
+}

@@ -24,9 +24,6 @@ window = {
 		using = Window_Position_MainTab
 
 		on_start = "[SetMapMode( 'dynastic_cycle' )]"
-		on_start = "[SituationWindow.ClearSelectedFuturePhaseType]"
-		on_start = "[SituationWindow.AccessParticipantCharacterList.SetSelectedParticipantGroup( Situation.GetTopCharacterParticipantGroup( GetPlayer.Self ) )]"
-		on_start = "[SituationDynasticCycleWindow.UpdateSelectedParticipantGroup( Situation.GetTopCharacterParticipantGroup( GetPlayer.Self ) )]"
 	}
 
 	state = {
@@ -1096,7 +1093,7 @@ types DynasticCycleTypes
 				datacontext = "[GetActivityType( 'activity_debate' )]"
 				datacontext = "[ActivityType.FindJoinableOpenActivityOfType]"
 			}
-
+			
 			vbox = {
 				name = "situation_decisions_container"
 				spacing = 2
@@ -1107,22 +1104,9 @@ types DynasticCycleTypes
 					button_dynastic_cycle_decision = {}
 				}
 			}
-
-			block "actions_area_favor_movement_decision"
-			{
-				button_dynastic_cycle_decision = {
-					datacontext = "[GetDecisionWithKey('favor_movement_decision')]"
-				}
-			}
-
-			block "actions_area_choose_movement_decision"
-			{
-				button_dynastic_cycle_decision = {
-					datacontext = "[GetDecisionWithKey('situation_dynastic_cycle_choose_movement_decision')]"
-				}
-			}
 		}
 	}
+
 
 	type button_dynastic_cycle_decision = button_decision_entry {
 		visible = "[Decision.IsShownForPlayer]"

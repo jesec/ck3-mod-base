@@ -1,0 +1,35 @@
+﻿influence_house_ambition_success = {
+	effect = {
+		if = {
+			limit = {
+				scope:target = {
+					is_ai = no
+				}
+			}
+			scope:target = {
+				trigger_event = influence_house_ambition_outcome.1003 #Event for when the one being influenced is a player and not AI
+			}
+		}
+		else = {
+			scope:owner = {
+				trigger_event = influence_house_ambition_outcome.1001 #Standard success
+			}
+		}
+	}
+}
+
+influence_house_ambition_failure = {
+	first_valid = {
+		influence_house_ambition_outcome.1002 #Standard failure
+	}
+}
+
+
+influence_house_ambition_ongoing = {
+	random_events = {
+		500 = 0
+		50 = influence_house_ambition_ongoing.1001 #They have different culture, talk it up a bit
+		50 = influence_house_ambition_ongoing.1002 #Write them a letter 
+	}
+}
+

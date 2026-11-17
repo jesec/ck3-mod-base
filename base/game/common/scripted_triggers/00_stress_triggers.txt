@@ -110,7 +110,7 @@ can_be_hashishiyah = {
 		faith = {
 			religion_tag = islam_religion
 		}
-		# Otherwise you must not be located in Europe (where Hashish was relatively unknown until modern times.)
+		# Otherwise you must not be located in Europe or Asia (where Hashish was relatively unknown until modern times.)
 		AND = {
 			OR = {
 				capital_province ?= {
@@ -327,8 +327,8 @@ can_be_eccentric = {
 }
 
 has_witnessed_stress_coping_trait = {
-	NOT = { has_trait = $TRAIT$ }
 	var:witnessed_trait ?= flag:$TRAIT$	
+	NOT = { has_trait = $TRAIT$ }
 }
 
 can_be_burdened = {
@@ -358,9 +358,8 @@ stress_rite_conversion_trigger = {
 	# A child re-founding their realm's religion over a tantrum is not a story we want.
 	is_adult = yes
 	spiritual_fulfillment < 0
-	rite_fulfillment_score = {
-		target = root.rite
-		value <= 0
+	faith = {
+		fervor <= 50
 	}
 	OR = {
 		has_trait = cynical
@@ -368,8 +367,9 @@ stress_rite_conversion_trigger = {
 		has_trait = fickle
 		spiritual_fulfillment < spiritual_fulfillment_minus_1
 	}
-	faith = {
-		fervor <= 50
+	rite_fulfillment_score = {
+		target = root.rite
+		value <= 0
 	}
 	# Must stay in step with stress_threshold.1501's picker, or the option has no rite
 	any_available_rite = {

@@ -18,7 +18,7 @@ scripted_effect tournament_horse_race_riot_effect = {
 			# Effect
 			scope:activity.activity_location.county = {
 				change_county_control = minor_county_control_loss
-				change_development_progress = minor_development_progress_loss
+				change_prosperity_progress = minor_prosperity_progress_loss
 				add_county_modifier = {
 					modifier = feeble_presence_modifier
 					years = 5
@@ -41,10 +41,10 @@ jason_race_events.1 = {
 			triggered_desc = {
 				trigger = {
 					root.location.county = {
-						county_control >= 80
+						county_control >= county_control_relative_80
 					}
 					root.location.county = {
-						county_opinion >= 0
+						popular_opinion >= 0
 					}
 				}
 				desc = jason_race_events.1.desc.rowdy_fans
@@ -98,8 +98,8 @@ jason_race_events.1 = {
 			root.location.county = {
 				NOR = {
 					AND = {
-						county_control > 80
-						county_opinion >= 0
+						county_control > county_control_relative_80
+						popular_opinion >= 0
 						culture = {
 							OR = {
 								has_cultural_tradition = tradition_loyal_soldiers
@@ -111,8 +111,8 @@ jason_race_events.1 = {
 						}
 					}
 					AND = {
-						county_control >= 80
-						county_opinion >= 0
+						county_control >= county_control_relative_80
+						popular_opinion >= 0
 						rite = {
 							OR = {
 								rite_has_tenet = tenet_dharmic_pacifism
@@ -714,7 +714,7 @@ jason_race_events.1 = {
 				}
 				modifier = {
 					add = 10
-					location.county = { county_opinion > 20 }
+					location.county = { popular_opinion > 20 }
 				}
 				modifier = {
 					add = 10
@@ -754,11 +754,11 @@ jason_race_events.1 = {
 				}
 				modifier = {
 					add = 20
-					location.county = { county_control <= 90 }
+					location.county = { county_control < county_control_baseline }
 				}
 				modifier = {
 					add = 20
-					location.county = { county_opinion < 0 }
+					location.county = { popular_opinion < 0 }
 				}
 				modifier = {
 					add = 15

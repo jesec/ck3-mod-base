@@ -1,0 +1,170 @@
+﻿
+# Fired when a category monopoly gets invalidated due to a new complete market monopoly
+# root scope: the invalidated category monopoly
+on_trade_monopoly_invalidated = {
+	effect = {
+		save_scope_as = trade_monopoly
+		character_owner ?= { save_scope_as = character_owner }
+		confederation_owner ?= { save_scope_as = confederation_owner }
+		title_owner ?= { save_scope_as = title_owner }
+		monopoly_trade_market = {
+			random_trade_monopoly_for_market = {
+				limit = { is_complete_monopoly = yes }
+				character_owner ?= { save_scope_as = new_monopoly_owner }
+				confederation_owner.leading_title.holder ?= { save_scope_as = new_monopoly_owner }
+				title_owner.holder ?= { save_scope_as = new_monopoly_owner }
+			}
+		}
+
+		if = {
+			limit = { exists = scope:character_owner }
+			scope:character_owner = {
+				send_interface_toast = {
+					title = monopoly_invalidated_toast_title
+					type = msg_trade_monopoly
+					left_icon = scope:character_owner
+					desc = monopoly_invalidated_toast_desc
+				}
+			}
+		}
+		else_if = {
+			limit = { exists = scope:confederation_owner }
+			scope:confederation_owner.leading_title.holder = { save_scope_as = character_owner }
+			scope:character_owner = {
+				send_interface_toast = {
+					title = monopoly_invalidated_toast_title
+					type = msg_trade_monopoly
+					left_icon = scope:character_owner
+					desc = monopoly_invalidated_toast_desc
+				}
+			}
+		}
+		else_if = {
+			limit = { exists = scope:title_owner }
+			scope:title_owner.holder = { save_scope_as = character_owner }
+			scope:character_owner = {
+				send_interface_toast = {
+					title = monopoly_invalidated_toast_title
+					type = msg_trade_monopoly
+					left_icon = scope:character_owner
+					desc = monopoly_invalidated_toast_desc
+				}
+			}
+		}
+	}
+}
+
+gdp_merchant_ai_trade_monopoly_pulse = {
+	trigger = {
+		is_ai = yes
+		government_has_flag = government_is_merchant
+		has_gdp_dlc_trigger = yes
+		is_imprisoned = no
+		gdp_merchant_ai_trade_monopoly_chance_per_mille_value > 0
+		gdp_merchant_ai_trade_monopoly_slots_value > 0
+		num_trade_routes > 0
+	}
+	effect = {
+		random = {
+			chance = 10
+			random = {
+				chance = gdp_merchant_ai_trade_monopoly_chance_per_mille_value
+				every_trade_monopoly_for_character = {
+					add_to_temporary_list = old_monopolies
+				}
+				gdp_ai_take_trade_monopoly_effect = {
+					OWNER_PARAM = owning_character
+					OWNER = root
+				}
+				random_trade_monopoly_for_character = {
+					limit = {
+						NOT = { is_in_list = old_monopolies }
+					}
+					save_scope_as = new_monopoly_scope
+					set_trade_monopoly_name = new_good_character_monopoly_name
+				}
+			}
+		}
+	}
+}
+
+gdp_republic_ai_trade_monopoly_pulse = {
+	trigger = {
+		is_ai = yes
+		has_gdp_dlc_trigger = yes
+		gdp_is_assembly_head_trigger = yes
+		is_imprisoned = no
+		gdp_republic_ai_trade_monopoly_chance_per_mille_value > 0
+		gdp_republic_ai_trade_monopoly_slots_value > 0
+		num_trade_routes > 0
+	}
+	effect = {
+		primary_title = { save_scope_as = monopoly_title }
+		random = {
+			chance = 10
+			random = {
+				chance = gdp_republic_ai_trade_monopoly_chance_per_mille_value
+				scope:monopoly_title = {
+					every_trade_monopoly_for_title = {
+						add_to_temporary_list = old_monopolies
+					}
+				}
+				gdp_ai_take_trade_monopoly_effect = {
+					OWNER_PARAM = owning_title
+					OWNER = scope:monopoly_title
+				}
+				scope:monopoly_title = {
+					random_trade_monopoly_for_title = {
+						limit = {
+							NOT = { is_in_list = old_monopolies }
+						}
+						save_scope_as = new_monopoly_scope
+						set_trade_monopoly_name = new_good_title_monopoly_name
+					}
+				}
+			}
+		}
+	}
+}
+
+gdp_trade_league_ai_trade_monopoly_pulse = {
+	trigger = {
+		is_ai = yes
+		has_gdp_dlc_trigger = yes
+		is_imprisoned = no
+		confederation ?= {
+			confederation_type = confederation_type:trade_league
+			has_cohesion_level_parameter = trade_league_can_request_monopolies
+			leading_title ?= { holder = root }
+		}
+		gdp_trade_league_ai_trade_monopoly_slots_value > 0
+		num_trade_routes > 0
+	}
+	effect = {
+		confederation = { save_scope_as = ai_monopoly_league }
+		random = {
+			chance = 10
+			random = {
+				chance = gdp_trade_league_ai_trade_monopoly_chance_per_mille_value
+				scope:ai_monopoly_league = {
+					every_trade_monopoly_for_confederation = {
+						add_to_temporary_list = old_monopolies
+					}
+				}
+				gdp_ai_take_trade_monopoly_effect = {
+					OWNER_PARAM = owning_confederation
+					OWNER = scope:ai_monopoly_league
+				}
+				scope:ai_monopoly_league = {
+					random_trade_monopoly_for_confederation = {
+						limit = {
+							NOT = { is_in_list = old_monopolies }
+						}
+						save_scope_as = new_monopoly_scope
+						set_trade_monopoly_name = new_good_confederation_monopoly_name
+					}
+				}
+			}
+		}
+	}
+}

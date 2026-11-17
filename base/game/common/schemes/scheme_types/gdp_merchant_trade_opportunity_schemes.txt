@@ -1,0 +1,1471 @@
+﻿@merchant_base_trade_opportunity_phases_per_agent_charge = 1
+
+##################################################
+# INFO
+# For laamp contracts that are broadly applicable: that is, they should be able to trigger virtually anywhere and with a minimum of triggers.
+# The idea is that any given laamp led by a character skilled in any one thing should always be viable — maybe through crime, maybe by demeaning themselves, but they should always have some contracts around to work with.
+##################################################
+
+# Challenge Competitor
+merchant_challenge_competitor_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_challenge_competitor_trade_opportunity_scheme_desc_general
+	success_desc = merchant_challenge_competitor_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+		scope:target.holder ?= {
+			gdp_is_merchant_or_unlanded_patrician_trigger = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_challenge_competitor_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_challenge_competitor_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_challenge_competitor_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_challenge_competitor_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_title.holder
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}
+}
+
+# Promote Goods
+merchant_promote_goods_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_promote_goods_trade_opportunity_scheme_desc_general
+	success_desc = merchant_promote_goods_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+	
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+	
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_promote_goods_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_promote_goods_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_promote_goods_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_promote_goods_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_character
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}
+}
+
+# Market Investment
+merchant_market_investment_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_market_investment_trade_opportunity_scheme_desc_general
+	success_desc = merchant_market_investment_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+	
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+	
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_market_investment_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_market_investment_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_market_investment_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_market_investment_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_character
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}
+}
+
+# Exploit Upheaval
+merchant_exploit_upheaval_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = martial
+	desc = merchant_exploit_upheaval_trade_opportunity_scheme_desc_general
+	success_desc = merchant_exploit_upheaval_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+	
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+	
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_exploit_upheaval_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_exploit_upheaval_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_exploit_upheaval_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_exploit_upheaval_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_character
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}
+}
+
+# Alleviate Upheaval
+merchant_alleviate_upheaval_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_alleviate_upheaval_trade_opportunity_scheme_desc_general
+	success_desc = merchant_alleviate_upheaval_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+	
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+	
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_alleviate_upheaval_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_alleviate_upheaval_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_alleviate_upheaval_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_alleviate_upheaval_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_character
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}
+}
+
+# Support Guilds
+merchant_support_guilds_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = learning
+	desc = merchant_support_guilds_trade_opportunity_scheme_desc_general
+	success_desc = merchant_support_guilds_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+	
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+	
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_support_guilds_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_support_guilds_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_support_guilds_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_support_guilds_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_character
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}
+}
+
+# Seek Debtors
+merchant_seek_debtors_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = intrigue
+	desc = merchant_seek_debtors_trade_opportunity_scheme_desc_general
+	success_desc = merchant_seek_debtors_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+	
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+	
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_seek_debtors_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_seek_debtors_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_seek_debtors_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scope:owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_seek_debtors_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_character
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}
+}
+
+# Sabotage Competition
+merchant_sabotage_competition_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = intrigue
+	desc = merchant_sabotage_competition_trade_opportunity_scheme_desc_general
+	success_desc = merchant_sabotage_competition_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+		scope:target.holder ?= {
+			gdp_is_merchant_or_unlanded_patrician_trigger = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_sabotage_competition_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_sabotage_competition_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_sabotage_competition_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_sabotage_competition_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_title.holder
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}
+
+# Build Connections
+merchant_build_category_connections_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_build_category_connections_trade_opportunity_scheme_desc_general
+	success_desc = merchant_build_category_connections_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+
+	# Parameters 
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_build_category_connections_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_build_category_connections_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_build_category_connections_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_build_category_connections_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_title.holder
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}
+
+# Disrupt Charter
+merchant_disrupt_charter_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = intrigue
+	desc = merchant_disrupt_charter_trade_opportunity_scheme_desc_general
+	success_desc = merchant_disrupt_charter_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = contract
+
+	# Parameters 
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+		scope:target.holder ?= {
+			is_landless_merchant = yes
+			merchant_has_charter_from_patron_trigger = {
+				EQUIPPED = no
+				INCLUDE_FORGERIES = yes
+			}
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_disrupt_charter_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_disrupt_charter_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_disrupt_charter_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_disrupt_charter_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_title.holder
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}
+
+# Extend Caravan
+merchant_silk_road_network_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_silk_road_network_trade_opportunity_scheme_desc_general
+	success_desc = merchant_silk_road_network_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/market_east_crowd.dds"
+	target_type = title
+	category = contract
+
+	# Parameters 
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_silk_road_network_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_silk_road_network_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_silk_road_network_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_silk_road_network_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_title.holder
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}
+
+# Consolidate Caravan
+merchant_silk_road_caravan_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_silk_road_caravan_trade_opportunity_scheme_desc_general
+	success_desc = merchant_silk_road_caravan_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/market_east_crowd.dds"
+	target_type = title
+	category = contract
+
+	# Parameters 
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_silk_road_caravan_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_silk_road_caravan_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_silk_road_caravan_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_silk_road_caravan_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_title.holder
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}
+
+# Entrepot Buy
+merchant_entrepot_buy_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_entrepot_buy_trade_opportunity_scheme_desc_general
+	success_desc = merchant_entrepot_buy_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/market_east_crowd.dds"
+	target_type = title
+	category = contract
+
+	# Parameters 
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_entrepot_buy_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_entrepot_buy_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_entrepot_buy_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_entrepot_buy_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_title.holder
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}
+
+# Entrepot Sell
+merchant_entrepot_sell_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = stewardship
+	desc = merchant_entrepot_sell_trade_opportunity_scheme_desc_general
+	success_desc = merchant_entrepot_sell_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/market_east_crowd.dds"
+	target_type = title
+	category = contract
+
+	# Parameters 
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = STEWARDSHIP }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_entrepot_sell_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_entrepot_sell_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_entrepot_sell_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_entrepot_sell_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_title.holder
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}
+
+# Negotiate Tolls
+merchant_negotiate_tolls_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = diplomacy
+	desc = merchant_negotiate_tolls_trade_opportunity_scheme_desc_general
+	success_desc = merchant_negotiate_tolls_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/market_east_crowd.dds"
+	target_type = character
+	category = contract
+
+	# Parameters 
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	uses_resistance = no
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = DIPLOMACY }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+	}
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_negotiate_tolls_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_negotiate_tolls_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_negotiate_tolls_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_negotiate_tolls_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_trade_opportunity_scheme_on_going_events_effect = yes }
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_character
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}
+
+# Smuggle Goods
+merchant_smuggle_goods_trade_opportunity_scheme = {
+	# Basic Setup
+	skill = intrigue
+	desc = merchant_smuggle_goods_trade_opportunity_scheme_desc_general
+	success_desc = merchant_smuggle_goods_trade_opportunity_scheme_desc_success
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/market_east_crowd.dds"
+	target_type = character
+	category = contract
+	is_secret = yes
+	maximum_breaches = 5
+
+	# Parameters 
+	speed_per_skill_point = t2_spsp_owner_value
+	speed_per_target_skill_point = t2_spsp_target_value
+	base_progress_goal = t3_base_phase_length_value # Trade opportunities should be snappy
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = @merchant_base_trade_opportunity_phases_per_agent_charge
+	success_chance_growth_per_skill_point = merchant_trade_opportunity_scgpsp_value
+	spymaster_speed_per_skill_point = 0
+	#uses_resistance = no
+	maximum_secrecy = 95
+
+	# Core Triggers
+	valid = {
+		scope:owner = {
+			is_landless_merchant = yes
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_laamp_contract_modifier = yes # close enough
+		ai_agent_join_chance_hostile_general_suite_modifier = yes
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers }
+	agent_groups_target_character_perspective = { courtiers vassals councillors }
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+		merchant_trade_opportunity_scheme_basic_success_chance_modifier = yes
+		modifier = {
+			add = {
+				value = 0
+				task_contract.task_contract_location.duchy ?= {
+					every_de_jure_county = {
+						if = {
+							limit = { has_county_modifier = county_corruption_smuggling_ring_modifier }
+							add = 1
+						}
+						else_if = {
+							limit = { has_county_modifier = county_corruption_smuggling_ring_modifier_2 }
+							add = 2
+						}
+						else_if = {
+							limit = { has_county_modifier = county_corruption_smuggling_ring_modifier_3 }
+							add = 3
+						}
+					}
+				}
+			}
+		}
+	}
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
+		add = secrecy_charting_realm_increase_value
+	}
+
+	# On Actions
+	on_start = {
+		trade_opportunity_scheme_scopes_effect = yes
+		# Try to guarantee an event in the first six months.
+		scope:owner = {
+			trigger_event = {
+				on_action = merchant_smuggle_goods_trade_opportunity_scheme_on_going_events
+				months = { 1 3 }
+			}
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		merchant_base_smuggle_goods_trade_opportunity_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { merchant_base_smuggle_goods_trade_opportunity_scheme_prep_effect = yes }
+	on_push_for_advantages = {
+		scheme_owner = {
+			trigger_event = { on_action = trade_opportunity_push_for_advantages_events }
+		}
+	}
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			merchant_base_smuggle_goods_trade_opportunity_scheme_prep_effect = yes
+		}
+	}
+	on_monthly = {
+		hostile_scheme_monthly_discovery_chance_effect = yes
+		fire_generic_trade_opportunity_scheme_on_going_events_effect = yes
+	}
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = {
+			send_interface_message = {
+				title = scheme_invalidated_title
+				type = trade_opportunity_scheme_invalidated_message
+				right_icon = scope:scheme.scheme_target_character
+				show_as_tooltip = {
+					scope:scheme = { end_scheme = yes }
+				}
+			}
+		}
+	}		
+}

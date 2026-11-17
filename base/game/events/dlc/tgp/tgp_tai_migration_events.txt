@@ -83,10 +83,13 @@ tgp_tai_migration_event.1000 = {
 			}
 		}
 		culture = {
-			change_cultural_acceptance = {
-				target = culture:tai
-				value = 10
-				desc = cultural_acceptance_gain_event
+			if = {
+				limit = { this != culture:tai }
+				change_cultural_acceptance = {
+					target = culture:tai
+					value = 10
+					desc = cultural_acceptance_gain_event
+				}
 			}
 		}
 		add_character_modifier = {
@@ -95,14 +98,14 @@ tgp_tai_migration_event.1000 = {
 		}
 		
 	}
-	option = { # accept only the skilled, not enough to change culture, but development
+	option = { # accept only the skilled, not enough to change culture, but prosperity
 		trigger = {
 			is_ai = no
 		}
 		name = tgp_tai_migration_event.1000.b
 		scope:migration_target = {
 			add_county_modifier = {
-				modifier = tgp_tai_migration_skilled_development_county_modifier
+				modifier = tgp_tai_migration_skilled_prosperity_county_modifier
 				years = 10
 			}
 		}
@@ -473,10 +476,13 @@ tgp_tai_migration_event.2000 = {
 	option = {
 		name = tgp_tai_migration_event.2000.a # employ the character
 		culture = {
-			change_cultural_acceptance = {
-				target = culture:tai
-				value = 6
-				desc = cultural_acceptance_gain_event
+			if = {
+				limit = { this != culture:tai }
+				change_cultural_acceptance = {
+					target = culture:tai
+					value = 6
+					desc = cultural_acceptance_gain_event
+				}
 			}
 		}
 		if = {
@@ -747,10 +753,13 @@ tgp_tai_migration_event.3000 = {
 		}
 		resolve_title_and_vassal_change = scope:title_change
 		culture = {
-			change_cultural_acceptance = {
-				target = culture:tai
-				value = 8
-				desc = cultural_acceptance_gain_event
+			if = {
+				limit = { this != culture:tai }
+				change_cultural_acceptance = {
+					target = culture:tai
+					value = 8
+					desc = cultural_acceptance_gain_event
+				}
 			}
 		}
 		house = {
@@ -918,10 +927,13 @@ tgp_tai_migration_event.4000 = {
 		add_courtier = scope:lowborn_tai_family_son
 		add_courtier = scope:lowborn_tai_family_daughter
 		culture = {
-			change_cultural_acceptance = {
-				target = culture:tai
-				value = 4
-				desc = cultural_acceptance_gain_event
+			if = {
+				limit = { this != culture:tai }
+				change_cultural_acceptance = {
+					target = culture:tai
+					value = 4
+					desc = cultural_acceptance_gain_event
+				}
 			}
 		}
 		reverse_add_opinion = {

@@ -1,0 +1,167 @@
+﻿#########################
+### Visit Holding (GDP) ###
+#########################
+
+visit_holding_guilds_blocked_trigger = {
+	OR = {
+		NOT = {
+			any_character_artifact = {
+				OR = {
+					rarity = common
+					rarity = masterwork
+				}
+				NOT = { artifact_type = creature }
+			}
+		}
+		has_variable = 1111_has_improved_artifact_recently
+	}
+	has_all_variables = {
+		name = 1111_has_bought_artifact_recently
+		name = 1110_visited_guild_master_recently
+	}
+	has_variable = visit_holding_guilds_area_refresh_tracker
+}
+
+visit_holding_market_dock_blocked_trigger = {
+	has_all_variables = {
+		name = 1310_has_created_contract_recently
+		name = 1320_has_recruited_recently
+	}
+	has_variable = visit_holding_market_dock_area_refresh_tracker
+}
+
+visit_holding_patron_blocked_trigger = {
+	OR = {
+		# Either you critically failed
+		has_variable = 1200_guards_summoned
+		# Or you exhausted all your options
+		has_all_variables = {
+			name = 1200_patron_competitiveness
+			name = 1200_patron_prestige
+		}
+	}
+	has_variable = visit_holding_patron_area_refresh_tracker
+}
+
+visit_holding_worship_blocked_trigger = {
+	OR = {
+		# Either you critically failed
+		has_variable = 1500_caught_stealing
+		# Or you exhausted all your options
+		has_all_variables = {
+			name = 1500_used_healer_recently
+			name = 1500_used_holy_site_recently
+			name = 1500_used_garden_recently
+		}
+	}
+	has_variable = visit_holding_worship_area_refresh_tracker
+}
+
+visit_holding_decision_show_available_areas_tooltip_trigger = {
+	# You have done something at the location, even a failure or critical failure, so the tooltip can list the remaining areas
+	OR = {
+		AND = {
+			location = {
+				OR = {
+					has_holding_type = church_holding
+					has_holding_type = temple_citadel_holding
+				}
+			}
+			has_variable = {
+				name = 1500_used_healer_recently
+				name = 1500_used_holy_site_recently
+				name = 1500_used_garden_recently
+				name = 1500_caught_stealing
+			}
+		}
+		has_variable = {
+			name = 1111_has_bought_artifact_recently
+			name = 1110_visited_guild_master_recently
+			name = 1310_has_created_contract_recently
+			name = 1320_has_recruited_recently
+			name = 1200_patron_competitiveness
+			name = 1200_patron_prestige
+			name = 1200_guards_summoned
+		}
+	}
+}
+
+# You've done literally everything you can at the Holding
+visit_holding_decision_all_options_exhausted_trigger = {
+	visit_holding_guilds_blocked_trigger = yes
+	visit_holding_market_dock_blocked_trigger = yes
+	trigger_if = {
+		limit = {
+			is_landless_merchant = yes
+			suzerain = {
+				NOT = { this = root }
+				is_ai = yes
+			}
+			NOT = { location = { holding_is_church = yes } }
+		}
+		visit_holding_patron_blocked_trigger = yes
+	}
+	trigger_if = {
+		limit = {
+			location = {
+				OR = {
+					has_holding_type = church_holding
+					has_holding_type = temple_citadel_holding
+				}
+			}
+		}
+		visit_holding_worship_blocked_trigger = yes
+	}
+}
+
+# At least one area of the holding is closed off from you
+visit_holding_decision_show_exhausted_areas_tooltip_trigger = {
+	visit_holding_decision_show_available_areas_tooltip_trigger = yes
+	OR = {
+		visit_holding_guilds_blocked_trigger = yes
+		visit_holding_market_dock_blocked_trigger = yes
+		AND = {
+			NOT = { location = { holding_is_church = yes } }
+			visit_holding_patron_blocked_trigger = yes
+		}
+		AND = {
+			location = {
+				OR = {
+					has_holding_type = church_holding
+					has_holding_type = temple_citadel_holding
+				}
+			}
+			visit_holding_worship_blocked_trigger = yes
+		}
+	}
+}
+
+# Character is this = recruit. Aptitude level 2+ is average, good, or excellent.
+visit_holding_merchant_position_candidate_trigger = {
+	save_temporary_scope_as = visit_holding_pos_candidate
+	aptitude = {
+		court_position = $POS$_court_position
+		value >= 2
+	}
+	$EMPLOYER$ = {
+		can_appoint_char_to_court_position = {
+			CHAR = scope:visit_holding_pos_candidate
+			COURT_POS = $POS$_court_position
+		}
+	}
+}
+
+# Permanent per-title lock. Character flags die with the ruler; this must survive succession.
+visit_holding_rare_spawn_already_seen_trigger = {
+	primary_title ?= { has_variable = visit_holding_seen_$SCENE$ }
+}
+
+visit_holding_stewardship_education_min_2_trigger = {
+	OR = {
+		has_trait = education_stewardship_2
+		has_trait = education_stewardship_3
+		has_trait = education_stewardship_4
+		has_trait = education_stewardship_5
+	}
+}
+

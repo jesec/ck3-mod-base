@@ -27,6 +27,31 @@ later_historical_copper_mine_trigger = {
 
 }
 
+# Province scope; whether bp3_survey.1060 can roll each mine type
+survey_copper_mine_possible_trigger = {
+	county = { has_potential_for_trade_good = trade_good_type:trade_good_copper }
+	NOR = {
+		later_historical_gold_mine_trigger = yes
+		later_historical_silver_mine_trigger = yes
+	}
+}
+
+survey_silver_mine_possible_trigger = {
+	county = { has_potential_for_trade_good = trade_good_type:trade_good_silver }
+	NOR = {
+		later_historical_gold_mine_trigger = yes
+		later_historical_copper_mine_trigger = yes
+	}
+}
+
+survey_gold_mine_possible_trigger = {
+	county = { has_potential_for_trade_good = trade_good_type:trade_good_gold }
+	NOR = {
+		later_historical_silver_mine_trigger = yes
+		later_historical_copper_mine_trigger = yes
+	}
+}
+
 reminiscing_event_trigger = {
 	is_ai = no
 	has_variable = reminiscing_location
@@ -35,103 +60,20 @@ reminiscing_event_trigger = {
 
 local_guild_trigger = {
 	OR = {
-		has_building_or_higher = watermills_01
-		has_building_or_higher = windmills_01
-		has_building_or_higher = common_tradeport_01
-		has_building_or_higher = pastures_01
-		has_building_or_higher = hunting_grounds_01
-		has_building_or_higher = orchards_01
-		has_building_or_higher = logging_camps_01
-		has_building_or_higher = quarries_01
-		has_building_or_higher = smiths_01
-		has_building_or_higher = stables_01
-		has_building_or_higher = guild_halls_01
-		has_building_or_higher = hospices_01
-		has_building_or_higher = workshops_01
+		province_has_district = market_district
+		province_has_district = guild_district
+		province_has_district = port_district
 	}
 }
 
 local_guild_compare_trigger = {
-	switch = {
-		trigger = scope:local_guild_scope
-		1 = {
-			NOT = { has_building_or_higher = watermills_01 }
-			building_watermills_requirement_terrain = yes
+	any_built_regular_district = {
+		OR = {
+			district_type = district_type:villages_district
+			district_type = district_type:market_district
+			district_type = district_type:port_district
 		}
-		2 = {
-			NOT = { has_building_or_higher = windmills_01 }
-			building_windmills_requirement_terrain = yes
-		}
-		3 = {
-			NOT = { has_building_or_higher = common_tradeport_01 }
-			building_common_tradeport_requirement_terrain = yes
-		}
-		4 = {
-			NOT = { has_building_or_higher = pastures_01 }
-			building_pastures_requirement_terrain = yes
-		}
-		5 = {
-			NOT = { has_building_or_higher = pastures_01 }
-			building_pastures_requirement_terrain = yes
-		}
-		6 = {
-			NOT = { has_building_or_higher = pastures_01 }
-			building_pastures_requirement_terrain = yes
-		}
-		7 = {
-			NOT = { has_building_or_higher = pastures_01 }
-			building_pastures_requirement_terrain = yes
-		}
-		8 = {
-			NOT = { has_building_or_higher = hunting_grounds_01 }
-			building_hunting_grounds_requirement_terrain = yes
-		}
-		9 = {
-			NOT = { has_building_or_higher = hunting_grounds_01 }
-			building_hunting_grounds_requirement_terrain = yes
-		}
-		10 = {
-			NOT = { has_building_or_higher = hunting_grounds_01 }
-			building_hunting_grounds_requirement_terrain = yes
-		}
-		11 = {
-			NOT = { has_building_or_higher = orchards_01 }
-			building_orchards_requirement_terrain = yes
-		}
-		12 = {
-			NOT = { has_building_or_higher = logging_camps_01 }
-			building_logging_camps_requirement_terrain = yes
-		}
-		13 = {
-			NOT = { has_building_or_higher = quarries_01 }
-			building_quarries_requirement_terrain = yes
-		}
-		14 = {
-			NOT = { has_building_or_higher = quarries_01 }
-			building_quarries_requirement_terrain = yes
-		}
-		15 = {
-			NOT = { has_building_or_higher = smiths_01 }
-			building_smiths_requirement_terrain = yes
-		}
-		16 = {
-			NOT = { has_building_or_higher = stables_01 }
-			building_stables_requirement_terrain = yes
-		}
-		17 = {
-			NOT = { has_building_or_higher = guild_halls_01 }
-			has_building_or_higher = city_01
-		}
-		18 = {
-			NOT = { has_building_or_higher = hospices_01 }
-		}
-		19 = {
-			NOT = { has_building_or_higher = hospices_01 }
-		}
-		20 = {
-			NOT = { has_building_or_higher = workshops_01 }
-			building_workshops_requirement_terrain = yes
-		}
+		free_building_slots > 0
 	}
 }
 

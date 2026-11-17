@@ -278,9 +278,9 @@ courtiers_became_rivals = {
 				target = scope:second
 				# Effects
 				scope:second = {
-					set_relation_rival = {
-						target = scope:first
-						reason = rival_courtiers_friction_on_tour
+					set_relation_rival_effect = {
+						TARGET = scope:first
+						REASON = rival_courtiers_friction_on_tour
 					}
 				}
 			}
@@ -839,7 +839,7 @@ liege_intimidated_courtier = {
 }
 
 liege_visited_benevolence = {
-	icon = development
+	icon = prosperity
 	is_valid = {
 		exists = scope:host.location.barony.holder
 		scope:host.location.barony.holder != scope:host
@@ -876,7 +876,7 @@ liege_visited_benevolence = {
 				}
 				else = {
 					scope:host.location.county = {
-						change_development_progress = 10
+						change_prosperity_progress = 10
 					}
 				}
 			}
@@ -1210,7 +1210,7 @@ increased_control = {
 		scope:host.location.barony.holder != scope:host
 		scope:host.location.county.holder.top_liege = scope:host.top_liege
 		scope:host.location.county = {
-			county_control < 100
+			county_control < county_control_baseline
 		}
 		scope:activity = {
 			NOT = {

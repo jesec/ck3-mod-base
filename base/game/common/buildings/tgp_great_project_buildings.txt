@@ -5,16 +5,16 @@
 # USED IN CODE, DO NOT RENAME OR REMOVE
 mandala_capital_01 = {
 
-	type_icon = "tgp_icon_building_mandala_capital_tier_01.dds"
+	type_icon = "great_buildings/mandala_capital_tier_01.dds"
+
+	asset = {
+		type = entity
+		name = "tgp_great_building_mandala_capital_01_entity"
+	}
 
 	#We only build this through Decision -> Great Projects
 	can_construct_potential = {
 		always = no #This should never show up
-	}
-
-    asset = {
-		type = entity
-		name = "tgp_great_building_mandala_capital_01_entity"
 	}
 
 	is_enabled = {
@@ -27,61 +27,222 @@ mandala_capital_01 = {
 
 	show_disabled = yes
 
-	rebuild_cost = {
-		gold = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { value = standard_rebuild_value }
-		}
-		piety = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { value = standard_rebuild_value }
-		}
-	}
-
-	can_rebuild = {
-		scope:county.holder = {
-			custom_tooltip = {
-				text = not_already_full_on_mandala_capitals
-				less_than_max_amount_of_mandala_capitals_trigger = yes
-			}
-		}
-	}
-
 	character_modifier = {
 		domain_limit = 1
 		court_grandeur_baseline_add = 1 #Most likely you don't have a court yet
 		vassal_limit_max = 1 #Added to the base for Mandala of 3 Max
 		domain_limit_max = 1
-		monthly_county_control_growth_add = 0.1
+		character_capital_county_monthly_control_change_add = 0.1
 	}
 
 	province_modifier = {
+		province_size_baseline_add = 50
 		stationed_maa_damage_mult = 0.1
 		levy_size = 0.15
 		garrison_size = 0.15
-		monthly_income = 0.2
+		monthly_religious_tax = 0.2
 	}
 
 	county_modifier = {
-		development_growth = 0.1
-		tax_mult = 0.1
+		prosperity_growth = 0.1
+		religious_tax_mult = 0.1
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_stone
+		amount = special_building_need_amount
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_incense_demand
+		trade_good_incense_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = votive_offering_need
+
+		culture_parameter = votive_incense_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gold_demand
+		trade_good_gold_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gold
+		amount = votive_offering_need
+
+		culture_parameter = votive_gold_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_silver_demand
+		trade_good_silver_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_silver
+		amount = votive_offering_need
+
+		culture_parameter = votive_silver_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gems_demand
+		trade_good_gems_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gems
+		amount = votive_offering_need
+
+		culture_parameter = votive_gems_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ceramics_demand
+		trade_good_ceramics_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ceramics
+		amount = votive_offering_need
+
+		culture_parameter = votive_ceramics_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_lacquerware_demand
+		trade_good_lacquerware_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_lacquerware
+		amount = votive_offering_need
+
+		culture_parameter = votive_lacquerware_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_amber_demand
+		trade_good_amber_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_amber
+		amount = votive_offering_need
+
+		culture_parameter = votive_amber_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_copper_demand
+		trade_good_copper_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_copper
+		amount = votive_offering_need
+
+		culture_parameter = votive_copper_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ivory_demand
+		trade_good_ivory_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ivory
+		amount = votive_offering_need
+
+		culture_parameter = votive_ivory_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_spices_demand
+		trade_good_spices_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_spices
+		amount = votive_offering_need
+
+		culture_parameter = votive_spices_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_medicaments_demand
+		trade_good_medicaments_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_medicaments
+		amount = votive_offering_need
+
+		culture_parameter = votive_medicaments_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
 	}
 
 	fallback = {
 		province_modifier = {
-			monthly_income = 0.1
+			monthly_religious_tax = 0.1
 		}
 	}
 	
 	next_building = mandala_capital_02
 
-	type = great_building
 	is_mandala_capital = yes
 
 	flag = mandala_capital_building
@@ -91,16 +252,16 @@ mandala_capital_01 = {
 
 mandala_capital_02 = {
 
-	type_icon = "tgp_icon_building_mandala_capital_tier_02.dds"
+	type_icon = "great_buildings/mandala_capital_tier_02.dds"
+
+	asset = {
+		type = entity
+		name = "tgp_great_building_mandala_capital_02_entity"
+	}
 
 	#We only build this through Decision -> Great Projects
 	can_construct_potential = {
 		scope:holder.capital_province = { has_building_with_flag = first_tier_mandala_capital_building }
-	}
-
-    asset = {
-		type = entity
-		name = "tgp_great_building_mandala_capital_02_entity"
 	}
 
 	is_enabled = {
@@ -121,56 +282,230 @@ mandala_capital_02 = {
 
 	show_disabled = yes
 
-	rebuild_cost = {
-		gold = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { 
-				value = {
-					add = standard_rebuild_value
-					multiply = 1.25
-				}
-			}
-		}
-		piety = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { 
-				value = {
-					add = standard_rebuild_value
-					multiply = 1.25
-				}
-			}
-		}
-	}
-
 	character_modifier = {
 		domain_limit = 1
 		court_grandeur_baseline_add = 3
 		vassal_limit_max = 2 #Added to the base for Mandala of 4 Max
-		monthly_county_control_growth_add = 0.15
+		character_capital_county_monthly_control_change_add = 0.15
 		domain_limit_max = 2
 	}
 
 	province_modifier = {
+		province_size_baseline_add = 100
 		stationed_maa_damage_mult = 0.1
 		levy_size = 0.25
 		garrison_size = 0.25
-		monthly_income = 0.4
+		monthly_religious_tax = 0.4
 	}
 
 	county_modifier = {
-		development_growth = 0.15
-		tax_mult = 0.2
+		prosperity_growth = 0.15
+		religious_tax_mult = 0.2
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_stone
+		amount = special_building_need_amount
+
+		can_be_filled_multiple_times = 2
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_incense_demand
+		trade_good_incense_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_incense_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gold_demand
+		trade_good_gold_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gold
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_gold_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_silver_demand
+		trade_good_silver_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_silver
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_silver_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gems_demand
+		trade_good_gems_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gems
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_gems_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ceramics_demand
+		trade_good_ceramics_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ceramics
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_ceramics_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_lacquerware_demand
+		trade_good_lacquerware_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_lacquerware
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_lacquerware_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_amber_demand
+		trade_good_amber_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_amber
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_amber_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_copper_demand
+		trade_good_copper_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_copper
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_copper_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ivory_demand
+		trade_good_ivory_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ivory
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_ivory_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_spices_demand
+		trade_good_spices_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_spices
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_spices_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_medicaments_demand
+		trade_good_medicaments_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_medicaments
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 2
+		culture_parameter = votive_medicaments_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
 	}
 
 	fallback = {
 		province_modifier = {
-			monthly_income = 0.1
+			monthly_religious_tax = 0.1
 		}
 	}
 
@@ -178,7 +513,6 @@ mandala_capital_02 = {
 	great_project_type = mandala_capital_02
 	is_mandala_capital = yes
 
-	type = great_building
 
 	flag = mandala_capital_building
 	flag = second_tier_mandala_capital_building
@@ -187,16 +521,16 @@ mandala_capital_02 = {
 
 mandala_capital_03 = {
 
-	type_icon = "tgp_icon_building_mandala_capital_tier_03.dds"
+	type_icon = "great_buildings/mandala_capital_tier_03.dds"
+
+	asset = {
+		type = entity
+		name = "tgp_great_building_mandala_capital_03_entity"
+	}
 
 	#We only build this through Decision -> Great Projects
 	can_construct_potential = {
 		scope:holder.capital_province = { has_building_with_flag = second_tier_mandala_capital_building }
-	}
-
-    asset = {
-		type = entity
-		name = "tgp_great_building_mandala_capital_03_entity"
 	}
 
 	is_enabled = {
@@ -217,57 +551,231 @@ mandala_capital_03 = {
 
 	show_disabled = yes
 
-	rebuild_cost = {
-		gold = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { 
-				value = {
-					add = standard_rebuild_value
-					multiply = 1.5
-				}
-			}
-		}
-		piety = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { 
-				value = {
-					add = standard_rebuild_value
-					multiply = 1.5
-				}
-			}
-		}
-	}
-
 	character_modifier = {
 		domain_limit = 2
 		court_grandeur_baseline_add = 5
 		vassal_limit_max = 8 #Added to the base for Mandala of 10 Max
-		monthly_county_control_growth_add = 0.2
+		character_capital_county_monthly_control_change_add = 0.2
 		diplomatic_range_mult = 0.15
 		domain_limit_max = 3
 	}
 
 	province_modifier = {
+		province_size_baseline_add = 150
 		stationed_maa_damage_mult = 0.1
 		levy_size = 0.35
 		garrison_size = 0.35
-		monthly_income = 0.5
+		monthly_religious_tax = 0.5
 	}
 
 	county_modifier = {
-		development_growth = 0.2
-		tax_mult = 0.25
+		prosperity_growth = 0.2
+		religious_tax_mult = 0.25
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_stone
+		amount = special_building_need_amount
+
+		can_be_filled_multiple_times = 3
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_incense_demand
+		trade_good_incense_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_incense_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gold_demand
+		trade_good_gold_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gold
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_gold_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_silver_demand
+		trade_good_silver_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_silver
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_silver_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gems_demand
+		trade_good_gems_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gems
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_gems_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ceramics_demand
+		trade_good_ceramics_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ceramics
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_ceramics_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_lacquerware_demand
+		trade_good_lacquerware_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_lacquerware
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_lacquerware_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_amber_demand
+		trade_good_amber_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_amber
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_amber_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_copper_demand
+		trade_good_copper_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_copper
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_copper_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ivory_demand
+		trade_good_ivory_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ivory
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_ivory_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_spices_demand
+		trade_good_spices_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_spices
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_spices_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_medicaments_demand
+		trade_good_medicaments_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_medicaments
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 3
+		culture_parameter = votive_medicaments_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
 	}
 
 	fallback = {
 		province_modifier = {
-			monthly_income = 0.1
+			monthly_religious_tax = 0.1
 		}
 	}
 
@@ -275,7 +783,6 @@ mandala_capital_03 = {
 	great_project_type = mandala_capital_03
 	is_mandala_capital = yes
 
-	type = great_building
 
 	flag = mandala_capital_building
 	flag = third_tier_mandala_capital_building
@@ -284,16 +791,16 @@ mandala_capital_03 = {
 
 mandala_capital_04 = {
 
-	type_icon = "tgp_icon_building_mandala_capital_tier_04.dds"
+	type_icon = "great_buildings/mandala_capital_tier_04.dds"
+
+	asset = {
+		type = entity
+		name = "tgp_great_building_mandala_capital_04_entity"
+	}
 
 	#We only build this through Decision -> Great Projects
 	can_construct_potential = {
 		scope:holder.capital_province = { has_building_with_flag = third_tier_mandala_capital_building }
-	}
-
-    asset = {
-		type = entity
-		name = "tgp_great_building_mandala_capital_04_entity"
 	}
 
 	is_enabled = {
@@ -314,58 +821,232 @@ mandala_capital_04 = {
 
 	show_disabled = yes
 
-	rebuild_cost = {
-		gold = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { 
-				value = {
-					add = standard_rebuild_value
-					multiply = 1.75
-				}
-			}
-		}
-		piety = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { 
-				value = {
-					add = standard_rebuild_value
-					multiply = 1.75
-				}
-			}
-		}
-	}
-
 	character_modifier = {
 		domain_limit = 3
 		court_grandeur_baseline_add = 7
 		vassal_limit_max = 16 #Added to the base for Mandala of 18 Max
-		monthly_county_control_growth_add = 0.25
+		character_capital_county_monthly_control_change_add = 0.25
 		diplomatic_range_mult = 0.25
 		diplomatic_range_mult = 0.2
 		domain_limit_max = 5
 	}
 
 	province_modifier = {
+		province_size_baseline_add = 200
 		stationed_maa_damage_mult = 0.1
 		levy_size = 0.4
 		garrison_size = 0.5
-		monthly_income = 0.5
+		monthly_religious_tax = 0.5
 	}
 
 	county_modifier = {
-		development_growth = 0.3
-		tax_mult = 0.3
+		prosperity_growth = 0.3
+		religious_tax_mult = 0.3
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_stone
+		amount = special_building_need_amount
+
+		can_be_filled_multiple_times = 4
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_incense_demand
+		trade_good_incense_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_incense_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gold_demand
+		trade_good_gold_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gold
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_gold_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_silver_demand
+		trade_good_silver_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_silver
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_silver_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gems_demand
+		trade_good_gems_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gems
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_gems_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ceramics_demand
+		trade_good_ceramics_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ceramics
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_ceramics_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_lacquerware_demand
+		trade_good_lacquerware_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_lacquerware
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_lacquerware_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_amber_demand
+		trade_good_amber_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_amber
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_amber_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_copper_demand
+		trade_good_copper_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_copper
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_copper_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ivory_demand
+		trade_good_ivory_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ivory
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_ivory_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_spices_demand
+		trade_good_spices_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_spices
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_spices_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_medicaments_demand
+		trade_good_medicaments_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_medicaments
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 4
+		culture_parameter = votive_medicaments_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
 	}
 
 	fallback = {
 		province_modifier = {
-			monthly_income = 0.1
+			monthly_religious_tax = 0.1
 		}
 	}
 
@@ -373,7 +1054,6 @@ mandala_capital_04 = {
 	great_project_type = mandala_capital_04
 	is_mandala_capital = yes
 
-	type = great_building
 
 	flag = mandala_capital_building
 	flag = fourth_tier_mandala_capital_building
@@ -382,16 +1062,16 @@ mandala_capital_04 = {
 
 mandala_capital_05 = {
 
-	type_icon = "tgp_icon_building_mandala_capital_tier_05.dds"
+	type_icon = "great_buildings/mandala_capital_tier_05.dds"
+
+	asset = {
+		type = entity
+		name = "tgp_great_building_mandala_capital_05_entity"
+	}
 
 	#We only build this through Decision -> Great Projects
 	can_construct_potential = {
 		scope:holder.capital_province = { has_building_with_flag = fourth_tier_mandala_capital_building }
-	}
-
-    asset = {
-		type = entity
-		name = "tgp_great_building_mandala_capital_05_entity"
 	}
 
 	is_enabled = {
@@ -412,127 +1092,247 @@ mandala_capital_05 = {
 
 	show_disabled = yes
 
-	rebuild_cost = {
-		gold = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { 
-				value = {
-					add = standard_rebuild_value
-					multiply = 2
-				}
-			}
-		}
-		piety = {
-			if = {
-				limit = { is_ai = yes }
-				value = ai_rebuild_value
-			}
-			else = { 
-				value = {
-					add = standard_rebuild_value
-					multiply = 2
-				}
-			}
-		}
-	}
-
 	character_modifier = {
 		domain_limit = 4
 		court_grandeur_baseline_add = 10
 		vassal_limit_max = 28 #Added to the base for Mandala of 30 Max
-		monthly_county_control_growth_add = 0.35
+		character_capital_county_monthly_control_change_add = 0.35
 		diplomatic_range_mult = 0.3
 		domain_limit_max = 7
 	}
 
 	province_modifier = {
+		province_size_baseline_add = 250
 		stationed_maa_damage_mult = 0.1
-		monthly_income = 0.75
+		monthly_religious_tax = 0.75
 	}
 
 	county_modifier = {
-		development_growth = 0.4
-		tax_mult = 0.35
+		prosperity_growth = 0.4
+		religious_tax_mult = 0.35
 		levy_size = 0.5
 		garrison_size = 0.5
 	}
 
+	trade_good_need = {
+		trade_good = trade_good_stone
+		amount = special_building_need_amount
+
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				province_size_baseline_add = 10
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_incense_demand
+		trade_good_incense_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_incense_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gold_demand
+		trade_good_gold_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gold
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_gold_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_silver_demand
+		trade_good_silver_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_silver
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_silver_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_gems_demand
+		trade_good_gems_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_gems
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_gems_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ceramics_demand
+		trade_good_ceramics_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ceramics
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_ceramics_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_lacquerware_demand
+		trade_good_lacquerware_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_lacquerware
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_lacquerware_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_amber_demand
+		trade_good_amber_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_amber
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_amber_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_copper_demand
+		trade_good_copper_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_copper
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_copper_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_ivory_demand
+		trade_good_ivory_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_ivory
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_ivory_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_spices_demand
+		trade_good_spices_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_spices
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_spices_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+	market_culture_modifier = {
+		parameter = votive_medicaments_demand
+		trade_good_medicaments_sell_price_mult = votive_offering_price_mult
+	}
+	trade_good_need = {
+		trade_good = trade_good_medicaments
+		amount = votive_offering_need
+
+		can_be_filled_multiple_times = 5
+		culture_parameter = votive_medicaments_demand
+
+		modifiers = {
+			province_modifier = {
+				popular_opinion_add = votive_offering_popular_opinion
+			}
+		}
+	}
+
 	fallback = {
 		province_modifier = {
-			monthly_income = 0.1
+			monthly_religious_tax = 0.1
 		}
 	}
 
 	great_project_type = mandala_capital_05
 	is_mandala_capital = yes
 
-	type = great_building
 
 	flag = mandala_capital_building
 	flag = final_tier_mandala_capital_building
 
 }
 
-# Great Barracks
-celestial_great_barracks_01 = {
-	effect_desc = {
-		desc = unlocks_building_desc
-		desc = celestial_great_barracks_effect_desc
-	}
-	
-	type_icon = "icon_structure_celestial_great_barracks.dds"
-
-	can_construct_potential = {
-		always = no # This building is the result of a great project
-	}
-
-	# Only enabled for military governors - Viable for all admin types though
-	is_enabled = {
-		county.holder = {
-			has_title = prev.duchy
-			custom_tooltip = {
-				text = celestial_great_barracks_enabled_desc
-				OR = {
-					vassal_contract_has_flag = province_military # Only for military governors
-					government_has_flag = government_is_administrative # All regular admin types are eligible
-					is_independent_ruler = yes # The top liege can always use it
-				}
-			}
-		}
-	}
-
-	show_disabled = yes
-	
-	cost_gold = expensive_building_tier_2_cost
-
-	character_modifier = {
-		monthly_influence_mult = 0.05
-		men_at_arms_title_limit = 1
-		men_at_arms_title_cap = 1
-		men_at_arms_recruitment_cost = -0.1
-		men_at_arms_maintenance = -0.12
-	}
-
-	duchy_capital_county_modifier = {
-		supply_limit_mult = 1
-		garrison_size = 1.5
-		hostile_raid_time = 0.5
-		defender_holding_advantage = 15
-		additional_fort_level = normal_building_fort_level_tier_6
-		travel_danger = -30
-		monthly_county_control_growth_add = 0.2
-	}
-
-	type = duchy_capital
-	flag = duchy_building
-}
 
 # The Great Wall - Qin Era
 the_great_wall_01 = {
-	type_icon = "icon_structure_the_great_wall.dds"
+	type_icon = "great_buildings/the_great_wall.dds"
 
 	can_construct_potential = {
 	}
@@ -548,12 +1348,11 @@ the_great_wall_01 = {
 		defender_holding_advantage = 2
 	}
 	
-	type = great_building
 }
 
 # The Great Wall - Han Era
 the_great_wall_02 = {
-	type_icon = "icon_structure_the_great_wall.dds"
+	type_icon = "great_buildings/the_great_wall.dds"
 
 	can_construct_potential = {
 	}
@@ -570,12 +1369,11 @@ the_great_wall_02 = {
 		defender_holding_advantage = 4
 	}
 	
-	type = great_building
 }
 
 # The Great Wall - Northern Wei/Qi/Sui Era (we bundle these together since they overlap somewhat)
 the_great_wall_03 = {
-	type_icon = "icon_structure_the_great_wall.dds"
+	type_icon = "great_buildings/the_great_wall.dds"
 
 	can_construct_potential = {
 	}
@@ -592,12 +1390,11 @@ the_great_wall_03 = {
 		defender_holding_advantage = 6
 	}
 	
-	type = great_building
 }
 
 # The Great Wall - Ming Era (this is also what you can build in-game)
 the_great_wall_04 = {
-	type_icon = "icon_structure_the_great_wall.dds"
+	type_icon = "great_buildings/the_great_wall.dds"
 
 	can_construct_potential = {
 	}
@@ -614,17 +1411,16 @@ the_great_wall_04 = {
 		defender_holding_advantage = 8
 	}
 	
-	type = great_building
 }
 
 the_great_wall_shanhai_pass = {
+	type_icon = "great_buildings/the_great_wall.dds"
+
 	asset = {
 		type = pdxmesh
 		name = "tgp_great_wall_04_mesh"
 	}
 
-	type_icon = "icon_structure_the_great_wall.dds"
-
 	can_construct_potential = {
 	}
 
@@ -640,17 +1436,16 @@ the_great_wall_shanhai_pass = {
 		defender_holding_advantage = 8
 	}
 	
-	type = great_building
 }
 
 the_great_wall_liaodong = {
+	type_icon = "great_buildings/the_great_wall.dds"
+
 	asset = {
 		type = pdxmesh
 		name = "tgp_great_wall_05_mesh"
 	}
 
-	type_icon = "icon_structure_the_great_wall.dds"
-
 	can_construct_potential = {
 	}
 
@@ -666,5 +1461,4 @@ the_great_wall_liaodong = {
 		defender_holding_advantage = 8
 	}
 	
-	type = great_building
 }

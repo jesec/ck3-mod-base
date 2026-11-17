@@ -1,0 +1,384 @@
+﻿unity_irregularities = {
+	group = merchant_unity_contract_group
+	icon = "gfx/interface/icons/currencies/house_unity/divided.dds"
+
+	travel = no
+	use_diplomatic_range = no
+
+	weight = {
+		# Standard weights.
+		value = task_contract_weight_default_value
+	}
+
+	# Validity Triggers
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		# UNITY CHECKS
+		house ?= {
+			OR = {
+				has_house_unity_stage = opportunistic_cs
+				has_house_unity_stage = rapacious_cs
+			}
+		}
+		any_trade_route = {
+			# TARGET CHECKS
+			trader ?= {
+				is_available_quick = {
+					adult = yes
+					alive = yes
+					imprisoned = no
+					incapable = no
+				}
+			}
+		}
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = unity_irregularities }
+			has_character_flag = unity_contract_cooldown_irregularities
+		}
+	}
+	valid_to_keep = {
+		unity_irregularities_valid_to_keep_trigger = yes
+	}
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		merchant_trade_opportunity_valid_to_accept_contract_limit_trigger = yes
+	}
+	valid_to_continue = {
+		unity_irregularities_valid_to_continue_trigger = yes
+	}
+
+	# On_actions
+	on_accepted = {
+		task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_accept_contract" }
+		# For the intro event.
+		save_scope_as = task_contract
+		unity_contract_irregularies_scope_effect = yes
+		# Track this as a variable so that we can invalidate if they die.
+		set_variable = {
+			name = person_a # TRADER
+			value = scope:person_a
+		}
+		set_variable = {
+			name = person_b # RULER
+			value = scope:person_b
+		}
+		# Plus our score.
+		increment_variable_effect = {
+			VAR = assurances_given
+			VAL = 0
+		}
+		# & numbers of chars checked for loc.
+		increment_variable_effect = {
+			VAR = chars_checked
+			VAL = 0
+		}
+		# Then we start the travel.
+		task_contract_taker ?= { trigger_event = gdp_merchant_unity_contract.1004 }
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_create = {
+		scope:contract = {
+			save_scope_as = task_contract
+			task_contract_taker ?= { # Set a cooldown
+				add_character_flag = {
+					flag = unity_contract_cooldown_irregularities
+					years = 10
+				}
+				trigger_event = {
+					id = gdp_merchant_unity_contract.1041
+					days = 730
+				}
+			}
+			set_variable = {
+				name = expiry
+				days = 730
+			}
+		}
+	}
+	on_invalidated = {
+		save_scope_as = task_contract
+		if = {
+			limit = { exists = var:expired }
+			task_contract_taker = {
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = unity_contract_expired_title
+					left_icon = scope:task_contract.task_contract_employer
+					right_icon = scope:task_contract.task_contract_target
+					scope:task_contract = { unity_irregularities_failure_effect = yes }
+				}
+			}
+		}
+		else_if = {
+			limit = { unity_irregularities_valid_to_continue_trigger = yes }
+			task_contract_taker = {
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = unity_contract_invalidated_title
+					left_icon = scope:task_contract.task_contract_employer
+					right_icon = scope:task_contract.task_contract_target
+					scope:task_contract = { unity_irregularities_failure_effect = yes }
+				}
+			}
+		}
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes
+	}
+
+	# Rewards
+	task_contract_reward = {
+		success_standard = { # Settled matters ok
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
+				task_contract_taker = {
+					save_scope_as = taker
+					add_prestige = medium_prestige_value
+					add_short_term_gold = merchant_contract_gold_reward_value
+					reverse_add_opinion = {
+						target = scope:task_contract.task_contract_employer
+						modifier = respect_opinion
+						opinion = 15
+					}
+					reverse_add_opinion = {
+						target = scope:task_contract.task_contract_target
+						modifier = respect_opinion
+						opinion = 15
+					}
+					house = {
+						add_unity_value = {
+							value = medium_unity_value
+							character = scope:taker
+							desc = unity_irregularities_unity_desc
+						}
+					}
+					if = {
+						limit = {
+							government_has_flag = government_is_merchant
+							has_perk = large_levies_perk
+						}
+						house = {
+							add_unity_value = {
+								value = minor_unity_value
+								character = scope:taker
+								desc = merchant_family_mobilization_unity_desc
+							}
+						}
+					}
+				}
+			}
+		}
+		success_critical = { # Settled matters really goodly
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
+				task_contract_taker = {
+					save_scope_as = taker
+					add_prestige = major_prestige_value
+					if = {
+						limit = {
+							government_has_flag = government_is_merchant
+							has_perk = large_levies_perk
+						}
+						add_prestige = minor_prestige_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_critical_value
+					reverse_add_opinion = {
+						target = scope:task_contract.task_contract_employer
+						modifier = respect_opinion
+						opinion = 25
+					}
+					reverse_add_opinion = {
+						target = scope:task_contract.task_contract_target
+						modifier = respect_opinion
+						opinion = 25
+					}
+					house = {
+						add_unity_value = {
+							value = massive_unity_value
+							character = scope:taker
+							desc = unity_irregularities_unity_desc
+						}
+					}
+					if = {
+						limit = {
+							government_has_flag = government_is_merchant
+							has_perk = large_levies_perk
+						}
+						house = {
+							add_unity_value = {
+								value = minor_unity_value
+								character = scope:taker
+								desc = merchant_family_mobilization_unity_desc
+							}
+						}
+					}
+				}
+				task_contract_location.barony.trade_market = {
+					add_competitiveness_modifier_for_character = {
+						character = scope:taker
+						modifier = gdp_unity_irregularities_critical_success_modifier
+						years = 10
+					}
+				}
+			}
+		}
+		success_qualified_insufficient_assurances = { # Kinda settled matters
+			visible = no
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
+				task_contract_taker = {
+					save_scope_as = taker
+					if = {
+						limit = {
+							government_has_flag = government_is_merchant
+							has_perk = soon_forgiven_perk
+						}
+						reverse_add_opinion = {
+							target = scope:task_contract.task_contract_employer
+							modifier = annoyed_opinion
+							opinion = -5
+						}
+					}
+					else = {
+						reverse_add_opinion = {
+							target = scope:task_contract.task_contract_employer
+							modifier = annoyed_opinion
+							opinion = -10
+						}
+					}
+				}
+				task_contract_location.barony.trade_market = {
+					add_competitiveness_modifier_for_character = {
+						character = scope:taker
+						modifier = gdp_unity_irregularities_qualified_success_modifier
+						years = 10
+					}
+				}
+			}
+		}
+		success_qualified_betrayed_trader = { # Threw trader under the wagon
+			visible = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract" }
+				task_contract_taker = {
+					save_scope_as = taker
+				}
+				task_contract_target = {
+					hidden_effect = { move_to_pool = yes }
+					if = {
+						limit = { gold >= 1 }
+						pay_short_term_gold = {
+							target = scope:task_contract.task_contract_employer
+							gold = gold
+						}
+					}
+					if = {
+						limit = {
+							scope:taker = {
+								government_has_flag = government_is_merchant
+								has_perk = soon_forgiven_perk
+							}
+						}
+						add_opinion = {
+							target = scope:taker
+							modifier = angry_opinion
+							opinion = -25
+						}
+					}
+					else = {
+						add_opinion = {
+							target = scope:taker
+							modifier = angry_opinion
+							opinion = -50
+						}
+					}
+				}
+				task_contract_employer = {
+					show_as_tooltip = {
+						imprison = { target = scope:task_contract.task_contract_target type = house_arrest }	
+					}
+					hidden_effect = {
+						rightfully_imprison_character_less_verbose_effect = {
+							TARGET = scope:task_contract.task_contract_target
+							IMPRISONER = scope:task_contract.task_contract_employer
+						}
+					}
+					scope:task_contract.task_contract_target = { change_prison_type = house_arrest }
+					add_opinion = {
+						target = scope:taker
+						modifier = pleased_opinion
+						opinion = 25
+					}
+				}
+				task_contract_taker.house = {
+					add_unity_value = {
+						value = medium_unity_loss
+						character = scope:taker
+						desc = unity_irregularities_unity_desc
+					}
+				}
+			}
+		}
+		failure_standard = { # Tried but failed to settle matters
+			positive = no
+			effect = {
+				unity_irregularities_failure_effect = yes
+			}
+		}
+		failure_denial = { # Denied all wrongdoing
+			positive = no
+			visible = no
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
+				task_contract_taker = {
+					save_scope_as = taker
+					add_prestige = medium_prestige_gain
+					if = {
+						limit = {
+							government_has_flag = government_is_merchant
+							has_perk = soon_forgiven_perk
+						}
+						reverse_add_opinion = {
+							target = scope:task_contract.task_contract_employer
+							modifier = angry_opinion
+							opinion = -30
+						}
+					}
+					else = {
+						reverse_add_opinion = {
+							target = scope:task_contract.task_contract_employer
+							modifier = angry_opinion
+							opinion = -55
+						}
+					}
+					reverse_add_opinion = {
+						target = scope:task_contract.task_contract_target
+						modifier = pleased_opinion
+						opinion = 25
+					}
+					house = {
+						add_unity_value = {
+							value = massive_unity_value
+							character = scope:taker
+							desc = unity_irregularities_unity_desc
+						}
+					}
+				}
+				task_contract_location.barony.trade_market = {
+					add_competitiveness_modifier_for_character = {
+						character = scope:taker
+						modifier = gdp_unity_irregularities_failure_denial_modifier
+						years = 10
+					}
+				}
+			}
+		}
+	}
+}

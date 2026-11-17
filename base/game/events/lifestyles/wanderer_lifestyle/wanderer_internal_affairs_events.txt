@@ -16,8 +16,8 @@ scripted_trigger internal_affairs_10_holding_trigger = {
 	}
 	county = {
 		OR = {
-			county_opinion <= 0
-			county_control <= 50
+			popular_opinion <= 0
+			county_control < county_control_baseline
 		}
 		holder = {
 			trigger_if = {
@@ -90,7 +90,7 @@ internal_affairs.10 = { # Chance for Republic/Theocracy
 			triggered_desc = {
 				trigger = {
 					scope:barony_title.county = {
-						county_control < 50
+						county_control < county_control_baseline
 					}
 				}
 				desc = internal_affairs.10.desc.control
@@ -136,7 +136,6 @@ internal_affairs.10 = { # Chance for Republic/Theocracy
 				OR = {
 					has_cultural_parameter = can_make_republican_vassals
 					has_cultural_parameter = city_buildings_more_powerful
-					has_cultural_parameter = city_buildings_less_control
 					has_cultural_parameter = republican_vassals_pay_more
 					has_cultural_parameter = more_parochial_vassals
 				}
@@ -342,8 +341,8 @@ scripted_trigger internal_affairs_20_county_trigger = {
 	}
 	holder != root
 	OR = {
-		county_control < 50
-		county_opinion < -25
+		county_control < county_control_baseline
+		popular_opinion < -25
 	}
 }
 
@@ -357,8 +356,8 @@ internal_affairs.20 = { # Unfitting Lord/Lady
 			triggered_desc = {
 				trigger = {
 					scope:county_title = {
-						county_control < 50
-						county_opinion < -25
+						county_control < county_control_baseline
+						popular_opinion < -25
 					}
 				}
 				desc = internal_affairs.20.desc.both
@@ -366,7 +365,7 @@ internal_affairs.20 = { # Unfitting Lord/Lady
 			triggered_desc = {
 				trigger = {
 					scope:county_title = {
-						county_control < 50
+						county_control < county_control_baseline
 					}
 				}
 				desc = internal_affairs.20.desc.control
@@ -374,7 +373,7 @@ internal_affairs.20 = { # Unfitting Lord/Lady
 			triggered_desc = {
 				trigger = {
 					scope:county_title = {
-						county_opinion < -25
+						popular_opinion < -25
 					}
 				}
 				desc = internal_affairs.20.desc.opinion
@@ -989,8 +988,8 @@ internal_affairs.50 = { # A town of x
 		is_ai = no
 		location.county = {
 			OR = {
-				county_opinion <= 0
-				county_control <= 75
+				popular_opinion <= 0
+				county_control <= county_control_relative_65
 			}
 			holder ?= {
 				NOT = { faith = root.location.county.faith }
@@ -1236,7 +1235,7 @@ internal_affairs.60 = { # The Bandit's Hoard
 		has_lifestyle = wanderer_lifestyle
 		is_landless_adventurer = yes
 		location.county = {
-			county_control <= 75
+			county_control < county_control_baseline
 		}
 		OR = {
 			gold <= medium_gold_value

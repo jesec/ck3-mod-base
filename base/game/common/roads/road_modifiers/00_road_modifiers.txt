@@ -1,0 +1,92 @@
+﻿## Shared road modifiers per tier
+#
+# Applies to every road, based on the tier it is currently at.
+# An entry with no 'type' applies to all roads that no other entry claims.
+# (road_modifiers_default used by code - do not remove)
+#
+# Each tier takes up to four blocks, all optional:
+#
+#	tier_3 = {
+#		modifier = { road_construction_speed = 0.1 }				# the road itself
+#		province_modifier = { monthly_civic_tax = 0.05 }			# provinces the road covers
+#		trade_route_modifier = { trade_capacity_add = 3 }			# routes that follow the road
+#		travel_modifier = { travel_speed = 30 }						# anyone travelling along it
+#	}
+#
+# The first three blocks at entry level apply at every tier. travel_modifier is per tier only.
+#
+road_modifiers_default = {
+	tier_1 = {
+		province_modifier = {
+			monthly_commerce_tax = 0.1
+			travel_danger = -2
+			prosperity_growth = 0.02
+		}
+		trade_route_modifier = {
+			trade_route_length_mult = 0.05
+		}
+		travel_modifier = { travel_speed_mult = 0.05 }
+		character_modifier = { movement_speed = 0.1 }
+	}
+
+	tier_2 = {
+		province_modifier = {
+			monthly_commerce_tax = 0.2
+			travel_danger = -4
+			prosperity_growth = 0.04
+		}
+		trade_route_modifier = {
+			trade_route_length_mult = 0.1
+		}
+		travel_modifier = { travel_speed_mult = 0.1 }
+		character_modifier = { movement_speed = 0.1 }
+	}
+
+	tier_3 = {
+		province_modifier = {
+			monthly_commerce_tax = 0.3
+			travel_danger = -6
+			province_size_baseline_add = 10
+			prosperity_growth = 0.06
+		}
+		trade_route_modifier = {
+			trade_route_length_mult = 0.15
+		}
+		travel_modifier = { travel_speed_mult = 0.15 }
+		character_modifier = { movement_speed = 0.15 }
+	}
+
+	tier_4 = {
+		province_modifier = {
+			monthly_commerce_tax = 0.4
+			travel_danger = -8
+			province_size_baseline_add = 15
+			prosperity_growth = 0.08
+		}
+		trade_route_modifier = {
+			trade_route_length_mult = 0.2
+		}
+		travel_modifier = { travel_speed_mult = 0.2 }
+		character_modifier = { movement_speed = 0.2 }
+	}
+
+	tier_5 = {
+		province_modifier = {
+			monthly_commerce_tax = 0.5
+			travel_danger = -10
+			province_size_baseline_add = 20
+			prosperity_growth = 0.1
+		}
+		trade_route_modifier = {
+			trade_route_length_mult = 0.25
+		}
+		travel_modifier = { travel_speed_mult = 0.25 }
+		character_modifier = { movement_speed = 0.25 }
+	}
+}
+
+# Sets for specific roads name them in 'type'. Unlisted tiers grant nothing.
+#specific_road_modifiers = {
+#	type = { road_key_01 road_key_02 }
+#	tier_5 = { trade_route_modifier = { trade_capacity_add = 8 } }
+#}

@@ -145,6 +145,7 @@ ai_military_threat_modifier = {
 
 	# similar current military power
 	modifier = {
+		exists = $RECEIVER$
 		$SENDER$.current_power_ninety_percent_value < $RECEIVER$.military_power
 		$SENDER$.military_power > $RECEIVER$.current_power_ninety_percent_value
 		add = {
@@ -161,6 +162,7 @@ ai_military_threat_modifier = {
 	}
 	modifier = {
 		# Sender is more powerful
+		exists = $RECEIVER$
 		$SENDER$.current_power_ninety_percent_value > $RECEIVER$.military_power
 		add = {
 			value = {
@@ -188,6 +190,7 @@ ai_military_threat_modifier = {
 	}
 	modifier = {
 		# Sender is less powerful
+		exists = $RECEIVER$
 		$SENDER$.current_power_ninety_percent_value < $RECEIVER$.military_power
 		add = {
 			value = {
@@ -215,6 +218,7 @@ ai_military_threat_modifier = {
 	}
 	modifier = {
 		# Sender's power is lower, but with allies it's stronger
+		exists = $RECEIVER$
 		$SENDER$ = { any_ally = { exists = this } }
 		$SENDER$.current_power_ninety_percent_value < $RECEIVER$.military_power
 		$SENDER$.current_power_with_allies_value > $RECEIVER$.current_power_with_allies_value

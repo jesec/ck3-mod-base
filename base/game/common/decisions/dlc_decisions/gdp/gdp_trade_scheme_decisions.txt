@@ -1,0 +1,311 @@
+﻿### Improve Trade Capacity ###
+gdp_improve_trade_capacity_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/gdp_republic_trade_ships.dds" }
+	decision_group_type = trade
+	sort_order = 60
+	desc = gdp_improve_trade_capacity_decision_desc
+	selection_tooltip = gdp_improve_trade_capacity_decision_tooltip
+
+	ai_check_interval = 0
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		gdp_is_trade_ruler_trigger = yes
+		any_trade_route = { count >= 1 }
+	}
+
+	is_valid_showing_failures_only = {
+		# can_start_scheme already covers adult, imprisoned and incapable.
+		can_start_scheme = {
+			type = gdp_improve_trade_capacity
+			target_character = root
+		}
+		exists = scope:selected_item
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = gdp_improve_trade_capacity_decision_effect_tt
+			begin_scheme_with_agents_effect = {
+				SCHEME_TYPE = gdp_improve_trade_capacity
+				TARGET_TYPE = target_character
+				TARGET_SCOPE = root
+				# Success.
+				AGENT_1 = agent_broker
+				AGENT_2 = agent_appraiser
+				AGENT_3 = agent_bookkeeper
+				# Speed.
+				AGENT_4 = agent_overseer
+				AGENT_5 = agent_supplier
+			}
+			gdp_improve_trade_scheme_set_focus_effect = yes
+			# Scheme progress bonus from education
+			education_5_scheme_progress_effect = { SKILL = stewardship }
+		}
+		custom_tooltip = gdp_improve_trade_capacity_decision_success_tt
+	}
+
+	widget = {
+		gui = "decision_view_widget_select_trade_route"
+		controller = select_scope_object
+		show_from_start = yes
+		decision_to_second_step_button = "gdp_improve_trade_capacity_decision_confirm"
+
+		setup_items = {
+			scope:actor = {
+				every_trade_route = {
+					add_to_list = item_list
+				}
+			}
+		}
+
+		default_item = {
+			scope:actor = {
+				random_trade_route = {
+					save_scope_as = selected_item
+				}
+			}
+		}
+
+		ai_select_item = {
+			scope:actor = {
+				random_trade_route = {
+					limit = { has_trader = yes }
+					save_scope_as = selected_item
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		# Only worth a scheme slot once there is a running network to tune.
+		modifier = {
+			add = 40
+			any_trade_route = { has_trader = yes }
+		}
+		modifier = {
+			add = 20
+			any_trade_route = {
+				count >= 2
+				has_trader = yes
+			}
+		}
+		modifier = {
+			has_trait = greedy
+			add = 15
+		}
+		modifier = {
+			has_trait = diligent
+			add = 10
+		}
+	}
+}
+
+### Improve Trade Competitiveness ###
+gdp_improve_trade_competitiveness_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/gdp_republic_assembly.dds" }
+	decision_group_type = trade
+	sort_order = 59
+	desc = gdp_improve_trade_competitiveness_decision_desc
+	selection_tooltip = gdp_improve_trade_competitiveness_decision_tooltip
+
+	ai_check_interval = 0
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		gdp_is_trade_ruler_trigger = yes
+		any_trade_route = { count >= 1 }
+	}
+
+	is_valid_showing_failures_only = {
+		# can_start_scheme already covers adult, imprisoned and incapable.
+		can_start_scheme = {
+			type = gdp_improve_trade_competitiveness
+			target_character = root
+		}
+		exists = scope:selected_item
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = gdp_improve_trade_competitiveness_decision_effect_tt
+			begin_scheme_with_agents_effect = {
+				SCHEME_TYPE = gdp_improve_trade_competitiveness
+				TARGET_TYPE = target_character
+				TARGET_SCOPE = root
+				# Success.
+				AGENT_1 = agent_broker
+				AGENT_2 = agent_appraiser
+				AGENT_3 = agent_bookkeeper
+				# Speed.
+				AGENT_4 = agent_overseer
+				AGENT_5 = agent_supplier
+			}
+			gdp_improve_trade_scheme_set_focus_effect = yes
+			# Scheme progress bonus from education
+			education_5_scheme_progress_effect = { SKILL = diplomacy }
+		}
+		custom_tooltip = gdp_improve_trade_competitiveness_decision_success_tt
+	}
+
+	widget = {
+		gui = "decision_view_widget_select_trade_route"
+		controller = select_scope_object
+		show_from_start = yes
+		decision_to_second_step_button = "gdp_improve_trade_competitiveness_decision_confirm"
+
+		setup_items = {
+			scope:actor = {
+				every_trade_route = {
+					add_to_list = item_list
+				}
+			}
+		}
+
+		default_item = {
+			scope:actor = {
+				random_trade_route = {
+					save_scope_as = selected_item
+				}
+			}
+		}
+
+		ai_select_item = {
+			scope:actor = {
+				random_trade_route = {
+					limit = { has_trader = yes }
+					save_scope_as = selected_item
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		# Only worth a scheme slot once there is a running network to tune.
+		modifier = {
+			add = 40
+			any_trade_route = { has_trader = yes }
+		}
+		modifier = {
+			add = 20
+			any_trade_route = {
+				count >= 2
+				has_trader = yes
+			}
+		}
+		modifier = {
+			has_trait = greedy
+			add = 15
+		}
+		modifier = {
+			has_trait = diligent
+			add = 10
+		}
+	}
+}
+
+### Improve Trade Expertise ###
+gdp_improve_trade_expertise_decision = {
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_erudition.dds" }
+	decision_group_type = trade
+	sort_order = 58
+	desc = gdp_improve_trade_expertise_decision_desc
+	selection_tooltip = gdp_improve_trade_expertise_decision_tooltip
+
+	ai_check_interval = 0
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		gdp_is_trade_ruler_trigger = yes
+		any_trade_route = { count >= 1 }
+	}
+
+	is_valid_showing_failures_only = {
+		# can_start_scheme already covers adult, imprisoned and incapable.
+		can_start_scheme = {
+			type = gdp_improve_trade_expertise
+			target_character = root
+		}
+		exists = scope:selected_item
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = gdp_improve_trade_expertise_decision_effect_tt
+			begin_scheme_with_agents_effect = {
+				SCHEME_TYPE = gdp_improve_trade_expertise
+				TARGET_TYPE = target_character
+				TARGET_SCOPE = root
+				# Success.
+				AGENT_1 = agent_broker
+				AGENT_2 = agent_appraiser
+				AGENT_3 = agent_bookkeeper
+				# Speed.
+				AGENT_4 = agent_overseer
+				AGENT_5 = agent_supplier
+			}
+			gdp_improve_trade_scheme_set_focus_effect = yes
+			# Scheme progress bonus from education
+			education_5_scheme_progress_effect = { SKILL = learning }
+		}
+		custom_tooltip = gdp_improve_trade_expertise_decision_success_tt
+	}
+
+	widget = {
+		gui = "decision_view_widget_select_trade_route"
+		controller = select_scope_object
+		show_from_start = yes
+		decision_to_second_step_button = "gdp_improve_trade_expertise_decision_confirm"
+
+		setup_items = {
+			scope:actor = {
+				every_trade_route = {
+					add_to_list = item_list
+				}
+			}
+		}
+
+		default_item = {
+			scope:actor = {
+				random_trade_route = {
+					save_scope_as = selected_item
+				}
+			}
+		}
+
+		ai_select_item = {
+			scope:actor = {
+				random_trade_route = {
+					limit = { has_trader = yes }
+					save_scope_as = selected_item
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		# Only worth a scheme slot once there is a running network to tune.
+		modifier = {
+			add = 40
+			any_trade_route = { has_trader = yes }
+		}
+		modifier = {
+			add = 20
+			any_trade_route = {
+				count >= 2
+				has_trader = yes
+			}
+		}
+		modifier = {
+			has_trait = greedy
+			add = 15
+		}
+		modifier = {
+			has_trait = diligent
+			add = 10
+		}
+	}
+}

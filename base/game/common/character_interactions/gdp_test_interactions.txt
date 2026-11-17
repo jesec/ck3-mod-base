@@ -1,0 +1,1062 @@
+﻿debug_spawn_merchant_contract_interaction = {
+	category = interaction_debug_gdp
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = merchant
+	common_interaction = yes
+	is_shown = {
+		debug_only = yes
+		scope:recipient = {
+			government_has_flag = government_is_merchant
+			exists = domicile
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_ai = no
+			is_available_quick = {
+				adult = yes
+				alive = yes
+				incapable = no
+				imprisoned = no
+			}
+		}
+	}
+	can_send = {
+		calc_true_if = {
+			amount = 1
+			### TRADE OPPORTUNITIES
+			scope:challenge_competitor = yes
+			scope:promote_goods = yes
+			scope:market_investment = yes
+			scope:exploit_upheaval = yes
+			scope:support_guilds = yes
+			scope:seek_debtors = yes
+			scope:sabotage_competition = yes
+			scope:build_category_connections = yes
+			scope:disrupt_charter = yes
+			scope:entrepot_buy = yes
+			scope:negotiate_tolls = yes
+			scope:smuggle_goods = yes
+			### SILK ROAD
+			scope:silk_road_network = yes
+			### LUXURY CONTRACTS
+			scope:menagerie_acquisition = yes
+			scope:find_curio = yes
+			### PATRON CONTRACTS
+			scope:patron_hobnob = yes
+			### UNITY CONTRACTS
+			scope:unity_irregularities = yes
+		}
+	}
+	### TRADE OPPORTUNITIES
+	send_option = { # Challenge Competitor
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = challenge_competitor }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = challenge_competitor } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_challenge_competitor }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						has_trader = yes
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = challenge_competitor
+		localization = challenge_competitor_contract
+	}
+	send_option = { # Promote Goods
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = promote_goods }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = promote_goods } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_promote_goods }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						has_trader = yes
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = promote_goods
+		localization = promote_goods_contract
+	}
+	send_option = { # Market Investment
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = market_investment }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = market_investment } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_market_investment }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						has_trader = yes
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = market_investment
+		localization = market_investment_contract
+	}
+	send_option = { # Explot/Alleviate Upheaval
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = exploit_upheaval }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = exploit_upheaval } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_exploit_upheaval }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						has_trader = yes
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = exploit_upheaval
+		localization = debug_spawn_merchant_contract_interaction_exploit_alleviate
+	}
+	send_option = { # Patronize Artisans
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = support_guilds }
+				# FOR UI
+				has_realm_law = company_purpose_artisan
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = support_guilds } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_support_guilds }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						has_trader = yes
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = support_guilds
+		localization = support_guilds_contract
+	}
+	send_option = { # Extend Credit
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = seek_debtors }
+				# FOR UI
+				has_realm_law = company_purpose_creditor
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = seek_debtors } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_seek_debtors }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						has_trader = yes
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = seek_debtors
+		localization = seek_debtors_contract
+	}
+	send_option = { # Sabotage Competition
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = sabotage_competition }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = sabotage_competition } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_sabotage_competition }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						has_trader = yes
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = sabotage_competition
+		localization = sabotage_competition_contract
+	}
+	send_option = { # Study Commodity
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = build_category_connections }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = build_category_connections } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_build_category_connections }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = build_category_connections
+		localization = build_category_connections_contract
+	}
+	send_option = { # Disrupt Charter
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = disrupt_charter }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = disrupt_charter } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_disrupt_charter }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = disrupt_charter
+		localization = disrupt_charter_contract
+	}
+	send_option = { # Entrepot Buy/Sell
+		is_valid = {
+			scope:recipient = {
+				OR = {
+					can_create_task_contract = { type_name = entrepot_buy }
+					can_create_task_contract = { type_name = entrepot_sell }
+				}
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = {
+						any_character_task_contract = {
+							OR = {
+								has_task_contract_type = entrepot_buy
+								has_task_contract_type = entrepot_sell
+							}
+						}
+					}
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NAND = {
+						has_character_flag = trade_opportunity_cooldown_entrepot_buy
+						has_character_flag = trade_opportunity_cooldown_entrepot_sell
+					}
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = entrepot_buy
+		localization = debug_spawn_merchant_contract_interaction_entrepot_buy_sell
+	}
+	send_option = { # Negotiate Tolls
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = negotiate_tolls }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = {
+						any_character_task_contract = { has_task_contract_type = negotiate_tolls }
+					}
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_negotiate_tolls }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = negotiate_tolls
+		localization = negotiate_tolls_contract
+	}
+	send_option = { # Smuggle Goods
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = smuggle_goods }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = {
+						any_character_task_contract = { has_task_contract_type = smuggle_goods }
+					}
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_smuggle_goods }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = smuggle_goods
+		localization = smuggle_goods_contract
+	}
+	### SILK ROAD
+	send_option = { # Extend Caravan/Consolidate Caravan (Silk Road)
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = silk_road_network }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = {
+						any_character_task_contract = {
+							OR = {
+								has_task_contract_type = silk_road_network
+								has_task_contract_type = silk_road_caravan
+							}
+						}
+					}
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = trade_opportunity_cooldown_silk_road_network }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = silk_road_network
+		localization = debug_spawn_merchant_contract_interaction_silk_road_network_caravan
+	}
+	### LUXURY CONTRACTS
+	send_option = {
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = menagerie_acquisition }
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = menagerie_acquisition } }
+				}
+			}
+		}
+		flag = menagerie_acquisition
+		localization = menagerie_acquisition_contract
+	}
+	send_option = {
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = find_curio }
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = find_curio } }
+				}
+			}
+		}
+		flag = find_curio
+		localization = find_curio_contract
+	}
+	### PATRON CONTRACTS
+	send_option = {
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = patron_hobnob }
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = patron_hobnob } }
+				}
+			}
+		}
+		flag = patron_hobnob
+		localization = patron_hobnob_contract
+	}
+	### UNITY CONTRACTS
+	send_option = {
+		is_valid = {
+			scope:recipient = {
+				can_create_task_contract = { type_name = unity_irregularities }
+				# FOR UI
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_duplicate_tt
+					NOT = { any_character_task_contract = { has_task_contract_type = unity_irregularities } }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_cooldown_tt
+					NOT = { has_character_flag = unity_contract_cooldown_irregularities }
+				}
+				custom_tooltip = {
+					text = debug_spawn_merchant_contract_interaction_route_tt
+					any_trade_route = {
+						any_trade_market_on_route = {}
+					}
+				}
+			}
+		}
+		flag = unity_irregularities
+		localization = unity_irregularities_contract
+	}
+	on_accept = {
+		scope:recipient = {
+			switch = {
+				trigger = yes
+				### TRADE OPPORTUNITIES
+				scope:challenge_competitor = {
+					trigger_event = { on_action = gdp_challenge_competitor }
+				}
+				scope:promote_goods = {
+					trigger_event = { on_action = gdp_promote_goods }
+				}
+				scope:market_investment = {
+					trigger_event = { on_action = gdp_market_investment }
+				}
+				scope:exploit_upheaval = {
+					trigger_event = { on_action = gdp_exploit_upheaval } # also alleviate
+				}
+				scope:support_guilds = {
+					trigger_event = { on_action = gdp_support_guilds }
+				}
+				scope:seek_debtors = {
+					trigger_event = { on_action = gdp_seek_debtors }
+				}
+				scope:sabotage_competition = {
+					trigger_event = { on_action = gdp_sabotage_competition }
+				}
+				scope:build_category_connections = {
+					trigger_event = { on_action = gdp_build_category_connections }
+				}
+				scope:disrupt_charter = {
+					trigger_event = { on_action = gdp_disrupt_charter }
+				}
+				scope:entrepot_buy = {
+					trigger_event = { on_action = gdp_entrepot_buy } # also sell
+				}
+				scope:negotiate_tolls = {
+					trigger_event = { on_action = gdp_negotiate_tolls }
+				}
+				scope:smuggle_goods = {
+					trigger_event = { on_action = gdp_smuggle_goods }
+				}
+				### SILK ROAD
+				scope:silk_road_network = {
+					trigger_event = { on_action = gdp_silk_road_network } # also caravan
+				}
+				### LUXURY CONTRACTS
+				scope:menagerie_acquisition = {
+					trigger_event = { on_action = gdp_menagerie_acquisition }
+				}
+				scope:find_curio = {
+					trigger_event = { on_action = gdp_find_curio }
+				}
+				### PATRON CONTRACTS
+				scope:patron_hobnob = {
+					trigger_event = { on_action = gdp_patron_hobnob }
+				}
+				### UNITY CONTRACTS
+				scope:unity_irregularities = {
+					trigger_event = { on_action = gdp_unity_irregularities }
+					custom_tooltip = unity_irregularities_contract
+				}
+			}
+		}
+	}
+	auto_accept = yes
+}
+
+debug_spawn_domicile_artifact_interaction = {
+	category = interaction_debug_gdp
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = merchant
+	common_interaction = yes
+	is_shown = {
+		debug_only = yes
+		scope:recipient = {
+			government_has_flag = government_is_merchant
+			exists = domicile
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			is_ai = no
+			is_available_quick = {
+				adult = yes
+				alive = yes
+				incapable = no
+				imprisoned = no
+			}
+		}
+	}
+
+	send_option = {
+		flag = dangerous_game
+		localization = create_dangerous_game
+	}
+	send_option = {
+		flag = harmless_game
+		localization = create_harmless_game
+	}
+	send_option = {
+		flag = library
+		localization = create_library_artifact
+	}
+	send_option = {
+		flag = curio
+		localization = create_curio_artifact
+	}
+
+	on_accept = {
+		scope:recipient = {
+			switch = {
+				trigger = yes
+				### ARTIFACT TYPE
+				scope:dangerous_game = {
+					
+					random_province = {
+						limit = { luxury_contract_dangerous_creature_location_trigger = yes }
+						save_scope_as = creature_location
+					}
+					luxury_contract_dangerous_creature_effect = { PROVINCE = scope:creature_location }
+					create_creature_artifact_effect = {
+						OWNER = scope:recipient
+						CREATOR = suzerain
+					}
+				}
+				scope:harmless_game = {
+					scope:recipient = { save_scope_as = harmless_local_creature }
+					random_province = {
+						limit = { luxury_contract_harmless_creature_location_trigger = yes }
+						save_scope_as = creature_location
+					}
+					luxury_contract_standard_creature_effect = { PROVINCE = scope:creature_location }
+					create_creature_artifact_effect = {
+						OWNER = scope:recipient
+						CREATOR = suzerain
+					}
+				}
+				scope:library = {
+					create_library_artifact_effect = {
+						OWNER = scope:recipient
+						CREATOR = suzerain
+						SUBJECT = flag:no
+						TOPIC = flag:no
+					}
+				}
+				scope:curio = {
+					create_curio_artifact_effect = {
+						OWNER = scope:recipient
+						CREATOR = suzerain
+					}
+				}
+			}
+		}
+	}
+	auto_accept = yes
+}
+
+debug_grant_monopoly_interaction = {
+	category = interaction_debug_gdp
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = merchant
+	common_interaction = yes
+	is_shown = {
+		debug_only = yes
+		scope:recipient = {
+			government_has_flag = government_is_merchant
+			exists = domicile
+		}
+	}
+	is_valid_showing_failures_only = {
+		scope:recipient = {
+			custom_tooltip = {
+				text = debug_spawn_merchant_contract_interaction_route_tt
+				any_trade_route = {
+					any_trade_market_on_route = {
+						NOT = {
+							any_trade_monopoly_for_market = { character_owner ?= scope:recipient }
+						}
+					}
+				}
+			}
+		}
+	}
+
+	send_option = {
+		flag = exploitative
+		localization = monopoly_exploitative
+	}
+	send_option = {
+		flag = normal
+		localization = monopoly_normal
+	}
+
+	on_accept = {
+		scope:recipient = {
+			random_trade_route = {
+				limit = {
+					any_trade_market_on_route = {
+						NOT = {
+							any_trade_monopoly_for_market = { character_owner ?= scope:recipient }
+						}
+					}
+				}
+				random_trade_market_on_route = {
+					limit = {
+						NOT = {
+							any_trade_monopoly_for_market = { character_owner ?= scope:recipient }
+						}
+					}
+					save_scope_as = trade_market
+				}
+			}
+		}
+		scope:trade_market ?= {
+			switch = {
+				trigger = yes
+				scope:exploitative = {
+					create_trade_monopoly = {
+						type = exploitative
+						is_complete = yes
+						owning_character = scope:recipient
+						trade_market = scope:trade_market
+					}
+				}
+				scope:normal = {
+					create_trade_monopoly = {
+						type = normal
+						is_complete = yes
+						owning_character = scope:recipient
+						trade_market = scope:trade_market
+					}
+				}
+			}
+		}
+	}
+	auto_accept = yes
+}
+
+debug_request_trade_monopoly_for_confederation_interaction = {
+	category = interaction_debug_gdp
+	use_diplomatic_range = no
+	icon = merchant
+	common_interaction = yes
+
+	# Code handles trade good selection, type toggles and setting up the actual monopoly
+	special_interaction = request_monopoly
+	interface = trade_market
+	target_type = trade_good_category
+	target_filter = all_trade_good_categories_traded_in
+	target_source = actor
+	can_be_picked_trade_good_category_type = {
+		# No market is selected until the player picks one, so we guard this scope
+		exists = scope:trade_market
+		scope:trade_market = {
+			OR = {
+				any_trade_good_with_need = { has_category = scope:target }
+				any_trade_good_with_surplus = { has_category = scope:target }
+			}
+		}
+	}
+
+	is_shown = {
+		debug_only = yes
+		scope:actor = {
+			is_confederation_member = yes
+		}
+		scope:recipient = {
+			any_held_trade_market = {
+				any_character_in_market = { this = scope:actor }
+				NOT = { has_complete_trade_monopoly = yes }
+			}
+		}
+	}
+
+	on_accept = {
+		if = {
+			limit = {
+				scope:is_complete_monopoly = yes
+				scope:is_exploitative_monopoly = yes
+			}
+			custom_tooltip = request_monopoly.tt.complete_exploitative
+		}
+		else_if = {
+			limit = { scope:is_complete_monopoly = yes }
+			custom_tooltip = request_monopoly.tt.complete_normal
+		}
+		else_if = {
+			limit = {
+				exists = scope:trade_good_type
+				scope:is_exploitative_monopoly = yes
+			}
+			custom_tooltip = request_monopoly.tt.specific_exploitative
+		}
+		else_if = {
+			limit = { exists = scope:trade_good_type }
+			custom_tooltip = request_monopoly.tt.specific_normal
+		}
+		hidden_effect = {
+			request_monopoly_effect = {
+				OWNER_PARAM = owning_confederation
+				OWNER = scope:actor.confederation
+			}
+		}
+	}
+}
+
+debug_request_trade_monopoly_for_title_interaction = {
+	category = interaction_debug_gdp
+	use_diplomatic_range = no
+	icon = merchant
+	common_interaction = yes
+
+	special_interaction = request_monopoly
+	interface = trade_market
+	target_type = trade_good_category
+	target_filter = all_trade_good_categories_traded_in
+	target_source = actor
+	can_be_picked_trade_good_category_type = {
+		# No market is selected until the player picks one, so we guard this scope
+		exists = scope:trade_market
+		scope:trade_market = {
+			OR = {
+				any_trade_good_with_need = { has_category = scope:target }
+				any_trade_good_with_surplus = { has_category = scope:target }
+			}
+		}
+	}
+
+	is_shown = {
+		debug_only = yes
+		scope:actor = {
+			government_has_flag = government_is_republic
+		}
+		scope:recipient = {
+			any_held_trade_market = {
+				any_character_in_market = { this = scope:actor }
+				NOT = { has_complete_trade_monopoly = yes }
+			}
+		}
+	}
+
+	on_accept = {
+		if = {
+			limit = {
+				scope:is_complete_monopoly = yes
+				scope:is_exploitative_monopoly = yes
+			}
+			custom_tooltip = request_monopoly.tt.complete_exploitative
+		}
+		else_if = {
+			limit = { scope:is_complete_monopoly = yes }
+			custom_tooltip = request_monopoly.tt.complete_normal
+		}
+		else_if = {
+			limit = {
+				exists = scope:trade_good_type
+				scope:is_exploitative_monopoly = yes
+			}
+			custom_tooltip = request_monopoly.tt.specific_exploitative
+		}
+		else_if = {
+			limit = { exists = scope:trade_good_type }
+			custom_tooltip = request_monopoly.tt.specific_normal
+		}
+		hidden_effect = {
+			request_monopoly_effect = {
+				OWNER_PARAM = owning_title
+				OWNER = scope:actor.primary_title
+			}
+		}
+	}
+}
+
+debug_trade_expertise_interaction = {
+	category = interaction_debug_gdp
+	use_diplomatic_range = no
+	ignores_pending_interaction_block = yes
+	icon = merchant
+	common_interaction = yes
+	is_shown = {
+		debug_only = yes
+		scope:recipient = {
+			government_allows = profit_trade_routes
+			exists = domicile
+		}
+	}
+	send_option = {
+		flag = alcohol
+		localization = trade_category_alcohol
+	}
+	send_option = {
+		flag = comforts
+		localization = trade_category_comforts
+	}
+	send_option = {
+		flag = cereals
+		localization = trade_category_cereals
+	}
+	send_option = {
+		flag = meat
+		localization = trade_category_meat
+	}
+	send_option = {
+		flag = beasts_of_burden
+		localization = trade_category_beasts_of_burden
+	}
+	send_option = {
+		flag = salt
+		localization = trade_category_salt
+	}
+	send_option = {
+		flag = clothes
+		localization = trade_category_clothes
+	}
+	send_option = {
+		flag = fabrics
+		localization = trade_category_fabrics
+	}
+	send_option = {
+		flag = dyes
+		localization = trade_category_dyes
+	}
+	send_option = {
+		flag = alum
+		localization = trade_category_alum
+	}
+	send_option = {
+		flag = stone
+		localization = trade_category_stone
+	}
+	send_option = {
+		flag = carpentry_supplies
+		localization = trade_category_carpentry_supplies
+	}
+	send_option = {
+		flag = base_metals
+		localization = trade_category_base_metals
+	}
+	send_option = {
+		flag = luxury_items
+		localization = trade_category_luxury_items
+	}
+	send_option = {
+		flag = jewelry_materials
+		localization = trade_category_jewelry_materials
+	}
+	send_option = {
+		flag = precious_metals
+		localization = trade_category_precious_metals
+	}
+	send_option = {
+		flag = medicaments
+		localization = trade_category_medicaments
+	}
+	send_option = {
+		flag = incense
+		localization = trade_category_incense
+	}
+	send_option = {
+		flag = luxury_consumption
+		localization = trade_category_luxury_consumption
+	}
+	send_option = {
+		flag = books
+		localization = trade_category_books
+	}
+
+	on_accept = {
+		scope:recipient.primary_title = {
+			switch = {
+				trigger = yes
+				scope:alcohol = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_alcohol
+						value = 600
+					}
+				}
+				scope:comforts = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_comforts
+						value = 600
+					}
+				}
+				scope:cereals = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_cereals
+						value = 600
+					}
+				}
+				scope:meat = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_meat
+						value = 600
+					}
+				}
+				scope:beasts_of_burden = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_beasts_of_burden
+						value = 600
+					}
+				}
+				scope:salt = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_salt
+						value = 600
+					}
+				}
+				scope:clothes = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_clothes
+						value = 600
+					}
+				}
+				scope:fabrics = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_fabrics
+						value = 600
+					}
+				}
+				scope:dyes = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_dyes
+						value = 600
+					}
+				}
+				scope:alum = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_alum
+						value = 600
+					}
+				}
+				scope:stone = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_stone
+						value = 600
+					}
+				}
+				scope:carpentry_supplies = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_carpentry_supplies
+						value = 600
+					}
+				}
+				scope:base_metals = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_base_metals
+						value = 600
+					}
+				}
+				scope:luxury_items = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_luxury_items
+						value = 600
+					}
+				}
+				scope:jewelry_materials = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_jewelry_materials
+						value = 600
+					}
+				}
+				scope:precious_metals = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_precious_metals
+						value = 600
+					}
+				}
+				scope:medicaments = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_medicaments
+						value = 600
+					}
+				}
+				scope:incense = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_incense
+						value = 600
+					}
+				}
+				scope:luxury_consumption = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_luxury_consumption
+						value = 600
+					}
+				}
+				scope:books = {
+					add_trade_good_category_xp = {
+						target = trade_good_category:trade_category_books
+						value = 600
+					}
+				}
+			}
+		}
+	}
+	auto_accept = yes
+}

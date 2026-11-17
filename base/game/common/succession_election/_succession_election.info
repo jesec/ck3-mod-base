@@ -1,9 +1,19 @@
-﻿== Structure ==
+﻿Definitions for the various types of elections that can be used in succession orders.
 
-feudal_elective = {
+The election type determines who get to vote, how string they are, and who they can vote for.
 
-	# Characters that can be elected
-	# In addition to the scripted limitations, the gender and faith laws are taken into account. Also the current title holder can never be a candidate.
+For usage see: common/laws/_laws.info
+
+== Structure ==
+
+<election type key> = {
+
+	### Characters that can be elected
+	#
+	# In addition to the scripted limitations, the gender and faith laws are taken into account.
+	#
+	# Also the current title holder can only be a candidate if the succession laws have a term length.
+	#
 	candidates = {
 
 		# A set of candidates. Can list multiple sets. By default if a character matches any set, they will be a valid candidate
@@ -58,26 +68,70 @@ feudal_elective = {
 		candidate_policy = include_all_candidates
 	}
 
-	# Characters that can vote in the election
+	### Characters that can vote in the election
+	#
 	# Note that only rulers can be electors.
+	#
 	electors = {
 		# all elements from "candidates" are valid, except that 'candidate_policy' must be 'include_all_candidates' (logs an error otherwise)
 
-		max = 10			# optional maximum number of electors, <0 for no limitation; default: -1
+		### Elector filter
+		#
+		# (works like with candidates above)
+		#
+		limit = <trigger>
+
+		### Optional maximum number of electors
+		#
+		# Default: -1 (no limit)
+		#
+		max = 10
+
+		###  Elector priority
+		#
+		# Optional MTTH (a.k.a 'Old math)' and Scripted Vaue (a.k.a 'New math') to calculate a character's priority
+		# This it only relevant when there is a max.
+		#
+		# (scope is same as for limit)
+		#
+		# Default base: 1
+		#
+		priority = <MTTH>
+		priority_value = <scripted value>
 	}
 
-	# Optional value to calculate the score an elector should add with their vote;
-	# scope: root = elector, scope:title = the title under election, scope:holder = current title holder;
+	### Optional elector strength
 	#
-	elector_vote_strength = {}			# uses MTTH syntax
-	elector_vote_strength_value = {}	# uses scripted value syntax
+	# MTTH or scripted value to calculate the score an elector should add with their vote.
+	#
+	# Scopes:
+	#  - root (characer)	= elector
+	#  - title (title)		= the title under election
+	#  - holder (character)	= current title holder
+	#
+	# Default base: 1
+	#
+	# Optional.
+	#
+	elector_vote_strength = <MTTH>
+	elector_vote_strength_value = <scripted value>
 
-	# Value to calculate the AI voting behavior. AI electors will choose the candidate with the highest score.
-	# Scope: root = elector, scope:candidate = the considered candidate, scope:title = the title under election,
-	# scope:holder = current title holder, scope:holder_candidate = the title holder's candidate
+	### AI preference for candidates
 	#
-	candidate_score = {}		# uses MTTH syntax
-	candidate_score_value = {}	# uses scripted value syntax
+	# MTTH or scripted value to calculate the AI voting behavior.
+	# AI electors will choose the candidate with the highest score.
+	#
+	# Scope:
+	#  - root (character)		= elector
+	#  - candidate (character)	= the considered candidate
+	#  - title (title)			= the title under election
+	#  - holder (character)		= current title holder
+	#  - holder_candidate		= the title holder's candidate
+	#
+	# Default base: 1
+	#
+	candidate_score = <MTTH>
+	candidate_score_value = <scripted value>
 }
 
 == Candidate Set Types ==

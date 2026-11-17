@@ -559,15 +559,15 @@ on_holy_order_destroyed = {
 		}
 		# Otherwise, use the standard flow.
 		else = {
-			every_ruler = {
+			every_player = {
 				limit = {
-					is_ai = no
 					faith = root
 				}
 				if = {
 					limit = {
 						scope:leader ?= {
-							government_has_flag = government_is_monastic_holy_order
+							has_trait = devoted
+							NOT = { has_trait = order_member }
 						}
 					}
 					send_interface_toast = {
@@ -597,11 +597,12 @@ on_holy_order_destroyed = {
 				}
 				every_in_list = {
 					variable = owes_me_money
-					limit = {
-						is_alive = yes
+					every_owned_story = {
+						limit = { var:lender ?= scope:leader }
+						end_story = yes
 					}
-					clear_loanee_variables_effect = yes
 				}
+			 	clear_variable_list = owes_me_money
 			}
 		}
 	}

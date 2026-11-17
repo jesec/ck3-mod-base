@@ -1,0 +1,534 @@
+﻿window = {
+	name = "build_queue_window"
+	widgetid = "build_queue_window"
+	visible = "[And( IsGameViewOpen('build_queue'), And( Not(IsGameViewOpen('barbershop')), And( Not( IsPauseMenuShown ), Not(IsRightWindowOpen) ) ) )]"
+	parentanchor = top|right
+	position = { -50 55 }
+	size = { 500 600 }
+	movable = no
+
+	allow_outside = yes
+	layer = windows_layer
+
+	using = Window_Background_Subwindow
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+	}
+
+	widget = {
+
+		size = { 100% 100% }
+
+		allow_outside = yes
+
+		vbox = {
+			margin = { 8 0 }
+			margin_bottom = 16
+			spacing = 4
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text" {
+					text = "BUILD_QUEUE_WINDOW_TITLE"
+					max_width = 500
+				}
+
+				blockoverride "button_close" {
+					onclick = "[CloseGameView('build_queue')]"
+				}
+			}
+
+			
+			vbox = {
+				spacing = 4
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				scrollbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					blockoverride "scrollbox_margins" {
+						margin = { 6 10 }
+						margin_right = 12
+					}
+
+					blockoverride "scrollbox_content" {
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 8
+
+							vbox = {
+								name = "active_constructions"
+								layoutpolicy_horizontal = expanding
+								visible = "[Not(IsDataModelEmpty( BuildQueueWindow.GetActiveConstructionItems ))]"
+								spacing = 2
+
+								text_label_center = {
+									layoutpolicy_horizontal = expanding
+									autoresize = no
+									text = "ACTIVE_LABEL"
+								}
+
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									datamodel = [BuildQueueWindow.GetActiveConstructionItems]
+									spacing = 2
+
+									item = {
+										widget = {
+											layoutpolicy_horizontal = expanding
+											size = { 0 60 }
+											build_queue_item_not_draggable = {
+												visible = "[QueueOrConstructionItem.IsActiveConstruction]"
+											}
+										}
+										
+									}
+								}
+							}
+
+							vbox = {
+								name = "build_queue_queue_tutorial_uses_this"
+								layoutpolicy_horizontal = expanding
+								spacing = 2
+
+								text_label_center = {
+									layoutpolicy_horizontal = expanding
+									autoresize = no
+									text = "QUEUE_LABEL"
+								}
+
+								text_single = {
+									name = "empty_state_text"
+									layoutpolicy_vertical = expanding
+									margin = { 0 16 }
+									default_format = "#weak"
+
+									visible = "[IsDataModelEmpty( BuildQueueWindow.GetQueuedItems )]"
+									text = "BUILD_QUEUE_NO_ITEMS"
+								}
+
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									datamodel = [BuildQueueWindow.GetQueuedItems]
+									spacing = 2
+
+									item = {
+										widget = {
+											layoutpolicy_horizontal = expanding
+											size = { 0 60 }
+
+											drag_highlight_indicator = {
+												visible = "[QueueOrConstructionItem.HasAboveDropHighlight]"
+												parentanchor = top|left
+												size = { 100% 5 }
+											}
+
+											drag_highlight_indicator = {
+												visible = "[QueueOrConstructionItem.HasBelowDropHighlight]"
+												parentanchor = bottom|left
+												size = { 100% 5 }
+											}
+
+											vbox = {
+												widget = {
+													layoutpolicy_vertical = expanding
+													layoutpolicy_horizontal = expanding
+
+													drop_target = {
+														accept_draggable_id = "draggable_build_queue"
+														is_drop_allowed = yes
+														on_receive_drop = "[QueueOrConstructionItem.DropAbove( GetDraggedDatacontext('QueueOrConstructionItemDragDropObject').Self )]"
+														on_drag_enter = "[QueueOrConstructionItem.AddAboveDropHighlight]"
+														on_drag_exit = "[QueueOrConstructionItem.RemoveDropHighlight]"
+													}
+												}
+												widget = {
+													layoutpolicy_vertical = expanding
+													layoutpolicy_horizontal = expanding
+
+													drop_target = {
+														accept_draggable_id = "draggable_build_queue"
+														is_drop_allowed = yes
+														on_receive_drop = "[QueueOrConstructionItem.DropBelow( GetDraggedDatacontext('QueueOrConstructionItemDragDropObject').Self )]"
+														on_drag_enter = "[QueueOrConstructionItem.AddBelowDropHighlight]"
+														on_drag_exit = "[QueueOrConstructionItem.RemoveDropHighlight]"
+													}
+												}
+											}
+
+											build_queue_item_draggable = { }
+
+										}
+									}
+								}
+							}
+
+							
+
+							
+							
+						}
+					}
+				}	
+
+				text_multi = {
+					text = "QUEUE_EXPLANATION"
+					autoresize = yes
+					max_width = 450
+					min_width = 450
+					default_format = "#weak"
+				}	
+			}			
+
+			vbox = {
+				name = "build_queue_reserve_tutorial_uses_this"
+				layoutpolicy_horizontal = expanding
+				spacing = 4
+
+				text_label_center = {
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+					text = "RESERVES_LABEL"
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+
+					datamodel = "[BuildQueueWindow.AccessReserves]"
+
+					item = {
+						hbox = {
+							spacing = 8 
+							text_single = {
+								text = "[BuildQueueReserveItem.GetCategoryName]"
+								align = nobaseline
+							}
+
+							hbox = {
+								button_standard = {
+									size = { 88 32 }
+									text = "NONE"
+									onclick = "[BuildQueueReserveItem.OnValueChangeButtonClick( '(int32)0' )]"
+									down = "[BuildQueueReserveItem.IsAmountReserved( '(int32)0' )]"
+									alwaystransparent = "[BuildQueueReserveItem.IsAmountReserved( '(int32)0' )]"
+								}
+
+								button_standard = {
+									size = { 88 32 }
+									raw_text = "100"
+									onclick = "[BuildQueueReserveItem.OnValueChangeButtonClick( '(int32)100' )]"
+									down = "[BuildQueueReserveItem.IsAmountReserved( '(int32)100' )]"
+									alwaystransparent = "[BuildQueueReserveItem.IsAmountReserved( '(int32)100' )]"
+								}
+
+								button_standard = {
+									size = { 88 32 }
+									raw_text = "250"
+									onclick = "[BuildQueueReserveItem.OnValueChangeButtonClick( '(int32)250' )]"
+									down = "[BuildQueueReserveItem.IsAmountReserved( '(int32)250' )]"
+									alwaystransparent = "[BuildQueueReserveItem.IsAmountReserved( '(int32)250' )]"
+								}
+								button_standard = {
+									size = { 88 32 }
+									raw_text = "500"
+									onclick = "[BuildQueueReserveItem.OnValueChangeButtonClick( '(int32)500' )]"
+									down = "[BuildQueueReserveItem.IsAmountReserved( '(int32)500' )]"
+									alwaystransparent = "[BuildQueueReserveItem.IsAmountReserved( '(int32)500' )]"
+								}
+							}
+
+							
+						}
+					}
+				}
+
+				text_multi = {
+					text = "RESERVES_EXPLANATION"
+					autoresize = yes
+					max_width = 450
+					min_width = 450
+					default_format = "#weak"
+				}
+			}
+		}
+	}
+}
+
+types BuildQueueTypes {
+
+	type build_queue_item = widget {
+		size = { 100% 60 }
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+
+			background = {
+				texture = "gfx/interface/component_tiles/tile_window_background_no_edge_grey.dds"
+				alpha = 0.2
+
+				modify_texture = {
+					texture = "gfx/interface/colors/blue.dds"
+					blend_mode = normal
+					alpha = 1
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+					spriteType = Corneredtiled
+					spriteborder = { 25 25 }
+					blend_mode = alphamultiply
+				}
+			}
+
+			background = {
+				texture = "gfx/interface/colors/black.dds"
+				alpha = 0.2
+
+				modify_texture = {
+					texture ="gfx/interface/skinned/mask_pattern.dds"
+					texture_density = 3
+					spriteType = Corneredtiled
+					blend_mode = alphamultiply
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+					spriteType = Corneredtiled
+					spriteborder = { 25 25 }
+					blend_mode = alphamultiply
+				}
+			}
+
+			#Building Icon
+			vbox = {
+				margin = { 8 10 }
+
+				icon_building = {
+					size = { 46 46 }
+					texture = "[QueueOrConstructionItem.GetBuildingType.GetTypeIcon]"
+				}
+
+			}
+
+			#Building Name
+			vbox = {
+				margin_left = 4
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "[QueueOrConstructionItem.GetWhatTextNoTooltip]"
+					default_format = "#clickable"
+					align = left|nobaseline
+					max_width = 300
+					alwaystransparent = yes
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "BUILD_QUEUE_ITEM_LOCATION_NO_TOOLTIP"
+					default_format = "#low"
+					align = left|nobaseline
+					max_width = 300
+					alwaystransparent = yes
+				}
+			}
+
+			expand = {}
+
+			hbox = {
+				margin_right = 22
+
+				widget_in_construction_indicator = {			
+					blockoverride "visible_data" {
+						visible = "[QueueOrConstructionItem.IsActiveConstruction]"
+					}
+
+					blockoverride "position_data" {}
+
+					blockoverride "progress_value" {
+						value = "[QueueOrConstructionItem.GetConstructingProgress]"
+					}
+				}
+
+				widget_in_build_queue_indicator = {
+					blockoverride "visible_data" {
+						visible = "[Not(QueueOrConstructionItem.IsActiveConstruction)]"
+					}
+
+					blockoverride "position_data" {}
+
+					blockoverride "queue_position_data" {
+						raw_text = "##[QueueOrConstructionItem.GetLocalQueuePosition]"
+					}
+				}
+
+				button_close = {
+					enabled = "[QueueOrConstructionItem.CanCancel]"
+					tooltip = "[QueueOrConstructionItem.GetCancelTooltip]"
+					onclick = "[QueueOrConstructionItem.OnCancelClick]"
+				}
+			}
+		}
+
+		icon_drag_indicator = {
+			name = "drag_indicator"
+			alpha = 0
+
+			block "build_queue_item_draggable" {
+				visible = no
+			}
+
+			state = {
+				name = hover_enter
+				alpha = 1
+				duration = 0.2
+				using = Animation_Curve_Default
+			}
+
+			state = {
+				name = hover_leave
+				alpha = 0
+				duration = 0.2
+				using = Animation_Curve_Default
+			}
+		}
+	}
+
+
+	type build_queue_item_draggable = button_list {
+		size = { 100% 100% }
+		layoutpolicy_horizontal = expanding
+
+		onclick = "[QueueOrConstructionItem.OnClick]"
+		using = tooltip_ws
+
+		tooltipwidget = {
+			tooltip_build_queue_item = {
+				blockoverride "build_queue_item_tooltip_reorder" {
+					visible = yes
+				}
+			}
+		}
+
+		# Signify draggability with hand ready to grab on hover and grabs on click
+		onmousehierarchyenter = "[OnMouseEnterDraggable]"
+		onmousehierarchyleave = "[OnMouseLeaveDraggable]"
+		onpressed = "[OnMouseStartDragging]"
+		onreleased = "[OnMouseEndDragging]"
+
+		state = {
+			name = _mouse_hierarchy_enter
+			on_start = "[PdxGuiWidget.FindChild('drag_indicator').TriggerAnimation('hover_enter')]"
+		}
+
+		state = {
+			name = _mouse_hierarchy_leave
+			on_start = "[PdxGuiWidget.FindChild('drag_indicator').TriggerAnimation('hover_leave')]"
+		}
+
+		build_queue_item = {
+			blockoverride "build_queue_item_draggable" {
+				visible = yes
+			}
+		}
+
+		datacontext = "[QueueOrConstructionItem.GetDragDropObject]"
+
+		draggable_behavior = {
+			draggable_id = "draggable_build_queue"
+
+			# Signify dragging with grasping hand
+			on_drag_start = "[OnMouseStartDragging]"
+			on_drag_end = "[OnMouseEndDragging]"
+
+			drag_widget = {
+				build_queue_item = {
+					size = { 620 60 }
+					alwaystransparent = yes
+					position = "[GuiCurrentDrag.CurrentPosition]"
+					widgetanchor = center
+				}
+			}
+		}
+	}
+
+	type build_queue_item_not_draggable = button_list {
+		size = { 100% 100% }
+		layoutpolicy_horizontal = expanding
+
+		onclick = "[QueueOrConstructionItem.OnClick]"
+		using = tooltip_ws
+
+		tooltipwidget = {
+			tooltip_build_queue_item = {}
+		}
+
+		build_queue_item = {
+		}
+	}
+
+	type tooltip_build_queue_item = object_tooltip_pop_out {
+		blockoverride "header_additions" {
+			hbox = {
+				margin_right = 10
+				margin_top = 8
+				margin_left = -4
+
+				icon_flat_standard = {
+					texture = "[QueueOrConstructionItem.GetBuildingType.GetTypeIcon]"
+					size = { 52 49 }
+				}
+			}
+		}
+
+		blockoverride "title_text" {
+			text = "[QueueOrConstructionItem.GetWhatText]"
+		}
+
+		blockoverride "subtitle_text" {
+			text = "BUILD_QUEUE_ITEM_LOCATION"
+			default_format = "#low"
+		}
+
+		blockoverride "concept_link" {
+			text = "BUILD_QUEUE_ITEM_TOOLTIP_CONCEPT"
+		}
+
+		blockoverride "description_text" {
+			text = "BUILD_QUEUE_ITEM_TOOLTIP_DESCRIPTION"
+		}
+
+		blockoverride "call_to_action" {
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				margin_bottom = 16
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "CLICK_TO_SELECT"
+					align = nobaseline
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "BUILD_QUEUE_ITEM_TOOLTIP_REORDER"
+					align = nobaseline
+
+					block "build_queue_item_tooltip_reorder" {
+						visible = no
+					}
+				}
+			}
+		}
+	}
+}

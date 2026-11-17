@@ -1,0 +1,1127 @@
+﻿story_guelph_ghibelline = {
+	
+	on_setup = {
+		if = {
+			limit = {
+				NOT = { exists = global_var:active_guelph_ghibelline }
+			}
+			set_global_variable = {
+				name = active_guelph_ghibelline
+				value = 1
+			}
+		}
+		else = {
+			change_global_variable = {
+				name = active_guelph_ghibelline
+				add = 1
+			}
+		}
+		story_owner = {
+			set_variable = striving_guelph_ghibelline
+		}
+
+	}
+	
+	on_end = {
+		if = {
+			limit = { exists = global_var:active_guelph_ghibelline }
+			change_global_variable = {
+				name = active_guelph_ghibelline
+				add = -1
+			}
+		}
+		story_owner = {
+			if = {
+				limit = { is_alive = yes }
+				remove_variable = striving_guelph_ghibelline
+			}
+		}
+	}
+	
+	on_owner_death = {
+		end_story = yes
+	}
+
+	#Validity checks
+	effect_group = {
+		days = 30
+		triggered_effect = {
+			trigger = {
+				NOR = {
+					exists = situation:guelph_ghibelline
+					story_owner = {
+						is_ai = yes
+						any_character_situation = { this ?= situation:guelph_ghibelline }
+					}
+				}	
+			}
+			effect = {
+				end_story = yes
+			}
+		}
+	}
+
+
+	#Monthly checks, handles the AI behavior
+	effect_group = {
+		days = { 30 60 }
+
+		triggered_effect = {
+			trigger = {
+				story_owner = {
+					is_ai = yes
+					any_character_situation = { this ?= situation:guelph_ghibelline }
+				}
+			}
+			effect = {
+				story_owner = {
+					save_scope_as = sgg_root_scope
+					### DECISIONS
+
+					#Do I have enough Involvement so that I want to end the Situation? 
+					if = {
+						limit = {
+							can_execute_decision = ghibelline_victory_decision
+							exists = var:gg_involvement
+							var:gg_involvement >= gg_involvement_major_value
+							situation:guelph_ghibelline ?= {
+								exists = var:gg_advantage_years
+								var:gg_advantage_years >= gg_advantage_ai_victory_years
+							}
+						}
+						execute_decision = ghibelline_victory_decision
+					}
+					if = {
+						limit = {
+							can_execute_decision = guelph_victory_decision
+							exists = var:gg_involvement
+							var:gg_involvement >= gg_involvement_major_value
+							situation:guelph_ghibelline ?= {
+								exists = var:gg_advantage_years
+								var:gg_advantage_years >= gg_advantage_ai_victory_years
+							}
+						}
+						execute_decision = guelph_victory_decision
+					}
+
+					#“I can’t deal with this anymore argghh” Random chance to flip side (very low random chance, also gated behind personality traits)
+					if = {
+						limit = {
+							OR = {
+								AND = {
+									is_ghibelline_trigger = yes
+									situation:guelph_ghibelline ?= { situation_current_phase = guelph_advantage }
+								}
+								AND = {
+									is_guelph_trigger = yes
+									situation:guelph_ghibelline ?= { situation_current_phase = ghibelline_advantage }
+								}
+							}
+							trigger_if = {
+								limit = { game_start_date = 1066.9.15 }
+								NOR = {
+									has_variable = guelph_leader
+									has_variable = ghibelline_leader
+								}
+							}
+							trigger_else = { always = yes }
+							NOT = {
+								has_trait = loyal
+							}
+						}
+						random = {
+							chance = {
+								value = 10
+								#Is there anyone more impressive on the other side?
+								if = {
+									limit = {
+										situation:guelph_ghibelline ?= {
+											any_situation_participant = {
+												exists = var:gg_involvement
+												var:gg_involvement >= 20
+												save_temporary_scope_as = involvement_char_check
+												gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:involvement_char_check SECOND = scope:sgg_root_scope }
+											}
+										}
+									}
+									add = 5
+								}
+								if = {
+									limit = {
+										situation:guelph_ghibelline ?= {
+											any_situation_participant = {
+												exists = var:gg_involvement
+												var:gg_involvement >= 30
+												save_temporary_scope_as = involvement_char_check
+												gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:involvement_char_check SECOND = scope:sgg_root_scope }
+											}
+										}
+									}
+									add = 5
+								}
+								if = {
+									limit = {
+										situation:guelph_ghibelline ?= {
+											any_situation_participant = {
+												exists = var:gg_involvement
+												var:gg_involvement >= 40
+												save_temporary_scope_as = involvement_char_check
+												gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:involvement_char_check SECOND = scope:sgg_root_scope }
+											}
+										}
+									}
+									add = 10
+								}
+								if = {
+									limit = {
+										situation:guelph_ghibelline ?= {
+											any_situation_participant = {
+												exists = var:gg_involvement
+												var:gg_involvement >= 50
+												save_temporary_scope_as = involvement_char_check
+												gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:involvement_char_check SECOND = scope:sgg_root_scope }
+											}
+										}
+									}
+									add = 10
+								}
+								if = {
+									limit = { has_variable = sgg_slated_for_turncoat }
+									add = 90
+								}
+							}
+							#Leaders do it in two increments, first is step down, then they flip
+							if = {
+								limit = {
+									OR = {
+										has_variable = guelph_leader
+										has_variable = ghibelline_leader
+									}
+								}
+								#Step down
+								if = {
+									limit = { can_execute_decision = step_down_as_guelph_ghibelline_leader_decision }
+									execute_decision = step_down_as_guelph_ghibelline_leader_decision
+								}
+								#Flag 'em
+								set_variable = sgg_slated_for_turncoat
+							}
+							else = {
+								remove_variable = sgg_slated_for_turncoat
+								#Flip
+								if = {
+									limit = { can_execute_decision = change_guelph_ghibelline_side_decision }
+									execute_decision = change_guelph_ghibelline_side_decision
+								}
+							}
+						}	
+					}
+
+					#Invite exiled rulers (if we can start wars)
+					if = {
+						limit = {
+							is_at_war = no
+							government_has_flag = government_is_republic
+							has_realm_law = republic_war_declaration_2_unlimited
+							war_chest_gold >= war_chest_gold_maximum
+						}
+						#Guelph
+						if = {
+							limit = {
+								is_guelph_trigger = yes
+								gg_available_displaced_guelph_rulers_exist = yes
+							}
+							run_interaction = {
+								interaction = gg_invite_guelph_exiles_interaction
+								actor = scope:sgg_root_scope
+								recipient = scope:sgg_root_scope
+								send_threshold = maybe
+							}
+							ai_start_best_war = {
+								cb = { 
+									reinstate_guelph_ghibelline_ruler_cb
+								}
+								is_valid = {
+									scope:target_character = {
+										current_military_strength < scope:sgg_root_scope.current_military_strength
+										OR = {
+											gold < scope:sgg_root_scope.gold
+											current_military_strength <= scope:sgg_root_scope.fifty_percent_of_current_military_strength
+										}
+									}
+								}
+							}
+						}
+						#Ghibelline
+						if = {
+							limit = {
+								is_ghibelline_trigger = yes
+								gg_available_displaced_ghibelline_rulers_exist = yes
+							}
+							run_interaction = {
+								interaction = gg_invite_ghibelline_exiles_interaction
+								actor = scope:sgg_root_scope
+								recipient = scope:sgg_root_scope
+								send_threshold = maybe
+							}
+							ai_start_best_war = {
+								cb = { 
+									reinstate_guelph_ghibelline_ruler_cb
+								}
+								is_valid = {
+									scope:target_character = {
+										current_military_strength < scope:sgg_root_scope.current_military_strength
+										OR = {
+											gold < scope:sgg_root_scope.gold
+											current_military_strength <= scope:sgg_root_scope.fifty_percent_of_current_military_strength
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					#Is the current leader fit to rule? What’s their involvement?
+					if = {
+						limit = {	
+							OR = {
+								AND = {
+									top_participant_group:guelph_ghibelline ?= { participant_group_type = ghibelline_member }
+									situation:guelph_ghibelline = {
+										any_situation_participant = {
+											top_participant_group:guelph_ghibelline ?= { participant_group_type = ghibelline_leader }
+											#Only consider replacing the ruler if it ain't the HRE Kaiser
+											NOT = { 
+												any_held_title = { this = title:e_hre }
+											}
+											is_ai = yes
+											exists = var:gg_involvement
+											var:gg_involvement < gg_involvement_minimum_leadership_value
+										}
+									}
+								}	
+								AND = {
+									top_participant_group:guelph_ghibelline ?= { participant_group_type = guelph_member }
+									situation:guelph_ghibelline = {
+										any_situation_participant = {
+											top_participant_group:guelph_ghibelline ?= { participant_group_type = guelph_leader }
+											#Nor the Pope
+											NOT = { 
+												any_held_title = { this = title:k_papal_state }
+											}
+											is_ai = yes
+											exists = var:gg_involvement
+											var:gg_involvement < gg_involvement_minimum_leadership_value
+										}
+									}
+								}
+							}
+							can_execute_decision = become_guelph_ghibelline_leader_decision
+						}
+						execute_decision = become_guelph_ghibelline_leader_decision
+					}
+
+
+					### INTERACTIONS
+
+					#Can we ask someone to join our side?
+					situation:guelph_ghibelline ?= {
+						every_situation_participant = {
+							limit = {
+								trigger_if = {
+									limit = {
+										scope:sgg_root_scope = { is_guelph_trigger = yes }
+									}
+									is_guelph_trigger = no
+								}
+								trigger_if = {
+									limit = {
+										scope:sgg_root_scope = { is_ghibelline_trigger = yes }
+									}
+									is_ghibelline_trigger = no
+								}
+								save_temporary_scope_as = partisan_check
+								# Below this opinion they never accept, even with a strong hook
+								opinion = {
+									target = scope:sgg_root_scope
+									value >= 10
+								}
+								scope:sgg_root_scope = {
+									NOT = {
+										any_in_list = {
+											variable = recently_attempted_partisans
+											this = scope:partisan_check
+										}
+									}
+									is_character_interaction_potentially_accepted = {
+										recipient = scope:partisan_check
+										interaction = gg_recruit_partisan_interaction
+										ai_accept = 50
+									}
+								}
+							}
+							add_to_list = potential_partisan_targets
+						}
+					}
+					if = {
+						limit = { list_size:potential_partisan_targets > 0 }
+						random_in_list = {
+							list = potential_partisan_targets
+							weight = {
+								base = 10
+								modifier = {
+									is_gg_undecided_trigger = yes
+									NOT = { exists = var:force_undecided }
+									add = 20
+								}
+							}
+							save_scope_as = partisan_target
+							#Put cooldown on, esp if target is player
+							scope:sgg_root_scope = {
+								add_to_variable_list = {
+									name = recently_attempted_partisans
+									target = scope:partisan_target
+									years = 10
+								}
+							}
+						}
+						run_interaction = {
+							interaction = gg_recruit_partisan_interaction
+							actor = scope:sgg_root_scope
+							recipient = scope:partisan_target
+							send_threshold = maybe
+						}
+					}
+
+					#Exile family – very rare
+					random = {
+						chance = 10 #Make it rare
+						situation:guelph_ghibelline ?= {
+							every_situation_participant = {
+								limit = {
+									is_available_quick = {
+										ai = yes
+										adult = yes
+									}
+									save_temporary_scope_as = banish_check
+									gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:banish_check SECOND = scope:sgg_root_scope }
+									has_minor_negative_or_below_house_relations_with_target_trigger = {
+										FIRST = scope:banish_check 
+										SECOND = scope:sgg_root_scope
+									}
+									scope:sgg_root_scope = {
+										is_character_interaction_valid = {
+											recipient = scope:banish_check
+											interaction = gg_banish_guelph_ghibelline_family_interaction
+										}
+									}
+								}
+								add_to_list = potential_banish_targets
+							}
+						}
+						if = {
+							limit = { list_size:potential_banish_targets > 0 }
+							random_in_list = {
+								list = potential_banish_targets
+								save_scope_as = banish_target
+							}
+							run_interaction = {
+								interaction = gg_banish_guelph_ghibelline_family_interaction
+								actor = scope:sgg_root_scope
+								recipient = scope:banish_target
+								send_threshold = maybe
+							}
+						}
+					}
+
+
+					### SCHEMES
+
+					##Personal
+
+					#Befriend/Sway
+					if = {
+						limit = {
+							OR = {
+								NOT = {
+									any_scheme = {
+										OR = {
+											scheme_type = befriend
+											scheme_type = sway
+											scheme_type = seduce
+											scheme_type = courting
+											scheme_type = elope
+											scheme_type = learn_language
+										}
+									}
+								}
+								AND = {
+									OR = {
+										dynasty ?= { has_dynasty_perk = glory_legacy_5 }
+										AND = {
+											has_royal_court = yes
+											has_dlc_feature = royal_court
+											has_court_type = court_diplomatic
+											court_grandeur_current_level >= 10
+										}
+									}
+									any_scheme = {
+										count < 2
+										OR = {
+											scheme_type = befriend
+											scheme_type = sway
+											scheme_type = seduce
+											scheme_type = courting
+											scheme_type = elope
+											scheme_type = learn_language
+										}
+									}
+								}
+								AND = {
+									dynasty ?= { has_dynasty_perk = glory_legacy_5 }
+									has_royal_court = yes
+									has_dlc_feature = royal_court
+									has_court_type = court_diplomatic
+									court_grandeur_current_level >= 10
+									any_scheme = {
+										count < 3
+										OR = {
+											scheme_type = befriend
+											scheme_type = sway
+											scheme_type = seduce
+											scheme_type = courting
+											scheme_type = elope
+											scheme_type = learn_language
+										}
+									}
+								}
+							}
+						}
+						every_courtier = {
+							limit = {
+								has_council_position = councillor_spymaster
+								opinion = {
+									target = scope:sgg_root_scope
+									value < 100
+								}
+								save_temporary_scope_as = courtier_check
+								scope:sgg_root_scope = {
+									OR = {
+										can_start_scheme = {
+											type = befriend
+											target_character = scope:courtier_check
+										}
+										can_start_scheme = {
+											type = sway
+											target_character = scope:courtier_check
+										}
+									}
+								}
+							}
+							add_to_list = befriend_targets
+						}
+
+						situation:guelph_ghibelline ?= { 
+							every_situation_participant = {
+								limit = {
+									save_temporary_scope_as = potential_befriend_target
+									NOR = { 
+										has_variable = force_undecided
+										scope:sgg_root_scope = {
+											any_scheme = { scheme_target_character ?= scope:potential_befriend_target } #Don't Sway _and_ Murder your target
+										}
+									}
+									gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:potential_befriend_target SECOND = scope:sgg_root_scope }
+									scope:sgg_root_scope = {
+										OR = {
+											can_start_scheme = {
+												type = befriend
+												target_character = scope:potential_befriend_target
+											}
+											can_start_scheme = {
+												type = sway
+												target_character = scope:potential_befriend_target
+											}
+										}
+									}	
+								}
+								add_to_list = befriend_targets
+							}
+						}
+						random_in_list = {
+							list = befriend_targets
+							weight = {
+								base = 10
+								modifier = {
+									trait_compatibility = {
+										target = scope:sgg_root_scope
+										value >= neutral_trait_compatibility
+									}
+									add = 50
+								}
+								modifier = {
+									is_courtier_of = scope:sgg_root_scope
+									has_council_position = councillor_spymaster
+									add = 50
+								}
+								modifier = {
+									has_council_position = councillor_spymaster
+									add = 10
+								}
+								modifier = {
+									is_gg_undecided_trigger = yes
+									factor = 2
+								}
+								modifier = {
+									save_temporary_scope_as = potential_befriend_target
+									gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:potential_befriend_target SECOND = scope:sgg_root_scope }
+									add = 20
+								}
+							}
+							save_scope_as = befriend_target
+						}
+						if = {
+							limit = { exists = scope:befriend_target }
+							if = {
+								limit = {
+									can_start_scheme = {
+										type = befriend
+										target_character = scope:befriend_target
+									}
+								}
+								start_scheme = {
+									type = befriend
+									target_character = scope:befriend_target
+								}
+							}
+							else = {
+								start_scheme = {
+									type = sway
+									target_character = scope:befriend_target
+								}
+							}					
+						}
+					}	
+
+
+					##Political
+
+					#Is there anyone we can align to our side
+					if = { 
+						limit = {
+							NOT = {
+								any_scheme = {
+									OR = {
+										scheme_type = gg_align_undecided
+										scheme_type = gg_switch_sides
+										scheme_type = gg_replace_ruler
+									}
+								}
+							}
+						}
+						situation:guelph_ghibelline ?= {
+							every_situation_participant = {
+								limit = {
+									is_gg_undecided_trigger = yes
+									save_temporary_scope_as = potential_align_undecided_target
+									NOR = { 
+										has_variable = force_undecided
+										any_targeting_scheme = { scheme_type = gg_align_undecided }
+										scope:sgg_root_scope = {
+											any_scheme = { scheme_target_character ?= scope:potential_align_undecided_target } #Don't Sway _and_ Murder your target
+										}
+									}
+									scope:sgg_root_scope = {
+										can_start_scheme = {
+											type = gg_align_undecided
+											target_character = scope:potential_align_undecided_target
+										}
+									}	
+								}
+								add_to_list = align_targets
+							}
+						}
+						random_in_list = {
+							list = align_targets
+							weight = {
+								base = 10
+								modifier = {
+									trait_compatibility = {
+										target = scope:sgg_root_scope
+										value >= neutral_trait_compatibility
+									}
+									add = 50
+								}
+								modifier = {
+									add = "opinion(scope:sgg_root_scope)"
+								}
+								modifier = {
+									has_relation_lover = scope:sgg_root_scope
+									factor = 2
+								}
+								modifier = {
+									has_relation_friend = scope:sgg_root_scope
+									factor = 2
+								}
+							}
+							save_scope_as = align_undecided_target
+						}
+						if = {
+							limit = { exists = scope:align_undecided_target }
+							start_scheme = {
+								type = gg_align_undecided
+								target_character = scope:align_undecided_target
+							}
+						}
+					}
+
+					#Is there anyone we can flip from the other side
+					if = { 
+						limit = {
+							NOT = {
+								any_scheme = {
+									OR = {
+										scheme_type = gg_align_undecided
+										scheme_type = gg_switch_sides
+										scheme_type = gg_replace_ruler
+									}
+								}
+							}
+						}
+						situation:guelph_ghibelline ?= {
+							every_situation_participant = {
+								limit = {
+									save_temporary_scope_as = potential_switch_sides_target
+									NOR = {
+										has_variable = changed_to_ghibelline
+										has_variable = schemed_to_ghibelline
+										has_variable = ghibelline_leader
+										has_variable = changed_to_guelph
+										has_variable = schemed_to_guelph
+										has_variable = guelph_leader
+										any_targeting_scheme = { scheme_type = gg_switch_sides }
+										scope:sgg_root_scope = {
+											any_scheme = { scheme_target_character ?= scope:potential_switch_sides_target } #Don't Sway _and_ Murder your target
+										}
+										#Not the Pope or the Kaiser
+										any_held_title = { this = title:k_papal_state }
+										any_held_title = { this = title:e_hre }
+									}
+									scope:sgg_root_scope = {
+										can_start_scheme = {
+											type = gg_switch_sides
+											target_character = scope:potential_switch_sides_target
+										}
+									}	
+								}
+								add_to_list = switch_sides_targets
+							}
+						}
+						random_in_list = {
+							list = switch_sides_targets
+							weight = {
+								base = 10
+								modifier = {
+									trait_compatibility = {
+										target = scope:sgg_root_scope
+										value >= neutral_trait_compatibility
+									}
+									add = 50
+								}
+								modifier = {
+									add = "opinion(scope:sgg_root_scope)"
+								}
+								modifier = {
+									has_relation_lover = scope:sgg_root_scope
+									factor = 2
+								}
+								modifier = {
+									has_relation_friend = scope:sgg_root_scope
+									factor = 2
+								}
+							}
+							save_scope_as = switch_sides_target
+						}
+						if = {
+							limit = { exists = scope:switch_sides_target }
+							start_scheme = {
+								type = gg_switch_sides
+								target_character = scope:switch_sides_target
+							}
+						}
+					}
+
+					#End replacement schemes that are useless
+					if = { 
+						limit = {
+							any_scheme = {
+								type = gg_replace_ruler
+								is_scheme_exposed = yes
+							}
+						}
+						every_scheme = {
+							type = gg_replace_ruler
+							limit = { is_scheme_exposed = yes }
+							end_scheme = yes
+						}
+					}
+					#Is there anyone we can replace
+					random = {
+						chance = 25 #Make it rare
+						if = { 
+							limit = {
+								NOT = {
+									any_scheme = {
+										OR = {
+											scheme_type = gg_align_undecided
+											scheme_type = gg_switch_sides
+											scheme_type = gg_replace_ruler
+										}
+									}
+								}
+							}
+							situation:guelph_ghibelline ?= {
+								every_situation_participant = {
+									limit = {
+										save_temporary_scope_as = potential_replace_ruler_target
+										NOR = {
+											has_variable = changed_to_ghibelline
+											has_variable = schemed_to_ghibelline
+											has_variable = changed_to_guelph
+											has_variable = schemed_to_guelph
+											any_targeting_scheme = { scheme_type = gg_replace_ruler }
+											scope:sgg_root_scope = {
+												any_scheme = { scheme_target_character ?= scope:potential_replace_ruler_target } #Don't Sway _and_ Murder your target
+											}
+										}
+										scope:sgg_root_scope = {
+											can_start_scheme = {
+												type = gg_replace_ruler
+												target_character = scope:potential_replace_ruler_target
+											}
+										}	
+									}
+									add_to_list = replace_ruler_targets
+								}
+							}
+							random_in_list = {
+								list = replace_ruler_targets
+								weight = {
+									base = 10
+									modifier = {
+										exists = var:gg_involvement
+										add = var:gg_involvement
+									}
+									modifier = {
+										add = {
+											value = "opinion(scope:sgg_root_scope)"
+											multiply = -1
+										}
+									}
+									modifier = {
+										has_character_modifier = vilified_ruler_modifier
+										factor = 2
+									}
+									modifier = {
+										has_relation_rival = scope:sgg_root_scope
+										factor = 2
+									}
+									modifier = {
+										save_temporary_scope_as = temp_replace_ruler_target
+										has_minor_negative_or_below_house_relations_with_target_trigger = { 
+											FIRST = scope:temp_replace_ruler_target 
+											SECOND = scope:sgg_root_scope
+										}
+										factor = 2
+									}
+								}
+								save_scope_as = replace_ruler_target
+							}
+							if = {
+								limit = { exists = scope:replace_ruler_target }
+								start_scheme = {
+									type = gg_replace_ruler
+									target_character = scope:replace_ruler_target
+								}
+							}
+						}
+					}
+
+
+					##Hostile
+
+					# End murder schemes that are useless
+					if = { 
+						limit = {
+							any_scheme = {
+								type = murder
+								is_scheme_exposed = yes
+							}
+						}
+						every_scheme = {
+							type = murder
+							limit = { is_scheme_exposed = yes }
+							end_scheme = yes
+						}
+					}
+					#Can I murder someone relevant/who did bad things to me (vilified ruler weight^) in the Situation?
+					if = { 
+						limit = {
+							NOT = { ai_honor >= high_positive_ai_value } # Really honorable characters do not stoop this low, ever
+							OR = {
+								NOT = {
+									any_scheme = {
+										OR = {
+											scheme_type = murder
+											scheme_type = abduct
+											scheme_type = claim_throne
+											scheme_type = fabricate_hook
+										}
+									}
+								}
+								AND = {
+									has_perk = twice_schemed_perk
+									any_scheme = {
+										count < 2
+										NOT = { scheme_type = fabricate_hook } #Diversify!
+									}
+								}
+							}
+						}
+						situation:guelph_ghibelline ?= {
+							every_situation_participant = {
+								limit = {
+									save_temporary_scope_as = potential_murder_target
+									NOR = {
+										is_allied_to = scope:sgg_root_scope
+										has_relation_friend = scope:sgg_root_scope
+										has_relation_lover = scope:sgg_root_scope
+									}
+									gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:potential_murder_target SECOND = scope:sgg_root_scope }
+									scope:sgg_root_scope = {
+										can_start_scheme = {
+											type = murder
+											target_character = scope:potential_murder_target
+										}
+									}			
+								}
+								add_to_list = murder_targets
+							}
+						}
+						random_in_list = {
+							list = murder_targets
+							weight = {
+								base = 10
+								modifier = {
+									add = {
+										value = "opinion(scope:sgg_root_scope)"
+										multiply = -1
+									}
+								}
+								#Consider high Involvement characters
+								modifier = {
+									is_ai = yes
+									exists = var:gg_involvement
+									add = var:gg_involvement
+								}
+								#Especially consider Players (:stab:)
+								modifier = {
+									is_ai = no
+									exists = var:gg_involvement
+									add = {
+										value = var:gg_involvement
+										multiply = 2
+									}
+								}
+								#And vilified rulers
+								modifier = {
+									has_character_modifier = vilified_ruler_modifier
+									factor = 2
+								}
+								modifier = {
+									has_relation_rival = scope:sgg_root_scope
+									factor = 2
+								}
+								modifier = {
+									save_temporary_scope_as = temp_murder_target
+									has_minor_negative_or_below_house_relations_with_target_trigger = { 
+										FIRST = scope:temp_murder_target 
+										SECOND = scope:sgg_root_scope
+									}
+									factor = 2
+								}
+							}
+							save_scope_as = murder_target
+						}
+						if = {
+							limit = { exists = scope:murder_target }
+							start_scheme = {
+								type = murder
+								target_character = scope:murder_target
+							}
+						}
+					}
+
+					# End hook schemes that are useless
+					if = { 
+						limit = {
+							any_scheme = {
+								type = fabricate_hook
+								is_scheme_exposed = yes
+							}
+						}
+						every_scheme = {
+							type = fabricate_hook
+							limit = { is_scheme_exposed = yes }
+							end_scheme = yes
+						}
+					}
+					#Fabricate Hook?
+					if = { 
+						limit = {
+							has_perk = truth_is_relative_perk
+							OR = {
+								NOT = {
+									any_scheme = {
+										OR = {
+											scheme_type = murder
+											scheme_type = abduct
+											scheme_type = claim_throne
+											scheme_type = fabricate_hook
+										}
+									}
+								}
+								AND = {
+									has_perk = twice_schemed_perk
+									any_scheme = {
+										count < 2
+										NOT = { scheme_type = fabricate_hook } #Diversify!
+									}
+								}
+							}
+						}
+						situation:guelph_ghibelline ?= {
+							every_situation_participant = {
+								limit = {
+									save_temporary_scope_as = potential_hook_target
+									NOR = {
+										is_allied_to = scope:sgg_root_scope
+										has_relation_friend = scope:sgg_root_scope
+										has_relation_lover = scope:sgg_root_scope
+									}
+									gg_first_and_second_are_opposite_sides_trigger = { FIRST = scope:potential_hook_target SECOND = scope:sgg_root_scope }
+									scope:sgg_root_scope = {
+										can_start_scheme = {
+											type = fabricate_hook
+											target_character = scope:potential_hook_target
+										}
+									}			
+								}
+								add_to_list = hook_targets
+							}
+						}
+						random_in_list = {
+							list = hook_targets
+							weight = {
+								base = 10
+								modifier = {
+									add = {
+										value = "opinion(scope:sgg_root_scope)"
+										multiply = -1
+									}
+								}
+								#Consider high Involvement characters
+								modifier = {
+									is_ai = yes
+									exists = var:gg_involvement
+									add = var:gg_involvement
+								}
+								#Especially consider Players (:stab:)
+								modifier = {
+									is_ai = no
+									exists = var:gg_involvement
+									add = {
+										value = var:gg_involvement
+										multiply = 2
+									}
+								}
+								#And vilified rulers
+								modifier = {
+									has_character_modifier = vilified_ruler_modifier
+									factor = 2
+								}
+								modifier = {
+									has_relation_rival = scope:sgg_root_scope
+									factor = 2
+								}
+								modifier = {
+									save_temporary_scope_as = temp_hook_target
+									has_minor_negative_or_below_house_relations_with_target_trigger = { 
+										FIRST = scope:temp_hook_target 
+										SECOND = scope:sgg_root_scope
+									}
+									factor = 2
+								}
+							}
+							save_scope_as = hook_target
+						}
+						if = {
+							limit = { exists = scope:hook_target }
+							start_scheme = {
+								type = fabricate_hook
+								target_character = scope:hook_target
+							}
+						}	
+					}	
+				}
+			}
+		}
+	}
+
+	#Yearly check
+	effect_group = {
+		days = { 260 460 }
+
+		triggered_effect = {
+			trigger = {
+				story_owner = {
+					is_available_quick = {
+						ai = yes
+						adult = yes
+					}
+					top_liege = this
+					is_landed = yes
+					is_at_war = no			
+				}
+			}
+			effect = {
+				story_owner = {
+					save_scope_as = y_sgg_root_scope
+					####### WAR
+					#Displace someone?
+					if = {
+						limit = {
+							government_has_flag = government_is_republic
+							has_realm_law = republic_war_declaration_2_unlimited
+							war_chest_gold >= war_chest_gold_maximum
+						}
+						ai_start_best_war = {
+							cb = { 
+								displace_guelph_ghibelline_ruler_cb
+							}
+							is_valid = {
+								scope:target_character = {
+									current_military_strength < scope:y_sgg_root_scope.current_military_strength
+									OR = {
+										gold < scope:y_sgg_root_scope.gold
+										current_military_strength <= scope:y_sgg_root_scope.fifty_percent_of_current_military_strength
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

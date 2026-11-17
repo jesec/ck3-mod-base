@@ -1,0 +1,282 @@
+﻿##########################
+# Unity Contract Scripted Effects
+##########################
+
+manage_new_unity_contract_effect = {
+	if = {
+		limit = { exists = scope:destination }
+		if = {
+			limit = {
+				NOT = { has_character_flag = unity_contract_frequency_cooldown }
+			}
+			add_character_flag = { flag = unity_contract_frequency_cooldown years = 6 }
+		}
+		send_interface_message = {
+			type = msg_merchant_unity_contracts
+			title = msg_unity_contract_appear.t
+			desc = msg_unity_contract_appear.desc
+			left_icon = scope:local_ruler
+			right_icon = scope:destination.county
+		}
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			exists = scope:unity_contract
+		}
+		accept_task_contract = scope:unity_contract
+	}
+}
+
+unity_contract_task_contract_setup_scopes_effect = {
+	save_scope_as = merchant
+	random_trade_route = {
+		limit = { has_trader = yes }
+		# WEIGHT UP
+		weight = {
+			base = 1
+			modifier = {
+				trader ?= { has_trait = deceitful }
+				add = 10
+			}
+			modifier = {
+				trader ?= { has_trait = arbitrary }
+				add = 10
+			}
+			modifier = {
+				trader ?= { has_trait = greedy }
+				add = 10
+			}
+		}
+		# SAVE ROUTE
+		save_scope_as = route
+		# SAVE TRADER
+		trader = { save_scope_as = trader }
+		# SAVE MARKET
+		random_trade_market_on_route = {
+			# PREFER NOT OWN STOMPING GROUND
+			limit = {
+				NOT = { trade_market_owner.county.duchy = scope:merchant.capital_province.county.duchy }
+			}
+			# BUT PERMISSABLE AS FALLBACK
+			alternative_limit = { always = yes }
+			### WEIGHT UP
+			weight = {
+				base = 1
+				# Prefer markets with other merchants
+				modifier = {
+					add = {
+						value = 0
+						every_character_in_market = {
+							limit = {
+								government_has_flag = government_is_merchant
+								house != scope:merchant.house
+							}
+							add = 10
+						}
+					}
+				}
+				# Prefer markets not owned by your patron
+				modifier = {
+					trade_market_owner.county.duchy = {
+						any_de_jure_county = { scope:merchant.suzerain?= holder }
+					}
+					add = -25
+				}
+			} 
+			# SAVE MARKET
+			save_scope_as = market
+			trade_market_owner.county.duchy = {
+				random_de_jure_county = {
+					limit = {
+						NOT = { scope:merchant.suzerain = holder }
+					}
+					alternative_limit = { always = yes }
+					weight = {
+						base = 5
+						# Prefer richer places
+						modifier = {
+							add = {
+								value = prosperity_level
+								divide = 2
+							}
+						}
+						# Prefer not to deal directly with high tier rulers
+						modifier = {
+							add = {
+								value = holder.highest_held_title_tier
+								multiply = -2
+							}
+						}
+						# Prefer places with other holders or lessees
+						modifier = {
+							save_temporary_scope_as = county_temp
+							add = {
+								value = 0
+								every_direct_de_jure_vassal_title = {
+									limit = {
+										OR = {
+											AND = {
+												exists = holder
+												holder != scope:county_temp.holder
+											}
+											exists = lessee
+										}
+									}
+									add = 5
+								}
+							}
+						}
+					}
+					# SAVE DESTINATION
+					title_province = { save_scope_as = destination }
+					# SAVE LOCAL RULER
+					holder = { save_scope_as = county_holder }
+					if = {
+						limit = { holder.highest_held_title_tier > tier_county }
+						random_direct_de_jure_vassal_title = {
+							limit = {
+								OR = {
+									AND = {
+										exists = holder
+										holder != scope:county_holder
+									}
+									exists = lessee
+								}
+							}
+							weight = {
+								base = 1
+								# Prefer richer places
+								modifier = { add = province_size_level }
+							}
+							random_list = {
+								10 = {
+									trigger = {
+										exists = holder
+										holder != scope:county_holder
+									}
+									holder = { save_scope_as = local_ruler }
+								}
+								10 = {
+									trigger = { exists = lessee }
+									lessee = { save_scope_as = local_ruler  }
+								}
+							}
+						}
+					}
+					if = {
+						limit = {
+							NOT = { exists = scope:local_ruler }
+							scope:county_holder.highest_held_title_tier = tier_county
+						}
+						scope:county_holder = { save_scope_as = local_ruler }
+					}
+					if = {
+						limit = {
+							NOT = { exists = scope:local_ruler }
+						}
+						scope:county_holder = {
+							random_councillor = { save_scope_as = local_ruler }
+						}
+					}
+					if = {
+						limit = {
+							NOT = { exists = scope:local_ruler }
+						}
+						scope:county_holder = { save_scope_as = local_ruler }
+					}
+				}
+			}
+		}
+	}
+	# save contract tier
+	random_list = {
+		10 = {
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_county
+			}
+		}
+		5 = {
+			trigger = { scope:destination.county.prosperity_level >= 10 }
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_duchy
+			}
+		}
+		2 = {
+			trigger = { scope:destination.county.prosperity_level >= 25 }
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_kingdom
+			}
+		}
+	}
+}
+
+unity_contract_irregularies_scope_effect = {
+	scope:task_contract = {
+		var:route = { save_scope_as = route }
+		task_contract_taker = { save_scope_as = merchant }
+		task_contract_employer = {
+			save_scope_as = local_ruler
+			save_scope_as = person_b
+		}
+		task_contract_target = {
+			save_scope_as = trader
+			save_scope_as = person_a
+		}
+		task_contract_location = {
+			save_scope_as = destination
+			barony.trade_market = { save_scope_as = market }
+		}
+	}
+}
+
+unity_irregularities_failure_effect = {
+	save_scope_as = task_contract
+	task_contract_taker = { play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract" }
+	task_contract_taker = {
+		save_scope_as = taker
+		add_stress = {
+			value = medium_stress_gain
+			multiply = trade_opportunity_contract_tier_value
+		}
+	}
+	task_contract_employer = {
+		if = {
+			limit = {
+				scope:taker = {
+					government_has_flag = government_is_merchant
+					has_perk = soon_forgiven_perk
+				}
+			}
+			add_opinion = {
+				target = scope:taker
+				modifier = angry_opinion
+				opinion = -10
+			}
+		}
+		else = {
+			add_opinion = {
+				target = scope:taker
+				modifier = angry_opinion
+				opinion = -20
+			}
+		}
+	}
+	task_contract_location.barony.trade_market = {
+		add_competitiveness_modifier_for_character = {
+			character = scope:taker
+			modifier = gdp_unity_irregularities_failure_modifier
+			years = 10
+		}
+	}
+	scope:taker.house = {
+		add_unity_value = {
+			value = massive_unity_loss
+			character = scope:taker
+			desc = unity_irregularities_unity_desc
+		}
+	}
+}

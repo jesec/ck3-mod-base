@@ -1,0 +1,1377 @@
+﻿######################################################
+#################### CHANGE LAW ######################
+######################################################
+
+template Law_Window_Frame
+{
+	layer = middle
+	parentanchor = right
+	position = { 0 50 }
+
+	using = Window_Background
+	using = Window_Decoration
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+		position_x = -605
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+		position_x = -565
+	}
+}
+
+template Background_Law_Illustration
+{
+	widget = {
+		size = { 0 0 }
+		allow_outside = yes
+
+		icon = {
+			alpha = 0.3
+			size = { 565 483 }
+			position = { 24 190 }
+			background = {
+				fittype = centercrop
+				texture = "gfx/interface/illustrations/republic/republic_law_illustration.dds"
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/event_effect_mask.dds"
+					spriteType = Corneredstretched
+					blend_mode = alphamultiply
+					mirror = horizontal
+				}
+			}
+		}
+	}
+}
+
+window = {
+	name = "law_change_window"
+	using = Law_Window_Frame
+
+	vbox = {
+		using = Window_Margins
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		set_parent_size_to_minimum = yes
+		minimumsize = { -1 900 }
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				text = "LAW_CHANGE_WINDOW_TITLE"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[LawChangeWindow.Close]"
+			}
+		}
+
+		vbox_law_change = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+		}
+	}
+}
+
+
+types LawChangeWindowTypes
+{
+	## Enact or propose new laws
+	type vbox_law_change = vbox {
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			## Left Side, approving members
+			vbox = {
+				datacontext = "[LawChangeWindow.GetSelectedLaw]"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				## Powerful Vassals
+				vbox_approving_powerful_vassals = {
+					visible = "[And( LawChangeWindow.LawUsesPowerfulVassalApproval, GetPlayer.HasVassals )]"
+				}
+
+				## Assembly
+				vbox_approving_assembly_members = {
+					visible = "[And( GuiLaw.ShouldBeApproved, LawChangeWindow.RulerHasAssembly )]"
+				}
+			}
+
+			vbox = {
+				layoutpolicy_vertical = expanding
+				using = Background_Law_Illustration
+
+				hbox = {
+					name = "law_change_tabs"
+					layoutpolicy_horizontal = expanding
+
+					button_tab = {
+						name = "proposed_law_tab"
+						shortcut = "tab_1"
+						visible = "[LawChangeWindow.HasVotingSession]"
+
+						down = "[LawChangeWindow.IsTabShown( 'proposed_law' )]"
+						alwaystransparent = "[LawChangeWindow.IsTabShown( 'proposed_law' )]"
+
+						onclick = "[LawChangeWindow.OnTabChanged]"
+						onclick = "[LawChangeWindow.SetTab( 'proposed_law' )]"
+
+						blockoverride "tab_label"
+						{
+							text = "law_change_tabs_proposed_law"
+							max_width = 220
+						}
+
+						blockoverride "icon_visible" {}
+
+						blockoverride "tab_icon"
+						{
+							texture = "gfx/interface/icons/flat_icons/proposed_law.dds"
+							down = "[LawChangeWindow.IsTabShown( 'proposed_law' )]"
+						}
+					}
+
+					button_tab = {
+						name = "other_laws_tab"
+						shortcut = "tab_2"
+						visible = "[LawChangeWindow.HasVotingSession]"
+
+						down = "[LawChangeWindow.IsTabShown( 'other_laws' )]"
+						alwaystransparent = "[LawChangeWindow.IsTabShown( 'other_laws' )]"
+
+						onclick = "[LawChangeWindow.OnTabChanged]"
+						onclick = "[LawChangeWindow.SetTab( 'other_laws' )]"
+
+						blockoverride "tab_label"
+						{
+							text = "law_change_tabs_other_laws"
+							max_width = 220
+						}
+
+						blockoverride "icon_visible" {}
+
+						blockoverride "tab_icon"
+						{
+							texture = "gfx/interface/icons/flat_icons/other_laws.dds"
+							down = "[LawChangeWindow.IsTabShown( 'other_laws' )]"
+						}
+					}
+				}
+
+				## Middle content, the laws
+				vbox_laws_middle_section = {
+					visible = "[Not( LawChangeWindow.HasVotingSession )]"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+				}
+
+				## Middle content, voting in progress
+				vbox_ongoing_voting_session = {
+					visible = "[And( LawChangeWindow.IsTabShown( 'proposed_law' ), LawChangeWindow.HasVotingSession )]"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+				}
+
+				## Middle content, other laws during voting session
+				vbox_other_laws = {
+					visible = "[LawChangeWindow.IsTabShown( 'other_laws' )]"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+				}
+			}
+
+			## Right Side, dissenting members
+			vbox = {
+				datacontext = "[LawChangeWindow.GetSelectedLaw]"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				## Powerful Vassals
+				vbox_dissenting_powerful_vassals = {
+					visible = "[And( LawChangeWindow.LawUsesPowerfulVassalApproval, GetPlayer.HasVassals )]"
+				}
+
+				## Assembly
+				vbox_dissenting_assembly_members = {
+					visible = "[And( GuiLaw.ShouldBeApproved, LawChangeWindow.RulerHasAssembly )]"
+				}
+			}
+		}
+
+		## Approval bar
+		widget_vassal_approval_bar = {
+			visible = "[And( GuiLaw.ShouldBeApproved, LawChangeWindow.RulerHasAssembly)]"
+			datacontext = "[LawChangeWindow.GetSelectedLaw]"
+		}
+
+		spacer =  {
+			visible = "[And( GuiLaw.ShouldBeApproved, LawChangeWindow.RulerHasAssembly)]"
+			datacontext = "[LawChangeWindow.GetSelectedLaw]"
+			size = { 0 40 }
+		}
+
+		spacer =  {
+			size = { 0 20 }
+		}
+
+		widget_ongoing_session_voting = {
+			visible = "[And(LawChangeWindow.HasVotingSession, Not( LawChangeWindow.IsTabShown( 'other_laws' )))]"
+			datacontext = "[LawChangeWindow.GetVotingSession]"
+			alwaystransparent = yes
+		}
+	}
+
+	## View current voting session
+	type vbox_ongoing_voting_session = vbox {
+		ignoreinvisible = yes
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			ignoreinvisible = yes
+
+			vbox_law_desc = {
+				minimumsize = { 600 200 }
+
+				blockoverride "law_datacontext" {
+					datacontext = "[LawChangeWindow.GetProposedLaw]"
+				}
+			}
+
+		}
+	}
+
+	## View other laws during ongoing voting session
+	type vbox_other_laws = vbox {
+
+		vbox_select_law_section = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = growing
+			minimumsize = { 600 0 }
+			margin_top = 10
+			spacing = 5
+		}
+
+		vbox_law_desc = {
+			blockoverride "show_current_law" {
+				visible = no
+			}
+
+			max_width = 600
+
+			blockoverride "law_datacontext" {
+				datacontext = "[LawChangeWindow.GetSelectedLaw.GetLaw]"
+			}
+		}
+	}
+
+	type button_law_choice_base = button_standard {
+		visible = "[GuiLaw.IsWidgetVisible(PdxGuiWidget.Self)]"
+
+		datacontext = "[GuiLaw.GetLaw]"
+
+		onclick = "[GuiLaw.SetSelected]"
+		down = "[GuiLaw.IsSelected]"
+		alwaystransparent = "[GuiLaw.IsSelected]"
+
+		selection_glow = {
+			visible = "[GuiLaw.IsSelected]"
+		}
+
+		block "content" {}
+
+		tooltip = "LAW_CHOICE_TOOLTIP"
+
+		text_multi = {
+			visible = "[Or(GuiLaw.CanEnactOrPropose, GuiLaw.IsEnacted)]"
+			text = "[Law.GetNameNoTooltip]"
+			size = { 100% 100% }
+			align = hcenter|nobaseline
+			margin = { 8 5 }
+			default_format = "#clickable"
+		}
+
+		text_multi = {
+			visible = "[And( Not( GuiLaw.IsEnacted ), Not( GuiLaw.CanEnactOrPropose ) )]"
+			text = "[Law.GetNameNoTooltip]"
+			size = { 100% 100% }
+			align = hcenter|nobaseline
+			margin = { 8 5 }
+			default_format = "#low"
+		}
+
+
+		blockoverride "button_standard_current"
+		{
+			visible = "[GuiLaw.IsEnacted]"
+		}
+
+		icon = {
+			visible = "[And( Not( GuiLaw.IsEnacted ), Not( GuiLaw.CanEnactOrPropose ) )]"
+			size = { 30 30 }
+			parentanchor = bottom|right
+			texture = "gfx/interface/icons/symbols/icon_cross.dds"
+		}
+	}
+
+	type button_default_law_choice = button_law_choice_base {
+		size = { 140 80 }
+	}
+
+	type button_clan_law_choice = button_law_choice_base {
+		name = "widget_clan_law"
+
+		size = { 120 160 }
+
+		blockoverride "content" {
+			icon = {
+				size = { 55 55 }
+				position = { 32 12 }
+				texture = "[GuiLaw.GetHouseUnityStage.GetIcon]"
+			}
+		}
+	}
+
+	type button_law_choice_no_negatives = button_standard {
+		visible = "[GuiLaw.IsWidgetVisible(PdxGuiWidget.Self)]"
+		size = { 140 80 }
+		datacontext = "[GuiLaw.GetLaw]"
+
+		onclick = "[GuiLaw.SetSelected]"
+		down = "[GuiLaw.IsSelected]"
+		alwaystransparent = "[GuiLaw.IsSelected]"
+
+		selection_glow = {
+			visible = "[GuiLaw.IsSelected]"
+		}
+
+		block "content" {}
+
+		tooltip = "LAW_CHOICE_TOOLTIP"
+
+		vbox = {
+			expand = {}
+
+			text_single = {
+				visible = "[LawChangeWindow.IsCurrentlyProposedLaw( GuiLaw.Self )]"
+				align = hcenter
+				text = "law_change_tabs_proposed_law"
+			}
+
+			text_single = {
+				visible = "[GuiLaw.IsEnacted]"
+				align = hcenter
+				text = "ALREADY_HAS_THIS_LAW"
+			}
+
+			text_multi = {
+				text = "[Law.GetNameNoTooltip]"
+				layoutpolicy_horizontal = expanding
+				autoresize = yes
+				max_width = 132
+				align = hcenter
+				margin = { 8 5 }
+				default_format = "#clickable"
+			}
+
+			expand = {}
+		}
+
+		blockoverride "button_standard_current"
+		{
+			visible = "[GuiLaw.IsEnacted]"
+		}
+	}
+
+	### Law middle section
+	#
+	# Shows:
+	# - Available laws in the law group
+	# - Description of the selected law
+	# - Buttons to cancel (close) or change
+	#
+	type vbox_laws_middle_section = vbox {
+		vbox_select_law_section = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = growing
+			minimumsize = { 0 200 }
+			margin = { 14 14 }
+			spacing = 20
+		}
+
+		vbox_law_desc = {
+			max_width = 600
+			min_width = 600
+			spacing = 10
+			margin_bottom = 20
+
+			blockoverride "show_current_law" {
+				visible = no
+			}
+
+			blockoverride "law_datacontext" {
+				datacontext = "[LawChangeWindow.GetSelectedLaw.GetLaw]"
+			}
+		}
+
+		vbox = {
+			visible = "[And( Not( LawChangeWindow.GetSelectedLaw.CanManuallyChange ), GetPlayer.GetGovernment.IsType( 'clan_government' ))]"
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = growing
+
+			background = {
+				using = Background_Area_Dark
+				alpha = 0.6
+			}
+
+			vbox = {
+				spacing = 6
+
+				text_label_center = {
+					text = "LAW_CHANGE_WINDOW_CLAN_TITLE"
+				}
+
+				text_multi = {
+					text = "LAW_CHANGE_WINDOW_CLAN_DESC"
+					default_format = "#weak"
+					autoresize = yes
+					max_width = 500
+				}
+			}
+
+			spacer = {
+				size = { 0 20 }
+			}
+		}
+
+		# Buttons when character can enact or propose laws
+		vbox = {
+			visible = "[And( LawChangeWindow.GetSelectedLaw.CanManuallyChange, Not( LawChangeWindow.HasVotingSession ) )]"
+
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+			margin_bottom = 12
+
+			text_single = {
+				text = "LAW_CHANGE_WINDOW_ENACT_COST"
+				tooltip = "LAW_CHANGE_WINDOW_ENACT_COST_TOOLTIP"
+				using = Font_Size_Medium
+			}
+
+			hbox = {
+				spacing = 20
+
+				button_standard = {
+					name ="close_button"
+					onclick = "[LawChangeWindow.Close]"
+					text = "CANCEL"
+					using = tooltip_above
+				}
+
+				button_primary = {
+					visible = "[Not( LawChangeWindow.ChangeWithVotingSession )]"
+					enabled = "[LawChangeWindow.GetSelectedLaw.CanEnact]"
+					onclick = "[LawChangeWindow.GetSelectedLaw.Enact]"
+
+					text = "LAW_CHANGE_WINDOW_CHANGE"
+
+					using = tooltip_above
+					tooltip = "[LawChangeWindow.GetSelectedLaw.GetCanEnactDescription]"
+				}
+
+				button_primary = {
+					visible = "[LawChangeWindow.ChangeWithVotingSession]"
+					enabled = "[LawChangeWindow.GetSelectedLaw.CanPropose]"
+					onclick = "[LawChangeWindow.GetSelectedLaw.Propose]"
+
+					text = "LAW_CHANGE_WINDOW_PROPOSE_LAW_CHANGE"
+
+					using = tooltip_above
+					tooltip = "[LawChangeWindow.GetSelectedLaw.GetCanProposeDescription]"
+				}
+			}
+		}
+	}
+
+	# Vote in ongoing voting session
+	type widget_ongoing_session_voting = widget {
+		size = { 800 60 }
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			margin_bottom = 12
+
+			hbox = {
+				datacontext = "[LawChangeWindow.GetVotingSession]"
+
+				layoutpolicy_horizontal = expanding
+
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.65
+					margin = { 20 12 }
+				}
+
+				text_multi = {
+					autoresize = yes
+					max_width = 420
+					text = "LAW_CHANGE_WINDOW_SESSION_VOTES_TO_PASS"
+					default_format = "#weak" # TODO_CD_TGP: investigate why this was debug pink
+					align = left
+				}
+
+				expand = {
+					visible = "[Not(LawChangeWindow.HasVotingSession)]"
+				}
+
+				hbox = {
+					visible = "[LawChangeWindow.HasVotingSession]"
+					layoutpolicy_horizontal = expanding
+					spacing = 16
+
+					expand = {}
+
+					button_standard_big = {
+						visible = "[VotingSession.CanVote( GetPlayer.Self )]"
+						size = { 160 40 }
+						onclick = "[PostCommand( LawChangeWindow.ApproveProposal )]"
+						text = "LAW_CHANGE_WINDOW_APPROVE"
+						using = tooltip_above
+						down = "[LawChangeWindow.HasVotedApprove( GetPlayer )]"
+					}
+
+					text_multi = {
+						autoresize = yes
+						max_width = 420
+						text = "LAW_CHANGE_WINDOW_SESSION_IN_PROGRESS"
+						default_format = "#weak" # TODO_CD_TGP: investigate why this was debug pink
+					}
+
+					button_standard_big = {
+						visible = "[VotingSession.CanVote( GetPlayer.Self )]"
+						size = { 160 40 }
+						onclick = "[PostCommand( LawChangeWindow.RejectProposal )]"
+						text = "LAW_CHANGE_WINDOW_REJECT"
+						down = "[LawChangeWindow.HasVotedReject( GetPlayer )]"
+					}
+
+					expand = {}
+				}
+
+				text_multi = {
+					autoresize = yes
+					max_width = 420
+					text = "LAW_CHANGE_WINDOW_SESSION_TIME_LEFT"
+					default_format = "#weak" # TODO_CD_TGP: investigate why this was debug pink
+					align = right
+				}
+			}
+		}
+	}
+
+
+	### Select new law section
+	#
+	# Current law, and all other available members of that law group
+	# Laws can occasionally be split into categories (e.g. succession laws)
+	#
+	type vbox_select_law_section = vbox {
+		spacing = 20
+
+		text_single = {
+			layoutpolicy_horizontal = expanding
+			autoresize = no
+
+			text = "LAW_CHANGE_WINDOW_CHOOSE_NEW"
+			default_format = "#weak"
+			align = center
+		}
+
+		vbox = {
+			visible = "[DataModelHasItems(LawChangeWindow.GetPartitionLaws)]"
+			ignoreinvisible = yes
+			spacing = 14
+
+			text_single = {
+				text = "LAW_CHANGE_WINDOW_PARTITION_LAWS"
+			}
+
+			hbox = {
+				datamodel = "[LawChangeWindow.GetPartitionLaws]"
+				visible = "[Not(LawChangeWindow.HasVotingSession)]"
+				spacing = 10
+
+				item = {
+					vbox = {
+						visible = "[Not(LawChangeWindow.HasVotingSession)]"
+						button_default_law_choice = {}
+						button_clan_law_choice = {}
+					}
+				}
+			}
+
+			hbox = {
+				datamodel = "[LawChangeWindow.GetPartitionLaws]"
+				visible = "[LawChangeWindow.HasVotingSession]"
+				spacing = 10
+
+				item = {
+					vbox = {
+						visible = "[LawChangeWindow.HasVotingSession]"
+						enabled = "[Not( LawChangeWindow.IsCurrentlyProposedLaw( GuiLaw.Self ) )]"
+						button_law_choice_no_negatives = {}
+					}
+				}
+			}
+		}
+
+		vbox = {
+			visible = "[DataModelHasItems(LawChangeWindow.GetAppointmentLaws)]"
+			spacing = 14
+			ignoreinvisible = yes
+
+			text_single = {
+				text = "LAW_CHANGE_WINDOW_APPOINTMENT_LAWS"
+			}
+
+			fixedgridbox = {
+				visible = "[Not(LawChangeWindow.HasVotingSession)]"
+				datamodel = "[LawChangeWindow.GetAppointmentLaws]"
+				addcolumn = 160
+				addrow = 90
+				datamodel_wrap = 3
+				flipdirection = yes
+
+				item = {
+					container = {
+						button_default_law_choice = {}
+						button_clan_law_choice = {}
+					}
+				}
+			}
+
+			fixedgridbox = {
+				visible = "[LawChangeWindow.HasVotingSession]"
+				datamodel = "[LawChangeWindow.GetAppointmentLaws]"
+				addcolumn = 160
+				addrow = 90
+				datamodel_wrap = 3
+				flipdirection = yes
+
+				item = {
+					container = {
+						button_law_choice_no_negatives = {
+							visible = "[Not( LawChangeWindow.IsCurrentlyProposedLaw( GuiLaw.Self ) )]"
+						}
+					}
+				}
+			}
+		}
+
+		vbox = {
+			visible = "[DataModelHasItems(LawChangeWindow.GetElectiveLaws)]"
+			spacing = 14
+			ignoreinvisible = yes
+
+			text_single = {
+				text = "LAW_CHANGE_WINDOW_ELECTIVE_LAWS"
+			}
+
+			fixedgridbox = {
+				visible = "[Not(LawChangeWindow.HasVotingSession)]"
+				addcolumn = 160
+				addrow = 90
+				datamodel_wrap = 3
+				flipdirection = yes
+
+				datamodel = "[LawChangeWindow.GetElectiveLaws]"
+				item = {
+					container = {
+						button_default_law_choice = {}
+						button_clan_law_choice = {}
+					}
+				}
+			}
+
+			fixedgridbox = {
+				visible = "[LawChangeWindow.HasVotingSession]"
+				addcolumn = 160
+				addrow = 90
+				datamodel_wrap = 3
+				flipdirection = yes
+
+				datamodel = "[LawChangeWindow.GetElectiveLaws]"
+				item = {
+					container = {
+						button_law_choice_no_negatives = {
+							visible = "[Not( LawChangeWindow.IsCurrentlyProposedLaw( GuiLaw.Self ) )]"
+						}
+					}
+				}
+			}
+		}
+
+		vbox = {
+			visible = "[DataModelHasItems(LawChangeWindow.GetSingleHeirLaws)]"
+			spacing = 14
+			ignoreinvisible = yes
+			margin_left = 10
+			text_single = {
+				text = "LAW_CHANGE_WINDOW_SINGLE_HEIR_LAWS"
+			}
+
+			fixedgridbox = {
+				visible = "[Not(LawChangeWindow.HasVotingSession)]"
+				datamodel = "[LawChangeWindow.GetSingleHeirLaws]"
+				addcolumn = 160
+				addrow = 90
+
+				datamodel_wrap = 3
+				flipdirection = yes
+
+				item = {
+					container = {
+						button_default_law_choice = {}
+						button_clan_law_choice = {}
+					}
+				}
+			}
+
+			fixedgridbox = {
+				visible = "[LawChangeWindow.HasVotingSession]"
+				datamodel = "[LawChangeWindow.GetSingleHeirLaws]"
+				addcolumn = 160
+				addrow = 90
+				datamodel_wrap = 3
+				flipdirection = yes
+
+				item = {
+					container = {
+						enabled = "[Not( LawChangeWindow.IsCurrentlyProposedLaw( GuiLaw.Self ) )]"
+						button_law_choice_no_negatives = {}
+					}
+				}
+			}
+		}
+
+		vbox = {
+			visible = "[DataModelHasItems(LawChangeWindow.GetOtherLaws)]"
+			margin_left = 12
+			margin_top = 16
+			margin_right = 12
+
+			flowcontainer = {
+				datamodel = "[LawChangeWindow.GetOtherLaws]"
+				visible = "[Not(LawChangeWindow.HasVotingSession)]"
+				wrap_count = 3
+				spacing = 10
+				ignoreinvisible = yes
+
+				item = {
+					container = {
+						visible = "[Not(LawChangeWindow.HasVotingSession)]"
+						button_default_law_choice = {}
+						button_clan_law_choice = {}
+					}
+				}
+			}
+
+			flowcontainer = {
+				datamodel = "[LawChangeWindow.GetOtherLaws]"
+				visible = "[LawChangeWindow.HasVotingSession]"
+				wrap_count = 3
+				spacing = 10
+				ignoreinvisible = yes
+
+				item = {
+					container = {
+						enabled = "[Not( LawChangeWindow.IsCurrentlyProposedLaw( GuiLaw.Self ) )]"
+						button_law_choice_no_negatives = {}
+					}
+				}
+			}
+		}
+
+		hbox = {
+			visible = "[And( DynastyHouse.IsValid, DynastyHouse.HasHouseUnity)]"
+			datacontext = "[LawChangeWindow.GetDynastyHouse]"
+			datacontext = "[DynastyHouse.GetCurrentHouseUnityStage]"
+			datacontext = "[DynastyHouse.GetHouseUnityType]"
+
+			margin = { 20 10 }
+			spacing = 5
+
+			background = {
+				using = Background_Area_Dark
+				alpha = 0.6
+			}
+
+			text_single = {
+				text = "HOUSE_UNITY_VALUE_TT_TITLE"
+				align = nobaseline
+			}
+
+			text_single = {
+				text = "[DynastyHouse.GetHouseUnityValue|0]"
+				align = nobaseline
+			}
+
+			spacer =  {
+				size = { 40 1 }
+			}
+
+			text_single = {
+				text = "[HouseUnityStage.GetName]"
+				align = nobaseline
+			}
+
+			icon = {
+				size = { 40 40 }
+				texture = "[HouseUnityStage.GetIcon]"
+			}
+		}
+		expand = {}
+	}
+
+
+	type vbox_law_desc = vbox {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		margin = { 5 0 }
+		margin_top = 8
+		spacing = 10
+
+		block "law_datacontext" {}
+
+		scrollbox = {
+			min_width = 300
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "scrollbox_content"
+			{
+				vbox = {
+					layoutpolicy_horizontal = expanding
+
+					vbox = {
+						block "show_current_law" {}
+
+						layoutpolicy_horizontal = expanding
+						margin = { 25 15 }
+						margin_top = 5
+						spacing = 4
+
+						text_single = {
+							visible = "[LawChangeWindow.HasVotingSession]"
+							text = "LAW_CHANGE_WINDOW_SUBSTITUTED_LAW"
+							layoutpolicy_horizontal = expanding
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							autoresize = no
+
+							text = "LAW_CHANGE_WINDOW_LAW_VOTED_ON"
+							align = nobaseline
+							using = Font_Size_Medium
+							default_format = "#high"
+						}
+
+						text_single = {
+							layoutpolicy_horizontal = expanding
+							autoresize = no
+
+							text = "[Law.GetSubName]"
+							visible = "[Law.HasSubName]"
+							align = nobaseline
+							default_format = "#low"
+						}
+					}
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						max_width = 500
+						margin_right = 40
+						text = "[Law.GetEffectDescription]"
+					}
+				}
+			}
+			expand = {}
+		}
+	}
+
+	type widget_vassal_approval_bar = widget {
+		layoutpolicy_horizontal = expanding
+
+		vbox = {
+			spacer =  {
+				size = { 0 20 }
+			}
+
+			hbox = {
+				block "approval_bar_approve_label" {
+					text_single = {
+						using = Font_Size_Medium
+						text = LAW_CHANGE_WINDOW_NUM_APPROVE
+					}
+				}
+
+				spacer =  {
+					size = { 10 0 }
+				}
+
+				widget = {
+					block "approval_bar_datacontext" {
+						datacontext = "[LawChangeWindow.AccessApprovalBar]"
+					}
+					size = { 700 25 }
+
+					hbox_approval_complex_bar_progress = {}
+
+					hbox_complex_bar_levels = {
+						layoutpolicy_horizontal = expanding
+
+						blockoverride "marker"
+						{
+							widget_level_marker = {
+								visible = "[EqualTo_int32( PdxGuiWidget.GetIndexInDataModel, '(int32)1' )]"
+								scale = 0.6
+								position = { 0 -15 }
+
+								blockoverride "visible_active"
+								{
+									visible = no
+								}
+
+								blockoverride "visible_inactive"
+								{
+									size = { 50 50 }
+									texture = "gfx/interface/icons/laws/law_pass_threshold.dds"
+									position = { 2 0 }
+								}
+
+								blockoverride "marker_addon" {
+									icon = {
+										texture = "gfx/interface/colors/black.dds"
+										position = { 0 30 }
+										size = { 5 35 }
+										alpha = 0.6
+									}
+								}
+							}
+						}
+					}
+				}
+
+				spacer =  {
+					size = { 10 0 }
+				}
+
+				block "approval_bar_dissent_label" {
+					text_single = {
+						using = Font_Size_Medium
+						text = LAW_CHANGE_WINDOW_NUM_DISSENT
+					}
+				}
+			}
+		}
+	}
+
+	type hbox_approval_complex_bar_progress = hbox {
+
+		hbox_complex_bar_progress_next = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "texture_empty"
+			{
+				spriteType = Corneredtiled
+				spriteborder = { 30 30 }
+				texture = "gfx/interface/progressbars/progress_red.dds"
+			}
+
+			blockoverride "texture_filled"
+			{
+				spriteType = Corneredtiled
+				spriteborder = { 30 30 }
+				texture = "gfx/interface/progressbars/progress_standard.dds"
+			}
+		}
+	}
+
+	type widget_assembly_member_approve = widget {
+		allow_outside = yes
+
+		vbox = {
+			ignoreinvisible = yes
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				portrait_head = {
+					blockoverride "coa"
+					{
+
+					}
+				}
+
+				vbox = {
+
+					coa_house_tiny = {
+						datacontext = "[Character.GetHouse]"
+					}
+
+					button_round = {
+						size = { 40 40 }
+						visible = "[Not( ObjectsEqual( Character.Self, GetPlayer.Self ) )]"
+						onclick = "[ToggleFilteredCharacterInteractionMenu( Character.Self, 'assembly_interaction' )]"
+
+						button_replace = {
+							size = { 90% 90% }
+							parentanchor = center
+							alwaystransparent = yes
+							texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+						}
+					}
+				}
+
+			}
+
+			block "member_vote_label" {
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					margin_left = 10
+					max_width = 150
+
+					text = "[SelectLocalization( LawChangeWindow.IsProposer( Character.Self ), 'LAW_CHANGE_WINDOW_ASSEMBLY_PROPOSER', 'LAW_CHANGE_WINDOW_ASSEMBLY_APPROVE' )]"
+					tooltip = "[Character.GetAiLawApprovalDesc( GuiLaw.GetLaw )]"
+					using = tooltip_se
+				}
+			}
+		}
+	}
+
+	type widget_assembly_member_disapprove = widget {
+		allow_outside = yes
+		vbox = {
+			hbox = {
+				portrait_head = {
+					blockoverride "coa"
+					{
+
+					}
+				}
+
+				vbox = {
+					margin_left = -5
+
+					coa_house_tiny = {
+						datacontext = "[Character.GetHouse]"
+					}
+
+					button_round = {
+						size = { 40 40 }
+						visible = "[Not( ObjectsEqual( Character.Self, GetPlayer.Self ) )]"
+						#TODO_GDP: Replace the interaction filter with correct voting-related interactions
+						onclick = "[ToggleFilteredCharacterInteractionMenu( Character.Self, 'assembly_interaction' )]"
+
+						button_replace = {
+							size = { 90% 90% }
+							parentanchor = center
+							alwaystransparent = yes
+							texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+						}
+					}
+				}
+			}
+
+			block "member_vote_label" {
+				text_single = {
+					visible = "[Or( LawChangeWindow.HasVotedReject( Character.Self ), LawChangeWindow.WouldVoteReject( Character.Self ) )]"
+					layoutpolicy_horizontal = expanding
+					margin_left = 10
+					max_width = 150
+
+					text = "[SelectLocalization( LawChangeWindow.IsProposer( Character.Self ), 'LAW_CHANGE_WINDOW_ASSEMBLY_PROPOSER', 'LAW_CHANGE_WINDOW_ASSEMBLY_OPPOSE' )]"
+					tooltip = "[Character.GetAiLawApprovalDesc( GuiLaw.GetLaw )]"
+					using = tooltip_se
+				}
+
+				text_single = {
+					visible = "[Or( LawChangeWindow.HasVotedUndecided( Character.Self ), LawChangeWindow.WouldVoteUndecided( Character.Self ) )]"
+					layoutpolicy_horizontal = expanding
+					margin_left = 10
+					max_width = 150
+
+					text = "[SelectLocalization( LawChangeWindow.IsProposer( Character.Self ), 'LAW_CHANGE_WINDOW_ASSEMBLY_PROPOSER', 'LAW_CHANGE_WINDOW_ASSEMBLY_UNDECIDED' )]"
+
+					tooltip = "[Character.GetAiLawApprovalDesc( GuiLaw.GetLaw )]"
+					using = tooltip_se
+				}
+			}
+		}
+	}
+
+	type flowcontainer_powerful_vassal_approve = flowcontainer {
+		direction = vertical
+		ignoreinvisible = yes
+
+		portrait_head = {}
+
+		text_single = {
+			parentanchor = hcenter
+			text = "LAW_CHANGE_WINDOW_POWERFUL_APPROVE"
+
+			tooltip = "LAW_CHANGE_WINDOW_POWERFUL_APPROVE_TT"
+			using = tooltip_se
+			max_width = 110
+		}
+	}
+
+	type flowcontainer_powerful_vassal_disapprove = flowcontainer {
+		direction = vertical
+		ignoreinvisible = yes
+
+		portrait_head = {}
+
+		flowcontainer = {
+			parentanchor = hcenter
+			ignoreinvisible = yes
+			tooltip = "LAW_CHANGE_WINDOW_POWERFUL_OPPOSE_TT"
+			using = tooltip_se
+
+			icon = {
+				size = { 30 30 }
+				texture = "gfx/interface/icons/symbols/icon_cross.dds"
+			}
+
+			text_single = {
+				text = "LAW_CHANGE_WINDOW_POWERFUL_OPPOSE"
+				max_width = 80
+			}
+		}
+	}
+
+	type vbox_approving_powerful_vassals = vbox {
+		layoutpolicy_vertical = expanding
+		layoutpolicy_horizontal = expanding
+		margin = { 0 20 }
+		min_width = 300
+
+		background = {
+			using = Background_Area
+		}
+
+		vbox = {
+			spacing = 6
+
+			text_label_center = {
+				text = "LAW_CHANGE_WINDOW_POWERFUL_VASSALS_APPROVE"
+			}
+
+			text_multi = {
+				text = "LAW_CHANGE_WINDOW_POWERFUL_VASSALS_DESC"
+				default_format = "#weak"
+				autoresize = yes
+				max_width = 250
+			}
+
+			spacer = {
+				size = { 0 20 }
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+
+				fixedgridbox = {
+					datamodel = "[LawChangeWindow.GetApprovingMembers]"
+					layoutpolicy_horizontal = expanding
+
+					addcolumn = 120
+					addrow = 155
+					datamodel_wrap = 2
+					flipdirection = yes
+
+					item = {
+						flowcontainer_powerful_vassal_approve = {}
+					}
+				}
+			}
+		}
+		expand = {}
+	}
+
+	type vbox_approving_assembly_members = vbox {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		min_width = 350
+
+		background = {
+			using = Background_Area
+		}
+
+		vbox = {
+			spacing = 5
+			margin_bottom = 10
+
+			block "column_header" {
+				text_label_center = {
+					max_width = 300
+					text = "LAW_CHANGE_WINDOW_ASSEMBLY_MEMBERS_APPROVE"
+				}
+
+				text_multi = {
+					autoresize = yes
+					max_width = 300
+					text = "LAW_CHANGE_WINDOW_ASSEMBLY_MEMBERS_APPROVE_DESC"
+					default_format = "#weak"
+				}
+			}
+		}
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "scrollbox_content" {
+				fixedgridbox = {
+					layoutpolicy_horizontal = expanding
+					datamodel_wrap = 2
+					addcolumn = 160
+					addrow = 150
+					flipdirection = yes
+
+					block "member_datamodel" {
+						datamodel = "[LawChangeWindow.GetApprovingMembers]"
+					}
+
+					block "member_item" {
+						item = {
+							widget_assembly_member_approve = {}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type vbox_dissenting_powerful_vassals = vbox {
+		layoutpolicy_vertical = expanding
+		layoutpolicy_horizontal = expanding
+
+		margin = { 0 20 }
+		min_width = 300
+
+		background = {
+			using = Background_Area
+		}
+
+		vbox = {
+			spacing = 6
+
+			text_label_center = {
+				text = "LAW_CHANGE_WINDOW_POWERFUL_VASSALS_DISAPPROVE"
+			}
+
+			text_multi = {
+				text = "LAW_CHANGE_WINDOW_POWERFUL_VASSALS_DESC"
+				default_format = "#weak"
+				autoresize = yes
+				max_width = 250
+			}
+
+			spacer = {
+				size = { 0 20 }
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				margin_left = 28
+
+				fixedgridbox = {
+					datamodel = "[LawChangeWindow.GetDissentingMembers]"
+					layoutpolicy_horizontal = expanding
+
+					addcolumn = 120
+					addrow = 155
+					datamodel_wrap = 2
+					flipdirection = yes
+
+					item = {
+						flowcontainer_powerful_vassal_disapprove = {}
+					}
+				}
+			}
+		}
+		expand = {}
+	}
+
+	type vbox_dissenting_assembly_members = vbox {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		min_width = 350
+
+		background = {
+			using = Background_Area
+		}
+
+		vbox = {
+			spacing = 5
+			margin_bottom = 10
+
+			block "column_header" {
+				text_label_center = {
+					max_width = 300
+					text = "LAW_CHANGE_WINDOW_ASSEMBLY_MEMBERS_DISSENT"
+				}
+
+				text_multi = {
+					autoresize = yes
+					max_width = 300
+					text = "LAW_CHANGE_WINDOW_ASSEMBLY_MEMBERS_DISSENT_DESC"
+					default_format = "#weak"
+				}
+			}
+		}
+
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			blockoverride "scrollbox_content" {
+				fixedgridbox = {
+					layoutpolicy_horizontal = expanding
+					datamodel_wrap = 2
+					addcolumn = 160
+					addrow = 150
+					flipdirection = yes
+
+					block "member_datamodel" {
+						datamodel = "[LawChangeWindow.GetDissentingMembers]"
+					}
+
+					block "member_item" {
+						item = {
+							widget_assembly_member_disapprove = {}
+						}
+					}
+				}
+			}
+		}
+	}
+}

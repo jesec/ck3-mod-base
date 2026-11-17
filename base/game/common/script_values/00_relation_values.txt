@@ -41,4 +41,30 @@ sum_potential_friends_and_potential_rivals_tally_value = {
 	}
 }
 
+sum_debtors_owed_gold_value = {
+	value = 0
+	every_relation = {
+		type = debtor
+		every_owned_story = {
+			limit = {
+				story_type = story_cycle_loan
+				exists = var:amount_owed
+			}
+			add = var:amount_owed
+		}
+	}
+}
+
+debtor_owed_gold_value = {
+	value = 0
+	# TODO find a way to make this just the relevant lender
+	every_owned_story = {
+		limit = {
+			story_type = story_cycle_loan
+			exists = var:amount_owed
+		}
+		add = var:amount_owed
+	}
+}
+
 getwomanmangirlboy_age_threshold_value = 20

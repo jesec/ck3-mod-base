@@ -1,0 +1,109 @@
+﻿types TradeMarketShareTypes
+{
+	type flowcontainer_trade_market_share_pie = flowcontainer {
+		tooltipwidget = { widget_trade_market_share_tooltip = {} }
+
+		background = {
+			using = Background_Area_Dark
+		}
+
+		margin = { 4 4 }
+
+		widget = {
+			size = { 20 20 }
+			parentanchor = vcenter
+			alwaystransparent = yes
+
+			icon = {
+				size = { 160% 160% }
+				texture = "gfx/interface/component_masks/mask_circle.dds"
+				position = { -6 -6 }
+				color = { 0.55 0.15 0.15 1 }
+				alwaystransparent = yes
+			}
+
+			progresspie = {
+				size = { 160% 160% }
+				texture = "gfx/interface/progressbars/action_progress_thin_green.dds"
+				position = { -6 -6 }
+				framesize = { 128 128 }
+				frame = 2
+				value = "[TradeMarketShare.GetShare]"
+				min = 0
+				max = 1
+				alwaystransparent = yes
+			}
+
+			icon = {
+				size = { 22 22 }
+				texture = "gfx/interface/icons/trade/icon_trade_competitiveness.dds"
+				parentanchor = vcenter
+				alwaystransparent = yes
+			}
+		}
+	}
+
+	type widget_trade_market_share_tooltip = widget {
+		size = { 320 5 }
+		using = DefaultTooltipBackground
+		using = GeneralTooltipSetup
+		alwaystransparent = no
+
+		vbox = {
+			datacontext = "[TradeMarketShare.GetGood]"
+			layoutpolicy_horizontal = expanding
+			resizeparent = yes
+			margin = { 15 12 }
+			spacing = 4
+			ignoreinvisible = yes
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				text = "TRADE_MARKET_SHARE_TT_HEADER"
+			}
+
+			text_single = {
+				datacontext = "[TradeMarketShare.GetGoodPart]"
+				visible = "[TradeMarketShare.IsSell]"
+				layoutpolicy_horizontal = expanding
+				text = "TRADE_MARKET_SHARE_TT_GOOD_NEED"
+			}
+
+			text_single = {
+				datacontext = "[TradeMarketShare.GetGoodPart]"
+				visible = "[Not( TradeMarketShare.IsSell )]"
+				layoutpolicy_horizontal = expanding
+				text = "TRADE_MARKET_SHARE_TT_GOOD_SURPLUS"
+			}
+
+			vbox = {
+				datacontext = "[TradeGoodType.GetNeedCategory]"
+				datacontext = "[TradeMarketShare.GetCategoryPart]"
+				visible = "[TradeMarketShare.HasCategoryPart]"
+				layoutpolicy_horizontal = expanding
+				spacing = 4
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_MARKET_SHARE_TT_CATEGORY_NEED"
+				}
+
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					autoresize = yes
+					max_width = 290
+					text = "TRADE_MARKET_SHARE_TT_CATEGORY_COMPETITION"
+				}
+			}
+
+			block "explanation" {
+				text_multi = {
+					layoutpolicy_horizontal = expanding
+					autoresize = yes
+					max_width = 290
+					text = "TRADE_MARKET_SHARE_TT_EXPLANATION"
+				}
+			}
+		}
+	}
+}

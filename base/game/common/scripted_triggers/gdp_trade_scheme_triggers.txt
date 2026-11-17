@@ -1,0 +1,51 @@
+﻿##################################################
+# Trade Scheme Triggers
+# Keyed off profit trade routes rather than off any particular government, so
+# new trade governments pick the schemes up for free.
+##################################################
+
+gdp_is_trade_ruler_trigger = {
+	government_allows = profit_trade_routes
+}
+
+### Improve Trade Routes
+
+# Shared by all three improve schemes, which are gated identically.
+gdp_improve_trade_scheme_valid_trigger = {
+	gdp_is_trade_ruler_trigger = yes
+	is_adult = yes
+	is_imprisoned = no
+	is_incapable = no
+	custom_tooltip = {
+		text = gdp_improve_trade_routes_needs_route_tt
+		any_trade_route = { count >= 1 }
+	}
+}
+
+### Disrupt Trade Routes
+
+# Trade route scope
+# any_character_in_market only lists characters who own an active route in that market
+gdp_trade_route_shares_market_with_trigger = {
+	any_trade_market_on_route = {
+		any_character_in_market = { this = $CHARACTER$ }
+	}
+}
+
+gdp_disrupt_trade_routes_scheme_owner_valid_trigger = {
+	is_available_quick = {
+		adult = yes
+		imprisoned = no
+		incapable = no
+	}
+	gdp_is_trade_ruler_trigger = yes
+}
+
+gdp_disrupt_trade_routes_scheme_target_valid_trigger = {
+	NOT = { this = $SCHEME_OWNER$ }
+	gdp_is_trade_ruler_trigger = yes
+	custom_tooltip = {
+		text = gdp_disrupt_trade_routes_target_needs_route_tt
+		any_trade_route = { count >= 1 }
+	}
+}

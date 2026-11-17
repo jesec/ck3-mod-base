@@ -164,7 +164,7 @@
 					NOT = { has_focus = martial_authority_focus }
 					any_held_title = {
 						title_tier = county
-						county_control < 100
+						county_control < county_control_baseline
 					}
 				}
 				set_focus = martial_authority_focus
@@ -284,6 +284,15 @@
 			}
 			every_relation = {
 				type = rival
+				limit = {
+					save_temporary_scope_as = rival_in_question
+					scope:root_scope = {
+						can_start_scheme = {
+							type = murder
+							target_character = scope:rival_in_question
+						}
+					}
+				}
 				add_to_list = targets
 			}
 			random_in_list = {

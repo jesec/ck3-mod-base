@@ -1,0 +1,1324 @@
+﻿change_guelph_ghibelline_phase_decision = {
+	decision_group_type = guelph_ghibelline
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { 
+					NOT = {
+						situation:guelph_ghibelline ?= { situation_current_phase = repose }
+					}
+				}
+				desc = guelph_ghibelline_peace_decision
+			}
+			desc = guelph_ghibelline_conflict_decision
+		}
+	}
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { 
+					NOT = {
+						situation:guelph_ghibelline ?= { situation_current_phase = repose }
+					}
+				}
+				desc = guelph_ghibelline_peace_desc
+			}
+			desc = guelph_ghibelline_conflict_desc
+		}
+	}
+	selection_tooltip = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { 
+					NOT = {
+						situation:guelph_ghibelline ?= { situation_current_phase = repose }
+					}
+				}
+				desc = guelph_ghibelline_peace_tooltip
+			}
+			desc = guelph_ghibelline_conflict_tooltip
+		}
+	}
+	picture = {
+		trigger = {
+			situation:guelph_ghibelline ?= { situation_current_phase = agitation }
+		}
+		reference = "gfx/interface/illustrations/decisions/gdp_decision_culture_italian.dds"
+	}
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_siege_warfare.dds"
+	}
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		gg_phase_is_pre_gg_trigger = no
+		is_guelph_or_ghibelline_trigger = yes
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_at_war = no
+		trigger_if = {
+			limit = {
+				situation:guelph_ghibelline ?= { situation_current_phase = ghibelline_advantage }
+			}
+			custom_tooltip = {
+				text = not_ghibelline_advantage_leader_tt
+				is_ghibelline_leader_with_advantage_trigger = yes
+			}
+		}
+		trigger_if = {
+			limit = {
+				situation:guelph_ghibelline ?= { situation_current_phase = guelph_advantage }
+			}
+			custom_tooltip = {
+				text = not_guelph_advantage_leader_tt
+				is_guelph_leader_with_advantage_trigger = yes
+			}	
+		}
+		trigger_if = {
+			limit = {
+				situation:guelph_ghibelline ?= { situation_current_phase = agitation }
+			}
+			custom_tooltip = {
+				text = only_hre_peace_privilege_tt
+				top_participant_group:guelph_ghibelline ?= { participant_group_type = ghibelline_leader }
+			}	
+		}
+		custom_tooltip = {
+			text = not_gg_leader_tt
+			top_participant_group:guelph_ghibelline ?= {
+				OR = {
+					participant_group_type = guelph_leader
+					participant_group_type = ghibelline_leader
+				}	
+			}
+		}
+	}
+
+	cooldown = { years = 20 }
+
+	cost = {
+		prestige = {
+			value = major_prestige_value
+		}
+	}
+
+	effect = {
+		#Change to Repose
+		if = {
+			limit = {
+				NOT = {
+					situation:guelph_ghibelline ?= { situation_current_phase = repose }
+				}
+			}
+			add_tyranny = minor_tyranny_loss
+			add_character_modifier = {
+				modifier = instated_peace_privilege_modifier
+				years = 10
+			}
+			custom_tooltip = {
+				text = change_situation_phase_to_repose_tt
+				situation:guelph_ghibelline ?= {
+					every_situation_participant = {
+						limit = { is_ai = no }
+						send_interface_message = {
+							type = msg_guelph_ghibelline_repose_neutral_text
+							title = repose
+							desc = change_situation_phase_to_repose_tt
+						}
+					}
+					every_situation_sub_region = { change_phase = repose }
+				}
+			}
+		}
+		else = {
+			situation:guelph_ghibelline ?= {
+				if = {
+					limit = {
+						situation_ghibelline_group_score >= situation_score_advantage_threshold
+						NOT = {
+							situation:guelph_ghibelline ?= { situation_current_phase = ghibelline_advantage }
+						}
+					}
+					custom_tooltip = {
+						text = change_situation_phase_to_ghibelline_advantage_tt
+						every_situation_participant = {
+							limit = { is_ai = no }
+							send_interface_message = {
+								type = msg_ghibelline_advantage_neutral_text
+								title = ghibelline_advantage
+								desc = change_situation_phase_to_ghibelline_advantage_tt
+							}
+						}
+						every_situation_sub_region = { change_phase = ghibelline_advantage }
+					}	
+				}
+				else_if = {
+					limit = { 
+						situation_guelph_group_score >= situation_score_advantage_threshold
+						NOT = {
+							situation:guelph_ghibelline ?= { situation_current_phase = guelph_advantage }
+						}
+					}
+					custom_tooltip = {
+						text = change_situation_phase_to_guelph_advantage_tt
+						every_situation_participant = {
+							limit = { is_ai = no }
+							send_interface_message = {
+								type = msg_guelph_advantage_neutral_text
+								title = guelph_advantage
+								desc = change_situation_phase_to_guelph_advantage_tt
+							}
+						}
+						every_situation_sub_region = { change_phase = guelph_advantage }
+					}
+				}
+				else = {
+					custom_tooltip = {
+						text = change_situation_phase_to_agitation_tt
+						every_situation_participant = {
+							limit = { is_ai = no }
+							send_interface_message = {
+								type = msg_guelph_ghibelline_agitation_neutral_text
+								title = agitation
+								desc = change_situation_phase_to_agitation_tt
+							}
+						}
+						every_situation_sub_region = { change_phase = agitation }
+					}
+				}
+			}
+		}
+		gg_involvement_decision_effect = yes
+	}
+
+	ai_check_interval = 12
+
+	#A Ghibelline leader who is not winning a drawn-out Agitation sues for peace
+	ai_potential = {
+		is_ghibelline_leader_trigger = yes
+		situation:guelph_ghibelline ?= {
+			situation_current_phase = agitation
+			exists = var:gg_agitation_years
+			var:gg_agitation_years >= gg_agitation_weariness_years
+		}
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			add = 20
+			situation_ghibelline_score_percentage < 50
+		}
+		modifier = {
+			add = 30
+			situation_ghibelline_score_percentage < 40
+		}
+	}
+}
+
+become_guelph_ghibelline_leader_decision = {
+	decision_group_type = guelph_ghibelline
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { is_guelph_trigger = yes }
+				desc = become_guelph_leader_decision
+			}
+			desc = become_ghibelline_leader_decision
+		}
+	}
+	desc = become_gg_leader_desc
+	selection_tooltip = become_guelph_ghibelline_leader_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_castle_view.dds"
+	}
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		gg_phase_is_pre_gg_trigger = no
+		OR = {
+			is_guelph_trigger = yes
+			is_ghibelline_trigger = yes
+		}
+		top_participant_group:guelph_ghibelline ?= {
+			NOR = {
+				participant_group_type = guelph_leader
+				participant_group_type = ghibelline_leader
+			}	
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_landed = yes
+		custom_tooltip = {
+			text = not_gg_supporter_tt
+			top_participant_group:guelph_ghibelline ?= {
+				OR = {
+					participant_group_type = guelph_member
+					participant_group_type = ghibelline_member
+				}	
+			}
+		}
+		custom_tooltip = {
+			text = not_recently_overthrown_gg_leader_tt
+			NOT = { exists = var:recently_overthrown_gg_leader }
+		}
+		custom_tooltip = {
+			text = not_recently_stepped_down_gg_leader_tt
+			NOR = {
+				AND = {
+					is_guelph_trigger = yes
+					var:stepped_down_gg_leader ?= flag:guelph
+				}
+				AND = {
+					is_ghibelline_trigger = yes
+					var:stepped_down_gg_leader ?= flag:ghibelline
+				}
+			}
+		}
+		custom_tooltip = {
+			text = not_current_leader_at_war_tt
+			NOR = {
+				AND = {
+					is_guelph_trigger = yes
+					situation:guelph_ghibelline ?= {
+						any_situation_participant = {
+							exists = var:guelph_leader
+							is_at_war = yes
+						}
+					}
+				}
+				AND = {
+					is_ghibelline_trigger = yes
+					situation:guelph_ghibelline ?= {
+						any_situation_participant = {
+							exists = var:ghibelline_leader
+							is_at_war = yes
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = { is_ai = no }
+			custom_tooltip = {
+				text = enough_involvement_for_leadership_tt
+				exists = var:gg_involvement
+				var:gg_involvement >= gg_involvement_minimum_leadership_value
+			}
+		}
+	}
+
+	cooldown = { years = 20 }
+
+	cost = {
+		prestige = {
+			value = {
+				add = major_prestige_value
+				multiply = situation_ghibelline_leader_primary_title_value
+				subtract = {
+					add = major_prestige_value
+					multiply = primary_title.tier
+				}
+				max = {
+					add = massive_prestige_value
+					multiply = 2
+				}
+			}
+		}
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 180
+		duchy = 180
+		kingdom = 180
+		empire = 180
+		hegemony = 0
+	}
+
+	effect = {
+		gg_become_new_leader_effect = { VIA_SCHEME = flag:decision }
+		gg_involvement_decision_effect = yes
+	}
+
+	ai_potential = {
+		#AI should only ever do this if the current leader is AI
+		OR = {
+			AND = {
+				is_ghibelline_trigger = yes
+				situation:guelph_ghibelline ?= {
+					any_situation_participant = {
+						is_ghibelline_leader_trigger = yes
+						is_ai = yes
+					}
+				}
+			}
+			AND = {
+				is_guelph_trigger = yes
+				situation:guelph_ghibelline ?= {
+					any_situation_participant = {
+						is_guelph_leader_trigger = yes
+						is_ai = yes
+					}
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 10
+		#They're the same tier or below us
+		modifier = {
+			add = 20
+			OR = {
+				AND = {
+					is_ghibelline_trigger = yes
+					situation:guelph_ghibelline ?= {
+						any_situation_participant = {
+							is_ghibelline_leader_trigger = yes
+							primary_title.tier <= root.primary_title.tier
+						}
+					}
+				}
+				AND = {
+					is_guelph_trigger = yes
+					situation:guelph_ghibelline ?= {
+						any_situation_participant = {
+							is_guelph_leader_trigger = yes
+							primary_title.tier <= root.primary_title.tier
+						}
+					}
+				}
+			}
+		}
+		#They're higher tier than us
+		modifier = {
+			add = -25
+			OR = {
+				AND = {
+					is_ghibelline_trigger = yes
+					situation:guelph_ghibelline ?= {
+						any_situation_participant = {
+							is_ghibelline_leader_trigger = yes
+							primary_title.tier > root.primary_title.tier
+						}
+					}
+				}
+				AND = {
+					is_guelph_trigger = yes
+					situation:guelph_ghibelline ?= {
+						any_situation_participant = {
+							is_guelph_leader_trigger = yes
+							primary_title.tier > root.primary_title.tier
+						}
+					}
+				}
+			}
+		}
+		modifier = {
+			exists = var:gg_involvement
+			add = var:gg_involvement
+		}
+	}
+}
+
+change_guelph_ghibelline_side_decision = {
+	decision_group_type = guelph_ghibelline
+	title = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { is_guelph_trigger = yes }
+				desc = change_to_ghibelline_decision
+			}
+			desc = change_to_guelph_decision
+		}
+	}
+	desc = change_to_gg_desc
+	selection_tooltip = change_guelph_ghibelline_side_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_cerimonial_decision.dds"
+	}
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		is_guelph_or_ghibelline_trigger = yes
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = is_guelph_leader_tt
+			is_guelph_leader_trigger = no
+		}
+		custom_tooltip = {
+			text = is_ghibelline_leader_tt
+			is_ghibelline_leader_trigger = no
+		}
+		custom_tooltip = {
+			text = is_in_lombard_league_tt
+			NAND = {
+				is_guelph_trigger = yes
+				confederation.confederation_type ?= confederation_type:lombard_league
+			}
+		}
+	}
+
+	cooldown = { years = 20 }
+
+	cost = {
+		prestige = {
+			value = {
+				add = major_prestige_value
+				multiply = primary_title.tier
+			}
+		}
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 180
+		duchy = 180
+		kingdom = 180
+		empire = 180
+		hegemony = 0
+	}
+
+	effect = {
+		save_scope_value_as = {
+			name = gg_change_reason
+			value = flag:decision
+		}
+		if = {
+			limit = { is_guelph_trigger = yes }
+			gg_change_side_to_ghibelline_effect = { REASON = scope:gg_change_reason }
+		}
+		else = {
+			gg_change_side_to_guelph_effect = { REASON = scope:gg_change_reason }
+		}
+		gg_involvement_decision_effect = yes
+	}
+
+	ai_potential = {
+		OR = {
+			AND = {
+				is_ghibelline_trigger = yes
+				situation:guelph_ghibelline ?= {
+					any_situation_participant = {
+						is_ghibelline_leader_trigger = yes
+						has_relation_rival = root
+					}
+				}
+				situation_ghibelline_group_score < situation_guelph_group_score
+			}
+			AND = {
+				is_guelph_trigger = yes
+				situation:guelph_ghibelline ?= {
+					any_situation_participant = {
+						is_guelph_leader_trigger = yes
+						has_relation_rival = root
+					}
+				}
+				situation_guelph_group_score < situation_ghibelline_group_score
+			}
+		}
+
+	}
+
+	ai_will_do = {
+		base = 20
+		modifier = {
+			has_trait = disloyal
+			add = 10
+		}
+		modifier = {
+			has_trait = loyal
+			add = -10
+		}
+	}
+}
+
+step_down_as_guelph_ghibelline_leader_decision = {
+	decision_group_type = guelph_ghibelline
+	desc = step_down_as_guelph_ghibelline_leader_decision_desc
+	selection_tooltip = step_down_as_guelph_ghibelline_leader_decision_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_castle_view.dds"
+	}
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes	
+		top_participant_group:guelph_ghibelline ?= {
+			OR = {
+				participant_group_type = guelph_leader
+				participant_group_type = ghibelline_leader
+			}	
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = not_gg_in_prelude_phase_tt
+			gg_phase_is_pre_gg_trigger = no
+		}
+		situation:guelph_ghibelline ?= {
+			trigger_if = {
+				limit = { 
+					root = { is_guelph_leader_trigger = yes }
+				}
+				situation_participant_group:guelph_member = {
+					any_situation_group_participant = { is_suitable_gg_leader_trigger = yes }
+				}	
+			}
+			trigger_else = {
+				situation_participant_group:ghibelline_member = {
+					any_situation_group_participant = { is_suitable_gg_leader_trigger = yes }
+				}
+			}	
+		}
+	}
+
+	cost = {
+		prestige = {
+			value = {
+				add = major_prestige_value
+				multiply = situation_guelph_ghibelline_score_diff_factor
+				if = {
+					limit = { primary_title.tier <= tier_county }
+					multiply = 0.2
+				}
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = {
+			text = new_gg_leader_tt
+			if = {
+				limit = { is_guelph_trigger = yes }
+				remove_variable = guelph_leader
+				situation:guelph_ghibelline = {
+					situation_participant_group:guelph_member = {
+						ordered_situation_group_participant = {
+							limit = { is_suitable_gg_leader_trigger = yes }
+							order_by = primary_title.tier
+							save_scope_as = new_gg_leader
+							set_variable = guelph_leader
+							recalculate_participant_group = situation:guelph_ghibelline
+						}
+					}
+				}
+				set_variable = {
+					name = stepped_down_gg_leader
+					value = flag:guelph
+					years = 20
+				}
+			}
+			else = {
+				remove_variable = ghibelline_leader
+				situation:guelph_ghibelline = {
+					situation_participant_group:ghibelline_member = {
+						ordered_situation_group_participant = {
+							limit = { is_suitable_gg_leader_trigger = yes }
+							order_by = primary_title.tier
+							save_scope_as = new_gg_leader
+							set_variable = ghibelline_leader
+							recalculate_participant_group = situation:guelph_ghibelline
+						}
+					}
+				}
+				set_variable = {
+					name = stepped_down_gg_leader
+					value = flag:ghibelline
+					years = 20
+				}
+			}
+		}
+		custom_tooltip = {
+			text = step_down_to_member_tt
+			recalculate_participant_group = situation:guelph_ghibelline
+		}	
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 36
+		duchy = 0
+		kingdom = 0
+		empire = 0
+		hegemony = 0
+	}
+
+	ai_potential = {
+		top_participant_group:guelph_ghibelline ?= {
+			OR = {
+				participant_group_type = guelph_leader
+				participant_group_type = ghibelline_leader
+			}
+		}
+		is_landed = no
+		primary_title.tier <= tier_county
+		any_held_title = { 
+			NOR = {
+				this = title:k_papal_state
+				this = title:e_hre
+			}
+		}
+		has_gdp_dlc_trigger = yes
+	}
+
+	ai_will_do = {
+		base = 0
+		modifier = {
+			is_landed = no
+			add = 100
+		}
+		modifier = {
+			primary_title.tier <= tier_county
+			add = 100
+		}
+	}
+}
+
+pick_a_guelph_ghibelline_side_decision = {
+	decision_group_type = guelph_ghibelline
+	desc = pick_a_guelph_ghibelline_side_decision_desc
+	selection_tooltip = pick_a_guelph_ghibelline_side_decision_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_cerimonial_decision.dds"
+	}
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		top_participant_group:guelph_ghibelline ?= { participant_group_type = undecided }
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_at_war = no
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 180
+		county = 180
+		duchy = 180
+		kingdom = 180
+		empire = 180
+		hegemony = 180
+	}
+
+	widget = {
+		gui = "decision_view_widget_option_list_generic"
+		controller = decision_option_list_controller
+		decision_to_second_step_button = "SELECT_SIDE"
+		show_from_start = yes
+		#Guelphs
+		item = {
+			value = guelph_side
+			is_shown = {}
+			is_valid = {
+				custom_tooltip = {
+					text = not_former_guelph_tt
+					NOT = { has_character_modifier = left_guelphs_modifier }
+				}
+			}
+			localization = pick_a_guelph_ghibelline_side_decision_option_guelph
+			icon = "gfx/interface/icons/situations/guelph_ghibelline/guelph_icon.dds"
+			ai_chance = {
+				value = 100
+				if = {
+					limit = { government_has_flag = government_is_theocracy }
+					add = 50
+				}
+				if = {
+					limit = {
+						is_independent_ruler = no
+						liege ?= { is_ghibelline_trigger = yes }
+					}
+					multiply = 0
+				}
+			}
+		}
+		#Ghibellines
+		item = {
+			value = ghibelline_side
+			is_shown = {}
+			is_valid = {
+				custom_tooltip = {
+					text = not_former_ghibelline_tt
+					NOT = { has_character_modifier = left_ghibellines_modifier }
+				}
+				custom_tooltip = {
+					text = is_in_lombard_league_tt
+					NOT = { confederation.confederation_type ?= confederation_type:lombard_league }
+				}
+			}
+			localization = pick_a_guelph_ghibelline_side_decision_option_ghibelline
+			icon = "gfx/interface/icons/situations/guelph_ghibelline/ghibelline_icon.dds"
+			ai_chance = {
+				value = 100
+				if = {
+					limit = {
+						NOT = { government_has_flag = government_is_theocracy }
+					}
+					add = 50
+				}
+				if = {
+					limit = {
+						is_independent_ruler = no
+						liege ?= { is_guelph_trigger = yes }
+					}
+					multiply = 0
+				}
+			}
+		}
+	}
+
+	effect = {
+		save_scope_value_as = {
+			name = gg_change_reason
+			value = flag:decision
+		}
+		if = {
+			limit = { scope:guelph_side = yes }
+			gg_change_side_to_guelph_effect = { REASON = scope:gg_change_reason }
+		}
+		else = {
+			gg_change_side_to_ghibelline_effect = { REASON = scope:gg_change_reason } 
+		}
+		gg_involvement_decision_effect = yes
+	}
+
+	ai_potential = {
+		is_gg_undecided_trigger = yes
+	}
+
+	ai_will_do = {
+		base = 50
+		modifier = {
+			has_trait = lazy
+			add = -50
+		}
+		modifier = {
+			has_trait = craven
+			add = -50
+		}
+	}
+
+}
+
+#Ending decision/s
+guelph_victory_decision = {
+	decision_group_type = guelph_ghibelline
+	desc = guelph_victory_decision_desc
+	selection_tooltip = guelph_ghibelline_victory_decision_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_pam.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_victory.dds"
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+	}
+
+	is_valid = {
+		is_adult = yes
+		is_at_war = no
+		situation:guelph_ghibelline ?= {
+			custom_tooltip = {
+				text = is_guelph_advantage_tt
+				situation_current_phase = guelph_advantage
+			}
+		}
+		custom_tooltip = {
+			text = is_guelph_leader_tt
+			is_guelph_leader_trigger = yes
+		}
+		custom_tooltip = {
+			text = guelph_leader_has_involvement_tt
+			has_variable = gg_involvement
+			var:gg_involvement >= gg_involvement_minimum_victory_value
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		custom_tooltip = {
+			text = guelphs_are_winning_tt
+			NOT = { exists = global_var:processing_guelph_win }
+		}
+	}
+
+	cost = {
+		prestige = {
+			value = {
+				add = monumental_prestige_value
+				multiply = situation_ghibelline_score_factor
+				#The AI spends Prestige too freely to ever save for this, so Involvement alone gates it
+				if = {
+					limit = { is_ai = yes }
+					multiply = 0
+				}
+				round_to = 10
+			}
+		}
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 180
+		kingdom = 180
+		empire = 180
+		hegemony = 180
+	}
+
+	effect = {
+		show_as_tooltip = { gg_guelph_situation_victory_effect = yes }
+		save_scope_as = guelph_win
+		#Please don't press the button again while processing...
+		set_global_variable = {
+			name = processing_guelph_win
+			value = root
+			days = 3
+		}
+		# Trigger a player-facing event
+		trigger_event = gdp_guelph_ghibelline.9000
+		situation:guelph_ghibelline = {
+			#Notify players about what happened
+			every_situation_participant = {
+				limit = { 
+					is_ai = no
+					this != root
+				}
+				trigger_event = gdp_guelph_ghibelline.9010
+			}
+		}
+	}
+
+	ai_potential = {
+		is_guelph_leader_trigger = yes
+	}
+
+	ai_will_do = {
+		base = 200
+		modifier = {
+			has_trait = ambitious
+			add = 50
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement >= gg_involvement_massive_value
+			add = 100
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement >= gg_involvement_omega_value
+			add = 100
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement >= gg_involvement_capped_value
+			add = 100
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement < gg_involvement_massive_value
+			add = -100
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement < gg_involvement_major_value
+			factor = 0
+		}
+	}
+}
+
+ghibelline_victory_decision = {
+	decision_group_type = guelph_ghibelline
+	desc = ghibelline_victory_decision_desc
+	selection_tooltip = guelph_ghibelline_victory_decision_tooltip
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_legitimacy_02.dds"
+	}
+	extra_picture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_ghibelline_victory.dds"
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+	}
+
+	is_valid = {
+		is_adult = yes
+		is_at_war = no
+		situation:guelph_ghibelline ?= {
+			custom_tooltip = {
+				text = is_ghibelline_advantage_tt
+				situation_current_phase = ghibelline_advantage
+			}
+		}
+		custom_tooltip = {
+			text = is_ghibelline_leader_tt
+			is_ghibelline_leader_trigger = yes
+		}
+		custom_tooltip = {
+			text = ghibelline_leader_has_involvement_tt
+			situation:guelph_ghibelline ?= {
+				any_situation_participant = {
+					has_variable = ghibelline_leader
+					has_variable = gg_involvement
+					var:gg_involvement >= gg_involvement_minimum_victory_value
+				}
+			}
+		}	
+	}
+
+	is_valid_showing_failures_only = {
+		custom_tooltip = {
+			text = ghibelline_are_winning_tt
+			NOT = { exists = global_var:processing_ghibelline_win }
+		}
+	}
+
+	cost = {
+		prestige = {
+			value = {
+				add = monumental_prestige_value
+				multiply = situation_guelph_score_factor
+				if = {
+					limit = { is_ai = yes }
+					multiply = 0
+				}
+				round_to = 10
+			}
+		}
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 180
+		kingdom = 180
+		empire = 180
+		hegemony = 180
+	}
+
+	effect = {
+		show_as_tooltip = { gg_ghibelline_situation_victory_effect = yes }
+		save_scope_as = ghibelline_win
+		#Please don't press the button again while processing...
+		set_global_variable = {
+			name = processing_ghibelline_win
+			value = root
+			days = 3
+		}
+		# Trigger a player-facing event
+		trigger_event = gdp_guelph_ghibelline.9000
+		situation:guelph_ghibelline = {
+			#Notify players about what happened
+			every_situation_participant = {
+				limit = { 
+					is_ai = no
+					this != root
+				}
+				trigger_event = gdp_guelph_ghibelline.9010
+			}
+		}
+	}
+
+	ai_potential = {
+		is_ghibelline_leader_trigger = yes
+	}
+
+	ai_will_do = {
+		base = 200
+		modifier = {
+			has_trait = ambitious
+			add = 50
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement >= gg_involvement_massive_value
+			add = 100
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement >= gg_involvement_omega_value
+			add = 100
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement >= gg_involvement_capped_value
+			add = 100
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement < gg_involvement_massive_value
+			add = -100
+		}
+		modifier = {
+			exists = var:gg_involvement
+			var:gg_involvement < gg_involvement_major_value
+			factor = 0
+		}
+	}
+}
+
+form_lombard_league_decision = {
+	decision_group_type = guelph_ghibelline
+	desc = form_lombard_league_decision_desc
+	selection_tooltip = form_lombard_league_decision_tooltip
+	picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		has_gdp_dlc_trigger = yes
+		gg_phase_is_pre_gg_trigger = no
+		situation:guelph_ghibelline ?= { 
+			any_situation_participant = { this = root }
+		}
+		has_lombard_league_title_trigger = yes
+		#There can only be one
+		custom_tooltip = {
+			text = lombard_league_never_existed.tt
+			NOR = { 
+				has_global_variable = lombard_league_created
+				any_confederation = { confederation_type = confederation_type:lombard_league }
+			}
+		}
+		#The Kaiser needs to exist and be the leader
+		custom_tooltip = {
+			text = ghibelline_leader_is_hre_kaiser.tt
+			situation:guelph_ghibelline ?= { 
+				any_situation_participant = { 
+					has_variable = ghibelline_leader
+					primary_title = title:e_hre
+				}
+			}	
+		}
+		NOT = { 
+			confederation.confederation_type ?= confederation_type:lombard_league
+		}
+		is_ai = no
+	}
+
+	is_valid_showing_failures_only = {
+		is_adult = yes
+		is_at_war = no
+		custom_tooltip = {
+			text = not_be_ghibelline_tt
+			is_ghibelline_trigger = no
+		}
+		#Ghibellines need to have at least 40%
+		situation_ghibelline_score_percentage >= 40
+	}
+
+	cost = {
+		gold = major_gold_value
+	}
+
+	effect = {
+		if = {
+			limit = {
+				any_held_title = { this = title:k_venice }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:venice }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_verona }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:verona }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_padua }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:padua }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_treviso }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:treviso }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_bologna }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:bologna }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_ferrara }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:ferrara }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_modena }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:modena }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_mantua }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:mantua }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_cremona }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:cremona }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_brescia }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:brescia }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_novara }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:novara }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_tortona }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:tortona }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_piacenza }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:piacenza }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_parma }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:parma }
+		}
+		else_if = {
+			limit = {
+				any_held_title = { this = title:c_genoa }
+			}
+			save_lombard_league_creator_scopes_effect = { FLAG = flag:genoa }
+		}
+		show_as_tooltip = {
+			add_character_modifier = lombard_founder_modifier
+			#We save the league_creator scope/identifier in the Situation before we call this event
+			create_lombard_league_effect = yes
+			gg_involvement_decision_effect = yes
+		}
+		#Yes, this is manual
+		display_who_might_join_lombard_league_effect = yes
+		trigger_event = gdp_guelph_ghibelline.7000
+	}
+
+	ai_check_interval = 0 #No AI
+}
+
+leave_lombard_league_decision = {
+	decision_group_type = guelph_ghibelline
+	desc = leave_lombard_league_decision_desc
+	selection_tooltip = leave_lombard_league_decision_tooltip
+	picture = { reference = "gfx/interface/illustrations/decisions/fractious.dds" }
+	is_invisible = yes
+
+	sort_order = 20
+
+	is_shown = {
+		confederation.confederation_type ?= confederation_type:lombard_league
+		is_ai = no
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = is_in_lombard_league_tt
+			confederation.confederation_type ?= confederation_type:lombard_league
+		}
+		is_at_war = no
+	}
+
+	is_valid_showing_failures_only = {
+		is_available = yes
+	}
+
+	cost = {
+		prestige = medium_prestige_value
+	}
+
+	effect = {
+		set_variable = {
+			name = left_lombard_league
+			years = 5
+		}
+		confederation = {
+			every_confederation_member = {
+				limit = { 
+					this != root
+					is_ai = yes
+				}
+				add_to_list = confederation_members
+			}
+			#Your confederation will survive, it has more members
+			if = {
+				limit = {
+					any_confederation_member = {
+						count >= 2
+						this != root
+					}
+				}
+				remove_confederation_member = root
+			}
+			#Your confederation is toast
+			else = {
+				disband_confederation = yes
+			}
+		}
+		every_in_list = {
+			list = confederation_members
+			custom = custom.every_lombard_league_member
+			add_opinion = {
+				modifier = turncoat_opinion
+				target = root
+				opinion = -20
+			}
+		}
+		gg_involvement_decision_effect = yes
+	}
+
+	#The AI should only do this if they get invalidated (i.e. turned Ghibelline) so happens automatically
+	ai_check_interval = 0
+}

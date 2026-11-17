@@ -359,6 +359,15 @@
  relation_superior_male_FR_OnA: "on supérieur"
  relation_subordinate_female_FR_OnA: "a subordonnée"
  relation_subordinate_male_FR_OnA: "on subordonné"
+ relation_best_friend_associate_FR_OnA: "[Select_CString(second.IsFemale,'a meilleure amie et associée','on meilleur ami et associé')]"
+ relation_friend_associate_FR_OnA: "[Select_CString(second.IsFemale,'on amie et associée','on ami et associé')]"
+ mistress_FR_OnA: "a maîtresse"
+ master_FR_OnA: "on maître"
+ relation_patron_FR_OnA: "[second.Custom('FR_OnA')] mécène"
+ relation_associate_female_FR_OnA: "on associé[second.Custom('FR_E')]"
+ relation_associate_male_FR_OnA: "on associé[second.Custom('FR_E')]"
+ relation_creditor_FR_OnA: "[Select_CString(second.IsFemale,'a créancière','on créancier')]"
+ relation_debtor_FR_OnA: "[Select_CString(second.IsFemale,'a débitrice','on débiteur')]"
 
  daughter_in_law_FR_Le: "la belle-fille"
  relation_acquaintance_female_FR_Le: "la connaissance"
@@ -618,6 +627,15 @@
  relation_superior_male_FR_Le: "le supérieur"
  relation_subordinate_female_FR_Le: "la subordonnée"
  relation_subordinate_male_FR_Le: "le subordonné"
+ relation_best_friend_associate_FR_Le: "[Select_CString(second.IsFemale,'la meilleure amie et associée','le meilleur ami et associé')]"
+ relation_friend_associate_FR_Le: "l’[Select_CString(second.IsFemale,'amie et associée','ami et associé')]"
+ mistress_FR_Le: "la maîtresse"
+ master_FR_Le: "le maître"
+ relation_patron_FR_Le: "[second.Custom('FR_LeLa')] mécène"
+ relation_associate_female_FR_Le: "l’associée"
+ relation_associate_male_FR_Le: "l’associé"
+ relation_creditor_FR_Le: "[Select_CString(second.IsFemale,'la créancière','le créancier')]"
+ relation_debtor_FR_Le: "[Select_CString(second.IsFemale,'la débitrice','le débiteur')]"
 
  # FR_CompositionType_lela
  CompositionType_song_FR_Le: "la chanson"
@@ -640,6 +658,7 @@
  # FR_GetCourtOwnerConcept_FR_Du
  LIEGE_FR_Du: "du [liege|El]"
  ADVENTURER_FR_Du: "de l’[adventurer|El]"
+ MERCHANT_FR_Du: "de la [company|E] [SelectLocalization( ROOT.Char.GetGovernment.IsValid(), 'GOVERNMENT_ADJECTIVE_ICON_MERCHANT', '' )]"
 
  # FR_pam_anointment_authority_name_loc_FR_Le
  pam_anointment_authority_name_challenger_FR_Le: "[ROOT.Char.GetReligiousHeadOrChallenger.Custom('FR_le_Char_Pi')][ROOT.Char.GetReligiousHeadOrChallenger.GetTitledFirstName]"
@@ -982,11 +1001,11 @@
  Loc_FR_du_GetTitledFirstNameNoTooltip: " [CHARACTER.Custom('FR_du_Char_Pi')][CHARACTER.GetTitledFirstNameNoTooltip]"
  Loc_FR_du_GetName: " [CHARACTER.Custom('FR_du_Char')][CHARACTER.GetName]"
  Loc_FR_du_GetShortUIName: " [CHARACTER.Custom('FR_du_Char_Pi')][CHARACTER.GetShortUINameNotMe]"
- Loc_FR_du_GetShortUINameNoTooltip: " [CHARACTER.Custom('FR_du_Char_U_Pi')][CHARACTER.GetShortUINameNotMeNoTooltip]"
- Loc_FR_au_GetShortUIName: " [CHARACTER.Custom('FR_au_Char_U_Pi')][CHARACTER.GetShortUINameNotMe]"
- Loc_FR_au_GetShortUINameNoTooltip: " [CHARACTER.Custom('FR_au_Char_U_Pi')][CHARACTER.GetShortUINameNotMeNoTooltip]"
- Loc_FR_le_GetShortUIName: " [CHARACTER.Custom('FR_le_Char_U_Pi')][CHARACTER.GetShortUINameNotMe]"
- Loc_FR_le_GetShortUINameNoTooltip: " [CHARACTER.Custom('FR_le_Char_U_Pi')][CHARACTER.GetShortUINameNotMeNoTooltip]"
+ Loc_FR_du_GetShortUINameNoTooltip: " [CHARACTER.Custom('FR_du_Char_Pi')][CHARACTER.GetShortUINameNotMeNoTooltip]"
+ Loc_FR_au_GetShortUIName: " [CHARACTER.Custom('FR_au_Char_Pi')][CHARACTER.GetShortUINameNotMe]"
+ Loc_FR_au_GetShortUINameNoTooltip: " [CHARACTER.Custom('FR_au_Char_Pi')][CHARACTER.GetShortUINameNotMeNoTooltip]"
+ Loc_FR_le_GetShortUIName: " [CHARACTER.Custom('FR_le_Char_Pi')][CHARACTER.GetShortUINameNotMe]"
+ Loc_FR_le_GetShortUINameNoTooltip: " [CHARACTER.Custom('FR_le_Char_Pi')][CHARACTER.GetShortUINameNotMeNoTooltip]"
  Loc_FR_le_GetShortUIName_U: "[CHARACTER.Custom('FR_le_Char_U_Pi')|U][CHARACTER.GetShortUIName]"
  Loc_FR_le_GetUIName: " [CHARACTER.Custom('FR_le_Char_P')][CHARACTER.GetUINameNotMe]"
  Loc_FR_du_GetUIName: " [CHARACTER.Custom('FR_du_Char_P')][CHARACTER.GetUINameNotMe]"
@@ -1047,6 +1066,8 @@
  building_holy_site_cathedral_01_FR_au: "à la grande cathédrale"
  building_holy_site_mosque_01_FR_au: "à la grande mosquée"
  building_type_holy_site_other_grand_temple_01_FR_au: "au grand temple"
+ holy_site_cathedral_01_FR_au: "à la grande basilique"
+ holy_site_mosque_01_FR_au: "à la grande mosquée"
  # FR_GetYoungMiddleAgedOld_Un
  age_young_FR_un: "un[ROOT.Char.Custom('FR_E')] jeune [ROOT.Char.GetWomanMan]"
  age_middle_aged_FR_un: "un[ROOT.Char.Custom('FR_E')] [ROOT.Char.GetWomanMan] d’âge moyen"
@@ -1478,18 +1499,23 @@
  office_FR_On: "on bureau"
  # FR_GetCourt_Le
  # camp_FR_Le: "le camp"
+ company_FR_Le: "la compagnie"
  court_FR_Le: "la Cour"
  # FR_GetCourt_Du
  # camp_FR_Du: "du camp"
+ company_FR_Du: "de la compagnie"
  court_FR_Du: "de la Cour"
  # FR_GetCourt_Au
  # camp_FR_Au: "au camp"
+ company_FR_Au: "à la compagnie"
  court_FR_Au: "à la Cour"
  # FR_GetCourt_OnA
  # camp_FR_On: "on camp"
+ company_FR_On: "a compagnie"
  court_FR_On: "a Cour"
  # FR_GetCourtConcept_Le
  # CAMP_FR_Le: "le [camp|E]"
+ COMPANY_FR_Le: "la [company|E]"
  COURT_CONCEPT_FR_Le: "la [court|E]"
  # FR_GetCourtConcept_Au
  CAMP_FR_Au: "au [camp|E]"
@@ -1744,6 +1770,12 @@
  animal_type_falcon_FR_Le: "le " # faucon
  animal_type_hawk_FR_Le: "l’" # épervier
  animal_type_raptor_FR_Le: "le " # rapace
+ animal_type_elephant_FR_Le: "l’" # éléphant
+ animal_type_monkey_FR_Le: "le " # singe
+ animal_type_parrot_FR_Le: "le " # perroquet
+ animal_type_peacock_FR_Le: "le " # paon
+ animal_type_cockatoo_FR_Le: "le " # cacatoès
+ animal_type_caracal_FR_Le: "le " # caracal
 
  animal_type_cat_FR_De: "de " # chat
  animal_type_dog_FR_De: "de " # chien
@@ -1795,6 +1827,12 @@
  animal_type_falcon_FR_De: "de " # faucon
  animal_type_hawk_FR_De: "d’" # épervier
  animal_type_raptor_FR_De: "de " # rapace
+ animal_type_elephant_FR_De: "d’" # éléphant
+ animal_type_monkey_FR_De: "de " # singe
+ animal_type_parrot_FR_De: "de " # perroquet
+ animal_type_peacock_FR_De: "de " # paon
+ animal_type_cockatoo_FR_De: "de " # cacatoès
+ animal_type_caracal_FR_De: "de " # caracal
 
  animal_type_cat_FR_Du: "du " # chat
  animal_type_dog_FR_Du: "du " # chien
@@ -1846,6 +1884,12 @@
  animal_type_falcon_FR_Du: "du " # faucon
  animal_type_hawk_FR_Du: "de l’" # épervier
  animal_type_raptor_FR_Du: "du " # rapace
+ animal_type_elephant_FR_Du: "de l’" # éléphant
+ animal_type_monkey_FR_Du: "du " # singe
+ animal_type_parrot_FR_Du: "du " # perroquet
+ animal_type_peacock_FR_Du: "du " # paon
+ animal_type_cockatoo_FR_Du: "du " # cacatoès
+ animal_type_caracal_FR_Du: "du " # caracal
 
  animal_type_cat_FR_Au: "au " # chat
  animal_type_dog_FR_Au: "au " # chien
@@ -1897,6 +1941,12 @@
  animal_type_falcon_FR_Au: "au " # faucon
  animal_type_hawk_FR_Au: "à l’" # épervier
  animal_type_raptor_FR_Au: "au " # rapace
+ animal_type_elephant_FR_Au: "à l’" # éléphant
+ animal_type_monkey_FR_Au: "au " # singe
+ animal_type_parrot_FR_Au: "au " # perroquet
+ animal_type_peacock_FR_Au: "au " # paon
+ animal_type_cockatoo_FR_Au: "au " # cacatoès
+ animal_type_caracal_FR_Au: "au " # caracal
 
  animal_type_cat_FR_E: "" # chat
  animal_type_dog_FR_E: "" # chien
@@ -1948,6 +1998,12 @@
  animal_type_falcon_FR_E: "" # faucon
  animal_type_hawk_FR_E: "" # épervier
  animal_type_raptor_FR_E: "" # rapace
+ animal_type_elephant_FR_E: "" # éléphant
+ animal_type_monkey_FR_E: "" # singe
+ animal_type_parrot_FR_E: "" # perroquet
+ animal_type_peacock_FR_E: "" # paon
+ animal_type_cockatoo_FR_E: "" # cacatoès
+ animal_type_caracal_FR_E: "" # caracal
 
  # GetLegendaryColor
  animal_type_cat_FR_Color: "blanc" # chat
@@ -2000,6 +2056,12 @@
  animal_type_falcon_FR_Color: "blanc" # faucon
  animal_type_hawk_FR_Color: "blanc" # épervier
  animal_type_raptor_FR_Color: "blanc" # rapace
+ animal_type_elephant_FR_Color: "blanc" # éléphant
+ animal_type_monkey_FR_Color: "blanc" # singe
+ animal_type_parrot_FR_Color: "blanc" # perroquet
+ animal_type_peacock_FR_Color: "blanc" # paon
+ animal_type_cockatoo_FR_Color: "blanc" # cacatoès
+ animal_type_caracal_FR_Color: "blanc" # caracal
 
  # FR_E_GetRandomRegionalSmallGame (GetRandomRegionalSmallGame)
  animal_squirrel_FR_E: "" # écureuil
@@ -2698,3 +2760,4 @@
  # FR_GetCourtTypeConcept_Au
  # CAMP_FR_Au: "[camp|E]"
  # COURT_CONCEPT_FR_Au: "[court|E]"
+ COMPANY_FR_Au: "à la [company|E]"

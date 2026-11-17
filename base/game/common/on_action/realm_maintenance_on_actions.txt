@@ -1,8 +1,38 @@
 ﻿realm_maintenance_quarterly_pulse = {
 	on_actions = {
-		low_control_pulse
 		high_control_pulse
+		county_corruption_escalation_pulse
+		low_control_pulse
 		in_debt_county_corruption_pulse
+	}
+}
+
+#Existing corruption may worsen if not addressed
+county_corruption_escalation_pulse = {
+	trigger = {
+		any_held_county = {
+			county_control < low_county_control
+			has_escalatable_county_corruption_trigger = yes
+		}
+	}
+	effect = {
+		every_held_county = {
+			limit = {
+				county_control < low_county_control
+				has_escalatable_county_corruption_trigger = yes
+			}
+			random = {
+				chance = 10
+				save_scope_as = county
+				holder = {
+					save_scope_as = corruption_holder
+					trigger_event = {
+						id = realm_maintenance.0005
+						days = { 10 40 }
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -11,13 +41,13 @@ in_debt_county_corruption_pulse = {
 	trigger = {
 		is_in_debt = yes
 		any_held_county = {
-			immune_to_county_corruption_trigger = no
+			is_susceptible_to_county_corruption_trigger = yes
 		}
 	}
 	effect = {
 		every_held_county = {
 			limit = {
-				immune_to_county_corruption_trigger = no
+				is_susceptible_to_county_corruption_trigger = yes
 			}
 			save_temporary_scope_as = county
 			random = {
@@ -37,17 +67,11 @@ in_debt_county_corruption_pulse = {
 
 #Low County Control may add corruption
 low_control_pulse = {
-	trigger = {
-		any_held_county = {
-			county_control < low_county_control_limit
-			immune_to_county_corruption_trigger = no
-		}
-	}
 	effect = {
 		every_held_county = {
 			limit = {
-				county_control < low_county_control_limit
-				immune_to_county_corruption_trigger = no
+				county_control < low_county_control
+				is_susceptible_to_county_corruption_trigger = yes
 			}
 			random = {
 				chance = county_control_corruption_gain_chance
@@ -70,16 +94,16 @@ high_control_pulse = {
 		gold >= 0
 		any_held_county = {
 			is_landless_type_title = no
-			has_county_corruption_trigger = yes
 			county_control > high_county_control_limit
+			has_county_corruption_trigger = yes
 		}
 	}
 	effect = {
 		every_held_county = {
 			limit = {
 				is_landless_type_title = no
-				has_county_corruption_trigger = yes
 				county_control > high_county_control_limit
+				has_county_corruption_trigger = yes
 			}
 			random = {
 				chance = high_control_county_corruption_removal_chance

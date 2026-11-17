@@ -1,0 +1,178 @@
+﻿##################################################
+# Events for the Republic Incite Unrest scheme
+##################################################
+namespace = gdp_incite_unrest_scheme_event
+
+### Outcome events
+
+# Success : unrest spreads in the liege's capital
+gdp_incite_unrest_scheme_event.0001 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				scope:target = { is_alive = yes }
+				scope:owner = { is_alive = yes }
+			}
+			scope:target = { gdp_incite_unrest_apply_effect = yes }
+			scope:owner = {
+				trigger_event = { id = gdp_incite_unrest_scheme_event.0005 }
+			}
+			scope:scheme = {
+				every_scheme_agent_character = {
+					limit = { is_ai = no }
+					trigger_event = { id = gdp_incite_unrest_scheme_event.0005 }
+				}
+				end_scheme = yes
+			}
+			scope:target = {
+				trigger_event = { id = gdp_incite_unrest_scheme_event.0006 }
+			}
+		}
+	}
+}
+
+# Failure : scheme fizzles, no lasting effect
+gdp_incite_unrest_scheme_event.0002 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = { scope:owner = { is_alive = yes } }
+			scope:owner = {
+				send_interface_message = {
+					type = gdp_incite_unrest_scheme_failure_message
+					title = gdp_incite_unrest_scheme_failure_t
+					left_icon = scope:target
+					custom_tooltip = gdp_incite_unrest_scheme_failure_desc
+				}
+			}
+		}
+	}
+}
+
+# Discovered : scheme exposed; schemer loses candidacy standing and house rating
+gdp_incite_unrest_scheme_event.0003 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = { scope:owner = { is_alive = yes } }
+			scope:owner = {
+				# Immediate candidacy hit
+				liege = {
+					primary_title = {
+						if = {
+							limit = { has_order_of_succession = appointment }
+							change_appointment_investment = {
+								target = scope:owner
+								value = {
+									value = appointment_score_major_value
+									multiply = -1
+								}
+							}
+						}
+					}
+				}
+				# 10-year house disgrace modifier
+				add_character_modifier = {
+					modifier = gdp_caught_inciting_unrest_modifier
+					years = 10
+				}
+				send_interface_message = {
+					type = gdp_incite_unrest_scheme_discovered_message
+					title = gdp_incite_unrest_scheme_discovered_t
+					left_icon = scope:target
+
+					show_as_tooltip = {
+						liege = {
+							primary_title = {
+								if = {
+									limit = { has_order_of_succession = appointment }
+									change_appointment_investment = {
+										target = scope:owner
+										value = {
+											value = appointment_score_major_value
+											multiply = -1
+										}
+									}
+								}
+							}
+						}
+						add_character_modifier = {
+							modifier = gdp_caught_inciting_unrest_modifier
+							years = 10
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Resolution : rolled when the player chooses to execute from the scheme prep popup
+gdp_incite_unrest_scheme_event.0004 = {
+	hidden = yes
+
+	immediate = {
+		random = {
+			chance = scope:scheme.scheme_success_chance
+			save_scope_value_as = {
+				name = scheme_successful
+				value = yes
+			}
+		}
+		scope:owner = {
+			if = {
+				limit = { exists = scope:scheme_successful }
+				trigger_event = { on_action = gdp_incite_unrest_scheme_success }
+			}
+			else = {
+				trigger_event = { on_action = gdp_incite_unrest_scheme_failure }
+			}
+		}
+	}
+}
+
+# Success : notification to player agents who participated
+gdp_incite_unrest_scheme_event.0005 = {
+	type = character_event
+	title = gdp_incite_unrest_scheme_success_t
+	desc = gdp_incite_unrest_scheme_event.0005.desc
+	theme = intrigue
+	left_portrait = {
+		character = scope:owner
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = worry
+	}
+
+	option = {
+		name = gdp_incite_unrest_scheme_event.0005.a
+		show_as_tooltip = {
+			scope:target = { gdp_incite_unrest_apply_effect = yes }
+		}
+	}
+}
+
+# Success : notification to the liege whose capital suffers unrest
+gdp_incite_unrest_scheme_event.0006 = {
+	type = character_event
+	title = gdp_incite_unrest_scheme_success_liege_t
+	desc = gdp_incite_unrest_scheme_event.0006.desc
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = worry
+	}
+
+	option = {
+		name = gdp_incite_unrest_scheme_event.0006.a
+		show_as_tooltip = {
+			gdp_incite_unrest_apply_effect = yes
+		}
+	}
+}

@@ -123,7 +123,6 @@
 		add = hostile_scheme_base_odds_prediction_target_is_title_value
 		add = odds_skill_contribution_diplomacy_value
 		add = agent_groups_owner_perspective_value
-		add = agent_groups_target_character_perspective_value
 		add = odds_dispute_border_scheme_misc_value
 		min = 0
 	}
@@ -190,6 +189,10 @@
 			multiplier = 0.2
 		}
 		opinion_modifier = {
+			trigger = { # We skip this when the disputed title is the top liege's own
+				exists = scope:target.holder
+				scope:target.holder != scope:owner.top_liege
+			}
 			who = scope:owner.top_liege
 			opinion_target = scope:target.holder
 			multiplier = -0.2

@@ -1,0 +1,67 @@
+﻿# Required controller: select_scope_object
+
+vbox = {
+	name = "decision_view_widget_select_trade_good_category"
+	layoutpolicy_horizontal = expanding
+	layoutpolicy_vertical = expanding
+	ignoreinvisible = yes
+
+	scrollbox = {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		size = { 545 200 }
+
+		blockoverride "scrollbox_content" {
+			vbox = {
+				margin_top = 10
+				datamodel = "[DecisionViewWidgetSelectScopeObject.GetEntries]"
+				spacing = 6
+
+				item = {
+					button_standard = {
+						layoutpolicy_horizontal = expanding
+						size = { 500 50 }
+						margin = { 10 10 }
+
+						datacontext = "[SelectScopeObjectEntry.GetScopeObject.TradeGoodCategoryType]"
+
+						onclick = "[DecisionViewWidgetSelectScopeObject.OnSelect(SelectScopeObjectEntry.Self)]"
+						enabled = "[SelectScopeObjectEntry.IsEnabled]"
+						down = "[SelectScopeObjectEntry.IsSelected]"
+						tooltip = "[SelectScopeObjectEntry.GetTooltip]"
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacing = 10
+							margin_left = 10
+							alwaystransparent = yes
+
+							icon = {
+								name = "option_icon"
+								size = { 36 36 }
+								texture = "[TradeGoodCategory.GetIcon]"
+							}
+
+							vbox = {
+								name = "option_info"
+								layoutpolicy_vertical = expanding
+
+								text_single = {
+									name = "option_type"
+									text = "[TradeGoodCategory.GetNameNoTooltip]"
+									max_width = 400
+									align = left
+								}
+							}
+
+							expand = {}
+						}
+					}
+				}
+			}
+		}
+
+		blockoverride "scrollbox_background_fade" {}
+	}
+}

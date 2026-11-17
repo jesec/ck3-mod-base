@@ -1,4 +1,4 @@
-window = {
+﻿window = {
 	name = "reforge_artifact_window"
 	position = { 0 20 }
 	parentanchor = center
@@ -60,7 +60,7 @@ window = {
 		button_checkbox_label = {
 			datacontext = "[ReforgeArtifactWindow.GetArtifact]"
 
-			visible = "[Artifact.CanReforge( ReforgeArtifactWindow.GetCharacter.Self )]"
+			visible = "[And( Artifact.CanReforge( ReforgeArtifactWindow.GetCharacter.Self ), Not( ReforgeArtifactWindow.GetCharacter.GetGovernment.IsType( 'merchant_government' ) ) )]"
 			onclick = "[ReforgeArtifactWindow.ToggleCompleteReforge]"
 
 			blockoverride "checkbox"

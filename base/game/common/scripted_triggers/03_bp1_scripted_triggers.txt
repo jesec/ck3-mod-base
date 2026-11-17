@@ -11,18 +11,22 @@ house_relation_feud_flag_trigger = {
 # Feud relation targeting a specified House
 house_has_feud_relation_with_trigger = {
 	exists = $TARGET$.house
-	OR = {
-		house ?= {
-			this != $TARGET$.house
-			has_house_relation_with = $TARGET$.house
-			any_house_relation = {
-				has_house_relation_level = feud
-				any_relation_house = { $TARGET$.house = this }
-			}
-		}
-		exists = scope:return_feud_as_true_for_debug
+	house ?= {
+		NOT = { this = $TARGET$.house }
 	}
-	has_bp1_dlc_trigger = yes
+	# To avoid runtime errors
+	custom_tooltip = {
+		text = house_has_feud_relation_with_trigger.tt
+		OR = {
+			house ?= {
+				any_house_relation = {
+					has_house_relation_level = feud
+					any_relation_house = { $TARGET$.house ?= this }
+				}
+			}
+			exists = scope:return_feud_as_true_for_debug
+		}
+	}
 }
 
 # General checks house head can start a feud
@@ -82,7 +86,20 @@ valid_for_feud_events_with_target_trigger = {
 		}
 	}
 	# Must be near target House Head
-	in_diplomatic_range = $TARGET$.house.house_head
+	# Landless merchants use company range and overlapping markets.
+	OR = {
+		in_diplomatic_range = $TARGET$.house.house_head
+		AND = {
+			OR = {
+				government_has_flag = government_is_merchant
+				$TARGET$.house.house_head = { government_has_flag = government_is_merchant }
+			}
+			house_relation_heads_in_range_trigger = {
+				HOUSE = house
+				OTHER_HOUSE = $TARGET$.house
+			}
+		}
+	}
 	# Save scopes for checking against
 	save_temporary_scope_as = house_head_temp
 	$TARGET$.house.house_head = { save_temporary_scope_as = target_house_head_temp }
@@ -108,7 +125,20 @@ house_feud_valid_feud_target_trigger = {
 		}
 	}
 	# Must be interactable
-	in_diplomatic_range = root
+	# Landless merchants use company range and overlapping markets.
+	OR = {
+		in_diplomatic_range = root
+		AND = {
+			OR = {
+				government_has_flag = government_is_merchant
+				root = { government_has_flag = government_is_merchant }
+			}
+			house_relation_heads_in_range_trigger = {
+				HOUSE = house
+				OTHER_HOUSE = root.house
+			}
+		}
+	}
 }
 
 # Valid to be a target of a murder scheme

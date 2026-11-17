@@ -8,20 +8,25 @@ layer debug
 
 layer confirmation
 {
-	priority = 11
+	priority = 12
 }
 
 layer frontend
 {
-	priority = 10
+	priority = 11
 }
 
 layer tutorial
 {
-	priority = 9
+	priority = 10
 }
 
 layer top
+{
+	priority = 9
+}
+
+layer toasts
 {
 	priority = 8
 }
@@ -711,7 +716,7 @@ types WindowTypes
 				parentanchor = top|hcenter
 				position = { 0 8 }
 			}
-			
+
 			align = nobaseline
 		}
 	}
@@ -851,7 +856,7 @@ types WindowTypes
 		}
 
 		widget = {
-			block "header_size" 
+			block "header_size"
 			{
 				size = { 100% 54 }
 			}
@@ -877,7 +882,7 @@ types WindowTypes
 				alpha = 0.7
 				texture = "gfx/interface/colors/black.dds"
 
-				block "header_label_visibility" 
+				block "header_label_visibility"
 				{
 					visible = no
 				}
@@ -962,6 +967,22 @@ types WindowTypes
 			spriteborder = { 0 0 }
 			blend_mode = alphamultiply
 		}
+	}
+
+	type drag_highlight_indicator = icon {
+		texture = "gfx/interface/colors/white.dds"
+		color = { 0.92 0.72 0.40 0.8 }
+		spriteType = Corneredtiled
+		size = { 3 3 }
+
+		## EDGE FADE
+		modify_texture = {
+			texture = "gfx/interface/component_masks/mask_edge_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 4 4 }
+			blend_mode = alphamultiply
+		}
+
 	}
 }
 

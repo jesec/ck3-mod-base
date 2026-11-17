@@ -1,0 +1,858 @@
+﻿### Merchant Associate Tasks ###
+
+partner_handle_trade = {
+	court_position_types = { partner_court_position }
+
+	is_shown = {
+		government_has_flag = government_is_merchant
+		has_domicile = yes
+	}
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		prestige = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			if = {
+				limit = { scope:liege = { has_perk = honored_to_serve_perk } }
+				multiply = 0
+			}
+		}
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			trade_capacity_mult = 0.02
+		}
+		poor = {
+			trade_capacity_mult = 0.04
+		}
+		average = {
+			trade_capacity_mult = 0.06
+		}
+		good = {
+			trade_capacity_mult = 0.08
+		}
+		excellent = {
+			trade_capacity_mult = 0.10
+		}
+	}
+
+	ai_will_do = {
+		value = 99
+	}
+}
+
+partner_mentoring = {
+	court_position_types = { partner_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		gold = {
+			add = {
+				value = merchant_associate_task_cost
+				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+				if = {
+					limit = { scope:liege = { has_perk = honored_to_serve_perk } }
+					multiply = 0
+				}
+			}
+		}
+	}
+
+	on_start = {
+		custom_tooltip = partner_mentoring_fallback_tt
+	}
+
+	on_monthly = {
+		save_scope_as = partner_mentor
+		scope:liege = { save_scope_as = notification_character }
+		# Aptitude is expensive, so only work it out on the max possible chance. Outer chance x inner multiply must be 100
+		# See "Chance gates" in _court_position_tasks.info
+		random = {
+			chance = 25
+			random = {
+				chance = {
+					value = 1
+					add = {
+						value = "aptitude(partner_court_position)"
+						multiply = 4
+					}
+					if = {
+						limit = {
+							scope:liege = {
+								government_has_flag = government_is_merchant
+								has_perk = scientific_perk
+							}
+						}
+						multiply = 1.25
+					}
+					round = yes
+					multiply = 4
+				}
+				# Find target
+				random_list = {
+					5 = {
+						scope:liege = {
+							random_court_position_holder = {
+								limit = {
+									NOT = { this = root }
+								}
+								save_scope_as = target_character
+							}
+						}
+					}
+					5 = {
+						scope:liege = {
+							random_heir = {
+								limit = { 
+									liege = prev 
+									NOT = { this = root }
+								}
+								save_scope_as = target_character
+								save_scope_as = heir_character
+							}
+						}
+					}
+					2 = {
+						scope:liege = {
+							random_close_or_extended_family_member = {
+								limit = { 
+									liege = prev 
+									NOT = { this = root }
+								}
+								save_scope_as = target_character
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						exists = scope:target_character
+					}
+					random_list = {
+						3 = { # Martial
+							trigger = {
+								scope:target_character.martial < root.martial
+								scope:target_character = {
+									OR = {
+										scope:heir_character ?= scope:target_character
+										is_knight = yes
+									}
+								}
+							}
+							scope:liege = {
+								court_tutor_improve_others_skill_effect = { SKILL = martial }
+								merchant_partner_mentoring_spread_skill_effect = { SKILL = martial }
+							}
+						}
+						3 = { # Intrigue
+							trigger = {
+								scope:target_character.intrigue < root.intrigue
+								scope:target_character = {
+									OR = {
+										scope:heir_character ?= scope:target_character
+										has_court_position = fixer_court_position
+									}
+								}
+							}
+							scope:liege = {
+								court_tutor_improve_others_skill_effect = { SKILL = intrigue }
+								merchant_partner_mentoring_spread_skill_effect = { SKILL = intrigue }
+							}
+						}
+						3 = { # Diplomacy
+							trigger = {
+								scope:target_character.diplomacy < root.diplomacy
+								scope:target_character = {
+									OR = {
+										scope:heir_character ?= scope:target_character
+										has_court_position = translator_court_position
+									}
+								}
+							}
+							scope:liege = {
+								court_tutor_improve_others_skill_effect = { SKILL = diplomacy }
+								merchant_partner_mentoring_spread_skill_effect = { SKILL = diplomacy }
+							}
+						}
+						3 = { # Stewardship
+							trigger = {
+								scope:target_character.stewardship < root.stewardship
+								scope:target_character = {
+									OR = {
+										scope:heir_character ?= scope:target_character
+										has_court_position = bookmaker_court_position
+										has_court_position = travel_leader_court_position
+									}
+								}
+							}
+							scope:liege = {
+								court_tutor_improve_others_skill_effect = { SKILL = stewardship }
+								merchant_partner_mentoring_spread_skill_effect = { SKILL = stewardship }
+							}
+						}
+						3 = { # Learning
+							trigger = {
+								scope:target_character.learning < root.learning
+								scope:target_character = {
+									OR = {
+										scope:liege_character ?= scope:target_character
+										scope:heir_character ?= scope:target_character
+										has_court_position = court_physician_court_position
+										has_court_position = antiquarian_court_position
+										has_court_position = court_brewmaster_court_position
+									}
+								}
+							}
+							scope:liege = {
+								court_tutor_improve_others_skill_effect = { SKILL = learning }
+								merchant_partner_mentoring_spread_skill_effect = { SKILL = learning }
+							}
+						}
+						1 = { # Physician trait
+							trigger = {
+								has_trait = lifestyle_physician
+								scope:target_character = {
+									OR = {
+										has_court_position = court_physician_court_position
+										has_court_position = travel_leader_court_position
+									}
+								}
+							}
+							if = {
+								limit = {
+									scope:target_character = { 
+										NOT = { has_trait = lifestyle_physician }
+									}
+								}
+								scope:liege = { court_tutor_improve_others_trait_effect = { TRAIT = lifestyle_physician } }
+							}
+							else = {
+								scope:liege = { court_tutor_improve_others_trait_xp_effect = { TRAIT = lifestyle_physician } }
+							}
+						}
+						1 = { # Traveler trait
+							trigger = {
+								has_trait = lifestyle_traveler
+								scope:target_character = {
+									has_court_position = travel_leader_court_position
+								}
+							}
+							if = {
+								limit = {
+									scope:target_character = { 
+										NOT = { has_trait = lifestyle_traveler }
+									}
+								}
+								scope:liege = { court_tutor_improve_others_trait_effect = { TRAIT = lifestyle_traveler } }
+							}
+							else = {
+								scope:liege = {
+									court_tutor_improve_others_trait_track_xp_effect = { 
+										TRAIT = lifestyle_traveler
+										TRACK = travel
+									}
+								}
+							}
+						}
+						1 = { # Merchant trait
+							trigger = {
+								has_trait = lifestyle_merchant
+								scope:target_character = {
+									is_adult = yes
+									OR = {
+										NOT = { has_trait = lifestyle_merchant }
+										scope:liege = {
+											switch = {
+												trigger = has_realm_law
+												company_purpose_caravaneer = {
+													scope:target_character = {
+														has_trait_xp = {
+															trait = lifestyle_merchant
+															track = caravaneer
+															value < 100
+														}
+													}
+												}
+												company_purpose_artisan = {
+													scope:target_character = {
+														has_trait_xp = {
+															trait = lifestyle_merchant
+															track = artisan
+															value < 100
+														}
+													}
+												}
+												company_purpose_creditor = {
+													scope:target_character = {
+														has_trait_xp = {
+															trait = lifestyle_merchant
+															track = creditor
+															value < 100
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							if = {
+								limit = {
+									scope:target_character = {
+										NOT = { has_trait = lifestyle_merchant }
+									}
+								}
+								scope:liege = { court_tutor_improve_others_trait_effect = { TRAIT = lifestyle_merchant } }
+							}
+							else = {
+								scope:liege = {
+									switch = {
+										trigger = has_realm_law
+										company_purpose_caravaneer = {
+											court_tutor_improve_others_trait_track_xp_effect = {
+												TRAIT = lifestyle_merchant
+												TRACK = caravaneer
+											}
+										}
+										company_purpose_artisan = {
+											court_tutor_improve_others_trait_track_xp_effect = {
+												TRAIT = lifestyle_merchant
+												TRACK = artisan
+											}
+										}
+										company_purpose_creditor = {
+											court_tutor_improve_others_trait_track_xp_effect = {
+												TRAIT = lifestyle_merchant
+												TRACK = creditor
+											}
+										}
+									}
+								}
+							}
+						}
+						1 = { # Confucian Education trait
+							trigger = {
+								has_trait = confucian_education
+							}
+							if = {
+								limit = {
+									scope:target_character = { 
+										NOT = { has_trait = confucian_education }
+									}
+								}
+								scope:liege = { court_tutor_improve_others_trait_effect = { TRAIT = confucian_education } }
+							}
+							else = {
+								scope:liege = { court_tutor_improve_others_trait_xp_effect = { TRAIT = confucian_education } }
+							}
+						}
+						1 = { # Stewardship XP
+							trigger = {
+								has_lifestyle = stewardship_lifestyle
+							}
+							scope:liege = {
+								send_interface_toast = {
+									type = event_royal_court_good_with_text
+									title = court_tutor_improve_others_title
+									desc = court_tutor_improve_others_notification_desc
+									left_icon = root
+									right_icon = scope:target_character
+	
+									scope:target_character = { add_stewardship_lifestyle_xp = medium_lifestyle_xp }
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 50 # Always good
+	}
+}
+
+translator_foreign_deals = {
+	court_position_types = { translator_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		prestige = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			trade_route_length_add = 1
+		}
+		poor = {
+			trade_route_length_add = 1
+		}
+		average = {
+			trade_route_length_add = 2
+		}
+		good = {
+			trade_route_length_add = 2
+		}
+		excellent = {
+			trade_route_length_add = 3
+		}
+	}
+
+	ai_will_do = {
+		value = 50
+		if = {
+			limit = {
+				num_trade_routes >= 1
+			}
+			add = 50
+		}
+	}
+}
+
+fixer_investigate_competition = {
+	court_position_types = { fixer_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		prestige = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			trade_competitiveness_mult = 0.01
+		}
+		poor = {
+			trade_competitiveness_mult = 0.025
+		}
+		average = {
+			trade_competitiveness_mult = 0.05
+		}
+		good = {
+			trade_competitiveness_mult = 0.075
+		}
+		excellent = {
+			trade_competitiveness_mult = 0.1
+		}
+	}
+
+	ai_will_do = {
+		value = 50
+		if = {
+			limit = {
+				num_trade_routes >= 1
+			}
+			add = 25
+		}
+		if = {
+			limit = {
+				any_relation = { type = rival }
+			}
+			add = 25
+		}
+	}
+}
+
+fixer_unite_house = {
+	court_position_types = { fixer_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		prestige = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	on_start = {
+		custom_tooltip = fixer_unite_house_fallback_tt
+	}
+
+	on_monthly = {
+		# Aptitude is expensive, so only work it out on the max possible chance. Outer chance x inner multiply must be 100
+		# See "Chance gates" in _court_position_tasks.info
+		random = {
+			chance = 20
+			random = {
+				chance = {
+					value = 1
+					add = {
+						value = "aptitude(fixer_court_position)"
+						multiply = 4
+					}
+					multiply = 5
+				}
+				scope:liege = {
+					send_interface_toast = {
+						type = event_royal_court_good_with_text
+						title = fixer_unite_house_title
+						desc = fixer_unite_house_notification_desc
+						left_icon = root
+						right_icon = scope:liege
+	
+						scope:liege.house = {
+							add_unity_value = {
+								value = {
+									if = {
+										limit = {
+											scope:liege = {
+												government_has_flag = government_is_merchant
+												has_perk = thicker_than_water_perk
+											}
+										}
+										add = minor_unity_gain
+									}
+									else = {
+										add = miniscule_unity_gain
+									}
+								}
+								character = root
+								desc = clan_unity_fixer_increase.desc
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				ai_wants_high_unity = yes
+			}
+			add = 50
+		}
+	}
+}
+
+fixer_sow_dissent = {
+	court_position_types = { fixer_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		prestige = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	on_start = {
+		custom_tooltip = fixer_sow_dissent_fallback_tt
+	}
+
+	on_monthly = {
+		# Aptitude is expensive, so only work it out on the max possible chance. Outer chance x inner multiply must be 100
+		# See "Chance gates" in _court_position_tasks.info
+		random = {
+			chance = 20
+			random = {
+				chance = {
+					value = 1
+					add = {
+						value = "aptitude(fixer_court_position)"
+						multiply = 4
+					}
+					multiply = 5
+				}
+				scope:liege = {
+					send_interface_toast = {
+						type = event_royal_court_good_with_text
+						title = fixer_sow_dissent_title
+						desc = fixer_sow_dissent_notification_desc
+						left_icon = root
+						right_icon = scope:liege
+
+						scope:liege.house = {
+							add_unity_value = {
+								value = {
+									if = {
+										limit = {
+											scope:liege = {
+												government_has_flag = government_is_merchant
+												has_perk = thicker_than_water_perk
+											}
+										}
+										add = minor_unity_loss
+									}
+									else = {
+										add = miniscule_unity_loss
+									}
+								}
+								character = root
+								desc = clan_unity_fixer_decrease.desc
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				ai_wants_low_unity = yes
+			}
+			add = 50
+		}
+	}
+}
+
+translator_learn_language = {
+	court_position_types = { translator_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		gold = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			learn_language_scheme_phase_duration_add = -4
+		}
+		poor = {
+			learn_language_scheme_phase_duration_add = -8
+		}
+		average = {
+			learn_language_scheme_phase_duration_add = -12
+		}
+		good = {
+			learn_language_scheme_phase_duration_add = -16
+		}
+		excellent = {
+			learn_language_scheme_phase_duration_add = -20
+		}
+	}
+
+	employee_modifier = {
+		learn_language_scheme_phase_duration_add = -20
+	}
+
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				any_scheme = { type = learn_language }
+			}
+			add = 50
+		}
+	}
+}
+
+market_agent_extend_networks = {
+	court_position_types = { market_agent_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		prestige = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			trade_expertise_growth_mult = 0.01
+		}
+		poor = {
+			trade_expertise_growth_mult = 0.025
+		}
+		average = {
+			trade_expertise_growth_mult = 0.05
+		}
+		good = {
+			trade_expertise_growth_mult = 0.1
+		}
+		excellent = {
+			trade_expertise_growth_mult = 0.15
+		}
+	}
+
+	ai_will_do = {
+		value = 50
+	}
+}
+
+market_agent_negotiate_contracts = {
+	court_position_types = { market_agent_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		prestige = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			trade_category_all_buy_price_mult = -0.001
+		}
+		poor = {
+			trade_category_all_buy_price_mult = -0.002
+		}
+		average = {
+			trade_category_all_buy_price_mult = -0.003
+		}
+		good = {
+			trade_category_all_buy_price_mult = -0.005
+		}
+		excellent = {
+			trade_category_all_buy_price_mult = -0.008
+		}
+	}
+
+	ai_will_do = {
+		value = 50
+		if = {
+			limit = {
+				any_hired_mercenary = { always = yes }
+			}
+			add = 50
+		}
+	}
+}
+
+bailiff_threaten_debtors = {
+	court_position_types = { bailiff_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		gold = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			owned_hostile_scheme_success_chance_add = 2
+		}
+		poor = {
+			owned_hostile_scheme_success_chance_add = 4
+		}
+		average = {
+			owned_hostile_scheme_success_chance_add = 6
+		}
+		good = {
+			owned_hostile_scheme_success_chance_add = 8
+		}
+		excellent = {
+			owned_hostile_scheme_success_chance_add = 10
+		}
+	}
+
+	ai_will_do = {
+		value = 50
+	}
+}
+
+bailiff_collect_loans = {
+	court_position_types = { bailiff_court_position }
+
+	# Monthly cost for the task
+	cost = {
+		round = no
+		prestige = {
+			value = merchant_associate_task_cost
+			desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+			format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+		}
+	}
+
+	on_start = {
+		custom_tooltip = bailiff_collect_loans_fallback_tt
+	}
+
+	on_monthly = {
+		# Aptitude is expensive, so only work it out on the max possible chance. Outer chance x inner multiply must be 100
+		# See "Chance gates" in _court_position_tasks.info
+		random = {
+			chance = 5
+			random = {
+				chance = {
+					value = 1
+					add = {
+						value = "aptitude(bailiff_court_position)"
+					}
+					multiply = 20
+				}
+				scope:liege = {
+					every_in_list = {
+						variable = owes_me_money
+						limit = {
+							is_ai = yes
+							gold >= tiny_gold_min_value
+							any_owned_story = {
+								story_type = story_cycle_loan
+								var:lender = scope:liege
+							}
+						}
+						add_to_list = bailiff_collectable_debtors
+					}
+				}
+				random_in_list = {
+					list = bailiff_collectable_debtors
+					save_scope_as = debtor
+					random_owned_story = {
+						limit = {
+							story_type = story_cycle_loan
+							var:lender = scope:liege
+						}
+						save_scope_as = loan
+					}
+				}
+				if = {
+					limit = { exists = scope:loan }
+					bailiff_collect_loan_payment_effect = { LOAN = scope:loan }
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 0
+		if = {
+			limit = {
+				any_in_list = {
+					variable = owes_me_money
+				}
+			}
+			add = 50
+		}
+	}
+}

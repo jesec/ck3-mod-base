@@ -1,0 +1,346 @@
+﻿gdp_league_accession_cohesion_value = {
+	value = 1
+
+	if = {
+		limit = { scope:title.tier >= tier_kingdom }
+		add = 2
+	}
+	else_if = {
+		limit = { scope:title.tier = tier_duchy }
+		add = 1
+	}
+
+	if = {
+		limit = {
+			exists = scope:title.holder
+			exists = scope:title.holder.capital_province
+		}
+		add = {
+			value = scope:title.holder.capital_province.province_size_level
+			multiply = 0.25
+		}
+	}
+}
+
+gdp_league_departure_cohesion_value = {
+	value = 0
+
+	if = {
+		limit = { scope:title.tier >= tier_kingdom }
+		add = 6
+	}
+	else_if = {
+		limit = { scope:title.tier = tier_duchy }
+		add = 4
+	}
+	else = {
+		add = 2
+	}
+
+	if = {
+		limit = {
+			exists = scope:title.holder
+			exists = scope:title.holder.capital_province
+		}
+		add = {
+			value = scope:title.holder.capital_province.province_size_level
+			multiply = 0.5
+		}
+	}
+	if = {
+		limit = { has_variable = league_expelling_member }
+		multiply = 0.25
+	}
+
+	multiply = -1
+}
+
+# Cohesion loss on failed commune war
+gdp_league_failed_commune_cohesion_value = -8
+
+# Commune CB cooldown
+gdp_league_commune_cooldown_years_value = 10
+
+# Cohesion loss on failed monopoly war
+gdp_league_failed_monopoly_cohesion_value = -8
+
+# Monopoly CB cooldown
+gdp_league_monopoly_cooldown_years_value = 10
+
+# Cohesion gain for winning a trade war
+gdp_league_trade_war_cohesion_value = 5
+
+# Cohesion loss for the losing league
+gdp_league_trade_war_loser_cohesion_value = -12
+
+# Cohesion loss on failed trade war
+gdp_league_failed_trade_war_cohesion_value = -8
+
+# Trade war CB cooldown
+gdp_league_trade_war_cooldown_years_value = 10
+
+# Cohesion gate for Expel Rival Traders
+gdp_league_expulsion_cohesion_gate_value = 45
+
+# Cohesion loss for an expelled league
+gdp_league_expulsion_cohesion_value = -10
+
+burgher_faction_war_chest_value = 25
+
+burgher_faction_min_prosperity_value = 20
+
+burgher_faction_rich_prosperity_value = 40
+
+burgher_max_privilege_level_value = 3
+
+burgher_grievance_threshold_value = 3
+
+burgher_grievance_years_value = 20
+
+burgher_refusal_revolt_threshold_chance_value = 10
+
+burgher_refusal_revolt_chance_value = {
+	value = 0
+
+	if = {
+		limit = { exists = scope:burgher_revolt_faction }
+		add = {
+			value = scope:burgher_revolt_faction.faction_power
+			divide = scope:burgher_revolt_faction.faction_power_threshold
+			multiply = burgher_refusal_revolt_threshold_chance_value
+		}
+	}
+
+	if = {
+		limit = { popular_opinion < 0 }
+		add = {
+			value = popular_opinion
+			multiply = -0.5
+		}
+	}
+	else_if = {
+		limit = { popular_opinion > 0 }
+		add = {
+			value = popular_opinion
+			multiply = -0.25
+		}
+	}
+
+	min = 0
+	max = 80
+	round = yes
+}
+
+burgher_refuse_discontent_value = 25
+
+burgher_refusal_no_revolt_discontent_value = -100
+
+burgher_faction_join_prosperity_value = 12
+
+burgher_faction_cooldown_years_value = 5
+
+burgher_concede_cooldown_years_value = 8
+
+burgher_defeat_cooldown_years_value = 10
+
+burgher_white_peace_cooldown_years_value = 8
+
+burgher_war_starts_county_control_loss = -20
+
+burgher_crown_debt_value = {
+	value = 0
+
+	if = {
+		limit = { government_has_flag = government_has_treasury }
+		add = treasury_debt_level
+	}
+	else = {
+		add = debt_level
+	}
+
+	min = 0
+}
+
+burgher_expected_legitimacy_value = 2
+
+burgher_liege_legitimacy_shortfall_value = {
+	value = 0
+
+	if = {
+		limit = { government_has_flag = government_uses_legitimacy }
+		add = burgher_expected_legitimacy_value
+		subtract = legitimacy_level
+	}
+
+	min = 0
+}
+
+burgher_county_militia_value = {
+	value = county_levies_to_raise
+	multiply = {
+		value = prosperity_level
+		multiply = 0.01
+		add = 1
+		min = 1
+		max = 1.75
+	}
+}
+
+burgher_leader_pikemen_stacks_value = {
+	value = location.county.prosperity_level
+	divide = 10
+	round = yes
+	min = 2
+	max = 5
+}
+
+burgher_leader_bowmen_stacks_value = {
+	value = location.county.prosperity_level
+	divide = 14
+	round = yes
+	min = 1
+	max = 4
+}
+
+burgher_demand_guild_rights_size_value = 3
+
+burgher_demand_tax_exemption_size_value = 4
+
+burgher_demand_militia_charter_size_value = 4
+
+burgher_privilege_tier_2_size_value = 5
+
+burgher_privilege_tier_3_size_value = 8
+
+burgher_revoke_tier_1_opinion_value = -25
+
+burgher_revoke_tier_2_opinion_value = -40
+
+burgher_revoke_tier_3_opinion_value = -60
+
+burgher_revoke_liberties_opinion_value = {
+	value = 0
+
+	if = {
+		limit = { has_county_modifier = civic_privileges_county_modifier }
+		add = burgher_revoke_tier_1_opinion_value
+	}
+
+	if = {
+		limit = { has_county_modifier = civic_privilege_market_rights_1_county_modifier }
+		add = burgher_revoke_tier_1_opinion_value
+	}
+	if = {
+		limit = { has_county_modifier = civic_privilege_market_rights_2_county_modifier }
+		add = burgher_revoke_tier_2_opinion_value
+	}
+	if = {
+		limit = { has_county_modifier = civic_privilege_market_rights_3_county_modifier }
+		add = burgher_revoke_tier_3_opinion_value
+	}
+
+	if = {
+		limit = { has_county_modifier = civic_privilege_guild_rights_1_county_modifier }
+		add = burgher_revoke_tier_1_opinion_value
+	}
+	if = {
+		limit = { has_county_modifier = civic_privilege_guild_rights_2_county_modifier }
+		add = burgher_revoke_tier_2_opinion_value
+	}
+	if = {
+		limit = { has_county_modifier = civic_privilege_guild_rights_3_county_modifier }
+		add = burgher_revoke_tier_3_opinion_value
+	}
+
+	if = {
+		limit = { has_county_modifier = civic_privilege_tax_exemption_1_county_modifier }
+		add = burgher_revoke_tier_1_opinion_value
+	}
+	if = {
+		limit = { has_county_modifier = civic_privilege_tax_exemption_2_county_modifier }
+		add = burgher_revoke_tier_2_opinion_value
+	}
+	if = {
+		limit = { has_county_modifier = civic_privilege_tax_exemption_3_county_modifier }
+		add = burgher_revoke_tier_3_opinion_value
+	}
+
+	if = {
+		limit = { has_county_modifier = civic_privilege_militia_charter_1_county_modifier }
+		add = burgher_revoke_tier_1_opinion_value
+	}
+	if = {
+		limit = { has_county_modifier = civic_privilege_militia_charter_2_county_modifier }
+		add = burgher_revoke_tier_2_opinion_value
+	}
+	if = {
+		limit = { has_county_modifier = civic_privilege_militia_charter_3_county_modifier }
+		add = burgher_revoke_tier_3_opinion_value
+	}
+}
+
+burgher_broken_charter_years_value = 10
+
+burgher_bestow_liberties_opinion_value = 20
+
+burgher_bestow_discontent_value = -50
+
+burgher_revoke_discontent_value = 50
+
+burgher_agitation_discontent_value = 25
+
+hanseatic_monopoly_league_cohesion_value = 6
+
+hanseatic_monopoly_city_cohesion_value = 2
+
+hanseatic_monopoly_keep_cohesion_value = -10
+
+dissolve_hanse_white_peace_cohesion_value = 10
+
+dissolve_hanse_defeat_cohesion_value = 20
+
+burgher_garrison_suppression_value = {
+	value = 0
+
+	var:burgher_county.holder ?= {
+		every_maa_regiment = {
+			limit = {
+				exists = regiment_station
+				regiment_station.county = root.var:burgher_county
+			}
+			add = maa_current_troops_count
+		}
+	}
+
+	divide = 100
+	max = 15
+}
+
+gdp_civic_agitation_exposed_success_penalty_value = 25
+
+gdp_civic_agitation_league_cohesion_success_mult_value = 0.2
+
+gdp_civic_agitation_league_cohesion_success_value = {
+	value = 0
+	scope:owner.confederation ?= {
+		add = cohesion
+	}
+	multiply = gdp_civic_agitation_league_cohesion_success_mult_value
+	round = yes
+}
+
+gdp_civic_agitation_resolution_chance_value = {
+	value = 0
+
+	if = {
+		limit = { exists = scope:scheme }
+		add = scope:scheme.scheme_success_chance
+	}
+
+	if = {
+		limit = { exists = scope:scheme_exposed_this_execution }
+		subtract = gdp_civic_agitation_exposed_success_penalty_value
+	}
+
+	min = 0
+}

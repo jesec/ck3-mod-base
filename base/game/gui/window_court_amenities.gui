@@ -1048,189 +1048,7 @@ types RoyalCourtTypes
 				}
 
 				###### COURT AMENITIES #######
-				widget = {
-					name = "amenities_tutorial_uses_this"
-					size = { 1000 200 }
-					parentanchor = center
-
-					widget = {
-						name = "court_amenity_line_vertical"
-						parentanchor = top|hcenter
-						position = { 5 -30 }
-						size = { 15 46 }
-
-						icon = {
-							texture = "gfx/interface/window_roco_grandeur/line_vertical_court_amenities.dds"
-							size = { 15 36 }
-						}
-					}
-
-					widget = {
-						name = "court_amenity_fashion"
-						parentanchor = left|top
-						position = { -30 0 }
-						size = { 307 82}
-
-						widget_court_amenity_left = {
-							datacontext = "[CourtAmenitiesWindow.GetCategory( 'court_fashion' )]"
-						}
-					}
-
-					widget = {
-						name = "court_amenity_line_horizontal_left"
-						parentanchor = center
-						position = { -146 -50 }
-						size = { 46 15 }
-
-						icon = {
-							texture = "gfx/interface/window_roco_grandeur/line_horizontal_court_amenities.dds"
-							size = { 48 15 }
-						}
-					}
-
-					### Label & cost ###
-					widget = {
-						parentanchor = top|hcenter
-						position = { 5 10 }
-						size = { 220 75 }
-
-						background = {
-							margin = { 20 8 }
-							using = Background_Area
-						}
-
-						vbox = {
-							layoutpolicy_vertical = expanding
-							layoutpolicy_horizontal = expanding
-
-							expand = {
-								layoutpolicy_vertical = expanding
-							}
-
-							text_single = {
-								text =  COURT_AMENITIES_LABEL
-								align = center
-								using = Font_Size_Medium
-								margin_top = -3
-								layoutpolicy_horizontal = expanding
-								autoresize = no
-							}
-
-							text_single = {
-								text = "COURT_AMENITIES_EXPENSES_MONTHLY_COST"
-								align = center
-								margin_bottom = 6
-								tooltip = "[CourtAmenitiesWindow.GetMonthlyCostBreakdown]"
-								layoutpolicy_horizontal = expanding
-								autoresize = no
-							}
-
-							text_single = {
-								text = "COURT_AMENITIES_EXPENSES_NEW_MONTHLY_COST"
-								align = center
-								margin_bottom = 8
-								margin_top = -6
-								default_format = "#high"
-								visible = "[CourtAmenitiesWindow.HasChangedAnyAmenity]"
-								layoutpolicy_horizontal = expanding
-								autoresize = no
-							}
-
-							expand = {
-								layoutpolicy_vertical = expanding
-							}
-						}
-					}
-
-					widget = {
-						name = "court_amenity_line_horizontal_right"
-						parentanchor = center
-						position = { 152 -50}
-						size = { 46 15 }
-
-						icon = {
-							texture = "gfx/interface/window_roco_grandeur/line_horizontal_court_amenities.dds"
-							size = { 50 15 }
-							mirror = horizontal
-						}
-					}
-
-					widget = {
-						name = "court_amenity_lodgings"
-						parentanchor = right
-						position = { -20 0 }
-						size = { 307 82}
-
-						widget_court_amenity_right = {
-							datacontext = "[CourtAmenitiesWindow.GetCategory( 'court_lodging_standards' )]"
-
-							blockoverride "amenity_icon_texture"
-							{
-								texture = "gfx/interface/window_roco_grandeur/icon_amenity_lodgings.dds"
-							}
-						}
-					}
-
-					widget = {
-						name = "court_amenity_dining"
-						parentanchor = bottom|left
-						position = { 98 -20 }
-						size = { 307 82}
-
-						allow_outside = yes
-
-						widget_court_amenity_left = {
-							datacontext = "[CourtAmenitiesWindow.GetCategory( 'court_food_quality' )]"
-
-							blockoverride "amenity_icon_texture"
-							{
-								texture = "gfx/interface/window_roco_grandeur/icon_amenity_dining.dds"
-							}
-						}
-					}
-
-					widget = {
-						name = "court_amenity_lines_bottom"
-						parentanchor = center
-						position = { 5 -12}
-						size = { 42 78 }
-
-						icon = {
-							parentanchor = center
-							widgetanchor = right
-							position = { -5 1 }
-							size = { 42 62 }
-							texture = "gfx/interface/window_roco_grandeur/line_corner_court_amenities.dds"
-						}
-
-						icon = {
-							parentanchor = center
-							widgetanchor = left
-							position = { 5 1 }
-							size = { 42 62 }
-							mirror = horizontal
-							texture = "gfx/interface/window_roco_grandeur/line_corner_court_amenities.dds"
-						}
-					}
-
-					widget = {
-						name = "court_amenity_servants"
-						parentanchor = bottom|right
-						position = { -148 -20 }
-						size = { 307 82}
-
-						allow_outside = yes
-
-						widget_court_amenity_right = {
-							datacontext = "[CourtAmenitiesWindow.GetCategory( 'court_servants' )]"
-						}
-
-						blockoverride "amenity_icon_texture"
-						{
-							texture = "gfx/interface/window_roco_grandeur/icon_amenity_servants.dds"
-						}
-					}
-				}
+				widget_court_amenity_items = {}
 
 				widget = {
 					visible = "[CourtAmenitiesWindow.HasChangedAnyAmenity]"
@@ -1819,7 +1637,7 @@ types RoyalCourtTypes
 
 		vbox = {
 			set_parent_size_to_minimum = yes
-			spacing = 0
+			
 
 			background = {
 				texture = "gfx/interface/component_masks/mask_fade_horizontal_middle.dds"
@@ -1968,4 +1786,189 @@ types RoyalCourtTypes
 
 		frame = "[Select_int32( Not(EqualTo_int32(CourtGrandeurData.GetCurrentLevel, CourtGrandeurLevel.GetValue)), Select_int32( LessThan_int32(CourtGrandeurData.GetCurrentLevel, CourtGrandeurLevel.GetValue), '(int32)1', '(int32)2' ), '(int32)3' )]"
 	}
+	
+	type widget_court_amenity_items = widget {
+		name = "amenities_tutorial_uses_this"
+		size = { 1000 200 }
+		parentanchor = center
+
+		widget = {
+			name = "court_amenity_line_vertical"
+			parentanchor = top|hcenter
+			position = { 5 -30 }
+			size = { 15 46 }
+
+			icon = {
+				texture = "gfx/interface/window_roco_grandeur/line_vertical_court_amenities.dds"
+				size = { 15 36 }
+			}
+		}
+
+		widget = {
+			name = "court_amenity_fashion"
+			parentanchor = left|top
+			position = { -30 0 }
+			size = { 307 82}
+
+			widget_court_amenity_left = {
+				datacontext = "[CourtAmenitiesWindow.GetCategory( 'court_fashion' )]"
+			}
+		}
+
+		widget = {
+			name = "court_amenity_line_horizontal_left"
+			parentanchor = center
+			position = { -146 -50 }
+			size = { 46 15 }
+
+			icon = {
+				texture = "gfx/interface/window_roco_grandeur/line_horizontal_court_amenities.dds"
+				size = { 48 15 }
+			}
+		}
+
+		### Label & cost ###
+		widget = {
+			parentanchor = top|hcenter
+			position = { 5 10 }
+			size = { 220 75 }
+
+			background = {
+				margin = { 20 8 }
+				using = Background_Area
+			}
+
+			vbox = {
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = expanding
+
+				expand = {
+					layoutpolicy_vertical = expanding
+				}
+
+				text_single = {
+					text =  COURT_AMENITIES_LABEL
+					align = center
+					using = Font_Size_Medium
+					margin_top = -3
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+				}
+
+				text_single = {
+					text = "COURT_AMENITIES_EXPENSES_MONTHLY_COST"
+					align = center
+					margin_bottom = 6
+					tooltip = "[CourtAmenitiesWindow.GetMonthlyCostBreakdown]"
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+				}
+
+				text_single = {
+					text = "COURT_AMENITIES_EXPENSES_NEW_MONTHLY_COST"
+					align = center
+					margin_bottom = 8
+					margin_top = -6
+					default_format = "#high"
+					visible = "[CourtAmenitiesWindow.HasChangedAnyAmenity]"
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+				}
+
+				expand = {
+					layoutpolicy_vertical = expanding
+				}
+			}
+		}
+
+		widget = {
+			name = "court_amenity_line_horizontal_right"
+			parentanchor = center
+			position = { 152 -50}
+			size = { 46 15 }
+
+			icon = {
+				texture = "gfx/interface/window_roco_grandeur/line_horizontal_court_amenities.dds"
+				size = { 50 15 }
+				mirror = horizontal
+			}
+		}
+
+		widget = {
+			name = "court_amenity_lodgings"
+			parentanchor = right
+			position = { -20 0 }
+			size = { 307 82}
+
+			widget_court_amenity_right = {
+				datacontext = "[CourtAmenitiesWindow.GetCategory( 'court_lodging_standards' )]"
+
+				blockoverride "amenity_icon_texture"
+				{
+					texture = "gfx/interface/window_roco_grandeur/icon_amenity_lodgings.dds"
+				}
+			}
+		}
+
+		widget = {
+			name = "court_amenity_dining"
+			parentanchor = bottom|left
+			position = { 98 -20 }
+			size = { 307 82}
+
+			allow_outside = yes
+
+			widget_court_amenity_left = {
+				datacontext = "[CourtAmenitiesWindow.GetCategory( 'court_food_quality' )]"
+
+				blockoverride "amenity_icon_texture"
+				{
+					texture = "gfx/interface/window_roco_grandeur/icon_amenity_dining.dds"
+				}
+			}
+		}
+
+		widget = {
+			name = "court_amenity_lines_bottom"
+			parentanchor = center
+			position = { 5 -12}
+			size = { 42 78 }
+
+			icon = {
+				parentanchor = center
+				widgetanchor = right
+				position = { -5 1 }
+				size = { 42 62 }
+				texture = "gfx/interface/window_roco_grandeur/line_corner_court_amenities.dds"
+			}
+
+			icon = {
+				parentanchor = center
+				widgetanchor = left
+				position = { 5 1 }
+				size = { 42 62 }
+				mirror = horizontal
+				texture = "gfx/interface/window_roco_grandeur/line_corner_court_amenities.dds"
+			}
+		}
+
+		widget = {
+			name = "court_amenity_servants"
+			parentanchor = bottom|right
+			position = { -148 -20 }
+			size = { 307 82}
+
+			allow_outside = yes
+
+			widget_court_amenity_right = {
+				datacontext = "[CourtAmenitiesWindow.GetCategory( 'court_servants' )]"
+			}
+
+			blockoverride "amenity_icon_texture"
+			{
+				texture = "gfx/interface/window_roco_grandeur/icon_amenity_servants.dds"
+			}
+		}
+	}
+
 }

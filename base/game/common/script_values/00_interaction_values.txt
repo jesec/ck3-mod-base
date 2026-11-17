@@ -1,13 +1,13 @@
 ﻿golden_obligation_value = {
 	if = {
 		limit = {
-			normal_ransom_cost_value < minor_gold_value 
+			normal_ransom_cost_value < minor_gold_value
 		}
 		value = minor_gold_value
 	}
 	else_if = {
 		limit = { 
-			normal_ransom_cost_value < medium_gold_value 
+			normal_ransom_cost_value < medium_gold_value
 		}
 		value = normal_ransom_cost_value
 	}
@@ -248,6 +248,16 @@ normal_ransom_cost_value = {
 	multiply = haggler_ransom_cost_factor
 }
 
+half_normal_ransom_cost_value = {
+	value = normal_ransom_cost_value
+	divide = 2
+}
+
+quarter_normal_ransom_cost_value = {
+	value = normal_ransom_cost_value
+	divide = 4
+}
+
 current_situation_gold_ransom = {
 	if = {
 		limit = {
@@ -288,7 +298,7 @@ half_increased_ransom_cost_value = {
 increased_ransom_cost_value = {
 	value = {
 		add = normal_ransom_cost_value
-		multiply = 1.5
+		multiply = 1.25
 	}
 }
 
@@ -369,6 +379,7 @@ haggler_ransom_cost_factor = {
 	}
 }
 
+#Reverses the ransom_cost_value calculations to leave only the haggler value, which all ransom interaction windows show
 haggler_ransom_cost_modifier = {
 	value = ransom_cost_value
 	divide = haggler_ransom_cost_factor
@@ -964,6 +975,11 @@ designate_heir_cost = 1000
 designate_heir_admin_prestige_cost = 500
 designate_heir_admin_influence_cost = 150
 designate_heir_laamp_prestige_cost = 150
+
+half_current_influence_value = {
+	value = influence
+	multiply = 0.5
+}
 
 marry_close_family_tiers_acceptance_value = {
 	value = 0

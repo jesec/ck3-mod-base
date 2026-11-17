@@ -1,0 +1,256 @@
+﻿republic_governor = {
+	default_candidates = { holder_close_family unlanded_noble_house_head unlanded_noble_close_family holder_councilor landed_vassal }
+
+	use_investment_cap = no
+
+	candidate_score = {
+		value = {
+			# Base - Based on skills
+			add = {
+				value = martial
+				add = diplomacy
+				add = stewardship
+				add = intrigue
+				add = learning
+				desc = sum_of_skills_desc
+			}
+
+			# Traits
+			if = {
+				limit = {
+					has_trait = just
+				}
+				add = {
+					value = 10
+					desc = LAW_TRAIT_JUST_DESC
+				}
+			}
+
+			# Perks
+			if = {
+				limit = { has_perk = forced_vassalage_perk }
+				add = {
+					value = gdp_forced_vassalage_perk_republic_value
+					desc = forced_vassalage_perk_name_desc
+				}
+			}
+
+			# Legacy
+			if = {
+				limit = {
+					dynasty ?= { has_dynasty_perk = gdp_republic_legacy_1 }
+				}
+				add = {
+					value = gdp_republic_legacy_apppointment_candidate_score_bonus_value
+					desc = gdp_republic_legacy_1_perk_desc
+				}
+			}
+
+			# Prestige Level
+			if = {
+				limit = {
+					prestige_level = 0
+				}
+				subtract = {
+					value = 10
+					desc = "[prestige_level|E]"
+				}
+			}
+			if = {
+				limit = {
+					prestige_level >= 2
+				}
+				add = {
+					value = 10
+					multiply = {
+						value = prestige_level
+						subtract = 1 # Base value should start at 2
+					}
+					desc = "[prestige_level|E]"
+				}
+			}
+
+			# Domicile
+			if = {
+				limit = {
+					house.house_head ?= {
+						domicile ?= {
+							OR = {
+								has_domicile_parameter = company_candidate_score_bonus_1
+								has_domicile_parameter = company_candidate_score_bonus_2
+								has_domicile_parameter = company_candidate_score_bonus_3
+							}
+						}
+					}
+				}
+				add = {
+					value = 0
+					add = {
+						house.house_head.domicile = {
+							if = {
+								limit = { has_domicile_parameter = company_candidate_score_bonus_3 }
+								add = gdp_company_candidate_score_bonus_3_value
+							}
+							else_if = {
+								limit = { has_domicile_parameter = company_candidate_score_bonus_2 }
+								add = gdp_company_candidate_score_bonus_2_value
+							}
+							else = {
+								add = gdp_company_candidate_score_bonus_1_value
+							}
+						}
+					}
+					desc = DOMICILE_RESOURCE_FROM_DOMICILE
+				}
+			}
+
+			# Culture
+			if = {
+				limit = { culture ?= scope:title.holder.capital_county.culture }
+				add = {
+					value = 10
+					desc = of_local_culture_succession_desc
+				}
+			}
+
+			# Personal reasons
+			if = {
+				limit = {
+					scope:title.holder ?= { is_close_family_of = root }
+				}
+				add = {
+					value = 15
+					desc = "close_family_holder_desc"
+				}
+			}
+			else_if = {
+				limit = {
+					scope:title.holder ?= {
+						any_spouse = { is_close_family_of = root }
+						NOT = { is_close_family_of = root }
+					}
+				}
+				add = {
+					value = 10
+					desc = "close_family_married_to_holder_desc"
+				}
+			}
+
+			# House ambition
+			if = {
+				limit = {
+					house ?= {
+						OR = {
+							has_house_aspiration_parameter = ambition_candidate_score_from_renown_bonus_1
+							has_house_aspiration_parameter = ambition_candidate_score_from_renown_bonus_2
+							has_house_aspiration_parameter = ambition_candidate_score_from_renown_bonus_3
+							has_house_aspiration_parameter = ambition_candidate_score_from_renown_bonus_4
+						}
+					}
+				}
+				add = {
+					value = dynasty.dynasty_prestige_level
+					if = {
+						limit = {
+							house = { has_house_aspiration_parameter = ambition_candidate_score_from_renown_bonus_4 }
+						}
+						multiply = ambition_candidate_score_per_renown_4_value
+					}
+					else_if = {
+						limit = {
+							house = { has_house_aspiration_parameter = ambition_candidate_score_from_renown_bonus_3 }
+						}
+						multiply = ambition_candidate_score_per_renown_3_value
+					}
+					else_if = {
+						limit = {
+							house = { has_house_aspiration_parameter = ambition_candidate_score_from_renown_bonus_2 }
+						}
+						multiply = ambition_candidate_score_per_renown_2_value
+					}
+					else = {
+						multiply = ambition_candidate_score_per_renown_1_value
+					}
+					desc = "[dynasty_prestige_level|E]"
+				}
+			}
+
+			#Don't want no elections nor appointments
+			if = {
+				limit = {
+					OR = {
+						has_character_modifier = gdp_republic_renounced_election_personal
+						house ?= { has_house_modifier = gdp_republic_renounced_election_house }
+					}
+				}
+				add = {
+					value = -9999
+					desc = republic_renounced_election
+				}
+			}
+
+			# ADJUST BASED ON GENDER LAW - MUST GO AT THE END
+			if = {
+				limit = {
+					scope:title.holder.top_liege ?= { has_realm_law = male_preference_law }
+					is_female = yes
+				}
+				multiply = {
+					value = {
+						value = 1
+						subtract = appointment_non_preferred_gender_penalty_value
+					}
+					desc = appointment_male_preference_desc
+				}
+			}
+			else_if = {
+				limit = {
+					scope:title.holder.top_liege ?= { has_realm_law = male_only_law }
+					is_female = yes
+				}
+				multiply = {
+					value = {
+						value = 1
+						subtract = appointment_opposite_gender_penalty_value
+					}
+					desc = appointment_male_only_desc
+				}
+			}
+			else_if = {
+				limit = {
+					scope:title.holder.top_liege ?= { has_realm_law = female_preference_law }
+					is_female = no
+				}
+				multiply = {
+					value = {
+						value = 1
+						subtract = appointment_non_preferred_gender_penalty_value
+					}
+					desc = appointment_female_preference_desc
+				}
+			}
+			else_if = {
+				limit = {
+					scope:title.holder.top_liege ?= { has_realm_law = female_only_law }
+					is_female = no
+				}
+				multiply = {
+					value = {
+						value = 1
+						subtract = appointment_opposite_gender_penalty_value
+					}
+					desc = appointment_female_only_desc
+				}
+			}
+
+			# We remove all score from the emperor, to make sure you don't inherit governorships needlessly
+			if = {
+				limit = { top_liege = this }
+				multiply = {
+					value = 0
+					desc = appointment_is_top_liege
+				}
+			}
+		}
+	}
+}

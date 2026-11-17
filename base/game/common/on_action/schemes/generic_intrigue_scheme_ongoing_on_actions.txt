@@ -1,0 +1,84 @@
+﻿##################################################
+# Generic intrigue scheme event sub-pools.
+# Each pool covers one category of mid-scheme events.
+# Hook in whichever pools fit your scheme's theme
+# via random_on_action in your *_ongoing on_action.
+##################################################
+
+# Agent interactions (1001-1009 + generic agent wrapper)
+generic_intrigue_agents_ongoing = {
+	trigger = {
+		exists = scope:scheme
+	}
+	random_events = {
+		200 = 0
+		200 = intrigue_scheme_ongoing.1001	# Pay gold for scheme progress
+		100 = intrigue_scheme_ongoing.1002	# Zealous agent promotes your agenda
+		100 = intrigue_scheme_ongoing.1004	# Gregarious agent is too loose-lipped
+		100 = intrigue_scheme_ongoing.1006	# Lazy agent is careless
+		30  = intrigue_scheme_ongoing.1007	# Caring agent wants you to stop
+		50  = intrigue_scheme_ongoing.1008	# Agent close to being discovered
+		50  = intrigue_scheme_ongoing.1009	# Close relation willing to join after all
+		2000 = agent_events.9801
+	}
+}
+
+# Target interactions (the person being schemed against)
+generic_intrigue_target_ongoing = {
+	trigger = {
+		exists = scope:scheme
+	}
+	random_events = {
+		200 = 0
+		100 = intrigue_scheme_ongoing.2001	# Trusting target
+		100 = intrigue_scheme_ongoing.2002	# Drunkard target
+		50  = intrigue_scheme_ongoing.2003	# Discover a secret about someone else
+	}
+}
+
+# Owner stress and logistics
+generic_intrigue_owner_ongoing = {
+	trigger = {
+		exists = scope:scheme
+	}
+	random_events = {
+		200 = 0
+		50  = intrigue_scheme_ongoing.3001	# Being Just causes stress
+		100 = intrigue_scheme_ongoing.3003	# Mapping the local surroundings
+		100 = intrigue_scheme_ongoing.3005	# Messenger pigeon
+		100 = intrigue_scheme_ongoing.3010	# Translate letters yourself
+		100 = intrigue_scheme_ongoing.3011	# Complex language code
+	}
+}
+
+# Physical and miscellaneous scheme actions
+generic_intrigue_other_ongoing = {
+	trigger = {
+		exists = scope:scheme
+	}
+	random_events = {
+		200 = 0
+		100 = intrigue_scheme_ongoing.5001	# Distract guards with itching powder
+		100 = intrigue_scheme_ongoing.5009	# Friend of Animals gets some help
+		100 = intrigue_scheme_ongoing.5019	# Find old architectural papers
+		100 = intrigue_scheme_ongoing.5026	# Court chaplain is in on it
+	}
+}
+
+# Intrigue lifestyle perk events
+generic_intrigue_lifestyle_ongoing = {
+	trigger = {
+		exists = scope:scheme
+	}
+	random_events = {
+		200 = 0
+		100 = intrigue_scheme_lifestyle.1001	# Opportunity to set up a soldier spy ring
+		50  = intrigue_scheme_lifestyle.1002	# Soldier spy ring compromised
+		100 = intrigue_scheme_lifestyle.3001	# Study the target's habits
+		100 = intrigue_scheme_lifestyle.3101	# Convert informants in target's court
+		50  = intrigue_scheme_lifestyle.3102	# Informants revealed
+		100 = intrigue_scheme_lifestyle.3201	# Intercept communication
+		100 = intrigue_scheme_lifestyle.3301	# Possible to gain hook
+		100 = intrigue_scheme_lifestyle.3401	# Convince courtier to inform on target
+	}
+}

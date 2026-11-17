@@ -4,7 +4,7 @@ replace_ceremonial_regent_faction_war = {
 	group = civil_war
 	ai_only_against_liege = yes
 	allow_hostages = no
-	
+
 	allowed_for_character = {
 		scope:attacker = { is_leading_faction_type = replace_ceremonial_regent_faction }
 	}
@@ -35,13 +35,13 @@ replace_ceremonial_regent_faction_war = {
 	}
 
 	on_victory = {
+		on_victory_faction_war_effect = yes
+
 		scope:attacker = {
-			show_pow_release_message_effect = yes
 			#EP2 Accolade glory gain from winning against higher ranked enemy
 			accolade_attacker_war_end_glory_gain_med_effect = yes
 		}
-		# LEGITIMACY FROM LOSING FACTION WAR
-		faction_war_end_defeat_legitimacy_effect = yes
+
 		scope:defender = {
 			add_prestige = -500
 			add_character_flag = {
@@ -65,8 +65,8 @@ replace_ceremonial_regent_faction_war = {
 				}
 			}
 			if = {
-				limit = { 
-					exists = scope:attacker.joined_faction 
+				limit = {
+					exists = scope:attacker.joined_faction
 				}
 				scope:attacker.joined_faction = {
 					save_scope_as = saved_faction
@@ -88,10 +88,7 @@ replace_ceremonial_regent_faction_war = {
 				}
 			}
 			# The faction should have already been destroyed due to all members leaving above, but in case it hasn't, destroy it now.
-			if = {
-				limit = { exists = scope:saved_faction }
-				scope:saved_faction = { destroy_faction = yes }
-			}
+			scope:saved_faction ?= { destroy_faction = yes }
 		}
 	}
 
@@ -106,13 +103,7 @@ replace_ceremonial_regent_faction_war = {
 	}
 
 	on_white_peace = {
-		scope:attacker = {
-			show_pow_release_message_effect = yes
-			stress_and_fulfillment_impact = {
- 				ambitious = medium_stress_impact_gain
- 				arrogant = medium_stress_impact_gain
- 			}
-		}
+		on_white_peace_faction_war_effect = yes
 		hidden_effect = {
 			scope:attacker = {
 				add_truce_both_ways = {
@@ -124,15 +115,11 @@ replace_ceremonial_regent_faction_war = {
 			}
 		}
 		scope:defender = {
-			stress_and_fulfillment_impact = {
- 				arrogant = medium_stress_impact_gain
- 			}
 			add_character_flag = {
 				flag = recent_replace_regent_faction_war
 				years = faction_war_white_peace_cooldown
 			}
 		}
-		on_white_peace_faction_revolt_war = yes
 	}
 
 	on_defeat_desc = {
@@ -146,10 +133,8 @@ replace_ceremonial_regent_faction_war = {
 	}
 
 	on_defeat = {
-		scope:attacker = {
-			show_pow_release_message_effect = yes
-			save_scope_as = imprisoner
-		}
+		on_defeat_faction_war_effect = yes
+
 		scope:defender = {
 			add_character_flag = {
 				flag = recent_replace_regent_faction_war
@@ -158,22 +143,6 @@ replace_ceremonial_regent_faction_war = {
 			add_dread = medium_dread_gain
 			add_achievement_flag_effect = { FLAG = achievement_know_your_place_flag }
 			# LEGITIMACY FROM WINNING FACTION WAR
-			faction_war_end_victory_legitimacy_effect = yes
-		}
-		on_lost_faction_revolt_war = yes # Imprison all faction members, including the faction leader.
-		scope:attacker = { # Imprison any war participant that isn't already in the faction.
-			every_character_war = {
-				limit = { is_defender = scope:defender }
-				every_war_attacker = {
-					limit = { is_imprisoned = no }
-					hidden_effect = {
-						hard_imprison_character_effect = {
-							TARGET = this
-							IMPRISONER = scope:defender
-						}
-					}
-				}
-			}
 		}
 	}
 
@@ -199,7 +168,7 @@ replace_ceremonial_regent_faction_war = {
 
 	max_attacker_score_from_battles = 100
 	max_defender_score_from_battles = 50
-	
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 
@@ -234,13 +203,13 @@ restore_ceremonial_liege_faction_war = {
 	}
 
 	on_victory = {
+		on_victory_faction_war_effect = yes
+
 		scope:attacker = {
-			show_pow_release_message_effect = yes
 			#EP2 Accolade glory gain from winning against higher ranked enemy
 			accolade_attacker_war_end_glory_gain_med_effect = yes
 		}
-		# LEGITIMACY FROM LOSING FACTION WAR
-		faction_war_end_defeat_legitimacy_effect = yes
+
 		scope:defender = {
 			add_prestige = -500
 			add_character_flag = {
@@ -290,10 +259,7 @@ restore_ceremonial_liege_faction_war = {
 					}
 				}
 				# The faction should have already been destroyed due to all members leaving above, but in case it hasn't, destroy it now.
-				if = {
-					limit = { exists = scope:saved_faction }
-					scope:saved_faction = { destroy_faction = yes }
-				}
+				scope:saved_faction ?= { destroy_faction = yes }
 			}
 		}
 
@@ -307,13 +273,7 @@ restore_ceremonial_liege_faction_war = {
 	}
 
 	on_white_peace = {
-		scope:attacker = {
-			show_pow_release_message_effect = yes
-			stress_and_fulfillment_impact = {
- 				ambitious = medium_stress_impact_gain
- 				arrogant = medium_stress_impact_gain
- 			}
-		}
+		on_white_peace_faction_war_effect = yes
 		hidden_effect = {
 			scope:attacker = {
 				add_truce_both_ways = {
@@ -325,15 +285,11 @@ restore_ceremonial_liege_faction_war = {
 			}
 		}
 		scope:defender = {
-			stress_and_fulfillment_impact = {
- 				arrogant = medium_stress_impact_gain
- 			}
 			add_character_flag = {
 				flag = recent_restore_ceremonial_liege_faction_war
 				years = faction_war_white_peace_cooldown
 			}
 		}
-		on_white_peace_faction_revolt_war = yes
 	}
 
 	on_defeat_desc = {
@@ -341,10 +297,8 @@ restore_ceremonial_liege_faction_war = {
 	}
 
 	on_defeat = {
-		scope:attacker = {
-			show_pow_release_message_effect = yes
-			save_scope_as = imprisoner
-		}
+		on_defeat_faction_war_effect = yes
+
 		scope:defender = {
 			add_character_flag = {
 				flag = recent_restore_ceremonial_liege_faction_war
@@ -352,28 +306,10 @@ restore_ceremonial_liege_faction_war = {
 			}
 			add_dread = medium_dread_gain
 			add_achievement_flag_effect = { FLAG = achievement_know_your_place_flag }
-			# LEGITIMACY FROM WINNING FACTION WAR
-			faction_war_end_victory_legitimacy_effect = yes
-		}
-		on_lost_faction_revolt_war = yes # Imprison all faction members, including the faction leader.
-		scope:attacker = { # Imprison any war participant that isn't already in the faction.
-			every_character_war = {
-				limit = { is_defender = scope:defender }
-				every_war_attacker = {
-					limit = { is_imprisoned = no }
-					hidden_effect = {
-						hard_imprison_character_effect = {
-							TARGET = this
-							IMPRISONER = scope:defender
-						}
-					}
-				}
-			}
 		}
 		scope:claimant = {
 			depose_effect = { DEPOSER = scope:defender }
 		}
-		on_lost_faction_revolt_war = yes
 	}
 
 	on_invalidated_desc = msg_invalidate_war_title
@@ -398,7 +334,7 @@ restore_ceremonial_liege_faction_war = {
 
 	max_attacker_score_from_battles = 100
 	max_defender_score_from_battles = 50
-	
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 
@@ -454,7 +390,7 @@ ceremonial_claimant_faction_war = {
 	}
 
 	on_victory = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_victory_faction_war_effect = yes
 
 		#EP2 Accolade glory gain from winning against higher ranked enemy
 		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
@@ -508,12 +444,6 @@ ceremonial_claimant_faction_war = {
 				}
 			}
 		}
-
-		# LEGITIMACY FROM LOSING FACTION WAR
-		faction_war_end_defeat_legitimacy_effect = yes
-
-		#Mandalas gain or lose piety/devotion depending on Decree
-		mandala_war_victory_effects = yes
 	}
 
 	on_white_peace_desc = {
@@ -522,39 +452,18 @@ ceremonial_claimant_faction_war = {
 	}
 
 	on_white_peace = {
-		scope:attacker = {
-			show_pow_release_message_effect = yes
-			stress_and_fulfillment_impact = {
- 				ambitious = medium_stress_impact_gain
- 				arrogant = medium_stress_impact_gain
- 			}
-		}
+		on_white_peace_faction_war_effect = yes
 
 		scope:defender = {
 			add_character_flag = {
 				flag = recent_ceremonial_claimant_faction_war
 				years = faction_war_white_peace_cooldown
 			}
-			stress_and_fulfillment_impact = {
- 				arrogant = medium_stress_impact_gain
- 			}
 		}
-		on_white_peace_faction_revolt_war = yes
 
 		hidden_effect = {
-			scope:attacker = {
-				add_truce_both_ways = {
-					character = scope:defender
-					days = 1825
-					war = root.war
-					result = white_peace
-				}
-				if = {
-					limit = { exists = joined_faction }
-					joined_faction = {
-						destroy_faction = yes # Destroy the faction if it wasn't already destroyed automatically.
-					}
-				}
+			scope:attacker.joined_faction ?= {
+				destroy_faction = yes # Destroy the faction if it wasn't already destroyed automatically.
 			}
 		}
 	}
@@ -564,8 +473,7 @@ ceremonial_claimant_faction_war = {
 	}
 
 	on_defeat = {
-		scope:attacker = { show_pow_release_message_effect = yes }
-		on_lost_faction_revolt_war = yes
+		on_defeat_faction_war_effect = yes
 
 		scope:defender = {
 			add_character_flag = {
@@ -574,13 +482,7 @@ ceremonial_claimant_faction_war = {
 			}
 			add_dread = medium_dread_gain
 			add_achievement_flag_effect = { FLAG = achievement_know_your_place_flag }
-
-			# LEGITIMACY FROM WINNING FACTION WAR
-			faction_war_end_victory_legitimacy_effect = yes
 		}
-
-		#Mandalas gain or lose piety/devotion depending on Decree
-		mandala_war_defeat_effects = yes
 	}
 
 	check_attacker_inheritance_validity = no
@@ -603,7 +505,7 @@ ceremonial_claimant_faction_war = {
 
 	max_attacker_score_from_battles = 50
 	max_defender_score_from_battles = 100
-	
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 
@@ -642,16 +544,12 @@ imperial_policy_faction_war = {
 	}
 
 	on_victory = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_victory_faction_war_effect = yes
 
 		#EP2 Accolade glory gain from winning against higher ranked enemy
 		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
 
-		# LEGITIMACY FROM LOSING FACTION WAR
-		faction_war_end_defeat_legitimacy_effect = yes
-
 		scope:defender = {
-			
 			add_prestige = -500
 
 			add_character_flag = {
@@ -695,20 +593,9 @@ imperial_policy_faction_war = {
 					}
 				}
 				# The faction should have already been destroyed due to all members leaving above, but in case it hasn't, destroy it now.
-				if = {
-					limit = { exists = scope:saved_faction }
-					scope:saved_faction = {
-						destroy_faction = yes
-					}
-				}
+				scope:saved_faction ?= { destroy_faction = yes }
 			}
 		}
-
-		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
-		laamp_as_mercenary_payout_tooltip_effect = yes
-
-		#Mandalas gain or lose piety/devotion depending on Decree
-		mandala_war_victory_effects = yes
 	}
 
 	on_white_peace_desc = {
@@ -716,36 +603,14 @@ imperial_policy_faction_war = {
 	}
 
 	on_white_peace = {
-		scope:attacker = {
-			show_pow_release_message_effect = yes
-			stress_and_fulfillment_impact = {
- 				ambitious = medium_stress_impact_gain
- 				arrogant = medium_stress_impact_gain
- 			}
-		}
-		hidden_effect = {
-			scope:attacker = {
-				add_truce_both_ways = {
-					character = scope:defender
-					days = 1825
-					war = root.war
-					result = white_peace
-				}
-			}
-		}
+		on_white_peace_faction_war_effect = yes
+
 		scope:defender = {
-			stress_and_fulfillment_impact = {
- 				arrogant = medium_stress_impact_gain
- 			}
 			add_character_flag = {
 				flag = recent_imperial_policy_faction_war
 				years = faction_war_white_peace_cooldown
 			}
 		}
-		on_white_peace_faction_revolt_war = yes
-
-		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
-		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -753,7 +618,8 @@ imperial_policy_faction_war = {
 	}
 
 	on_defeat = {
-		scope:attacker = { show_pow_release_message_effect = yes }
+		on_defeat_faction_war_effect = yes
+
 		scope:defender = {
 			add_character_flag = {
 				flag = recent_imperial_policy_faction_war
@@ -761,17 +627,7 @@ imperial_policy_faction_war = {
 			}
 			add_dread = medium_dread_gain
 			add_achievement_flag_effect = { FLAG = achievement_know_your_place_flag }
-
-			# LEGITIMACY FROM WINNING FACTION WAR
-			faction_war_end_victory_legitimacy_effect = yes
 		}
-		on_lost_faction_revolt_war = yes
-
-		# EP3: note gold gained from military assistance/join war contracts and their war contribution threshold
-		laamp_as_mercenary_payout_tooltip_effect = yes
-
-		#Mandalas gain or lose piety/devotion depending on Decree
-		mandala_war_defeat_effects = yes
 	}
 
 	on_invalidated_desc = msg_invalidate_war_title
@@ -796,7 +652,7 @@ imperial_policy_faction_war = {
 
 	max_attacker_score_from_battles = 100
 	max_defender_score_from_battles = 50
-	
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 

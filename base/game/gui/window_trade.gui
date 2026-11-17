@@ -1,0 +1,3684 @@
+﻿#######################################################
+#####################   TRADE   #######################
+#######################################################
+
+window = {
+	name = "trade_window"
+	widgetid = "trade_window"
+
+	parentanchor = top|right
+	movable = no
+	allow_outside = yes
+	layer = windows_layer
+
+	datacontext = "[GetPlayer]"
+	datacontext = "[TradeWindow.AccessTraderCharacterList]"
+
+	using = Window_Size_MainTab
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+		using = Window_Position_MainTab
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+		using = Window_Position_MainTab_Hide
+	}
+
+	state = {
+		name = auto_reset_clients_tab
+		trigger_when = "[And( TradeWindow.IsShowClients, Not( GetPlayer.IsLandedRuler ) )]"
+		on_finish = "[TradeWindow.SetShowTradeRoutes]"
+	}
+
+	trader_character_list_window = {
+		datacontext = "[TradeWindow.AccessTraderCharacterList]"
+		visible_at_creation = no
+		visible = "[TraderCharacterList.IsOpen]"
+	}
+
+	competitors_leaderboard_window = {
+		datacontext = "[TradeWindow.GetCompetitorsLeaderboard]"
+		visible_at_creation = no
+		visible = "[CompetitorsLeaderboard.IsVisible]"
+	}
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 0 30 }
+		margin_right = 13
+
+		widget = {
+			datacontext = "[GetPlayer]"
+			size = { 100% 100% }
+
+			### WINDOW CONTENT
+			vbox = {
+				using = Window_Margins
+
+				header_pattern = {
+					datacontext = "[TradeWindow.AccessTraderCharacterList]"
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "header_text"
+					{
+						text = "TRADE"
+					}
+
+					blockoverride "button_close"
+					{
+						onclick = "[ToggleGameView( 'trade_window' )]"
+					}
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					ignoreinvisible = yes
+					visible = "[Or( CanPlayerUseProfitMode, GetPlayer.IsLandedRuler )]"
+					button_tab = {
+
+						shortcut = "tab_1"
+
+						onclick = "[TradeWindow.SetShowTradeRoutes]"
+						down = "[TradeWindow.IsShowTradeRoutes]"
+
+						alwaystransparent = "[TradeWindow.IsShowTradeRoutes]"
+
+						blockoverride "tab_label"
+						{
+							text = TRADE_WINDOW_TRADE_ROUTES
+							max_width = 110
+						}
+
+						blockoverride "icon_visible" {}
+
+						blockoverride "tab_icon"
+						{
+							texture = "gfx/interface/icons/flat_icons/trade_route.dds"
+							down = "[TradeWindow.IsShowTradeRoutes]"
+							size = { 30 30 }
+						}
+					}
+
+					spacer = { size = { 0 10 } }
+
+					button_tab = {
+						visible = "[CanPlayerUseProfitMode]"
+						onclick = "[TradeWindow.SetShowTradeExperience]"
+						down = "[TradeWindow.IsShowTradeExperience]"
+						shortcut = "tab_2"
+
+						alwaystransparent = "[TradeWindow.IsShowTradeExperience]"
+
+						blockoverride "tab_label"
+						{
+							text = "TRADE_WINDOW_TRADE_EXPERIENCE"
+							max_width = 130
+						}
+
+						blockoverride "icon_visible" {}
+
+						blockoverride "tab_icon"
+						{
+							texture = "gfx/interface/icons/flat_icons/trade_experience.dds"
+							size = { 32 32 }
+							down = "[TradeWindow.IsShowTradeExperience]"
+						}
+					}
+
+					spacer = { size = { 0 10 } }
+
+					button_tab = {
+						visible = "[GetPlayer.IsLandedRuler]"
+						onclick = "[TradeWindow.SetShowClients]"
+						down = "[TradeWindow.IsShowClients]"
+						shortcut = "tab_3"
+
+						alwaystransparent = "[TradeWindow.IsShowClients]"
+
+						blockoverride "tab_label"
+						{
+							text = "TRADE_WINDOW_CLIENTS"
+							max_width = 110
+						}
+
+						blockoverride "icon_visible" {}
+
+						blockoverride "tab_icon"
+						{
+							texture = "gfx/interface/icons/flat_icons/merchant_government.dds"
+							size = { 30 30 }
+							down = "[TradeWindow.IsShowClients]"
+						}
+					}
+
+					expand = {}
+				}
+
+				vbox = {
+					widgetid = "trade_routes_tab_content_tutorial_uses_this"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					margin_left = 15
+					margin = { 0 5 }
+					visible = "[TradeWindow.IsShowTradeRoutes]"
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 10 0 }
+
+						# Trade Stats
+						hbox = {
+							name = "trade_stats_tutorial_uses_this"
+							visible = "[CanPlayerUseProfitMode]"
+							min_height = 40
+							margin = { 8 4 }
+							spacing = 10
+							layoutpolicy_horizontal = expanding
+
+							background = {
+								using = Background_Area_Dark
+
+								modify_texture = {
+									texture = "gfx/interface/component_masks/mask_fade_vertical middle_thick_inverse.dds"
+									blend_mode = alphamultiply
+									alpha = 0.5
+								}
+							}
+
+							expand = {}
+
+							hbox_trade_window_stat = {
+								visible = "[CanPlayerUseProfitMode]"
+								datacontext = "[TradeWindow.GetCharacterMaxTradeGoodsPerRouteTooltip]"
+								blockoverride "icon" {
+									texture = "gfx/interface/icons/trade/icon_trade_goods.dds"
+								}
+								blockoverride "text" {
+									text = "[ValueBreakdown.GetValue]"
+
+								}
+								tooltipwidget = {
+									widget_value_breakdown_tooltip = {
+										blockoverride "header_text"
+										{
+											text = "[max_trade_goods|E]"
+										}
+
+										blockoverride "footer"
+										{
+											vbox = {
+												layoutpolicy_horizontal = expanding
+												margin_bottom = 10
+												spacing = 10
+
+												divider_light = {
+													layoutpolicy_horizontal = expanding
+												}
+
+												text_multi = {
+													autoresize = yes
+													max_width = 200
+													alwaystransparent = no
+													text = "TRADE_GOODS_ON_PROFIT_ROUTE_MAXIMUM"
+												}
+											}
+										}
+									}
+								}
+
+								using = tooltip_se
+							}
+
+							divider_light = {
+								visible = "[CanPlayerUseProfitMode]"
+								size = { 3 10 }
+							}
+
+							hbox_trade_window_stat = {
+								visible = "[CanPlayerUseProfitMode]"
+								datacontext = "[TradeWindow.GetCharacterMaxTradeMarketsPerRouteTooltip]"
+								blockoverride "icon" {
+									texture = "gfx/interface/icons/trade/icon_trade_market.dds"
+								}
+								blockoverride "text" {
+									text = "[ValueBreakdown.GetValue]"
+								}
+								tooltipwidget = {
+									widget_value_breakdown_tooltip = {
+
+										blockoverride "header_text"
+										{
+											text = "[max_trade_markets|E]"
+										}
+
+									}
+								}
+
+								using = tooltip_se
+							}
+
+							divider_light = {
+								visible = "[CanPlayerUseProfitMode]"
+								size = { 3 10 }
+							}
+
+							hbox_trade_window_stat = {
+								visible = "[CanPlayerUseProfitMode]"
+								datacontext = "[TradeWindow.GetCharacterTradeCompetitivenessTooltip]"
+								blockoverride "icon" {
+									texture = "gfx/interface/icons/trade/icon_trade_competitiveness.dds"
+								}
+								blockoverride "text" {
+									text = "[ValueBreakdown.GetValue]"
+								}
+								tooltipwidget = {
+									widget_value_breakdown_tooltip = {}
+								}
+
+								using = tooltip_se
+							}
+
+							divider_light = {
+								visible = "[CanPlayerUseProfitMode]"
+								size = { 3 10 }
+							}
+
+							hbox_trade_window_stat = {
+								name = "competitive_pressure"
+								visible = "[And( GetPlayer.HasPerk( GetPerk( 'serve_the_crown_perk' ) ), GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_merchant' ) )]"
+								blockoverride "icon" {
+									texture = "gfx/interface/icons/trade/icon_trade_competitive_pressure.dds"
+								}
+								blockoverride "text" {
+									text = "HUD_COMPETITIVE_PRESSURE"
+								}
+								tooltip = "HUD_COMPETITIVE_PRESSURE_TOOLTIP"
+								using = tooltip_se
+							}
+
+							divider_light = {
+								visible = "[And( GetPlayer.HasPerk( GetPerk( 'serve_the_crown_perk' ) ), GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_merchant' ) )]"
+								size = { 3 10 }
+							}
+
+							hbox_trade_window_stat = {
+								visible = "[CanPlayerUseProfitMode]"
+								datacontext = "[TradeWindow.GetCharacterMaxRouteLengthTooltip]"
+								blockoverride "icon" {
+									texture = "gfx/interface/icons/trade/icon_trade_route_length.dds"
+								}
+								blockoverride "text" {
+									text = "[ValueBreakdown.GetValue]"
+								}
+								tooltipwidget = {
+									widget_value_breakdown_tooltip = {
+										blockoverride "header_text"
+										{
+											text = "[route_length|E]"
+										}
+									}
+								}
+
+								using = tooltip_se
+							}
+
+							divider_light = {
+								visible = "[And(Character.CanOwnTradePosts(), Character.GetGovernment.HasGovernmentFlag( 'government_has_trade_posts' ) )]"
+								size = { 3 10 }
+							}
+
+							hbox_trade_posts = {
+								margin = { 4 4 }
+								using = tooltip_se
+							}
+
+							expand = {}
+						}
+					}
+
+					vbox = {
+						name = "routes_area"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						margin = { 10 0 }
+						spacing = 4
+
+						spacer = {
+							size = { 0 5 }
+						}
+
+						scrollbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+
+							blockoverride "scrollbox_background"
+							{
+								background = {
+									visible = "[GetPlayer.GetCapitalLocation.GetTitle.GetTradeMarket.IsValid]"
+									texture = "[GetIllustration( 'trade_market_bg' ).GetTexture( GetPlayer.GetCapitalLocation.GetTitle.GetTradeMarket.GetLocationTitle.MakeScope )]"
+									fittype = end
+									alpha = 0.3
+									using = Mask_Rough_Edges
+									modify_texture = {
+										texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+										blend_mode = alphamultiply
+										mirror = vertical
+									}
+								}
+							}
+
+							blockoverride "scrollbox_content"
+							{
+								# Distribution Routes Header
+								text_label_left = {
+									visible = "[Not( CanPlayerUseProfitMode )]"
+									datacontext = "[TradeWindow.GetCharacterMaxTradeRoutesTooltip]"
+									layoutpolicy_horizontal = expanding
+									autoresize = no
+									text = "YOUR_DISTRIBUTION_ROUTES_TITLE"
+
+									tooltipwidget = {
+										widget_value_breakdown_tooltip = {
+											blockoverride "header_text"
+											{
+												text = "game_concept_distribution_routes"
+											}
+										}
+									}
+
+									using = tooltip_se
+								}
+
+								spacer = { size = { 0 10 } }
+
+								# Distribution Routes List
+								vbox = {
+									datamodel = "[TradeWindow.GetDistributionRoutes]"
+									layoutpolicy_horizontal = expanding
+									spacing = 20
+									item = {
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											layoutpolicy_vertical = expanding
+
+											widget_distribution_trade_route_item = {
+												datacontext = "[TradeRouteItem.GetDisplayCategory]"
+											}
+										}
+									}
+								}
+
+								# Distribution Routes Empty State
+								hbox = {
+									visible = "[And( Not( DataModelHasItems( TradeWindow.GetDistributionRoutes ) ), Not( CanPlayerUseProfitMode ) )]"
+									layoutpolicy_horizontal = expanding
+									margin = { 0 50 }
+
+									background = {
+										using = Background_Area
+										alpha = 0.4
+									}
+
+									background = {
+										using = Background_Area_Dark
+										alpha = 0.4
+
+										modify_texture = {
+											texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+											mirror = vertical
+											blend_mode = alphamultiply
+										}
+
+										modify_texture = {
+											texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+											spriteType = Corneredtiled
+											spriteborder = { 25 25 }
+											blend_mode = alphamultiply
+										}
+									}
+
+									background = {
+										using = Background_Trade_Entry_Pattern
+									}
+
+									text_single = {
+										text = "NO_DISTRIBUTION_ROUTES"
+										default_format = "#weak"
+									}
+								}
+
+								# Profit Routes Header
+								text_label_left = {
+									visible = "[CanPlayerUseProfitMode]"
+									datacontext = "[TradeWindow.GetCharacterMaxTradeRoutesTooltip]"
+									layoutpolicy_horizontal = expanding
+									autoresize = no
+									text = "YOUR_PROFIT_ROUTES_TITLE"
+
+									tooltipwidget = {
+										widget_value_breakdown_tooltip = {
+											blockoverride "header_text"
+											{
+												text = "game_concept_profit_routes"
+											}
+										}
+									}
+
+									using = tooltip_se
+								}
+
+								spacer = { size = { 0 10 } }
+
+								# Profit Routes List
+								vbox = {
+									datamodel = "[TradeWindow.GetProfitRoutes]"
+									layoutpolicy_horizontal = expanding
+									spacing = 15
+									item = {
+										hbox = {
+											datacontext = "[TradeRouteItem.GetMaxTradeMarketsOnRouteTooltip]"
+											layoutpolicy_horizontal = expanding
+											layoutpolicy_vertical = expanding
+
+											widget_profit_trade_route_item = {
+												datacontext = "[TradeRouteItem.GetFocusTradeGoodNeedCategory]"
+											}
+										}
+									}
+								}
+
+								# Profit Routes Empty State
+								hbox = {
+									visible = "[And( Not( DataModelHasItems( TradeWindow.GetProfitRoutes ) ), CanPlayerUseProfitMode )]"
+									layoutpolicy_horizontal = expanding
+									margin = { 0 50 }
+
+									background = {
+										using = Background_Area
+										alpha = 0.4
+									}
+
+									background = {
+										using = Background_Area_Dark
+										alpha = 0.4
+
+										modify_texture = {
+											texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+											mirror = vertical
+											blend_mode = alphamultiply
+										}
+
+										modify_texture = {
+											texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+											spriteType = Corneredtiled
+											spriteborder = { 25 25 }
+											blend_mode = alphamultiply
+										}
+									}
+
+									background = {
+										using = Background_Trade_Entry_Pattern
+									}
+
+									text_single = {
+										text = "NO_PROFIT_ROUTES"
+										default_format = "#weak"
+									}
+								}
+
+								spacer = { size = { 0 15 } }
+
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 5
+
+									button_primary_big = {
+										name = "create_profit_route"
+										size = { 0 56 }
+										enabled = "[TradeWindow.CanPlanNewTradeRoute]"
+										layoutpolicy_horizontal = expanding
+										text = "TRADE_WINDOW_CREATE_ROUTE_BUTTON"
+										tooltip = "TRADE_WINDOW_CREATE_ROUTE_BUTTON_TT"
+										tooltip_when_disabled = "[TradeWindow.GetPlanNewTradeRouteDisabledTooltip]"
+										onclick = "[TradeWindow.PlanNewTradeRoute]"
+
+										margin_widget = {
+											parentanchor = center
+											size = { 99% 95% }
+											margin = { 5 5 }
+											scissor = yes
+
+											proportional_icon = {
+												visible = "[GetPlayer.GetCapitalLocation.GetTitle.GetTradeMarket.IsValid]"
+												parentanchor = top|hcenter
+												size = { 532 213 }
+												position = { 0 -110 }
+												texture = "gfx/interface/illustrations/decisions/tgp_silk_road.dds"
+												alpha = 0.5
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_horizontal_middle_inverse.dds"
+													blend_mode = alphamultiply
+												}
+											}
+										}
+										margin_widget = {
+											parentanchor = center
+											size = { 100% 100% }
+											margin = { 2 2 }
+											icon = {
+												parentanchor = center
+												size = { 100% 100% }
+												texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+												spriteType = Corneredtiled
+												spriteborder = { 5 5 }
+											}
+										}
+									}
+								}
+
+								spacer = { size = { 0 20 } }
+
+								# Commission Routes
+								text_label_left = {
+									visible = "[Character.CanAcceptCommissionRoutes]"
+									layoutpolicy_horizontal = expanding
+									autoresize = no
+									text = "YOUR_COMMISSION_ROUTES_TITLE"
+								}
+
+								text_label_left = {
+									visible = "[Character.CanIssueCommissionRoutes]"
+									layoutpolicy_horizontal = expanding
+									autoresize = no
+									text = "YOUR_ISSUED_COMMISSION_ROUTES_TITLE"
+								}
+
+								spacer = { size = { 0 10 } }
+
+								# Commission Routes List
+								vbox = {
+									layoutpolicy_horizontal = expanding
+
+									vbox = {
+										visible = "[Character.CanAcceptCommissionRoutes]"
+										datamodel = "[TradeWindow.GetCommissionedRoutes]"
+										layoutpolicy_horizontal = expanding
+										spacing = 15
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+
+												widget_commission_trade_route_item = {}
+											}
+										}
+									}
+
+									vbox = {
+										visible = "[Character.CanIssueCommissionRoutes]"
+										datamodel = "[TradeWindow.GetIssuedCommissionRoutes]"
+										layoutpolicy_horizontal = expanding
+										spacing = 15
+										item = {
+											hbox = {
+												layoutpolicy_horizontal = expanding
+												layoutpolicy_vertical = expanding
+
+												widget_commission_trade_route_item = {}
+											}
+										}
+									}
+								}
+
+								# Commission(ed) Routes Empty State
+								hbox = {
+									visible = "[And( Not( DataModelHasItems( TradeWindow.GetIssuedCommissionRoutes ) ), Character.CanIssueCommissionRoutes )]"
+									layoutpolicy_horizontal = expanding
+									margin = { 0 50 }
+
+									background = {
+										using = Background_Area
+										alpha = 0.4
+									}
+
+									background = {
+										using = Background_Area_Dark
+										alpha = 0.4
+
+										modify_texture = {
+											texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+											mirror = vertical
+											blend_mode = alphamultiply
+										}
+
+										modify_texture = {
+											texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+											spriteType = Corneredtiled
+											spriteborder = { 25 25 }
+											blend_mode = alphamultiply
+										}
+									}
+
+									background = {
+										using = Background_Trade_Entry_Pattern
+									}
+
+									text_multi = {
+										autoresize = yes
+										max_width = 400
+										align = center
+										text = "NO_COMMISSION_ROUTES_RULER_PERSPECTIVE"
+										default_format = "#weak"
+									}
+								}
+
+								hbox = {
+									visible = "[And( Not( DataModelHasItems( TradeWindow.GetCommissionedRoutes ) ), Character.CanAcceptCommissionRoutes )]"
+									layoutpolicy_horizontal = expanding
+									margin = { 0 50 }
+
+									background = {
+										using = Background_Area
+										alpha = 0.4
+									}
+
+									background = {
+										using = Background_Area_Dark
+										alpha = 0.4
+
+										modify_texture = {
+											texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+											mirror = vertical
+											blend_mode = alphamultiply
+										}
+
+										modify_texture = {
+											texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+											spriteType = Corneredtiled
+											spriteborder = { 25 25 }
+											blend_mode = alphamultiply
+										}
+									}
+
+									text_single = {
+										text = "NO_COMMISSION_ROUTES_MERCHANT_PERSPECTIVE"
+										default_format = "#weak"
+									}
+								}
+
+								spacer = {
+									size = { 0 20 }
+								}
+
+								vbox = {
+									visible = "[Character.IsLandedRuler]"
+									layoutpolicy_horizontal = expanding
+									margin_top = 15
+									spacing = 10
+
+									text_label_left = {
+										layoutpolicy_horizontal = expanding
+										autoresize = no
+										text = "YOUR_TRADE_MARKETS_TITLE"
+									}
+
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										spacing = 15
+
+										datamodel = "[TradeWindow.GetRelevantTradeMarkets]"
+										item = {
+											vbox_relevant_trade_market_item = {}
+										}
+									}
+
+									hbox = {
+										visible = "[IsDataModelEmpty( TradeWindow.GetRelevantTradeMarkets )]"
+										layoutpolicy_horizontal = expanding
+										margin = { 0 50 }
+
+										text_single = {
+											text = "TRADE_WINDOW_NO_RELEVANT_TRADE_MARKETS"
+											default_format = "#weak"
+										}
+									}
+								}
+							}
+						}
+
+						spacer = {
+							size = { 0 7 }
+						}
+
+						hbox = {
+							visible = "[CanPlayerUseProfitMode]"
+							layoutpolicy_horizontal = expanding
+
+							expand = {}
+							button_sidepanel_left = {
+								layoutpolicy_horizontal = expanding
+								name = "open_competitors_button"
+								onclick = "[TradeWindow.GetCompetitorsLeaderboard.Toggle]"
+								alpha = "[Select_float( TradeWindow.GetCompetitorsLeaderboard.HasItems, '(float)1.0', '(float)0.5' )]"
+								tooltip = "TRADE_WINDOW_OPEN_COMPETITORS_BUTTON_TOOLTIP"
+								using = tooltip_ne
+								blockoverride "button_text"
+								{
+									text = "TRADE_WINDOW_OPEN_COMPETITORS_BUTTON"
+									max_width = 180
+								}
+							}
+							expand = {}
+						}
+					}
+				}
+
+				scrollbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[TradeWindow.IsShowTradeExperience]"
+
+					blockoverride "scrollbox_content"
+					{
+						vbox = {
+							datamodel = "[TradeWindow.GetTradeCategories]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+
+							spacing = 15
+
+							item = {
+								vbox_trade_expertise_entry = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+								}
+							}
+						}
+					}
+				}
+
+				vbox = {
+					visible = "[And( TradeWindow.IsShowClients, GetPlayer.IsLandedRuler )]"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					datacontext = "[TradeWindow.GetClientCharacterList]"
+					margin = { 8 8 }
+					spacing = 8
+
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 8
+
+						button_decision_entry = {
+							name = "invite_merchants_decision"
+							datacontext = "[GetDecisionWithKey( 'invite_merchants_decision' )]"
+							visible = "[Decision.IsShownForPlayer]"
+							layoutpolicy_horizontal = expanding
+
+							onclick = "[TradeWindow.OnDecisionClick( Decision.Self )]"
+
+							blockoverride "button_size"
+							{
+								size = { 200 45 }
+							}
+						}
+
+						button_decision_entry = {
+							name = "gdp_sponsor_merchant_company_decision"
+							datacontext = "[GetDecisionWithKey( 'gdp_sponsor_merchant_company_decision' )]"
+							visible = "[Decision.IsShownForPlayer]"
+							layoutpolicy_horizontal = expanding
+
+							onclick = "[TradeWindow.OnDecisionClick( Decision.Self )]"
+
+							blockoverride "button_size"
+							{
+								size = { 200 45 }
+							}
+						}
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 8 0 }
+						text_label_left = {
+							text = "[client_merchants|E]"
+						}
+
+						expand = {}
+
+						text_single = {
+							text = "TRADE_WINDOW_CLIENTS_SORTED_BY_COMPANY_SIZE"
+							align = nobaseline
+							default_format = "#weak"
+						}
+					}
+
+					vbox_character_list = {
+						datacontext = "[ClientCharacterList.AccessCharacterList]"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						blockoverride "sort_buttons" {}
+						blockoverride "character_count" {}
+
+						blockoverride "scrollbox_empty_visibility"
+						{
+							layoutpolicy_vertical = expanding
+							visible = "[Not( CharacterSelectionList.HasItems )]"
+							text = "TRADE_WINDOW_CLIENTS_EMPTY"
+						}
+
+						blockoverride "container_implementation"
+						{
+							vbox = {
+								name = "characters_grid"
+								datamodel = "[CharacterSelectionList.GetList]"
+								visible = "[Not( CharacterSelectionList.IsBuildingList )]"
+								layoutpolicy_horizontal = expanding
+								spacing = 4
+
+								item = {
+									hbox_trade_client_list_item = {}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+######################################################
+################ TYPES AND TEMPLATES #################
+######################################################
+
+types TradeTypes
+{
+	type trade_route_goods_list = hbox {
+		layoutpolicy_horizontal = expanding
+
+		hbox = {
+			visible = "[Not( IsDataModelEmpty( TradeRoute.GetTradeGoods))]"
+			datamodel = "[TradeRoute.GetTradeGoods]"
+			spacing = 10
+
+			item = {
+				icon = {
+					visible = "[TradeRoute.HasAnyTransactionForGood( TradeGoodType.Self )]"
+					block "good_icon_size" {
+						size = { 40	40 }
+					}
+					tooltipwidget = trade_good_type_tooltip
+					texture = "[TradeGoodType.GetIcon]"
+
+					text_single = {
+						parentanchor = bottom|right
+						position = { 2 2 }
+						text = "[TradeRoute.GetSellAmountForGood( TradeGoodType.Self )|V1^]"
+						align = nobaseline
+						alwaystransparent = yes
+
+						block "good_amount_text" {
+						}
+
+						background = {
+							using = Background_Area_Dark
+
+							margin = { 5 0 }
+						}
+					}
+				}
+			}
+		}
+
+		expand = {}
+	}
+
+	type widget_trade_header = widget_header_with_picture {
+		layoutpolicy_horizontal = expanding
+
+		blockoverride "header_text" {
+			text = "TRADE"
+		}
+
+		blockoverride "size" {
+			size = { 100% 130 }
+		}
+
+		blockoverride "header_size"
+		{
+			size = { 100% 40 }
+		}
+
+		blockoverride "header_position" {
+			position = { 0 -12 }
+		}
+
+		blockoverride "header_background_visibility" {
+			visible = no
+		}
+
+		blockoverride header_pattern_visibility {
+			visible = no
+		}
+
+		blockoverride header_label_visibility {
+			visible = yes
+		}
+
+		blockoverride "illustration_texture" {
+			texture = "gfx/interface/skinned/illustrations/header_illustrations/header_my_realm.dds"
+
+			modify_texture = {
+				texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+				blend_mode = alphamultiply
+			}
+		}
+
+		blockoverride "button_close"
+		{
+			onclick = "[ToggleGameView( 'trade_window' )]"
+		}
+	}
+
+	type widget_trade_value_breakdown_hbox = hbox {
+		layoutpolicy_horizontal = expanding
+		text_single = {
+			block "trade_type_label" {
+			}
+			align = left
+		}
+		spacer = { size = { 5 0 } }
+
+		text_single = {
+			block "trade_type_datacontext" {
+				datacontext = "[TradeWindow.GetCharacterMaxTradeGoodsPerRouteTooltip]"
+			}
+			text = "[ValueBreakdown.GetValue]"
+			default_format = "#underline"
+			align = left
+
+
+			tooltipwidget = {
+				widget_value_breakdown_tooltip = {}
+			}
+		}
+		expand = {}
+	}
+
+	type widget_profit_trade_route_item = widget {
+		datacontext = "[TradeRouteItem.GetTradeRoute]"
+		datacontext = "[TradeRouteItem.GetFocusTradeGoodNeedCategory]"
+		layoutpolicy_horizontal = expanding
+		size = { 510 200 }
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			using = Background_Trade_Route_Item_Frame
+
+			background = {
+				visible = "[And( Not( TradeRoute.IsCommissionRoute ), TradeRouteItem.GetTrader.GetCharacter.IsValid )]"
+				using = Background_Trade_Good_Banner_Right_Tinted
+				margin_bottom = -160
+				margin_left = -3
+				margin_top = 2
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				color = "[TradeGoodCategory.GetColor]"
+			}
+
+			background = {
+				visible = "[And( Not( TradeRoute.IsCommissionRoute ), Not( TradeRouteItem.GetTrader.GetCharacter.IsValid ) )]"
+				using = Background_Trade_Good_Banner_Right_Tinted
+				margin_bottom = -160
+				margin_left = -3
+				margin_top = 2
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				color = "[TradeGoodCategory.GetColor]"
+			}
+
+			background = {
+				visible = "[TradeRoute.IsCommissionRoute]"
+				using = Background_Trade_Good_Banner_Right_Tinted
+				margin_bottom = -170
+				margin_left = -3
+				margin_top = 2
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				color = "[TradeGoodCategory.GetColor]"
+			}
+
+			background = {
+				using = Background_Trade_Entry_Category
+				visible = "[Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ), TradeGoodCategory.IsActivelyTradedGood( Character.Self ))]"
+				color = "[TradeGoodCategory.GetColor]"
+			}
+
+			background = {
+				using = Background_Trade_Entry_Pattern
+				margin_top = -30
+			}
+
+			# Header
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				maximumsize = { 550 40 }
+				margin = { 10 5 }
+				spacing = 10
+
+				warning_icon = {
+					visible = "[TradeRoute.IsSuspended]"
+					size = { 30 30 }
+					tooltip = "TRADE_ROUTE_TOOLTIP_SUSPENDED"
+				}
+
+				warning_icon = {
+					visible = "[And3( TradeRoute.IsProfitRoute, Not( TradeRoute.IsSuspended ), LessThanOrEqualTo_CFixedPoint( TradeRoute.GetGoldEarnedLastTick, '(CFixedPoint)0' ) )]"
+					size = { 30 30 }
+					tooltip = "TRADE_ROUTE_NO_INCOME_TT"
+				}
+
+				text_single = {
+					text = "[TradeRoute.GetNameNoTooltip]"
+					align = left|nobaseline
+					default_format = "#clickable"
+				}
+				expand = {}
+
+			}
+
+			spacer = {
+				size = { 0 5 }
+			}
+
+			# Content
+			hbox = {
+				datacontext = "[TradeRouteItem.GetTrader]"
+				layoutpolicy_horizontal = expanding
+
+				margin = { 2 2 }
+				margin_right = 10
+				spacing = 5
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					margin_left = 10
+					ignoreinvisible = yes
+
+					# Only goods and stops are gated, modifiers stay visible when the route has no goods
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						margin_top = 4
+						spacing = 5
+						min_height = 100
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							ignoreinvisible = yes
+
+							# Goods
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								spacing = 10
+								visible = "[Not( IsDataModelEmpty( TradeRoute.GetTradeGoods))]"
+
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									spacing = 5
+									ignoreinvisible = yes
+									hbox = {
+										datamodel = "[TradeRoute.GetTradeGoods]"
+										spacing = 5
+
+										item = {
+											icon = {
+												size = { 42 42 }
+												tooltipwidget = trade_good_type_tooltip_with_transactions
+												texture = "[TradeGoodType.GetIcon]"
+
+												text_single = {
+													parentanchor = bottom|right
+													position = { 2 2 }
+													text = "[TradeRoute.GetSellAmountForGood( TradeGoodType.Self )|V1^]"
+													align = nobaseline
+													alwaystransparent = yes
+
+													background = {
+														using = Background_Area_Dark
+
+														margin = { 5 0 }
+													}
+												}
+											}
+										}
+									}
+
+									# Available empty slots within the route's current max goods.
+									hbox = {
+										visible = "[GreaterThan_int32( Subtract_int32( TradeRouteItem.GetMaxTradeGoodsOnRouteTooltip.GetIntegerValue, GetDataModelSize(TradeRoute.GetTradeGoods) ), '(int32)0' )]"
+										datamodel = "[RepeatedItem( Max_int32( Subtract_int32( TradeRouteItem.GetMaxTradeGoodsOnRouteTooltip.GetIntegerValue, GetDataModelSize(TradeRoute.GetTradeGoods )), '(int32)0' ) )]"
+										spacing = 5
+
+										item = {
+											widget_trade_route_good_slot_available = {}
+										}
+									}
+
+									# Locked empty slots: past the route's current max, up to the absolute goods cap.
+									hbox = {
+										datamodel = "[RepeatedItem( Max_int32( Subtract_int32( GetDefine( 'NTrade', 'MAX_TRADE_GOODS_ON_ROUTE_CAP' ), TradeRouteItem.GetMaxTradeGoodsOnRouteTooltip.GetIntegerValue ), '(int32)0' ) )]"
+										spacing = 5
+
+										item = {
+											widget_trade_route_good_slot_locked = {}
+										}
+									}
+									expand = {}
+								}
+
+								hbox = {
+									layoutpolicy_horizontal = expanding
+
+									hbox = {
+										name = "used_stops"
+										datamodel = "[TradeRouteItem.GetMarkets]"
+										spacing = 7
+										alwaystransparent = no
+
+										item = {
+											hbox = {
+												datacontext = "[TradeMarketItem.GetTradeMarket]"
+												tooltip = "TRADE_ROUTE_MARKET_STOP_TOOLTIP"
+												using = tooltip_se
+
+												button_icon = {
+													size = { 22 22 }
+													texture = "gfx/interface/icons/flat_icons/map_modes/trade_markets.dds"
+													button_ignore = none
+													using = TradeMarket_Mouse_Entry
+													onclick = "[OpenGameViewData( 'trade_market_window', TradeMarket.Self )]"
+
+													modify_texture = {
+														alpha = 0.4
+														using = Color_Black
+														blend_mode = normal
+														visible = "[Not( TradeRoute.HasAnyTransactionInMarket( TradeMarket.Self ) )]"
+													}
+
+													icon = {
+														size = { 15 15 }
+														parentanchor = bottom|right
+														position = { 3 3 }
+														alwaystransparent = yes
+														texture = "gfx/interface/icons/symbols/icon_alert.dds"
+														visible = "[Not( TradeRoute.HasAnyTransactionInMarket( TradeMarket.Self ) )]"
+													}
+
+													icon = {
+														size = { 15 15 }
+														parentanchor = top|right
+														position = { 3 -3 }
+														alwaystransparent = yes
+														texture = "gfx/interface/icons/symbols/icon_alert.dds"
+														visible = "[Not( IsDataModelEmpty( TradeMarketItem.GetBlockingMonopolies ) )]"
+													}
+												}
+											}
+										}
+									}
+
+									spacer = {
+										size = { 7 0 }
+									}
+
+									hbox = {
+										name = "unused_stops"
+										# We clamp here because RepeatedItem does not guard a negative count when stops exceed the maximum
+										datamodel = "[RepeatedItem( Max_int32( Subtract_int32( TradeRouteItem.GetMaxTradeMarketsOnRouteTooltip.GetIntegerValue, TradeRouteItem.GetMarketsSize ), '(int32)0' ) )]"
+										spacing = 7
+										alwaystransparent = no
+
+										item = {
+											icon_flat_standard = {
+												size = { 22 22 }
+												alpha = 0.5
+												texture = "gfx/interface/icons/flat_icons/map_modes/trade_markets.dds"
+											}
+										}
+									}
+
+									expand = {}
+								}
+							}
+
+							expand = {}
+
+							vbox = {
+								layoutpolicy_vertical = expanding
+								margin_top = 5
+
+								flowcontainer_trade_route_modifiers = {}
+								expand = {}
+							}
+						}
+
+						# Trade Route Capacity
+						hbox = {
+							# A distribution route has no capacity limit, so we hide this row for it
+							# This is a property of the route, not of what the player is allowed to build
+							visible = "[And( Not( TradeRoute.IsDistributionRoute ), Not( TradeRoute.IsCommissionRoute ) )]"
+							datacontext = "[TradeRouteItem.GetTradeCapacityTooltip]"
+							layoutpolicy_horizontal = expanding
+							ignoreinvisible = yes
+
+							hbox = {
+								spacing = 9
+								background = {
+									using = Background_Area_Dark
+									margin = { 10 5 }
+									alpha = 0.6
+
+									modify_texture = {
+										texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+										mirror = horizontal
+										blend_mode = alphamultiply
+									}
+
+									modify_texture = {
+										texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+										mirror = horizontal
+										blend_mode = alphamultiply
+									}
+								}
+
+								# Profit
+								text_single = {
+									visible = "[And( GetPlayer.CanCreateProfitTradeRoutes, Not( TradeRoute.IsCommissionRoute ) )]"
+									text = "TRADE_ROUTE_ENTRY_ACTUAL_PROFIT"
+									align = nobaseline
+									using = tooltip_se
+
+									tooltipwidget = {
+										trade_route_transactions_tooltip = {}
+									}
+								}
+
+								divider_light = {
+									visible = "[And( GetPlayer.CanCreateProfitTradeRoutes, Not( TradeRoute.IsCommissionRoute ) )]"
+									layoutpolicy_vertical = expanding
+								}
+
+								text_single = {
+									text = "TRADE_CAPACITY_LABEL"
+									align = nobaseline
+								}
+								text_single = {
+									# Used is what the route bought at its last monthly update, max is its capacity now, so used can exceed max until the next update
+									text = "[SelectLocalization( GreaterThan_CFixedPoint( TradeRouteItem.GetTotalPurchased, ValueBreakdown.GetFixedPointValue ), 'TRADE_ROUTE_ENTRY_USED_CAPACITY_OVER', 'TRADE_ROUTE_ENTRY_USED_CAPACITY' )]"
+									default_format = "#underline"
+									align = nobaseline
+									using = tooltip_se
+
+									tooltipwidget = {
+										widget_value_breakdown_tooltip = {
+											blockoverride "header"
+											{
+												text_label_left = {
+													layoutpolicy_horizontal = expanding
+													text = "[capacity|E]"
+													default_format = "#T"
+												}
+											}
+
+											blockoverride "footer"
+											{
+												vbox = {
+													visible = "[GreaterThan_CFixedPoint( TradeRouteItem.GetTotalPurchased, ValueBreakdown.GetFixedPointValue )]"
+													layoutpolicy_horizontal = expanding
+													margin_bottom = 10
+													spacing = 10
+
+													divider_light = {
+														layoutpolicy_horizontal = expanding
+													}
+
+													text_multi = {
+														autoresize = yes
+														max_width = 275
+														alwaystransparent = no
+														text = "TRADE_ROUTE_ENTRY_USED_CAPACITY_OVER_TT"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+							spacer = {
+								size = { 5 0 }
+							}
+							icon = {
+								size = { 18 18 }
+								texture = "gfx/interface/icons/symbols/icon_alert.dds"
+								visible = "[GreaterThan_CFixedPoint( TradeRouteItem.GetTotalPurchased, ValueBreakdown.GetFixedPointValue )]"
+								tooltip = "TRADE_ROUTE_ENTRY_USED_CAPACITY_OVER_TT"
+							}
+							expand = {}
+						}
+						expand = {}
+					}
+				}
+
+				vbox = {
+					layoutpolicy_vertical = expanding
+
+					# Trader
+					hbox = {
+						layoutpolicy_vertical = expanding
+
+						spacer = { size = { 3 0 } }
+
+						# Trade Expertise
+						vbox_trade_route_expertise = {
+							visible = "[TradeRoute.HasPrimaryGood]"
+						}
+						spacer = { size = { 3 0 } }
+
+						vbox = {
+							layoutpolicy_vertical = expanding
+							datacontext = "[TradeRouteItem.GetTrader.GetCharacter]"
+							visible = "[Character.IsValid]"
+
+							portrait_head_small = {}
+
+							hbox = {
+								text_label_center = {
+									text = "[trader|E]"
+								}
+
+								spacer = { size = { 5 0 } }
+
+								icon = {
+									datacontext = "[TradeRouteItem.GetTrader]"
+									datacontext = "[TraderItem.GetSelectedTask]"
+									size = { 25 25 }
+									texture = "[TraderTaskItem.GetIcon]"
+									tooltip = TRADER_ACTIVE_TASK
+								}
+							}
+							expand = {}
+						}
+
+						vbox = {
+							layoutpolicy_vertical = expanding
+							datacontext = "[TradeRouteItem.GetTrader.GetCharacter]"
+							visible = "[And3(Not( Character.IsValid ), GetPlayer.HasCompanyTitle, Not( TradeRoute.IsCommissionRoute ))]"
+
+							vbox = {
+								background = {
+									using = Background_Area_Dark
+									margin = { -5 -5 }
+									alpha = 0.7
+								}
+								portrait_map = {
+									blockoverride "portrait_button" {
+										alwaystransparent = yes
+										tooltip_visible = no
+									}
+								}
+							}
+
+							text_label_center = {
+								text = "[trader|E]"
+							}
+							expand = {}
+						}
+					}
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+				margin = { 5 5 }
+
+				button_standard = {
+					using = Button_Edit_Trade_Route
+					layoutpolicy_horizontal = expanding
+					layoutstretchfactor_horizontal = 2
+
+					hbox = {
+						parentanchor = center
+						spacing = 3
+
+						expand = {}
+
+						icon = {
+							size = { 28 28 }
+							texture = "gfx/interface/icons/flat_icons/replace.dds"
+							alwaystransparent = yes
+
+							modify_texture = {
+								texture = "gfx/interface/colors/gold.dds"
+								alpha = 0.8
+							}
+						}
+
+						text_single = {
+							margin_bottom = 2
+							text = EDIT_TRADE_ROUTE_LABEL
+							align = nobaseline
+							default_format = "#clickable"
+							alwaystransparent = yes
+						}
+
+						expand = {}
+					}
+				}
+
+				button_standard = {
+					layoutpolicy_horizontal = expanding
+					layoutstretchfactor_horizontal = 1
+					visible = "[IsValidCommand( TradeRoute.DestroyTradeRouteCommand )]"
+					onclick = "[CreateCommandPopup( TradeRoute.DestroyTradeRouteCommand )]"
+					datacontext = "[TradeRouteItem.GetTradeRoute]"
+					tooltip = "REMOVE_ROUTE_TT"
+
+					hbox = {
+						parentanchor = center
+
+						expand = {}
+
+						icon = {
+							size = { 28 28 }
+							texture = "gfx/interface/icons/flat_icons/cancel.dds"
+							alwaystransparent = yes
+
+							modify_texture = {
+								texture = "gfx/interface/colors/gold.dds"
+								alpha = 0.8
+							}
+						}
+
+						text_single = {
+							margin_bottom = 2
+							text = REMOVE_ROUTE_LABEL
+							align = nobaseline
+							default_format = "#clickable"
+							alwaystransparent = yes
+						}
+
+						expand = {}
+					}
+				}
+			}
+		}
+	}
+
+	type widget_distribution_trade_route_item = widget {
+		datacontext = "[TradeRouteItem.GetTradeRoute]"
+		datacontext = "[TradeRouteItem.GetDisplayCategory]"
+		layoutpolicy_horizontal = expanding
+		size = { 0 135 }
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			using = Background_Trade_Route_Item_Frame
+
+			background = {
+				using = Background_Trade_Entry_Category
+				color = "[TradeGoodCategory.GetColor]"
+			}
+
+			background = {
+				using = Background_Trade_Entry_Pattern
+				margin_top = -30
+			}
+
+			# Header
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				maximumsize = { 550 40 }
+				margin = { 10 0 }
+				margin_top = 3
+				spacing = 10
+
+				background = {
+					using = Background_Trade_Good_Banner_Right_Tinted
+					margin_left = -1
+					margin = { 0 5 }
+					margin_bottom = 10
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					color = "[TradeGoodCategory.GetColor]"
+				}
+
+				text_single = {
+					text = "[TradeRoute.GetNameNoTooltip]"
+					align = left|nobaseline
+					default_format = "#clickable"
+				}
+
+				expand = {}
+			}
+
+			# Content
+			hbox = {
+				layoutpolicy_horizontal = expanding
+
+				margin = { 2 2 }
+				margin_right = 10
+				spacing = 5
+
+				# Goods
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					margin = { 10 10 }
+
+					trade_route_goods_list = {}
+				}
+
+				# Modifiers
+				vbox = {
+					layoutpolicy_vertical = expanding
+					margin_top = 5
+
+					flowcontainer_trade_route_modifiers = {}
+					expand = {}
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+				margin = { 10 0 }
+				margin_bottom = 5
+
+				button_standard = {
+					using = Button_Edit_Trade_Route
+					layoutpolicy_horizontal = expanding
+					layoutstretchfactor_horizontal = 2
+
+					hbox = {
+						parentanchor = center
+						spacing = 3
+
+						expand = {}
+
+						icon = {
+							size = { 28 28 }
+							texture = "gfx/interface/icons/flat_icons/replace.dds"
+							alwaystransparent = yes
+
+							modify_texture = {
+								texture = "gfx/interface/colors/gold.dds"
+								alpha = 0.8
+							}
+						}
+
+						text_single = {
+							margin_bottom = 2
+							text = EDIT_TRADE_ROUTE_LABEL
+							align = nobaseline
+							default_format = "#clickable"
+							alwaystransparent = yes
+						}
+
+						expand = {}
+					}
+				}
+
+				button_standard = {
+					layoutpolicy_horizontal = expanding
+					layoutstretchfactor_horizontal = 1
+					visible = "[IsValidCommand( TradeRoute.DestroyTradeRouteCommand )]"
+					onclick = "[CreateCommandPopup( TradeRoute.DestroyTradeRouteCommand )]"
+					datacontext = "[TradeRouteItem.GetTradeRoute]"
+					tooltip = "DELETE_DISTRIBUTION_ROUTE_TEXT"
+
+					hbox = {
+						parentanchor = center
+
+						expand = {}
+
+						icon = {
+							size = { 28 28 }
+							texture = "gfx/interface/icons/flat_icons/cancel.dds"
+							alwaystransparent = yes
+
+							modify_texture = {
+								texture = "gfx/interface/colors/gold.dds"
+								alpha = 0.8
+							}
+						}
+
+						text_single = {
+							margin_bottom = 2
+							text = REMOVE_ROUTE_LABEL
+							align = nobaseline
+							default_format = "#clickable"
+							alwaystransparent = yes
+						}
+
+						expand = {}
+					}
+				}
+			}
+		}
+	}
+
+	type widget_commission_trade_route_item = widget {
+		datacontext = "[TradeRouteItem.GetTradeRoute]"
+		datacontext = "[TradeRouteItem.GetDisplayCategory]"
+		layoutpolicy_horizontal = expanding
+		size = { 0 150 }
+
+		vbox = {
+
+			using = Background_Trade_Route_Item_Frame
+
+			background = {
+				using = Background_Trade_Entry_Category
+				color = "[TradeGoodCategory.GetColor]"
+			}
+
+			background = {
+				using = Background_Trade_Entry_Pattern
+				margin_top = -30
+			}
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					# Header
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						maximumsize = { 550 40 }
+						margin = { 10 5 }
+						spacing = 10
+
+						background = {
+							using = Background_Trade_Good_Banner_Right_Tinted
+							margin = { -2 5 }
+							margin_bottom = 10
+
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							color = "[TradeGoodCategory.GetColor]"
+						}
+						text_single = {
+							text = "[TradeRoute.GetNameNoTooltip]"
+							align = left|nobaseline
+							default_format = "#clickable"
+						}
+
+						expand = {}
+					}
+
+					# Goods
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 2 2 }
+						margin_right = 10
+						spacing = 5
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+							spacing = 5
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								margin = { 5 0 }
+								spacing = 5
+
+								hbox = {
+									visible = "[Not( IsDataModelEmpty( TradeRoute.GetTradeGoods))]"
+									datamodel = "[TradeRoute.GetTradeGoods]"
+									spacing = 5
+									item = {
+										icon = {
+											size = { 40 40 }
+											tooltipwidget = trade_good_type_tooltip
+											texture = "[TradeGoodType.GetIcon]"
+										}
+									}
+								}
+
+								text_single = {
+									visible = "[TradeRoute.HasPrimaryGood]"
+									datacontext = "[TradeRoute.GetPrimaryGood]"
+									text = "COMMISSION_ROUTE_TRADE_GOOD_FLAVOR_TEXT"
+									align = left|nobaseline
+								}
+
+								expand = {}
+							}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								margin = { 10 0 }
+								flowcontainer_trade_route_modifiers = {}
+
+								expand = {}
+							}
+						}
+
+						expand = {}
+
+					}
+				}
+
+				vbox = {
+					visible = "[Character.CanIssueCommissionRoutes]"
+					margin = { 10 0 }
+
+					portrait_head_small = {
+						datacontext = "[TradeRoute.GetOwner]"
+					}
+
+					text_label_center = {
+						text = "[merchant|E]"
+						align = nobaseline
+					}
+				}
+
+				# Trade Expertise
+				vbox_trade_route_expertise = {
+					margin = { 0 5 }
+					visible = "[And( Character.CanAcceptCommissionRoutes, TradeRoute.HasPrimaryGood )]"
+				}
+
+				vbox = {
+					visible = "[Character.CanAcceptCommissionRoutes]"
+					margin = { 10 0 }
+
+					portrait_head_small = {
+						datacontext = "[TradeRoute.GetCommissioner]"
+					}
+
+					text_label_center = {
+						text = "[merchant_patron|E]"
+						align = nobaseline
+					}
+				}
+			}
+			# Time Left, + Remove Route
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+				margin = { 10 5 }
+
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.6
+				}
+
+				text_single = {
+					text = "TRADE_ROUTE_COMMISSION_ENDS_IN"
+					align = nobaseline
+					margin = { 5 0 }
+				}
+
+				expand = {}
+
+				button_standard = {
+					visible = "[IsValidCommand( TradeRoute.DestroyTradeRouteCommand )]"
+					onclick = "[CreateCommandPopup( TradeRoute.DestroyTradeRouteCommand )]"
+					datacontext = "[TradeRouteItem.GetTradeRoute]"
+					tooltip = "REMOVE_ROUTE_TT"
+
+					text_single = {
+						margin_bottom = 2
+						parentanchor = center
+
+						text = REMOVE_ROUTE_LABEL
+						align = nobaseline
+						default_format = "#clickable"
+					}
+				}
+			}
+		}
+	}
+
+	type widget_trader_character_list_item = widget{
+		datacontext = "[CharacterListItem.GetCharacter]"
+		size = { 590 120 }
+
+		hbox = {
+			margin = { 0 10 }
+			spacing = 15
+
+			portrait_head = {}
+
+			button_standard = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				onclick = "[CharacterListItem.OnClick('character')]"
+				enabled = "[CharacterListItem.IsSelectable]"
+
+				framesize = { 252 80 }
+				spriteType = Corneredtiled
+				spriteborder = { 20 20 }
+
+				background = {
+					texture = "gfx/interface/buttons/button_entry_characterlist.dds"
+					spriteType = Corneredtiled
+					margin = { 10 0 }
+					using = Color_Orange
+					alpha = 0
+					using = Mask_Rough_Edges
+				}
+
+				block "button" {}
+
+				character_list_arrow = {
+					name = "character_list_arrow"
+				}
+
+				block "overlay" {
+					using = default_character_list_overlay
+				}
+
+				block "button_content"
+				{
+					vbox = {
+						layoutpolicy_horizontal = expanding
+
+						margin_left = 8
+
+						## Name, Age, Relation to player + Skills
+						hbox = {
+							layoutpolicy_horizontal = expanding
+
+							## Name, Age, Relation to player
+							vbox = {
+								layoutpolicy_horizontal = expanding
+
+								## Name
+								hbox = {
+									layoutpolicy_horizontal = expanding
+
+									margin_top = 4
+									margin_right = 8
+
+									text_single = {
+										layoutpolicy_horizontal = expanding
+
+										text = "[Character.GetUINameNoTooltip]"
+										align = nobaseline
+										alwaystransparent = yes
+										autoresize = no
+										max_width = 300
+
+										using = Font_Size_Medium
+									}
+
+									expand = {}
+								}
+
+								## Age
+								hbox = {
+									layoutpolicy_horizontal = expanding
+
+									margin_top = 4
+
+									using = character_age_or_death_text
+									blockoverride "list_layout" {}
+
+									block "character_relation"
+									{
+										text_single = {
+											name = "character_relation"
+											layoutpolicy_horizontal = expanding
+											raw_text = "|  [Character.GetRelationToString( GetPlayer )]"
+											tooltip = "EXTENDED_RELATIONS_TOOLTIP"
+											default_format = "#low"
+											autoresize = no
+											align = nobaseline
+											visible = "[Character.HasRelationTo( GetPlayer )]"
+											alwaystransparent = yes
+										}
+
+										expand = {
+											visible = "[Not(Character.HasRelationTo( GetPlayer ))]"
+										}
+									}
+								}
+
+								expand = {}
+							}
+
+							## Skills
+							vbox = {
+								layoutpolicy_vertical = expanding
+
+								hbox = {
+									name = "skills_grid"
+									layoutpolicy_horizontal = expanding
+
+									expand = {}
+
+									datamodel = "[CharacterListItem.GetSkillItems]"
+									margin_right = 5
+
+									item = {
+										widget_skill_item_no_icon = {}
+									}
+								}
+
+								expand = {}
+							}
+						}
+
+						## Dynasty, Traits, Culture and Religion
+						hbox = {
+							layoutpolicy_horizontal = expanding
+
+							background = {
+								using = Background_Area
+
+								margin_left = 8
+							}
+
+							hbox = {
+								## Dynasty
+								widget = {
+									size = { 40 40 }
+
+									coa_house_small = {
+										datacontext = "[Character.GetHouse]"
+										scale = 0.6
+									}
+								}
+
+								## Traits
+								fixedgridbox = {
+									name = "traits_grid"
+									datamodel = "[CharacterListItem.GetTraits]"
+									flipdirection = yes
+									addcolumn = 30
+									addrow = 30
+									maxhorizontalslots = 8
+									maxverticalslots = 1
+
+									item = {
+										container = {
+											visible = "[Trait.IsValid]"
+
+											icon_trait = {
+												blockoverride "icon_size"
+												{
+													size = { 30 30 }
+												}
+
+												blockoverride "tooltip_placement"
+												{
+													using = tooltip_se
+												}
+
+												blockoverride "glow_radius"
+												{
+													glow_radius = 3
+												}
+											}
+										}
+									}
+								}
+							}
+
+							## Realm
+							widget = {
+								size = {45 40 }
+								visible = "[Not( IsDataModelEmpty( CharacterListItem.GetTitleItems ) )]"
+
+								block "claims_visibility" {}
+
+								datacontext = "[CharacterListItem.GetFirstClaim]"
+
+								coa_title_tiny_crown = {
+									datacontext = "[Claim.GetTitle]"
+									parentanchor = vcenter
+									position = { 0 -3 }
+									scale = 0.8
+
+									using = tooltip_ne
+
+									highlight_icon = {
+										name = "pressed_claim"
+										visible = "[And(Claim.IsPressed, Not(Claim.IsImplicit))]"
+										texture = "gfx/interface/icons/title_status/icon_claim_pressed.dds"
+										size = { 24 24 }
+										parentanchor = bottom|right
+									}
+
+									highlight_icon = {
+										name = "unpressed_claim"
+										visible = "[And(Not(Claim.IsPressed), Not(Claim.IsImplicit))]"
+										texture = "gfx/interface/icons/title_status/icon_claim_unpressed.dds"
+										size = { 24 24 }
+										parentanchor = bottom|right
+									}
+
+									highlight_icon = {
+										name = "implicit_claim"
+										visible = "[Claim.IsImplicit]"
+										texture = "gfx/interface/icons/title_status/icon_claim_implicit.dds"
+										size = { 24 24 }
+										parentanchor = bottom|right
+									}
+
+									blockoverride "coa_tooltip"
+									{
+										tooltip = "CHARACTER_LIST_CLAIM_TOOLTIP"
+									}
+								}
+
+								text_single = {
+									align = right
+									minimumsize = { 15 0 }
+									parentanchor = vcenter|right
+									text = "[CharacterListItem.GetTitleItemCount]"
+
+									tooltip = "CHARACTER_LIST_CLAIM_TOOLTIP"
+								}
+							}
+
+							expand = {}
+
+							vbox = {
+								layoutpolicy_vertical = expanding
+								margin = { 0 2 }
+								margin_right = 4
+
+								divider_light = {
+									layoutpolicy_vertical = expanding
+								}
+							}
+
+							## Religion
+							hbox = {
+								margin_right = 16
+
+								icon = {
+									name = "faith_button"
+									size = { 30 30 }
+									datacontext = "[Character.GetFaith]"
+									texture = "[Faith.GetIcon]"
+
+									tooltipwidget = {
+										faith_tooltip = {}
+									}
+								}
+
+								hbox = {
+									datacontext = "[Character.GetCulture]"
+
+									tooltipwidget = {
+										culture_tooltip = {}
+									}
+
+									using = tooltip_se
+
+									hbox = {
+										spacing = 4
+
+										icon = {
+											name = "culture"
+											texture = "gfx/interface/icons/icon_culture.dds"
+											size = { 30 30 }
+										}
+
+										text_single = {
+											layoutpolicy_horizontal = expanding
+											max_width = 110
+											align = nobaseline
+											text = "CULTURE_LISTS_WINDOW"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type trader_character_list_window = window {
+		datacontext = "[TraderCharacterList.AccessCharacterList]"
+		block "properties" {
+			# Name used to find the window, don't change
+			name = "trader_character_list_window"
+			position = { -700 0 }
+		}
+		parentanchor = center|vcenter
+		size = { 700 800 }
+		minimumsize = { 680 550 }
+		layer = top
+		allow_outside = yes
+
+
+		using = Window_Movable
+		using = Window_Size_CharacterList
+		using = Window_Background
+		using = Window_Decoration
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+		}
+
+		vbox = {
+			using = Window_Margins
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "TRADER_CHARACTER_LIST_HEADER"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[TraderCharacterList.Close]"
+				}
+			}
+
+			vbox_character_list = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				blockoverride "container_implementation" {
+					fixedgridbox = {
+						name = "characters_grid"
+						datamodel = "[CharacterSelectionList.GetList]"
+						visible = "[Not(CharacterSelectionList.IsBuildingList)]"
+						addcolumn = 600
+						addrow = 125
+
+						item = {
+							widget_trader_character_list_item = {
+								datacontext = "[CharacterListItem.GetCharacter]"
+							}
+						}
+					}
+
+					text_single = {
+						visible = "[Not(CharacterSelectionList.HasItems)]"
+						layoutpolicy_vertical = expanding
+						name = "no_match"
+						text = "CHARACTER_FINDER_NO_MATCH"
+					}
+				}
+			}
+
+			expand = {}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+
+				margin_bottom = 15
+
+				button_primary = {
+					text = "CLOSE_LABEL"
+					onclick = "[TraderCharacterList.Close]"
+				}
+			}
+		}
+
+		window_character_filter = {
+			blockoverride "addition_filter" {
+				filter_item = {
+					layoutpolicy_horizontal = expanding
+					datacontext = "[CharacterSelectionList.GetFilter('ruler_filter')]"
+				}
+				filter_item = {
+					layoutpolicy_horizontal = expanding
+					datacontext = "[CharacterSelectionList.GetFilter('religion_filter')]"
+				}
+				filter_item = {
+					layoutpolicy_horizontal = expanding
+					datacontext = "[CharacterSelectionList.GetFilter('culture_filter')]"
+				}
+				filter_item = {
+					layoutpolicy_horizontal = expanding
+					datacontext = "[CharacterSelectionList.GetFilter('alive_filter')]"
+				}
+			}
+		}
+	}
+
+	type hbox_trade_route_transaction = hbox {
+		visible = "[And( Not( TradeRoute.IsCommissionRoute ), Or( TradeRoute.HasPurchaseTransactionForTradeGoodInMarket( TradeGoodType.Self, TradeMarket.Self ), TradeRoute.HasSellTransactionForTradeGoodInMarket( TradeGoodType.Self, TradeMarket.Self ) ) )]"
+		layoutpolicy_horizontal = expanding
+		spacing = 5
+
+		text_single = {
+			block "entry_name"
+			{
+				text = "[TradeGoodType.GetTextIcon][TradeGoodType.GetName]"
+			}
+			align = left|nobaseline
+		}
+
+		expand = {}
+
+		# Purchase/Sell amounts
+		transaction_value = {
+			visible = "[TradeRoute.HasPurchaseTransactionForTradeGoodInMarket( TradeGoodType.Self, TradeMarket.Self )]"
+			datacontext = "[TradeRouteItem.GetBuyTransactionBreakdownTooltip( TradeGoodType.Self, TradeMarket.Self )]"
+		}
+
+		transaction_value = {
+			visible = "[TradeRoute.HasSellTransactionForTradeGoodInMarket( TradeGoodType.Self, TradeMarket.Self )]"
+			datacontext = "[TradeRouteItem.GetSellTransactionBreakdownTooltip( TradeGoodType.Self, TradeMarket.Self )]"
+			blockoverride "formatting"
+			{
+				default_format = "#underline;H"
+			}
+		}
+	}
+
+	type transaction_value = text_single {
+		raw_text = "@gold_icon![ValueBreakdown.GetValue|3]"
+		block "formatting"
+		{
+			default_format = "#underline"
+		}
+		align = nobaseline
+
+		tooltip_visible = "[ValueBreakdown.HasTooltip]"
+		tooltipwidget = {
+			widget_value_breakdown_tooltip = {}
+		}
+	}
+
+	type trade_route_transactions_tooltip =  container {
+		alwaystransparent = no
+
+		object_tooltip_pop_out = {
+			alwaystransparent = no
+
+			blockoverride "title_text" {
+				margin = { 0 5 }
+				text = "TRADE_ROUTE_TRANSACTIONS_LABEL"
+				default_format = "#T"
+			}
+
+			blockoverride "main_description" {
+				vbox = {
+					datamodel = "[TradeRouteItem.GetMarkets]"
+					layoutpolicy_horizontal = expanding
+					min_width = 200
+					margin_top = 10
+					margin_bottom = -10
+
+					item = {
+						vbox = {
+							datacontext = "[TradeMarketItem.GetTradeMarket]"
+							layoutpolicy_horizontal = expanding
+							margin_bottom = 10
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+
+								# Trade Market name
+								text_single = {
+									text = "[TradeMarket.GetName]"
+									align = left|nobaseline
+									default_format = "#bold"
+								}
+
+								expand = {}
+
+								# Competitiveness
+								text_single = {
+									datacontext = "[TradeMarketItem.GetCompetitivenessBreakdown]"
+									raw_text = "@competitiveness_icon![ValueBreakdown.GetValue]"
+									default_format = "#underline"
+									align = nobaseline
+
+									tooltipwidget = {
+										widget_value_breakdown_tooltip = {}
+									}
+								}
+							}
+
+							# Trade Goods being traded at this market with money spent/earned
+							vbox = {
+								datamodel = "[TradeRouteItem.GetTradeRoute.GetTradeGoods]"
+								layoutpolicy_horizontal = expanding
+								min_width = 100
+
+								item = {
+									hbox_trade_route_transaction = {
+										margin_left = 20
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			blockoverride "concept_link" {}
+		}
+	}
+
+	type vbox_trade_expertise_entry = vbox {
+		#alpha = "[Select_float(Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ),TradeGoodCategory.IsActivelyTradedGood( Character.Self )),'(float)1.0','(float)0.5')]"
+
+
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+
+		background = {
+			using = Background_Area_Dark
+			margin = { 0 7 }
+			alpha = 0.3
+		}
+
+		background = {
+			using = Background_Frame
+			margin = { 5 7 }
+		}
+
+		# Background banner
+		widget = {
+			layoutpolicy_horizontal = expanding
+			size = { 0 0 }
+
+			widget = {
+				size = { 100% 44 }
+
+				# Entry with level > 0
+				background = {
+					using = Background_Trade_Good_Banner_Right_Tinted
+					visible = "[Not( StringIsEmpty( TradeGoodCategory.GetTradeGoodCategoryActiveEffectsDesc( Character.Self ) ) )]"
+					margin_top = -3
+					margin_left = -40
+					color = "[TradeGoodCategory.GetColor]"
+				}
+
+				# Entry with level = 0
+				background = {
+					using = Background_Trade_Good_Banner_Right_Tinted
+					visible = "[And( StringIsEmpty( TradeGoodCategory.GetTradeGoodCategoryActiveEffectsDesc( Character.Self ) ), Or( GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ), TradeGoodCategory.IsActivelyTradedGood( Character.Self ) ) )]"
+					margin_top = -3
+					margin_left = -40
+					color = "[TradeGoodCategory.GetColor]"
+				}
+
+				background = {
+					using = Background_Trade_Good_Banner_Right
+					visible = "[Not( IsTradeGoodCategoryActive( TradeGoodCategory ) )]"
+					margin_top = -3
+					margin_left = -40
+
+					modify_texture = {
+						color = "[TradeGoodCategory.GetColor]"
+						blend_mode = overlay
+						alpha = 0.1
+					}
+				}
+			}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin_bottom = 10
+			margin_top = 0
+
+			background = {
+				using = Background_Trade_Entry_Category
+				visible = "[Not(Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ), TradeGoodCategory.IsActivelyTradedGood( Character.Self )))]"
+				color = "[TradeGoodCategory.GetColor]"
+				alpha = 0.1
+
+				modify_texture = {
+					texture = "gfx/interface/colors/grey.dds"
+					blend_mode = overlay
+					alpha = 1
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+					mirror = vertical
+					blend_mode = alphamultiply
+				}
+			}
+
+			background = {
+				using = Background_Trade_Entry_Category
+				visible = "[Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ), TradeGoodCategory.IsActivelyTradedGood( Character.Self ))]"
+				color = "[TradeGoodCategory.GetColor]"
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+					mirror = vertical
+					blend_mode = alphamultiply
+				}
+			}
+
+			background = {
+				using = Background_Trade_Entry_Pattern
+				margin_top = -30
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+					mirror = vertical
+					blend_mode = alphamultiply
+				}
+			}
+
+			vbox = {
+				layoutpolicy_vertical = expanding
+				margin_top = 3
+				widget_trade_good_category = {}
+
+				expand = {}
+			}
+
+			spacer = {
+				size = { 5 0 }
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				spacer = {
+					size = { 0 7 }
+				}
+
+				hbox = {
+					margin_right = 5
+					layoutpolicy_horizontal = expanding
+
+					text_single = {
+						text = "[TradeGoodCategory.GetName]"
+						default_format = "#high"
+
+					}
+
+					expand = {}
+
+					text_single = {
+						text = TRADE_WINDOW_TRADE_EXPERIENCE_FOR_NEXT_LEVEL
+						tooltip = "[TradeGoodCategory.GetTradeGoodCategoryExperienceDesc( Character.Self )]"
+					}
+				}
+
+				spacer = {
+					size = { 0 20 }
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+
+					hbox = {
+						margin = { 0 5 }
+						spacing = 10
+						datamodel = "[TradeGoodCategory.GetTradeGoodTypes]"
+
+						background = {
+							visible = "[Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ), TradeGoodCategory.IsActivelyTradedGood( Character.Self ))]"
+							using = Background_Area_Dark
+							margin = { 9 5 }
+							alpha = 0.5
+						}
+
+						item = {
+							button_standard = {
+								size = { 30 30 }
+								onclick = "[TradeWindow.SetSelectedTradeGoodType( TradeGoodType.Self )]"
+								onclick = "[TradeGoodType.PlaySelectSound]"
+								down = "[ObjectsEqual( TradeWindow.GetSelectedTradeGoodType, TradeGoodType.Self )]"
+								alwaystransparent = "[ObjectsEqual( TradeWindow.GetSelectedTradeGoodType, TradeGoodType.Self )]"
+								icon = {
+									size = { 30 30 }
+									texture = "[TradeGoodType.GetSmallIcon]"
+								}
+
+								tooltipwidget = trade_good_type_tooltip
+								using = tooltip_se
+								blockoverride "call_to_action" {
+									cooltip_paragraph = {
+										text = "TRADE_GOOD_TYPE_TOOLTIP_CTA_SELECT"
+										default_format = "#I"
+										margin_bottom = 16
+									}
+								}
+							}
+						}
+					}
+
+					expand = {}
+				}
+
+				spacer = {
+					size = { 0 5 }
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					text_multi = {
+
+						text = "[TradeGoodCategory.GetTradeGoodCategoryActiveEffectsDesc( Character.Self )]"
+						max_width = 400
+						autoresize = yes
+					}
+					expand = {}
+				}
+				spacer = {
+					visible = "[Not( StringIsEmpty( TradeGoodCategory.GetTradeGoodCategoryActiveEffectsDesc( Character.Self ) ) )]"
+					size = { 0 5 }
+				}
+
+				text_single = {
+					#alpha = "[Select_float(Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ),TradeGoodCategory.IsActivelyTradedGood( Character.Self )),'(float)1.0','(float)0.5')]"
+					layoutpolicy_horizontal = expanding
+					text = TRADE_WINDOW_TRADE_EXPERIENCE_EFFECTS_PER_LEVEL
+					tooltip = "[TradeGoodCategory.GetTradeGoodCategoryEffectsPerLevelDesc( Character.Self )]"
+				}
+
+				spacer = {
+					size = { 0 3 }
+				}
+			}
+		}
+		background = {
+			visible = "[Not(Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ), TradeGoodCategory.IsActivelyTradedGood( Character.Self )))]"
+			texture = "gfx/interface/component_tiles/tile_window_background_no_edge.dds"
+			alpha = 0.4
+		}
+	}
+
+	type vbox_relevant_trade_market_item = vbox {
+		datacontext = "[RelevantTradeMarket.GetMarket]"
+		layoutpolicy_horizontal = expanding
+
+		background = {
+			using = Background_Area_Dark
+			alpha = 0.5
+		}
+
+		button_trade_market_group_header = {
+			blockoverride "trade_market_group_header_needs_spacing" {
+				spacing = -2
+			}
+		}
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			margin = { 8 8}
+
+			button_group = {
+				layoutpolicy_horizontal = expanding
+
+				onclick = "[RelevantTradeMarket.ToggleExpanded]"
+
+				flowcontainer = {
+					spacing = 5
+
+					widget = {
+						size = { 18 22 }
+
+						button_expand = {
+							parentanchor = center
+							frame = "[Select_int32( RelevantTradeMarket.IsExpanded, '(int32)2', '(int32)1' )]"
+						}
+					}
+
+					text_single = {
+						text = "MARKET_WINDOW_PLAYER_HOLDINGS"
+						default_format = "#low"
+						align = nobaseline
+					}
+				}
+			}
+
+			vbox = {
+				visible = "[RelevantTradeMarket.IsExpanded]"
+				layoutpolicy_horizontal = expanding
+				margin_top = 5
+				margin_left = 15
+				spacing = 5
+
+				datamodel = "[RelevantTradeMarket.GetHoldings]"
+
+				item = {
+					vbox = {
+						layoutpolicy_horizontal = expanding
+
+						divider_light = {
+							layoutpolicy_horizontal = expanding
+						}
+
+						hbox = {
+							datacontext = "[RelevantTradeMarketHolding.GetBarony]"
+							layoutpolicy_horizontal = expanding
+							spacing = 4
+
+							text_single = {
+								size = { 40 25 }
+								autoresize = no
+								text = "[RelevantTradeMarketHolding.GetMarketPriority|O]"
+								default_format = "#tooltip_heading"
+								align = nobaseline|center
+								tooltip = "HOLDING_MARKET_PRIORITY_TT"
+
+							}
+
+							coa_title_tiny_crown = {
+								using = tooltip_ws
+							}
+
+							text_single = {
+								text = "[Title.GetNameNoTierNoTooltip]"
+								align = nobaseline
+							}
+
+							expand = {}
+
+							hbox = {
+								margin_right = 5
+
+								hbox = {
+									spacing = -4
+
+									datamodel = "[RelevantTradeMarketHolding.GetNeeds]"
+									item = {
+										hbox = {
+											visible = "[LessThan_int32( PdxGuiWidget.GetIndexInDataModel, '(int32)8' )]"
+											datacontext = "[TradeNeed.GetColumn]"
+											datacontext = "[TradeNeedColumn.GetSourcesTooltip]"
+
+											tooltipwidget = { trade_needs_column_tooltip = {} }
+
+											icon = {
+												visible = "[Not( TradeNeed.IsCategory )]"
+												datacontext = "[TradeNeed.GetGood]"
+												size = { 25 25 }
+												texture = "[TradeGoodType.GetSmallIcon]"
+											}
+
+											icon = {
+												visible = "[TradeNeed.IsCategory]"
+												datacontext = "[TradeNeed.GetCategory]"
+												size = { 25 25 }
+												texture = "[TradeGoodCategory.GetSmallIcon]"
+											}
+										}
+									}
+								}
+
+								icon = {
+									visible = "[GreaterThan_int32( GetDataModelSize( RelevantTradeMarketHolding.GetNeeds ), '(int32)8' )]"
+									size = { 16 16 }
+									texture = "gfx/interface/icons/symbols/icon_plus_small.dds"
+
+									tooltipwidget = {
+										county_market_needs_tooltip = {
+											blockoverride "market_needs_context" {}
+
+											blockoverride "needs_tooltip_title" {
+												text = "MY_REALM_WINDOW_MARKET_UNMET_NEEDS"
+											}
+
+											blockoverride "needs_tooltip_subtitle" {
+												text = "[Title.GetNameNoTierNoTooltip]"
+											}
+
+											blockoverride "needs_tooltip_header" {
+												widget = {
+													size = { 42 42 }
+
+													hbox = {
+														parentanchor = center
+														position = { -8 0 }
+														ignoreinvisible = yes
+														datamodel = "[RelevantTradeMarketHolding.GetNeeds]"
+
+														item = {
+															widget = {
+																visible = "[LessThan_int32( PdxGuiWidget.GetIndexInDataModel, '(int32)1' )]"
+																size = { 42 42 }
+
+																icon = {
+																	visible = "[Not( TradeNeed.IsCategory )]"
+																	datacontext = "[TradeNeed.GetGood]"
+																	size = { 42 42 }
+																	texture = "[TradeGoodType.GetIcon]"
+																}
+
+																icon = {
+																	visible = "[TradeNeed.IsCategory]"
+																	datacontext = "[TradeNeed.GetCategory]"
+																	size = { 42 42 }
+																	texture = "[TradeGoodCategory.GetIcon]"
+																}
+															}
+														}
+													}
+												}
+											}
+
+											blockoverride "needs_list" {
+												datamodel = "[RelevantTradeMarketHolding.GetNeeds]"
+											}
+
+											blockoverride "need_row_context" {
+												datacontext = "[TradeNeed.GetColumn]"
+												datacontext = "[TradeNeedColumn.GetSourcesTooltip]"
+											}
+
+											blockoverride "need_row_tooltip" {
+												tooltipwidget = { trade_needs_column_tooltip = {} }
+											}
+
+											blockoverride "need_good_icon" {
+												visible = "[Not( TradeNeed.IsCategory )]"
+												datacontext = "[TradeNeed.GetGood]"
+											}
+
+											blockoverride "need_category_icon" {
+												visible = "[TradeNeed.IsCategory]"
+												datacontext = "[TradeNeed.GetCategory]"
+											}
+
+											blockoverride "need_good_name" {
+												visible = "[Not( TradeNeed.IsCategory )]"
+												datacontext = "[TradeNeed.GetGood]"
+											}
+
+											blockoverride "need_category_name" {
+												visible = "[TradeNeed.IsCategory]"
+												datacontext = "[TradeNeed.GetCategory]"
+											}
+
+											blockoverride "need_exploited_marker" {}
+
+											blockoverride "need_amount" {
+												text = "[TradeNeed.GetColumn.GetRemainingNeed|1^]"
+											}
+
+											blockoverride "needs_hidden" {}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type widget_trade_good_category = widget {
+		size = { 90 80 }
+		using = tooltip_ws
+
+		tooltipwidget = trade_good_category_expertise_tooltip
+
+		highlight_icon = {
+			texture = "gfx/interface/buttons/button_goods_item_frame.dds"
+			size = { 80 80 }
+			parentanchor = center
+			color = "[TradeGoodCategory.GetColor]"
+		}
+
+		highlight_icon = {
+			texture = "gfx/interface/buttons/button_base_goods_item_frame.dds"
+			size = { 80 80 }
+			parentanchor = center
+		}
+
+		highlight_icon = {
+			size = { 48 48 }
+			alwaystransparent = yes
+			parentanchor = center
+			texture = "[TradeGoodCategory.GetIcon]"
+		}
+
+		highlight_icon = {
+			name = "progress_frame"
+			texture = "gfx/interface/window_scheme/scheme_hud_bg_progress_frame.dds"
+			size = { 77 96 }
+			position = { 0 2 }
+			parentanchor = center
+			alpha = 0.4
+		}
+
+		progresspie = {
+			name = "progress"
+			size = { 67 67 }
+			texture = "gfx/interface/progressbars/action_progress_thin_dark_green.dds"
+			framesize = { 128 128 }
+			frame = 2
+			value = "[TradeGoodCategory.GetTradeGoodCategoryXpProgress( Character.Self )]"
+			widgetanchor = center
+			parentanchor = center
+			position = { 0.5 0.5 }
+			min = 0
+			max = 1
+		}
+
+		icon = {
+			alpha = "[Select_float(Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self), '(int32)0' ),TradeGoodCategory.IsActivelyTradedGood( Character.Self)),'(float)1.0','(float)0.5')]"
+			size = { 60 30 }
+			parentanchor = bottom|hcenter
+			position = { 0 28 }
+
+			background = {
+				texture = "gfx/interface/component_decoration/rating_banner_short.dds"
+			}
+
+
+			text_single = {
+				position = { 0 -10 }
+				text = "[TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self)]"
+				default_format = "#light_background"
+				parentanchor = bottom|hcenter
+			}
+		}
+
+		icon = {
+			position = { 40.5 -1 }
+			size = { 10 10 }
+			texture = "gfx/interface/component_decoration/progressbar_arrow_grey.dds"
+			color = "[TradeGoodCategory.GetColor]"
+
+		}
+		icon = {
+			size = { 96 96 }
+			parentanchor = center
+			texture = "gfx/interface/component_tiles/tile_window_background_no_edge.dds"
+			alpha = 0.7
+			alwaystransparent = no
+			visible = "[Not(Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ), TradeGoodCategory.IsActivelyTradedGood( Character.Self )))]"
+
+			modify_texture = {
+				texture = "gfx/interface/component_masks/mask_circle.dds"
+				blend_mode = alphamultiply
+			}
+		}
+	}
+
+	type widget_trade_good_category_small = widget {
+		block "size" {
+			size = { 60 70 }
+		}
+
+		tooltipwidget = trade_good_category_expertise_tooltip
+
+		highlight_icon = {
+			texture = "gfx/interface/buttons/button_goods_item_frame.dds"
+			size = { 60 60 }
+			parentanchor = center
+			color = "[TradeGoodCategory.GetColor]"
+		}
+
+		highlight_icon = {
+			texture = "gfx/interface/buttons/button_base_goods_item_frame.dds"
+			size = { 60 60 }
+			parentanchor = center
+		}
+
+		highlight_icon = {
+			size = { 30 30 }
+			position = { 0 -1 }
+			alwaystransparent = yes
+			parentanchor = center
+			texture = "[TradeGoodCategory.GetSmallIcon]"
+		}
+
+		highlight_icon = {
+			name = "progress_frame"
+			texture = "gfx/interface/window_scheme/scheme_hud_bg_progress_frame.dds"
+			size = { 58 75 }
+			position = { 0 2 }
+			parentanchor = center
+			alpha = 0.4
+		}
+
+		progresspie = {
+			name = "progress"
+			size = { 48 48 }
+			texture = "gfx/interface/progressbars/action_progress_thin_dark_green.dds"
+			framesize = { 128 128 }
+			frame = 2
+			value = "[TradeGoodCategory.GetTradeGoodCategoryXpProgress( Character.Self )]"
+			widgetanchor = center
+			parentanchor = center
+			position = { 0 0 }
+			min = 0
+			max = 1
+		}
+
+		icon = {
+			alpha = "[Select_float(Or(GreaterThan_int32( TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self ), '(int32)0' ),TradeGoodCategory.IsActivelyTradedGood( Character.Self )),'(float)1.0','(float)0.5')]"
+			size = { 55 27 }
+			parentanchor = bottom|hcenter
+			position = { 0 21 }
+
+			background = {
+				texture = "gfx/interface/component_decoration/rating_banner_short.dds"
+			}
+
+
+			text_single = {
+				position = { 0 -9 }
+				text = "[TradeGoodCategory.GetTradeGoodCategoryLevel( Character.Self )]"
+				default_format = "#light_background"
+				parentanchor = bottom|hcenter
+			}
+		}
+
+		icon = {
+			position = { 25 4 }
+			size = { 10 10 }
+			texture = "gfx/interface/component_decoration/progressbar_arrow_grey.dds"
+			color = "[TradeGoodCategory.GetColor]"
+
+		}
+	}
+
+	type hbox_trade_window_stat = hbox {
+		spacing = 2
+		icon = {
+			size = { 30 30 }
+			block "icon" {}
+		}
+		text_single = {
+			block "size" {
+				size = { 40 22 }
+			}
+			autoresize = no
+			# background = { using = Background_Area_Border_Solid }
+			block "text" {
+				raw_text = "0"
+				default_format = "#D"
+			}
+			align = nobaseline|center
+		}
+	}
+
+	type widget_trade_monopoly_icon = widget {
+		size = { 40 40 }
+		#datacontext = TradeMonopoly
+
+		block "trade_monopoly_tooltip"
+		{
+			tooltipwidget = {
+
+				using = trade_monopoly_tooltip
+			}
+		}
+
+
+		icon = {
+			visible = "[TradeMonopoly.IsExploitative]"
+			size = { 120% 120% }
+			texture = "gfx/interface/icons/trade/icon_trade_monopoly_exploitative_frame.dds"
+			parentanchor = center
+		}
+
+		icon = {
+			visible = "[Not(TradeMonopoly.IsExploitative)]"
+			size = { 120% 120% }
+			texture = "gfx/interface/icons/trade/icon_trade_monopoly_frame.dds"
+			parentanchor = center
+		}
+
+		icon = {
+			visible = "[TradeMonopoly.IsComplete]"
+			size = { 100% 100% }
+			texture = "gfx/interface/icons/trade/icon_trade_market.dds"
+
+		}
+
+		icon = {
+			visible = "[Not(TradeMonopoly.IsComplete)]"
+			size = { 100% 100% }
+			texture = "[TradeMonopoly.GetTradeGoodCategoryType.GetIcon]"
+
+		}
+
+	}
+
+	type competitors_leaderboard_window = window {
+		block "properties" {
+			name = "competitors_leaderboard_window"
+			position = { -600 0 }
+			size = { 620 850 }
+		}
+		parentanchor = center|vcenter
+		layer = top
+		allow_outside = yes
+
+		using = Window_Movable
+		using = Window_Background
+		using = Window_Decoration
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+		}
+
+		vbox = {
+			margin = { 35 15 }
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "header_text"
+				{
+					text = "TRADE_WINDOW_COMPETITORS_WINDOW_HEADER"
+				}
+
+				blockoverride "button_close"
+				{
+					onclick = "[CompetitorsLeaderboard.Close]"
+				}
+			}
+
+			text_multi = {
+				text = "TRADE_WINDOW_COMPETITORS_WINDOW_DESCRIPTION"
+				default_format = "#weak"
+				autoresize = yes
+				max_width = 480
+			}
+
+			vbox_character_list = {
+				datacontext = "[CompetitorsLeaderboard.AccessCharacterList]"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				blockoverride "skill_sort_buttons" {}
+
+				blockoverride "container_implementation" {
+					vbox = {
+						name = "competitors_grid"
+						datamodel = "[CharacterSelectionList.GetList]"
+						visible = "[Not(CharacterSelectionList.IsBuildingList)]"
+
+						spacing = 10
+						layoutpolicy_horizontal = expanding
+
+						item = {
+							vbox_competitor_list_item = {
+								datacontext = "[CharacterListItem.GetCharacter]"
+								layoutpolicy_horizontal = expanding
+							}
+						}
+					}
+
+					text_single = {
+						visible = "[Not(CharacterSelectionList.HasItems)]"
+						layoutpolicy_vertical = expanding
+						text = "TRADE_WINDOW_COMPETITORS_EMPTY"
+					}
+				}
+			}
+
+			expand = {}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin_bottom = 15
+
+				button_primary = {
+					text = "CLOSE_LABEL"
+					onclick = "[CompetitorsLeaderboard.Close]"
+				}
+			}
+		}
+	}
+
+	type vbox_competitor_list_item = vbox {
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			margin = { 10 5 }
+
+			background = {
+				using = Background_Area_With_Header
+			}
+
+			background = {
+				using = Background_Frame
+			}
+
+			background = {
+				using = Background_Trade_Entry_Pattern
+				alpha = 0.4
+				margin_top = -30
+			}
+
+			vbox = {
+				layoutpolicy_vertical = expanding
+				margin_top = 2
+
+				portrait_head_small = {}
+
+				expand = {}
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				margin_left = 10
+				spacing = 4
+
+				text_single = {
+					text = "[Character.GetUINameNoTooltip|U]"
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+				}
+
+				text_single = {
+					text = "[Character.GetRelationToString( GetPlayer )]"
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+
+
+					hbox = {
+						datacontext = "[Character.GetActiveLawInGroupWithFlag('company_size')]"
+						spacing = 10
+
+						background = {
+							visible = "[Law.IsValid]"
+							using = Background_Area_Dark
+							alpha = 0.5
+							margin = { 5 0 }
+							margin_right = -25
+						}
+
+						background = {
+							visible = "[Not(Law.IsValid)]"
+							using = Background_Area_Dark
+							alpha = 0.5
+							margin = { 5 0 }
+							margin_right = -50
+						}
+
+						hbox = {
+							name = "shared_markets"
+							spacing = 4
+							tooltip = "TRADE_WINDOW_COMPETITORS_COL_SHARED_MARKETS_TOOLTIP"
+							using = tooltip_se
+
+							icon = {
+								size = { 24 24 }
+								texture = "gfx/interface/icons/trade/icon_trade_market.dds"
+							}
+
+							text_single = {
+								text = "[CompetitorsLeaderboard.GetSharedMarketCountForItem( CharacterListItem.Self )|V0]"
+								align = nobaseline
+							}
+						}
+
+						divider_light = {
+							layoutpolicy_vertical = expanding
+						}
+
+						hbox = {
+							name = "shared_goods"
+							spacing = 4
+							tooltip = "TRADE_WINDOW_COMPETITORS_COL_SHARED_GOODS_TOOLTIP"
+							using = tooltip_se
+
+							icon = {
+								size = { 24 24 }
+								texture = "gfx/interface/icons/trade/icon_trade_goods.dds"
+							}
+
+							text_single = {
+								text = "[CompetitorsLeaderboard.GetSharedGoodCountForItem( CharacterListItem.Self )|V0]"
+								align = nobaseline
+							}
+						}
+
+						divider_light = {
+							layoutpolicy_vertical = expanding
+						}
+
+						hbox = {
+							name = "competitiveness"
+							spacing = 4
+							tooltip = "TRADE_WINDOW_COMPETITORS_COL_COMPETITIVENESS_TOOLTIP"
+							using = tooltip_se
+
+							icon = {
+								size = { 24 24 }
+								texture = "gfx/interface/icons/trade/icon_trade_competitiveness.dds"
+							}
+
+							text_single = {
+								text = "[CompetitorsLeaderboard.GetAggregateCompetitivenessForItem( CharacterListItem.Self )|V1]"
+								align = nobaseline
+							}
+
+							spacer = {
+								size = { 3 0 }
+							}
+
+							hbox = {
+								# take up the space even when the character has no Company Size
+								ignoreinvisible = no
+								spacing = 4
+
+								divider_light = {
+									datacontext = "[Character.GetActiveLawInGroupWithFlag('company_size')]"
+									visible = "[Law.IsValid]"
+									layoutpolicy_vertical = expanding
+								}
+								widget_company_size = {
+									visible = "[Law.IsValid]"
+									using = tooltip_se
+								}
+							}
+
+
+
+							spacer = {
+								size = { 5 0 }
+							}
+						}
+					}
+					expand = {}
+
+					hbox = {
+						name = "house_relation"
+						datacontext = "[Character.GetHouse]"
+						datacontext = "[DynastyHouse.GetHouseRelationWith( GetPlayer.GetHouse )]"
+						margin_right = 5
+						spacing = 0
+
+						background = {
+							using = Background_Area_Light
+							alpha = 0.5
+							margin = { 5 -5 }
+							margin_left = -15
+						}
+
+						background = {
+							using = Background_Frame
+							margin = { 5 -5 }
+							margin_left = -15
+						}
+
+						coa_house_tiny = {}
+
+						hbox = {
+							visible = "[HouseRelation.IsValid]"
+							datacontext = "[HouseRelation.GetLevel]"
+
+							icon = {
+								size = { 30 30 }
+								texture = "[HouseRelationLevel.GetRenderedIcon]"
+							}
+
+							text_single = {
+								text = "[HouseRelationLevel.GetNameNoTooltip|V]"
+								align = nobaseline
+							}
+
+							tooltipwidget = {
+								using = house_relation_level_tooltip
+							}
+							using = tooltip_se
+						}
+
+						text_single = {
+							visible = "[Not(HouseRelation.IsValid)]"
+							text = "NO_HOUSE_RELATION"
+							align = nobaseline
+							default_format = "#weak"
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type flowcontainer_trade_route_modifiers = flowcontainer {
+		name = "modifiers_grid"
+		datamodel = "[TradeRouteItem.GetTimedModifiers]"
+		spacing = 2
+		wrap_count = 2
+		ignoreinvisible = yes
+
+		background = {
+			using = Background_Area
+			margin = { 5 5 }
+		}
+
+		item = {
+			modifier_item_icon = {
+				size = { 20 20 }
+			}
+		}
+	}
+
+	# Callers set visibility because we cannot override a type's non-multiple property from the instance
+	type vbox_trade_route_expertise = vbox {
+		layoutpolicy_vertical = expanding
+
+		widget_trade_good_category_small = {
+			datacontext = "[TradeRouteItem.GetFocusTradeGoodNeedCategory]"
+			blockoverride "trade_expertise_increase_text" {
+				datacontext = "[TradeRoute.GetPrimaryGood]"
+				text = "TRADE_EXPERTISE_ACTUAL_INCREASE"
+			}
+		}
+		expand = {}
+	}
+
+	type hbox_trade_client_list_item = vbox {
+		datacontext = "[CharacterListItem.GetCharacter]"
+		layoutpolicy_horizontal = expanding
+		margin = { 10 0 }
+		margin_top = 5
+		margin_bottom = 12
+		spacing = 4
+
+		background = {
+			using = Background_Area_With_Header
+		}
+
+		background = {
+			using = Background_Frame
+		}
+
+		background = {
+			using = Background_Trade_Entry_Pattern
+			alpha = 0.4
+			margin_top = -30
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+
+			vbox = {
+				layoutpolicy_vertical = expanding
+				margin_top = 2
+
+				portrait_head_small = {}
+
+				expand = {}
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				margin_left = 10
+				spacing = 4
+
+				text_single = {
+					text = "[Character.GetUINameNoTooltip|U]"
+					layoutpolicy_horizontal = expanding
+					autoresize = no
+				}
+
+				hbox = {
+					spacing = 4
+					ignoreinvisible = yes
+					layoutpolicy_vertical = expanding
+					layoutpolicy_horizontal = expanding
+
+					hbox = {
+						name = "company_size"
+						datacontext = "[Character.GetActiveLawInGroupWithFlag('company_size')]"
+						spacing = 4
+
+						background = {
+							using = Background_Area
+							margin = { 15 5 }
+						}
+
+						tooltipwidget = {
+							general_law_tooltip = {}
+						}
+						using = tooltip_se
+
+						widget_company_size = {
+							blockoverride "company_size_tooltip" {} #no tooltip
+						}
+
+						text_single = {
+							text = "[Law.GetNameNoTooltip|U]"
+							align = nobaseline
+						}
+					}
+
+					expand = {}
+
+					hbox = {
+						spacing = 4
+
+						background = {
+							using = Background_Area
+							margin_left = 10
+							margin_right = -10
+						}
+
+						hbox_vassal_gold_tax = {
+							datacontext = "[Character.GetTributaryContract]"
+
+							blockoverride "tax_value" {
+								text = "[ClientCharacterList.GetTaxContribution( CharacterListItem.Self )|=1]"
+							}
+
+							blockoverride "tax_breakdown" {
+								datacontext = "[ClientCharacterList.GetTaxBreakdown( CharacterListItem.Self )]"
+							}
+						}
+
+						button_round_interaction = {
+							name = "suzerain_modify_tributary_contract_interaction"
+							blockoverride "icon" {
+								button_feudal_contract = {
+									alwaystransparent = yes
+									size = { 100% 100% }
+								}
+							}
+						}
+					}
+
+					container = {
+						visible = "[Not( MerchantHasCharterFromScopePatron( Character, GetPlayer ) )]"
+						button_round = {
+							name = "grant_merchant_charter_interaction"
+							visible = "[And( Character.IsPlayerInteractionShown( PdxGuiWidget.GetName ), Character.IsValid )]"
+							enabled = "[Character.IsPlayerInteractionValid( PdxGuiWidget.GetName )]"
+							onclick = "[Character.OpenPlayerInteraction( PdxGuiWidget.GetName )]"
+							tooltip = "[Character.GetPlayerInteractionTooltip( PdxGuiWidget.GetName )]"
+							using = tooltip_se
+
+							button_icon = {
+								alwaystransparent = yes
+								parentanchor = center
+								size = { 24 24 }
+								texture = "gfx/interface/icons/flat_icons/merchant_charter.dds"
+							}
+						}
+					}
+
+					container = {
+						visible = "[MerchantHasCharterFromScopePatron( Character, GetPlayer )]"
+						button_round = {
+							name = "revoke_merchant_charter_interaction"
+							visible = "[And( Character.IsPlayerInteractionShown( PdxGuiWidget.GetName ), Character.IsValid )]"
+							enabled = "[Character.IsPlayerInteractionValid( PdxGuiWidget.GetName )]"
+							onclick = "[Character.OpenPlayerInteraction( PdxGuiWidget.GetName )]"
+							tooltip = "[Character.GetPlayerInteractionTooltip( PdxGuiWidget.GetName )]"
+							using = tooltip_se
+
+							button_icon = {
+								alwaystransparent = yes
+								parentanchor = center
+								size = { 24 24 }
+								texture = "gfx/interface/icons/flat_icons/revoke_merchant_charter.dds"
+							}
+						}
+					}
+				}
+			}
+
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+
+			button_standard = {
+				name = "commission_trade_route_interaction"
+				size = { 480 33 }
+				visible = "[And( Character.IsPlayerInteractionShown( PdxGuiWidget.GetName ), Character.IsValid )]"
+				enabled = "[Character.IsPlayerInteractionValid( PdxGuiWidget.GetName )]"
+				onclick = "[Character.OpenPlayerInteraction( PdxGuiWidget.GetName )]"
+				text = "COMMISSION_TRADE_ROUTE_BUTTON_LABEL"
+				tooltip = "[Character.GetPlayerInteractionTooltip( PdxGuiWidget.GetName )]"
+				using = tooltip_se
+			}
+		}
+	}
+}
+
+template Background_Trade_Good_Banner_Right {
+
+	mirror = horizontal
+	texture_density = 2
+
+	texture = "gfx/interface/window_military/military_banner_gray.dds"
+}
+
+# Banner + grey overlay tint used on trade route / category entries
+template Background_Trade_Good_Banner_Right_Tinted {
+
+	mirror = horizontal
+	texture_density = 2
+	texture = "gfx/interface/window_military/military_banner_gray.dds"
+
+	modify_texture = {
+		texture = "gfx/interface/colors/grey.dds"
+		blend_mode = overlay
+		alpha = 0.2
+	}
+}
+
+# Colored category wash behind route / category entries (set color/visible at call site)
+template Background_Trade_Entry_Category {
+
+	texture = "gfx/interface/component_tiles/tile_window_background_no_edge_grey.dds"
+	alpha = 0.6
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+		mirror = vertical
+		blend_mode = alphamultiply
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+		spriteType = Corneredtiled
+		spriteborder = { 25 25 }
+		blend_mode = alphamultiply
+	}
+}
+
+# Patterned fill used on trade route entries (override margin_top/alpha per entry if needed)
+template Background_Trade_Entry_Pattern {
+
+	texture = "gfx/interface/colors/black.dds"
+	alpha = 0.3
+
+	modify_texture = {
+		texture = "gfx/interface/skinned/mask_pattern.dds"
+		texture_density = 3
+		spriteType = Corneredtiled
+		blend_mode = alphamultiply
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+		mirror = vertical
+		blend_mode = alphamultiply
+	}
+
+	modify_texture = {
+		texture = "gfx/interface/component_masks/mask_rough_edges.dds"
+		spriteType = Corneredtiled
+		spriteborder = { 25 25 }
+		blend_mode = alphamultiply
+	}
+}
+
+template Background_Trade_Route_Item_Frame {
+
+	background = {
+		using = Background_Area_Solid
+		margin = { 0 7 }
+		alpha = 0.6
+	}
+
+	background = {
+		using = Background_Frame
+		margin = { 5 7 }
+	}
+}
+
+template Button_Edit_Trade_Route {
+
+	datacontext = "[TradeRouteItem.GetTradeRoute]"
+	enabled = "[Not( TradeRoute.IsCommissionRoute )]"
+	onclick = "[TradeWindow.EditTradeRoute( TradeRouteItem.GetTradeRoute )]"
+
+	onmousehierarchyenter = "[TradeWindow.SetHoveredTradeRoute( TradeRoute.Self )]"
+	onmousehierarchyleave = "[TradeWindow.ClearHoveredTradeRoute]"
+
+	tooltip = "EDIT_TRADE_ROUTE_TT"
+	tooltip_when_disabled = CANNOT_EDIT_CONTRACT_TRADE_ROUTE
+}

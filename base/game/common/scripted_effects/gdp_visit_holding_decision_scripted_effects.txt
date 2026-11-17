@@ -1,0 +1,319 @@
+﻿# Visit Holding Cooldown Values
+
+visit_holding_refresh_all_options_tracker_effect = {
+	set_variable = {
+		name = visit_holding_all_options_refresh_tracker
+		days = visit_holding_cooldown_days
+	}
+}
+
+visit_holding_set_option_cooldown_effect = {
+	set_variable = {
+		name = $VAR$
+		days = visit_holding_cooldown_days
+	}
+	visit_holding_refresh_all_options_tracker_effect = yes
+}
+
+visit_holding_set_option_cooldown_guilds_effect = {
+	visit_holding_set_option_cooldown_effect = { VAR = $VAR$ }
+	set_variable = {
+		name = visit_holding_guilds_area_refresh_tracker
+		days = visit_holding_cooldown_days
+	}
+}
+
+visit_holding_set_option_cooldown_market_dock_effect = {
+	visit_holding_set_option_cooldown_effect = { VAR = $VAR$ }
+	set_variable = {
+		name = visit_holding_market_dock_area_refresh_tracker
+		days = visit_holding_cooldown_days
+	}
+}
+
+visit_holding_set_option_cooldown_patron_effect = {
+	visit_holding_set_option_cooldown_effect = { VAR = $VAR$ }
+	set_variable = {
+		name = visit_holding_patron_area_refresh_tracker
+		days = visit_holding_cooldown_days
+	}
+}
+
+visit_holding_set_option_cooldown_worship_effect = {
+	visit_holding_set_option_cooldown_effect = { VAR = $VAR$ }
+	set_variable = {
+		name = visit_holding_worship_area_refresh_tracker
+		days = visit_holding_cooldown_days
+	}
+}
+
+visit_holding_refresh_patron_area_tracker_effect = {
+	set_variable = {
+		name = visit_holding_patron_area_refresh_tracker
+		days = visit_holding_cooldown_days
+	}
+	visit_holding_refresh_all_options_tracker_effect = yes
+}
+
+
+temporarily_lock_visit_holding_effect = {
+	set_variable = {
+		name = gdp_visit_holding_is_visiting
+		days = visit_holding_lock_days
+	}
+}
+
+visit_holding_mark_hub_area_visited_effect = {
+	set_variable = {
+		name = gdp_visit_holding_been_to_area
+		value = yes
+	}
+}
+
+visit_holding_return_to_market_dock_hub_effect = {
+	if = {
+		limit = {
+			location = { is_coastal = yes }
+		}
+		trigger_event = gdp_visit_holding_decision_event.1400
+	}
+	else = {
+		trigger_event = gdp_visit_holding_decision_event.1300
+	}
+}
+
+visit_holding_rare_recruit_return_to_hub_after_recruit_effect = {
+	visit_holding_return_to_market_dock_hub_effect = yes
+	visit_holding_clean_up_variables_effect = yes
+	scope:market_first_recruit ?= { visit_holding_clean_up_variables_effect = yes }
+	scope:market_second_recruit ?= { visit_holding_clean_up_variables_effect = yes }
+	scope:market_third_recruit ?= { visit_holding_clean_up_variables_effect = yes }
+}
+
+visit_holding_clean_up_variables_effect = {
+	#Recruit Flags 
+	remove_character_flag ?= is_charlatan_recruit
+	remove_character_flag ?= is_hired_muscle_recruit
+	remove_character_flag ?= is_numerate_recruit
+	remove_character_flag ?= is_traveler_recruit
+	remove_character_flag ?= is_urchin_recruit
+	remove_character_flag ?= is_herbalist_recruit
+	#Is visiting flag
+	remove_variable ?= gdp_visit_holding_is_visiting
+	#No return from location once you have left 
+	remove_variable ?= return_from_location
+	remove_variable ?= gdp_visit_holding_been_to_area
+	remove_variable ?= visit_holding_checked_for_monk
+	remove_variable ?= visit_holding_checked_for_caravaneer
+	remove_variable ?= visit_holding_checked_for_sea_captain
+	remove_variable ?= visit_holding_checked_for_carnival_jester
+	remove_variable ?= visit_holding_checked_for_cook
+}
+
+visit_holding_consider_merchant_position_effect = {
+	if = {
+		limit = {
+			visit_holding_merchant_position_candidate_trigger = {
+				POS = $POS$
+				EMPLOYER = $EMPLOYER$
+			}
+		}
+		set_variable = {
+			name = visit_holding_recruit_court_position
+			value = flag:$POS$
+		}
+	}
+}
+
+visit_holding_pick_merchant_court_position_effect = {
+	if = {
+		limit = { exists = $CHARACTER$ }
+		$CHARACTER$ = {
+			save_scope_as = visit_holding_rare_recruit
+			remove_variable ?= visit_holding_recruit_court_position
+			switch = {
+				trigger = highest_skill
+				stewardship = {
+					visit_holding_consider_merchant_position_effect = {
+						POS = partner
+						EMPLOYER = $EMPLOYER$
+					}
+				}
+				diplomacy = {
+					visit_holding_consider_merchant_position_effect = {
+						POS = translator
+						EMPLOYER = $EMPLOYER$
+					}
+				}
+				intrigue = {
+					visit_holding_consider_merchant_position_effect = {
+						POS = fixer
+						EMPLOYER = $EMPLOYER$
+					}
+				}
+			}
+		}
+	}
+}
+
+visit_holding_appoint_rare_recruit_court_position_effect = {
+	hidden_effect = {
+		$CHARACTER$ = { remove_character_flag ?= created }
+	}
+	if = {
+		limit = {
+			$CHARACTER$ = { var:visit_holding_recruit_court_position ?= flag:partner }
+			can_appoint_char_to_court_position = {
+				CHAR = $CHARACTER$
+				COURT_POS = partner_court_position
+			}
+		}
+		court_position_grant_effect = {
+			EMPLOYER = root
+			POS = partner
+			CANDIDATE = $CHARACTER$
+		}
+	}
+	else_if = {
+		limit = {
+			$CHARACTER$ = { var:visit_holding_recruit_court_position ?= flag:translator }
+			can_appoint_char_to_court_position = {
+				CHAR = $CHARACTER$
+				COURT_POS = translator_court_position
+			}
+		}
+		court_position_grant_effect = {
+			EMPLOYER = root
+			POS = translator
+			CANDIDATE = $CHARACTER$
+		}
+	}
+	else_if = {
+		limit = {
+			$CHARACTER$ = { var:visit_holding_recruit_court_position ?= flag:fixer }
+			can_appoint_char_to_court_position = {
+				CHAR = $CHARACTER$
+				COURT_POS = fixer_court_position
+			}
+		}
+		court_position_grant_effect = {
+			EMPLOYER = root
+			POS = fixer
+			CANDIDATE = $CHARACTER$
+		}
+	}
+}
+
+#Mark that the player has already visited this rare recruit scene (for return loc)
+visit_holding_been_to_rare_recruit_effect = {
+	if = {
+		limit = {
+			NOT = { exists = scope:been_to_$SCENE$ }
+		}
+		save_scope_as = been_to_$SCENE$
+	}
+}
+
+visit_holding_set_rare_recruit_loc_tracker_effect = {
+	if = {
+		limit = {
+			NOT = { exists = scope:$SCENE$_loc_tracker }
+		}
+		save_scope_value_as = {
+			name = $SCENE$_loc_tracker
+			value = 0
+		}
+	}
+	else_if = {
+		limit = { scope:$SCENE$_loc_tracker ?= 0 }
+		save_scope_value_as = {
+			name = $SCENE$_loc_tracker
+			value = 1
+		}
+	}
+	else_if = {
+		limit = { scope:$SCENE$_loc_tracker ?= 2 }
+		save_scope_value_as = {
+			name = $SCENE$_loc_tracker
+			value = 1
+		}
+	}
+	else = {
+		save_scope_value_as = {
+			name = $SCENE$_loc_tracker
+			value = 2
+		}
+	}
+}
+
+visit_holding_ensure_stewardship_education_min_2_effect = {
+	hidden_effect = {
+		$CHARACTER$ = {
+			if = {
+				limit = { has_trait = education_stewardship_1 }
+				remove_trait = education_stewardship_1
+				add_trait = education_stewardship_2
+			}
+			else_if = {
+				limit = {
+					NOT = { visit_holding_stewardship_education_min_2_trigger = yes }
+				}
+				add_trait = education_stewardship_2
+			}
+		}
+	}
+}
+
+visit_holding_mark_rare_spawn_seen_effect = {
+	hidden_effect = {
+		primary_title ?= { set_variable = visit_holding_seen_$SCENE$ }
+	}
+}
+
+visit_holding_ensure_visiting_associate_effect = {
+	if = {
+		limit = {
+			NOT = { exists = scope:visiting_associate }
+		}
+		random_courtier = {
+			limit = {
+				is_available_ai_adult = yes
+			}
+			weight = {
+				base = 1
+				modifier = {
+					add = 500
+					is_close_family_of = root
+				}
+				modifier = {
+					add = 200
+					is_primary_heir_of = root
+				}
+				modifier = {
+					add = 100
+					is_child_of = root
+				}
+				modifier = {
+					add = 10
+					is_courtier_of = root
+				}
+			}
+			save_scope_as = visiting_associate
+		}
+	}
+}
+
+visit_holding_rare_recruit_duel_loss_effect = {
+	custom_tooltip = gdp_visit_holding_rare_recruit_duel_loss.tt
+	hidden_effect = {
+		if = {
+			limit = {
+				exists = $CHARACTER$
+				$CHARACTER$ = { has_character_flag = created }
+			}
+			$CHARACTER$ = { silent_disappearance_effect = yes }
+		}
+		clear_saved_scope = $SCENE$
+		clear_saved_scope = visit_holding_rare_recruit
+	}
+}

@@ -1,0 +1,57 @@
+﻿#############################################
+# ON ACTIONS FOR MERCHANT PATRON CONTRACTS
+#############################################
+
+# Event management tombola.
+merchant_base_patron_contract_scheme_on_going_events = {
+	trigger = { exists = scope:scheme }
+	random_on_action = {
+		chance_to_happen = 25
+		100 = merchant_patron_hobnob_patron_contract_scheme_ongoing_events
+		##################################################
+		# Generic Agent events
+		100 = agent_events_on_action							#	General agent events.
+	}
+}
+
+# Hobnob with patron
+merchant_patron_hobnob_patron_contract_scheme_ongoing_events = {
+	trigger = {
+		scope:scheme ?= {
+			scheme_type = merchant_patron_hobnob_patron_contract_scheme
+			exists = scheme_owner
+		}
+	}
+	random_events = {
+		100 = laamp_base_contract_schemes.0301		# Tell stories according to your prestige level.
+		100 = laamp_base_contract_schemes.0311		# Tell stories of your exotic culture/faith.
+		100 = laamp_base_contract_schemes.0541		# Use personal skill to impress.
+		100 = laamp_base_contract_schemes.0551		# Hang out with influential figures at court.
+		100 = laamp_base_contract_schemes.0561		# Lean on someone important to them.
+	}
+}
+
+### GDP Patron Contracts
+# Hobnob
+gdp_patron_hobnob = {
+	trigger = {
+		can_create_task_contract = { type_name = patron_hobnob }
+	}
+	
+	effect = {
+		# Save useful scopes
+		patron_contract_task_contract_scopes_effect = yes
+
+		# Create
+		create_task_contract = {
+			task_contract_type = patron_hobnob
+			task_contract_tier = scope:contract_tier
+			task_contract_employer = scope:patron
+			location = scope:destination
+			save_scope_as = patron_contract
+		}
+		
+		# General post-creation set up
+		manage_new_patron_contract_effect = yes
+	}
+}

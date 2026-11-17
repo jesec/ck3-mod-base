@@ -1,0 +1,205 @@
+﻿action_patrician_in_debt = {
+	is_dangerous = yes
+
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_has_merchant_company
+				gold < 0
+			}
+			try_create_important_action = {
+				important_action_type = action_patrician_in_debt
+				actor = root
+			}
+		}
+	}
+
+	effect = {
+		open_view = trade_window
+	}
+}
+
+# You can select a House Ambition (current ambition is "No Ambition")
+action_can_select_house_ambition = {
+	type = alert
+	icon = action_house_ambition_red
+
+	check_create_action = {
+		if = {
+			limit = {
+				house ?= {
+					has_house_aspiration_parameter = republic_no_ambition
+				}
+			}
+
+			try_create_important_action = {
+				important_action_type = action_can_select_house_ambition
+			}
+		}
+	}
+
+	effect = {
+		house = {
+			open_view_data = {
+				view = house_aspiration_window
+				player = root
+			}
+		}
+	}
+}
+
+# You can raise your republic_tier_law; mirrors each tier's can_pass and pass_cost
+action_elevate_republic_tier = {
+	type = alert
+	icon = action_republic
+
+	check_create_action = {
+		if = {
+			limit = {
+				gdp_is_assembly_head_trigger = yes
+				is_imprisoned = no
+				is_incapable = no
+				is_at_war = no
+				is_adult = yes
+				OR = {
+					AND = {
+						has_realm_law = republic_tier_county
+						highest_held_title_tier = tier_county
+						trigger_if = {
+							limit = { liege ?= { this != root } }
+							liege = { highest_held_title_tier >= tier_kingdom }
+						}
+						prestige_level >= 2
+						capital_county ?= {
+							title_province.province_size_level >= 2
+							popular_opinion >= 0
+						}
+						prestige >= 500
+						treasury >= 100
+					}
+					AND = {
+						has_realm_law = republic_tier_duchy
+						highest_held_title_tier = tier_duchy
+						trigger_if = {
+							limit = { liege ?= { this != root } }
+							liege = { highest_held_title_tier >= tier_empire }
+						}
+						prestige_level >= 3
+						capital_county ?= {
+							title_province.province_size_level >= 4
+							popular_opinion >= 35
+						}
+						prestige >= 1500
+						treasury >= 500
+					}
+					AND = {
+						has_realm_law = republic_tier_kingdom
+						highest_held_title_tier = tier_kingdom
+						trigger_if = {
+							limit = { liege ?= { this != root } }
+							liege = { highest_held_title_tier >= tier_hegemony }
+						}
+						prestige_level >= 4
+						capital_county ?= {
+							title_province.province_size_level >= 8
+							popular_opinion >= 50
+						}
+						prestige >= 3000
+						treasury >= 1500
+					}
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_elevate_republic_tier
+				actor = root
+			}
+		}
+	}
+
+	effect = {
+		open_view = government_republic
+	}
+}
+
+# You have markets in which you can construct trade posts
+action_can_construct_trade_posts = {
+	icon = action_trade_post_green
+	priority = 310
+	combine_into_one = yes
+
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_has_trade_posts
+				trade_post_count < trade_post_limit
+			}
+			every_trade_route = {
+				every_trade_market_on_route = {
+					limit = {
+						trade_market_owner = {
+							duchy = {
+								any_de_jure_county = {
+									any_county_province = {
+										is_county_capital = yes
+										NOT = { exists = trade_post_district }
+									}
+									holder ?= {
+										in_diplomatic_range = root
+									}
+								}
+								NOT = {
+									any_de_jure_county = {
+										any_county_province = {
+											is_county_capital = yes
+											exists = trade_post_district
+											trade_post_owner = root
+										}
+									}
+								}
+							}
+						}
+					}
+
+					try_create_important_action = {
+						important_action_type = action_can_construct_trade_posts
+						trade_market = this
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		scope:trade_market = {
+			open_trade_market_trade_posts = yes
+		}
+	}
+}
+
+# You are above your trade post limit
+action_above_trade_post_limit = {
+	type = alert
+	icon = action_trade_post_red
+
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_has_trade_posts
+				trade_post_count > trade_post_limit
+			}
+			try_create_important_action = {
+				important_action_type = action_above_trade_post_limit
+				trade_market = this
+				actor = root
+			}
+		}
+	}
+
+	effect = {
+		open_interaction_window = {
+			interaction = dismantle_trade_post_interaction
+			actor = root
+			recipient = root
+		}
+	}
+}

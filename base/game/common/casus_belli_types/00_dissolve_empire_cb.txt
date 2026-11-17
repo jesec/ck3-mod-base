@@ -22,8 +22,8 @@ dissolve_empire_war = {
 	allowed_against_character = {
 		scope:defender = {
 			top_liege = this
-			any_held_title = { tier >= tier_empire }
 			has_trait = excommunicated
+			highest_held_title_tier = tier_empire  # not for hegemony
 			faith = scope:attacker.faith
 			rite = { rite_has_parameter = excommunication_active }
 			# Grace period blocks only AI attackers; human players can always declare.
@@ -68,7 +68,7 @@ dissolve_empire_war = {
 				NOT = { has_trait = excommunicated }
 			}
 			scope:defender = {
-				NOT = { any_held_title = { tier >= tier_empire } }
+				NOT = { any_held_title = { title_tier = empire } }
 			}
 		}
 	}
@@ -86,7 +86,7 @@ dissolve_empire_war = {
 			triggered_desc = {
 				trigger = {
 					scope:defender = {
-						NOT = { any_held_title = { tier >= tier_empire } }
+						NOT = { any_held_title = { title_tier = empire } }
 					}
 				}
 				desc = dissolve_empire_war_invalidated_no_empire
@@ -112,9 +112,7 @@ dissolve_empire_war = {
 	}
 
 	on_victory = {
-		scope:attacker = { show_pow_release_message_effect = yes }
-
-		add_legitimacy_attacker_victory_effect = yes
+		on_victory_effect = yes
 
 		scope:attacker = { accolade_attacker_war_end_glory_gain_med_effect = yes }
 
@@ -124,7 +122,7 @@ dissolve_empire_war = {
 
 		scope:defender = {
 			every_held_title = {
-				limit = { tier >= tier_empire }
+				title_tier = empire
 				save_temporary_scope_as = empire_to_destroy
 				scope:defender = { destroy_title = scope:empire_to_destroy }
 			}
@@ -149,10 +147,6 @@ dissolve_empire_war = {
 				}
 			}
 		}
-
-		add_truce_attacker_victory_effect = yes
-
-		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_white_peace_desc = {
@@ -168,19 +162,13 @@ dissolve_empire_war = {
 	}
 
 	on_white_peace = {
+		on_white_peace_effect = yes
+
 		scope:attacker = {
-			show_pow_release_message_effect = yes
 			add_prestige = medium_prestige_loss
-			stress_and_fulfillment_impact = {
-				ambitious = medium_stress_impact_gain
-			}
 		}
 
 		scope:defender = { accolade_defender_war_end_glory_gain_low_effect = yes }
-
-		add_truce_white_peace_effect = yes
-
-		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	on_defeat_desc = {
@@ -202,13 +190,9 @@ dissolve_empire_war = {
 	}
 
 	on_defeat = {
-		scope:attacker = { show_pow_release_message_effect = yes }
-
-		add_legitimacy_attacker_defeat_effect = yes
+		on_defeat_effect = yes
 
 		scope:defender = {
-			#Again used in most CBs on defeat even if not Mandala -W
-			mandala_peacemaker_perk_serenity_effect = yes
 			accolade_defender_war_end_glory_gain_high_effect = yes
 		}
 
@@ -220,10 +204,6 @@ dissolve_empire_war = {
 				value = medium_piety_loss
 			}
 		}
-
-		add_truce_attacker_defeat_effect = yes
-
-		laamp_as_mercenary_payout_tooltip_effect = yes
 	}
 
 	transfer_behavior = transfer
@@ -232,7 +212,7 @@ dissolve_empire_war = {
 
 	ai_score_mult = {
 		value = 1
-		multiply = struggle_wars_prioritise_struggle_targets_value
+		add = common_cb_ai_score_mult_additive
 		if = {
 			limit = {
 				scope:attacker = {
@@ -243,6 +223,7 @@ dissolve_empire_war = {
 			}
 			multiply = 5
 		}
+		multiply = common_cb_ai_score_mult
 	}
 
 	cost = {

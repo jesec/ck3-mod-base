@@ -1,0 +1,1027 @@
+﻿@trade_needs_column_width = 56
+@trade_needs_row_height = 26
+
+types TradeNeedsTypes
+{
+	# The needs of one market for one good, listed by county and holding. datacontext: TradeNeedsList
+	type vbox_market_needs = vbox {
+		layoutpolicy_horizontal = expanding
+
+		text_multi = {
+			visible = "[TradeNeedsList.ShouldShowNoNeedMessage]"
+			layoutpolicy_horizontal = expanding
+			autoresize = yes
+			margin = { 20 30 }
+
+			block "no_need_message_width" {
+				max_width = 360
+			}
+
+			text = "[SelectLocalization( TradeNeedsList.DoesMarketNeedGood, 'TRADE_NEEDS_NO_NEED_FOR_YOU_IN_MARKET', 'TRADE_NEEDS_NO_NEED_IN_MARKET' )]"
+			align = center|nobaseline
+		}
+
+		# Header for the scrollbox
+		hbox = {
+			visible = "[And3( TradeNeedsList.HasGood, TradeNeedsList.ShouldShowCounties, Not(TradeNeedsList.ShouldShowNoNeedMessage) )]"
+			layoutpolicy_horizontal = expanding
+			margin = { 16 5 }
+
+			block "scrollbox_header_content" {
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 12
+
+					text_single = {
+						max_width = 64
+
+						text = "[county|E]"
+						align = nobaseline
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+
+						text = "MARKET_WINDOW_SORTED_BY_PRIORITY"
+						align = nobaseline
+						default_format = "#weak"
+
+					}
+
+					button_checkbox_label = {
+						visible = "[TradeMarket.PlayerHasHoldingsInMarket]"
+						onclick = "[TradeMarketWindow.ToggleNeedsListScope]"
+						tooltip = "MARKET_WINDOW_PLAYER_HOLDINGS_TT"
+						blockoverride "text" {
+							text = "MARKET_WINDOW_PLAYER_HOLDINGS"
+						}
+						blockoverride "checkbox" {
+							checked = "[Not( TradeNeedsList.IsShowingWholeMarket )]"
+						}
+					}
+				}
+			}
+
+			hbox = {
+				margin = { 16 0 }
+
+				divider = {
+					layoutpolicy_vertical = expanding
+					min_width = 5
+				}
+
+				widget = {
+					datacontext = "[TradeNeedsList.GetGood]"
+					size = { @trade_needs_column_width 24 }
+
+					icon = {
+						parentanchor = center
+						size = { 24 24 }
+						texture = "[TradeGoodType.GetSmallIcon]"
+						tooltip = "TRADE_ROUTE_PLANNER_GOOD_NEED_HEADER"
+					}
+				}
+
+				divider = {
+					layoutpolicy_vertical = expanding
+					min_width = 5
+				}
+
+				widget = {
+					visible = "[TradeNeedsList.ShowsCategoryColumn]"
+					datacontext = "[TradeNeedsList.GetCategory]"
+					size = { @trade_needs_column_width 24 }
+
+					icon = {
+						parentanchor = center
+						size = { 24 24 }
+						texture = "[TradeGoodCategory.GetSmallIcon]"
+						tooltip = "TRADE_ROUTE_PLANNER_CATEGORY_NEED_HEADER"
+					}
+				}
+				divider = {
+					visible = "[TradeNeedsList.ShowsCategoryColumn]"
+					layoutpolicy_vertical = expanding
+					min_width = 5
+				}
+			}
+		}
+
+		# Counties served by the market, each with its holdings.
+		scrollbox = {
+			datacontext = "[TradeNeedsList.GetMarket]"
+			visible = "[And( TradeNeedsList.ShouldShowCounties, Not(TradeNeedsList.ShouldShowNoNeedMessage) )]"
+			layoutpolicy_horizontal = expanding
+
+			block "needs_scrollbox_size" {
+				min_height = 400
+			}
+
+			blockoverride "scrollbox_content" {
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					ignoreinvisible = yes
+					spacing = 5
+
+					datamodel = "[TradeNeedsList.GetCounties]"
+					item = {
+						trade_needs_county_row = {
+							visible = "[TradeNeedsCounty.IsListed]"
+						}
+					}
+				}
+			}
+		}
+	}
+
+	# The needs of one market for one good, listed by holding in priority order. datacontext: TradeNeedsList
+	type vbox_market_holding_needs = vbox {
+		layoutpolicy_horizontal = expanding
+
+		text_multi = {
+			visible = "[TradeNeedsList.ShouldShowNoNeedMessage]"
+			layoutpolicy_horizontal = expanding
+			autoresize = yes
+			margin = { 20 30 }
+
+			block "no_need_message_width" {
+				max_width = 360
+			}
+
+			text = "[SelectLocalization( TradeNeedsList.DoesMarketNeedGood, 'TRADE_NEEDS_NO_NEED_FOR_YOU_IN_MARKET', 'TRADE_NEEDS_NO_NEED_IN_MARKET' )]"
+			align = center|nobaseline
+		}
+
+		hbox = {
+			visible = "[And3( TradeNeedsList.HasGood, TradeNeedsList.ShouldShowHoldings, Not(TradeNeedsList.ShouldShowNoNeedMessage) )]"
+			layoutpolicy_horizontal = expanding
+			margin = { 16 5 }
+
+			block "scrollbox_header_content" {
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 12
+
+					text_single = {
+						max_width = 64
+
+						text = "[holding|E]"
+						align = nobaseline
+					}
+
+					text_single = {
+						layoutpolicy_horizontal = expanding
+
+						text = "MARKET_WINDOW_SORTED_BY_PRIORITY"
+						align = nobaseline
+						default_format = "#weak"
+					}
+
+					button_checkbox_label = {
+						visible = "[TradeMarket.PlayerHasHoldingsInMarket]"
+						onclick = "[TradeMarketWindow.ToggleNeedsListScope]"
+						tooltip = "MARKET_WINDOW_PLAYER_HOLDINGS_TT"
+						blockoverride "text" {
+							text = "MARKET_WINDOW_PLAYER_HOLDINGS"
+						}
+						blockoverride "checkbox" {
+							checked = "[Not( TradeNeedsList.IsShowingWholeMarket )]"
+						}
+					}
+				}
+			}
+
+			hbox = {
+				margin = { 16 0 }
+
+				divider = {
+					layoutpolicy_vertical = expanding
+					min_width = 5
+				}
+
+				widget = {
+					datacontext = "[TradeNeedsList.GetGood]"
+					size = { @trade_needs_column_width 24 }
+
+					icon = {
+						parentanchor = center
+						size = { 24 24 }
+						texture = "[TradeGoodType.GetSmallIcon]"
+						tooltip = "TRADE_ROUTE_PLANNER_GOOD_NEED_HEADER"
+					}
+				}
+
+				divider = {
+					layoutpolicy_vertical = expanding
+					min_width = 5
+				}
+
+				widget = {
+					visible = "[TradeNeedsList.ShowsCategoryColumn]"
+					datacontext = "[TradeNeedsList.GetCategory]"
+					size = { @trade_needs_column_width 24 }
+
+					icon = {
+						parentanchor = center
+						size = { 24 24 }
+						texture = "[TradeGoodCategory.GetSmallIcon]"
+						tooltip = "TRADE_ROUTE_PLANNER_CATEGORY_NEED_HEADER"
+					}
+				}
+				divider = {
+					visible = "[TradeNeedsList.ShowsCategoryColumn]"
+					layoutpolicy_vertical = expanding
+					min_width = 5
+				}
+			}
+		}
+
+		scrollbox = {
+			datacontext = "[TradeNeedsList.GetMarket]"
+			visible = "[And( TradeNeedsList.ShouldShowHoldings, Not(TradeNeedsList.ShouldShowNoNeedMessage) )]"
+			layoutpolicy_horizontal = expanding
+
+			block "needs_scrollbox_size" {
+				min_height = 400
+			}
+
+			blockoverride "scrollbox_content" {
+				trade_needs_holdings_list = {}
+			}
+		}
+	}
+
+	# Every holding in a needs list. Holdings without the need are collapsed together. datacontext: TradeNeedsList
+	type trade_needs_holdings_list = vbox {
+		layoutpolicy_horizontal = expanding
+		margin = { 0 5 }
+		ignoreinvisible = yes
+
+		background = {
+			using = Background_Area_Dark
+			alpha = 0.6
+		}
+
+		datamodel = "[TradeNeedsList.GetHoldings]"
+		item = {
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 0 4 }
+				ignoreinvisible = yes
+				visible = "[Or( TradeNeedsHolding.StandsInForCollapsedBaronies, TradeNeedsHolding.IsShown )]"
+
+				trade_needs_market_collapsed_holdings_row = {
+					visible = "[TradeNeedsHolding.StandsInForCollapsedBaronies]"
+				}
+
+				trade_needs_holding_row = {
+					visible = "[TradeNeedsHolding.IsShown]"
+					alpha = "[Select_float( Or( Not( GetPlayer.IsLandedRuler ), And( TradeNeedsHolding.GetBarony.GetHolder.IsLocalPlayer, Not( TradeNeedsHolding.GetBarony.IsLeasedOut ) ) ), '(float)1.0', '(float)0.5' )]"
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					margin = { 12 0 }
+					visible = "[LessThan_int32( PdxGuiWidget.GetIndexInDataModel, Subtract_int32( GetDataModelSize( TradeNeedsList.GetHoldings ), '(int32)1' ) )]"
+
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+				}
+			}
+		}
+	}
+
+	# One county and the holdings inside it. datacontext: TradeNeedsCounty
+	# Where counties can collapse, the county is a row above its holdings, otherwise it is only a coat of arms beside them
+	type trade_needs_county_row = vbox {
+		layoutpolicy_horizontal = expanding
+		spacing = 2
+		ignoreinvisible = yes
+
+		background = {
+			using = Background_Area_Dark
+			alpha = 0.6
+		}
+
+		hbox = {
+			datacontext = "[TradeNeedsCounty.GetCounty]"
+			datacontext = "[TradeNeedsCounty.GetAmounts]"
+			visible = "[TradeNeedsList.AreCountiesCollapsible]"
+			layoutpolicy_horizontal = expanding
+			spacing = 2
+			margin = { 8 4 }
+
+
+			button_expand = {
+				onclick = "[TradeNeedsCounty.ToggleExpanded]"
+				size = { @trade_needs_row_height @trade_needs_row_height }
+
+				frame = "[Select_int32( TradeNeedsCounty.IsExpanded, '(int32)2', '(int32)1' )]"
+			}
+
+
+			coa_title_tiny = {
+				blockoverride "position" {}
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				autoresize = no
+				max_width = 200
+				margin_left = 3
+
+				text = "[Title.GetNameNoTierNoTooltip]"
+				align = nobaseline|left
+				using = tooltip_se
+			}
+
+			hbox = {
+				visible = "[TradeNeedAmounts.ShowsNeedAmounts]"
+				spacing = 2
+
+				divider_light = {
+					layoutpolicy_vertical = expanding
+				}
+
+				trade_needs_column_cell = {
+					datacontext = "[TradeNeedAmounts.GetGood]"
+				}
+
+				divider_light = {
+					layoutpolicy_vertical = expanding
+				}
+
+				trade_needs_column_cell = {
+					visible = "[TradeNeedAmounts.ShowsCategoryColumn]"
+					datacontext = "[TradeNeedAmounts.GetCategory]"
+				}
+
+				divider_light = {
+					visible = "[TradeNeedsList.ShowsCategoryColumn]"
+					layoutpolicy_vertical = expanding
+				}
+			}
+		}
+
+		vbox = {
+			visible = "[And( TradeNeedsList.AreCountiesCollapsible, TradeNeedsCounty.IsExpanded )]"
+			layoutpolicy_horizontal = expanding
+			margin_top = 10
+			margin_bottom = 15
+			margin_left = 20
+
+
+			trade_needs_county_holdings = {}
+		}
+
+		hbox = {
+			visible = "[Not( TradeNeedsList.AreCountiesCollapsible )]"
+			layoutpolicy_horizontal = expanding
+			margin = { 0 5 }
+			margin_left = 5
+			spacing = 2
+
+			vbox = {
+				datacontext = "[TradeNeedsCounty.GetCounty]"
+				layoutpolicy_vertical = expanding
+				min_width = 44
+
+				expand = {}
+
+				coa_title_tiny = {
+					blockoverride "position" {}
+				}
+
+				expand = {}
+			}
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+				min_width = 4
+			}
+
+			trade_needs_county_holdings = {}
+		}
+	}
+
+	# The holdings of one county. Where the list collapses, each run of holdings with no need becomes one row. datacontext: TradeNeedsCounty
+	type trade_needs_county_holdings = vbox {
+		layoutpolicy_horizontal = expanding
+		ignoreinvisible = yes
+
+		datamodel = "[TradeNeedsCounty.GetHoldings]"
+
+		item = {
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 0 4 }
+				ignoreinvisible = yes
+				visible = "[Or( TradeNeedsHolding.StandsInForCollapsedBaronies, TradeNeedsHolding.IsShown )]"
+
+				trade_needs_collapsed_holdings_row = {
+					visible = "[TradeNeedsHolding.StandsInForCollapsedBaronies]"
+				}
+
+				trade_needs_holding_row = {
+					visible = "[TradeNeedsHolding.IsShown]"
+					alpha = "[Select_float( Or( Not( GetPlayer.IsLandedRuler ), And( TradeNeedsHolding.GetBarony.GetHolder.IsLocalPlayer, Not( TradeNeedsHolding.GetBarony.IsLeasedOut ) ) ), '(float)1.0', '(float)0.5' )]"
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					margin = { 12 0 }
+					visible = "[LessThan_int32( PdxGuiWidget.GetIndexInDataModel, Subtract_int32( GetDataModelSize( TradeNeedsCounty.GetHoldings ), '(int32)1' ) )]"
+
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+				}
+			}
+		}
+	}
+
+	# Stands in for a run of holdings with no need, and names them in its tooltip. datacontext: TradeNeedsHolding
+	type trade_needs_collapsed_holdings_row = hbox {
+		tooltipwidget = { trade_needs_collapsed_holdings_tooltip = {} }
+		layoutpolicy_horizontal = expanding
+		alwaystransparent = no
+		margin_left = 12
+		margin_bottom = 4
+		spacing = 4
+
+		text_single = {
+			size = { 40 @trade_needs_row_height }
+			autoresize = no
+			raw_text = "-"
+			default_format = "#T"
+			align = nobaseline|center
+			tooltip = "HOLDING_MARKET_PRIORITY_TT"
+		}
+
+		text_single = {
+			size = { 40 @trade_needs_row_height }
+			autoresize = no
+			raw_text = "-"
+			default_format = "#T"
+			align = nobaseline|center
+			tooltip = "HOLDING_MARKET_PRIORITY_TT"
+		}
+
+		text_single = {
+			autoresize = yes
+			alwaystransparent = yes
+			text = "[SelectLocalization( EqualTo_int32( TradeNeedsHolding.GetCollapsedBaroniesCount, '(int32)1' ), 'TRADE_NEEDS_HOLDING_WITHOUT_NEED', 'TRADE_NEEDS_HOLDINGS_WITHOUT_NEED' )]"
+			align = nobaseline|center
+			default_format = "#weak"
+		}
+
+		expand = {}
+
+		hbox = {
+			spacing = 2
+			margin_right = 12
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+
+			text_single = {
+				size = { 56 @trade_needs_row_height }
+				autoresize = no
+				raw_text = "-"
+				default_format = "#T"
+				align = nobaseline|center
+			}
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+
+			text_single = {
+				size = { 56 @trade_needs_row_height }
+				autoresize = no
+				raw_text = "-"
+				default_format = "#T"
+				align = nobaseline|center
+			}
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+		}
+	}
+
+	# The holdings a collapsed row stands in for. datacontext: TradeNeedsHolding
+	type trade_needs_collapsed_holdings_tooltip = container {
+		alwaystransparent = no
+
+		object_tooltip_pop_out = {
+			alwaystransparent = no
+
+			blockoverride "title_text" {
+				margin = { 0 5 }
+				text = "TRADE_NEEDS_COLLAPSED_HOLDINGS_TOOLTIP_TITLE"
+				default_format = "#T"
+			}
+
+			blockoverride "main_description" {
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					min_width = 220
+					margin_top = 10
+
+					datamodel = "[TradeNeedsHolding.GetCollapsedBaronies]"
+					item = {
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							alwaystransparent = no
+							margin_left = 15
+							spacing = 4
+
+							widget = {
+								size = { 40 @trade_needs_row_height }
+
+								text_single = {
+									size = { 40 @trade_needs_row_height }
+									autoresize = no
+
+									text = "[TradeMarket.GetFulfillmentPriorityInCounty( Title.Self )|O]"
+									default_format = "#light_background"
+									align = nobaseline|center
+									tooltip = "HOLDING_MARKET_PRIORITY_TT"
+
+									using = Background_Letter_No_Frame
+								}
+							}
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								autoresize = no
+								min_width = 150
+								margin_left = 3
+
+								text = "[Title.GetNameNoTierNoTooltip]"
+								align = nobaseline|left
+							}
+
+							expand = {}
+						}
+					}
+				}
+			}
+
+			blockoverride "concept_link" {}
+		}
+	}
+
+	# Collapses multiple holdings without the need into a single row. datacontext: TradeNeedsHolding
+	type trade_needs_market_collapsed_holdings_row = hbox {
+		tooltipwidget = { trade_needs_market_collapsed_holdings_tooltip = {} }
+		layoutpolicy_horizontal = expanding
+		alwaystransparent = no
+		margin_left = 12
+		margin_bottom = 4
+		spacing = 4
+
+		text_single = {
+			size = { 40 @trade_needs_row_height }
+			autoresize = no
+			raw_text = "-"
+			default_format = "#T"
+			align = nobaseline|center
+			tooltip = "HOLDING_MARKET_PRIORITY_TT"
+		}
+
+		text_single = {
+			size = { 40 @trade_needs_row_height }
+			autoresize = no
+			raw_text = "-"
+			default_format = "#T"
+			align = nobaseline|center
+			tooltip = "HOLDING_MARKET_PRIORITY_TT"
+		}
+
+		text_single = {
+			autoresize = yes
+			alwaystransparent = yes
+			text = "[SelectLocalization( EqualTo_int32( TradeNeedsHolding.GetCollapsedBaroniesCount, '(int32)1' ), 'TRADE_NEEDS_HOLDING_WITHOUT_NEED', 'TRADE_NEEDS_HOLDINGS_WITHOUT_NEED' )]"
+			align = nobaseline|center
+			default_format = "#weak"
+		}
+
+		expand = {}
+
+		hbox = {
+			spacing = 2
+			margin_right = 12
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+
+			text_single = {
+				size = { 56 @trade_needs_row_height }
+				autoresize = no
+				raw_text = "-"
+				default_format = "#T"
+				align = nobaseline|center
+			}
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+
+			text_single = {
+				size = { 56 @trade_needs_row_height }
+				autoresize = no
+				raw_text = "-"
+				default_format = "#T"
+				align = nobaseline|center
+			}
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+		}
+	}
+
+	# The holdings a collapsed row stands in for, by market priority. datacontext: TradeNeedsHolding
+	type trade_needs_market_collapsed_holdings_tooltip = container {
+		alwaystransparent = no
+
+		object_tooltip_pop_out = {
+			alwaystransparent = no
+
+			blockoverride "title_text" {
+				margin = { 0 5 }
+				text = "TRADE_NEEDS_COLLAPSED_HOLDINGS_TOOLTIP_TITLE"
+				default_format = "#T"
+			}
+
+			blockoverride "main_description" {
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					min_width = 220
+					margin_top = 10
+
+					datamodel = "[TradeNeedsHolding.GetCollapsedBaronies]"
+					item = {
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							alwaystransparent = no
+							margin_left = 15
+							spacing = 4
+
+							widget = {
+								size = { 40 @trade_needs_row_height }
+
+								text_single = {
+									size = { 40 @trade_needs_row_height }
+									autoresize = no
+
+									text = "[TradeMarket.GetFulfillmentPriorityForBarony( Title.Self )|O]"
+									default_format = "#light_background"
+									align = nobaseline|center
+									tooltip = "HOLDING_MARKET_PRIORITY_TT"
+
+									using = Background_Letter_No_Frame
+								}
+							}
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								autoresize = no
+								min_width = 150
+								margin_left = 3
+
+								text = "[Title.GetNameNoTierNoTooltip]"
+								align = nobaseline|left
+							}
+
+							expand = {}
+						}
+					}
+				}
+			}
+
+			blockoverride "concept_link" {}
+		}
+	}
+
+	# One holding of a needs list. datacontext: TradeNeedsHolding
+	type trade_needs_holding_row = hbox {
+		datacontext = "[TradeNeedsHolding.GetAmounts]"
+		layoutpolicy_horizontal = expanding
+		alwaystransparent = no
+		spacing = 2
+
+		# Entrepot needs are served after every ordinary need in the market, so they have no place in the order.
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			alwaystransparent = no
+			margin_left = 12
+
+			widget = {
+				size = { 40 @trade_needs_row_height }
+
+				text_single = {
+					visible = "[Not( TradeNeedsHolding.IsEntrepot )]"
+					datacontext = "[TradeNeedsHolding.GetBarony]"
+					size = { 40 @trade_needs_row_height }
+					autoresize = no
+					text = "[TradeNeedsHolding.GetMarketPriority|O]"
+					default_format = "#T"
+					align = nobaseline|center
+					tooltip = "HOLDING_MARKET_PRIORITY_TT"
+				}
+			}
+
+			coa_trade_needs_holding = {}
+
+			button_standard_hover = {
+				datacontext = "[TradeNeedsHolding.GetHolding]"
+				layoutpolicy_horizontal = expanding
+				size = { 0 @trade_needs_row_height }
+
+				onclick = "[OpenGameViewData( 'holding_view', Holding.GetProvince )]"
+				tooltipwidget = { holding_tooltip_click = {} }
+
+				text_single = {
+					margin_left = 8
+					alwaystransparent = yes
+					text = "[TradeNeedsHolding.GetDisplayName]"
+					default_format = "#clickable"
+				}
+			}
+
+			expand = {}
+		}
+
+		hbox = {
+			visible = "[TradeNeedAmounts.ShowsNeedAmounts]"
+			spacing = 2
+			margin_right = 12
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+
+			trade_needs_column_cell = {
+				datacontext = "[TradeNeedAmounts.GetGood]"
+			}
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+
+			trade_needs_column_cell = {
+				visible = "[TradeNeedAmounts.ShowsCategoryColumn]"
+				datacontext = "[TradeNeedAmounts.GetCategory]"
+			}
+
+			divider_light = {
+				layoutpolicy_vertical = expanding
+			}
+		}
+	}
+
+	# The holding's barony coat of arms, opening its holding view. datacontext: TradeNeedsHolding
+	type coa_trade_needs_holding = coa_title_tiny {
+		datacontext = "[TradeNeedsHolding.GetBarony]"
+		datacontext = "[TradeNeedsHolding.GetHolding]"
+		blockoverride "position" {}
+
+		blockoverride "coa_onclick" {
+			onclick = "[OpenGameViewData( 'holding_view', Holding.GetProvince )]"
+		}
+
+		blockoverride "coa_tooltip" {
+			tooltipwidget = { holding_tooltip_click = {} }
+		}
+	}
+
+	# One need column of a row. datacontext: TradeNeedColumn
+	# Checkmark once the need is met, before or by the route draft, otherwise what is still needed
+	# Highlighted when the route draft is what meets it
+	type trade_needs_column_cell = widget {
+		size = { @trade_needs_column_width @trade_needs_row_height }
+
+		icon = {
+			visible = "[TradeNeedColumn.IsMetByDraft]"
+			size = { 100% 100% }
+			texture = "gfx/interface/colors/white.dds"
+			alwaystransparent = yes
+			using = Color_Green_Transparent
+
+			using = Mask_Rough_Edges
+		}
+
+		text_single = {
+			visible = "[TradeNeedColumn.HasNeed]"
+			datacontext = "[TradeNeedColumn.GetSourcesTooltip]"
+			size = { @trade_needs_column_width @trade_needs_row_height }
+			autoresize = no
+			text = "[SelectLocalization( TradeNeedColumn.IsMet, 'TRADE_NEEDS_CELL_MET', 'TRADE_NEEDS_CELL_REMAINING' )]"
+			align = nobaseline|center
+			tooltipwidget = { trade_needs_column_tooltip = {} }
+		}
+
+		text_single = {
+			visible = "[Not( TradeNeedColumn.HasNeed )]"
+			size = { @trade_needs_column_width @trade_needs_row_height }
+			autoresize = no
+			text = "TRADE_NEEDS_CELL_NO_NEED"
+			align = nobaseline|center
+			default_format = "#weak"
+		}
+	}
+
+	# The column's totals above the list of where its need comes from. datacontext: TradeNeedColumn, ValueBreakdown
+	type trade_needs_column_tooltip = widget_value_breakdown_tooltip {
+		blockoverride "header" {
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				ignoreinvisible = yes
+				spacing = 2
+
+				text_label_left = {
+					layoutpolicy_horizontal = expanding
+					text = "[ValueBreakdown.GetName]"
+					default_format = "#T"
+				}
+
+				text_single = {
+					visible = "[And( TradeNeedColumn.IsMet, Not( TradeNeedColumn.IsMetByDraft ) )]"
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_NEEDS_TOOLTIP_MET"
+				}
+
+				text_single = {
+					visible = "[TradeNeedColumn.IsMetByDraft]"
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_NEEDS_TOOLTIP_MET_BY_DRAFT"
+				}
+
+				text_single = {
+					visible = "[Not( TradeNeedColumn.IsMet )]"
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_NEEDS_TOOLTIP_REMAINING"
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_NEEDS_TOOLTIP_TOTAL"
+				}
+
+				text_single = {
+					visible = "[GreaterThan_CFixedPoint( TradeNeedColumn.GetAlreadyMetNeed, '(CFixedPoint)0' )]"
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_NEEDS_TOOLTIP_ALREADY_MET"
+				}
+
+				text_single = {
+					visible = "[TradeNeedColumn.IsCoveredByDraft]"
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_NEEDS_TOOLTIP_COVERED_BY_DRAFT"
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "TRADE_NEEDS_TOOLTIP_SOURCES"
+					default_format = "#weak"
+				}
+			}
+		}
+	}
+
+	type button_trade_market_group_header = button_standard {
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		min_height = 52
+
+		tooltip = "CLICK_TO_VIEW_MARKET"
+		using = tooltip_se
+		using = TradeMarket_Mouse_Entry
+
+		onclick = "[ToggleGameViewData( 'trade_market_window', TradeMarket.Self )]"
+
+		hbox = {
+			margin = { 8 0 }
+
+			hbox = {
+				spacing = 8
+
+				widget = {
+					size = { 42 42 }
+					allow_outside = yes
+
+					coa_title_tiny_crown = {
+						position = { 0 -2 }
+						datacontext = "[TradeMarket.GetLocationTitle]"
+
+						using = tooltip_ws
+					}
+				}
+				text_single = {
+					text = "[TradeMarket.GetNameNoTooltip|U]"
+					default_format = "#low"
+					max_width = 180
+					using = Font_Size_Medium
+					align = nobaseline
+				}
+
+				toll_level_icon = {
+					name = "my_toll"
+					size = { 30 30 }
+					datacontext = "[TradeMarket.GetTollLevelForCharacter( GetPlayer )]"
+					visible = "[TradeMarket.GetLocationTitle.GetHolder.IsLocalPlayer]"
+
+					tooltipwidget = {
+						widget_market_tolls_tooltip_main_window = {
+							datacontext = "[GetPlayer]"
+							datacontext = "[TradeMarket.GetTollLevel]"
+						}
+					}
+				}
+
+				expand = {}
+			}
+			expand = {}
+			hbox = {
+				name = "unmet_needs"
+				visible = "[Not( IsDataModelEmpty( TradeMarket.GetRealmNeeds ) )]"
+				margin_left = 8
+				spacing = 5
+
+				text_multi = {
+					text = "MY_REALM_WINDOW_MARKET_UNMET_NEEDS"
+					default_format = "#low"
+					align = nobaseline
+				}
+
+				hbox = {
+					block "trade_market_group_header_needs_spacing" {
+						spacing = -4
+					}
+					datamodel = "[TradeMarket.GetRealmNeeds]"
+
+					item = {
+						hbox = {
+							visible = "[LessThan_int32( PdxGuiWidget.GetIndexInDataModel, '(int32)5' )]"
+
+							tooltipwidget = { widget_market_need_holdings_tooltip = {} }
+
+							icon = {
+								visible = "[Not( TradeMarketRealmNeed.IsCategory )]"
+								datacontext = "[TradeMarketRealmNeed.GetTradeGoodType]"
+								size = { 25 25 }
+								texture = "[TradeGoodType.GetSmallIcon]"
+							}
+
+							icon = {
+								visible = "[TradeMarketRealmNeed.IsCategory]"
+								datacontext = "[TradeMarketRealmNeed.GetCategory]"
+								size = { 25 25 }
+								texture = "[TradeGoodCategory.GetSmallIcon]"
+							}
+						}
+					}
+				}
+
+				icon = {
+					visible = "[GreaterThan_int32( GetDataModelSize( TradeMarket.GetRealmNeeds ), '(int32)5' )]"
+					size = { 16 16 }
+					texture = "gfx/interface/icons/symbols/icon_plus_small.dds"
+
+					tooltipwidget = {
+						county_market_needs_tooltip = {
+							blockoverride "market_needs_context" {}
+
+							blockoverride "needs_tooltip_subtitle"
+							{
+								text = "[TradeMarket.GetNameNoTooltip]"
+								default_format = "#weak"
+							}
+
+							blockoverride "header_additions"
+							{
+								widget = {
+									size = { 42 42 }
+
+									icon = {
+										size = { 42 42 }
+										parentanchor = center
+										position = { -8 0 }
+										texture = "[GUIProductionItem.GetTradeGoodType.GetIcon]"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+	}
+}

@@ -1,0 +1,173 @@
+﻿GuelphGhibellinePeaceConflict = {
+	type = character
+
+	text = {
+		trigger = {
+			situation:guelph_ghibelline ?= { 
+				OR = {
+					situation_current_phase = agitation
+					situation_current_phase = guelph_advantage
+					situation_current_phase = ghibelline_advantage
+				}
+			}
+		}
+		localization_key = guelph_ghibelline_peace_conflict_peace
+	}
+
+	text = {
+		trigger = {
+			situation:guelph_ghibelline ?= { situation_current_phase = repose }
+		}
+		localization_key = guelph_ghibelline_peace_conflict_conflict
+	}
+}
+
+GetGuelphGhibelline = {
+	type = character
+
+	text = {
+		trigger = { is_guelph_trigger = yes }
+		localization_key = guelph
+	}
+
+	text = {
+		trigger = { is_ghibelline_trigger = yes }
+		localization_key = ghibelline
+	}
+}
+
+GetGuelphGhibellineConcept = {
+	type = character
+	parent = GetGuelphGhibelline
+	suffix = "_concept"
+}
+
+GetGuelphsGhibellines = {
+	type = character
+
+	text = {
+		trigger = { is_guelph_trigger = yes }
+		localization_key = guelphs
+	}
+
+	text = {
+		trigger = { is_ghibelline_trigger = yes }
+		localization_key = ghibellines
+	}
+}
+
+GetGuelphsGhibellinesConcept = {
+	type = character
+	parent = GetGuelphsGhibellines
+	suffix = "_concept"
+}
+
+GuelphGhibellineGetOpposite = {
+	type = character
+
+	text = {
+		trigger = { is_ghibelline_trigger = yes }
+		localization_key = guelph
+	}
+
+	text = {
+		trigger = { is_guelph_trigger = yes }
+		localization_key = ghibelline
+	}
+}
+
+GuelphsGhibellinesGetOpposite = {
+	type = character
+	parent = GuelphGhibellineGetOpposite
+	suffix = "s"
+}
+
+GuelphGhibellineGetOppositeConcept = {
+	type = character
+	parent = GuelphGhibellineGetOpposite
+	suffix = "_concept"
+}
+
+GetGuelphGhibellineMemberGroup = {
+	type = character
+
+	text = {
+		trigger = { is_guelph_trigger = yes }
+		localization_key = guelph_member_participant_group
+	}
+
+	text = {
+		trigger = { is_ghibelline_trigger = yes }
+		localization_key = ghibelline_member_participant_group
+	}
+}
+
+GetGuelphGhibellineLeaderGroup = {
+	type = character
+
+	text = {
+		trigger = { is_guelph_trigger = yes }
+		localization_key = guelph_leader_participant_group
+	}
+
+	text = {
+		trigger = { is_ghibelline_trigger = yes }
+		localization_key = ghibelline_leader_participant_group
+	}
+}
+
+GetHighestSkillAdjective = {
+	type = character
+	random_valid = yes
+
+	text = {
+		trigger = { highest_skill = diplomacy }
+		localization_key = highest_skill_charms
+	}
+
+	text = {
+		trigger = {
+			OR = {
+				highest_skill = learning
+				highest_skill = intrigue
+				highest_skill = stewardship
+			}
+		}
+		localization_key = highest_skill_wits
+	}
+
+	text = {
+		trigger = {
+			OR = {
+				highest_skill = martial
+			}
+		}
+		localization_key = highest_skill_strength
+	}
+}
+
+DescribeTargetSkill = {
+	type = character
+
+	text = {
+		trigger = { scope:target_skill_flag = flag:diplomacy }
+		localization_key = target_diplomacy
+	}
+	text = {
+		trigger = { scope:target_skill_flag = flag:martial }
+		localization_key = target_martial
+	}
+	text = {
+		trigger = { scope:target_skill_flag = flag:stewardship }
+		localization_key = target_stewardship
+	}
+	text = {
+		trigger = { scope:target_skill_flag = flag:intrigue }
+		localization_key = target_intrigue
+		fallback = yes
+	}
+	text = {
+		trigger = { scope:target_skill_flag = flag:learning }
+		localization_key = target_learning
+	}
+}

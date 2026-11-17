@@ -1,0 +1,45 @@
+﻿# Holder changes do not fire member join/leave. Keep the focus modifier on the current holder.
+
+gdp_league_focus_on_title_gain = {
+	trigger = {
+		has_gdp_dlc_trigger = yes
+		government_has_flag = government_is_republic
+		is_ruler = yes
+		scope:title = {
+			is_noble_family_title = no
+			title_confederation ?= {
+				confederation_type = confederation_type:trade_league
+				exists = var:league_focused_category
+			}
+		}
+	}
+
+	effect = {
+		scope:title.title_confederation.var:league_focused_category = {
+			save_temporary_scope_as = focused_category
+		}
+		gdp_apply_league_focused_category_modifier_effect = {
+			CHARACTER = root
+			CATEGORY = scope:focused_category
+		}
+	}
+}
+
+gdp_league_focus_on_title_lost = {
+	trigger = {
+		has_gdp_dlc_trigger = yes
+		scope:title.title_confederation ?= {
+			confederation_type = confederation_type:trade_league
+		}
+		NOT = {
+			any_held_title = {
+				this != scope:title
+				title_confederation ?= scope:title.title_confederation
+			}
+		}
+	}
+
+	effect = {
+		gdp_clear_league_focused_category_modifiers_effect = yes
+	}
+}

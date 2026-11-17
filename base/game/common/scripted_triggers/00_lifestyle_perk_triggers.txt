@@ -63,6 +63,15 @@ extortion_courtier_representative_trigger = {
 	}	
 }
 
+contract_warfare_can_challenge_to_single_combat_trigger = {
+	culture ?= { has_cultural_parameter = contract_warfare_single_combat }
+	OR = {
+		has_trait_category = commander
+		has_trait = education_martial
+		has_trait = brave
+	}
+}
+
 # We use a trigger so this can be enabled elsewhere easily.
 can_challenge_rival_to_single_combat_trigger = {
 	# Enabling perks.
@@ -71,6 +80,7 @@ can_challenge_rival_to_single_combat_trigger = {
 		culture = { has_cultural_parameter = can_duel_rivals }
 		government_has_flag = government_is_nomadic
 		government_has_flag = government_is_japan_feudal
+		contract_warfare_can_challenge_to_single_combat_trigger = yes
 	}
 }
 

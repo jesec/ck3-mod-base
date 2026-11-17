@@ -73,6 +73,7 @@ disease_outbreak_pulse_chance_of_no_event = {
 	}
 	if = { #Wet Nurse reduces chance of sickness for children
 		limit = {
+			root = { is_adult = no }
 			OR = {
 				liege ?= {
 					any_court_position_holder ?= {
@@ -87,7 +88,6 @@ disease_outbreak_pulse_chance_of_no_event = {
 					}
 				}
 			}
-			root = { is_adult = no }
 		}
 		add = 25
 	}
@@ -752,11 +752,12 @@ base_weight_minus = {
 #The actual value that will be looked at
 character_weight_target_value = {
 	add = character_weight_base_value
+	save_temporary_value_as = character_weight_base
 
 	#To even the numbers out some if you have "good" and/or active traits
 	if = {
 		limit = { #You weigh too little
-			character_weight_base_value < base_weight_minus
+			scope:character_weight_base < base_weight_minus
 		}
 		if = {
 			limit = { has_trait = lifestyle_hunter }
@@ -783,7 +784,7 @@ character_weight_target_value = {
 	}
 	else_if = { #You weigh too much
 		limit = {
-			character_weight_base_value > base_weight_plus
+			scope:character_weight_base > base_weight_plus
 		}
 		if = {
 			limit = { has_trait = lifestyle_hunter }

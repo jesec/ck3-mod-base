@@ -717,7 +717,7 @@ add_plague_county_modifiers = {
 	if = {
 		limit = {
 			any_sub_realm_county = {
-				development_level >= 30
+				prosperity_level >= 30
 			}
 		}
 		show_as_tooltip = { # Show as tooltip to reduce tooltip size
@@ -734,8 +734,8 @@ add_plague_county_modifiers = {
 		limit = {
 			any_sub_realm_county = {
 				AND = {
-					development_level >= 20
-					development_level < 30
+					prosperity_level >= 20
+					prosperity_level < 30
 				}
 			}
 		}
@@ -753,8 +753,8 @@ add_plague_county_modifiers = {
 		limit = {
 			any_sub_realm_county = {
 				AND = {
-					development_level >= 15
-					development_level < 20
+					prosperity_level >= 15
+					prosperity_level < 20
 				}
 			}
 		}
@@ -772,8 +772,8 @@ add_plague_county_modifiers = {
 		limit = {
 			any_sub_realm_county = {
 				AND = {
-					development_level >= 10
-					development_level < 15
+					prosperity_level >= 10
+					prosperity_level < 15
 				}
 			}
 		}
@@ -816,7 +816,7 @@ add_plague_county_modifiers = {
 		}
 		every_sub_realm_county = {
 			limit = {
-				development_level >= 30
+				prosperity_level >= 30
 			}
 			add_county_modifier = {
 				modifier = shattered_by_plague
@@ -826,8 +826,8 @@ add_plague_county_modifiers = {
 		every_sub_realm_county = {
 			limit = {
 				AND = {
-					development_level >= 20
-					development_level < 30
+					prosperity_level >= 20
+					prosperity_level < 30
 				}
 			}
 			add_county_modifier = {
@@ -838,8 +838,8 @@ add_plague_county_modifiers = {
 		every_sub_realm_county = {
 			limit = {
 				AND = {
-					development_level >= 15
-					development_level < 20
+					prosperity_level >= 15
+					prosperity_level < 20
 				}
 			}
 			add_county_modifier = {
@@ -850,8 +850,8 @@ add_plague_county_modifiers = {
 		every_sub_realm_county = {
 			limit = {
 				AND = {
-					development_level >= 10
-					development_level < 15
+					prosperity_level >= 10
+					prosperity_level < 15
 				}
 			}
 			add_county_modifier = {
@@ -918,12 +918,12 @@ cant_touch_this_achievement_effect = {
 # this = county to apply to
 # scope:epidemic = epidemic infecting
 # BASE = how much to apply by default for this epidemic type
-apply_infection_development_loss = {
+apply_infection_prosperity_loss = {
 	save_temporary_scope_value_as = {
 		name = base_loss
 		value = $BASE$
 	}
-	change_development_progress_with_overflow = epidemic_development_loss_value
+	change_prosperity_progress_with_overflow = epidemic_prosperity_loss_value
 }
 
 apply_infection_fertility_loss = {
@@ -973,6 +973,31 @@ bd_random_game_rule_effect = {
 					has_game_rule = bd_occurrence_random
 				}
 				set_global_variable = random_black_plague_var
+			}
+		}
+	}
+}
+
+apply_infection_trade_disruption = {
+	barony.trade_market = {
+		if = {
+			limit = { scope:epidemic = { outbreak_intensity = apocalyptic } }
+			add_trade_market_modifier = {
+				modifier = gdp_epidemic_3_trade_modifier
+				years = 5
+			}
+		}
+		else_if = {
+			limit = { scope:epidemic = { outbreak_intensity = major } }
+			add_trade_market_modifier = {
+				modifier = gdp_epidemic_2_trade_modifier
+				years = 5
+			}
+		}
+		else = {
+			add_trade_market_modifier = {
+				modifier = gdp_epidemic_1_trade_modifier
+				years = 5
 			}
 		}
 	}

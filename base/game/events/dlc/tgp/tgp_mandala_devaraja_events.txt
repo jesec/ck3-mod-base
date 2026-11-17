@@ -712,7 +712,7 @@ devaraja.0004 = {
 	trigger = {
 		government_has_flag = government_is_mandala
 		is_available_for_activity_trigger = yes
-		capital_county.county_control < full_county_control
+		capital_county = { county_control < county_control_baseline }
 		cp:councillor_court_chaplain ?= {
 			is_available_ai = yes
 		}
@@ -1220,16 +1220,16 @@ devaraja.0008 = {
 	}
 
 	trigger = {
+		is_tributary = yes
+		suzerain = {
+			faith != root.faith
+		}
+		is_available_for_activity_trigger = yes
 		any_ancestor = {
 			even_if_dead = yes
 			highest_held_title_tier >= tier_county
 			is_alive = no
 			faith != root.suzerain.faith
-		}
-		is_available_for_activity_trigger = yes
-		is_tributary = yes
-		suzerain = {
-			faith != root.faith
 		}
 		any_courtier = {
 			has_character_flag = suzerains_missionary

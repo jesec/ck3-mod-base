@@ -1,0 +1,2439 @@
+﻿# Note: we end these in on_trade_route_destroyed when a route is cancelled or destroyed
+# Checks here lag behind the game state and player actions
+
+challenge_competitor = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/scheme_types/icon_scheme_challenge_status.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = challenge_competitor_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = challenge_competitor }
+			has_character_flag = trade_opportunity_cooldown_challenge_competitor
+		}
+		any_trade_route = {
+			has_trader = yes
+			current_capacity < max_capacity
+			any_trade_market_on_route = {
+				gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = root }
+				NOR = {
+					has_competitiveness_modifier_for_character = {
+						character = root
+						modifier = gdp_challenge_competitor_trade_opportunity_success_critical_modifier
+					}
+					has_competitiveness_modifier_for_character = {
+						character = root
+						modifier = gdp_challenge_competitor_trade_opportunity_success_modifier
+					}
+					has_competitiveness_modifier_for_character = {
+						character = root
+						modifier = gdp_challenge_competitor_trade_opportunity_failure_modifier
+					}
+				}
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_target ?= {
+			gdp_is_merchant_or_unlanded_patrician_trigger = yes
+			house != root.task_contract_taker.house
+		}
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_target.house.house_head ?= {
+			gdp_is_merchant_or_unlanded_patrician_trigger = yes
+			house != root.task_contract_taker.house
+		}
+		var:task_contract_route ?= {
+			any_trade_market_on_route = { trade_market_owner.title_province = root.task_contract_location }
+		}
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_challenge_competitor
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market ?= {
+					add_competitiveness_modifier_for_character = {
+						character = scope:task_contract.task_contract_taker
+						modifier = gdp_challenge_competitor_trade_opportunity_success_modifier
+						years = 10
+					}
+				}
+				scope:task_contract.task_contract_taker = { save_scope_as = char }
+				scope:task_contract.task_contract_target = { save_scope_as = target_char }
+				task_contract_target.house = {
+					if = {
+						limit = {
+							NOT = { has_house_relation_with = scope:task_contract.task_contract_taker.house }
+						}
+						set_house_relation = {
+							target = scope:task_contract.task_contract_taker.house
+							level = quarrel
+							description = house_relation_reason_challenge_competitor_decrease_desc
+						}
+					}
+					else = {
+						change_house_relation_effect = {
+							HOUSE = scope:task_contract.task_contract_taker.house
+							VALUE = house_relation_damage_minor_value
+							REASON = challenge_competitor_decrease
+							CHAR = scope:task_contract.task_contract_taker
+							TARGET_CHAR = scope:task_contract.task_contract_target
+							TITLE = scope:dummy_gender
+						}
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			visible = no
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_critical_value
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market ?= {
+					add_competitiveness_modifier_for_character = {
+						character = scope:task_contract.task_contract_taker
+						modifier = gdp_challenge_competitor_trade_opportunity_success_critical_modifier
+						years = 10
+					}
+				}
+				scope:task_contract.task_contract_taker = { save_scope_as = char }
+				scope:task_contract.task_contract_target = { save_scope_as = target_char }
+				task_contract_target.house = {
+					add_house_modifier = {
+						modifier = gdp_challenge_competitor_trade_opportunity_success_critical_modifier
+						years = 10
+					}
+					if = {
+						limit = {
+							NOT = { has_house_relation_with = scope:task_contract.task_contract_taker.house }
+						}
+						set_house_relation = {
+							target = scope:task_contract.task_contract_taker.house
+							level = cordial
+							description = house_relation_reason_challenge_competitor_increase_desc
+						}
+					}
+					else = {
+						change_house_relation_effect = {
+							HOUSE = scope:task_contract.task_contract_taker.house
+							VALUE = house_relation_improve_minor_value
+							REASON = challenge_competitor_increase
+							CHAR = scope:task_contract.task_contract_taker
+							TARGET_CHAR = scope:task_contract.task_contract_target
+							TITLE = scope:dummy_gender
+						}
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+				var:task_contract_market ?= {
+					add_competitiveness_modifier_for_character = {
+						character = scope:task_contract.task_contract_taker
+						modifier = gdp_challenge_competitor_trade_opportunity_failure_modifier
+						years = 10
+					}
+				}
+				scope:task_contract.task_contract_taker = { save_scope_as = char }
+				scope:task_contract.task_contract_target = { save_scope_as = target_char }
+				task_contract_target.house = {
+					if = {
+						limit = {
+							NOT = { has_house_relation_with = scope:task_contract.task_contract_taker.house }
+						}
+						set_house_relation = {
+							target = scope:task_contract.task_contract_taker.house
+							level = quarrel
+							description = house_relation_reason_challenge_competitor_decrease_desc
+						}
+					}
+					else = {
+						change_house_relation_effect = {
+							HOUSE = scope:task_contract.task_contract_taker.house
+							VALUE = house_relation_damage_minor_value
+							REASON = challenge_competitor_decrease
+							CHAR = scope:task_contract.task_contract_taker
+							TARGET_CHAR = scope:task_contract.task_contract_target
+							TITLE = scope:dummy_gender
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+promote_goods = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/trade/icon_trade_goods.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = promote_goods_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = promote_goods }
+			has_character_flag = trade_opportunity_cooldown_promote_goods
+		}
+		any_trade_route = {
+			has_trader = yes
+			NOT = { has_variable = promote_goods_trade_opportunity_active }
+			save_temporary_scope_as = promote_goods_route_check
+			any_trade_market_on_route = {
+				gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				save_temporary_scope_as = promote_goods_market_check
+				scope:promote_goods_route_check = {
+					trade_route_selling_any_good_in_market_trigger = { MARKET = scope:promote_goods_market_check }
+				}
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		var:task_contract_route ?= {
+			any_trade_market_on_route = { trade_market_owner.title_province = root.task_contract_location }
+		}
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_promote_goods
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				promote_goods_apply_trade_opportunity_outcome_effect = { VALUE = 0.005 }
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_critical_value
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+				}
+				promote_goods_apply_trade_opportunity_outcome_effect = { VALUE = 0.0125 }
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_expertise_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+				promote_goods_apply_trade_opportunity_outcome_effect = { VALUE = -0.005 }
+			}
+		}
+	}
+}
+
+market_investment = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/character_interactions/commission_trade_route_interaction.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = market_investment_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = market_investment }
+			has_character_flag = trade_opportunity_cooldown_market_investment
+		}
+		any_trade_route = {
+			has_trader = yes
+			NOT = { has_trade_route_modifier = gdp_market_investment_trade_opportunity_capacity_modifier }
+			any_trade_market_on_route = {
+				gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				# Do not run Encourage Investment against a player county holder.
+				trade_market_owner.county.holder = { is_ai = yes }
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		var:task_contract_route ?= {
+			any_trade_market_on_route = { trade_market_owner.title_province = root.task_contract_location }
+		}
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_market_investment
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			visible = no
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_route ?= {
+					add_trade_route_modifier = {
+						modifier = gdp_market_investment_trade_opportunity_capacity_modifier
+						years = 10
+					}
+				}
+				market_investment_merchant_funded_outcome_effect = yes
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_critical_value
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_route ?= {
+					add_trade_route_modifier = {
+						modifier = gdp_market_investment_trade_opportunity_capacity_modifier
+						years = 10
+					}
+				}
+				# Scheme success convinced the ruler, so the merchant never pays
+				# An AI holder funds the works, and a player who gained the county is not charged either
+				if = {
+					limit = {
+						task_contract_location.county.holder = { is_ai = yes }
+					}
+					task_contract_location.county.holder = {
+						send_interface_toast = {
+							title = gdp_market_investment_trade_opportunity_critical_success_modifier
+							left_icon = scope:task_contract.task_contract_taker
+							right_icon = scope:task_contract.task_contract_location.county
+							pay_short_term_gold = {
+								target = scope:task_contract.task_contract_taker
+								gold = medium_gold_value
+							}
+							scope:task_contract.task_contract_location.county = {
+								add_county_modifier = {
+									modifier = gdp_market_investment_trade_opportunity_critical_success_modifier
+									years = 10
+								}
+							}
+						}
+					}
+				}
+				else = {
+					task_contract_location.county = {
+						add_county_modifier = {
+							modifier = gdp_market_investment_trade_opportunity_critical_success_modifier
+							years = 10
+						}
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}
+
+exploit_upheaval = { # PAIRED: alleviate_upheaval
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/scheme_types/icon_hostile_takeover_scheme.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = exploit_upheaval_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = {
+				OR = {
+					has_task_contract_type = exploit_upheaval
+					has_task_contract_type = alleviate_upheaval
+				}
+			}
+			has_character_flag = trade_opportunity_cooldown_exploit_upheaval
+		}
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				exploit_upheaval_market_modifier_trigger = yes
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location.barony.trade_market = {
+			save_temporary_scope_as = market_temp
+			exploit_upheaval_market_modifier_trigger = yes
+		}
+		task_contract_taker = {
+			valid_merchant_contract_basic_trigger = yes
+			NOT = {
+				any_character_active_contract = {
+					OR = {
+						has_task_contract_type = exploit_upheaval
+						has_task_contract_type = alleviate_upheaval
+					}
+					task_contract_location.barony.trade_market = scope:market_temp
+				}
+			}
+		}
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location.barony.trade_market = { save_temporary_scope_as = market_temp }
+		task_contract_taker = {
+			NOT = {
+				any_character_active_contract = {
+					task_contract_type = alleviate_upheaval
+					task_contract_location.barony.trade_market = scope:market_temp
+				}
+			}
+		}
+		var:task_contract_route ?= {
+			any_trade_market_on_route = {
+				exploit_upheaval_market_modifier_trigger = yes
+			}
+		}
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_exploit_upheaval
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = minor_gold_value
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					stress_and_fulfillment_impact = {
+						greedy = minor_stress_impact_loss
+						generous = minor_stress_impact_gain
+						callous = minor_stress_impact_loss
+						compassionate = minor_stress_impact_gain
+					}
+				}
+				task_contract_location.county.duchy = {
+					random_de_jure_county = {
+						limit = {
+							any_county_province = { has_province_modifier = recently_looted_modifier }
+						}
+						save_scope_as = saved_county
+						every_county_province = {
+							limit = { has_province_modifier = recently_looted_modifier }
+							custom = custom.every_looted_county_province
+							remove_province_modifier = recently_looted_modifier
+						}
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = {
+						value = minor_gold_value
+						add = merchant_contract_gold_reward_critical_value
+					}
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+					stress_and_fulfillment_impact = {
+						greedy = minor_stress_impact_loss
+						generous = minor_stress_impact_gain
+						callous = minor_stress_impact_loss
+						compassionate = minor_stress_impact_gain
+					}
+				}
+				task_contract_location.duchy = {
+					random_de_jure_county = {
+						limit = {
+							any_county_province = { has_province_modifier = recently_looted_modifier }
+						}
+						save_scope_as = saved_county
+						every_county_province = {
+							limit = { has_province_modifier = recently_looted_modifier }
+							custom = custom.every_looted_county_province
+							remove_province_modifier = recently_looted_modifier
+						}
+					}
+					custom_tooltip = exploit_upheaval_contract_success_critical_monopoly_tt
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}
+
+alleviate_upheaval = { # PAIRED: exploit_upheaval
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/character_interactions/request_trade_support_interaction.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = alleviate_upheaval_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOT = {
+			any_character_task_contract = { has_task_contract_type = alleviate_upheaval }
+		}
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				exploit_upheaval_market_modifier_trigger = yes
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location.barony.trade_market = {
+			save_temporary_scope_as = market_temp
+			exploit_upheaval_market_modifier_trigger = yes
+		}
+		task_contract_taker = {
+			NOT = {
+				any_character_active_contract = {
+					OR = {
+						has_task_contract_type = exploit_upheaval
+						has_task_contract_type = alleviate_upheaval
+					}
+					task_contract_location.barony.trade_market = scope:market_temp
+				}
+			}
+		}
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location.barony.trade_market = { save_temporary_scope_as = market_temp }
+		task_contract_taker = {
+			NOT = {
+				any_character_active_contract = {
+					task_contract_type = exploit_upheaval
+					task_contract_location.barony.trade_market = scope:market_temp
+				}
+			}
+		}
+		var:task_contract_route ?= {
+			any_trade_market_on_route = {
+				exploit_upheaval_market_modifier_trigger = yes
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					stress_and_fulfillment_impact = {
+						generous = minor_stress_impact_loss
+						greedy = minor_stress_impact_gain
+						compassionate = minor_stress_impact_loss
+						callous = minor_stress_impact_gain
+					}
+				}
+				task_contract_location = {
+					barony.trade_market = { alleviate_upheaval_modifier_removal_effect = yes }
+					duchy = {
+						every_de_jure_county = { change_prosperity_progress = 15 }
+						random_de_jure_county = {
+							limit = {
+								any_county_province = { has_province_modifier = recently_looted_modifier }
+							}
+							every_county_province = {
+								limit = { has_province_modifier = recently_looted_modifier }
+								remove_province_modifier = recently_looted_modifier
+							}
+						}
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+					stress_and_fulfillment_impact = {
+						generous = minor_stress_impact_loss
+						greedy = minor_stress_impact_gain
+						compassionate = minor_stress_impact_loss
+						callous = minor_stress_impact_gain
+					}
+				}
+				task_contract_location = {
+					barony.trade_market = { alleviate_upheaval_modifier_removal_effect = yes }
+					duchy = {
+						every_de_jure_county = { change_prosperity_progress = 30 }
+						random_de_jure_county = {
+							limit = {
+								any_county_province = { has_province_modifier = recently_looted_modifier }
+							}
+							every_county_province = {
+								limit = { has_province_modifier = recently_looted_modifier }
+								remove_province_modifier = recently_looted_modifier
+							}
+						}
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					add_stress = {
+						value = minor_stress_gain
+						multiply = trade_opportunity_contract_tier_value
+					}
+					remove_short_term_gold = minor_gold_value
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}
+
+support_guilds = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/inspirations/artisan_inspiration.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = support_guilds_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		has_realm_law = company_purpose_artisan
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = support_guilds }
+			has_character_flag = trade_opportunity_cooldown_support_guilds
+		}
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_taker = { has_realm_law = company_purpose_artisan }
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		has_realm_law = company_purpose_artisan
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		save_temporary_scope_as = task_contract
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_taker = { has_realm_law = company_purpose_artisan }
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_support_guilds
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					remove_short_term_gold = medium_gold_value
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_trait_xp = {
+						trait = lifestyle_merchant
+						track = artisan
+						value = trade_opportunity_xp_success_standard
+					}
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				task_contract_location.county = {
+					change_prosperity_progress = 5
+					add_county_modifier = {
+						modifier = gdp_support_guilds_trade_opportunity_success_modifier
+						years = 10
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					custom_tooltip = support_guilds_contract_success_critical_inspiration_tt
+					add_trait_xp = {
+						trait = lifestyle_merchant
+						track = artisan
+						value = trade_opportunity_xp_success_critical
+					}
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					remove_short_term_gold = minor_gold_value
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}
+
+seek_debtors = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/character_interactions/loan_money_interaction.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = seek_debtors_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		has_realm_law = company_purpose_creditor
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = seek_debtors }
+			has_character_flag = trade_opportunity_cooldown_seek_debtors
+		}
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_taker = { has_realm_law = company_purpose_creditor }
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		has_realm_law = company_purpose_creditor
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_taker = { has_realm_law = company_purpose_creditor }
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_seek_debtors
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					add_trait_xp = {
+						trait = lifestyle_merchant
+						track = creditor
+						value = trade_opportunity_xp_success_standard
+					}
+					merchant_creditor_capstone_prestige_effect = yes
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				if = {
+					limit = {
+						NOT = { exists = scope:debtor }
+					}
+					task_contract_location.barony.trade_market = { custom_tooltip = seek_debtors_contract_success_standard_debtor_tt }
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}
+
+sabotage_competition = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/scheme_types/icon_raid_estate.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = sabotage_competition_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = sabotage_competition }
+			has_character_flag = trade_opportunity_cooldown_sabotage_competition
+		}
+		any_trade_route = {
+			has_trader = yes
+			current_capacity < max_capacity
+			any_trade_market_on_route = {
+				gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = root }
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_target.house.house_head ?= {
+			gdp_is_merchant_or_unlanded_patrician_trigger = yes
+			house != root.task_contract_taker.house
+		}
+		var:task_contract_route ?= {
+			any_trade_market_on_route = { trade_market_owner.title_province = root.task_contract_location }
+		}
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_sabotage_competition
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_intrigue_lifestyle_xp = medium_lifestyle_xp
+					add_short_term_gold = {
+						value = medium_gold_value
+						multiply = trade_opportunity_contract_tier_value
+					}
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market ?= {
+					add_competitiveness_modifier_for_character = {
+						character = scope:task_contract.task_contract_target
+						modifier = gdp_sabotage_competition_trade_opportunity_failure_modifier
+						years = 10
+					}
+				}
+				scope:task_contract.task_contract_taker = { save_scope_as = char }
+				scope:task_contract.task_contract_target = { save_scope_as = target_char }
+				task_contract_target.house = {
+					if = {
+						limit = {
+							NOT = { has_house_relation_with = scope:task_contract.task_contract_taker.house }
+						}
+						set_house_relation = {
+							target = scope:task_contract.task_contract_taker.house
+							level = quarrel
+							description = house_relation_reason_sabotage_competition_decrease_desc
+						}
+					}
+					else = {
+						change_house_relation_effect = {
+							HOUSE = scope:task_contract.task_contract_taker.house
+							VALUE = house_relation_damage_minor_value
+							REASON = sabotage_competition_decrease
+							CHAR = scope:task_contract.task_contract_taker
+							TARGET_CHAR = scope:task_contract.task_contract_target
+							TITLE = scope:dummy_gender
+						}
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_intrigue_lifestyle_xp = medium_lifestyle_xp
+					add_short_term_gold = {
+						value = major_gold_value
+						multiply = trade_opportunity_contract_tier_value
+						add = merchant_contract_gold_reward_critical_value
+					}
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market ?= {
+					add_competitiveness_modifier_for_character = {
+						character = scope:task_contract.task_contract_target
+						modifier = gdp_sabotage_competition_trade_opportunity_critical_failure_modifier
+						years = 10
+					}
+				}
+				scope:task_contract.task_contract_taker = { save_scope_as = char }
+				scope:task_contract.task_contract_target = { save_scope_as = target_char }
+				task_contract_target.house = {
+					if = {
+						limit = {
+							NOT = { has_house_relation_with = scope:task_contract.task_contract_taker.house }
+						}
+						set_house_relation = {
+							target = scope:task_contract.task_contract_taker.house
+							level = quarrel
+							description = house_relation_reason_sabotage_competition_decrease_desc
+						}
+					}
+					else = {
+						change_house_relation_effect = {
+							HOUSE = scope:task_contract.task_contract_taker.house
+							VALUE = house_relation_damage_minor_value
+							REASON = sabotage_competition_decrease
+							CHAR = scope:task_contract.task_contract_taker
+							TARGET_CHAR = scope:task_contract.task_contract_target
+							TITLE = scope:dummy_gender
+						}
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+				var:task_contract_market ?= {
+					add_competitiveness_modifier_for_character = {
+						character = scope:task_contract.task_contract_taker
+						modifier = gdp_sabotage_competition_trade_opportunity_failure_modifier
+						years = 10
+					}
+				}
+				scope:task_contract.task_contract_taker = { save_scope_as = char }
+				scope:task_contract.task_contract_target = { save_scope_as = target_char }
+				task_contract_target.house = {
+					if = {
+						limit = {
+							NOT = { has_house_relation_with = scope:task_contract.task_contract_taker.house }
+						}
+						set_house_relation = {
+							target = scope:task_contract.task_contract_taker.house
+							level = quarrel
+							description = house_relation_reason_sabotage_competition_decrease_desc
+						}
+					}
+					else = {
+						change_house_relation_effect = {
+							HOUSE = scope:task_contract.task_contract_taker.house
+							VALUE = house_relation_damage_minor_value
+							REASON = sabotage_competition_decrease
+							CHAR = scope:task_contract.task_contract_taker
+							TARGET_CHAR = scope:task_contract.task_contract_target
+							TITLE = scope:dummy_gender
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+build_category_connections = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/scheme_types/icon_scheme_befriend.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = build_category_connections_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = build_category_connections }
+			has_character_flag = trade_opportunity_cooldown_build_category_connections
+		}
+		save_temporary_scope_as = merchant_temp
+		any_trade_route = {
+			has_trader = yes
+			any_traded_good = {
+				any_trade_category = {
+					has_trade_good_category_xp_track = yes
+					save_temporary_scope_as = category_temp
+					"scope:merchant_temp.primary_title.trade_good_category_level(scope:category_temp)" < 55
+				}
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		var:task_contract_route ?= {
+			any_trade_market_on_route = { trade_market_owner.title_province = root.task_contract_location }
+		}
+		exists = var:task_contract_trade_good
+		exists = var:task_contract_trade_category
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_build_category_connections
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					primary_title = {
+						add_trade_good_category_xp = {
+							target = scope:task_contract.var:task_contract_trade_category
+							value = 300
+						}
+					}
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}
+
+disrupt_charter = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/character_interactions/revoke_merchant_charter_interaction.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = disrupt_charter_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = disrupt_charter }
+			has_character_flag = trade_opportunity_cooldown_disrupt_charter
+		}
+		save_temporary_scope_as = merchant_temp
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				any_character_in_market = {
+					is_landless_merchant = yes
+					any_held_title = {
+						is_target_in_global_variable_list = {
+							name = merchants_tally
+							target = this
+						}
+					}
+					disrupt_charter_trade_opportunity_target_valid_trigger = { SCHEME_OWNER = scope:merchant_temp }
+				}
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_target.house.house_head ?= {
+			is_landless_merchant = yes
+			house != root.task_contract_taker.house
+			merchant_has_charter_from_patron_trigger = {
+				EQUIPPED = no
+				INCLUDE_FORGERIES = yes
+			}
+		}
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_disrupt_charter
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				task_contract_target = {
+					merchant_charter_authority_scope_effect = {
+						PATRON = scope:task_contract.task_contract_target.suzerain
+						MERCHANT = scope:task_contract.task_contract_target
+					}
+					send_interface_message = {
+						type = event_generic_bad
+						title = gdp_disrupt_charter_trade_opportunity_success_modifier
+						left_icon = scope:task_contract.task_contract_taker
+						right_icon = scope:patron
+						custom_tooltip = {
+							text = disrupt_charter_abuse_reward_tt
+							if = {
+								limit = { scope:task_contract.task_contract_tier >= define:NTaskContract|MEDIUM_TASK_CONTRACT_TIER }
+								merchant_charter_abuse_stance_escalate_effect = { PATRON = scope:patron }
+							}
+							if = {
+								limit = { scope:task_contract.task_contract_tier >= define:NTaskContract|HIGH_TASK_CONTRACT_TIER }
+								merchant_charter_abuse_stance_escalate_effect = { PATRON = scope:patron }
+							}
+							merchant_charter_abuse_stance_min_indifferent_effect = { PATRON = scope:patron }
+							merchant_charter_abuse_counter_effect = {
+								PATRON = scope:patron
+								MERCHANT = scope:task_contract.task_contract_target
+							}
+						}
+						add_character_modifier = {
+							modifier = gdp_disrupt_charter_trade_opportunity_success_modifier
+							years = 10
+						}
+					}
+					scope:task_contract.task_contract_taker = { save_scope_as = char }
+					scope:task_contract.task_contract_target = { save_scope_as = target_char }
+					house = {
+						if = {
+							limit = {
+								NOT = { has_house_relation_with = scope:task_contract.task_contract_taker.house }
+							}
+							set_house_relation = {
+								target = scope:task_contract.task_contract_taker.house
+								level = quarrel
+								description = house_relation_reason_disrupt_charter_decrease_desc
+							}
+						}
+						else = {
+							change_house_relation_effect = {
+								HOUSE = scope:task_contract.task_contract_taker.house
+								VALUE = house_relation_damage_minor_value
+								REASON = disrupt_charter_decrease
+								CHAR = scope:task_contract.task_contract_taker
+								TARGET_CHAR = scope:task_contract.task_contract_target
+								TITLE = scope:dummy_gender
+							}
+						}
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_critical_value
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+				}
+				task_contract_target = {
+					merchant_charter_authority_scope_effect = {
+						PATRON = scope:task_contract.task_contract_target.suzerain
+						MERCHANT = scope:task_contract.task_contract_target
+					}
+					send_interface_message = {
+						type = event_generic_bad
+						title = gdp_disrupt_charter_trade_opportunity_critical_success_modifier
+						left_icon = scope:task_contract.task_contract_taker
+						right_icon = scope:patron
+						custom_tooltip = {
+							text = disrupt_charter_abuse_reward_tt
+							if = {
+								limit = { scope:task_contract.task_contract_tier >= define:NTaskContract|MEDIUM_TASK_CONTRACT_TIER }
+								merchant_charter_abuse_stance_escalate_effect = { PATRON = scope:patron }
+							}
+							if = {
+								limit = { scope:task_contract.task_contract_tier >= define:NTaskContract|HIGH_TASK_CONTRACT_TIER }
+								merchant_charter_abuse_stance_escalate_effect = { PATRON = scope:patron }
+							}
+							merchant_charter_abuse_stance_min_indifferent_effect = { PATRON = scope:patron }
+							merchant_charter_abuse_counter_effect = {
+								PATRON = scope:patron
+								MERCHANT = scope:task_contract.task_contract_target
+							}
+						}
+						add_character_modifier = {
+							modifier = gdp_disrupt_charter_trade_opportunity_critical_success_modifier
+							years = 10
+						}
+					}
+					scope:task_contract.task_contract_taker = { save_scope_as = char }
+					scope:task_contract.task_contract_target = { save_scope_as = target_char }
+					house = {
+						if = {
+							limit = {
+								NOT = { has_house_relation_with = scope:task_contract.task_contract_taker.house }
+							}
+							set_house_relation = {
+								target = scope:task_contract.task_contract_taker.house
+								level = quarrel
+								description = house_relation_reason_disrupt_charter_decrease_desc
+							}
+						}
+						else = {
+							change_house_relation_effect = {
+								HOUSE = scope:task_contract.task_contract_taker.house
+								VALUE = house_relation_damage_minor_value
+								REASON = disrupt_charter_decrease
+								CHAR = scope:task_contract.task_contract_taker
+								TARGET_CHAR = scope:task_contract.task_contract_target
+								TITLE = scope:dummy_gender
+							}
+						}
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}
+
+entrepot_buy = { # PAIRED: entrepot_sell
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/scheme_types/steal_market_insights.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = entrepot_buy_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = {
+				OR = {
+					has_task_contract_type = entrepot_buy
+					has_task_contract_type = entrepot_sell
+				}
+			}
+			has_character_flag = trade_opportunity_cooldown_entrepot_buy
+		}
+		# A trade route passes through an entrepot where it is buying goods
+		any_trade_route = {
+			has_trader = yes
+			NOR = {
+				has_trade_route_modifier = gdp_entrepot_buy_trade_opportunity_success_modifier
+				has_trade_route_modifier = gdp_entrepot_buy_trade_opportunity_success_critical_modifier
+				has_trade_route_modifier = gdp_entrepot_buy_trade_opportunity_failure_modifier
+			}
+			save_temporary_scope_as = entrepot_route_check
+			any_trade_market_on_route = {
+				gdp_entrepot_trade_opportunity_market_available_trigger = { MERCHANT = root }
+				save_temporary_scope_as = entrepot_market_check
+				scope:entrepot_route_check = {
+					trade_route_buying_any_good_in_market_trigger = { MARKET = scope:entrepot_market_check }
+				}
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location = {
+			province_has_district = entrepot_location_district
+			barony.trade_market = { save_temporary_scope_as = market_temp }
+		}
+		task_contract_taker = {
+			NOT = {
+				any_character_active_contract = {
+					OR = {
+						has_task_contract_type = entrepot_buy
+						has_task_contract_type = entrepot_sell
+					}
+					task_contract_location.barony.trade_market = scope:market_temp
+				}
+			}
+		}
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		save_temporary_scope_as = task_contract
+		valid_trade_opportunity_to_continue_trigger = yes
+		scope:task_contract.task_contract_location = { province_has_district = entrepot_location_district }
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_entrepot_buy
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market = {
+					add_price_modifier_for_character = {
+						type = buy_mult
+						character = scope:task_contract.task_contract_taker
+						trade_good_type = scope:task_contract.var:task_contract_trade_good
+						value = -0.01
+						years = 10
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			visible = no
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_critical_value
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market = {
+					add_price_modifier_for_character = {
+						type = buy_mult
+						character = scope:task_contract.task_contract_taker
+						trade_good_type = scope:task_contract.var:task_contract_trade_good
+						value = -0.02
+						years = 10
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_expertise_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+				var:task_contract_market = {
+					add_price_modifier_for_character = {
+						type = buy_mult
+						character = scope:task_contract.task_contract_taker
+						trade_good_type = scope:task_contract.var:task_contract_trade_good
+						value = 0.01
+						years = 10
+					}
+				}
+			}
+		}
+	}
+}
+
+entrepot_sell = { # PAIRED: entrepot_buy
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/scheme_types/icon_scheme_leverage_contribution.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = entrepot_sell_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = {
+				OR = {
+					has_task_contract_type = entrepot_sell
+					has_task_contract_type = entrepot_buy
+				}
+			}
+			has_character_flag = trade_opportunity_cooldown_entrepot_sell
+		}
+		# A trade route passes through an entrepot where it is selling goods
+		any_trade_route = {
+			has_trader = yes
+			NOR = {
+				has_trade_route_modifier = gdp_entrepot_sell_trade_opportunity_success_modifier
+				has_trade_route_modifier = gdp_entrepot_sell_trade_opportunity_success_critical_modifier
+				has_trade_route_modifier = gdp_entrepot_sell_trade_opportunity_failure_modifier
+			}
+			save_temporary_scope_as = entrepot_route_check
+			any_trade_market_on_route = {
+				gdp_entrepot_trade_opportunity_market_available_trigger = { MERCHANT = root }
+				save_temporary_scope_as = entrepot_market_check
+				scope:entrepot_route_check = {
+					trade_route_selling_any_good_in_market_trigger = { MARKET = scope:entrepot_market_check }
+				}
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location = {
+			province_has_district = entrepot_location_district
+			barony.trade_market = { save_temporary_scope_as = market_temp }
+		}
+		task_contract_taker = {
+			NOT = {
+				any_character_active_contract = {
+					OR = {
+						has_task_contract_type = entrepot_buy
+						has_task_contract_type = entrepot_sell
+					}
+					task_contract_location.barony.trade_market = scope:market_temp
+				}
+			}
+		}
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		save_temporary_scope_as = task_contract
+		valid_trade_opportunity_to_continue_trigger = yes
+		scope:task_contract.task_contract_location = { province_has_district = entrepot_location_district }
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_entrepot_sell
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market = {
+					add_price_modifier_for_character = {
+						type = sell_mult
+						character = scope:task_contract.task_contract_taker
+						trade_good_type = scope:task_contract.var:task_contract_trade_good
+						value = 0.01
+						years = 10
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			visible = no
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_critical_value
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+					merchant_port_factors_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market = {
+					add_price_modifier_for_character = {
+						type = sell_mult
+						character = scope:task_contract.task_contract_taker
+						trade_good_type = scope:task_contract.var:task_contract_trade_good
+						value = 0.02
+						years = 10
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_expertise_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+				var:task_contract_market = {
+					add_price_modifier_for_character = {
+						type = sell_mult
+						character = scope:task_contract.task_contract_taker
+						trade_good_type = scope:task_contract.var:task_contract_trade_good
+						value = -0.01
+						years = 10
+					}
+				}
+			}
+		}
+	}
+}
+
+negotiate_tolls = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/trade/icon_toll.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = negotiate_tolls_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		save_temporary_scope_as = merchant_temp
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = negotiate_tolls }
+			has_character_flag = trade_opportunity_cooldown_negotiate_tolls
+		}
+		# A trade route
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = scope:merchant_temp }
+				save_temporary_scope_as = market_temp
+				scope:merchant_temp = {
+					NOT = {
+						any_character_task_contract = {
+							OR = {
+								has_task_contract_type = negotiate_tolls
+								has_task_contract_type = smuggle_goods
+							}
+							task_contract_location.barony.trade_market = scope:market_temp
+						}
+					}
+				}
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location.barony.trade_market = {
+			save_temporary_scope_as = market_temp
+			pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = root.task_contract_taker }
+		}
+		task_contract_taker = {
+			NOT = {
+				any_character_active_contract = {
+					OR = {
+						has_task_contract_type = negotiate_tolls
+						has_task_contract_type = smuggle_goods
+					}
+					task_contract_location.barony.trade_market = scope:market_temp
+				}
+			}
+		}
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location.barony.trade_market = {
+			pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = root.task_contract_taker }
+		}
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_negotiate_tolls
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market = {
+					if = {
+						limit = { market_toll_level_minus_1_value = 0 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_no_tolls
+							years = 10
+						}
+					}
+					else_if = {
+						limit = { market_toll_level_minus_1_value = 1 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_minimal_tolls
+							years = 10
+						}
+					}
+					else_if = {
+						limit = { market_toll_level_minus_1_value = 2 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_low_tolls
+							years = 10
+						}
+					}
+					else_if = {
+						limit = { market_toll_level_minus_1_value = 3 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_medium_tolls
+							years = 10
+						}
+					}
+					else_if = {
+						limit = { market_toll_level_minus_1_value = 4 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_high_tolls
+							years = 10
+						}
+					}
+				}
+			}
+		}
+		success_critical = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_prestige = {
+						value = medium_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_critical_value
+					trade_opportunities_competitive_pressure_critical_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market = {
+					if = {
+						limit = { market_toll_level_minus_2_value = 0 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_no_tolls
+							years = 10
+						}
+					}
+					else_if = {
+						limit = { market_toll_level_minus_2_value = 1 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_minimal_tolls
+							years = 10
+						}
+					}
+					else_if = {
+						limit = { market_toll_level_minus_2_value = 2 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_low_tolls
+							years = 10
+						}
+					}
+					else_if = {
+						limit = { market_toll_level_minus_2_value = 3 }
+						add_toll_exception = {
+							target = scope:task_contract.task_contract_taker
+							toll_level = toll_level:toll_level_medium_tolls
+							years = 10
+						}
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}
+
+smuggle_goods = {
+	group = merchant_trade_opportunity_group
+	icon = "gfx/interface/icons/character_interactions/icon_tribute_mission.dds"
+	travel = no
+	use_diplomatic_range = no
+
+	weight = { value = smuggle_goods_trade_opportunity_weight_value }
+
+	valid_to_create = {
+		save_temporary_scope_as = merchant_temp
+		valid_merchant_contract_basic_trigger = yes
+		NOR = {
+			any_character_task_contract = { has_task_contract_type = smuggle_goods }
+			has_character_flag = trade_opportunity_cooldown_smuggle_goods
+		}
+		# A trade route
+		any_trade_route = {
+			has_trader = yes
+			any_trade_market_on_route = {
+				save_temporary_scope_as = market_temp
+				pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = scope:merchant_temp }
+				scope:merchant_temp = {
+					NOT = {
+						any_character_task_contract = {
+							OR = {
+								has_task_contract_type = negotiate_tolls
+								has_task_contract_type = smuggle_goods
+							}
+							task_contract_location.barony.trade_market = scope:market_temp
+						}
+					}
+				}
+			}
+		}
+	}
+
+	valid_to_keep = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location.barony.trade_market = {
+			save_temporary_scope_as = market_temp
+			pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = root.task_contract_taker }
+		}
+		task_contract_taker = {
+			NOT = {
+				any_character_active_contract = {
+					OR = {
+						has_task_contract_type = smuggle_goods
+						has_task_contract_type = negotiate_tolls
+					}
+					task_contract_location.barony.trade_market = scope:market_temp
+				}
+			}
+		}
+	}
+
+	valid_to_accept = {
+		valid_merchant_contract_basic_trigger = yes
+		valid_to_accept_trade_opportunity_trigger = yes
+	}
+
+	can_accept_while_traveling = {
+		can_accept_trade_opportunity_while_traveling_trigger = yes
+	}
+
+	valid_to_continue = {
+		valid_trade_opportunity_to_continue_trigger = yes
+		task_contract_location.barony.trade_market = {
+			pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = root.task_contract_taker }
+		}
+	}
+
+	on_create = {
+		scope:contract.task_contract_taker ?= { # Set a cooldown
+			add_character_flag = {
+				flag = trade_opportunity_cooldown_smuggle_goods
+				years = 10
+			}
+		}
+	}
+
+	on_accepted = {
+		trade_opportunity_on_accepted_effect = yes
+	}
+
+	on_completed = {
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	on_invalidated = {
+		merchant_trade_opportunity_contract_invalidated_message_effect = yes
+		merchant_trade_opportunity_travel_complete_or_invalidated_effect = yes # required to ensure travel does not get stuck
+	}
+
+	task_contract_reward = {
+		success_standard = {
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_success_on_contract"
+					add_dealbreaker_secret_effect = yes
+					add_prestige = {
+						value = minor_prestige_gain
+						multiply = trade_opportunity_contract_tier_value
+						multiply = merchant_contract_prestige_reward_mult_value
+					}
+					add_short_term_gold = merchant_contract_gold_reward_value
+					trade_opportunities_competitive_pressure_success_effect = yes
+					merchant_binding_contracts_trade_opportunity_success_effect = yes
+				}
+				var:task_contract_market = {
+					save_scope_as = market
+					add_toll_exception = {
+						target = scope:task_contract.task_contract_taker
+						toll_level = toll_level:toll_level_no_tolls
+						years = 5
+					}
+					show_as_tooltip = {
+						add_trade_market_modifier = {
+							modifier = gdp_market_smuggling_trade_modifier
+							years = 10
+						}
+					}
+				}
+				custom_tooltip = {
+					text = smuggle_goods_smuggling_ring_effect_tt
+					scope:market.trade_market_owner.duchy = {
+						random_de_jure_county = {
+							limit = {
+								NOT = { has_county_modifier = county_corruption_smuggling_ring_modifier_3 }
+							}
+							weight = {
+								base = 100
+								modifier = {
+									add = {
+										value = county_control
+										multiply = -1
+									}
+								}
+								modifier = {
+									has_county_modifier = county_corruption_smuggling_ring_modifier_2
+									add = 25
+								}
+								modifier = {
+									has_county_modifier = county_corruption_smuggling_ring_modifier
+									add = 25
+								}
+								modifier = {
+									this = scope:market.trade_market_owner.county
+									factor = 2
+								}
+							}
+							add_merchant_smuggling_ring_county_corruption_modifier_effect = yes
+						}
+					}
+				}
+			}
+		}
+		failure_standard = {
+			positive = no
+			should_print_on_complete = yes
+			effect = {
+				save_scope_as = task_contract
+				task_contract_taker = {
+					play_sound_effect = "event:/DLC/EP3/SFX/UI/Contracts/ep3_ui_contracts_failure_on_contract"
+					if = {
+						limit = { exists = scope:task_contract.scheme }
+						add_dealbreaker_secret_effect = yes
+					}
+					merchant_contract_failure_reputation_effect = yes
+					trade_opportunities_competitive_pressure_failure_effect = yes
+				}
+			}
+		}
+	}
+}

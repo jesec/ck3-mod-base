@@ -419,3 +419,63 @@ ce3_papal_bull_check_effect = { # Papal Bull
 		}
 	}
 }
+
+ep5_09_wearer_of_many_hats_achievement_record_effect = { # Wearer of Many Hats
+	if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_feudal
+				government_has_flag = government_is_clan
+				government_has_flag = government_is_ecclesiastical
+			}
+		}
+		add_achievement_flag_effect = { FLAG = ep5_09_wearer_of_many_hats_achievement_landed_flag }
+	}
+	else_if = {
+		limit = {
+			government_has_flag = government_is_republic
+		}
+		add_achievement_flag_effect = { FLAG = ep5_09_wearer_of_many_hats_achievement_republic_flag }
+	}
+	else_if = {
+		limit = {
+			government_has_flag = government_is_merchant
+		}
+		add_achievement_flag_effect = { FLAG = ep5_09_wearer_of_many_hats_achievement_merchant_flag }
+	}
+	else_if = {
+		limit = {
+			government_has_flag = government_is_landless_adventurer
+		}
+		add_achievement_flag_effect = { FLAG = ep5_09_wearer_of_many_hats_achievement_adventurer_flag }
+	}
+}
+
+ep5_12_would_you_like_fries_with_that_check_effect = { # Would You Like Fries With That?
+	hidden_effect = {
+		if = {
+			limit = {
+				$VICTIM$ = {
+					gdp_is_patrician_trigger = yes
+					OR = {
+						culture = {
+							has_cultural_pillar = heritage_central_germanic
+						}
+						liege ?= {
+							government_has_flag = government_is_republic
+							culture = {
+								has_cultural_pillar = heritage_central_germanic
+							}
+						}
+					}
+				}
+			}
+			$EATER$ = {
+				add_achievement_global_variable_effect = {
+					VARIABLE = ep5_12_would_you_like_fries_with_that_achievement_unlocked
+					VALUE = yes
+				}
+			}
+		}
+	}
+}

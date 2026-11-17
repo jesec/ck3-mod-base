@@ -1,0 +1,218 @@
+﻿gdp_civic_agitation_scheme = {
+	skill = intrigue
+	desc = gdp_civic_agitation_scheme_desc_general
+	success_desc = gdp_civic_agitation_scheme_desc_success
+	discovery_desc = gdp_civic_agitation_scheme_discovery_desc
+	icon = icon_scheme_incite_unrest
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = title
+	category = hostile
+	is_secret = yes
+	is_basic = no
+	maximum_breaches = 5
+
+	cooldown = { years = 5 }
+
+	speed_per_skill_point = t2_spsp_owner_value
+	spymaster_speed_per_skill_point = t2_spsp_owner_spy_value
+	uses_resistance = no
+	base_progress_goal = 150
+	base_maximum_success = 25
+	minimum_success = 5
+	phases_per_agent_charge = 1
+	success_chance_growth_per_skill_point = t1_scgpsp_value
+
+	allow = {
+		gdp_can_agitate_county_trigger = { COUNTY = scope:target }
+		gdp_can_agitate_civic_unrest_trigger = yes
+		is_available_quick = {
+			adult = yes
+			imprisoned = no
+		}
+	}
+
+	valid = {
+		gdp_can_agitate_county_trigger = { COUNTY = scope:target }
+		gdp_can_agitate_civic_unrest_trigger = yes
+		is_available_quick = {
+			adult = yes
+			alive = yes
+			imprisoned = no
+			incapable = no
+		}
+	}
+
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_basic_suite_modifier = yes
+		ai_agent_join_chance_hostile_title_modifier = yes
+	}
+	valid_agent = {
+		is_valid_agent_standard_trigger = yes
+		title_scheme_valid_agent_trigger = yes
+	}
+	agent_groups_owner_perspective = { courtiers guests scripted_relations }
+
+	odds_prediction = {
+		add = hostile_scheme_base_odds_prediction_target_is_title_value
+
+		add = {
+			value = scope:owner.intrigue
+			desc = scheme_odds.intrigue.owner
+		}
+
+		scope:temp_target ?= {
+			add = {
+				value = intrigue
+				desc = gdp_civic_agitation_odds_target_intrigue
+				multiply = -0.5
+			}
+		}
+
+		min = 0
+	}
+
+	base_success_chance = {
+		base = 0
+
+		scheme_type_skill_success_chance_modifier = { SKILL = INTRIGUE }
+		hostile_scheme_title_base_chance_modifier = yes
+		political_scheme_title_base_chance_modifier = yes
+		apply_political_scheme_title_success_chance_adjustments_modifier = yes
+
+		compare_modifier = {
+			trigger = { exists = scope:target }
+			desc = "SCHEME_TARGET_COUNTY_POPULAR_OPINION"
+			value = scope:target.popular_opinion
+			multiplier = -0.5
+		}
+
+		compare_modifier = {
+			trigger = { exists = scope:target }
+			desc = "SCHEME_TARGET_COUNTY_PROSPERITY"
+			value = scope:target.prosperity_level
+			multiplier = 0.5
+		}
+
+		compare_modifier = {
+			trigger = { exists = scope:target }
+			desc = "SCHEME_TARGET_COUNTY_CONTROL"
+			value = scope:target.county_control
+			multiplier = -0.25
+		}
+
+		modifier = {
+			add = 15
+			desc = "SCHEME_TARGET_HAS_PRIVILEGES"
+			scope:target ?= { has_variable = civic_privileges_level }
+		}
+
+		modifier = {
+			add = gdp_civic_agitation_league_cohesion_success_value
+			desc = "SCHEME_OWNER_LEAGUE_COHESION"
+			scope:owner = { gdp_is_trade_league_member_trigger = yes }
+			gdp_civic_agitation_league_cohesion_success_value > 0
+		}
+
+		modifier = {
+			add = 10
+			desc = overseer_trait_desc
+			scope:owner = { has_trait = schemer }
+		}
+		modifier = {
+			add = -10
+			scope:owner = { has_character_modifier = political_schemes_distracted_modifier }
+			desc = political_schemes_distracted_modifier
+		}
+	}
+
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
+	}
+
+	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:political
+		}
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
+				}
+			}
+			add_agent_slot = agent_conspirator
+			add_agent_slot = agent_demagogue
+			add_agent_slot = agent_financier
+			add_agent_slot = agent_financier
+			add_agent_slot = agent_alibi_title
+		}
+		if = {
+			limit = {
+				scheme_owner = { gdp_is_popular_republic_head_trigger = yes }
+			}
+			add_scheme_modifier = { type = gdp_civic_agitation_popular_republic_modifier }
+		}
+	}
+
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		gdp_civic_agitation_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+
+	on_hud_click = { gdp_civic_agitation_scheme_prep_effect = yes }
+
+	on_monthly = {
+		hostile_scheme_monthly_discovery_chance_effect = yes
+		if = {
+			limit = {
+				has_scheme_modifier = gdp_civic_agitation_popular_republic_modifier
+				scheme_owner = { gdp_is_popular_republic_head_trigger = no }
+			}
+			remove_scheme_modifier = gdp_civic_agitation_popular_republic_modifier
+		}
+		else_if = {
+			limit = {
+				NOT = { has_scheme_modifier = gdp_civic_agitation_popular_republic_modifier }
+				scheme_owner = { gdp_is_popular_republic_head_trigger = yes }
+			}
+			add_scheme_modifier = { type = gdp_civic_agitation_popular_republic_modifier }
+		}
+		if = {
+			limit = {
+				exists = scope:discovery_event_happening
+			}
+			scheme_owner = { save_scope_as = owner }
+			scheme_target_title.holder ?= { save_scope_as = wronged_lord }
+			scope:owner = {
+				add_character_modifier = {
+					modifier = gdp_caught_agitating_modifier
+					years = 10
+				}
+			}
+			scope:wronged_lord ?= {
+				add_opinion = {
+					modifier = angry_opinion
+					target = scope:owner
+					opinion = -40
+				}
+			}
+		}
+	}
+
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_owner = { save_scope_as = owner }
+		scope:owner = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = gdp_civic_agitation_scheme_invalidated_title
+				left_icon = scope:owner
+				custom_tooltip = gdp_civic_agitation_scheme_invalidated_desc
+			}
+		}
+	}
+}

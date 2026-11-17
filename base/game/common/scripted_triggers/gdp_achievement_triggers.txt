@@ -1,0 +1,34 @@
+﻿# Scope: character
+ep5_achievement_is_burgher_king_trigger = {
+	gdp_is_assembly_head_trigger = yes
+	highest_held_title_tier >= tier_kingdom
+	culture = {
+		has_cultural_pillar = heritage_central_germanic
+	}
+}
+
+# Scope: trade monopoly
+# Owned by OWNER personally or through one of OWNER's titles
+ep5_achievement_monopoly_owned_by_trigger = {
+	OR = {
+		character_owner ?= $OWNER$
+		title_owner.holder ?= $OWNER$
+	}
+}
+
+# Scope: character
+# Owns a CATEGORY monopoly, personally or through a held title, in the Trade Market of DUCHY
+ep5_achievement_owns_monopoly_in_duchy_market_trigger = {
+	OR = {
+		any_trade_monopoly_for_character = {
+			is_trade_monopoly_for_trade_good_category = $CATEGORY$
+			monopoly_trade_market.trade_market_owner.duchy ?= title:$DUCHY$
+		}
+		any_held_title = {
+			any_trade_monopoly_for_title = {
+				is_trade_monopoly_for_trade_good_category = $CATEGORY$
+				monopoly_trade_market.trade_market_owner.duchy ?= title:$DUCHY$
+			}
+		}
+	}
+}

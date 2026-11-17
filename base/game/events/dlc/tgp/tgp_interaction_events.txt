@@ -415,15 +415,19 @@ tgp_interaction_event.0030 = {
 			scope:actor = {
 				remove_relation_elder = scope:recipient
 				if = {
-					limit = {
-						exists = scope:new_elder
-					}
+					limit = { exists = scope:new_elder }
 					set_relation_elder = scope:new_elder
-					root = {
-						set_relation_grudge = scope:new_elder
-					}
 				}
 			}
+		}
+		if = {
+			limit = { exists = scope:new_elder }
+			scope:actor = { save_scope_as = relationship_reason_involved_character }
+			set_relation_grudge_effect = {
+				TARGET = scope:new_elder
+				REASON = grudge_replaced_as_elder
+			}
+			clear_saved_scope = relationship_reason_involved_character
 		}
 	}
 	

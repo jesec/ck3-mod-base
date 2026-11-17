@@ -429,40 +429,6 @@ burgundian = {
 	}
 }
 
-arpitan = {
-	trigger = {
-		OR = {
-			capital_county = {
-				title:d_dauphine = {
-					is_de_jure_liege_or_above_target = prev
-				}
-			}
-			capital_county = {
-				title:d_savoie = {
-					is_de_jure_liege_or_above_target = prev
-				}
-			}
-			capital_county = {
-				title:d_provence = {
-					is_de_jure_liege_or_above_target = prev
-				}
-			}
-			has_primary_title = title:d_dauphine
-			has_primary_title = title:d_savoie
-			has_primary_title = title:d_provence
-		}
-		culture = { has_cultural_pillar = heritage_frankish }
-		any_sub_realm_county = {
-			culture = { has_cultural_pillar = heritage_frankish }
-			OR = {
-				duchy = title:d_dauphine
-				duchy = title:d_savoie
-				duchy = title:d_provence
-			}
-		}
-	}
-}
-
 lothringian = {
 	trigger = {
 		OR = {
@@ -566,12 +532,22 @@ walloon = {
 				}
 			}
 			capital_county = {
+				title:d_artois = {
+					is_de_jure_liege_or_above_target = prev
+				}
+			}
+			capital_county = {
 				title:d_brabant = {
 					is_de_jure_liege_or_above_target = prev
 				}
 			}
 			capital_county = {
 				title:d_luxembourg = {
+					is_de_jure_liege_or_above_target = prev
+				}
+			}
+			capital_county = {
+				title:d_liege = {
 					is_de_jure_liege_or_above_target = prev
 				}
 			}
@@ -586,8 +562,10 @@ walloon = {
 				}
 			}
 			has_primary_title = title:d_flanders
+			has_primary_title = title:d_artois
 			has_primary_title = title:d_brabant
 			has_primary_title = title:d_luxembourg
+			has_primary_title = title:d_liege
 			has_primary_title = title:d_julich
 			has_primary_title = title:d_holland
 		}
@@ -596,8 +574,10 @@ walloon = {
 			culture = { has_cultural_pillar = heritage_frankish }
 			OR ={
 				duchy = title:d_flanders
+				duchy = title:d_artois
 				duchy = title:d_brabant
 				duchy = title:d_luxembourg
+				duchy = title:d_liege
 				duchy = title:d_julich
 				duchy = title:d_holland
 			}
@@ -612,8 +592,10 @@ flemish = {
 			culture = culture:dutch
 			OR ={
 				duchy = title:d_flanders
+				duchy = title:d_artois
 				duchy = title:d_brabant
 				duchy = title:d_luxembourg
+				duchy = title:d_liege
 				duchy = title:d_julich
 				duchy = title:d_holland
 			}
@@ -932,16 +914,6 @@ pontic = {
 	}
 }
 
-novgorodian = {
-	trigger = {
-		culture = culture:russian
-		any_sub_realm_county = {
-			culture = culture:russian
-			duchy = title:d_novgorod
-		}
-	}
-}
-
 geatish = {
 	trigger = {
 		culture = culture:swedish
@@ -968,6 +940,14 @@ gutish = {
 
 venetian = {
 	trigger = {
+		OR = {
+			capital_county = {
+				title:d_venice = {
+					is_de_jure_liege_or_above_target = prev
+				}
+			}
+			has_primary_title = title:d_venice
+		}
 		culture = { has_cultural_pillar = heritage_latin }
 		any_sub_realm_county = {
 			culture = { has_cultural_pillar = heritage_latin }
@@ -982,19 +962,6 @@ mervi = {
 		any_sub_realm_county = {
 			culture = { has_cultural_pillar = heritage_iranian }
 			duchy = title:d_merv
-		}
-	}
-}
-
-parsi = {
-	trigger = {
-		capital_county = {
-			title_province = { geographical_region = world_india }
-		}
-		faith = { religion_tag = zoroastrianism_religion }
-		any_sub_realm_county = {
-			faith = { religion_tag = zoroastrianism_religion }
-			title_province = { geographical_region = world_india }
 		}
 	}
 }
@@ -1173,6 +1140,236 @@ tabari = { #or Mazandarani
 	}
 }
 
+genoese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_genoa
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+pisan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_pisa
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+florentine = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_firenze
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+sienese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_siena
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+lucchese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_lucca
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+aretine = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_arezzo
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+milanese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_lombardia
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+pavese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_pavia
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+cremonese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_cremona
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+brescian = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_brescia
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+mantuan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_mantua
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+comasque = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_como
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+paduan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_padua
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+trevisan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_treviso
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+bolognese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_bologna
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+ferrarese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_ferrara
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+ravennese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_ravenna
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+modenese = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_modena
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+parmesan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_parma
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+anconitan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_ancona
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+orvietan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_orvieto
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+amalfitan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_amalfi
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
+ragusan = {
+	trigger = {
+		culture = { has_cultural_pillar = heritage_latin }
+		capital_county = {
+			this = title:c_ragusa
+			culture = { has_cultural_pillar = heritage_latin }
+		}
+	}
+}
+
 ligurian = {
 	trigger = {
 		OR = {
@@ -1259,6 +1456,48 @@ umbrian = {
 		any_sub_realm_county = {
 			culture = { has_cultural_pillar = heritage_latin }
 			duchy = title:d_spoleto
+		}
+	}
+}
+
+piedmontese = {
+	trigger = {
+		OR = {
+			capital_county = {
+				title:d_piedmonte = {
+					is_de_jure_liege_or_above_target = prev
+				}
+			}
+			has_primary_title = title:d_piedmonte
+		}
+		OR = {
+			culture = { has_cultural_pillar = heritage_latin }
+			culture = culture:arpitan
+		}
+		any_sub_realm_county = {
+			OR = {
+				culture = { has_cultural_pillar = heritage_latin }
+				culture = culture:arpitan
+			}
+			duchy = title:d_piedmonte
+		}
+	}
+}
+
+veronese = {
+	trigger = {
+		OR = {
+			capital_county = {
+				title:d_verona = {
+					is_de_jure_liege_or_above_target = prev
+				}
+			}
+			has_primary_title = title:d_verona
+		}
+		culture = { has_cultural_pillar = heritage_latin }
+		any_sub_realm_county = {
+			culture = { has_cultural_pillar = heritage_latin }
+			duchy = title:d_verona
 		}
 	}
 }

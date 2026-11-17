@@ -43,7 +43,7 @@ tgp_china_yearly.0001 = {
 		is_independent_ruler = no
 		short_term_gold >= medium_gold_value
 		any_held_county = {
-			county_control <= 60
+			county_control < county_control_baseline
 			root.location.county = this
 		}
 	}
@@ -51,7 +51,7 @@ tgp_china_yearly.0001 = {
 	immediate = {
 		random_held_county = {
 			limit = {
-				county_control <= 60
+				county_control < county_control_baseline
 				root.location.county = this
 			}
 			save_scope_as = poor_county
@@ -261,7 +261,7 @@ tgp_china_yearly.0005 = {
 		government_has_flag = government_is_celestial
 		highest_held_title_tier <= tier_kingdom
 		is_independent_ruler = no
-		any_held_county = { development_level <= terrible_development_level }
+		any_held_county = { prosperity_level <= terrible_prosperity_level }
 		OR = {
 			any_courtier_or_guest  = {
 				is_available_ai_adult = yes
@@ -271,12 +271,13 @@ tgp_china_yearly.0005 = {
 	}
 
 	immediate = {
-		every_pool_character = {
+		random_pool_character = {
 			province = root.location
 			limit = {
 				age = { 6 12 }
 				num_of_good_genetic_traits >= 1
 				num_of_bad_genetic_traits >= 1
+				any_parent = {}
 				any_parent = {
 					count = all
 					is_alive = no
@@ -404,7 +405,6 @@ tgp_china_yearly.0005 = {
 
 	option = { #I will find a suitable custodian.
 		name = tgp_china_yearly.0005.a
-
 		trigger = { exists = scope:guardian }
 
 		scope:grieving_child = {
@@ -434,8 +434,6 @@ tgp_china_yearly.0005 = {
 	option = { #The child cannot honor their father if we take them in.
 		name = tgp_china_yearly.0005.b
 
-		change_merit = minor_merit_gain
-
 		stress_and_fulfillment_impact = {
 			compassionate = medium_stress_impact_gain
 			callous = medium_stress_impact_loss
@@ -458,17 +456,48 @@ tgp_china_yearly.0005 = {
 		}
 	}
 
+	option = { #Take this and bury your parent, poor child
+		name = tgp_china_yearly.0005.e
+
+		trigger = { gold >= tiny_gold_value }
+
+		remove_short_term_gold = tiny_gold_value
+		add_prestige = medium_prestige_gain
+		change_merit = medium_merit_gain
+		add_courtier = scope:grieving_child
+		scope:grieving_child = {
+			add_opinion = {
+				target = ROOT
+				modifier = thankful_opinion
+				opinion = 50
+			}
+		}
+
+		stress_and_fulfillment_impact = {
+			compassionate = medium_stress_impact_loss
+			greedy = medium_stress_impact_gain
+			generous = medium_stress_impact_loss
+		}
+		ai_chance = {
+			base = 100
+			ai_value_modifier = {
+				ai_compassion = tiny_chance_impact_positive_ai_value
+				ai_greed = tiny_chance_impact_negative_ai_value
+			}
+		}
+	}
+
 	option = { #I am not ready to decide on this.
 		name = tgp_china_yearly.0005.c
 		flavor = tgp_china_yearly.0005.c.flavor
 
 		trigger = {
 			OR = {
+				NOT = { has_trait = confucian_education }
 				has_trait_xp = {
 					trait = confucian_education
 					value < 100
 				}
-				NOT = { has_trait = confucian_education }
 			}
 		}
 
@@ -561,10 +590,18 @@ tgp_china_yearly.0010 = {
 
 	trigger = {
 		is_available_adult = yes
-		has_tgp_dlc_trigger = yes
-		government_has_flag = government_is_celestial
-		highest_held_title_tier <= tier_kingdom
-		is_independent_ruler = no
+		OR = {
+			AND = {
+				has_tgp_dlc_trigger = yes
+				government_has_flag = government_is_celestial
+				highest_held_title_tier <= tier_kingdom
+				is_independent_ruler = no
+			}
+			AND = {
+				government_has_flag = government_is_merchant
+				has_trait = confucian_education
+			}
+		}
 		is_ai = no
 	}
 
@@ -603,6 +640,7 @@ tgp_china_yearly.0010 = {
 
 	option = { #Banish him.
 		name = tgp_china_yearly.0010.a
+		trigger = {	government_has_flag = government_is_celestial }
 		custom_tooltip = tgp_china_yearly.0010.a.tt
 		add_dread = minor_dread_gain
 		change_merit = minor_merit_gain
@@ -626,6 +664,41 @@ tgp_china_yearly.0010 = {
 		}
 
 		stress_and_fulfillment_impact = { ambitious = medium_stress_impact_loss }
+	}
+
+	option = {
+		name = tgp_china_yearly.0010.e
+		trigger = {
+			government_has_flag = government_is_merchant
+			NOT = { has_trait = lifestyle_poet }
+		}
+		pay_short_term_gold = {
+			target = scope:starving_lowborn
+			gold = scope:starving_lowborn.tiny_gold_value
+		}
+		add_trait = lifestyle_poet
+		stress_and_fulfillment_impact = {
+			impatient = minor_stress_impact_gain
+			humble = minor_stress_impact_gain
+			content = minor_stress_impact_gain
+			ambitious = medium_stress_impact_loss
+			eccentric = medium_stress_impact_loss
+		}
+		ai_chance = {
+			base = 100
+			modifier = {
+				factor = 0
+				OR = {
+					has_trait = impatient
+					has_trait = content
+					has_trait = humble
+				}
+			}
+			modifier = {
+				factor = 0
+				diplomacy <= high_skill_rating
+			}
+		}
 	}
 
 	option = { #I wonder what the books say about this.

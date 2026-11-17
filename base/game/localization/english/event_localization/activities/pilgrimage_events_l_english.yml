@@ -2,11 +2,12 @@
  ### SETUP
  activity_pilgrimage:0 "Pilgrimage"
  activity_pilgrimage_desc:0 "$game_concept_pilgrimage_desc$"
- activity_pilgrimage_host_desc: "$BULLET_WITH_TAB$[piety_i|E][piety|E]\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E]\n$BULLET_WITH_TAB$[stress_loss_i][stress_loss|E]\n[GetPlayer.Custom('GetPilgrimOrHajjiTrait')]"
- activity_pilgrimage_pilgrim_custom_host_desc:0 "$BULLET_WITH_TAB$@pilgrim_trait_icon! [GetTrait('pilgrim').GetName( GetNullCharacter )] [trait|E] / [GetTrait('pilgrim').GetName( GetNullCharacter )] [trait_level_track_xp|E]\n$BULLET_WITH_TAB$@gallowsbait_trait_icon! [GetTrait('gallowsbait').GetName( GetNullCharacter )] [trait|E] loss during a Pious [pilgrimage|E]"
+ activity_pilgrimage_host_desc: "$BULLET_WITH_TAB$[piety_i|E] [piety|E]\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E]\n$BULLET_WITH_TAB$[stress_loss_i] [stress_loss|E]\n[GetPlayer.Custom('GetPilgrimOrHajjiTrait')][SelectLocalization( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_merchant' ), 'activity_pilgrimage_expertise_desc', '' )]"
+ activity_pilgrimage_expertise_desc: "\n$BULLET_WITH_TAB$[GetTradeGoodCategory('trade_category_incense').GetNameWithIcon] [trade_expertise|E]"
+ activity_pilgrimage_pilgrim_custom_host_desc:0 "$BULLET_WITH_TAB$@pilgrim_trait_icon! [GetTrait('pilgrim').GetName( GetNullCharacter )] [trait|E] / [trait_level_track_xp|E]\n$BULLET_WITH_TAB$@gallowsbait_trait_icon! [GetTrait('gallowsbait').GetName( GetNullCharacter )] [trait|E] loss during a Pious [pilgrimage|E]"
  activity_pilgrimage_hajjaj_custom_host_desc:0 "$BULLET_WITH_TAB$@hajjaj_trait_icon! [GetTrait('hajjaj').GetName( GetNullCharacter )] [trait|E]\n$BULLET_WITH_TAB$@gallowsbait_trait_icon! [GetTrait('gallowsbait').GetName( GetNullCharacter )] [trait|E] loss during a Pious [hajj|E]"
 
- activity_pilgrimage_selection_tooltip:1 "Undertake a [pilgrimage|E] to prove your dedication to [GetPlayer.GetFaith.PantheonTerm]\n\nAnticipated Rewards:\n$BULLET_WITH_TAB$[piety_i] [piety|E] Gain\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E] Gain\n$BULLET_WITH_TAB$[stress_loss_i] [stress_loss|E]"
+ activity_pilgrimage_selection_tooltip:1 "Undertake a [pilgrimage|E] to prove your dedication to [GetPlayer.GetFaith.PantheonTerm]\n\nAnticipated Rewards:\n$BULLET_WITH_TAB$[piety_i] [piety|E]\n$BULLET_WITH_TAB$[legitimacy_i] [legitimacy|E]\n$BULLET_WITH_TAB$[stress_loss_i] [stress_loss|E]\n$BULLET_WITH_TAB$@pilgrim_trait_icon! [GetTrait('pilgrim').GetName( GetNullCharacter )] [trait|E][SelectLocalization( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_merchant' ), 'activity_pilgrimage_expertise_desc', '' )]"
  activity_pilgrimage_destination_selection:0 "The further away from your capital your destination is, the more you prove your dedication to [GetPlayer.GetFaith.PantheonTerm] and gain additional [piety|E]."
  activity_pilgrimage_owner:0 "Pilgrim"
  activity_pilgrimage_name:0 "The Pilgrimage"
@@ -1132,7 +1133,7 @@ pilgrimage.6850.c.flavor: "You imprison your [ROOT.Char.GetCouncillorPosition( '
  RATTAN_GLOSS: "A climbing palm prized for its strength and flexibility. Woven into baskets, bindings, and snares, rattan is a common tool of jungle life used by hunters, traders, and villagers alike."
  
  pilgrimage_seasia.1200.t: "$pilgrimage_header$ A Wanderer from Nalanda"
- pilgrimage_seasia.1200.desc: "Making our way down a winding path, we spot a [GetTrait('devoted').GetName( local_character )] camped next to a [background_terrain_scope.Custom('GetRandomRegionalDangerSingular')] in the [background_terrain_scope.Custom('TerrainTypeProvince')].\n\n"Greetings, pilgrims," the [local_character.GetWomanMan] says softly. "I am a learned [local_character.GetFaith.GetAdjective] scholar from the [GetBuilding('nalanda_university').GetName], seeking the most tranquil places in [exploration_target.GetBaseNameNoTier] for meditation. Might you share your knowledge of this land?""
+ pilgrimage_seasia.1200.desc: "Making our way down a winding path, we spot a [GetTrait('devoted').GetName( local_character )] camped next to a [background_terrain_scope.Custom('GetRandomRegionalDangerSingular')] in the [background_terrain_scope.Custom('TerrainTypeProvince')].\n\n"Greetings, pilgrims," the [local_character.GetWomanMan] says softly. "I am a learned [local_character.GetFaith.GetAdjective] scholar from the [GetBuildingType('nalanda_university').GetName], seeking the most tranquil places in [exploration_target.GetBaseNameNoTier] for meditation. Might you share your knowledge of this land?""
  pilgrimage_seasia.1200.a: "If you tell me about your [local_character.GetFaith.GetAdjectiveNoTooltip] faith!"
  pilgrimage_seasia.1200.b: "Yes, if you bless my [blessed_artifact.GetNameNoTooltip]?"
  pilgrimage_seasia.1200.c: "[other_barony.GetBaseNameNoTierNoTooltip] is most serene for meditation."

@@ -1,10 +1,13 @@
-@interaction_item_column_width = 30
+﻿@interaction_item_column_width = 30
 
 types CharacterInteraction
 {
 	type icon_character_interaction = icon {
 		name = "interaction_icon"
-		position = { 0 -5 }
+		block "interaction_icon_position"
+		{
+			position = { 0 -5 }
+		}
 		size = { 60 60 }
 		texture = "[CharacterInteractionConfirmationWindow.GetInteraction.GetIcon( CharacterInteractionConfirmationWindow.GetRecipient )]"
 	}
@@ -95,7 +98,7 @@ types CharacterInteraction
 		hbox = {
 			name = "button"
 			spacing = 10
-			
+
 			button_primary = {
 				size = { 400 42 }
 				block "button_content" {}
@@ -505,6 +508,14 @@ types CharacterInteraction
 							tooltip = "GRANT_TITLE_LEASED_OUT_VASSAL"
 						}
 
+						icon = {
+							name = "market_capital"
+							visible = "[And( Title.HasTradeMarketCapital, Title.IsLanded )]"
+							size = { 24 24 }
+							texture = "gfx/interface/icons/trade/icon_trade_market.dds"
+							tooltip = "TITLE_CONTAINS_MARKET_CAPITAL"
+						}
+
 						block "extra_title_items" {}
 					}
 				}
@@ -589,6 +600,827 @@ types CharacterInteraction
 				text = "[Regiment.GetName]"
 				onclick = "[CharacterInteractionConfirmationWindow.SetSelectedMaa( Regiment.Self )]"
 				onclick = "[GetVariableSystem.Toggle( 'character_interaction_change_maa' )]"
+			}
+		}
+	}
+
+	type vbox_list_interaction_trade_market_selection = vbox {
+		name = "trade_market_grid"
+		datamodel = "[CharacterInteractionConfirmationWindow.GetTradeMarkets]"
+		layoutpolicy_horizontal = expanding
+		spacing = 10
+
+		item = {
+			widget = {
+				name = "trade_market_list_item"
+				layoutpolicy_horizontal = expanding
+				size = { 360 80 }
+
+				button_standard = {
+					name = "trade_market_button"
+					size = { 100% 100% }
+
+					onclick = "[CharacterInteractionConfirmationWindow.SetSelectedTradeMarket( TradeMarket.Self )]"
+					onclick = "[GetVariableSystem.Toggle( 'character_interaction_change_trade_market' )]"
+					down = "[ObjectsEqual( CharacterInteractionConfirmationWindow.GetSelectedTradeMarket, TradeMarket.Self )]"
+
+					vbox = {
+						text_multi = {
+							name = "name"
+							layoutpolicy_horizontal = expanding
+							text = "[TradeMarket.GetNameNoTooltip]"
+							max_width = 250
+							default_format = "#V"
+							autoresize = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type vbox_trade_market_picker = vbox {
+		name = "interaction_window_trade_market_picker"
+		visible = "[CharacterInteractionConfirmationWindow.UsesTradeMarketTarget]"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		margin = { 14 10 }
+
+		hbox = {
+			visible = "[CharacterInteractionConfirmationWindow.HasSelectedTradeMarket]"
+			datacontext = "[CharacterInteractionConfirmationWindow.GetSelectedTradeMarket]"
+			layoutpolicy_vertical = expanding
+			spacing = 5
+
+			text_single = {
+				text = "[TradeMarket.GetName]"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+
+		button_round = {
+			name = "change"
+			datacontext = "[GetVariableSystem]"
+			onclick = "[VariableSystem.Toggle( 'character_interaction_change_trade_market' )]"
+
+			tooltip = "CHARACTER_INTERACTION_WINDOW_SELECT_TRADE_MARKET_TOOLTIP"
+			using = tooltip_below
+
+			button_replace = {
+				parentanchor = center
+				alwaystransparent = yes
+			}
+		}
+
+		hbox = {
+			visible = "[Not( CharacterInteractionConfirmationWindow.HasSelectedTradeMarket )]"
+			minimumsize = { 0 112 }
+			margin = { 10 10 }
+
+			text_single = {
+				text = "CHARACTER_INTERACTION_NO_TARGET_SELECTED"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+
+		#### replaces character effects ###
+		scrollbox = {
+			visible = "[GetVariableSystem.Exists( 'character_interaction_change_trade_market' )]"
+			layoutpolicy_horizontal = expanding
+			size = { 400 400 }
+
+			blockoverride "scrollbox_content"
+			{
+				vbox_list_interaction_trade_market_selection = {
+					maximumsize = { 250 400 }
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "button_toggles" {}
+				}
+			}
+		}
+	}
+
+	type vbox_list_interaction_trade_good_selection = fixedgridbox {
+		name = "trade_good_grid"
+		datamodel = "[CharacterInteractionConfirmationWindow.GetTradeGoodTypes]"
+		layoutpolicy_horizontal = expanding
+		addcolumn = 65
+		addrow = 65
+		datamodel_wrap = 7
+		flipdirection = yes
+		item = {
+			widget = {
+				name = "trade_good_list_item"
+				size = { 60 60 }
+
+				button_standard = {
+					name = "trade_good_button"
+					size = { 100% 100% }
+
+					onclick = "[CharacterInteractionConfirmationWindow.SetSelectedTradeGoodType( TradeGoodType.Self )]"
+					onclick = "[GetVariableSystem.Toggle( 'character_interaction_change_trade_good' )]"
+					down = "[ObjectsEqual( CharacterInteractionConfirmationWindow.GetSelectedTradeGoodType, TradeGoodType.Self )]"
+
+					vbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 0 5 }
+
+						icon = {
+							size = { 42 42 }
+							texture = "[TradeGoodType.GetIcon]"
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type vbox_list_interaction_trade_good_selection_small = vbox {
+		name = "trade_good_grid_small"
+		visible = "[TradeMarketInteractionWindow.HasSelectedTradeMarket]"
+		datacontext = "[TradeMarketInteractionWindow.GetSelectedTradeMarket]"
+		layoutpolicy_horizontal = expanding
+		ignoreinvisible = yes
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 3
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				minimumsize = { 285 0 }
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					ignoreinvisible = yes
+					datamodel = "[DataModelFirst( GetBasicNeedTradeGoodCategories, Divide_int32( GetDataModelSize( GetBasicNeedTradeGoodCategories ), '(int32)2' ) )]"
+
+					item = {
+						vbox_interaction_trade_good_category_row = {}
+					}
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					ignoreinvisible = yes
+					datamodel = "[DataModelFirst( GetNonBasicNeedTradeGoodCategories, Divide_int32( GetDataModelSize( GetNonBasicNeedTradeGoodCategories ), '(int32)2' ) )]"
+
+					item = {
+						vbox_interaction_trade_good_category_row = {}
+					}
+				}
+
+				expand = {}
+			}
+
+			icon = {
+				layoutpolicy_vertical = expanding
+				texture = "gfx/interface/colors/black.dds"
+				spriteType = Corneredtiled
+				size = { 6 4 }
+				alpha = 0.4
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_edge_3px.dds"
+					spriteType = Corneredtiled
+					spriteborder = { 4 4 }
+					blend_mode = alphamultiply
+				}
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_scratches.dds"
+					spriteType = Corneredtiled
+					blend_mode = alphamultiply
+				}
+			}
+
+			vbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				minimumsize = { 285 0 }
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					ignoreinvisible = yes
+					datamodel = "[DataModelSkipFirst( GetBasicNeedTradeGoodCategories, Divide_int32( GetDataModelSize( GetBasicNeedTradeGoodCategories ), '(int32)2' ) )]"
+
+					item = {
+						vbox_interaction_trade_good_category_row = {}
+					}
+				}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					ignoreinvisible = yes
+					datamodel = "[DataModelSkipFirst( GetNonBasicNeedTradeGoodCategories, Divide_int32( GetDataModelSize( GetNonBasicNeedTradeGoodCategories ), '(int32)2' ) )]"
+
+					item = {
+						vbox_interaction_trade_good_category_row = {}
+					}
+				}
+
+				expand = {}
+			}
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+
+			background = {
+				using = Background_Area
+				using = Color_White
+				alpha = 0.06
+			}
+
+			widget = {
+				layoutpolicy_vertical = expanding
+				size = { 60 30 }
+
+				divider = {
+					parentanchor = right
+					size = { 4 100% }
+				}
+
+				text_single = {
+					autoresize = no
+					size = { 100% 100% }
+					text = "TRADE_MARKET_MISC_CATEGORY"
+					align = center|nobaseline
+					default_format = "#low"
+				}
+			}
+
+			flowcontainer = {
+				datamodel = "[GetBasicTradeGoodsAloneInNeedCategory]"
+
+				item = {
+					button_interaction_trade_good_balance = {}
+				}
+			}
+
+			flowcontainer = {
+				wrap_count = 6
+				datamodel = "[GetNonBasicTradeGoodsAloneInNeedCategory]"
+
+				item = {
+					button_interaction_trade_good_balance = {}
+				}
+			}
+
+			expand = {}
+		}
+	}
+
+	type vbox_interaction_trade_good_category_row = vbox {
+		visible = "[NotEqualTo_int32( TradeGoodCategory.GetTradeGoodTypesCount, '(int32)1' )]"
+		layoutpolicy_horizontal = expanding
+		margin_bottom = 3
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+
+			background = {
+				using = Background_Area
+				color = "[TradeGoodCategory.GetColor]"
+				alpha = 0.1
+			}
+
+			widget = {
+				layoutpolicy_vertical = expanding
+				size = { 70 30 }
+
+				tooltipwidget = {
+					widget_trade_category_net_balance_breakdown_tooltip = {}
+				}
+
+				divider = {
+					parentanchor = right
+					size = { 4 100% }
+				}
+
+				hbox = {
+					margin_left = 2
+					spacing = 4
+
+					icon = {
+						size = { 28 28 }
+						texture = "[TradeGoodCategory.GetSmallIcon]"
+						alpha = "[Select_float( GreaterThan_CFixedPoint( TradeMarket.GetNeedForCategory( TradeGoodCategory.Self ), '(CFixedPoint)0' ), '(float)1.0', '(float)0.4' )]"
+					}
+
+					widget = {
+						visible = "[GreaterThan_CFixedPoint( TradeMarket.GetNeedForCategory( TradeGoodCategory.Self ), '(CFixedPoint)0' )]"
+						size = { 30 30 }
+
+						icon = {
+							visible = "[LessThan_CFixedPoint( TradeMarket.GetUnfulfilledNeedForCategory( TradeGoodCategory.Self ), '(CFixedPoint)0.1' )]"
+							parentanchor = left|vcenter
+							size = { 20 20 }
+							texture = "gfx/interface/icons/symbols/icon_check.dds"
+						}
+
+						text_single = {
+							visible = "[And( GreaterThanOrEqualTo_CFixedPoint( TradeMarket.GetUnfulfilledNeedForCategory( TradeGoodCategory.Self ), '(CFixedPoint)0.1' ), LessThan_CFixedPoint( TradeMarket.GetUnfulfilledNeedForCategory( TradeGoodCategory.Self ), '(CFixedPoint)100' ) )]"
+							autoresize = no
+							size = { 100% 100% }
+							text = "MARKET_CATEGORY_UNFULFILLED_NEED_VALUE"
+							default_format = "#N"
+							align = nobaseline
+						}
+
+						# No decimal from 100 up: the header has no width left to grow this cell
+						text_single = {
+							visible = "[GreaterThanOrEqualTo_CFixedPoint( TradeMarket.GetUnfulfilledNeedForCategory( TradeGoodCategory.Self ), '(CFixedPoint)100' )]"
+							autoresize = no
+							size = { 100% 100% }
+							text = "MARKET_CATEGORY_UNFULFILLED_NEED_VALUE_WHOLE"
+							default_format = "#N"
+							align = nobaseline
+						}
+					}
+				}
+			}
+
+			flowcontainer = {
+				wrap_count = 3
+				datamodel = "[TradeGoodCategory.GetTradeGoodTypes]"
+
+				item = {
+					button_interaction_trade_good_balance = {}
+				}
+			}
+
+			expand = {}
+		}
+	}
+
+	type button_interaction_trade_good_balance = button_standard {
+		size = { 75 30 }
+		onclick = "[CharacterInteractionConfirmationWindow.SetSelectedTradeGoodType( TradeGoodType.Self )]"
+		onclick = "[GetVariableSystem.Toggle( 'character_interaction_change_trade_good' )]"
+		down = "[ObjectsEqual( CharacterInteractionConfirmationWindow.GetSelectedTradeGoodType, TradeGoodType.Self )]"
+		enabled = "[TradeMarketInteractionWindow.CanPickTradeGoodType( TradeGoodType.Self )]"
+		alpha = "[Select_float( TradeMarketInteractionWindow.CanPickTradeGoodType( TradeGoodType.Self ), '(float)1.0', '(float)0.4' )]"
+		tooltip_visible = "[TradeMarket.HasTradeBalanceForGood( TradeGoodType.Self )]"
+
+		tooltipwidget = {
+			widget_trade_good_net_balance_breakdown_tooltip = {
+				datacontext = "[TradeMarketInteractionWindow.GetMarketGoodBalance( TradeGoodType.Self )]"
+
+				blockoverride "call_to_action" {
+					text_multi = {
+						visible = "[Not( TradeMarketInteractionWindow.CanPickTradeGoodType( TradeGoodType.Self ) )]"
+						layoutpolicy_horizontal = expanding
+						autoresize = yes
+						max_width = 350
+						margin = { 2 5 }
+						align = nobaseline
+						text = "[TradeMarketInteractionWindow.GetTradeGoodTypePickBlockers( TradeGoodType.Self )]"
+					}
+				}
+			}
+		}
+
+		flowcontainer = {
+			parentanchor = center
+			spacing = 5
+			ignoreinvisible = yes
+
+			icon = {
+				parentanchor = vcenter
+				size = { 26 26 }
+				texture = "[TradeGoodType.GetSmallIcon]"
+			}
+
+			text_single = {
+				visible = "[And( TradeMarket.HasTradeBalanceForGood( TradeGoodType.Self ), Not( And( GreaterThan_CFixedPoint( TradeMarket.GetBalanceForGood( TradeGoodType.Self ), '(CFixedPoint)-0.1' ), LessThan_CFixedPoint( TradeMarket.GetBalanceForGood( TradeGoodType.Self ), '(CFixedPoint)0.1' ) ) ) )]"
+				parentanchor = vcenter
+				text = "[TradeMarket.GetBalanceForGood( TradeGoodType.Self )|+=1^]"
+				align = nobaseline
+				alwaystransparent = yes
+			}
+
+			# Fulfilled balance: replaces a balance that would display as zero
+			icon = {
+				visible = "[And3( TradeMarket.HasTradeBalanceForGood( TradeGoodType.Self ), GreaterThan_CFixedPoint( TradeMarket.GetBalanceForGood( TradeGoodType.Self ), '(CFixedPoint)-0.1' ), LessThan_CFixedPoint( TradeMarket.GetBalanceForGood( TradeGoodType.Self ), '(CFixedPoint)0.1' ) )]"
+				parentanchor = vcenter
+				size = { 20 20 }
+				texture = "gfx/interface/icons/symbols/icon_check.dds"
+				alwaystransparent = yes
+			}
+		}
+
+		widget = {
+			visible = "[Nor( TradeMarket.HasTradeBalanceForGood( TradeGoodType.Self ), TradeMarketInteractionWindow.CanPickTradeGoodType( TradeGoodType.Self ) )]"
+			size = { 100% 100% }
+			tooltip = "[TradeMarketInteractionWindow.GetTradeGoodTypePickBlockers( TradeGoodType.Self )]"
+		}
+	}
+
+
+	type vbox_trade_good_picker = vbox {
+		name = "interaction_window_trade_good_picker"
+		visible = "[CharacterInteractionConfirmationWindow.UsesTradeGoodTypeTarget]"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		margin = { 14 10 }
+
+		hbox = {
+			visible = "[CharacterInteractionConfirmationWindow.HasSelectedTradeGoodType]"
+			datacontext = "[CharacterInteractionConfirmationWindow.GetSelectedTradeGoodType]"
+			layoutpolicy_vertical = expanding
+			spacing = 5
+
+			text_single = {
+				text = "[TradeGoodType.GetName]"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+
+		button_round = {
+			name = "change"
+			datacontext = "[GetVariableSystem]"
+			onclick = "[VariableSystem.Toggle( 'character_interaction_change_trade_good' )]"
+
+			tooltip = "CHARACTER_INTERACTION_WINDOW_SELECT_TRADE_GOOD_TOOLTIP"
+			using = tooltip_below
+
+			button_replace = {
+				parentanchor = center
+				alwaystransparent = yes
+			}
+		}
+
+		hbox = {
+			visible = "[Not( CharacterInteractionConfirmationWindow.HasSelectedTradeGoodType )]"
+			minimumsize = { 0 112 }
+			margin = { 10 10 }
+
+			text_single = {
+				text = "CHARACTER_INTERACTION_NO_TARGET_SELECTED"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+
+		#### replaces character effects ###
+		scrollbox = {
+			visible = "[GetVariableSystem.Exists( 'character_interaction_change_trade_good' )]"
+			layoutpolicy_horizontal = expanding
+			size = { 600 300 }
+
+			blockoverride "scrollbox_content"
+			{
+				vbox_list_interaction_trade_good_selection = {
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "button_toggles" {}
+				}
+			}
+		}
+	}
+
+	type vbox_trade_good_list_picker = vbox {
+		name = "interaction_window_trade_good_list_picker"
+		visible = "[CharacterInteractionConfirmationWindow.UsesTradeGoodTypeTarget]"
+		layoutpolicy_horizontal = expanding
+		ignoreinvisible = yes
+		spacing = 10
+
+		#### replaces character effects ###
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			autoresizescrollarea = yes
+			maximumsize = { -1 330 }
+
+			blockoverride "scrollbox_content"
+			{
+				vbox_list_interaction_trade_good_selection_small = {
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "button_toggles" {}
+				}
+			}
+		}
+
+		hbox = {
+			visible = "[Not( CharacterInteractionConfirmationWindow.HasSelectedTradeGoodType )]"
+			margin = { 10 10 }
+
+			text_single = {
+				text = "CHARACTER_INTERACTION_NO_TARGET_SELECTED"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+		hbox = {
+			visible = "[CharacterInteractionConfirmationWindow.HasSelectedTradeGoodType]"
+			datacontext = "[CharacterInteractionConfirmationWindow.GetSelectedTradeGoodType]"
+
+			text_single = {
+				text = "[TradeGoodType.GetName]"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+	}
+
+	type vbox_list_interaction_trade_category_selection = fixedgridbox {
+		name = "trade_category_grid"
+		datamodel = "[CharacterInteractionConfirmationWindow.GetTradeGoodCategoryTypes]"
+		layoutpolicy_horizontal = expanding
+		addcolumn = 65
+		addrow = 65
+		datamodel_wrap = 7
+		flipdirection = yes
+
+		item = {
+			widget = {
+				name = "trade_category_list_item"
+				size = { 60 60 }
+
+				button_standard = {
+					name = "trade_category_button"
+					size = { 100% 100% }
+
+					onclick = "[CharacterInteractionConfirmationWindow.SetSelectedTradeGoodCategoryType( TradeGoodCategory.Self )]"
+					onclick = "[GetVariableSystem.Toggle( 'character_interaction_change_trade_category' )]"
+					down = "[ObjectsEqual( CharacterInteractionConfirmationWindow.GetSelectedTradeGoodCategoryType, TradeGoodCategory.Self )]"
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 10 0 }
+						spacing = 10
+
+						icon = {
+							size = { 42 42 }
+							texture = "[TradeGoodCategory.GetIcon]"
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type vbox_trade_category_picker = vbox {
+		name = "interaction_window_trade_category_picker"
+		visible = "[CharacterInteractionConfirmationWindow.UsesTradeGoodCategoryTypeTarget]"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		margin = { 14 10 }
+
+		hbox = {
+			visible = "[CharacterInteractionConfirmationWindow.HasSelectedTradeGoodCategoryType]"
+			datacontext = "[CharacterInteractionConfirmationWindow.GetSelectedTradeGoodCategoryType]"
+			layoutpolicy_vertical = expanding
+			spacing = 5
+
+			text_single = {
+				text = "[TradeGoodCategory.GetName]"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+
+		button_round = {
+			name = "change"
+			datacontext = "[GetVariableSystem]"
+			onclick = "[VariableSystem.Toggle( 'character_interaction_change_trade_category' )]"
+
+			tooltip = "CHARACTER_INTERACTION_WINDOW_SELECT_TRADE_CATEGORY_TOOLTIP"
+			using = tooltip_below
+
+			button_replace = {
+				parentanchor = center
+				alwaystransparent = yes
+			}
+		}
+
+		hbox = {
+			visible = "[Not( CharacterInteractionConfirmationWindow.HasSelectedTradeGoodCategoryType )]"
+			minimumsize = { 0 112 }
+			margin = { 10 10 }
+
+			text_single = {
+				text = "CHARACTER_INTERACTION_NO_TARGET_SELECTED"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+
+		#### replaces character effects ###
+		scrollbox = {
+			visible = "[GetVariableSystem.Exists( 'character_interaction_change_trade_category' )]"
+			layoutpolicy_horizontal = expanding
+			size = { 400 400 }
+
+			blockoverride "scrollbox_content"
+			{
+				vbox_list_interaction_trade_category_selection = {
+					maximumsize = { 250 400 }
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "button_toggles" {}
+				}
+			}
+		}
+	}
+
+	type vbox_trade_category_list_picker = vbox {
+		name = "interaction_window_trade_category_list_picker"
+		visible = "[CharacterInteractionConfirmationWindow.UsesTradeGoodCategoryTypeTarget]"
+		ignoreinvisible = yes
+		layoutpolicy_horizontal = expanding
+
+		#### replaces character effects ###
+		scrollbox = {
+			layoutpolicy_horizontal = expanding
+			autoresizescrollarea = yes
+			maximumsize = { -1 300 }
+
+			blockoverride "scrollbox_content"
+			{
+				vbox_list_interaction_trade_category_selection = {
+					layoutpolicy_horizontal = expanding
+
+					blockoverride "button_toggles" {}
+				}
+			}
+		}
+
+		hbox = {
+			visible = "[Not( CharacterInteractionConfirmationWindow.HasSelectedTradeGoodCategoryType )]"
+			minimumsize = { 0 38 }
+			margin = { 10 0 }
+			margin_top = 5
+
+			text_single = {
+				text = "CHARACTER_INTERACTION_NO_TARGET_SELECTED"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+		hbox = {
+			visible = "[CharacterInteractionConfirmationWindow.HasSelectedTradeGoodCategoryType]"
+			datacontext = "[CharacterInteractionConfirmationWindow.GetSelectedTradeGoodCategoryType]"
+			layoutpolicy_vertical = expanding
+			minimumsize = { 0 38 }
+			margin_top = 5
+
+			icon = {
+				size = { 32 32 }
+				texture = "[TradeGoodCategory.GetSmallIcon]"
+			}
+			text_single = {
+				text = "[TradeGoodCategory.GetName]"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+	}
+
+	type vbox_list_interaction_district_selection = vbox {
+		name = "district_grid"
+		datamodel = "[CharacterInteractionConfirmationWindow.GetDistricts]"
+		layoutpolicy_horizontal = expanding
+		spacing = 5
+
+		item = {
+			widget = {
+				name = "district_list_item"
+				layoutpolicy_horizontal = expanding
+				size = { 360 50 }
+
+				button_standard = {
+					name = "district_button"
+					size = { 75% 100% }
+					parentanchor = center
+
+					onclick = "[CharacterInteractionConfirmationWindow.SetSelectedDistrict( District.Self )]"
+					onclick = "[GetVariableSystem.Toggle( 'character_interaction_change_district' )]"
+					down = "[ObjectsEqual( CharacterInteractionConfirmationWindow.GetSelectedDistrict, District.Self )]"
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 10 0 }
+						spacing = 10
+
+						widget = {
+							size = { 50 50 }
+							coa_title_small = {
+								datacontext = "[District.GetHolding.GetProvince.GetCoATitle]"
+								parentanchor = left|vcenter
+								scale = 0.8
+							}
+						}
+
+						vbox = {
+							text_multi = {
+								name = "name"
+								layoutpolicy_horizontal = expanding
+								text = "[District.GetHolding.GetName]"
+								max_width = 250
+								default_format = "#V"
+								autoresize = yes
+							}
+						}
+						expand = {}
+					}
+				}
+			}
+		}
+	}
+
+	type vbox_district_picker = vbox {
+		name = "interaction_window_district_picker"
+		visible = "[CharacterInteractionConfirmationWindow.UsesDistrictTarget]"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+		margin = { 14 10 }
+		spacing = 10
+
+		hbox = {
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+			spacing = 10
+
+			spacer = {
+				visible = "[GetVariableSystem.Exists( 'character_interaction_change_district' )]"
+				size = { 30 0 }
+			}
+
+			expand = {}
+
+			hbox = {
+				visible = "[CharacterInteractionConfirmationWindow.HasSelectedDistrict]"
+				datacontext = "[CharacterInteractionConfirmationWindow.GetSelectedDistrict]"
+				spacing = 5
+
+				icon_building = {
+					name = "selected_district_icon"
+					size = { 36 36 }
+					texture = "[District.GetType.GetPrimaryBuildingType.GetTypeIcon]"
+				}
+
+				text_single = {
+					text = INTERACTION_SELECTED_DISTRICT
+					using = Font_Size_Medium
+					align = nobaseline
+				}
+			}
+
+			button_round = {
+				name = "change"
+				datacontext = "[GetVariableSystem]"
+				onclick = "[VariableSystem.Toggle( 'character_interaction_change_district' )]"
+
+				tooltip = "CHARACTER_INTERACTION_WINDOW_SELECT_DISTRICT_TOOLTIP"
+				using = tooltip_below
+
+				button_replace = {
+					parentanchor = center
+					alwaystransparent = yes
+				}
+			}
+
+			expand = {}
+
+			button_menu = {
+				visible = "[GetVariableSystem.Exists( 'character_interaction_change_district' )]"
+				onclick = "[GetVariableSystem.Toggle( 'character_interaction_expand_districts' )]"
+				shortcut = compact_mode
+				tooltip = "[SelectLocalization( GetVariableSystem.Exists( 'character_interaction_expand_districts' ), 'RULER_DESIGNER_LIST_ENTRY_COLLAPSE', 'RULER_DESIGNER_LIST_ENTRY_EXPAND' )]"
+			}
+		}
+
+		hbox = {
+			visible = "[Not( CharacterInteractionConfirmationWindow.HasSelectedDistrict )]"
+			minimumsize = { 0 60 }
+			margin = { 10 10 }
+
+			text_single = {
+				text = "CHARACTER_INTERACTION_NO_TARGET_SELECTED"
+				using = Font_Size_Medium
+				align = nobaseline
+			}
+		}
+
+		#### replaces character effects ###
+		scrollbox = {
+			visible = "[GetVariableSystem.Exists( 'character_interaction_change_district' )]"
+			layoutpolicy_horizontal = expanding
+			minimumsize = "[Select_CVector2f( GetVariableSystem.Exists( 'character_interaction_expand_districts' ), '(CVector2f)500,600', '(CVector2f)500,250' )]"
+
+			blockoverride "scrollbox_content"
+			{
+				vbox_list_interaction_district_selection = {
+					layoutpolicy_horizontal = expanding
+				}
 			}
 		}
 	}
@@ -1203,6 +2035,7 @@ types CharacterInteraction
 	type vbox_character_interaction_effects_simple = vbox {
 		name = "effects"
 		spacing = 10
+		margin = { 0 10 }
 
 		hbox = {
 			block "visibility"
@@ -1249,44 +2082,58 @@ types CharacterInteraction
 		scrollbox = {
 			name = "effects_scrollarea"
 			layoutpolicy_horizontal = expanding
-			layoutpolicy_vertical = expanding
-			size = { 0 170 }
+			block "interaction_effects_scrollbox_layout"
+			{
+				layoutpolicy_vertical = expanding
+			}
+			block "interaction_effects_scrollbox_size"
+			{
+				size = { 0 0 }
+			}
+			
 
 			blockoverride "scrollbox_content"
 			{
-				margin = { 0 10 }
+				margin = { 0 20 }
 
-				text_multi = {
-					visible = "[InteractionEffectsDescription.IsShowingOnAcceptEffects]"
-					name = "accept_effects_info"
+				vbox = {
+					name = "effect_descriptions"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-					autoresize = yes
-					max_width = 400
-					margin = { 5 0 }
-					text = "[InteractionEffectsDescription.GetAcceptEffectDescription]"
-				}
+					block "effect_descriptions_visibility" {}
 
-				text_multi = {
-					visible = "[InteractionEffectsDescription.IsShowingIntermediaryDeclineEffect]"
-					name = "intermediary_decline_effects_info"
-					layoutpolicy_horizontal = expanding
-					layoutpolicy_vertical = expanding
-					autoresize = yes
-					max_width = 400
-					margin = { 5 0 }
-					text = "[InteractionEffectsDescription.GetIntermediaryRejectionEffectDescription]"
-				}
+					text_multi = {
+						visible = "[InteractionEffectsDescription.IsShowingOnAcceptEffects]"
+						name = "accept_effects_info"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						autoresize = yes
+						max_width = 400
+						margin = { 5 0 }
+						text = "[InteractionEffectsDescription.GetAcceptEffectDescription]"
+					}
 
-				text_multi = {
-					visible = "[InteractionEffectsDescription.IsShowingRecipientDeclineEffect]"
-					name = "decline_effects_info"
-					layoutpolicy_horizontal = expanding
-					layoutpolicy_vertical = expanding
-					autoresize = yes
-					max_width = 400
-					margin = { 5 0 }
-					text = "[InteractionEffectsDescription.GetRejectionEffectDescription]"
+					text_multi = {
+						visible = "[InteractionEffectsDescription.IsShowingIntermediaryDeclineEffect]"
+						name = "intermediary_decline_effects_info"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						autoresize = yes
+						max_width = 400
+						margin = { 5 0 }
+						text = "[InteractionEffectsDescription.GetIntermediaryRejectionEffectDescription]"
+					}
+
+					text_multi = {
+						visible = "[InteractionEffectsDescription.IsShowingRecipientDeclineEffect]"
+						name = "decline_effects_info"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						autoresize = yes
+						max_width = 400
+						margin = { 5 0 }
+						text = "[InteractionEffectsDescription.GetRejectionEffectDescription]"
+					}
 				}
 
 				block "extra_content" {}
@@ -2422,6 +3269,134 @@ types CharacterInteraction
 					}
 				}
 			}
+
+			# Stained glass header theme - Trade
+			icon = {
+				visible = "[SchemeType.IsTrade]"
+				parentanchor = left
+				position = { -1 8 }
+				size = { 128 43 }
+				texture = "gfx/interface/window_scheme/scheme_header_theme_personal.dds"
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+					blend_mode = alphaMultiply
+					mirror = horizontal
+				}
+
+				# Shimmer animation
+				modify_texture = {
+					name = overlay
+					texture = "gfx/interface/component_effects/effect_blue_shine.dds"
+					blend_mode = colordodge
+					translate_uv = { 0.6 0 }
+				}
+
+				state = {
+					name = right
+					next = left
+
+					duration = 2
+					delay = 2
+					bezier = { .8 .18 .96 .05 }
+
+					modify_texture = {
+						name = overlay
+						translate_uv = { -0.6 0 }
+					}
+				}
+
+				state = {
+					name = left
+					next = right
+
+					duration = 0.0
+					delay = 9
+
+
+					modify_texture = {
+						name = overlay
+						translate_uv = { 0.6 0 }
+					}
+				}
+
+				state = {
+					trigger_on_create = yes
+					name = start
+					next = right
+
+					duration = 0.0
+
+					modify_texture = {
+						name = overlay
+						translate_uv = {0.6 0}
+					}
+				}
+			}
+
+			icon = {
+				visible = "[SchemeType.IsTrade]"
+				parentanchor = right
+				position = { 1 8 }
+				size = { 128 43 }
+				texture = "gfx/interface/window_scheme/scheme_header_theme_personal.dds"
+				mirror = horizontal
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_horizontal_short.dds"
+					blend_mode = alphaMultiply
+					mirror = horizontal
+				}
+
+				# Shimmer animation
+				modify_texture = {
+					name = overlay
+					texture = "gfx/interface/component_effects/effect_blue_shine.dds"
+					blend_mode = colordodge
+					translate_uv = { 0.6 0 }
+				}
+
+				state = {
+					name = right
+					next = left
+
+					duration = 2
+					delay = 6
+					bezier = { .8 .18 .96 .05 }
+
+					modify_texture = {
+						name = overlay
+						translate_uv = { 0.6 0 }
+					}
+				}
+
+				state = {
+					name = left
+					next = right
+
+					duration = 0.0
+					delay = 5
+
+
+					modify_texture = {
+						name = overlay
+						translate_uv = { -0.6 0 }
+					}
+				}
+
+				state = {
+					trigger_on_create = yes
+					name = start
+					next = right
+
+					duration = 0.0
+
+					modify_texture = {
+						name = overlay
+						translate_uv = { -0.6 0 }
+					}
+				}
+			}
 		}
 
 		buttons_window_control = {
@@ -2499,15 +3474,16 @@ types CharacterInteraction
 				visible = yes
 			}
 
+			block "ReplaceClick"
+			{
+				onclick = [CharacterInteractionConfirmationWindow.OnChangeOrRevertActorCharacter]
+			}
+
 			button_replace = {
+				alwaystransparent = yes
 				parentanchor = center
 
 				block "size_icon" {}
-
-				block "ReplaceClick"
-				{
-					onclick = [CharacterInteractionConfirmationWindow.OnChangeOrRevertActorCharacter]
-				}
 			}
 		}
 
@@ -2539,7 +3515,7 @@ types CharacterInteraction
 
 	type dynamicgridbox_interaction_list = dynamicgridbox {
 		name = "interaction_list"
-		
+
 		item = {
 			container = {
 				name = "interaction_widget"
@@ -2549,7 +3525,7 @@ types CharacterInteraction
 					visible = "[Not( InteractionItem.IsMarriageSetting )]"
 					tooltip = "[InteractionItem.GetTooltip]"
 					size = { 317 30 }
-					
+
 					icon = {
 						name = "interaction_glow"
 						visible = "[And( InteractionItem.IsHighlighted, Not( InteractionItem.IsPuppetInteraction ) )]"
@@ -2588,11 +3564,11 @@ types CharacterInteraction
 						texture = "gfx/interface/component_effects/attention_text.dds"
 						spriteType = Corneredtiled
 						spriteborder = { 10 10 }
-						
+
 						color = { 0.9 0.7 0.5 1 } # Orange With No Transparency
 
 						alpha = 0
-						
+
 						state = {
 							trigger_on_create = yes
 							name = a
@@ -2634,7 +3610,7 @@ types CharacterInteraction
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
 						margin = { 8 0 }
-						
+
 						button = {
 							name = "interaction_button"
 
@@ -2730,6 +3706,12 @@ types CharacterInteraction
 										visible = "[SchemeType.IsPolitical]"
 										size = {100% 100%}
 										texture = "gfx/interface/icons/scheme_types/icon_scheme_political.dds"
+									}
+
+									icon = {
+										visible = "[SchemeType.IsTrade]"
+										size = {100% 100%}
+										texture = "gfx/interface/icons/scheme_types/merchant.dds"
 									}
 
 									icon = {
@@ -2932,7 +3914,7 @@ types InteractionCharacterList
 		vbox_character_list = {
 			layoutpolicy_horizontal = expanding
 			layoutpolicy_vertical = expanding
-			
+
 			blockoverride "traits_grid" {
 				fixedgrid_traits_list = {
 					visible = "[CharacterInteractionConfirmationWindow.GetInteraction.ShowsMilitaryStrength]"
@@ -2968,7 +3950,7 @@ types InteractionCharacterList
 			blockoverride "bottom_right_box"
 			{
 				hbox = {
-					
+
 					layoutpolicy_horizontal = expanding
 
 					expand = {}
@@ -3115,7 +4097,7 @@ types InteractionCharacterList
 								texture = "gfx/interface/icons/icon_obedience.dds"
 							}
 						}
-						
+
 						### ITEM MILITARY ###
 						hbox = {
 							visible = "[CharacterInteractionConfirmationWindow.GetInteraction.ShowsMilitaryStrength]"

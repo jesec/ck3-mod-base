@@ -1,0 +1,1114 @@
+﻿action_can_make_patron_request_interaction = {
+	priority = 350
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				save_temporary_scope_as = actor
+				suzerain = { save_temporary_scope_as = recipient }
+				is_character_interaction_valid = {
+					interaction = patron_request_interaction
+					recipient = suzerain
+				}
+				OR = {
+					AND = { # Competetiveness
+						prestige >= merchant_competetiveness_prestige_value
+						patron_request_competitiveness_available_trigger = yes
+					}
+					AND = { # Wedding
+						gold >= merchant_marriage_gold_value
+						patron_request_marriage_available_trigger = yes
+					}
+					AND = { # Hunt
+						gold >= medium_gold_value
+						patron_request_hunt_available_trigger = yes
+					}
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_can_make_patron_request_interaction
+				actor = root
+				recipient = suzerain
+			}
+		}
+	}
+	effect = {
+		open_interaction_window = {
+			interaction = patron_request_interaction 
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_can_make_loan_money_interaction = {
+	priority = 350
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			}
+			every_ruler = {
+				limit = {
+					gold <= gdp_loan_money_debt_threshold_value
+					root = {
+						is_character_interaction_potentially_accepted = {
+							interaction = loan_money_interaction
+							recipient = prev
+						}
+					}
+				}
+				save_temporary_scope_as = temp_victim
+				try_create_important_action = {
+					important_action_type = action_can_make_loan_money_interaction
+					actor = root
+					recipient = scope:temp_victim
+				}
+			}
+		}
+	}
+	unimportant = {
+		scope:recipient = {
+			OR = {
+				monthly_character_income < tiny_income_multiplier_value
+				OR = {
+					has_trait = deceitful
+					has_trait = arbitrary
+					has_trait = greedy
+				}
+				debt_level >= 3
+				OR = {
+					has_relation_rival = scope:actor
+					has_minor_negative_or_below_house_relations_with_target_trigger = {
+						FIRST = scope:actor
+						SECOND = scope:recipient
+					}
+				}
+				any_owned_story = {
+					story_type = story_cycle_loan
+					var:lender != scope:actor
+				}
+				any_targeting_faction = {
+					OR = {
+						faction_is_type = claimant_faction
+						faction_is_type = nation_fracturing_faction
+					}
+					faction_power > 50
+				}
+				any_character_war = {
+					primary_defender = scope:recipient
+					OR = {
+						using_cb = depose_war
+						using_cb = claimant_faction_war
+						using_cb = nation_fracturing_faction_war
+						casus_belli = {
+							OR = {
+								any_target_title = { this = scope:recipient.primary_title }
+								any_target_title = {
+									is_landless_type_title = no
+									tier >= scope:recipient.highest_held_title_tier_minus_one
+								}
+							}
+						}
+					}
+				}
+				faith = {
+					faith_hostility_level = {
+						target = scope:actor.faith
+						value > faith_fully_accepted_level
+					}
+				}
+			}
+		}
+	}
+	effect = {
+		open_interaction_window = {
+			interaction = loan_money_interaction 
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_can_compel_seize_realm_debtor_to_war = {
+	priority = 900
+	combine_into_one = yes
+	icon = alliance
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				gdp_merchant_seize_realm_attacker_trigger = yes
+				any_hooked_character = {
+					root = {
+						is_character_interaction_valid = {
+							interaction = gdp_merchant_seize_realm_call_debtor_interaction
+							recipient = prev
+						}
+					}
+				}
+			}
+			every_hooked_character = {
+				limit = {
+					root = {
+						is_character_interaction_valid = {
+							interaction = gdp_merchant_seize_realm_call_debtor_interaction
+							recipient = prev
+						}
+					}
+				}
+				save_temporary_scope_as = temp_debtor
+				try_create_important_action = {
+					important_action_type = action_can_compel_seize_realm_debtor_to_war
+					actor = root
+					recipient = scope:temp_debtor
+				}
+			}
+		}
+	}
+	unimportant = {
+		root = {
+			NOT = {
+				is_character_interaction_potentially_accepted = {
+					interaction = gdp_merchant_seize_realm_call_debtor_interaction
+					recipient = scope:recipient
+				}
+			}
+		}
+	}
+	effect = {
+		open_interaction_window = {
+			interaction = gdp_merchant_seize_realm_call_debtor_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_can_make_sponsor_war_interaction = {
+	priority = 350
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				has_realm_law_flag = unlock_military_merchant_patron_requests
+				suzerain ?= { is_at_war = yes }
+				OR = {
+					suzerain = {
+						maa_regiments_count < maa_regiments_max_count
+					}
+					NOT = { has_character_modifier = merchant_patron_fund_mercenaries_modifier }
+				}
+				gold > sponsor_war_value
+				is_character_interaction_potentially_accepted = {
+					interaction = sponsor_war_interaction
+					recipient = suzerain
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_can_make_sponsor_war_interaction
+				actor = root
+				recipient = suzerain
+			}
+		}
+	}
+	unimportant = {
+		root = {
+			NOT = {
+				is_character_interaction_potentially_accepted = {
+				    interaction = sponsor_war_interaction
+				    recipient = suzerain
+				}
+			}
+		}
+	}
+	effect = {
+		open_interaction_window = {
+			interaction = sponsor_war_interaction 
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_merchant_company_in_debt = {
+	is_dangerous = yes
+
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				gdp_merchant_company_in_debt_trigger = yes
+				has_character_flag = merchant_company_in_debt
+			}
+			try_create_important_action = {
+				important_action_type = action_merchant_company_in_debt
+				actor = root
+			}
+		}
+	}
+
+	effect = {
+		open_view = trade_window
+	}
+}
+
+action_merchant_company_purpose = {
+	type = alert
+	icon = action_trade_red
+
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				# Family is the default company purpose, therefore only show when you DO have it
+				has_realm_law = company_purpose_family
+			}
+			try_create_important_action = {
+				important_action_type = action_merchant_company_purpose
+				actor = root
+			}
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			open_view_data = {
+				view = my_realm
+				data = flag:change_company_purpose
+			}
+		}
+	}
+}
+
+action_increase_company_size = {
+	type = alert
+	icon = action_trade_green
+
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				OR = {
+					NOT = { has_variable = company_size_cooldown }
+					culture = { has_innovation = innovation_all_things }
+				}
+				# Mirrors the company_size laws' prestige pass_cost
+				prestige >= 300
+				domicile ?= {
+					domicile_uses_acumen = yes
+					OR = {
+						AND = {
+							root = { has_realm_law = company_size_small }
+							acumen >= define:NDomicile|MERCHANT_ACUMEN_LEVEL_2_THRESHOLD
+						}
+						AND = {
+							root = { has_realm_law = company_size_medium }
+							acumen >= define:NDomicile|MERCHANT_ACUMEN_LEVEL_3_THRESHOLD
+						}
+						AND = {
+							root = { has_realm_law = company_size_large }
+							acumen >= define:NDomicile|MERCHANT_ACUMEN_LEVEL_4_THRESHOLD
+						}
+					}
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_increase_company_size
+				actor = root
+			}
+		}
+	}
+
+	effect = {
+		scope:actor = {
+			open_view_data = {
+				view = my_realm
+				data = flag:bookmark_laws
+			}
+		}
+	}
+}
+
+action_create_trade_route = {
+	priority = 350
+	type = alert
+	icon = action_trade_red
+	check_create_action = {
+		if = {
+			limit = {
+				government_allows = profit_trade_routes
+				max_trade_routes > merchant_current_trade_routes_value
+			}
+			try_create_important_action = {
+				important_action_type = action_create_trade_route
+				actor = root
+			}
+		}
+	}
+	effect = {
+		open_view = trade_window
+	}
+}
+
+action_trade_opportunities_available = {
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				any_character_task_contract = {
+					OR = {
+						has_task_contract_group = merchant_trade_opportunity_group
+						has_task_contract_group = merchant_silk_road_contract_group
+					}
+					save_temporary_scope_as = trade_opportunity_check
+					NOT = {
+						root = {
+							any_character_active_contract = { this = scope:trade_opportunity_check }
+						}
+					}
+				}
+				is_at_war = no
+				is_available = yes
+			}
+			every_character_task_contract = {
+				limit = {
+					OR = {
+						has_task_contract_group = merchant_trade_opportunity_group
+						has_task_contract_group = merchant_silk_road_contract_group
+					}
+					save_temporary_scope_as = trade_opportunity_check
+					NOT = {
+						root = {
+							any_character_active_contract = { this = scope:trade_opportunity_check }
+						}
+					}
+				}
+				save_temporary_scope_as = temp_contract
+				try_create_important_action = {
+					important_action_type = action_trade_opportunities_available
+					actor = root
+					contract = scope:temp_contract
+					contract_location = scope:temp_contract.task_contract_location
+				}
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = { exists = scope:contract_location }
+			pan_camera_to_province = scope:contract_location
+		}
+	}
+}
+
+action_luxury_contracts_available = {
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				any_character_task_contract = {
+					has_task_contract_group = merchant_luxury_contract_group
+					count >= 1
+				}
+				is_available = yes
+				is_at_war = no
+			}
+			every_character_task_contract = {
+				limit = { has_task_contract_group = merchant_luxury_contract_group }
+				save_temporary_scope_as = temp_contract
+				try_create_important_action = {
+					important_action_type = action_luxury_contracts_available
+					actor = root
+					contract = scope:temp_contract
+					contract_location = scope:temp_contract.task_contract_location
+				}
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = { exists = scope:contract_location }
+			pan_camera_to_province = scope:contract_location
+		}
+	}
+}
+
+action_unity_contracts_available = {
+	combine_into_one = yes
+	is_dangerous = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				any_character_task_contract = {
+					has_task_contract_group = merchant_unity_contract_group
+					count >= 1
+				}
+				is_available = yes
+				is_at_war = no
+			}
+			every_character_task_contract = {
+				limit = { has_task_contract_group = merchant_unity_contract_group }
+				save_temporary_scope_as = temp_contract
+				try_create_important_action = {
+					important_action_type = action_unity_contracts_available
+					actor = root
+					contract = scope:temp_contract
+					contract_location = scope:temp_contract.task_contract_location
+					local_ruler = scope:temp_contract.task_contract_employer
+					trader = scope:temp_contract.task_contract_target
+				}
+			}
+		}
+	}
+	effect = {
+		if = {
+			limit = { exists = scope:contract_location }
+			pan_camera_to_province = scope:contract_location
+		}
+	}
+}
+
+action_assign_trader = {
+	type = alert
+	priority = 300
+	icon = action_trade_red
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				any_trade_route = {
+					has_trader = no
+					is_commission_route = no
+				}
+			}
+			every_trade_route = {
+				limit = {
+					has_trader = no
+					is_commission_route = no
+				}
+				save_temporary_scope_as = temp_route
+				try_create_important_action = {
+					important_action_type = action_assign_trader
+					actor = root
+					route = scope:temp_route
+				}
+			}
+		}
+	}
+	unimportant = {
+		NOT = {
+			any_courtier = {
+				is_adult = yes
+				is_trader = no
+			}
+		}
+	}
+	effect = {
+		open_view = trade_window
+	}
+}
+
+action_request_charter = {
+	priority = 350
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+			 	suzerain ?= { highest_held_title_tier >= tier_duchy }
+			 	is_available_quick = {
+			 		adult = yes
+			 		at_war = no
+			 	}
+		 		suzerain_tier_to_company_size_shared_valid_trigger = yes
+			 	NOT = {
+					merchant_has_charter_from_patron_trigger = {
+						EQUIPPED = no
+						INCLUDE_FORGERIES = yes
+					}
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_request_charter
+				actor = root
+				patron = suzerain
+			}
+		}
+	}
+	unimportant = {
+		NOT = {
+			is_character_interaction_potentially_accepted = {
+				interaction = request_merchant_charter_interaction
+				recipient = suzerain
+			}
+		}
+	}
+	effect = {
+		open_interaction_window = {
+			interaction = request_merchant_charter_interaction 
+			actor = scope:actor
+			recipient = scope:actor.suzerain
+		}
+	}
+}
+
+action_leverage_charter = {
+	priority = 350
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				merchant_has_charter_from_patron_trigger = {
+					EQUIPPED = no
+					INCLUDE_FORGERIES = yes
+				}
+			}
+			every_in_global_list = {
+				variable = merchants_tally
+				limit = {
+					holder = {
+						NOT = { this = root }
+						government_has_flag = government_is_merchant
+						suzerain ?= {
+							OR = {
+								this = root.suzerain
+								is_vassal_or_below_of = root.suzerain
+							}
+						}
+						in_diplomatic_range = root
+					}
+				}
+				try_create_important_action = {
+					important_action_type = action_leverage_charter
+					actor = root
+					recipient = holder
+				}
+			}
+		}
+	}
+	unimportant = {
+		NOT = {
+			any_trade_route = {
+				any_trade_market_on_route = {
+					any_character_in_market = { this = scope:recipient }
+				}
+			}
+		}
+	}
+	effect = {
+		open_interaction_window = {
+			interaction = leverage_charter_authority_interaction 
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_merchant_patron_fund_buildings_promise = {
+	priority = 1000
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				exists = var:merchant_patron_fund_buildings_promise
+			}
+			try_create_important_action = {
+				important_action_type = action_merchant_patron_fund_buildings_promise
+				actor = root
+				patron = var:merchant_patron_fund_buildings_promise
+			}
+		}
+	}
+
+	effect = {
+		var:merchant_patron_fund_buildings_promise ?= {
+			save_scope_as = promised_patron
+			capital_province ?= { save_scope_as = promised_patron_capital }
+		}
+		if = {
+			limit = { exists = scope:promised_patron_capital }
+			pan_camera_to_province = scope:promised_patron_capital
+			scope:promised_patron_capital = { open_view_data = holding_view }
+		}
+	}
+}
+
+action_gdp_trade_envoys_return_promise = {
+	priority = 1000
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_has_merchant_company
+				exists = var:gdp_trade_envoys_return_promise
+				var:gdp_trade_envoys_return_promise = { is_trader = yes }
+			}
+			try_create_important_action = {
+				important_action_type = action_gdp_trade_envoys_return_promise
+				actor = root
+				trader = var:gdp_trade_envoys_return_promise
+			}
+		}
+	}
+
+	effect = {
+		decision:gdp_return_trade_envoys_decision = { open_view_data = decision_detail }
+	}
+}
+
+action_move_company_size = {
+	priority = 50
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				save_temporary_scope_as = merchant_temp
+				# Company is large for Patron rank
+				suzerain = {
+					NOT = {
+						has_fitting_rank_for_company_size = { MERCHANT = scope:merchant_temp }
+					}
+				}
+			}
+			save_scope_as = merchant
+			suzerain = {
+				every_liege_or_above = {
+					if = {
+						limit = {
+							NOT = { this = scope:merchant.suzerain }
+							merchant_move_company_size_trigger = { MERCHANT = scope:merchant }
+						}
+						gdp_try_create_move_company_size_action_effect = yes
+					}
+					every_vassal_or_below = {
+						limit = {
+							NOT = { this = scope:merchant.suzerain }
+							merchant_move_company_size_trigger = { MERCHANT = scope:merchant }
+						}
+						gdp_try_create_move_company_size_action_effect = yes
+					}
+				}
+				top_liege = {
+					every_neighboring_and_across_water_realm_owner = {
+						if = {
+							limit = {
+								merchant_move_company_size_trigger = { MERCHANT = scope:merchant }
+							}
+							gdp_try_create_move_company_size_action_effect = yes
+						}
+						every_vassal_or_below = {
+							limit = {
+								merchant_move_company_size_trigger = { MERCHANT = scope:merchant }
+							}
+							gdp_try_create_move_company_size_action_effect = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = { exists = scope:province }
+			scope:province = { open_view_data = move_domicile_planner }
+		}
+		else = {
+			open_view_data = move_domicile_planner
+		}
+	}
+}
+
+action_move_company_nearby_market = {
+	priority = 50
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				NOT = { has_character_flag = merchant_recently_moved_company }
+				save_temporary_scope_as = merchant_temp
+				scope:merchant_temp.domicile.domicile_location = {
+					save_temporary_scope_as = province_temp
+					barony = {
+						county = { save_temporary_scope_as = county_temp }
+						trade_market = {
+							save_temporary_scope_as = market_temp
+							trade_market_owner.duchy = { save_temporary_scope_as = duchy_temp }
+						}
+					}
+				}
+			}
+			scope:duchy_temp = {
+				# Nearby Market has more prosperous county
+				every_title_to_title_neighboring_and_across_water_duchy = {
+					limit = { gdp_average_duchy_prosperity_value > scope:duchy_temp.gdp_average_duchy_prosperity_value }
+					ordered_de_jure_county = {
+						limit = {
+							NOT = { title_province.barony.trade_market ?= scope:market_temp }
+							OR = {
+								prosperity_level > scope:province_temp.county.prosperity_level
+								any_county_province = { province_size_level > scope:province_temp.province_size_level }
+							}
+						}
+						order_by = {
+							value = 1
+							add = prosperity_level
+							ordered_county_province = {
+								order_by = province_size_level
+								add = province_size_level
+							}
+						}
+						title_province.barony.trade_market.trade_market_owner.title_province ?= {
+							try_create_important_action = {
+								important_action_type = action_move_company_nearby_market
+								actor = root
+								recipient = this.county.holder
+								county = this.county
+								province = this
+								market = this.barony.trade_market
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	effect = {
+		if = {
+			limit = { exists = scope:province }
+			scope:province = { open_view_data = move_domicile_planner }
+		}
+		else = {
+			open_view_data = move_domicile_planner
+		}
+	}
+}
+
+action_associate_request = {
+	priority = 10
+	is_dangerous = yes
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				domicile ?= { is_domicile_type = merchant_company }
+				save_temporary_scope_as = merchant_temp
+			}
+			every_in_list = {
+				variable = associate_requests
+				limit = {
+					exists = var:associate_request_type
+					var:associate_request_merchant ?= scope:merchant_temp
+					NAND = { # Company moves are tracked by action_associate_request_move_company
+						var:associate_request_type ?= flag:silk_road_market
+						exists = var:associate_request_target_market
+						exists = var:associate_request_target_location
+					}
+				}
+				try_create_important_action = {
+					important_action_type = action_associate_request
+					merchant = scope:merchant_temp
+					associate = this
+				}
+			}
+		}
+	}
+
+	effect = {
+		scope:associate = {
+			open_view_data = {
+				view = character
+			}
+		}
+	}
+}
+
+action_associate_request_move_company = {
+	priority = 10
+	is_dangerous = yes
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				domicile ?= { is_domicile_type = merchant_company }
+				save_temporary_scope_as = merchant_temp
+			}
+			every_in_list = {
+				variable = associate_requests
+				limit = {
+					var:associate_request_type ?= flag:silk_road_market
+					var:associate_request_merchant ?= scope:merchant_temp
+					exists = var:associate_request_target_market
+					exists = var:associate_request_target_location
+				}
+				try_create_important_action = {
+					important_action_type = action_associate_request_move_company
+					merchant = scope:merchant_temp
+					associate = this
+					market = var:associate_request_target_market
+					province = var:associate_request_target_location
+				}
+			}
+		}
+	}
+
+	effect = {
+		scope:province = { open_view_data = move_domicile_planner }
+	}
+}
+
+action_can_merchant_ransom = {
+	combine_into_one = yes
+	is_dangerous = no
+	check_create_action = {
+		save_scope_as = merchant
+		if = {
+			limit = { is_landless_merchant = yes }
+			suzerain.top_liege = {
+				if = {
+					limit = { gdp_can_be_ransomed_by_merchant = yes }
+					add_to_list = prisoners
+				}
+				every_prisoner = {
+					limit = { gdp_can_be_ransomed_by_merchant = yes } 
+					add_to_list = prisoners
+				}
+				every_vassal_or_below = {
+					if = {
+						limit = { gdp_can_be_ransomed_by_merchant = yes }
+						add_to_list = prisoners
+					}
+					every_prisoner = {
+						limit = { gdp_can_be_ransomed_by_merchant = yes }
+						add_to_list = prisoners
+					}
+				}
+				every_neighboring_and_across_water_realm_owner = {
+					if = {
+						limit = { gdp_can_be_ransomed_by_merchant = yes }
+						add_to_list = prisoners
+					}
+					every_prisoner = {
+						limit = { gdp_can_be_ransomed_by_merchant = yes }
+						add_to_list = prisoners
+					}
+					every_vassal_or_below = {
+						if = {
+							limit = { gdp_can_be_ransomed_by_merchant = yes }
+							add_to_list = prisoners
+						}
+						every_prisoner = {
+							limit = { gdp_can_be_ransomed_by_merchant = yes }
+							add_to_list = prisoners
+						}
+					}
+				}
+			}
+			domicile.domicile_location.duchy = {
+				every_de_jure_county = {
+					limit = { holder.top_liege = root.suzerain.top_liege }
+					holder.top_liege = {
+						if = {
+							limit = { gdp_can_be_ransomed_by_merchant = yes }
+							add_to_list = prisoners
+						}
+						every_prisoner = {
+							limit = { gdp_can_be_ransomed_by_merchant = yes } 
+							add_to_list = prisoners
+						}
+						every_vassal_or_below = {
+							if = {
+								limit = { gdp_can_be_ransomed_by_merchant = yes }
+								add_to_list = prisoners
+							}
+							every_prisoner = {
+								limit = { gdp_can_be_ransomed_by_merchant = yes }
+								add_to_list = prisoners
+							}
+						}
+					}
+				}
+			}
+		}
+		every_in_list = {
+			list = prisoners
+			limit = { # We skip definite refusals from ai_accept, since is_character_interaction_potentially_accepted cannot handle multiple options
+				character_is_prisoner_of_war = no
+				NOR = {
+					has_relation_nemesis = imprisoner
+					is_at_war_with = imprisoner
+					imprisoner = { is_at_war_with = root }
+				}
+			}
+			try_create_important_action = {
+				important_action_type = action_can_merchant_ransom
+				actor = scope:merchant
+				recipient = this.imprisoner
+				secondary_recipient = this
+			}
+		}
+	}
+	unimportant = {
+		OR = {
+			gold < scope:secondary_recipient.ransom_cost_value
+			scope:secondary_recipient = { has_relation_rival = scope:recipient }
+		}
+	}
+	effect = {
+		open_interaction_window = {
+			interaction = merchant_ransom_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+			secondary_recipient = scope:secondary_recipient
+		}
+	}
+}
+
+##################
+# Landed rulers
+##################
+
+action_entice_merchants = {
+	priority = 300
+	icon = action_trade_red
+	check_create_action = {
+		if = {
+			limit = {
+				is_landed = yes
+				highest_held_title_tier >= tier_duchy
+				NOT = {
+					any_tributary = { government_has_flag = government_is_merchant }
+				}
+				can_execute_decision = invite_merchants_decision
+			}
+			try_create_important_action = {
+				important_action_type = action_entice_merchants
+				actor = root
+			}
+		}
+	}
+	effect = {
+		decision:invite_merchants_decision = { open_view_data = decision_detail }
+	}
+}
+
+action_commission_merchant = {
+	priority = 300
+	combine_into_one = yes
+	icon = commission_trade_route_interaction
+	check_create_action = {
+		if = {
+			limit = {
+				is_landed = yes
+				highest_held_title_tier >= tier_duchy
+				any_tributary = {
+					government_has_flag = government_is_merchant
+				}
+				NOT = {
+					any_tributary = { has_commission_route_with = root }
+				}
+			}
+			every_tributary = {
+				limit = {
+					government_has_flag = government_is_merchant
+					NOR = {
+						has_commission_route_with = root
+						is_at_war_with = root
+					}
+					has_fewer_commission_routes_than = max_commission_routes
+					save_temporary_scope_as = merchant_temp
+					# Don't suggest unless there is a theoretical route that could be created
+					root = {
+						any_held_trade_market = {
+							save_temporary_scope_as = market_temp
+							OR = {
+								any_trade_good_with_unfulfilled_need = {
+									commission_trade_route_good_trigger = {
+										COMMISSIONER = root
+										MARKET = scope:market_temp
+										GOOD = this
+										MERCHANT = scope:merchant_temp
+									}
+								}
+								any_trade_category_with_unfulfilled_need = {
+									any_trade_good_in_category = {
+										commission_trade_route_good_trigger = {
+											COMMISSIONER = root
+											MARKET = scope:market_temp
+											GOOD = this
+											MERCHANT = scope:merchant_temp
+										}
+									}
+								}
+							}
+						}
+					}
+					root = {
+						is_character_interaction_valid = {
+							interaction = commission_trade_route_interaction
+							recipient = prev
+						}
+					}
+				}
+				try_create_important_action = {
+					important_action_type = action_commission_merchant
+					actor = root
+					recipient = this
+				}
+			}
+		}
+	}
+	unimportant = {
+		prestige < gdp_commission_route_cost_value
+	}
+	effect = {
+		open_interaction_window = {
+			interaction = commission_trade_route_interaction
+			actor = scope:actor
+			recipient = scope:recipient
+		}
+	}
+}
+
+action_distribution_route_fulfills_no_needs = {
+	priority = 400
+	icon = action_trade_red
+	combine_into_one = yes
+	check_create_action = {
+		if = {
+			limit = {
+				can_create_distribution_routes = yes
+				any_trade_route = {
+					is_distribution_route = yes
+					num_fulfilled_needs = 0
+				}
+			}
+			every_trade_route = {
+				limit = {
+					is_distribution_route = yes
+					num_fulfilled_needs = 0
+				}
+				save_temporary_scope_as = temp_route
+				try_create_important_action = {
+					important_action_type = action_distribution_route_fulfills_no_needs
+					actor = root
+					route = scope:temp_route
+				}
+			}
+		}
+	}
+	effect = {
+		open_view = trade_window
+	}
+}

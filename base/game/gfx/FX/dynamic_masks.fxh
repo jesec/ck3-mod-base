@@ -81,15 +81,29 @@ PixelShader =
 			Diffuse = lerp( Diffuse, ToGamma( SnowDebug ), 1.0f );
 		}
 
+		// WINTER_GRAPHICS_WINTER_LEVELS harsh = 1.0 (normal = 0.6)
+		static const float HARSH_WINTER_SEVERITY_THRESHOLD = 0.6f;
+
 		struct SSnowEffectData
 		{
 			float 	_NoSnowMask;
 			float 	_Noise;
+			float 	_Noise1;
 			float	_Noise2;
 			float	_Noise3;
 			float	_SnowHemisphere;
 			float	_Height;
+			float	_GameSnow;
+			float	_GameSnowMask;
+			float	_Winter;
+			float	_HarshWeight;
+			float	_HarshWinter;
 		};
+
+		float CombineSnowLayers( float BaseSnow, float AddedSnow )
+		{
+			return saturate( BaseSnow + AddedSnow - BaseSnow * AddedSnow );
+		}
 
 		float GetWinterValue()
 		{
@@ -99,20 +113,30 @@ PixelShader =
 			WinterValue *= 1.5f;
 			return min( 1.0f, WinterValue + WinterValue * _SnowExtent );
 		}
-		void GetSnowEffectData( inout SSnowEffectData SnowEffectData, float2 MapCoords, float2 WorldSpacePosXz )
+		SSnowEffectData GetSnowEffectData( float2 MapCoords, float2 WorldSpacePosXz )
 		{
-			float2 Coords = float2( MapCoords.x , MapCoords.y ) + vec2( _SnowRandomNumber ) * 0.1f;			
+			SSnowEffectData SnowEffectData;
+			SnowEffectData._NoSnowMask = 1.0f - PdxTex2D( SnowMaskMap, float2( MapCoords.x, 1.0f - MapCoords.y ) ).r;
+			float2 Coords = float2( MapCoords.x , MapCoords.y ) + vec2( _SnowRandomNumber ) * 0.1f;
+			SnowEffectData._Noise = 1.0f - SampleNoTile( SnowMaskMap, MapCoords * 5.0 ).a;
 			float4 SnowMaskColor = SampleNoTile( SnowMaskMap, Coords * _SnowNoiseTiling );
-			SnowEffectData._Noise =  SnowMaskColor.b;
-			SnowEffectData._Noise3 = SnowMaskColor.g;
+			SnowEffectData._Noise1 =  SnowMaskColor.b;
 			SnowEffectData._Noise2 = SnowMaskColor.b * SnowMaskColor.g;
+			SnowEffectData._Noise3 = SnowMaskColor.g;
 			SnowEffectData._SnowHemisphere = RemapClamped( 1.0f - MapCoords.y, 0.0f, 1.0f, 0.0f, 1.0f );
 			// Mountains etc.
 			float Height = GetHeight( WorldSpacePosXz );
 			SnowEffectData._Height = RemapClamped( Height, _SnowTerrainHeightMin, _SnowTerrainHeightMax, 0.0f, 1.0f );
+			SnowEffectData._GameSnow = GetWinterSeverityValue( MapCoords );
+			SnowEffectData._GameSnowMask = smoothstep( _SnowGameMaskMin, _SnowGameMaskMax, SnowEffectData._GameSnow ) * _SnowGameMaskImpact * SnowEffectData._Noise;
+			SnowEffectData._Winter = GetWinterValue();
+			SnowEffectData._Winter = saturate( SnowEffectData._Winter + SnowEffectData._GameSnowMask - SnowEffectData._Winter * SnowEffectData._GameSnowMask );
+			SnowEffectData._HarshWeight = RemapClamped( SnowEffectData._GameSnow, HARSH_WINTER_SEVERITY_THRESHOLD, 0.8f, 0.0f, 1.0f );
+			SnowEffectData._HarshWinter = max( SnowEffectData._Winter, SnowEffectData._GameSnow );
+			return SnowEffectData;
 		}
 
-		float GetWinterMask( float WinterValue, float2 MapCoords, float Position, float Contrast, float HemiPosition, float HemiContrast, SSnowEffectData SnowEffectData, float Harshness = 0.0f, float GameSnowMask = 0.0f)
+		float GetWinterMask( float WinterValue, float Position, float Contrast, float HemiPosition, float HemiContrast, SSnowEffectData SnowEffectData, float Harshness = 0.0f, float GameSnowMask = 0.0f, float ResultScale = 1.0f )
 		{
 			// Squish start-to-end from top of the map
 			float WinterMask = LevelsScan( WinterValue - SnowEffectData._SnowHemisphere , HemiPosition, HemiContrast );
@@ -120,19 +144,32 @@ PixelShader =
 
 			float SnowMask = saturate( WinterMask + GameSnowMask - WinterMask * GameSnowMask );
 
-			float Noise = Overlay( SnowEffectData._Noise + SnowMask, SnowEffectData._Noise2 );
+			float Noise = Overlay( SnowEffectData._Noise1 + SnowMask, SnowEffectData._Noise2 );
 			Noise = LevelsScan( Noise, Position - Harshness, Contrast + Harshness );
 			Noise = Noise * SnowMask * SnowEffectData._NoSnowMask;
 
-			return Noise;
+			return Noise * ResultScale;
+		}
+
+		float GetHarshWinterMask( float Position, float Contrast, float HemiPosition, float HemiContrast, SSnowEffectData SnowEffectData )
+		{
+			if ( SnowEffectData._HarshWeight <= 0.001f )
+			{
+				return 0.0f;
+			}
+
+			return GetWinterMask( SnowEffectData._HarshWinter, Position, Contrast, HemiPosition, HemiContrast, SnowEffectData, SnowEffectData._GameSnow, SnowEffectData._GameSnowMask, SnowEffectData._HarshWeight );
 		}
 
 		void ApplySnowMaterialTerrain( inout float4 Diffuse, inout float3 Normal, inout float4 Properties, float3 TerrainNormal, in float2 WorldSpacePosXz, in float2 MapCoords, inout float HighlightMask )
 		{
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				HighlightMask = 0.0f;
+				return;
+			}
 			// Snow data
-			SSnowEffectData SnowEffectData;
-			SnowEffectData._NoSnowMask = 1.0f - PdxTex2D( SnowMaskMap, float2( MapCoords.x, 1.0f - MapCoords.y) ).r;
-			GetSnowEffectData( SnowEffectData, MapCoords, WorldSpacePosXz );
+			SSnowEffectData SnowEffectData = GetSnowEffectData( MapCoords, WorldSpacePosXz );
 
 			if ( SnowEffectData._NoSnowMask < 0.05f )
 			{
@@ -140,16 +177,12 @@ PixelShader =
 				return;
 			}
 
-			// UVs
-			float Noise = 1.0f - SampleNoTile( SnowMaskMap, MapCoords * 5.0 ).a;
-			float GameSnow = GetWinterSeverityValue( MapCoords );
-			float GameSnowMask = smoothstep( _SnowGameMaskMin, _SnowGameMaskMax, GameSnow ) * _SnowGameMaskImpact * Noise;
-			float Winter = GetWinterValue();
-			Winter = saturate( Winter + GameSnowMask - Winter * GameSnowMask );
-
-			float Snow = GetWinterMask( Winter, MapCoords, _SnowTerrainAreaPosition, _SnowTerrainAreaContrast, _SnowHemispherePosition, _SnowHemisphereContrast, SnowEffectData, GameSnowMask, GameSnowMask );
-			float Frost = GetWinterMask( Winter, MapCoords, _FrostTerrainAreaPosition, _FrostTerrainAreaContrast, _FrostHemispherePosition, _FrostHemisphereContrast, SnowEffectData, 0.0f, GameSnowMask );
-			float WinterSmoothstep = smoothstep( 0.0f, 0.1f, Winter );
+			float Snow = GetWinterMask( SnowEffectData._Winter, _SnowTerrainAreaPosition, _SnowTerrainAreaContrast, _SnowHemispherePosition, _SnowHemisphereContrast, SnowEffectData, SnowEffectData._GameSnowMask, SnowEffectData._GameSnowMask );
+			float SnowHarsh = GetHarshWinterMask( _SnowTerrainAreaPosition, _SnowTerrainAreaContrast, _SnowHemispherePosition, _SnowHemisphereContrast, SnowEffectData );
+			SnowHarsh = SnowHarsh * ( 1.4f - 0.4f * SnowHarsh );
+			Snow = CombineSnowLayers( Snow, SnowHarsh );
+			float Frost = GetWinterMask( SnowEffectData._Winter, _FrostTerrainAreaPosition, _FrostTerrainAreaContrast, _FrostHemispherePosition, _FrostHemisphereContrast, SnowEffectData, 0.0f, SnowEffectData._GameSnowMask );
+			float WinterSmoothstep = smoothstep( 0.0f, 0.1f, SnowEffectData._Winter );
 			Frost *= _FrostMultiplier * WinterSmoothstep;
 			Snow *= WinterSmoothstep;
 
@@ -184,7 +217,6 @@ PixelShader =
 
 			float BlendValue = BlendFactors.y;
 			BlendValue = 1 - pow( 1 - BlendValue, 5 );
-
 			// Add more details to the snow
 			float DetailAngleReduction = smoothstep( 0.0f, 0.02f, abs( Normal.y ) );
 			DetailAngleReduction = lerp( 0.5f, 0.0f, DetailAngleReduction );
@@ -192,6 +224,7 @@ PixelShader =
 			BlendValue = lerp( BlendValue, 0.0f, DetailAngleReduction );
 			BlendValue = BlendValue - smoothstep( 0.25f, 1.0f, SnowEffectData._Noise2 ) * 2.0f;
 			BlendValue = max( 0.000001f, BlendValue );
+			BlendValue = CombineSnowLayers( BlendValue, SnowHarsh );
 
 			// Snow Layer
 			Diffuse = lerp( Diffuse, SnowDiffuse, BlendValue );
@@ -203,32 +236,29 @@ PixelShader =
 			#endif
 		}
 
-		void ApplySnowMaterialMesh( inout float3 Diffuse, inout float4 Properties, inout float3 Normal, in float2 WorldSpacePosXz, in float2 MapCoords, inout float HighlightMask, in float BlendStrength )
+		void ApplySnowMaterial( inout float3 Diffuse, inout float4 Properties, inout float3 Normal, in float2 WorldSpacePosXz, in SSnowEffectData SnowEffectData, inout float HighlightMask, in float BlendStrength )
 		{
 			#ifdef LOW_SPEC_SHADERS
 				HighlightMask = 0.0f;
 				return;
 			#endif
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				HighlightMask = 0.0f;
+				return;
+			}
 
-			SSnowEffectData SnowEffectData;
-			SnowEffectData._NoSnowMask = 1.0f - PdxTex2D( SnowMaskMap, float2( MapCoords.x, 1.0f - MapCoords.y ) ).r;
-			GetSnowEffectData( SnowEffectData, MapCoords, WorldSpacePosXz );
 			if ( SnowEffectData._NoSnowMask < 0.05f )
 			{
 				HighlightMask = 0.0f;
 				return;
 			}
 
-			// UVs
-			float Noise = 1.0f - SampleNoTile( SnowMaskMap, MapCoords * 5.0 ).a;
-			float GameSnow = GetWinterSeverityValue( MapCoords );
-			float GameSnowMask = smoothstep( _SnowGameMaskMin, _SnowGameMaskMax, GameSnow ) * _SnowGameMaskImpact * Noise;
-
-			float Winter = GetWinterValue();
-			Winter = saturate( Winter + GameSnowMask - Winter * GameSnowMask );
-
-			float Snow = GetWinterMask( Winter, MapCoords, _SnowAreaPosition, _SnowAreaContrast, _SnowHemispherePosition, _SnowHemisphereContrast, SnowEffectData, GameSnowMask, GameSnowMask );
-			Snow *= smoothstep( 0.0f, 0.1f, Winter );
+			float Snow = GetWinterMask( SnowEffectData._Winter, _SnowAreaPosition, _SnowAreaContrast, _SnowHemispherePosition, _SnowHemisphereContrast, SnowEffectData, SnowEffectData._GameSnowMask, SnowEffectData._GameSnowMask );
+			float SnowHarsh = GetHarshWinterMask( _SnowTerrainAreaPosition, _SnowTerrainAreaContrast, _SnowHemispherePosition, _SnowHemisphereContrast, SnowEffectData );
+			SnowHarsh = SnowHarsh * ( 1.4f - 0.4f * SnowHarsh );
+			Snow = CombineSnowLayers( Snow, SnowHarsh );
+			Snow *= smoothstep( 0.0f, 0.1f, SnowEffectData._Winter );
 
 			if ( Snow < SKIP_VALUE )
 			{
@@ -252,8 +282,88 @@ PixelShader =
 			HighlightMask = Snow;
 		}
 
+		void ApplySnowMaterialMesh( inout float3 Diffuse, inout float4 Properties, inout float3 Normal, in float2 WorldSpacePosXz, in float2 MapCoords, inout float HighlightMask, in float BlendStrength )
+		{
+			SSnowEffectData SnowEffectData = GetSnowEffectData( MapCoords, WorldSpacePosXz );
+			ApplySnowMaterial( Diffuse, Properties, Normal, WorldSpacePosXz, SnowEffectData, HighlightMask, BlendStrength );
+		}
+
+		void ApplySnowMaterialWithSnowEffectData( in SSnowEffectData SnowEffectData, inout float3 Diffuse, inout float4 Properties, inout float3 Normal, in float2 WorldSpacePosXz, inout float HighlightMask, in float BlendStrength )
+		{
+			ApplySnowMaterial( Diffuse, Properties, Normal, WorldSpacePosXz, SnowEffectData, HighlightMask, BlendStrength );
+		}
+
+		void ApplySnowMaterialRoad( inout float4 Diffuse, inout float4 Properties, float3 TerrainNormal, in float2 WorldSpacePosXz, in float2 MapCoords, inout float HighlightMask )
+		{
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				HighlightMask = 0.0f;
+				return;
+			}
+			// Snow data
+			SSnowEffectData SnowEffectData = GetSnowEffectData( MapCoords, WorldSpacePosXz );
+
+			if ( SnowEffectData._NoSnowMask < 0.05f )
+			{
+				HighlightMask = 0.0f;
+				return;
+			}
+
+			float Snow = GetWinterMask( SnowEffectData._Winter, _SnowTerrainAreaPosition, _SnowTerrainAreaContrast, _SnowHemispherePosition, _SnowHemisphereContrast, SnowEffectData, SnowEffectData._GameSnowMask, SnowEffectData._GameSnowMask );
+			float SnowHarsh = GetHarshWinterMask( _SnowTerrainAreaPosition, _SnowTerrainAreaContrast, _SnowHemispherePosition, _SnowHemisphereContrast, SnowEffectData );
+			SnowHarsh = SnowHarsh * ( 1.4f - 0.4f * SnowHarsh );
+			Snow = CombineSnowLayers( Snow, SnowHarsh );
+			float Frost = GetWinterMask( SnowEffectData._Winter, _FrostTerrainAreaPosition, _FrostTerrainAreaContrast, _FrostHemispherePosition, _FrostHemisphereContrast, SnowEffectData, 0.0f, SnowEffectData._GameSnowMask );
+			float WinterSmoothstep = smoothstep( 0.0f, 0.1f, SnowEffectData._Winter );
+			Frost *= _FrostMultiplier * WinterSmoothstep * 0.5f;
+			Snow *= WinterSmoothstep;
+
+			if ( Snow < SKIP_VALUE && Frost < SKIP_VALUE )
+			{
+				HighlightMask = Snow;
+				return;
+			}
+			// Remove snow from steep angle
+			TerrainNormal.y = smoothstep( _SnowAngleRemove, 1.0f, abs( TerrainNormal.y ) );
+			Snow = lerp( 0.0f, Snow, TerrainNormal.y );
+			HighlightMask = Snow;
+
+			// Apply material
+			float2 DetailUV = CalcDetailUV( WorldSpacePosXz );
+			float2 SnowUV = DetailUV * _SnowTextureTiling;
+			float4 SnowDiffuse = SampleNoTile( DetailTextures, SnowUV, _SnowTexIndex );;
+			float4 SnowProperties = SampleNoTile( MaterialTextures, SnowUV, _SnowTexIndex );
+
+			// Terrain material blend
+			SnowDiffuse.a = 1.0f - lerp( 1.0f, SnowDiffuse.a, 1.0f - _SnowHeightWeight );
+			SnowDiffuse.a *= SnowEffectData._Noise3;
+			float2 BlendFactors = CalcHeightBlendFactors( float2( Diffuse.a, SnowDiffuse.a ), float2( 1.0f - Snow, Snow ), DetailBlendRange * _SnowHeightContrast * Snow );
+
+			// Initial Frost Layer
+			Diffuse = lerp( Diffuse, SnowDiffuse, Frost );
+			Properties = lerp( Properties, SnowProperties, Frost );
+
+			float BlendValue = BlendFactors.y;
+			BlendValue = 1 - pow( 1 - BlendValue, 0.25f );
+			BlendValue = BlendValue - smoothstep( 0.25f, 1.0f, SnowEffectData._Noise2 ) * 2.0f;
+			BlendValue = max( 0.000001f, BlendValue );
+			BlendValue = CombineSnowLayers( BlendValue, SnowHarsh );
+
+			// Snow Layer
+			Diffuse = lerp( Diffuse, SnowDiffuse, BlendValue );
+			Properties = lerp( Properties, SnowProperties, BlendValue );
+
+			#if defined( DEBUG_OLD_SNOW_MASK )
+				DebugOldSnowMask( Diffuse.rgb, MapCoords );
+			#endif
+		}
+
 		float3 ApplySnowDiffuse( in float3 TerrainColor, in float3 Normal, in float2 Coordinate )
 		{
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				return TerrainColor;
+			}
 			float SnowScale = 150.0f;
 			float SnowScaleLarge = 0.0f;
 			float SnowScaleMedium = SnowScale;
@@ -290,6 +400,11 @@ PixelShader =
 
 		float3 ApplySnowDiffuse( in float3 TerrainColor, in float3 Normal, in float2 Coordinate, out float SnowMask )
 		{
+			if ( _TerrainEffectsEnabled < 0.001f )
+			{
+				SnowMask = 0.0f;
+				return TerrainColor;
+			}
 			float SnowScale = 150.0f;
 			float SnowScaleLarge = 0.0f;
 			float SnowScaleMedium = SnowScale;

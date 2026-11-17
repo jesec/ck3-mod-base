@@ -25,6 +25,11 @@ silk_road_sub_region_conflict_trigger = {
 }
 
 silk_road_innovation_trigger = {
+	# DLCs which enable The Silk Road situation
+	OR = {
+		has_tgp_dlc_trigger = yes
+		has_gdp_dlc_trigger = yes
+	}
 	OR = {
 		# Chinese
 		has_cultural_pillar = heritage_chinese
@@ -33,14 +38,24 @@ silk_road_innovation_trigger = {
 			variable = silk_road_unlocked_innovations
 			this = culture_innovation:innovation_$INNOVATION$
 		}
-		# Sinophilic
 		AND = {
-			has_cultural_parameter = may_adopt_silk_road_innovations
 			OR = {
 				culture:han ?= { has_innovation = innovation_$INNOVATION$ }
 				title:h_china.holder.culture ?= { has_innovation = innovation_$INNOVATION$ }
 			}
+			# Sinophilic tradition with AUH
+			trigger_if = {
+				limit = { has_tgp_dlc_trigger = yes }
+				has_cultural_parameter = may_adopt_silk_road_innovations
+			}
+			# Heritage fallback without AUH
+			trigger_else = {
+				OR = {
+					has_cultural_pillar = heritage_buyeo
+					has_cultural_pillar = heritage_korean
+					has_cultural_pillar = heritage_viet
+				}
+			}
 		}
 	}
-	has_tgp_dlc_trigger = yes
 }

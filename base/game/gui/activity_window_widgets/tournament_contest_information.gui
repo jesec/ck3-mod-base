@@ -274,8 +274,12 @@ types TournamentContestInformationTypes
 							button_contest_spectate = {
 								size = { 100 30 }
 
-								alwaystransparent = "[PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'spectator')]"
-								down = "[PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'spectator')]"
+								blockoverride "segment_selected"
+								{
+									down = "[PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'spectator')]"
+									alwaystransparent = "[PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'spectator')]"
+								}
+
 								onclick = "[Activity.AddCharacterToPhaseSubset(PlannedActivityPhase.Self, GetPlayer, 'spectator')]"
 								onclick = "[Activity.RemoveCharacterFromPhaseSubset(PlannedActivityPhase.Self, GetPlayer, 'contestant')]"
 
@@ -285,8 +289,12 @@ types TournamentContestInformationTypes
 							button_contest_participate = {
 								size = { 100 30 }
 
-								alwaystransparent = "[Not(PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'spectator'))]"
-								down = "[Not(PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'spectator'))]"
+								blockoverride "segment_selected"
+								{
+									down = "[Not(PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'spectator'))]"
+									alwaystransparent = "[Not(PlannedActivityPhase.IsCharacterInGuestSubset(GetPlayer, 'spectator'))]"
+								}
+
 								onclick = "[Activity.RemoveCharacterFromPhaseSubset(PlannedActivityPhase.Self, GetPlayer, 'spectator')]"
 								onclick = "[Activity.AddCharacterToPhaseSubset(PlannedActivityPhase.Self, GetPlayer, 'contestant')]"
 								

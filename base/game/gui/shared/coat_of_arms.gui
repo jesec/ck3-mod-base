@@ -34,7 +34,7 @@ types CoATypes
 	type coa_realm_tiny_crown = coa_realm_tiny {
 		blockoverride "crown"
 		{
-			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
+			visible = "[And5( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('merchant_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -60,6 +60,13 @@ types CoATypes
 				block "crown" {
 					visible = no
 				}
+			}
+
+			icon = {
+				name = "merchant_top_decor"
+				visible = "[GovernmentType.IsType('merchant_government')]"
+				parentanchor = hcenter
+				texture = "gfx/interface/coat_of_arms/merchant_topframe_28.dds"
 			}
 
 			icon = {
@@ -90,7 +97,7 @@ types CoATypes
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.HasClericalElectorTitle ) )]"
 				parentanchor = hcenter
 				size = { 32 22 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_28.dds"
@@ -100,7 +107,7 @@ types CoATypes
 
 			icon = {
 				name = "cardinal_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.HasClericalElectorTitle )]"
 				parentanchor = hcenter
 				size = { 32 22 }
 				texture = "gfx/interface/coat_of_arms/cardinal_topframe_28.dds"
@@ -159,7 +166,7 @@ types CoATypes
 	type coa_realm_small_crown = coa_realm_small {
 		blockoverride "crown"
 		{
-			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
+			visible = "[And5( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('merchant_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -189,10 +196,18 @@ types CoATypes
 			}
 
 			icon = {
+				name = "merchant_top_decor"
+				visible = "[Character.GetGovernment.IsType('merchant_government')]"
+				parentanchor = hcenter
+				texture = "gfx/interface/coat_of_arms/merchant_topframe_44.dds"
+
+				block "hat" {}
+			}
+
+			icon = {
 				name = "adventurer_top_decor"
 				visible = "[Character.GetGovernment.IsType('landless_adventurer_government')]"
 				parentanchor = hcenter
-				size = { 52 32 }
 				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_44.dds"
 
 				block "top_decor_visible" {}
@@ -203,8 +218,9 @@ types CoATypes
 				visible = "[Character.GetPrimaryTitle.IsMercenaryCompany]"
 				visible_at_creation = no
 				parentanchor = hcenter
-				size = { 52 32 }
 				texture = "gfx/interface/coat_of_arms/mercenary_topframe_44.dds"
+
+				block "hat" {}
 			}
 
 			icon = {
@@ -212,13 +228,14 @@ types CoATypes
 				visible = "[Character.GetPrimaryTitle.IsHolyOrder]"
 				visible_at_creation = no
 				parentanchor = hcenter
-				size = { 52 32 }
 				texture = "gfx/interface/coat_of_arms/holyorder_topframe_44.dds"
+				
+				block "hat" {}
 			}
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.HasClericalElectorTitle ) )]"
 				parentanchor = hcenter
 				size = { 52 32 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_44.dds"
@@ -228,7 +245,7 @@ types CoATypes
 
 			icon = {
 				name = "cardinal_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.HasClericalElectorTitle )]"
 				parentanchor = hcenter
 				size = { 52 32 }
 				texture = "gfx/interface/coat_of_arms/cardinal_topframe_44.dds"
@@ -287,7 +304,7 @@ types CoATypes
 	type coa_realm_medium_crown = coa_realm_medium {
 		blockoverride "crown"
 		{
-			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
+			visible = "[And5( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('merchant_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -301,9 +318,8 @@ types CoATypes
 
 		flowcontainer = {
 			direction = vertical
-			spacing = 3
-
 			ignoreinvisible = yes
+			spacing = 3
 
 			icon = {
 				name = "crown"
@@ -318,11 +334,23 @@ types CoATypes
 			}
 
 			icon = {
+				name = "merchant_top_decor"
+				visible = "[GovernmentType.IsType('merchant_government')]"
+				parentanchor = hcenter
+				size = { 64 40 }
+				texture = "gfx/interface/coat_of_arms/merchant_topframe_62.dds"
+
+				block "hat" {}
+			}
+
+			icon = {
 				name = "adventurer_top_decor"
 				visible = "[GovernmentType.IsType('landless_adventurer_government')]"
 				parentanchor = hcenter
 				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_62.dds"
+
+				block "hat" {}
 			}
 
 			icon = {
@@ -332,6 +360,7 @@ types CoATypes
 				parentanchor = hcenter
 				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/mercenary_topframe_62.dds"
+				block "hat" {}
 			}
 
 			icon = {
@@ -341,11 +370,13 @@ types CoATypes
 				parentanchor = hcenter
 				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/holyorder_topframe_62.dds"
+
+				block "hat" {}
 			}
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.HasClericalElectorTitle ) )]"
 				parentanchor = hcenter
 				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_62.dds"
@@ -355,7 +386,7 @@ types CoATypes
 
 			icon = {
 				name = "cardinal_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.HasClericalElectorTitle )]"
 				parentanchor = hcenter
 				size = { 64 40 }
 				texture = "gfx/interface/coat_of_arms/cardinal_topframe_62.dds"
@@ -365,7 +396,7 @@ types CoATypes
 
 			widget = {
 				size = { 64 64 }
-
+				
 				coa_realm_shadow = {
 					texture = "[GovernmentType.GetRealmFrameShadow('(int32)62')]"
 					size = { 64 64 }
@@ -378,16 +409,12 @@ types CoATypes
 					parentanchor = center
 					size = { 64 64 }
 
-					block "coa_icon_additions" {}
-
-					block "coat_of_arms"
-					{
-						coat_of_arms = "[Character.GetPrimaryTitle.GetTitleCoA.GetTexture('(int32)124','(int32)124')]"
-						coat_of_arms_slot = "[Character.GetPrimaryTitle.GetTitleCoA.GetSlot('(int32)124','(int32)124')]"
-					}
-
+					coat_of_arms = "[Character.GetPrimaryTitle.GetTitleCoA.GetTexture('(int32)124','(int32)124')]"
+					coat_of_arms_slot = "[Character.GetPrimaryTitle.GetTitleCoA.GetSlot('(int32)124','(int32)124')]"
+					coat_of_arms_mask = "[GovernmentType.GetRealmMask]"
 					coat_of_arms_offset = "[GovernmentType.GetRealmMaskOffset]"
 					coat_of_arms_scale = "[GovernmentType.GetRealmMaskScale]"
+					block "coa_icon_additions" {}
 
 					modify_texture = {
 						texture = "[GovernmentType.GetRealmMask]"
@@ -417,7 +444,7 @@ types CoATypes
 	type coa_realm_big_crown = coa_realm_big {
 		blockoverride "crown"
 		{
-			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
+			visible = "[And5( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('merchant_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -444,6 +471,13 @@ types CoATypes
 				block "crown" {
 					visible = no
 				}
+			}
+
+			icon = {
+				name = "merchant_top_decor"
+				visible = "[GovernmentType.IsType('merchant_government')]"
+				parentanchor = hcenter
+				texture = "gfx/interface/coat_of_arms/merchant_topframe_86.dds"
 			}
 
 			icon = {
@@ -474,7 +508,7 @@ types CoATypes
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.HasClericalElectorTitle ) )]"
 				parentanchor = hcenter
 				size = { 96 60 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_86.dds"
@@ -484,7 +518,7 @@ types CoATypes
 
 			icon = {
 				name = "cardinal_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.HasClericalElectorTitle )]"
 				parentanchor = hcenter
 				size = { 96 60 }
 				texture = "gfx/interface/coat_of_arms/cardinal_topframe_86.dds"
@@ -546,7 +580,7 @@ types CoATypes
 	type coa_realm_huge_crown = coa_realm_huge {
 		blockoverride "crown"
 		{
-			visible = "[And4( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
+			visible = "[And5( Not(Character.GetPrimaryTitle.IsMercenaryCompany), Not(Character.GetPrimaryTitle.IsHolyOrder), Not(Character.GetGovernment.IsType('landless_adventurer_government')), Not(Character.GetGovernment.IsType('merchant_government')), Not(Character.GetGovernment.IsType('ecclesiastical_government')) )]"
 		}
 	}
 
@@ -576,6 +610,13 @@ types CoATypes
 			}
 
 			icon = {
+				name = "merchant_top_decor"
+				visible = "[GovernmentType.IsType('merchant_government')]"
+				parentanchor = hcenter
+				texture = "gfx/interface/coat_of_arms/merchant_topframe_115.dds"
+			}
+
+			icon = {
 				name = "adventurer_top_decor"
 				visible = "[GovernmentType.IsType('landless_adventurer_government')]"
 				parentanchor = hcenter
@@ -602,7 +643,7 @@ types CoATypes
 
 			icon = {
 				name = "ecclesiastic_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.GetPrimaryTitle.HasClericalElector ) )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Not( Character.HasClericalElectorTitle ) )]"
 				parentanchor = hcenter
 				size = { 128 80 }
 				texture = "gfx/interface/coat_of_arms/ecclesiastic_topframe_115.dds"
@@ -612,7 +653,7 @@ types CoATypes
 
 			icon = {
 				name = "cardinal_top_decor"
-				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.GetPrimaryTitle.HasClericalElector )]"
+				visible = "[And( Character.GetGovernment.IsType('ecclesiastical_government'), Character.HasClericalElectorTitle )]"
 				parentanchor = hcenter
 				size = { 128 80 }
 				texture = "gfx/interface/coat_of_arms/cardinal_topframe_115.dds"
@@ -699,6 +740,20 @@ types CoATypes
 	####################################
 
 	# Standard Ttile Coa of Arms types
+
+	type coa_title_tiny_crown_with_status_icons = coa_title_tiny_crown {
+		using = tooltip_ne
+
+		icon_title_has_laws_status = {
+			parentanchor = bottom|right
+			position = { 5 0 }
+		}
+		icon_title_is_nomad = {
+			parentanchor = bottom|right
+			position = { 5 0 }
+		}
+		block "extra_icons" {}
+	}
 
 	## Tiny Title CoA
 	type coa_title_tiny_crown = coa_title_tiny {
@@ -1656,7 +1711,7 @@ types CoATypes
 	}
 
 	type coa_confederation_medium = button_group {
-		visible = "[Confederation.IsValid]"
+		visible = "[And( Confederation.IsValid, Not( Confederation.GetType.IsHouseBasedConfederation ) )]"
 		size = { 72 72 }
 
 		using = CoA_Confederation_Defaults
@@ -1856,7 +1911,7 @@ types CoATypes
 	}
 
 	type coa_bloc_medium = button_group {
-		visible = "[Confederation.IsValid]"
+		visible = "[And( Confederation.IsValid, Confederation.GetType.IsHouseBasedConfederation )]"
 		size = { 72 72 }
 
 		using = CoA_Confederation_Defaults
@@ -2415,7 +2470,106 @@ types CoATypes
 				name = "crown"
 				parentanchor = hcenter
 				texture = "gfx/interface/coat_of_arms/landless_adventurer_topframe_62.dds"
-				size = { 62 30 }
+				size = { 64 40 }
+			}
+
+			widget = {
+				size = { 64 64 }
+
+				coa_realm_shadow = {
+					parentanchor = center
+					texture = "[BookmarkCharacter.GetGovernmentType.GetRealmFrameShadow('(int32)62')]"
+					size = { 64 64 }
+					framesize = { 64 64 }
+					frame = 1
+				}
+
+				coat_of_arms_icon = {
+					visible = "[Not(BookmarkCharacter.HasDynastyHouse)]"
+					parentanchor = center
+					size = { 64 64 }
+					alwaystransparent = yes
+
+					coat_of_arms = "[BookmarkCharacter.GetDynastyTemplate.GetCoA.GetTexture('(int32)124','(int32)124')]"
+					coat_of_arms_slot = "[BookmarkCharacter.GetDynastyTemplate.GetCoA.GetSlot('(int32)124','(int32)124')]"
+					coat_of_arms_mask = "[BookmarkCharacter.GetGovernmentType.GetRealmMask]"
+					coat_of_arms_offset = "[BookmarkCharacter.GetGovernmentType.GetRealmMaskOffset]"
+					coat_of_arms_scale = "[BookmarkCharacter.GetGovernmentType.GetRealmMaskScale]"
+
+					modify_texture = {
+						texture = "[BookmarkCharacter.GetGovernmentType.GetRealmMask]"
+						blend_mode = overlay
+						alpha = @overlay_alpha
+					}
+
+					coa_realm_overlay = {
+						inherit_visual_state = no
+						texture = "[BookmarkCharacter.GetGovernmentType.GetRealmFrame('(int32)62')]"
+						size = { 64 64 }
+						frame = 1
+						framesize = { 64 64 }
+					}
+
+					coa_realm_topframe = {
+						inherit_visual_state = no
+						texture ="gfx/interface/coat_of_arms/topframe_62.dds"
+						framesize = { 64 64 }
+						size = { 64 64 }
+						frame = "[BookmarkCharacter.GetTier]"
+						position = { 0 -8 }
+					}
+				}
+
+				coat_of_arms_icon = {
+					visible = "[BookmarkCharacter.HasDynastyHouse]"
+					parentanchor = center
+					size = { 64 64 }
+					alwaystransparent = yes
+
+					coat_of_arms = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCoA.GetTexture('(int32)124','(int32)124')]"
+					coat_of_arms_slot = "[BookmarkCharacter.GetDynastyHouseTemplate.GetCoA.GetSlot('(int32)124','(int32)124')]"
+					coat_of_arms_mask = "[BookmarkCharacter.GetGovernmentType.GetRealmMask]"
+					coat_of_arms_offset = "[BookmarkCharacter.GetGovernmentType.GetRealmMaskOffset]"
+					coat_of_arms_scale = "[BookmarkCharacter.GetGovernmentType.GetRealmMaskScale]"
+
+					modify_texture = {
+						texture = "[BookmarkCharacter.GetGovernmentType.GetRealmMask]"
+						blend_mode = overlay
+						alpha = @overlay_alpha
+					}
+
+					coa_realm_overlay = {
+						inherit_visual_state = no
+						texture = "[BookmarkCharacter.GetGovernmentType.GetRealmFrame('(int32)62')]"
+						size = { 64 64 }
+						frame = 1
+						framesize = { 64 64 }
+					}
+
+					coa_realm_topframe = {
+						inherit_visual_state = no
+						texture ="gfx/interface/coat_of_arms/topframe_62.dds"
+						framesize = { 64 64 }
+						size = { 64 64 }
+						frame = "[BookmarkCharacter.GetTier]"
+						position = { 0 -8 }
+					}
+				}
+			}
+		}
+	}
+
+	type coa_merchant_bookmark = container {
+		flowcontainer = {
+			direction = vertical
+			ignoreinvisible = yes
+			spacing = 4
+
+			icon = {
+				name = "crown"
+				parentanchor = hcenter
+				texture = "gfx/interface/coat_of_arms/merchant_topframe_62.dds"
+				size = { 64 40 }
 			}
 
 			widget = {

@@ -5,11 +5,44 @@
 		<triggers>
 	}
 
+	## External buildings to always add when creating a new domicile of this type
+	#
+	# Useful for merchant companies where the design intent is for
+	# all domiciles have the same four external buildings.
+	#
+	# Note: main building should not be be specified here
+	#
+	initial_buildings = {
+		<domicile building types>
+	}
+
 	# Shortcut to rename the domicile window
 	# Rename windows are: 'primary_title' or 'house'. If unset, there is no rename shortcut
 	rename_window = primary_title
 
-	# Texture used in the realm tab access
+	# Texture used for the Header Banner
+	# Can define multiple assets, first valid displayed
+	header = {
+		trigger = { ... }
+		reference = "path/to/image.dds"
+	}
+	header = "path/to/image.dds"
+
+	# Texture used for the Frame
+	# Can define multiple assets, first valid displayed
+	frame = {
+		trigger = { ... }
+		reference = "path/to/image.dds"
+	}
+	frame = "path/to/image.dds"
+
+	# Texture used in the realm tab access and as background in the domicile window
+	# Can define multiple assets, first valid displayed
+	# root = the domicile, scope:owner = domicile owner
+	illustration = {
+		trigger = { ... }
+		reference = "path/to/image.dds"
+	}
 	illustration = "path/to/image.dds"
 
 	# Flat icon texture representing the domicile type in various places
@@ -45,13 +78,37 @@
 	#
 	can_move_manually = yes
 
+	# Should Domicile be moved to its new location instantly or use travel planning?
+	# Default is true
+	#
+	move_instantly = yes
+
 	# After moving the domicile, how many days before you can move again?
 	# days/weeks/months/years = X
 	move_cooldown = { days = 7 }
 
 	# How much does it cost to move the domicile? Ex: { gold = 500, prestige = 100 }
+	# Applied immediately on instant movement or otherwise as part of travel plan costs
 	move_cost = {
 		<scripted_cost>
+	}
+
+	# What should happen when the domicile starts moving somewhere?
+	# Optional, no effect if not defined
+	# Root scope is the domicile
+	# If domicile uses instant movement, fires in starting location
+	#
+	on_move_start = {
+		<effect>
+	}
+
+	# What should happen when the domicile reaches its new location?
+	# Optional, no effect if not defined
+	# Root scope is the domicile
+	# If domicile uses instant movement, fires in end location
+	#
+	on_move_end = {
+		<effect>
 	}
 
 	# Modifier applied to the domicile owner when disliked by the majority of their court
@@ -84,6 +141,9 @@
 
 			# Size of buildings placed in this slot, supports both % and direct values
 			size = { ... }
+
+			# Depth index for building slot to be rendered - could be behind certain layers - but between background and foreground
+			depth = 33
 
 			# Define assets used when slot is empty, will pick first valid match
 			empty_slot_asset = {
@@ -125,11 +185,17 @@
 		# Trigger for scoped domicile when to pick this asset over another, remove trigger part to always pick this asset
 		trigger = { ... }
 
-		# Path to background texture shown in the domicile window
+		# Path to background texture shown in the domicile window - layer will be defined in 00_graphics.txt but probably 0
 		background = "path/to/image.dds"
 
-		# Path to foreground texture shown in the front of domicile window
+		# Path to foreground texture shown in the front of domicile window - layer will be defined in 00_graphics.txt but probably very high
 		foreground = "path/to/image.dds"
+		
+		# Layer to use as foreground or background or something in between in the domicile window
+		layer = {
+			texture = "path/to/image.dds"
+			depth = 33
+		}
 
 		# Path to ambience sound
 		ambience = "path/to/ambience"

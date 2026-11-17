@@ -56,6 +56,11 @@ situation_type = {
 	# Defaults to the 'minor' group.
 	situation_group_type = <key>
 
+	# Religion type the situation is focused on.
+	# While the situation window is open, the religion map mode greys out counties of other religions.
+	# Optional, defaults to none.
+	religion = <key>
+
 	# The order that the situation should show up within its situation group in the gui.
 	# Higher number is sorted first, tie breaking is on definition order if same sort order.
 	# Defaults to 0.
@@ -70,6 +75,7 @@ situation_type = {
 	# 	sub_regions
 	# 	silk_road
 	# 	dynastic_cycle
+	# 	participant_groups_inside_realm (looks at the membership of whoever owns the county)
 	#
 	map_mode = participant_groups
 
@@ -224,6 +230,12 @@ situation_type = {
 	# Default: yes
 	use_situation_phase_flat_icons = yes
 
+	# Should the situation allow phase progress to go into the negatives?
+	# Should be true if phases use negative takeover values
+	# Default: no
+	#
+	allow_negative_progress = no
+
 	# Which phases can this Situation Type be in? (at least one needs to exist)
 	phases = {
 
@@ -247,6 +259,7 @@ situation_type = {
 			# scope:situation = situation
 			# scope:situation_sub_region = situation sub region this phase belongs to
 			on_start = { }
+
 			# Effect run when phase in a specific sub region is being ended (and next phase has been determined)
 			# Root = situation
 			# scope:situation = situation
@@ -270,7 +283,8 @@ situation_type = {
 			# (optional) Map province effect intensity (range 0.0-1.0, default 1.0)
 			map_province_effect_intensity = 1.0
 
-			# (optional) Maximum duration (days) this phase will run.
+			# (optional) Maximum duration (days) this phase will run
+			# Note: this does NOT get applied on start if used on a Situation's start_phase; this is applied when a phase is changed to
 			# `max_duration_next_phase` will determine which phase will be next, if max_duration is met
 			# [Scripted Duration]
 			# root - situation
@@ -321,6 +335,26 @@ situation_type = {
 						catalyst_betrayed_alliance = 25
 						catalyst_something_something = 30
 					}
+
+					### (optional) As above, but each catalyst entry depends on a specific dlc being enabled
+					#  dlc_feature - which DLC is required? If no valid DLC is provided, fallback will be used
+					#  dlc_enabled_catalysts - which catalysts get added if DLC is active?
+					#  fallback_catalysts - which catalysts get added if DLC is not active? Optional.
+					#
+					dlc_catalysts = {
+						dlc_feature = all_under_heaven
+
+						dlc_enabled_catalysts = {
+							catalyst_silk_road_china_consolidation = silk_road_steppe_china_consolidation_value
+							catalyst_yellow_river_flood = yellow_river_catastrophe_value
+							catalyst_hegemon_exploded = sudden_loss_of_hegemon_value
+						}
+
+						fallback_catalysts = {
+							catalyst_haesteinn_conquered_indonesia = fishy_catalyst_value
+							catalyst_khan_invaded_ireland = unexpected_island_invasion_value
+						}
+					}
 				}
 
 				# Another possible future phase
@@ -336,6 +370,10 @@ situation_type = {
 				# Apply modifiers / parameters to current situation phase & participants
 				# Examples: "War Effects", "Diplomacy Effects"
 				# Note: The arbitrary name you set will be used as it's localization key
+				# Note: The character and county modifiers of each participant group are named by the
+				# localization key <phase_key>_<set_key>_<participant_group_key> if it exists,
+				# otherwise by <situation_key>_<participant_group_key>
+				# Use $PARTICIPANT_GROUP$ in that localization for the group's name with a tooltip link to the group
 				#
 				war_effects_and_stuff_set = {
 

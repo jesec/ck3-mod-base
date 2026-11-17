@@ -376,6 +376,18 @@ pam_investiture_persuade_duel_effect = {
 
 # Tally and fallback both use this on the faith
 pam_resolve_investiture_crisis_effect = {
+	if = {
+		limit = {
+			religious_head_title ?= title:k_papal_state
+			has_doctrine = doctrine_clerical_succession_conditional
+			situation:guelph_ghibelline ?= {
+				situation_top_has_catalyst = catalyst_gg_investiture_council_settled
+				NOT = { has_variable = gg_investiture_settled }
+			}
+		}
+		situation:guelph_ghibelline = { set_variable = gg_investiture_settled }
+		gg_untargeted_reconciliation_catalyst_effect = { CATALYST = catalyst_gg_investiture_council_settled }
+	}
 	# Swap hidden so the conclusion "Effects from ..." readout shows only the "Replaced X with Y" tooltip below.
 	hidden_effect = {
 		if = { limit = { has_doctrine = doctrine_clerical_succession_conditional } remove_doctrine = doctrine_clerical_succession_conditional }
@@ -567,11 +579,13 @@ pam_investiture_council_force_gather_effect = {
 			if = {
 				limit = {
 					is_available_adult = yes
+					can_join_activity = scope:activity # Fails once the council is full
 					NOT = {
 						scope:activity = {
 							any_invited_character = { this = scope:investiture_gather_char }
 						}
 					}
+					can_join_activity = scope:activity
 				}
 				add_to_activity = scope:activity
 			}

@@ -1,0 +1,119 @@
+﻿### Title types
+#
+# Title type defines properties common to all titles of the same type.
+# E.g. holy orders, mercs, noble families, adventurers, nomads, "common" landed titles.
+#
+<type key> = {
+	## Title (template) key prefix
+	#
+	# Used to assign the correct title type to titles created on game start,
+	# and when loading older save games.
+	# This string is expected to appear early in the title key surrounded by _ on each side.
+	# In game start titles (defined in a script database) it should be preceded by only a tier prefix.
+	# In save files it can also expect to be prefixed by an 'x_' (which signifies dynamic title).
+	# E.g. the "noble family" title type would defines the prefix "nf" so that
+	#      "c_nf_hosoda" and "x_c_nf_123" will both be correctly mapped to the
+	#       noble family type.
+	#
+	# It will also used in naming dynamically created titles.
+	# The full key will be 'x_<tier>_<prefix>_<number>'.
+	# E.g. The key 'x_c_nf_123' would be created for a dynamic 'noble family' title type.
+	#
+	prefix = <string>
+
+
+	### Trade Post Proprietor
+	#
+	# Can a holder of this title own and control trade posts outside their own realm?
+	#
+	# Default: no
+	#
+	trade_post =<yes/no>
+
+	## Domicile
+	#
+	# Domicile assigned when creating a title of this type using the create_dynamic_title effect.
+	#
+	# Optional.
+	#
+	domicile_type = <domicile type key>
+
+	## Landless
+	#
+	# If used with create_dynamic_title effect this sets a preferred capital,
+	# generates a cos, and enables some standard flags for landless titles.
+	#
+	# Default: no
+	#
+	landless = <yes/no>
+
+	## House title
+	#
+	# Assigns title to the holders house as it's house title.
+	# This ensures that the title stays on the right character when head of house changes.
+	# Applied both for static titles at startup, and when using the create_dynamic_title effect.
+	#
+	# Default: no
+	#
+	house_title = <yes/no>
+
+	## Properties
+	#
+	# Define default title properties (listed below).
+	#
+	# This allows for both initial titles (defined under game/common/landed_titles/)
+	# and dynamic titles (created by scripted effects) to have the same setup.
+	#
+	# The defined 'properties' on this type can be overridden on specific title templates if needed.
+	#
+	# Optional. Leaving this out will create a title with default settings.
+	#
+	properties = {
+		color = { 255 255 255 }
+		definite_form = no
+		figurehead = no
+		allow_domicile = no
+		landless = no
+		require_landless = no
+		noble_family = no
+		nomad = no
+		destroy_if_invalid_heir = no
+		destroy_on_succession = no
+		delete_on_destroy = no
+		delete_on_gain_same_tier = no
+		no_automatic_claims = no
+		always_follows_primary_heir = no
+		ruler_uses_title_name = yes
+		can_be_named_after_dynasty = yes
+		can_use_nomadic_naming = yes
+	}
+
+	### Brief: Add additional entry in personal relation summary (dynamic description)
+	#
+	# If character's primary title is of this type, then setting this will add an additional entry in the
+	# holding characters personal relation summary (i.e. "Your step-sister, and champion").
+	# If the title's template has a personal_relation_entry defined, it will replace this entry.
+	#
+	# Scopes
+	# ------
+	# root: Inspected character (who holds this title).
+	# target: Character we are evaluating relationships to (usually local player).
+	# title: This title (held by inspected character).
+	# liege: Inspected characters liege.
+	# vassal: Vassal who matches the trigger below, if any.
+	#
+	# An empty dynamic description will be skipped.
+	#
+	personal_relation_entry = <dynamic descriptopn>
+
+	### Brief: What vassal do we provide to the scope of the relation entry above (trigger)
+	#
+	# Scopes
+	# ------
+	# root: Vassal character.
+	#
+	# If no match is found, then the vassal scope in the dynamic descrition above
+	# will not be set.
+	#
+	personal_relation_vassal = <trigger>
+}

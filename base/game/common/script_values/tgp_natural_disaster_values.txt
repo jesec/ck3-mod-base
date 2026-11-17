@@ -86,15 +86,15 @@ natural_disaster_realm_counties_in_situation_value = {
 	min = 1
 }
 
-# Factor based on the total development across affected counties
-natural_disaster_realm_counties_total_development_contributions_cost_factor = {
+# Factor based on the total prosperity across affected counties
+natural_disaster_realm_counties_total_prosperity_contributions_cost_factor = {
 	value = 0
 	scope:great_project.var:situation ?= {
 		every_situation_sub_region = {
 			every_situation_sub_region_county = {
 				limit = { holder.top_liege ?= scope:great_project.great_project_owner.top_liege }
 				add = {
-					add = development_level
+					add = prosperity_level
 					multiply = 0.5
 				}
 			}
@@ -160,8 +160,8 @@ natural_disaster_great_project_optional_investment_legitimacy_gain_value = {
 	}
 }
 
-natural_disaster_earthquake_epicenter_development_loss_value = {
-	value = development_level
+natural_disaster_earthquake_epicenter_prosperity_loss_value = {
+	value = prosperity_level
 	divide = {
 		value = 5
 		if = {
@@ -187,8 +187,8 @@ natural_disaster_earthquake_epicenter_development_loss_value = {
 	max = -1
 }
 
-natural_disaster_earthquake_development_loss_value = {
-	value = development_level
+natural_disaster_earthquake_prosperity_loss_value = {
+	value = prosperity_level
 	divide = {
 		value = 6
 		if = {
@@ -214,8 +214,8 @@ natural_disaster_earthquake_development_loss_value = {
 	max = -1
 }
 
-natural_disaster_flood_development_loss_value = {
-	value = development_level
+natural_disaster_flood_prosperity_loss_value = {
+	value = prosperity_level
 	divide = {
 		value = 7
 		if = {
@@ -241,7 +241,7 @@ natural_disaster_flood_development_loss_value = {
 	max = -1
 }
 
-natural_disaster_flood_development_loss_fraction_value = {
+natural_disaster_flood_prosperity_loss_fraction_value = {
 	value = 7
 	if = {
 		limit = {
@@ -304,6 +304,16 @@ natural_disaster_flood_control_loss_value = {
 	}
 	multiply = -1
 	max = -1
+}
+
+natural_disaster_province_size_loss_value = {
+	value = -10
+	if = {
+		limit = {
+			exists = scope:situation.var:severity
+		}
+		multiply = scope:situation.var:severity
+	}
 }
 
 natural_disaster_army_supply_loss_value = {

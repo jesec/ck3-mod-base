@@ -1,0 +1,452 @@
+﻿#On actions relating to Merchant rulers and related content
+
+on_birth_child = {
+	on_actions = {
+		gdp_merchant_legacy_3_company_direction_on_action
+	}
+}
+
+on_became_house_head = {
+	on_actions = {
+		gdp_merchant_legacy_3_company_direction_on_action
+	}
+}
+
+on_government_change = {
+	on_actions = {
+		gdp_merchant_legacy_3_company_direction_on_action
+	}
+}
+
+gdp_merchant_legacy_3_company_direction_on_action = {
+	effect = {
+		gdp_update_merchant_legacy_3_company_direction_effect = yes
+	}
+}
+
+yearly_playable_pulse = {
+	on_actions = {
+		gdp_merchant_ai_prestige_purchase_pulse
+		gdp_tgf_travelling_merchant_pulse
+	}
+}
+
+# AI merchants short on prestige for their next main building, or for the last tier's cost once maxed, convert part of their gold into prestige
+gdp_merchant_ai_prestige_purchase_pulse = {
+	trigger = {
+		is_ai = yes
+		government_has_flag = government_is_merchant
+		NOT = { has_character_flag = gdp_merchant_ai_prestige_purchase_cooldown }
+		gdp_merchant_ai_prestige_purchase_target_value > 0
+		prestige < gdp_merchant_ai_prestige_purchase_target_value
+		gold >= gdp_merchant_ai_prestige_purchase_min_gold_value
+	}
+	effect = {
+		save_scope_value_as = {
+			name = prestige_purchase_gold
+			value = gdp_merchant_ai_prestige_purchase_gold_value
+		}
+		remove_short_term_gold = scope:prestige_purchase_gold
+		add_prestige = scope:prestige_purchase_gold
+		add_character_flag = {
+			flag = gdp_merchant_ai_prestige_purchase_cooldown
+			years = 5
+		}
+	}
+}
+
+gdp_merchant_population_global_pulse = {
+	effect = {
+		gdp_merchant_population_cull_effect = yes
+		if = {
+			limit = { exists = global_var:gdp_minority_merchant_spawn_quota }
+			gdp_minority_merchant_repopulate_effect = yes
+		}
+		else = {
+			gdp_minority_merchant_spawn_roll_effect = yes
+		}
+	}
+}
+
+gdp_merchant_yearly_events = {
+	trigger = {
+		has_gdp_dlc_trigger = yes
+		government_allows = profit_trade_routes
+		NOT = { has_character_flag = is_in_task_contract_event_chain }
+	}
+	random_events = {
+		chance_to_happen = 100
+		100 = gdp_merchant_family.0001 # Runaway Bride/Groom
+		100 = gdp_merchant_family.0002 # Thicker Than Water
+		100 = gdp_merchant_family.0003 # Suffer No Dishonor
+		100 = gdp_merchant_family.0004 # An Auspicious Offer
+		100 = gdp_merchant_family.0005 # A Shame Upon the House
+		100 = gdp_merchant_family.0010 # Tipping of the Scales
+		100 = gdp_merchant_family.0015 # A Business Confidant
+		100 = gdp_merchant_family.0020 # Talent Exchange
+		100 = gdp_merchant_family.0025 # Just Good Business
+		100 = gdp_merchant_family.0030 # House Member(s) loiter instead of working
+		100 = gdp_merchant.2015 # The Price of X
+		100 = gdp_merchant.2000 # Bare Market
+		100 = gdp_merchant.2010 # Monopoly: The Craftsman
+		100 = gdp_merchant.2020 # A Seat at the Table
+		100 = gdp_merchant.2025 # The Lesser Merchant
+		300 = gdp_merchant.0025 # Artisan Purpose Recruitment Opportunity
+		300 = gdp_merchant.0030 # Creditor Purpose Recruitment Opportunity
+		300 = gdp_merchant.0035 # Caravaneer Purpose Recruitment Opportunity
+		300 = gdp_merchant.3000 # Translator court position boon
+		300 = gdp_merchant.3010 # Fixer court position boon
+		300 = gdp_merchant.3020 # Bailiff court position boon
+		300 = gdp_merchant.3030 # Market Agent court position boon
+		300 = gdp_merchant.3040 # Antiquarian court position boon
+		300 = gdp_merchant.4000 # You are a Silk Road Merchant in China/Korea who isn't Confucian
+		300 = gdp_merchant.4010 # You're a Merchant in China/Korea who hasn't taken the exam
+		300 = gdp_merchant.4030 # You're a Merchant outside of the Silk Road hearing about it
+		# Trade-good flavor, mirrored in gdp_tgf_travelling_merchant_pulse
+		100 = gdp_trade_good_flavor.1001 # Counting Stock
+		100 = gdp_trade_good_flavor.1002 # Word Travels
+		100 = gdp_trade_good_flavor.1003 # From the Source
+		100 = gdp_trade_good_flavor.1004 # An Open Road
+		100 = gdp_trade_good_flavor.1005 # Dreams of Profit
+		100 = gdp_trade_good_flavor.1006 # Fools Who Check
+		100 = gdp_trade_good_flavor.1007 # Ask for It by Name
+		100 = gdp_trade_good_flavor.1008 # The Appraiser
+		50 = gdp_trade_good_flavor.1009 # Learn to Count
+		100 = gdp_trade_good_flavor.1010 # The Imitator
+		50 = gdp_trade_good_flavor.1011 # The Price of Names
+		100 = gdp_trade_good_flavor.1012 # A Truce of Traders
+		100 = gdp_trade_good_flavor.1013 # A Private Price
+		100 = gdp_trade_good_flavor.1014 # Ask the Old Hands
+		100 = gdp_trade_good_flavor.1015 # A Beginner's Mistake
+		30 = gdp_trade_good_flavor.1016 # The Merchant's Handbook
+		50 = gdp_trade_good_flavor.1017 # The Feel of It
+		100 = gdp_trade_good_flavor.1018 # Wrong Measure
+		100 = gdp_trade_good_flavor.1019 # Two Goods, One Buyer
+		100 = gdp_trade_good_flavor.1020 # The Builder's Rate
+		30 = gdp_trade_good_flavor.1021 # Know the Goods
+		150 = gdp_trade_good_flavor.1022 # A Name for the Trade
+		100 = gdp_trade_good_flavor.1023 # A Choke on Supply
+		100 = gdp_trade_good_flavor.1024 # Under the Hammer
+		100 = gdp_trade_good_flavor.1025 # First at the Quay
+		100 = gdp_trade_good_flavor.1026 # By the Handful
+		100 = gdp_trade_good_flavor.1027 # Market Day
+		100 = gdp_trade_good_flavor.1028 # Foreign Coin
+		50 = gdp_trade_good_flavor.1029 # Years on the Road
+		100 = gdp_trade_good_flavor.1030 # Watching It Sell
+		100 = gdp_trade_good_flavor.1031 # Outside Money
+		100 = gdp_trade_good_flavor.1032 # The Display Room
+		250 = gdp_trade_good_flavor.1033 # Keeping Your Hand In
+		30 = gdp_trade_good_flavor.1034 # The Itinerary
+		100 = gdp_trade_good_flavor.1035 # Talking Shop
+		100 = gdp_trade_good_flavor.1036 # The Packing Floor
+		100 = gdp_trade_good_flavor.1037 # The Market Seal
+		100 = gdp_trade_good_flavor.1038 # The Broker
+		100 = gdp_trade_good_flavor.1039 # The Trader's Apprentice
+		100 = gdp_trade_good_flavor.1040 # Swimming in It
+		15 = gdp_trade_good_flavor.1041 # The First Sale
+		100 = gdp_trade_good_flavor.1042 # Coin Under the Pillow
+		30 = gdp_trade_good_flavor.1043 # Portrait With Coins
+		100 = gdp_trade_good_flavor.1044 # A Purse Too Heavy
+		250 = gdp_trade_good_flavor.1045 # Profit and Piety
+		250 = gdp_trade_good_flavor.1046 # One of Their Own
+		150 = gdp_trade_good_flavor.1047 # Flooded Market
+		30 = gdp_trade_good_flavor.1048 # Manuscript in a Bale
+		250 = gdp_trade_good_flavor.1049 # Merchants From Home
+		250 = gdp_trade_good_flavor.1050 # The Salt Road
+		100 = gdp_trade_good_flavor.2001 # A Heavy Harvest
+		30 = gdp_trade_good_flavor.2002 # The Hunter's Haul
+		100 = gdp_trade_good_flavor.2003 # A Rich Vein
+		100 = gdp_trade_good_flavor.2004 # Worth Its Secret
+		100 = gdp_trade_good_flavor.2005 # A Matter of Taste
+		100 = gdp_trade_good_flavor.2006 # Dress the Part
+		30 = gdp_trade_good_flavor.2007 # Face Value
+		50 = gdp_trade_good_flavor.2008 # Intact
+		250 = gdp_trade_good_flavor.2009 # Other Men See Armies
+		100 = gdp_trade_good_flavor.2010 # The Guild Knocks
+		100 = gdp_trade_good_flavor.2011 # Rulers Set Fashions
+		100 = gdp_trade_good_flavor.2012 # Sample the Goods
+		30 = gdp_trade_good_flavor.2013 # A Masterwork Order
+		100 = gdp_trade_good_flavor.2014 # Their Dish, Our Goods
+		100 = gdp_trade_good_flavor.2015 # Paid in Goods
+		100 = gdp_trade_good_flavor.2016 # Money Doesn't Stink
+		100 = gdp_trade_good_flavor.2017 # Seven Fat Years
+		250 = gdp_trade_good_flavor.2018 # Somebody's Cattle
+		250 = gdp_trade_good_flavor.2019 # A Dry Court's Thirst
+		30 = gdp_trade_good_flavor.3001 # A Perfect Wheel
+		150 = gdp_trade_good_flavor.3002 # A Famous Complaint
+		250 = gdp_trade_good_flavor.3003 # Rent in Pepper
+		150 = gdp_trade_good_flavor.3004 # A Letter Full of Complaints
+		150 = gdp_trade_good_flavor.3005 # A Subtlety
+		150 = gdp_trade_good_flavor.3006 # The Swarm
+		150 = gdp_trade_good_flavor.3007 # Another Pot of Tea
+		150 = gdp_trade_good_flavor.3008 # Before It Turns
+		150 = gdp_trade_good_flavor.3009 # The Midnight Oil
+		150 = gdp_trade_good_flavor.3010 # In the Blade
+		150 = gdp_trade_good_flavor.3011 # Ten-Year Millet
+		150 = gdp_trade_good_flavor.3012 # Polished or Not
+		150 = gdp_trade_good_flavor.3013 # Before the Fast
+		250 = gdp_trade_good_flavor.3014 # Look It in the Mouth
+		150 = gdp_trade_good_flavor.3015 # Fatten for Market
+		250 = gdp_trade_good_flavor.3016 # Calfskin for the Scribes
+		250 = gdp_trade_good_flavor.3017 # Buying the Clip
+		150 = gdp_trade_good_flavor.3018 # The Vegetable Lamb
+		30 = gdp_trade_good_flavor.3019 # Spolia
+		250 = gdp_trade_good_flavor.3020 # The Mast Trunk
+		250 = gdp_trade_good_flavor.3021 # The Tent of Smoke
+		30 = gdp_trade_good_flavor.3022 # A Blade From My Best
+		150 = gdp_trade_good_flavor.3023 # The Lapidary's Claim
+		250 = gdp_trade_good_flavor.3024 # The Gentleman's Stone
+		250 = gdp_trade_good_flavor.3025 # Porcelain Ballast
+		150 = gdp_trade_good_flavor.3026 # The Sap Bites
+		30 = gdp_trade_good_flavor.3027 # Reading Stones
+		150 = gdp_trade_good_flavor.3028 # Feast-Day Prices
+		150 = gdp_trade_good_flavor.3029 # Theriac
+		150 = gdp_trade_good_flavor.3030 # No Paper for Charters
+		150 = gdp_trade_good_flavor.3031 # Gruit or Hops
+		100 = gdp_trade_good_flavor.3032 # A Basket of Fruit
+	}
+}
+
+# Yearly events skip travellers, so merchants on contracts or other trips roll goods events here
+gdp_tgf_travelling_merchant_pulse = {
+	trigger = {
+		government_allows = profit_trade_routes
+		is_travelling = yes
+		has_gdp_dlc_trigger = yes
+		gdp_tgf_eligible_trigger = yes
+	}
+	random_events = {
+		chance_of_no_event = {
+			value = 70 # The ~30% yearly odds at home, AI scaled down like random_yearly_playable_pulse
+			if = {
+				limit = {
+					is_ai = yes
+					highest_held_title_tier >= tier_kingdom
+				}
+				add = 9
+			}
+			else_if = {
+				limit = {
+					is_ai = yes
+					highest_held_title_tier >= tier_duchy
+				}
+				add = 21
+			}
+			else_if = {
+				limit = { is_ai = yes }
+				add = 28.5
+			}
+		}
+		# Keep in sync with the trade-good flavor entries in gdp_merchant_yearly_events
+		100 = gdp_trade_good_flavor.1001 # Counting Stock
+		100 = gdp_trade_good_flavor.1002 # Word Travels
+		100 = gdp_trade_good_flavor.1003 # From the Source
+		100 = gdp_trade_good_flavor.1004 # An Open Road
+		100 = gdp_trade_good_flavor.1005 # Dreams of Profit
+		100 = gdp_trade_good_flavor.1006 # Fools Who Check
+		100 = gdp_trade_good_flavor.1007 # Ask for It by Name
+		100 = gdp_trade_good_flavor.1008 # The Appraiser
+		50 = gdp_trade_good_flavor.1009 # Learn to Count
+		100 = gdp_trade_good_flavor.1010 # The Imitator
+		50 = gdp_trade_good_flavor.1011 # The Price of Names
+		100 = gdp_trade_good_flavor.1012 # A Truce of Traders
+		100 = gdp_trade_good_flavor.1013 # A Private Price
+		100 = gdp_trade_good_flavor.1014 # Ask the Old Hands
+		100 = gdp_trade_good_flavor.1015 # A Beginner's Mistake
+		30 = gdp_trade_good_flavor.1016 # The Merchant's Handbook
+		50 = gdp_trade_good_flavor.1017 # The Feel of It
+		100 = gdp_trade_good_flavor.1018 # Wrong Measure
+		100 = gdp_trade_good_flavor.1019 # Two Goods, One Buyer
+		100 = gdp_trade_good_flavor.1020 # The Builder's Rate
+		30 = gdp_trade_good_flavor.1021 # Know the Goods
+		150 = gdp_trade_good_flavor.1022 # A Name for the Trade
+		100 = gdp_trade_good_flavor.1023 # A Choke on Supply
+		100 = gdp_trade_good_flavor.1024 # Under the Hammer
+		100 = gdp_trade_good_flavor.1025 # First at the Quay
+		100 = gdp_trade_good_flavor.1026 # By the Handful
+		100 = gdp_trade_good_flavor.1027 # Market Day
+		100 = gdp_trade_good_flavor.1028 # Foreign Coin
+		50 = gdp_trade_good_flavor.1029 # Years on the Road
+		100 = gdp_trade_good_flavor.1030 # Watching It Sell
+		100 = gdp_trade_good_flavor.1031 # Outside Money
+		100 = gdp_trade_good_flavor.1032 # The Display Room
+		250 = gdp_trade_good_flavor.1033 # Keeping Your Hand In
+		30 = gdp_trade_good_flavor.1034 # The Itinerary
+		100 = gdp_trade_good_flavor.1035 # Talking Shop
+		100 = gdp_trade_good_flavor.1036 # The Packing Floor
+		100 = gdp_trade_good_flavor.1037 # The Market Seal
+		100 = gdp_trade_good_flavor.1038 # The Broker
+		100 = gdp_trade_good_flavor.1039 # The Trader's Apprentice
+		100 = gdp_trade_good_flavor.1040 # Swimming in It
+		15 = gdp_trade_good_flavor.1041 # The First Sale
+		100 = gdp_trade_good_flavor.1042 # Coin Under the Pillow
+		30 = gdp_trade_good_flavor.1043 # Portrait With Coins
+		100 = gdp_trade_good_flavor.1044 # A Purse Too Heavy
+		250 = gdp_trade_good_flavor.1045 # Profit and Piety
+		250 = gdp_trade_good_flavor.1046 # One of Their Own
+		150 = gdp_trade_good_flavor.1047 # Flooded Market
+		30 = gdp_trade_good_flavor.1048 # Manuscript in a Bale
+		250 = gdp_trade_good_flavor.1049 # Merchants From Home
+		250 = gdp_trade_good_flavor.1050 # The Salt Road
+		100 = gdp_trade_good_flavor.2001 # A Heavy Harvest
+		30 = gdp_trade_good_flavor.2002 # The Hunter's Haul
+		100 = gdp_trade_good_flavor.2003 # A Rich Vein
+		100 = gdp_trade_good_flavor.2004 # Worth Its Secret
+		100 = gdp_trade_good_flavor.2005 # A Matter of Taste
+		100 = gdp_trade_good_flavor.2006 # Dress the Part
+		30 = gdp_trade_good_flavor.2007 # Face Value
+		50 = gdp_trade_good_flavor.2008 # Intact
+		250 = gdp_trade_good_flavor.2009 # Other Men See Armies
+		100 = gdp_trade_good_flavor.2010 # The Guild Knocks
+		100 = gdp_trade_good_flavor.2011 # Rulers Set Fashions
+		100 = gdp_trade_good_flavor.2012 # Sample the Goods
+		30 = gdp_trade_good_flavor.2013 # A Masterwork Order
+		100 = gdp_trade_good_flavor.2014 # Their Dish, Our Goods
+		100 = gdp_trade_good_flavor.2015 # Paid in Goods
+		100 = gdp_trade_good_flavor.2016 # Money Doesn't Stink
+		100 = gdp_trade_good_flavor.2017 # Seven Fat Years
+		250 = gdp_trade_good_flavor.2018 # Somebody's Cattle
+		250 = gdp_trade_good_flavor.2019 # A Dry Court's Thirst
+		30 = gdp_trade_good_flavor.3001 # A Perfect Wheel
+		150 = gdp_trade_good_flavor.3002 # A Famous Complaint
+		250 = gdp_trade_good_flavor.3003 # Rent in Pepper
+		150 = gdp_trade_good_flavor.3004 # A Letter Full of Complaints
+		150 = gdp_trade_good_flavor.3005 # A Subtlety
+		150 = gdp_trade_good_flavor.3006 # The Swarm
+		150 = gdp_trade_good_flavor.3007 # Another Pot of Tea
+		150 = gdp_trade_good_flavor.3008 # Before It Turns
+		150 = gdp_trade_good_flavor.3009 # The Midnight Oil
+		150 = gdp_trade_good_flavor.3010 # In the Blade
+		150 = gdp_trade_good_flavor.3011 # Ten-Year Millet
+		150 = gdp_trade_good_flavor.3012 # Polished or Not
+		150 = gdp_trade_good_flavor.3013 # Before the Fast
+		250 = gdp_trade_good_flavor.3014 # Look It in the Mouth
+		150 = gdp_trade_good_flavor.3015 # Fatten for Market
+		250 = gdp_trade_good_flavor.3016 # Calfskin for the Scribes
+		250 = gdp_trade_good_flavor.3017 # Buying the Clip
+		150 = gdp_trade_good_flavor.3018 # The Vegetable Lamb
+		30 = gdp_trade_good_flavor.3019 # Spolia
+		250 = gdp_trade_good_flavor.3020 # The Mast Trunk
+		250 = gdp_trade_good_flavor.3021 # The Tent of Smoke
+		30 = gdp_trade_good_flavor.3022 # A Blade From My Best
+		150 = gdp_trade_good_flavor.3023 # The Lapidary's Claim
+		250 = gdp_trade_good_flavor.3024 # The Gentleman's Stone
+		250 = gdp_trade_good_flavor.3025 # Porcelain Ballast
+		150 = gdp_trade_good_flavor.3026 # The Sap Bites
+		30 = gdp_trade_good_flavor.3027 # Reading Stones
+		150 = gdp_trade_good_flavor.3028 # Feast-Day Prices
+		150 = gdp_trade_good_flavor.3029 # Theriac
+		150 = gdp_trade_good_flavor.3030 # No Paper for Charters
+		150 = gdp_trade_good_flavor.3031 # Gruit or Hops
+		100 = gdp_trade_good_flavor.3032 # A Basket of Fruit
+	}
+}
+
+gdp_merchant_company_debt_pulse = {
+	trigger = {
+		government_has_flag = government_is_merchant
+		has_gdp_dlc_trigger = yes
+		gdp_merchant_company_in_debt_trigger = yes
+		NOR = {
+			has_character_flag = merchant_company_in_debt
+			has_character_flag = merchant_company_debt_grace
+		}
+	}
+	effect = {
+		# Acumen waits a year, so a short debt or an immediate re-entry does not apply it.
+		add_character_flag = {
+			flag = merchant_company_debt_grace
+			months = company_debt_grace_flag_months_value
+		}
+		trigger_event = {
+			on_action = gdp_merchant_company_debt_grace_pulse
+			months = company_debt_grace_months_value
+		}
+	}
+}
+
+gdp_merchant_company_debt_grace_pulse = {
+	effect = {
+		remove_character_flag = merchant_company_debt_grace
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				has_gdp_dlc_trigger = yes
+				gdp_merchant_company_in_debt_trigger = yes
+				NOT = { has_character_flag = merchant_company_in_debt }
+			}
+			add_character_flag = merchant_company_in_debt
+			if = {
+				limit = { is_ai = no }
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = company_in_debt_title
+					left_icon = root
+					domicile ?= { add_acumen = company_debt_acumen_loss_value }
+				}
+			}
+			else = {
+				domicile ?= { add_acumen = company_debt_acumen_loss_value }
+			}
+			trigger_event = {
+				on_action = gdp_merchant_company_debt_direction_pulse
+				months = company_debt_direction_interval_months_value
+			}
+		}
+	}
+}
+
+gdp_merchant_company_debt_direction_pulse = {
+	trigger = {
+		has_character_flag = merchant_company_in_debt
+	}
+	effect = {
+		if = {
+			limit = {
+				government_has_flag = government_is_merchant
+				gdp_merchant_company_in_debt_trigger = yes
+			}
+			if = {
+				limit = { is_ai = no }
+				send_interface_message = {
+					type = event_generic_bad
+					title = company_in_debt_direction_title
+					left_icon = root
+					house ?= {
+						add_unity_value = {
+							value = company_debt_direction_loss_value
+							character = root
+							desc = merchant_unity_company_in_debt_desc
+						}
+					}
+				}
+			}
+			else = {
+				house ?= {
+					add_unity_value = {
+						value = company_debt_direction_loss_value
+						character = root
+						desc = merchant_unity_company_in_debt_desc
+					}
+				}
+			}
+			trigger_event = {
+				on_action = gdp_merchant_company_debt_direction_pulse
+				months = company_debt_direction_interval_months_value
+			}
+		}
+		else = {
+			remove_character_flag = merchant_company_in_debt
+		}
+	}
+}
+
+# Older schedules still point at the monthly pulse.
+gdp_merchant_company_debt_monthly_pulse = {
+	effect = {
+		trigger_event = {
+			on_action = gdp_merchant_company_debt_direction_pulse
+			months = company_debt_direction_interval_months_value
+		}
+	}
+}

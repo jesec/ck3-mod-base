@@ -1,0 +1,100 @@
+﻿gdp_visit_holding_decision = {
+	picture = {
+		trigger = {
+			location ?= { 
+				OR = {
+					geographical_region = graphical_india 
+					culture ?= { has_graphical_india_culture_group_trigger = yes }
+					steppe_building_gfx_use_indian_trigger = yes
+				}
+			}
+		}
+		reference = "gfx/interface/illustrations/event_scenes/gdp_artisans_street_india.dds"
+	}
+	picture = {
+		trigger = {
+			location ?= {
+				OR = {
+					culture ?= {has_graphical_east_asia_culture_group_trigger = yes }
+					steppe_building_gfx_use_east_asian_trigger = yes
+					steppe_building_gfx_use_southeast_asian_trigger = yes
+					culture ?= { has_building_gfx = southeast_asian_building_gfx }
+				}
+			}
+		}
+		reference = "gfx/interface/illustrations/event_scenes/gdp_artisans_street_asia.dds"
+	}
+	picture = {
+		trigger = {
+			location ?= {
+				OR = {
+					culture ?= { has_graphical_mena_culture_group_trigger = yes }
+					culture ?= { has_building_gfx = iranian_building_gfx }
+					culture ?= { has_graphical_african_culture_group_trigger = yes }
+					steppe_building_gfx_use_mena_trigger = yes
+					culture ?= { has_building_gfx = berber_group_building_gfx }
+				}
+			}
+		}
+		reference = "gfx/interface/illustrations/event_scenes/gdp_artisans_street_mena.dds"
+	}
+	picture = {
+		reference = "gfx/interface/illustrations/event_scenes/gdp_artisans_street_western.dds"
+	}
+	desc =  gdp_visit_holding_decision_desc
+	selection_tooltip = gdp_visit_holding_decision_tooltip
+	sort_order = 99 
+
+	is_shown = {
+		government_has_flag = government_is_merchant
+	}
+
+	is_valid_showing_failures_only = {
+		is_alive = yes
+		is_available_adult = yes
+		root.location = {
+			has_holding = yes
+			is_occupied = no
+			is_raided = no	
+		}
+		custom_description = {
+			text = "visit_local_settlement_decision_sieged"
+			subject = root
+			root.location = {
+				NOT = {
+					any_army_in_location = { is_army_in_siege = yes }
+				}
+			}
+		}
+		custom_description = {
+			text = "decision_already_visiting_holding"
+			subject = root
+			NOT = { has_variable = gdp_visit_holding_is_visiting }
+		}
+		custom_description = {
+			text = visit_holding_decision_all_options_exhausted
+			subject = root
+			visit_holding_decision_all_options_exhausted_trigger = no
+		}
+	}
+	effect = {
+		#TODO GDP add ifs for different type of holdings 
+		custom_tooltip = gdp_visit_holding_decision_tt
+		temporarily_lock_visit_holding_effect = yes
+		trigger_event = gdp_visit_holding_decision_event.1000
+		close_view = {
+			view = decisions
+			player = root
+		}
+	}
+
+	ai_check_interval = 0
+
+	ai_potential = {
+		always = no
+	}
+	
+	ai_will_do = {
+		base = 0
+	}
+}

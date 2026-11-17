@@ -86,7 +86,7 @@
 					}
 
 					vbox = {
-						datamodel = "[DataModelFirst( DlcCollection.GetDlcs, '(int32)15' )]"
+						datamodel = "[DataModelFirst( DlcCollection.GetDlcs, '(int32)8' )]"
 						spacing = 5
 
 						item = {
@@ -297,7 +297,7 @@
 					widget = {
 						name = "main_characters"
 						layoutpolicy_horizontal = expanding
-						size = { 0 280 }
+						size = { 0 300 }
 
 						datacontext = "[GetIllustration( 'character_view_bg' )]"
 
@@ -415,8 +415,8 @@
 
 							blockoverride "portrait_transformation"
 							{
-								portrait_scale = { -1 1 }
-								portrait_offset = { 1 0 }
+								portrait_scale = { -0.95 0.95 }
+								portrait_offset = { 0.95 0.05 }
 							}
 
 							blockoverride "portrait_opinion" {
@@ -684,6 +684,7 @@
 							text_single = {
 								name = "government_type"
 								layoutpolicy_horizontal = expanding
+								margin_left = -8
 
 								text = "[SelectLocalization( Character.GetGovernment.IsValid(), 'GOVERNMENT_ADJECTIVE_ICON', '' )]"
 								default_format = "#low"
@@ -729,7 +730,7 @@
 							}
 
 							hbox = {
-								visible = "[And( Character.HasDomicile, Character.GetGovernment.IsType('administrative_government') )]"
+								visible = "[And( Character.HasDomicile, Character.GetDomicile.GetType.IsDomicileType('estate') )]"
 								layoutpolicy_horizontal = expanding
 								margin_top = 3
 								spacing = 5
@@ -741,6 +742,63 @@
 
 								text_single = {
 									text = RULER_DESIGNER_ESTATE_LOCATION
+									align = left
+								}
+
+								expand = {}
+							}
+
+							hbox = {
+								visible = "[And( Character.HasDomicile, Character.GetDomicile.GetType.IsDomicileType('east_asian_estate') )]"
+								layoutpolicy_horizontal = expanding
+								margin_top = 3
+								spacing = 5
+
+								icon = {
+									size = { 25 25 }
+									texture = "gfx/interface/icons/map_icons/map_icon_chinese_manor.dds"
+								}
+
+								text_single = {
+									text = RULER_DESIGNER_ESTATE_LOCATION
+									align = left
+								}
+
+								expand = {}
+							}
+
+							hbox = {
+								visible = "[And( Character.HasDomicile, Character.GetDomicile.GetType.IsDomicileType('japanese_manor') )]"
+								layoutpolicy_horizontal = expanding
+								margin_top = 3
+								spacing = 5
+
+								icon = {
+									size = { 25 25 }
+									texture = "gfx/interface/icons/map_icons/map_icon_japanese_manor.dds"
+								}
+
+								text_single = {
+									text = RULER_DESIGNER_MANOR_LOCATION
+									align = left
+								}
+
+								expand = {}
+							}
+
+							hbox = {
+								visible = "[And( Character.HasDomicile, Character.GetDomicile.GetType.IsDomicileType('merchant_company') )]"
+								layoutpolicy_horizontal = expanding
+								margin_top = 3
+								spacing = 5
+
+								icon = {
+									size = { 25 25 }
+									texture = "gfx/interface/icons/map_icons/map_icon_company.dds"
+								}
+
+								text_single = {
+									text = RULER_DESIGNER_COMPANY_LOCATION
 									align = left
 								}
 
@@ -913,12 +971,6 @@
 			margin_bottom = 8
 			margin_top = 4
 
-			flowcontainer_game_rules_mini = {
-				layoutpolicy_horizontal = expanding
-				name = "game_rules_mini"
-				margin = { 10 5 }
-			}
-
 			button_standard = {
 				name = "game_rules_button"
 				size = { 380 45 }
@@ -964,10 +1016,15 @@
 				}
 			}
 
+			hbox_game_rules_mini = {
+				layoutpolicy_horizontal = expanding
+				name = "game_rules_mini"
+			}
+
 			vbox = {
 				name = "select_and_customize_character"
 				datacontext = "[LobbyView.GetSelectedPlayable.GetCharacter]"
-				margin_top = 35
+				margin_top = 8
 				spacing = 5
 
 				vbox = {
@@ -1010,7 +1067,7 @@
 				vbox = {
 					layoutpolicy_horizontal = expanding
 					margin = { 10 10 }
-					visible = "[Not( Or( Character.IsOtherPlayer, Character.IsLocalPlayer ) )]"
+					visible = "[And3( GameIsMultiplayer, IsPreparationLobby, Not( Or( Character.IsOtherPlayer, Character.IsLocalPlayer ) ) )]"
 
 					button_primary = {
 						datacontext = "[LobbyView.GetSelectedPlayable.GetCharacter]"
@@ -1087,6 +1144,11 @@
 			}
 		}
 
+		flowcontainer_additional_mapmodes = {
+			parentanchor = bottom|right
+			position = { -400 -90 }
+		}
+
 		vbox = {
 			expand = {}
 			allow_outside = yes
@@ -1096,7 +1158,7 @@
 				spacing = 30
 				margin_top = 20
 				margin_left = 440
-				margin_right = 390
+				margin_right = 430
 				allow_outside = yes
 
 				vbox = {
@@ -1158,7 +1220,6 @@
 				expand = {}
 
 				map_modes = {
-					scale = 0.8
 					filter_mouse = all
 					alwaystransparent = no
 					hotkeys_HUD = {}

@@ -8,6 +8,7 @@
  CHARACTER_SORT_AGE:0 "Age"
  CHARACTER_SORT_EDUCATION_AVAILABLE: "Available for Education"
  CHARACTER_SORT_TITLES:0 "Rank"
+ CHARACTER_SORT_NAMING_TITLE: "Title"
  CHARACTER_SORT_VASSAL_SPEED: "Speed"
  CHARACTER_SORT_VASSAL_POWER: "Power"
  AGENT_ALREADY_CONSIDERING:0 "#Z Considering our offer#!"
@@ -90,9 +91,14 @@
  ai_opinion.reason.laamp_rival: "#N "I will not serve you":#! $VALUE|=+0$"
  ai_opinion.reason.laamp_stooge: ""Not a chance": $VALUE|=+0$"
  invite_agent_to_scheme_interaction.tt.no_stooges: "[recipient.GetShortUIName] is not your [GetCourtPositionType('stooge_camp_officer').GetNameNoTooltip]"
+ invite_agent_to_scheme_interaction_notification: "I hope you will see the benefits of joining my scheme as an agent."
 
  ai_agent_join_political_base: "Political Reluctance: $VALUE|=+0$"
  ai_agent_join_political_relative_house_power: "Relative [powerful_family_rating|E]: $VALUE|=+0$"
+
+ ai_agent_house_aspiration_match_sender: "Share your [house_aspiration|E]: $VALUE|=+0$"
+ ai_agent_house_aspiration_match_reciever: "Share the target's [house_aspiration|E]: $VALUE|=+0$"
+ ai_agent_house_aspiration_different: "Does not share your [house_aspiration|E]: $VALUE|=+0$"
 
  scheme_agent_aptitude.skill.prowess: "[prowess|E]"
  scheme_agent_aptitude.skill.intrigue: "[intrigue|E]"
@@ -204,6 +210,8 @@
  scheme_agent_aptitude.trait.military_engineer: "[GetTrait('military_engineer').GetName( GetNullCharacter )]"
  scheme_agent_aptitude.trait.organizer: "[GetTrait('organizer').GetName( GetNullCharacter )]"
  scheme_agent_aptitude.trait.forder: "[GetTrait('forder').GetName( GetNullCharacter )]"
+ scheme_agent_aptitude.assembly_member: "Assembly Member"
+ scheme_agent_aptitude.powerful_vassal: "Powerful Vassal"
 
  #################################################
  # Debug Agents
@@ -359,6 +367,9 @@
  agent_alibi: "Alibi"
  agent_alibi_i: "[secrecy_i]"
  agent_alibi_desc: "#WEAK Preposterous! They were with me all evening, I can swear to that. You know my word is good.#!\n$EFFECT_LIST_BULLET$ Provides [secrecy_i] [secrecy|E]\n$EFFECT_LIST_BULLET$ Requires [diplomacy_i] [diplomacy|E] & [learning_i] [learning|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('honest').GetName( GetNullCharacter )] and [GetTrait('loyal').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('deceitful').GetName( GetNullCharacter )] and [GetTrait('disloyal').GetName( GetNullCharacter )]"
+ agent_alibi_title: "$agent_alibi$"
+ agent_alibi_title_i: "$agent_alibi_i$"
+ agent_alibi_title_desc: "$agent_alibi_desc$"
  
  agent_justiciar: "Justiciar"
  agent_justiciar_i: "[secrecy_i]"
@@ -472,3 +483,39 @@
  agent_eunuch_speed: "Eunuch"
  agent_eunuch_speed_i: "[secrecy_i]"
  agent_eunuch_speed_desc: "#WEAK Silent as the moon's passage, he moves through the marbled halls, a keeper of secrets in a land where words are currency. In the shadow of emperors, he whispers, shaping the fate of the empire with nothing but the softest murmur.#!\n$EFFECT_LIST_BULLET$ Provides [secrecy_i] [secrecy|E]\n$EFFECT_LIST_BULLET$ Requires [intrigue_i] [intrigue|E] & [learning_i] [learning|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('deceitful').GetName( GetNullCharacter )] and [GetTrait('patient').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('compassionate').GetName( GetNullCharacter )] and [GetTrait('honest').GetName( GetNullCharacter )]"
+
+ agent_peddler: "Peddler"
+ agent_peddler_i: "[scheme_speed_i]"
+ agent_peddler_desc: "#WEAK Four for two coppers! Get 'em hasty 'fore they're gone folks!#!\n$EFFECT_LIST_BULLET$ Provides [scheme_speed_i] [scheme_potential|E]\n$EFFECT_LIST_BULLET$ Requires [stewardship_i] [stewardship|E] & [diplomacy_i] [diplomacy|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('diplomat').GetName( GetNullCharacter )] and [GetTrait('gregarious').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('just').GetName( GetNullCharacter )] and [GetTrait('honest').GetName( GetNullCharacter )]"
+
+ agent_overseer: "Overseer"
+ agent_overseer_i: "[scheme_speed_i]"
+ agent_overseer_desc: "#WEAK Often results rely on little more than a firm hand and a steely gaze.#!\n$EFFECT_LIST_BULLET$ Provides [scheme_speed_i] [scheme_speed|E]\n$EFFECT_LIST_BULLET$ Requires [stewardship_i] [stewardship|E] & [martial_i] [martial|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('administrator').GetName( GetNullCharacter )] and [GetTrait('overseer').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('arbitrary').GetName( GetNullCharacter )] and [GetTrait('lazy').GetName( GetNullCharacter )]"
+
+ agent_messenger: "Messenger"
+ agent_messenger_i: "[scheme_speed_i]"
+ agent_messenger_desc: "#WEAK An order is only as effective as the hand that ensures its timely delivery.#!\n$EFFECT_LIST_BULLET$ Provides [scheme_speed_i] [scheme_potential|E]\n$EFFECT_LIST_BULLET$ Requires [stewardship_i] [stewardship|E] & [diplomacy_i] [diplomacy|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('athletic').GetName( GetNullCharacter )] and [GetTrait('diplomat').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('shy').GetName( GetNullCharacter )] and [GetTrait('lazy').GetName( GetNullCharacter )]"
+
+ agent_appraiser: "Appraiser"
+ agent_appraiser_i: "[success_chance_max_i]"
+ agent_appraiser_desc: "#WEAK A most interesting piece, but what of the veracity of its provenance?#!\n$EFFECT_LIST_BULLET$ Provides [success_chance_max_i] [scheme_potential|E]\n$EFFECT_LIST_BULLET$ Requires [learning_i] [learning|E] & [stewardship_i] [stewardship|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('patient').GetName( GetNullCharacter )] and [GetTrait('greedy').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('lazy').GetName( GetNullCharacter )] and [GetTrait('just').GetName( GetNullCharacter )]"
+
+ agent_broker: "Broker"
+ agent_broker_i: "[success_chance_max_i]"
+ agent_broker_desc: "#WEAK I know someone who would be most interested, let me handle the details.#!\n$EFFECT_LIST_BULLET$ Provides [success_chance_max_i] [scheme_potential|E]\n$EFFECT_LIST_BULLET$ Requires [learning_i] [learning|E] & [stewardship_i] [stewardship|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('patient').GetName( GetNullCharacter )] and [GetTrait('greedy').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('lazy').GetName( GetNullCharacter )] and [GetTrait('just').GetName( GetNullCharacter )]"
+
+ agent_conspirator: "Conspirator"
+ agent_conspirator_i: "[success_chance_i]"
+ agent_conspirator_desc: "#WEAK Some Patricians have a lot to gain from a sudden change in government.#!\n$EFFECT_LIST_BULLET$ Provides [success_chance_i] [scheme_potential|E]\n$EFFECT_LIST_BULLET$ Requires [diplomacy_i] [diplomacy|E] & [intrigue_i] [intrigue|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('ambitious').GetName( GetNullCharacter )] and [GetTrait('schemer').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('content').GetName( GetNullCharacter )] and [GetTrait('impatient').GetName( GetNullCharacter )]"
+
+ agent_demagogue: "Demagogue"
+ agent_demagogue_i: "[success_chance_max_i]"
+ agent_demagogue_desc: "#WEAK Popular opinion need to be shaped to serve the aim of the conspiracy. it requires an enticing voice with honey words.#!\n$EFFECT_LIST_BULLET$ Provides [success_chance_max_i] [scheme_potential|E]\n$EFFECT_LIST_BULLET$ Requires [learning_i] [learning|E] & [intrigue_i] [intrigue|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('gregarious').GetName( GetNullCharacter )] and [GetTrait('beauty_good_1').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('shy').GetName( GetNullCharacter )] and [GetTrait('stuttering').GetName( GetNullCharacter )]"
+
+ agent_commander: "Commander"
+ agent_commander_i: "[secrecy_i]"
+ agent_commander_desc: "#WEAK An iron fist will keep the conspiracy secure and handle loose ends.#!\n$EFFECT_LIST_BULLET$ Provides [secrecy_i] [scheme_potential|E]\n$EFFECT_LIST_BULLET$ Requires [prowess_i] [prowess|E] & [martial_i] [martial|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('brave').GetName( GetNullCharacter )] and [GetTrait('gallowsbait').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('lazy').GetName( GetNullCharacter )] and [GetTrait('craven').GetName( GetNullCharacter )]"
+
+ agent_financier: "Financier"
+ agent_financier_i: "[scheme_speed_i]"
+ agent_financier_desc: "#WEAK Wealth is the driving force of any conspiracy; with plenty of coin to grease the wheels.#!\n$EFFECT_LIST_BULLET$ Provides [scheme_speed_i] [scheme_speed|E]\n$EFFECT_LIST_BULLET$ Requires [stewardship_i] [stewardship|E] & [intrigue_i] [intrigue|E]\n$EFFECT_LIST_BULLET$ #P Benefits#! from [traits|E] like [GetTrait('generous').GetName( GetNullCharacter )] and [GetTrait('avaricious').GetName( GetNullCharacter )]\n$EFFECT_LIST_BULLET$ #N Suffers#! from [traits|E] like [GetTrait('greedy').GetName( GetNullCharacter )] and [GetTrait('arbitrary').GetName( GetNullCharacter )]"

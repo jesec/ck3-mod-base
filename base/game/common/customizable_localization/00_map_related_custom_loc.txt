@@ -220,6 +220,13 @@ GetProvinceFoliageDesc = {
 	}
 }
 
+# e.g. 'densely-forested'
+GetProvinceFoliageDescAdjective = {
+	type = province
+	parent = GetProvinceFoliageDesc
+	suffix = _adj
+}
+
 ### TERRAIN FLAVOR ###
 
 # Singular - e.g. 'flatland'
@@ -604,6 +611,17 @@ GetProvinceGroundDesc = {
 	}
 
 	text = {
+		localization_key = ground_puddle
+		trigger = {
+			OR = {
+				terrain = wetlands
+				terrain = floodplains
+				terrain = jungle
+			}
+		}
+	}
+
+	text = {
 		localization_key = ground_gravel
 		trigger = {
 			OR = {
@@ -663,6 +681,170 @@ GetProvinceGroundDesc = {
 	text = {
 		localization_key = ground_dirt
 		trigger = { always = yes }
+		fallback = yes
+	}
+}
+
+# e.g. 'sandy'
+GetProvinceGroundDescAdjective = {
+	type = province
+	parent = GetProvinceGroundDesc
+	suffix = _adj
+}
+
+# e.g. 'dusty'
+GetProvinceAdjective = {
+	type = province
+	random_valid = yes
+
+	text = {
+		localization_key = terrain_dusty
+		trigger = {
+			OR = {
+				terrain = drylands
+				terrain = desert
+				terrain = desert_mountains
+				terrain = oasis
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_muggy
+		trigger = {
+			OR = {
+				terrain = wetlands
+				terrain = floodplains
+				terrain = jungle
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_windy
+		trigger = {
+			OR = {
+				terrain = mountains
+				terrain = steppe
+				terrain = desert_mountains
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_chilly
+		trigger = {
+			OR = {
+				terrain = mountains
+				has_winter_trigger = yes
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_frosty
+		trigger = {
+			has_winter_trigger = yes
+		}
+	}
+
+	text = {
+		localization_key = terrain_lush
+		trigger = {
+			OR = {
+				terrain = jungle
+				terrain = plains
+				terrain = farmlands
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_bright
+		trigger = {
+			OR = {
+				terrain = desert
+				terrain = desert_mountains
+				terrain = oasis
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_busy
+		trigger = {
+			county.prosperity_level >= 25
+		}
+	}
+
+	text = {
+		localization_key = terrain_bleached
+		trigger = {
+			OR = {
+				terrain = desert
+				terrain = desert_mountains
+				terrain = drylands
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_verdant
+		trigger = {
+			OR = {
+				terrain = plains
+				terrain = hills
+				terrain = farmlands
+				terrain = steppe
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_barren
+		trigger = {
+			OR = {
+				terrain = desert
+				terrain = desert_mountains
+				terrain = drylands
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_damp
+		trigger = {
+			OR = {
+				terrain = wetlands
+				terrain = floodplains
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_dry
+		trigger = {
+			OR = {
+				terrain = drylands
+				terrain = desert
+				terrain = desert_mountains
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_humid
+		trigger = {
+			OR = {
+				terrain = wetlands
+				terrain = floodplains
+			}
+		}
+	}
+
+	text = {
+		localization_key = terrain_quiet
+		trigger = { always = no }
 		fallback = yes
 	}
 }

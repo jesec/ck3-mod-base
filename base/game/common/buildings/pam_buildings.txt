@@ -1,69 +1,68 @@
-﻿##################
-# BUILDING A GREAT CATHEDRAL
-##################
+﻿###################
+## BUILDING A GREAT CATHEDRAL
+###################
 @illustration_catholic_grand_cathedral = "gfx/interface/illustrations/holding_types/pam_temple_romanesque.dds"
 @illustration_catholic_gothic_cathedral = "gfx/interface/illustrations/holding_types/pam_temple_gothic.dds"
 @illustration_orthodox_grand_cathedral = "gfx/interface/illustrations/holding_types/temple_orthodox.dds"
-# Construction-stage 3D map visual used only while the related GP is building
-great_project_cathedral_under_construction = {
-	type_icon = "icon_structure_cathedral.dds"
-
-	asset = {
-		type = pdxmesh
-		name = "pam_generic_under_construction_01_a_mesh"
-		requires_dlc_flag = by_god_alone
-		illustration = @illustration_catholic_grand_cathedral
-		soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Temples/church_temple" soundparameter = { "Tier" = 0 } }
-		graphical_faiths = { "catholic_gfx" }
-		graphical_regions = { graphical_western graphical_mena graphical_india graphical_mediterranean graphical_steppe graphical_east_asia graphical_siberia }
-	}
-	asset = {
-		type = pdxmesh
-		name = "pam_generic_orthodox_under_construction_01_a_mesh"
-		requires_dlc_flag = by_god_alone
-		illustration = @illustration_orthodox_grand_cathedral
-		soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Castle/mediterranean_castle" soundparameter = { "Tier" = 0 } }
-		graphical_cultures = { byzantine_building_gfx caucasian_building_gfx }
-		graphical_faiths = { "orthodox_gfx" }
-		graphical_regions = { graphical_western graphical_mena graphical_india graphical_mediterranean graphical_steppe graphical_east_asia graphical_siberia }
-	}
-	asset = {
-		type = pdxmesh
-		name = "pam_generic_under_construction_01_a_mesh"
-		requires_dlc_flag = by_god_alone
-		illustration = @illustration_catholic_grand_cathedral
-		soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Temples/church_temple" soundparameter = { "Tier" = 0 } }
-		graphical_regions = { graphical_western graphical_mena graphical_india graphical_mediterranean graphical_steppe graphical_east_asia graphical_siberia }
-	}
-
-	# Never shown/constructed from normal building UI
-	can_construct_potential = {
-		always = no
-	}
-	character_modifier = {
-		monthly_piety = 0.05
-		same_faith_opinion = 10
-   		zealot_opinion = 10
-	}
-	
-	county_modifier = {
-		development_growth_factor = 0.03
-		development_growth = 0.03
-	}
-
-	show_disabled = yes
-
-	type = great_building
-
-	flag = great_project_cathedral_building
-}
-#This is mostly fake and the effects take place in the domicile building built in the on_complete
+#great_project_cathedral_under_construction = {
+#	type_icon = "special_buildings/cathedral.dds"
+#
+#	asset = {
+#		type = pdxmesh
+#		name = "pam_generic_under_construction_01_a_mesh"
+#		requires_dlc_flag = by_god_alone
+#		illustration = @illustration_catholic_grand_cathedral
+#		soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Temples/church_temple" soundparameter = { "Tier" = 0 } }
+#		graphical_faiths = { "catholic_gfx" }
+#		graphical_regions = { graphical_western graphical_mena graphical_india graphical_mediterranean graphical_steppe graphical_east_asia graphical_siberia }
+#	}
+#	asset = {
+#		type = pdxmesh
+#		name = "pam_generic_orthodox_under_construction_01_a_mesh"
+#		requires_dlc_flag = by_god_alone
+#		illustration = @illustration_orthodox_grand_cathedral
+#		soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Castle/mediterranean_castle" soundparameter = { "Tier" = 0 } }
+#		graphical_cultures = { byzantine_building_gfx caucasian_building_gfx }
+#		graphical_faiths = { "orthodox_gfx" }
+#		graphical_regions = { graphical_western graphical_mena graphical_india graphical_mediterranean graphical_steppe graphical_east_asia graphical_siberia }
+#	}
+#	asset = {
+#		type = pdxmesh
+#		name = "pam_generic_under_construction_01_a_mesh"
+#		requires_dlc_flag = by_god_alone
+#		illustration = @illustration_catholic_grand_cathedral
+#		soundeffect = { soundeffect = "event:/SFX/Ambience/3DMapEmitters/Holdings/Temples/church_temple" soundparameter = { "Tier" = 0 } }
+#		graphical_regions = { graphical_western graphical_mena graphical_india graphical_mediterranean graphical_steppe graphical_east_asia graphical_siberia }
+#	}
+#
+#	# Never shown/constructed from normal building UI
+#	can_construct_potential = {
+#		always = no
+#	}
+#	character_modifier = {
+#		monthly_piety = 0.05
+#		same_faith_opinion = 10
+#   		zealot_opinion = 10
+#	}
+#	
+#	county_modifier = {
+#		prosperity_growth_factor = 0.03
+#		prosperity_growth = 0.03
+#	}
+#
+#	show_disabled = yes
+#
+#	#type = great_building
+#
+#	flag = great_project_cathedral_building
+#}
+##This is mostly fake and the effects take place in the domicile building built in the on_complete
 great_project_cathedral_01 = {
 	effect_desc = {
 		desc = cathedral_domicile_desc
 	}
 
-	type_icon = "icon_structure_cathedral.dds"
+	type_icon = "special_buildings/cathedral.dds"
 	#Catholic
 		asset = {
 			type = pdxmesh
@@ -94,6 +93,7 @@ great_project_cathedral_01 = {
 		graphical_regions = { graphical_western graphical_mena graphical_india graphical_mediterranean graphical_steppe graphical_east_asia graphical_siberia }
 	}
 
+
 	#We only build this through Decision -> Great Projects
 	can_construct_potential = {
 		always = no #This should never show up
@@ -114,9 +114,18 @@ great_project_cathedral_01 = {
 	}
 	
 	county_modifier = {
-		development_growth_factor = 0.1
-		monthly_county_control_growth_factor = 0.05
-		tax_mult = 0.1
+		prosperity_growth_factor = 0.1
+		control_baseline_add = 10
+		religious_tax_mult = 0.1
+	}
+
+	province_modifier = {
+		province_size_baseline_add = pam_cathedral_province_size_baseline_tier_1
+		trade_good_books_paper_production_add = special_building_books_output
+	}
+	market_modifier = {
+		trade_good_books_paper_buy_price_mult = special_building_production_buy_price
+		trade_good_jewelry_sell_price_mult = special_building_need_sell_price
 	}
 
 	on_complete = {	
@@ -129,15 +138,29 @@ great_project_cathedral_01 = {
 	}
 	
 	ai_value = {
-		base = 100
+		base = 10
 		ai_pious_building_preference_modifier = yes
 		modifier = { # Fill all building slots before going for special buildings
 			factor = 0
 			free_building_slots > 0
 		}
+		ai_special_district_modifier = { LEVEL = 1 }
 	}
-	
-	type = great_building
+
+	next_building = great_project_cathedral_02
+	great_project_type = pam_cathedral_01
+	trade_good_need = {
+		trade_good = trade_good_jewelry
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+		not_rite_parameter = luxury_forbidden
+
+		modifiers = {
+			province_modifier = {
+				monthly_religious_tax = special_building_need_tax
+			}
+		}
+	}
 
 	flag = grand_cathedral_flag
 	flag = great_project_cathedral_building
@@ -148,7 +171,7 @@ great_project_cathedral_02 = {
 		desc = cathedral_domicile_tier_2_desc
 	}
 
-	type_icon = "icon_structure_cathedral.dds"
+	type_icon = "special_buildings/cathedral.dds"
 	asset = {
 		type = pdxmesh
 		name = "pam_generic_gothic_01_a_mesh"
@@ -196,9 +219,18 @@ great_project_cathedral_02 = {
 	}
 	
 	county_modifier = {
-		development_growth_factor = 0.2
-		monthly_county_control_growth_factor = 0.1
-		tax_mult = 0.15
+		prosperity_growth_factor = 0.2
+		control_baseline_add = 15
+		religious_tax_mult = 0.15
+	}
+
+	province_modifier = {
+		province_size_baseline_add = pam_cathedral_province_size_baseline_tier_2
+		trade_good_books_paper_production_add = special_building_books_output
+	}
+	market_modifier = {
+		trade_good_books_paper_buy_price_mult = special_building_production_buy_price
+		trade_good_jewelry_sell_price_mult = special_building_need_sell_price
 	}
 
 	on_complete = {	
@@ -211,15 +243,30 @@ great_project_cathedral_02 = {
 	}
 	
 	ai_value = {
-		base = 100
+		base = 10
 		ai_pious_building_preference_modifier = yes
 		modifier = {
 			factor = 0
 			free_building_slots > 0
 		}
+		ai_special_district_modifier = { LEVEL = 2 }
 	}
-	
-	type = great_building
+
+	next_building = great_project_cathedral_03
+	great_project_type = pam_cathedral_02
+
+	trade_good_need = {
+		trade_good = trade_good_jewelry
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+		not_rite_parameter = luxury_forbidden
+
+		modifiers = {
+			province_modifier = {
+				monthly_religious_tax = special_building_need_tax
+			}
+		}
+	}
 
 	flag = grand_cathedral_flag
 	flag = great_project_cathedral_building
@@ -230,7 +277,7 @@ great_project_cathedral_03 = {
 		desc = cathedral_domicile_tier_3_desc
 	}
 
-	type_icon = "icon_structure_cathedral.dds"
+	type_icon = "special_buildings/cathedral.dds"
 	asset = {
 		type = pdxmesh
 		name = "pam_generic_gothic_02_a_mesh"
@@ -278,9 +325,18 @@ great_project_cathedral_03 = {
 	}
 	
 	county_modifier = {
-		development_growth_factor = 0.3
-		monthly_county_control_growth_factor = 0.15
-		tax_mult = 0.2
+		prosperity_growth_factor = 0.3
+		control_baseline_add = 20
+		religious_tax_mult = 0.2
+	}
+
+	province_modifier = {
+		province_size_baseline_add = pam_cathedral_province_size_baseline_tier_3
+		trade_good_books_paper_production_add = special_building_books_output
+	}
+	market_modifier = {
+		trade_good_books_paper_buy_price_mult = special_building_production_buy_price
+		trade_good_jewelry_sell_price_mult = special_building_need_sell_price
 	}
 
 	on_complete = {	
@@ -293,23 +349,37 @@ great_project_cathedral_03 = {
 	}
 	
 	ai_value = {
-		base = 100
+		base = 10
 		ai_pious_building_preference_modifier = yes
 		modifier = {
 			factor = 0
 			free_building_slots > 0
 		}
+		ai_special_district_modifier = { LEVEL = 3 }
 	}
-	
-	type = great_building
+
+	great_project_type = pam_cathedral_03
+
+	trade_good_need = {
+		trade_good = trade_good_jewelry
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+		not_rite_parameter = luxury_forbidden
+
+		modifiers = {
+			province_modifier = {
+				monthly_religious_tax = special_building_need_tax
+			}
+		}
+	}
 
 	flag = grand_cathedral_flag
 	flag = great_project_cathedral_building
 }
 
-##########
-# Abbey of St Gall
-##########
+###########
+## Abbey of St Gall
+###########
 pam_abbey_of_st_gall_01 = {
 	asset = {
 		type = pdxmesh
@@ -317,7 +387,7 @@ pam_abbey_of_st_gall_01 = {
 	}
 
 	construction_time = very_slow_construction_time
-	type_icon = "icon_structure_cluny_abbey.dds"
+	type_icon = "special_buildings/cluny_abbey.dds"
 
 	can_construct_potential = { building_requirement_tribal = no }
 
@@ -334,13 +404,18 @@ pam_abbey_of_st_gall_01 = {
 	}
 
 	county_modifier = {
-		development_growth = 0.1
-		development_growth_factor = 0.15
-		monthly_county_control_growth_factor = 0.05
+		prosperity_growth = 0.1
+		prosperity_growth_factor = 0.15
+		monthly_control_change_when_below_baseline_mult = 0.05
 	}
 
 	province_modifier = {
-		monthly_income = 0.5
+		monthly_religious_tax = 0.5
+		trade_good_books_paper_production_add = special_building_books_output
+	}
+	market_modifier = {
+		trade_good_books_paper_buy_price_mult = special_building_production_buy_price
+		trade_category_precious_metals_sell_price_mult = special_building_need_sell_price
 	}
 
 	on_complete = {
@@ -349,24 +424,35 @@ pam_abbey_of_st_gall_01 = {
 	}
 
 	ai_value = {
-		base = 100
+		base = 10
 		ai_pious_building_preference_modifier = yes
 		modifier = { # Fill all building slots before going for special buildings
 			factor = 0
 			free_building_slots > 0
 		}
+		ai_special_district_modifier = { LEVEL = 1 }
 	}
 
-	type = special
+	trade_good_need = {
+		trade_good_category = trade_category_precious_metals
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			county_holder_character_modifier = {
+				monthly_piety = special_building_need_piety
+			}
+		}
+	}
 
 	flag = travel_point_of_interest_religious
 	flag = holy_building
 	flag = religious_studies_location
 }
 
-##########
-# Palais des Papes
-##########
+###########
+## Palais des Papes
+###########
 pam_palais_de_papes_01 = {
 	asset = {
 		type = pdxmesh
@@ -374,7 +460,7 @@ pam_palais_de_papes_01 = {
 	}
 
 	construction_time = very_slow_construction_time
-	type_icon = "icon_structure_despot_palace.dds"
+	type_icon = "special_buildings/despot_palace.dds"
 
 	can_construct_potential = { building_requirement_tribal = no }
 	can_construct = { scope:holder.culture = { has_innovation = innovation_manorialism } }
@@ -392,14 +478,16 @@ pam_palais_de_papes_01 = {
 	}
 
 	county_modifier = {
-		development_growth = 0.1
-		development_growth_factor = 0.15
-		monthly_county_control_growth_factor = 0.05
-		tax_mult = 0.1
+		prosperity_growth = 0.1
+		prosperity_growth_factor = 0.15
+		monthly_control_change_when_below_baseline_mult = 0.05
 	}
 
 	province_modifier = {
-		monthly_income = 3
+		monthly_religious_tax = 3
+	}
+	market_modifier = {
+		trade_category_precious_metals_sell_price_mult = special_building_need_sell_price
 	}
 
 	on_complete = {
@@ -408,24 +496,35 @@ pam_palais_de_papes_01 = {
 	}
 
 	ai_value = {
-		base = 100
+		base = 10
 		ai_pious_building_preference_modifier = yes
 		modifier = { # Fill all building slots before going for special buildings
 			factor = 0
 			free_building_slots > 0
 		}
+		ai_special_district_modifier = { LEVEL = 1 }
 	}
 
-	type = special
+	trade_good_need = {
+		trade_good_category = trade_category_precious_metals
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+
+		modifiers = {
+			province_modifier = {
+				control_baseline_add = special_building_need_control
+			}
+		}
+	}
 
 	flag = travel_point_of_interest_diplomatic
 	flag = travel_point_of_interest_religious
 	flag = holy_building
 }
 
-##########
-# Archbasilica of Saint John Lateran
-##########
+###########
+## Archbasilica of Saint John Lateran
+###########
 pam_lateran_basilica_01 = {
 	asset = {
 		type = pdxmesh
@@ -433,10 +532,10 @@ pam_lateran_basilica_01 = {
 	}
 
 	construction_time = very_slow_construction_time
-	type_icon = "icon_structure_grand_basilica.dds"
+	type_icon = "special_buildings/grand_basilica.dds"
 
 	can_construct_potential = { building_requirement_tribal = no }
-	can_construct = { scope:holder.culture = { has_innovation = innovation_crop_rotation } }
+	can_construct = { building_monument_tribal_trigger = yes }
 
 	is_enabled = {
 		christianity_or_syncretic_with_christianity_trigger = { CHARACTER = scope:holder }
@@ -451,14 +550,23 @@ pam_lateran_basilica_01 = {
 	}
 
 	county_modifier = {
-		development_growth = 0.1
-		development_growth_factor = 0.15
-		monthly_county_control_growth_factor = 0.1
-		tax_mult = 0.1
+		prosperity_growth = 0.1
+		prosperity_growth_factor = 0.15
+		monthly_control_change_when_below_baseline_mult = 0.1
+		religious_tax_mult = 0.1
 	}
 
+	province_culture_modifier = {
+		parameter = civic_religion_cathedral_civic_tax
+		monthly_civic_tax = 0.4
+	}
 	province_modifier = {
-		monthly_income = 0.8
+		trade_good_books_paper_production_add = special_building_books_output
+	}
+	market_modifier = {
+		trade_good_incense_sell_price_mult = special_building_need_sell_price
+		trade_good_books_paper_buy_price_mult = special_building_production_buy_price
+		trade_good_jewelry_sell_price_mult = special_building_need_sell_price
 	}
 
 	on_complete = {
@@ -467,24 +575,47 @@ pam_lateran_basilica_01 = {
 	}
 
 	ai_value = {
-		base = 100
+		base = 10
 		ai_pious_building_preference_modifier = yes
 		modifier = { # Fill all building slots before going for special buildings
 			factor = 0
 			free_building_slots > 0
 		}
+		ai_special_district_modifier = { LEVEL = 1 }
 	}
 
-	type = special
+	trade_good_need = {
+		trade_good = trade_good_incense
+		amount = basic_resource_need
+
+		modifiers = {
+			county_holder_character_modifier = {
+				monthly_piety = 0.05
+			}
+		}
+	}
+
+	trade_good_need = {
+		trade_good = trade_good_jewelry
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+		not_rite_parameter = luxury_forbidden
+
+		modifiers = {
+			province_modifier = {
+				monthly_religious_tax = special_building_need_tax
+			}
+		}
+	}
 
 	flag = travel_point_of_interest_religious
 	flag = holy_building
 	flag = religious_studies_location
 }
 
-##########
-# Reims Cathedral
-##########
+###########
+## Reims Cathedral
+###########
 pam_reims_cathedral_01 = {
 	asset = {
 		type = pdxmesh
@@ -492,7 +623,7 @@ pam_reims_cathedral_01 = {
 	}
 
 	construction_time = very_slow_construction_time
-	type_icon = "icon_structure_cologne_cathedral.dds"
+	type_icon = "special_buildings/cologne_cathedral.dds"
 
 	can_construct_potential = { building_requirement_tribal = no }
 	can_construct = { scope:holder.culture = { has_innovation = innovation_manorialism } }
@@ -510,14 +641,22 @@ pam_reims_cathedral_01 = {
 	}
 
 	county_modifier = {
-		development_growth = 0.1
-		development_growth_factor = 0.15
-		monthly_county_control_growth_factor = 0.1
-		tax_mult = 0.2
+		prosperity_growth = 0.1
+		prosperity_growth_factor = 0.15
+		monthly_control_change_when_below_baseline_mult = 0.1
+		religious_tax_mult = 0.2
 	}
 
+	province_culture_modifier = {
+		parameter = civic_religion_cathedral_civic_tax
+		monthly_civic_tax = 0.4
+	}
 	province_modifier = {
-		monthly_income = 0.8
+		trade_good_books_paper_production_add = special_building_books_output
+	}
+	market_modifier = {
+		trade_good_books_paper_buy_price_mult = special_building_production_buy_price
+		trade_good_jewelry_sell_price_mult = special_building_need_sell_price
 	}
 
 	on_complete = {
@@ -526,17 +665,32 @@ pam_reims_cathedral_01 = {
 	}
 
 	ai_value = {
-		base = 100
+		base = 10
 		ai_pious_building_preference_modifier = yes
 		modifier = { # Fill all building slots before going for special buildings
 			factor = 0
 			free_building_slots > 0
 		}
+		ai_special_district_modifier = { LEVEL = 1 }
 	}
 
-	type = special
+	trade_good_need = {
+		trade_good = trade_good_jewelry
+		amount = special_building_need_amount
+		can_be_filled_multiple_times = 5
+		not_rite_parameter = luxury_forbidden
+
+		modifiers = {
+			province_modifier = {
+				monthly_religious_tax = special_building_need_tax
+			}
+		}
+	}
 
 	flag = travel_point_of_interest_religious
 	flag = holy_building
 	flag = religious_studies_location
 }
+
+##TODO_PAM_JC 3rd level cathedral needed. Art should already exist TIT-72345
+

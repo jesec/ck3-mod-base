@@ -1,0 +1,166 @@
+﻿republic_popular_faction = {
+	sort_order = 6
+	leaders_allowed_to_leave = no
+	player_can_join = no
+
+	name = FACTION_REPUBLIC_POPULAR_NAME
+	short_effect_desc = republic_popular_faction_short_effect_desc
+
+	requires_county = yes
+	requires_character = no
+	character_allow_create = no
+	character_allow_join = no
+
+	# Must be set at database load, but never used since demand resolves through events, not faction_start_war
+	casus_belli = peasant_war
+
+	discontent_progress = {
+		base = 2
+
+		compare_modifier = {
+			value = faction_target.capital_county.popular_opinion
+			multiplier = -0.05
+			desc = "FACTION_DISCONTENT_POPULAR_OPINION"
+		}
+
+		# Low control accelerates progress, high control decelerates it
+		modifier = {
+			add = {
+				value = faction_target.capital_county.county_control_baseline
+				subtract = faction_target.capital_county.county_control
+				multiply = 0.15
+			}
+			faction_target.capital_county = { county_control < county_control_baseline }
+			desc = "FACTION_DISCONTENT_LOW_CONTROL"
+		}
+		modifier = {
+			add = {
+				value = faction_target.capital_county.county_control
+				subtract = faction_target.capital_county.county_control_baseline
+				multiply = -0.15
+			}
+			faction_target.capital_county = { county_control > county_control_baseline }
+			desc = "FACTION_DISCONTENT_HIGH_CONTROL"
+		}
+
+		# Difficulty Settings (player only)
+		modifier = {
+			desc = "FACTION_REASON_DIFFICULTY_EASY"
+			add = -0.75
+			has_game_rule = easy_difficulty
+			faction_target = { is_ai = no }
+		}
+		modifier = {
+			desc = "FACTION_REASON_DIFFICULTY_VERY_EASY"
+			add = -1.5
+			has_game_rule = very_easy_difficulty
+			faction_target = { is_ai = no }
+		}
+		modifier = {
+			desc = "FACTION_REASON_DIFFICULTY_HARD"
+			add = 0.75
+			has_game_rule = hard_difficulty
+			faction_target = { is_ai = no }
+		}
+		modifier = {
+			desc = "FACTION_REASON_DIFFICULTY_VERY_HARD"
+			add = 1.5
+			has_game_rule = very_hard_difficulty
+			faction_target = { is_ai = no }
+		}
+
+		# Realm Stability Settings
+		modifier = {
+			desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_LESSER"
+			add = 0.75
+			has_game_rule = lesser_realm_stability
+		}
+		modifier = {
+			desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_HIGHER"
+			add = -1.5
+			has_game_rule = higher_realm_stability
+		}
+		modifier = {
+			desc = "FACTION_REASON_GAME_RULE_REALM_STABILITY_EXTREME"
+			add = -2.5
+			has_game_rule = extreme_realm_stability
+		}
+	}
+
+	power_threshold = {
+		base = 50
+	}
+
+	is_valid = {
+		faction_target = {
+			government_has_flag = government_is_republic
+		}
+	}
+
+	is_county_valid = {
+		holder = {
+			government_has_flag = government_is_republic
+		}
+	}
+
+	is_character_valid = {
+		has_valid_faction_members_trigger = yes
+	}
+
+	can_county_create = {
+		# Only targets republican rulers
+		scope:target = {
+			government_has_flag = government_is_republic
+		}
+		# Low popular opinion required to form
+		popular_opinion < 0
+		# Target must not be immune to factions
+		custom_description = {
+			text = character_is_immune_to_factions
+			subject = scope:target
+			NOT = { scope:target = { immune_to_factions_trigger = yes } }
+		}
+	}
+
+	# Only the capital county of the faction target may join
+	can_county_join = {
+		this = scope:faction.faction_target.capital_county
+	}
+
+	county_create_score = {
+		base = -20
+
+		# Primary driver: negative popular opinion
+		compare_modifier = {
+			desc = "FACTION_REASON_POPULAR_OPINION"
+			value = popular_opinion
+			multiplier = -2.0
+		}
+	}
+
+	county_join_score = {
+		base = 0
+		compare_modifier = {
+			desc = "FACTION_REASON_POPULAR_OPINION"
+			value = popular_opinion
+			multiplier = -2.0
+		}
+	}
+
+	demand = {
+		save_scope_as = faction
+		faction_target = {
+			trigger_event = {
+				on_action = gdp_republic_unrest_demand
+			}
+		}
+	}
+
+	ai_demand_chance = {
+		base = 0
+		modifier = {
+			add = 100
+			any_faction_county_member = {}
+		}
+	}
+}

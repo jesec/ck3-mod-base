@@ -8,6 +8,18 @@ on_trait_gained = {
 		is_alive = yes
 	}
 	effect = {
+		if = {
+			limit = {
+				OR = {
+					scope:trait = trait:greedy
+					scope:trait = trait:cynical
+				}
+				has_gdp_dlc_trigger = yes
+				government_has_flag = government_is_merchant
+			}
+			gdp_update_usury_reputation_effect = yes
+		}
+
 		# Taking vows is what makes a character clergy, so it is also when they are schooled
 		if = {
 			limit = { scope:trait = trait:devoted }
@@ -72,6 +84,17 @@ on_trait_lost = {
 				has_character_flag = pope_excom
 			}
 			remove_character_flag = pope_excom
+		}
+		if = {
+			limit = {
+				OR = {
+					scope:trait = trait:greedy
+					scope:trait = trait:cynical
+				}
+				has_gdp_dlc_trigger = yes
+				government_has_flag = government_is_merchant
+			}
+			gdp_update_usury_reputation_effect = yes
 		}
 	}
 }

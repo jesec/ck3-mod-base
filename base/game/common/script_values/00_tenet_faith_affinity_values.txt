@@ -1,0 +1,221 @@
+﻿# Tenet scope, with scope:affinity_faith as the faith judging the tenet
+# Read these through tenet_is_anathema_to_faith_trigger and tenet_is_intrinsic_to_faith_trigger, which save the faith
+# Entries are per faith, so dynamically created faiths start with neither list
+
+# This is 1 when the tenet is anathema, so the AI rarely adopts it and a Head of Faith will try to prohibit it once permitted
+anathema_to_faith = {
+	value = 0
+	# Abrahamic faiths
+	if = {
+		limit = {
+			OR = {
+				this = tenet:tenet_human_sacrifice
+				this = tenet:tenet_ritual_cannibalism
+				this = tenet:tenet_cranial_trophies
+				this = tenet:tenet_gruesome_festivals
+				this = tenet:tenet_sacrificial_ceremonies
+				this = tenet:tenet_divine_marriage
+				this = tenet:tenet_household_gods
+			}
+			scope:affinity_faith = {
+				OR = {
+					this = faith:christian_faith
+					this = faith:catholic
+					this = faith:orthodox
+					this = faith:miaphysitism
+					this = faith:armenian_apostolic
+					this = faith:conversos
+					this = faith:cathar
+					this = faith:waldensian
+					this = faith:lollard
+					this = faith:hussite
+					this = faith:joachimite
+					this = faith:iconoclast
+					this = faith:bogomilist
+					this = faith:paulician
+					this = faith:nestorian
+					this = faith:messalian
+					this = faith:adamites
+					this = faith:bosnian_church
+					this = faith:adoptionist
+					this = faith:sadr_al_islam
+					this = faith:sunni
+					this = faith:shia
+					this = faith:kharijite
+					this = faith:masmudi
+					this = faith:quranist
+					this = faith:druze
+					this = faith:qarmatian
+					this = faith:rabbinic_faith
+					this = faith:karaism
+					this = faith:haymanot
+					this = faith:malabarism
+					this = faith:samaritan
+					this = faith:kabarism
+				}
+			}
+		}
+		value = 1
+	}
+	# Zoroastrian, dualist and Jain faiths. Divine Marriage stays off this list, as Mazdayasna holds it
+	else_if = {
+		limit = {
+			OR = {
+				this = tenet:tenet_human_sacrifice
+				this = tenet:tenet_ritual_cannibalism
+				this = tenet:tenet_cranial_trophies
+				this = tenet:tenet_gruesome_festivals
+				this = tenet:tenet_sacrificial_ceremonies
+			}
+			scope:affinity_faith = {
+				OR = {
+					this = faith:mazdayasna
+					this = faith:zurvanism
+					this = faith:gayomarthianism
+					this = faith:khurmazta
+					this = faith:mazdakism
+					this = faith:khurramism
+					this = faith:urartuism
+					this = faith:afridunism
+					this = faith:manichaean_faith
+					this = faith:mandaean_faith
+					this = faith:gnostic_faith
+					this = faith:sethianism
+					this = faith:jain_faith
+				}
+			}
+		}
+		value = 1
+	}
+	# Buddhist faiths. Vajrayana uses skull cups, so Cranial Trophies stays off this list
+	else_if = {
+		limit = {
+			OR = {
+				this = tenet:tenet_human_sacrifice
+				this = tenet:tenet_ritual_cannibalism
+				this = tenet:tenet_gruesome_festivals
+				this = tenet:tenet_sacrificial_ceremonies
+			}
+			scope:affinity_faith = {
+				OR = {
+					this = faith:theravada_faith
+					this = faith:mahayana_faith
+					this = faith:maitreya_faith
+					this = faith:vajrayana_faith
+				}
+			}
+		}
+		value = 1
+	}
+	# Chalcedonian faiths
+	else_if = {
+		limit = {
+			OR = {
+				this = tenet:tenet_monophysitism
+				this = tenet:tenet_miaphysitism
+				this = tenet:tenet_adoptionism
+			}
+			scope:affinity_faith = {
+				OR = {
+					this = faith:christian_faith
+					this = faith:catholic
+					this = faith:orthodox
+				}
+			}
+		}
+		value = 1
+	}
+	else_if = {
+		limit = {
+			this = tenet:tenet_warmonger
+			scope:affinity_faith = faith:jain_faith
+		}
+		value = 1
+	}
+}
+
+# This is 1 when the tenet is intrinsic, so the AI never prohibits it and a Head of Faith will try to permit it once prohibited
+intrinsic_to_faith = {
+	value = 0
+	if = {
+		limit = {
+			OR = {
+				AND = {
+					scope:affinity_faith = faith:norse_pagan
+					OR = {
+						this = tenet:tenet_gruesome_festivals
+						this = tenet:tenet_warmonger
+					}
+				}
+				AND = {
+					scope:affinity_faith = faith:mazdayasna
+					this = tenet:tenet_divine_marriage
+				}
+				AND = {
+					OR = {
+						scope:affinity_faith = faith:miaphysitism
+						scope:affinity_faith = faith:armenian_apostolic
+					}
+					this = tenet:tenet_miaphysitism
+				}
+				AND = {
+					scope:affinity_faith = faith:adoptionist
+					this = tenet:tenet_adoptionism
+				}
+				AND = {
+					scope:affinity_faith = faith:iconoclast
+					this = tenet:tenet_aniconism
+				}
+				AND = {
+					scope:affinity_faith = faith:cathar
+					this = tenet:tenet_consolamentum
+				}
+				AND = {
+					scope:affinity_faith = faith:adamites
+					this = tenet:tenet_natural_primitivism
+				}
+				AND = {
+					scope:affinity_faith = faith:conversos
+					this = tenet:tenet_jewish_syncretism
+				}
+				AND = {
+					OR = {
+						scope:affinity_faith = faith:quranist
+						scope:affinity_faith = faith:karaism
+					}
+					this = tenet:tenet_literalism
+				}
+			}
+		}
+		value = 1
+	}
+}
+
+# Weight factors for AI tenet picks that score candidates rather than filter them
+anathema_to_faith_ai_weight_factor = 0.05
+intrinsic_to_faith_ai_weight_factor = 3
+
+# Milder factors outside the main rite, so branched rites can diverge while the main rite holds steady
+anathema_to_faith_branched_rite_ai_weight_factor = 0.5
+intrinsic_to_faith_branched_rite_ai_weight_factor = 1.5
+
+# Character scope. Personal tenet weight factors for the character's rite
+anathema_to_faith_personal_tenet_weight_factor = {
+	value = anathema_to_faith_ai_weight_factor
+	if = {
+		limit = {
+			NOT = { rite = faith.main_rite }
+		}
+		value = anathema_to_faith_branched_rite_ai_weight_factor
+	}
+}
+
+intrinsic_to_faith_personal_tenet_weight_factor = {
+	value = intrinsic_to_faith_ai_weight_factor
+	if = {
+		limit = {
+			NOT = { rite = faith.main_rite }
+		}
+		value = intrinsic_to_faith_branched_rite_ai_weight_factor
+	}
+}

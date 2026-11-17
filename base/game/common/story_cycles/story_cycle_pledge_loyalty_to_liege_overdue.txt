@@ -56,6 +56,13 @@ story_cycle_pledge_loyalty_to_liege_overdue = {
 				end_story = yes
 			}
 		}
+
+		triggered_effect = {
+			trigger = { NOT = { exists = story_owner.liege } } # Pool characters have no liege to pledge to
+			effect = {
+				end_story = yes
+			}
+		}
 	}
 
 	# Count up the months we're overdue by unless we're already on our way to pay homage or our liege is unable to meet
@@ -65,7 +72,7 @@ story_cycle_pledge_loyalty_to_liege_overdue = {
 		trigger = {
 			has_variable = pledge_loyalty_to_liege_overdue_months
 			NOT = { story_owner.var:pledge_loyalty_to_liege_grace ?= { this = liege } }
-			story_owner.liege = { is_available = yes }
+			story_owner.liege ?= { is_available = yes }
 		}
 
 		# Reset the story if we have a new liege
@@ -105,7 +112,7 @@ story_cycle_pledge_loyalty_to_liege_overdue = {
 			has_variable = pledge_loyalty_to_liege_overdue_months
 			story_owner = {
 				NOT = { var:pledge_loyalty_to_liege_grace ?= { this = liege } }
-				liege = { is_available = yes }
+				liege ?= { is_available = yes }
 			}
 		}
 

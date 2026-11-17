@@ -90,17 +90,40 @@
 		}
 	}
 
-	situation_mini_map_mode = {
-		blockoverride "map_mode_button_expand" {}
-
-		blockoverride "map_mode_button_expand_menu" {
-			visible = no
-		}
-	}
-
 	window_herd_leaderboard = {
 		datacontext = "[SteppeWindow.GetCharacterList]"
 		visible = "[HerdLeaderboard.IsVisible]"
+	}
+
+	widget = {
+		parentanchor = bottom|left
+		widgetanchor = bottom|right
+		position = { -200 -87 }
+		size = { 360 120 }
+		allow_outside = yes
+
+		vbox = {
+			layoutpolicy_vertical = expanding
+			layoutpolicy_horizontal = expanding
+			allow_outside = yes
+			spacing = -8
+			expand = {}
+
+			landless_ruler_filter_bar = {
+				visible = "[And( IsGameViewOpen( 'the_great_steppe' ), IsMapMode( 'landless_rulers' ) )]"
+			}
+
+			situation_mini_map_mode = {
+
+				blockoverride "position" {}
+
+				blockoverride "map_mode_button_expand" {}
+
+				blockoverride "map_mode_button_expand_menu" {
+					visible = no
+				}
+			}
+		}
 	}
 }
 
@@ -1092,9 +1115,12 @@ types SituationTypes
 	}
 
 	type situation_mini_map_mode = mini_map_mode {
-		parentanchor = bottom|left
-		widgetanchor = bottom|right
-		position = { -200 -87 }
+
+		block "position" {
+			parentanchor = bottom|left
+			widgetanchor = bottom|right
+			position = { -200 -87 }
+		}
 
 		blockoverride "widget_size"
 		{
@@ -1130,7 +1156,7 @@ types SituationTypes
 
 				blockoverride "mm_button"
 				{
-					shortcut = "map_mode_19"
+					shortcut = "map_mode_migration_counties"
 				}
 			}
 
@@ -1147,7 +1173,7 @@ types SituationTypes
 
 				blockoverride "mm_button"
 				{
-					shortcut = "map_mode_2"
+					shortcut = "map_mode_cultures"
 				}
 			}
 
@@ -1159,7 +1185,7 @@ types SituationTypes
 
 				blockoverride "mm_button"
 				{
-					shortcut = "map_mode_18"
+					shortcut = "map_mode_landless_rulers"
 				}
 			}
 		}

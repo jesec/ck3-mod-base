@@ -1,0 +1,39 @@
+﻿
+# Roads are drawn with the splines in gfx/map/spline_network/spline_network.splnet.
+# Each pair of neighbouring provinces in a road needs a spline in that file. A pair without one is not drawn,
+# and error.log reports "Could not find spline network strip" when the game tries to draw it.
+#
+# Changing a file in this folder while the game runs reloads the roads, generates the missing splines 
+# and saves the whole spline network to Documents/Paradox Interactive/Crusader Kings III/gfx/map/spline_network/spline_network.splnet (on Windows).
+# The console command SplineNetwork.AppendAssets does the same.
+# That copy overrides the game's spline network until you delete it, including after game updates,
+# and error.log reports it at startup while it exists.
+# To ship the splines with a mod, move the file into the mod at gfx/map/spline_network/spline_network.splnet
+# (tweak it in the map editor first if needed), and do not leave a copy in the Documents folder.
+
+road_type = {
+	### brief: tier ( number )
+	# road tier should be value 0-5
+	# only roads with greater than 0 tier will be shown on game start
+	# default is 0
+	tier = 1
+
+	### brief: spline asset id
+	# Provide the spline asset id of the road.
+	# currently supporting 0,1 values, which are used for dirtroad and naval roads respectively.
+	# those are aligned with ids for spline_types in spline_network.
+	# 1 also marks the road as a sea road, which grants no road modifiers (see common/roads/road_modifiers).
+	# default is 0, which is used for dirtroads.
+	spline_asset_id = 0
+	
+	### brief: province id list
+	# Provide the province id list of the road.
+	# First province in the list is the start point and last province is the last point accordingly.
+	#
+	provinces = {
+		provinceID_0
+		provinceID_1
+		...
+	}
+
+}

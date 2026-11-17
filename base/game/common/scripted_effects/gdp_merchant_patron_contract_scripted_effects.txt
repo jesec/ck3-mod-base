@@ -1,0 +1,123 @@
+﻿##########################
+# Patron Scheme Scripted Effects
+##########################
+
+fire_generic_patron_contract_scheme_on_going_events_effect = {
+	patron_contract_scheme_scopes_effect = yes
+	scope:owner = {
+		trigger_event = { on_action = merchant_base_patron_contract_scheme_on_going_events }
+	}
+}
+
+manage_new_patron_contract_effect = {
+	if = {
+		limit = { exists = scope:destination }
+		if = {
+			limit = {
+				NOT = { has_character_flag = patron_contract_frequency_cooldown }
+			}
+			add_character_flag = { flag = patron_contract_frequency_cooldown years = 6 }
+		}
+		send_interface_message = {
+			type = msg_merchant_contracts
+			title = msg_patron_contract_appear.t
+			desc = msg_patron_contract_appear.desc
+			left_icon = scope:patron
+			right_icon = scope:destination.county
+		}
+	}
+	if = {
+		limit = {
+			is_ai = yes
+			exists = scope:patron_contract
+		}
+		accept_task_contract = scope:patron_contract
+	}
+}
+
+patron_contract_task_contract_scopes_effect = {
+	suzerain = {
+		save_scope_as = patron
+		capital_province = { save_scope_as = destination }
+	}
+	# save contract tier
+	random_list = {
+		10 = {
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_county
+			}
+		}
+		5 = {
+			trigger = { scope:destination.county.prosperity_level >= 10 }
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_duchy
+			}
+		}
+		2 = {
+			trigger = { scope:destination.county.prosperity_level >= 25 }
+			save_scope_value_as = {
+				name = contract_tier
+				value = tier_kingdom
+			}
+		}
+	}
+}
+
+patron_contract_scheme_scopes_effect = {
+	save_scope_as = scheme
+	scheme_owner = { save_scope_as = owner }
+	if = {
+		limit = { is_scheme_target_type = character }
+		scheme_target_character ?= { save_scope_as = target }
+	}
+	else = {
+		scheme_target_title = {
+			save_scope_as = target_title
+			holder ?= { save_scope_as = target }
+		}
+	}
+	task_contract ?= {
+		save_scope_as = task_contract
+		task_contract_employer = { save_scope_as = patron }
+		task_contract_location = { save_scope_as = task_contract_location }
+	}
+}
+
+merchant_base_patron_contract_schemes_set_up_outcome_immediate_effect = {
+	scope:scheme = {
+		# Grab the right scopes.
+		task_contract = {
+			save_scope_as = task_contract
+			task_contract_employer = {
+				save_scope_as = patron
+				# Don't ask
+				save_scope_as = employer
+				save_scope_as = bg_override_char
+			}
+			save_scope_value_as = {
+				name = task_contract_tier
+				value = task_contract_tier
+			}
+		}
+	}
+}
+
+##################################################
+# AI Usage Critical Moment Effects — Patron Contract Schemes
+
+merchant_base_patron_hobnob_patron_contract_scheme_prep_effect = {
+	save_scope_as = scheme
+	scope:scheme.task_contract ?= { save_scope_as = task_contract }
+	save_scope_value_as = {
+		name = follow_up_event
+		value = event_id:gdp_merchant_patron_contract.0004
+	}
+	if = {
+		limit = {
+			NOT = { exists = scope:suppress_next_event }
+		}
+		scheme_owner = { trigger_event = scheme_critical_moments.0002 }
+	}
+}

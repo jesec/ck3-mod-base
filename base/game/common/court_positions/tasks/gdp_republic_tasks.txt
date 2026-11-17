@@ -1,0 +1,166 @@
+﻿#############################
+# Eparch Court Position Tasks
+#############################
+
+roman_censor_appoint_senators = {
+	court_position_types = { roman_censor_court_position }
+	
+	# When task is made available
+	is_shown = {
+	}
+	
+	# Monthly cost for the task
+	cost = {
+		round = no
+		treasury_or_gold = {
+			value = 0
+			add = {
+				value = 0 # We make this free, so senator appointment can be automatic more easily
+				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			}
+		}
+	}
+
+	scaling_employer_modifiers = {
+	}
+
+	on_start = {
+		custom_tooltip = roman_censor_appoint_senators_effect_desc
+	}
+	on_end = {
+	}
+	on_yearly = {
+		scope:liege ?= {
+			if = {
+				limit = {
+					gdp_republic_senate_has_empty_seats_trigger = yes
+				}
+				prev = { save_scope_as = roman_censor }
+				# Populate a list with candidates
+				every_vassal = {
+					limit = {
+						gdp_can_become_senator_trigger = yes
+						this != scope:roman_censor # Don't appoint yourself
+					}
+					add_to_list = potential_senators
+				}
+
+				# Find and appoint the best available candidate
+				if = {
+					limit = {
+						any_in_list = {
+							list = potential_senators
+							count >= 1
+						}
+					}
+					ordered_in_list = {
+						list = potential_senators
+						order_by = {
+							value = house.patrician_house_score_value
+							if = {
+								limit = { # Patricians get extra priority
+									gdp_is_patrician_trigger = yes
+								}
+								add = 1
+							}
+						}
+						max = 1
+
+						# Save the new senator
+						save_scope_as = new_senator
+					}
+
+					# Notify liege and set the senator flag
+					send_interface_message = {
+						type = send_interface_message
+						title = roman_censor_appointed_senator_msg_t
+						left_icon = scope:roman_censor
+						right_icon = scope:new_senator
+
+						custom_tooltip = {
+							text = roman_censor_appointed_senator_msg_desc
+							scope:new_senator = { add_character_flag = republic_appointed_senator }
+							update_assembly = yes
+						}
+					}
+				}
+			}
+		}
+
+		# Send the senator a toast
+		if = {
+			limit = {
+				scope:new_senator ?= { is_ai = no }
+			}
+			scope:new_senator ?= {
+				send_interface_toast = {
+					type = event_toast_effect_good
+					title = roman_censor_appointed_senator_msg_t
+					left_icon = scope:liege
+
+					custom_tooltip = roman_censor_appointed_senator_msg_desc
+				}
+			}
+		}
+	}
+
+	ai_will_do = {
+		value = 100 # The AI primarily uses the censor to appoint senators
+	}
+}
+
+roman_censor_public_morale = {
+	court_position_types = { roman_censor_court_position }
+	
+	# When task is made available
+	is_shown = {
+	}
+	
+	# Monthly cost for the task
+	cost = {
+		round = no
+		treasury_or_gold = {
+			value = 0
+			add = {
+				value = monthly_court_position_task_cost
+				desc = COURT_POSITION_TASK_COST_BREAKDOWN_BASE
+				format = "BASE_VALUE_FORMAT_DECIMALS_PLUS_NEGATIVE"
+			}
+		}
+	}
+
+	scaling_employer_modifiers = {
+		terrible = {
+			character_capital_popular_opinion_add = 3
+			direct_vassal_opinion = 1
+		}
+		poor = {
+			character_capital_popular_opinion_add = 6
+			direct_vassal_opinion = 2
+		}
+		average = {
+			character_capital_popular_opinion_add = 9
+			direct_vassal_opinion = 3
+		}
+		good = {
+			character_capital_popular_opinion_add = 12
+			direct_vassal_opinion = 4
+		}
+		excellent = {
+			character_capital_popular_opinion_add = 15
+			direct_vassal_opinion = 5
+		}
+	}
+
+	on_start = {
+	}
+	on_end = {
+	}
+	on_yearly = {
+	}
+
+	ai_will_do = {
+		value = 0
+	}
+}

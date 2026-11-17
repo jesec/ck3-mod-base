@@ -1,0 +1,82 @@
+﻿vbox = {
+	name = "event_window_widget_trade_good"
+	EventWindowWidgetTradeGood = {}
+}
+
+types EventWindowWidgetsTradeGood
+{
+	type EventWindowWidgetTradeGood = hbox {
+		margin_bottom = 15
+		block "trade_good_datacontext" {
+			datacontext = "[EventWindowWidget.GetScope.GetRootScope.Char]"
+			datacontext = "[Character.MakeScope.Var('tgf_widget_good').TradeGoodType]"
+		}
+
+		visible = "[Character.MakeScope.Var('tgf_widget_good').IsSet]"
+
+		spacing = 15
+
+		background = {
+			using = Background_Area
+			margin = { 20 0 }
+			modify_texture = {
+				texture = "gfx/interface/component_masks/mask_fade_horizontal_middle.dds"
+				blend_mode = alphamultiply
+			}
+		}
+
+		icon = {
+			name = "trade_good_icon"
+			size = { 96 96 }
+			texture = "[TradeGoodType.GetIcon]"
+			tooltipwidget = trade_good_type_tooltip
+		}
+
+		vbox = {
+			name = "trade_good_name_column"
+			spacing = 2
+
+			text_label_center = {
+				name = "trade_good_name"
+				layoutpolicy_horizontal = expanding
+				text = "[TradeGoodType.GetNameNoTooltip]"
+				align = center
+				max_width = 250
+				using = Font_Size_Medium
+			}
+
+			spacer = {
+				size = { 0 5 }
+			}
+
+			hbox = {
+				name = "trade_good_category_row"
+				datacontext = "[TradeGoodType.GetNeedCategory]"
+				spacing = 6
+
+				icon = {
+					name = "trade_good_category_icon"
+					size = { 32 32 }
+					texture = "[TradeGoodCategory.GetIcon]"
+					tooltipwidget = trade_good_category_type_tooltip
+				}
+
+				text_single = {
+					name = "trade_good_category_name"
+					text = "[TradeGoodCategory.GetName]"
+					align = nobaseline
+				}
+			}
+
+			text_single = {
+				name = "trade_good_expertise_level"
+				datacontext = "[TradeGoodType.GetNeedCategory]"
+				layoutpolicy_horizontal = expanding
+				text = "TGF_WIDGET_EXPERTISE_LEVEL"
+				tooltip = "[TradeGoodCategory.GetTradeGoodCategoryXpDesc( Character.Self )]"
+				align = center
+				using = Font_Size_Small
+			}
+		}
+	}
+}

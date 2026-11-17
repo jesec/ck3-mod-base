@@ -1,0 +1,57 @@
+﻿##################################################
+# Trader Martial Schemes
+# Safety and travel.
+##################################################
+
+### Securing Safe Passage
+# Increase travel speed and reduce travel danger for the trader for 5 years.
+# No special condition.
+gdp_trader_securing_safe_passage_scheme = {
+	skill = martial
+	desc = gdp_trader_securing_safe_passage_scheme_desc_general
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	target_type = nothing
+	category = personal
+
+	speed_per_skill_point = -1
+	uses_resistance = no
+	base_progress_goal = 120
+	base_maximum_success = 75
+	minimum_success = 5
+
+	base_success_chance = {
+		base = 0
+		gdp_trader_scheme_success_chance_modifier = { SKILL = MARTIAL }
+	}
+
+	allow = { gdp_trader_is_valid_for_scheme_trigger = yes }
+	valid = { gdp_trader_is_valid_for_scheme_trigger = yes }
+
+	on_phase_completed = {
+		gdp_trader_scheme_setup_effect = yes
+
+		if = {
+			limit = { exists = scope:gdp_trader_scheme_success }
+			scope:route_owner = {
+				send_interface_message = {
+					type = msg_trader_activity_success
+					title = gdp_trader_securing_safe_passage_scheme_success_title
+					desc = gdp_trader_securing_safe_passage_scheme_success_desc
+					left_icon = scope:trader
+					scope:trader = {
+						add_character_modifier = {
+							modifier = gdp_trader_safe_passage_modifier
+							years = 5
+						}
+					}
+				}
+			}
+		}
+		gdp_trader_scheme_complete_effect = yes
+	}
+
+	on_invalidated = {
+		gdp_trader_scheme_invalidated_effect = yes
+	}
+}

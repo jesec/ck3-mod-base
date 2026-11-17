@@ -15,11 +15,18 @@ great_project_base_starting_cost = {
 			has_treasury = yes
 		}
 		add = major_treasury_value
+		min = 500
 	}
 	else = {
 		add = major_gold_value
+		min = 300
 	}
-	min = 500
+	if = {
+		limit = {
+			has_realm_law = republic_type_civic
+		}
+		multiply = 0.8
+	}
 }
 great_project_base_contribution_cost = {
 	value = 0
@@ -28,13 +35,40 @@ great_project_base_contribution_cost = {
 			has_treasury = yes
 		}
 		add = medium_treasury_value
+		min = 250
 	}
 	else = {
 		add = medium_gold_value
+		min = 150
 	}
-	min = 250
+	if = {
+		limit = {
+			has_realm_law = republic_type_civic
+		}
+		multiply = 0.8
+	}
 }
 great_project_base_construction_time = 1825
+
+# Gold payers' piety costs keep the higher floor; only their gold costs use the lower one
+great_project_base_piety_starting_cost = {
+	value = great_project_base_starting_cost
+	if = {
+		limit = {
+			has_treasury = no
+		}
+		min = 500
+	}
+}
+great_project_base_piety_contribution_cost = {
+	value = great_project_base_contribution_cost
+	if = {
+		limit = {
+			has_treasury = no
+		}
+		min = 250
+	}
+}
 
 great_wall_treasury_cost_value = {
 	value = 0

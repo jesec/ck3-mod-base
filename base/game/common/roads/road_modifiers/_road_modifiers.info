@@ -1,0 +1,31 @@
+﻿# Shared road modifiers, applied to every road based on its current tier.
+# Sea roads (road types with spline_asset_id = 1) grant none of them.
+#
+# 'road_modifiers_default' is required by code and must not be removed.
+#
+# <key> = {
+#     tier_0 = { ... }    # Modifiers granted while the road is at tier 0
+#     ...
+#     tier_5 = { ... }
+# }
+#
+# Tier 0 is a road that has not been built yet. It is hidden on the map, but the road exists and
+# every road starts there, so anything set on tier_0 applies to every road from game start.
+# Tiers may be listed in any order and skipped; a tier that is not listed grants nothing.
+# Road tiers are always 0 to 5.
+#
+# Each tier block accepts up to four modifier blocks, one per target:
+#
+#     modifier = { ... }               # Road target. Read at the point of use, e.g. the road's
+#                                     # own construction speed.
+#     province_modifier = { ... }      # Province target. Applied to every province the road covers.
+#     trade_route_modifier = { ... }   # TradeRoute target. Applied once per road province a
+#                                     # trade route follows, so it stacks along the route.
+#     travel_modifier = { ... }        # TravelPlan target, per tier only. Applies while a character
+#                                     # moves through a province the road covers, highest tier road
+#                                     # only. Each tier's value stands alone; tiers do not
+#                                     # accumulate. Takes the same keys as a travel option, e.g.
+#                                     # travel_speed.
+#     character_modifier = { ... }     # Character target, per tier only. The army equivalent of
+#                                     # travel_modifier. Read as the army moves, so only
+#                                     # movement_speed has an effect.

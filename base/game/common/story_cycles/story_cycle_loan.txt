@@ -1,0 +1,124 @@
+﻿
+#var:lender = who owes money - character
+#var:amount_owed = gold value owed - value
+#var:instrument = type of loan - flag
+#var:years_since = years since loan - value
+#var:reminders = times the debtor has refused to repay - value
+#var:original_debtor = loan 1st given to (for inheritance/transferral) - character
+#var:original_lender = loan 1st given by (for inheritance/transferral) - character
+#var:demand_cooldown = how long until repayment can be demanded, used for tooltips/UI
+story_cycle_loan = {
+	visible = no
+
+	background = { reference = "gfx/interface/illustrations/event_scenes/study.dds" }
+	#visualization = {
+	#	custom_string_key = "LOAN_STORY_AMOUNT_OWED_TO_LENDER"
+	#	decisions = { repay_loan_decision }
+	#}
+
+	on_end = { # no messages sent here, as that is handled per-case
+		save_temporary_scope_as = loan_temp
+		story_owner = { save_temporary_scope_as = debtor_temp }
+		var:lender = {
+			save_temporary_scope_as = lender_temp
+			if = {
+				limit = { is_alive = yes }
+				remove_list_variable = { # Clear lender's tracker
+					name = owes_me_money
+					target = scope:debtor_temp
+				}
+			}
+		}
+		end_loan_story_consequences_tooltip_effect = yes
+	}
+
+	on_owner_death = { # Inheritance handling
+		save_scope_as = original_loan
+		story_owner = { save_temporary_scope_as = dead_debtor }
+		var:lender = {
+			save_temporary_scope_as = lender
+			# Clear lender's tracker
+			if = {
+				limit = { is_alive = yes }
+				remove_list_variable = {
+					name = owes_me_money
+					target = scope:dead_debtor
+				}
+			}
+		}
+		save_temporary_scope_value_as = { name = amount_owed_temp value = var:amount_owed }
+		scope:dead_debtor = {
+			if = { # If heir exists, pass the debt - wiped otherwise
+				limit = {
+					exists = primary_heir
+					primary_heir != scope:lender # cannot pass loan to self
+					scope:lender = { is_alive = yes }
+				}
+				primary_heir ?= {
+					save_temporary_scope_as = new_debtor
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						title = ho_loan_inherited_title
+						left_icon = scope:dead_debtor
+						right_icon = scope:lender
+						custom_description = {
+							text = ho_loan_inherited_debtor_tt
+							subject = scope:dead_debtor
+							object = scope:lender
+							value = scope:amount_owed_temp
+						}
+					}
+					scope:lender = {
+						send_interface_toast = {
+							type = event_toast_effect_neutral
+							title = ho_loan_inherited_title
+							left_icon = scope:new_debtor
+							right_icon = scope:dead_debtor
+							custom_description = {
+								text = ho_loan_inherited_lender_tt
+								subject = scope:new_debtor
+								object = scope:dead_debtor
+								value = scope:amount_owed_temp
+							}
+							hidden_effect = {
+								transfer_loan_effect = {
+									OLD_LOAN = scope:original_loan
+									NEW_LENDER = scope:lender
+									NEW_DEBTOR = scope:new_debtor
+								}
+							}
+						}
+					}
+				}
+			}
+			else = { # Purge the debt
+				scope:lender = {
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						title = ho_loan_inherited_title
+						left_icon = scope:dead_debtor
+						right_icon = scope:lender
+						custom_description = {
+							text = ho_loan_wiped_loaner_tt
+							subject = this
+							object = scope:dead_debtor
+							value = scope:amount_owed_temp
+						}
+						scope:original_loan = { end_loan_story_effect = yes }
+					}
+				}
+			}
+		}
+	}
+
+	#Maintenance group
+	effect_group = {
+		years = 1 # loan duration tracking, technically inherited loans can go out of sync, but it's not very important
+		triggered_effect = {
+			trigger = { always = yes }
+			effect = {
+				change_variable = { name = years_since add = 1 }
+			}
+		}
+	}
+}

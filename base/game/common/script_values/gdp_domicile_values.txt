@@ -1,0 +1,369 @@
+﻿# Main Domicile Building - Palace
+merchant_company_main_cost_tier_2_value = {
+	value = 100
+}
+merchant_company_main_cost_tier_3_value = {
+	value = 400
+}
+merchant_company_main_cost_tier_4_value = {
+	value = 1000
+
+}
+merchant_company_main_cost_tier_5_value = {
+	value = 2000
+}
+merchant_company_main_cost_tier_6_value = {
+	value = 3000
+}
+merchant_company_main_prestige_cost_tier_2_value = {
+	value = 250
+}
+merchant_company_main_prestige_cost_tier_3_value = {
+	value = 500
+}
+merchant_company_main_prestige_cost_tier_4_value = {
+	value = 1000
+}
+merchant_company_main_prestige_cost_tier_5_value = {
+	value = 2000
+}
+merchant_company_main_prestige_cost_tier_6_value = {
+	value = 3000
+}
+
+merchant_company_building_cost_tier_1_value = 100
+merchant_company_building_cost_tier_2_value = 150
+merchant_company_building_cost_tier_3_value = 250
+merchant_company_building_cost_tier_4_value = 350
+merchant_company_building_cost_tier_5_value = 500
+merchant_company_building_cost_tier_6_value = 700
+
+gdp_merchant_company_liquidation_value = {
+	value = 0
+	if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_06 }
+		}
+		add = merchant_company_main_cost_tier_6_value
+		add = merchant_company_main_cost_tier_5_value
+		add = merchant_company_main_cost_tier_4_value
+		add = merchant_company_main_cost_tier_3_value
+		add = merchant_company_main_cost_tier_2_value
+	}
+	else_if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_05 }
+		}
+		add = merchant_company_main_cost_tier_5_value
+		add = merchant_company_main_cost_tier_4_value
+		add = merchant_company_main_cost_tier_3_value
+		add = merchant_company_main_cost_tier_2_value
+	}
+	else_if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_04 }
+		}
+		add = merchant_company_main_cost_tier_4_value
+		add = merchant_company_main_cost_tier_3_value
+		add = merchant_company_main_cost_tier_2_value
+	}
+	else_if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_03 }
+		}
+		add = merchant_company_main_cost_tier_3_value
+		add = merchant_company_main_cost_tier_2_value
+	}
+	else_if = {
+		limit = {
+			domicile ?= { has_domicile_building = merchant_company_main_02 }
+		}
+		add = merchant_company_main_cost_tier_2_value
+	}
+	if = {
+		limit = {
+			domicile ?= { num_domicile_buildings > 1 }
+		}
+		add = {
+			value = domicile.num_domicile_buildings
+			subtract = 1
+			multiply = merchant_company_building_cost_tier_1_value
+		}
+	}
+	divide = 3
+	round = yes
+}
+
+### External company buildings (tier 2+): merchants pay prestige in addition
+company_external_prestige_cost_tier_2_value = {
+	value = 0
+	if = {
+		limit = { government_has_flag = government_is_merchant }
+		add = 200
+	}
+}
+company_external_prestige_cost_tier_3_value = {
+	value = 0
+	if = {
+		limit = { government_has_flag = government_is_merchant }
+		add = 400
+	}
+}
+company_external_prestige_cost_tier_4_value = {
+	value = 0
+	if = {
+		limit = { government_has_flag = government_is_merchant }
+		add = 800
+	}
+}
+company_external_prestige_cost_tier_5_value = {
+	value = 0
+	if = {
+		limit = { government_has_flag = government_is_merchant }
+		add = 1200
+	}
+}
+company_external_prestige_cost_tier_6_value = {
+	value = 0
+	if = {
+		limit = { government_has_flag = government_is_merchant }
+		add = 1600
+	}
+}
+company_external_gold_cost_tier_2_value = 50
+company_external_gold_cost_tier_3_value = 200
+company_external_gold_cost_tier_4_value = 500
+company_external_gold_cost_tier_5_value = 950
+company_external_gold_cost_tier_6_value = 1550
+
+### Merchant company domicile building AI
+# Each value must stay below 80% of the one above (BUILDING_MIN_SCORE_COMPARED_TO_BEST), or the AI mixes the bands
+# ai_building_merchant_company_domicile_factor places 280 at the first level of a resource district building upgrade in the holding building ladder
+# New internals sit above every internal upgrade so all free slots fill before anything is upgraded
+# Capacity & Max Goods/Markets: Storage Room, Trade Mission, Sample Room and Storehouse
+merchant_company_ai_capstone_value = { value = 1820 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_income_new_internal_value = { value = 1440 multiply = ai_building_merchant_company_domicile_factor }
+# Main tiers add trade routes, route length and internal slots, and unlock the next tier of every other building
+merchant_company_ai_main_upgrade_value = { value = merchant_company_ai_income_new_internal_value }
+merchant_company_ai_capacity_new_internal_value = { value = 1140 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_preferred_new_internal_value = { value = 905 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_normal_new_internal_value = { value = 720 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_income_internal_value = { value = 570 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_capacity_internal_value = { value = 450 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_preferred_internal_value = { value = 355 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_normal_internal_value = { value = 280 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_guild_external_upgrade_value = { value = 280 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_external_upgrade_value = { value = 220 multiply = ai_building_merchant_company_domicile_factor }
+# Below every real upgrade: Notice Boards, Criers' Corner, Food Stores and Goods Stores fill slots nothing else can use
+merchant_company_ai_filler_internal_value = { value = 170 multiply = ai_building_merchant_company_domicile_factor }
+# Stalls whose goods the company does not trade (branches: with renown-level expertise)
+merchant_company_ai_off_trade_branch_internal_value = { value = 130 multiply = ai_building_merchant_company_domicile_factor }
+merchant_company_ai_avoided_internal_value = -1
+
+merchant_company_upgrade_cost_tier_1_value = {
+	value = 20
+	if = {
+		limit = { has_stock_registers_perk_trigger = yes }
+		multiply = 0.9
+	}
+	multiply = gdp_company_contractors_lodge_cost_mult_value
+}
+merchant_company_upgrade_cost_tier_2_value = {
+	value = 50
+	if = {
+		limit = { has_stock_registers_perk_trigger = yes }
+		multiply = 0.9
+	}
+	multiply = gdp_company_contractors_lodge_cost_mult_value
+}
+merchant_company_upgrade_cost_tier_3_value = {
+	value = 110
+	if = {
+		limit = { has_stock_registers_perk_trigger = yes }
+		multiply = 0.9
+	}
+	multiply = gdp_company_contractors_lodge_cost_mult_value
+}
+merchant_company_upgrade_cost_tier_4_value = {
+	value = 200
+	if = {
+		limit = { has_stock_registers_perk_trigger = yes }
+		multiply = 0.9
+	}
+	multiply = gdp_company_contractors_lodge_cost_mult_value
+}
+merchant_company_upgrade_cost_tier_5_value = {
+	value = 320
+	if = {
+		limit = { has_stock_registers_perk_trigger = yes }
+		multiply = 0.9
+	}
+	multiply = gdp_company_contractors_lodge_cost_mult_value
+}
+merchant_company_upgrade_cost_tier_6_value = {
+	value = 470
+	if = {
+		limit = { has_stock_registers_perk_trigger = yes }
+		multiply = 0.9
+	}
+	multiply = gdp_company_contractors_lodge_cost_mult_value
+}
+
+# Half the cumulative internal upgrade gold, refunded when a location-bound building is lost on a company move
+gdp_location_building_refund_tier_1_value = {
+	value = merchant_company_upgrade_cost_tier_1_value
+	multiply = 0.5
+}
+gdp_location_building_refund_tier_2_value = {
+	value = merchant_company_upgrade_cost_tier_2_value
+	add = merchant_company_upgrade_cost_tier_1_value
+	multiply = 0.5
+}
+gdp_location_building_refund_tier_3_value = {
+	value = merchant_company_upgrade_cost_tier_3_value
+	add = merchant_company_upgrade_cost_tier_2_value
+	add = merchant_company_upgrade_cost_tier_1_value
+	multiply = 0.5
+}
+gdp_location_building_refund_tier_4_value = {
+	value = merchant_company_upgrade_cost_tier_4_value
+	add = merchant_company_upgrade_cost_tier_3_value
+	add = merchant_company_upgrade_cost_tier_2_value
+	add = merchant_company_upgrade_cost_tier_1_value
+	multiply = 0.5
+}
+gdp_location_building_refund_tier_5_value = {
+	value = merchant_company_upgrade_cost_tier_5_value
+	add = merchant_company_upgrade_cost_tier_4_value
+	add = merchant_company_upgrade_cost_tier_3_value
+	add = merchant_company_upgrade_cost_tier_2_value
+	add = merchant_company_upgrade_cost_tier_1_value
+	multiply = 0.5
+}
+gdp_location_building_refund_tier_6_value = {
+	value = merchant_company_upgrade_cost_tier_6_value
+	add = merchant_company_upgrade_cost_tier_5_value
+	add = merchant_company_upgrade_cost_tier_4_value
+	add = merchant_company_upgrade_cost_tier_3_value
+	add = merchant_company_upgrade_cost_tier_2_value
+	add = merchant_company_upgrade_cost_tier_1_value
+	multiply = 0.5
+}
+
+# Contractors' Lodge: internal upgrades get 5% cheaper per built level
+gdp_company_contractors_lodge_cost_mult_value = {
+	value = 1
+	if = {
+		limit = { domicile ?= { has_domicile_parameter = company_contractors_lodge_5 } }
+		value = 0.75
+	}
+	else_if = {
+		limit = { domicile ?= { has_domicile_parameter = company_contractors_lodge_4 } }
+		value = 0.8
+	}
+	else_if = {
+		limit = { domicile ?= { has_domicile_parameter = company_contractors_lodge_3 } }
+		value = 0.85
+	}
+	else_if = {
+		limit = { domicile ?= { has_domicile_parameter = company_contractors_lodge_2 } }
+		value = 0.9
+	}
+	else_if = {
+		limit = { domicile ?= { has_domicile_parameter = company_contractors_lodge_1 } }
+		value = 0.95
+	}
+}
+
+merchant_company_move_cost_value = {
+	value = {
+		value = medium_gold_value
+		format = "BASE_VALUE_FORMAT"
+		desc = "BASE_VALUE"
+	}
+	if = {
+		limit = { company_size_value = 2 }
+		multiply = 1.25
+		desc = company_size_medium
+	}
+	else_if = {
+		limit = { company_size_value = 3 }
+		multiply = 1.5
+		desc = company_size_large
+	}
+	else_if = {
+		limit = { company_size_value = 4 }
+		multiply = 2
+		desc = company_size_huge
+	}
+	if = {
+		limit = {
+			domicile ?= { has_domicile_parameter = diaspora_network_cheaper_move }
+		}
+		multiply = 0.1
+		desc = merchant_company_diaspora_network_01_domicile_building
+	}
+}
+
+# Squared distance a merchant can relocate their company in one move, by company size
+merchant_company_move_range_value = {
+	value = squared_distance_large
+	if = {
+		limit = { company_size_value = 2 }
+		value = squared_distance_huge
+	}
+	else_if = {
+		limit = { company_size_value = 3 }
+		value = squared_distance_almost_massive
+	}
+	else_if = {
+		limit = { company_size_value = 4 }
+		value = squared_distance_massive
+	}
+}
+
+# Study capstones give court position aptitude
+# Tier 5 replaces tier 4 rather than adding to it
+company_study_capstone_court_position_aptitude_04_value = 10
+company_study_capstone_court_position_aptitude_05_value = 20
+
+# Merchant company Infirmary: Court Physician aptitude per level (not cumulative)
+company_infirmary_physician_aptitude_01_value = 4
+company_infirmary_physician_aptitude_02_value = 8
+company_infirmary_physician_aptitude_03_value = 12
+company_infirmary_physician_aptitude_04_value = 16
+company_infirmary_physician_aptitude_05_value = 20
+
+# Merchant company Infirmary: Court Physician salary multiplier per level (not cumulative)
+company_infirmary_court_physician_salary_mult_01 = 0.9
+company_infirmary_court_physician_salary_mult_02 = 0.8
+company_infirmary_court_physician_salary_mult_03 = 0.7
+company_infirmary_court_physician_salary_mult_04 = 0.6
+company_infirmary_court_physician_salary_mult_05 = 0.5
+
+# Infirmary Court Physician salary reduction in percent per level, derived from the multipliers above, for loc
+company_infirmary_court_physician_salary_reduction_01 = {
+	value = 1
+	subtract = company_infirmary_court_physician_salary_mult_01
+	multiply = 100
+}
+company_infirmary_court_physician_salary_reduction_02 = {
+	value = 1
+	subtract = company_infirmary_court_physician_salary_mult_02
+	multiply = 100
+}
+company_infirmary_court_physician_salary_reduction_03 = {
+	value = 1
+	subtract = company_infirmary_court_physician_salary_mult_03
+	multiply = 100
+}
+company_infirmary_court_physician_salary_reduction_04 = {
+	value = 1
+	subtract = company_infirmary_court_physician_salary_mult_04
+	multiply = 100
+}
+company_infirmary_court_physician_salary_reduction_05 = {
+	value = 1
+	subtract = company_infirmary_court_physician_salary_mult_05
+	multiply = 100
+}

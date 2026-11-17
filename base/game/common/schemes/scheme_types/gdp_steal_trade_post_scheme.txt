@@ -1,0 +1,294 @@
+﻿############################
+# Steal Trade Post
+# For Patricians seizing a rival Patrician's trade post
+############################
+
+steal_trade_post = {
+	# Basic Setup
+	skill = intrigue
+	desc = "steal_trade_post_desc_general"
+	success_desc = "STEAL_TRADE_POST_SUCCESS_DESC"
+	discovery_desc = "STEAL_TRADE_POST_DISCOVERY_DESC"
+	icon = icon_scheme_steal_trade_post
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+	category = hostile
+	target_type = character
+	cooldown = { years = 10 }
+
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	speed_per_target_skill_point = t2_spsp_target_value
+	spymaster_speed_per_skill_point = t2_spsp_owner_spy_value
+	target_spymaster_speed_per_skill_point = t2_spsp_target_spy_value
+	tier_speed = 1
+	base_progress_goal = t2_base_phase_length_value
+	base_maximum_success = t2_base_max_success_value
+	phases_per_agent_charge = 1
+	success_chance_growth_per_skill_point = t1_scgpsp_value
+	maximum_secrecy = 95
+
+	is_secret = yes
+	maximum_breaches = 5
+
+	# Core Triggers
+	allow = {
+		gdp_is_patrician_trigger = yes
+		gdp_steal_trade_post_scheme_owner_valid_trigger = yes
+		custom_tooltip = {
+			text = trade_post_limit_reached_desc
+			trade_post_count < trade_post_limit
+		}
+		scope:target ?= {
+			gdp_is_patrician_trigger = yes
+			this != root
+		}
+	}
+
+	valid = {
+		scope:owner = {
+			gdp_is_patrician_trigger = yes
+			gdp_steal_trade_post_scheme_owner_valid_trigger = yes
+		}
+		scope:target ?= {
+			gdp_is_patrician_trigger = yes
+			this != scope:owner
+		}
+		# The targeted trade post has to survive and stay in the target's hands
+		trigger_if = {
+			limit = { exists = scope:scheme.var:target_trade_post }
+			scope:scheme.var:target_trade_post = {
+				exists = trade_post_district
+				trade_post_owner ?= scope:target
+			}
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_basic_suite_modifier = yes
+		# House
+		modifier = {
+			add = -50
+			house ?= scope:target.house
+			scope:owner.house != scope:target.house
+			desc = TARGET_IS_MY_HOUSE_MEMBER
+		}
+	}
+	valid_agent = {
+		is_valid_agent_standard_trigger = yes
+		title_scheme_valid_agent_trigger = yes
+	}
+	agent_groups_owner_perspective = { courtiers guests scripted_relations }
+	agent_groups_target_character_perspective = { courtiers guests scripted_relations }
+
+	odds_prediction = {
+		add = hostile_scheme_base_odds_prediction_target_is_char_value
+		add = agent_groups_owner_perspective_value
+		add = agent_groups_target_character_perspective_value
+		add = odds_steal_trade_post_scheme_misc_value
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		# Skill
+		modifier = {
+			desc = SCHEME_YOUR_INTRIGUE
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:owner }
+					add = {
+						value = scope:owner.intrigue
+						multiply = 0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_TARGET_INTRIGUE
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:target }
+					add = {
+						value = scope:target.intrigue
+						multiply = -0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_YOUR_STEWARDSHIP
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:owner }
+					add = {
+						value = scope:owner.stewardship
+						multiply = 0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_TARGET_STEWARDSHIP
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:target }
+					add = {
+						value = scope:target.stewardship
+						multiply = -0.5
+					}
+				}
+			}
+		}
+		# Countermeasures
+		apply_calculated_scheme_success_chance_adjustments_modifier = yes
+		# Family Feud
+		house_feud_title_hostile_scheme_success_modifier = yes
+		# The ruler owning local county (of the trade post) affects overall difficulty
+		modifier = {
+			desc = STEAL_TRADE_POST_FAVORED_BY_LOCAL_RULER_DESC
+			exists = var:target_trade_post.county.holder
+			var:target_trade_post.county.holder = {
+				gdp_steal_trade_post_local_ruler_favors_trigger = {
+					FAVORED = scope:owner
+					OTHER = scope:target
+				}
+			}
+			add = steal_trade_post_local_ruler_success_value
+		}
+		modifier = {
+			desc = STEAL_TRADE_POST_TARGET_FAVORED_BY_LOCAL_RULER_DESC
+			exists = var:target_trade_post.county.holder
+			var:target_trade_post.county.holder = {
+				gdp_steal_trade_post_local_ruler_favors_trigger = {
+					FAVORED = scope:target
+					OTHER = scope:owner
+				}
+			}
+			add = {
+				value = steal_trade_post_local_ruler_success_value
+				multiply = -1
+			}
+		}
+		modifier = {
+			desc = STEAL_TRADE_POST_HOOKED_LOCAL_RULER_DESC
+			exists = var:target_trade_post
+			scope:owner = {
+				has_hook = root.var:target_trade_post.county.holder
+			}
+			add = steal_trade_post_local_ruler_success_value
+		}
+		modifier = {
+			desc = TARGET_INCAPABLE_DESC
+			scope:target ?= {
+				is_available_quick = { incapable = yes }
+			}
+			add = 10
+		}
+		modifier = {
+			desc = STEAL_TRADE_POST_KONTOR_DEFENDED_DESC
+			var:target_trade_post ?= {
+				trade_post_district ?= {
+					has_building_with_flag = hanseatic_kontor_flag
+				}
+			}
+			scope:target = { is_hanseatic_league_member_trigger = yes }
+			NOT = { scope:owner.confederation ?= scope:target.confederation }
+			add = -25
+		}
+		modifier = {
+			desc = STEAL_TRADE_POST_ARSENAL_DEFENDED_DESC
+			var:target_trade_post ?= {
+				trade_post_district ?= {
+					has_building_with_flag = league_arsenal_flag
+				}
+			}
+			scope:target = { gdp_is_trade_league_member_trigger = yes }
+			NOT = { scope:owner.confederation ?= scope:target.confederation }
+			add = -25
+		}
+	}
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
+	}
+
+	# On Actions
+	on_start = {
+		# Keep the scheme reachable from valid/base_success_chance, which read var:target_trade_post
+		save_scope_as = scheme
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:calculating
+		}
+		# Fallback agents — a balanced config if you start the scheme from script.
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
+				}
+			}
+			add_agent_slot = agent_thief
+			add_agent_slot = agent_bailiff
+			add_agent_slot = agent_infiltrator
+			add_agent_slot = agent_overseer
+			add_agent_slot = agent_lookout
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		steal_trade_post_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { steal_trade_post_scheme_prep_effect = yes }
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			steal_trade_post_scheme_prep_effect = yes
+			purge_ai_scheme_slots_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_contract_scheme_on_going_events_effect = yes }
+
+	## Invalidation
+	on_invalidated = {
+		save_scope_as = scheme
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = {
+			save_scope_as = owner
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = steal_trade_post_invalidated_title
+				left_icon = scope:target
+				if = { # Owner is no longer a patrician
+					limit = {
+						NOT = {
+							scope:owner = { gdp_is_patrician_trigger = yes }
+						}
+					}
+					custom_tooltip = scheme_owner_not_patrician
+				}
+				else_if = { # Target is no longer a patrician
+					limit = {
+						NOT = {
+							scope:target = { gdp_is_patrician_trigger = yes }
+						}
+					}
+					custom_tooltip = scheme_target_not_patrician
+				}
+				else = { # The trade post itself is gone or has changed hands
+					custom_tooltip = scheme_target_trade_post_lost
+				}
+			}
+		}
+	}
+}

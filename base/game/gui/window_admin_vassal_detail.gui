@@ -238,7 +238,7 @@
 
 							text_multi = {
 								layoutpolicy_horizontal = expanding
-								
+
 								text = "[AdminVassalDetailView.GetSuccessionLineDesc]"
 								align = center|nobaseline
 								autoresize = yes
@@ -251,11 +251,11 @@
 								datacontext = "[AdminVassalDetailView.GetPreferredCandidate]"
 								visible = "[Character.IsPlayerInteractionShown('influence_candidacy_interaction')]"
 								layoutpolicy_horizontal = expanding
-								
+
 								minimumsize = { 0 40 }
-								
-								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('influence_candidacy_interaction', Title.Self)]"
-								
+
+								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('influence_candidacy_interaction', Title.GetEffectiveAppointmentTitle)]"
+
 								tooltip = "[Character.GetPlayerInteractionTooltip('influence_candidacy_interaction')]"
 								tooltip_when_disabled = "[Character.GetPlayerInteractionValidBlockers('influence_candidacy_interaction')]"
 
@@ -299,12 +299,12 @@
 								datacontext = "[AdminVassalDetailView.GetPreferredCandidate]"
 								visible = "[Character.IsValid]"
 								layoutpolicy_horizontal = expanding
-								
+
 								minimumsize = { 0 40 }
-								
+
 								enabled = "[Character.IsPlayerInteractionValid('start_promote_interaction')]"
-								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('start_promote_interaction', Title.Self)]"
-								
+								onclick = "[Character.OpenPlayerInteractionWithTargetTitle('start_promote_interaction', Title.GetEffectiveAppointmentTitle)]"
+
 								tooltip = "[Character.GetPlayerInteractionTooltip('start_promote_interaction')]"
 								tooltip_when_disabled = "[Character.GetPlayerInteractionValidBlockers('start_promote_interaction')]"
 
@@ -321,7 +321,7 @@
 
 									text_single = {
 										visible = "[ObjectsEqual( Character.Self, GetPlayer )]"
-										
+
 										text = "ADMIN_VASSAL_DETAILS_PROMOTE_BUTTON"
 										align = nobaseline
 										default_format = "#clickable"
@@ -330,7 +330,7 @@
 
 									text_single = {
 										visible = "[Not( ObjectsEqual( Character.Self, GetPlayer ) )]"
-										
+
 										text = "ADMIN_VASSAL_DETAILS_PROMOTE_BUTTON_FOR"
 										align = nobaseline
 										default_format = "#clickable"
@@ -346,7 +346,7 @@
 							layoutpolicy_horizontal = expanding
 							margin = { 15 0 }
 							min_width = 460
-							
+
 							text = "ADMIN_VASSAL_DETAILS_SUCCESSION_DETAILS"
 							align = center|nobaseline
 							default_format = "#weak"
@@ -405,7 +405,7 @@
 										}
 									}
 
-									
+
 								}
 
 								hbox = {
@@ -838,15 +838,14 @@ types AdminVassalDetails
 			}
 		}
 	}
-	
-	# requires Title context
+
 	type vbox_admin_vassal_successor_candidate = vbox {
 		margin = { 4 4 }
 		margin_bottom = 8
 
 		background = {
 			using = Background_Area
-			
+
 			margin_top = -34
 		}
 
@@ -860,7 +859,7 @@ types AdminVassalDetails
 		background = {
 			visible = "[Not( AdminVassalSuccessorCandidate.IsLocalPlayerCandidate )]"
 			using = Background_Frame
-			
+
 			margin_top = -34
 		}
 
@@ -874,12 +873,12 @@ types AdminVassalDetails
 		}
 
 		portrait_head = {
-			visible = "[Title.HasClericalRegion]"
+			visible = "[Title.GetHolder.HasClericalRegion]"
 			widget_admin_candidate_banners = {}
 		}
 
 		portrait_head_small = {
-			visible = "[Not( Title.HasClericalRegion )]"
+			visible = "[Not( Title.GetHolder.HasClericalRegion )]"
 			widget_admin_candidate_banners = {}
 		}
 
@@ -897,12 +896,12 @@ types AdminVassalDetails
 					size = { 24 24 }
 				}
 			}
-			
+
 			hbox = {
 				layoutpolicy_horizontal = expanding
 
 				hbox = {
-					visible = "[Title.HasClericalRegion]"
+					visible = "[Title.GetHolder.HasClericalRegion]"
 					margin_left = 4
 					spacing = 3
 
@@ -910,7 +909,7 @@ types AdminVassalDetails
 						name = "rite_button"
 						datacontext = "[Character.GetRite]"
 						size = { 25 25 }
-		
+
 						onclick = "[OpenGameViewData( 'faith', Rite.Self )]"
 					}
 
@@ -921,7 +920,7 @@ types AdminVassalDetails
 						}
 					}
 				}
-				
+
 				expand = {}
 
 				widget = {
@@ -930,34 +929,34 @@ types AdminVassalDetails
 
 					# ordinary candidacy
 					button_standard_hover = {
-						visible = "[Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_candidacy_interaction', Title.Self )]"
+						visible = "[Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 						size = { 100% 100% }
 
-						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_candidacy_interaction', Title.Self )]"
-						enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_candidacy_interaction', Title.Self )]"
+						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
+						enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 					}
 
 					# clerical regions
 					button_standard_hover = {
-						visible = "[And( Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_clerical_candidacy_interaction', Title.Self ), Title.IsClericalRegion )]"
+						visible = "[And( Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_clerical_candidacy_interaction', Title.GetEffectiveAppointmentTitle ), Title.GetHolder.HasClericalRegion )]"
 						size = { 100% 100% }
 
-						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_clerical_candidacy_interaction', Title.Self )]"
-						enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_clerical_candidacy_interaction', Title.Self )]"
+						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_clerical_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
+						enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_clerical_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 					}
 
 					# bishoprics
 					button_standard_hover = {
-						visible = "[And( Character.IsPlayerInteractionShownAndCanPickTitle( 'increase_theocratic_heir_candidacy', Title.Self ), Not( Title.IsClericalRegion ) )]"
+						visible = "[And( Character.IsPlayerInteractionShownAndCanPickTitle( 'increase_theocratic_heir_candidacy', Title.GetEffectiveAppointmentTitle ), Not( Title.GetHolder.HasClericalRegion ) )]"
 						size = { 100% 100% }
 
-						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'increase_theocratic_heir_candidacy', Title.Self )]"
-						enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'increase_theocratic_heir_candidacy', Title.Self )]"
+						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'increase_theocratic_heir_candidacy', Title.GetEffectiveAppointmentTitle )]"
+						enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'increase_theocratic_heir_candidacy', Title.GetEffectiveAppointmentTitle )]"
 					}
 
 					# celestial circuits
 					button_standard_hover = {
-						visible = "[Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_meritorious_career_interaction', Title.Self )]"
+						visible = "[Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_meritorious_career_interaction', Title.GetEffectiveAppointmentTitle )]"
 						size = { 100% 100% }
 
 						onclick = "[Character.OpenPlayerInteraction( 'influence_meritorious_career_interaction' )]"
@@ -966,18 +965,18 @@ types AdminVassalDetails
 
 					# heads of faith
 					button_standard_hover = {
-						visible = "[And3( Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_head_of_faith_candidacy_interaction', Title.Self ), Character.IsPlayerInteractionWithTargetTitleValid( 'influence_head_of_faith_candidacy_interaction', Title.Self ), GreaterThan_int32( Title.GetTierFrame, '(int32)3') )]"
+						visible = "[And3( Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_head_of_faith_candidacy_interaction', Title.GetEffectiveAppointmentTitle ), Character.IsPlayerInteractionWithTargetTitleValid( 'influence_head_of_faith_candidacy_interaction', Title.GetEffectiveAppointmentTitle ), GreaterThan_int32( Title.GetTierFrame, '(int32)3') )]"
 						size = { 100% 100% }
 
-						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_head_of_faith_candidacy_interaction', Title.Self )]"
-						enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_head_of_faith_candidacy_interaction', Title.Self )]"
+						onclick = "[Character.OpenPlayerInteractionWithTargetTitle( 'influence_head_of_faith_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
+						enabled = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_head_of_faith_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 					}
 
 					hbox = {
 						tooltipwidget = {
 							widget_value_breakdown_tooltip = {
 								block "score_breakdown" {
-									datacontext = "[AdminVassalDetailView.GetSuccessionScoreBreakdown(AdminVassalSuccessorCandidate.GetCandidate.Self )]"
+									datacontext = "[AdminVassalDetailView.GetSuccessionScoreBreakdown( AdminVassalSuccessorCandidate.GetCandidate.Self )]"
 								}
 								blockoverride "header_text" {
 									text = ADMIN_VASSAL_CANDIDATE_SCORE_TT_HEADING
@@ -998,7 +997,7 @@ types AdminVassalDetails
 								blockoverride "footer" {
 
 									vbox = {
-										visible = "[Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_candidacy_interaction', Title.Self )]"
+										visible = "[Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 										layoutpolicy_horizontal = expanding
 										margin_bottom = 10
 										spacing = 10
@@ -1008,11 +1007,11 @@ types AdminVassalDetails
 										}
 
 										cooltip_paragraph = {
-											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip('influence_candidacy_interaction', Title.Self )]"
+											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip('influence_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 										}
 
 										cooltip_paragraph = {
-											visible = "[Character.IsPlayerInteractionWithTargetTitleValid('influence_candidacy_interaction', Title.Self)]"
+											visible = "[Character.IsPlayerInteractionWithTargetTitleValid('influence_candidacy_interaction', Title.GetEffectiveAppointmentTitle)]"
 											text = "CLICK_TO_INFLUENCE"
 											default_format = "#I"
 										}
@@ -1020,7 +1019,7 @@ types AdminVassalDetails
 
 									# clerical regions
 									vbox = {
-										visible = "[And( Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_clerical_candidacy_interaction', Title.Self ), Title.IsClericalRegion )]"
+										visible = "[And( Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_clerical_candidacy_interaction', Title.GetEffectiveAppointmentTitle ), Title.GetHolder.HasClericalRegion )]"
 										layoutpolicy_horizontal = expanding
 										margin_bottom = 10
 										spacing = 10
@@ -1030,11 +1029,11 @@ types AdminVassalDetails
 										}
 
 										cooltip_paragraph = {
-											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'influence_clerical_candidacy_interaction', Title.Self )]"
+											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'influence_clerical_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 										}
 
 										cooltip_paragraph = {
-											visible = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_clerical_candidacy_interaction', Title.Self )]"
+											visible = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_clerical_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 											text = "CLICK_TO_INFLUENCE_CLERICAL"
 											default_format = "#I"
 										}
@@ -1042,7 +1041,7 @@ types AdminVassalDetails
 
 									# theocratic
 									vbox = {
-										visible = "[And( Character.IsPlayerInteractionShownAndCanPickTitle( 'increase_theocratic_heir_candidacy', Title.Self ), Not( Title.IsClericalRegion ) )]"
+										visible = "[And( Character.IsPlayerInteractionShownAndCanPickTitle( 'increase_theocratic_heir_candidacy', Title.GetEffectiveAppointmentTitle ), Not( Title.GetHolder.HasClericalRegion ) )]"
 										layoutpolicy_horizontal = expanding
 										margin_bottom = 10
 										spacing = 10
@@ -1052,11 +1051,11 @@ types AdminVassalDetails
 										}
 
 										cooltip_paragraph = {
-											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'increase_theocratic_heir_candidacy', Title.Self )]"
+											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'increase_theocratic_heir_candidacy', Title.GetEffectiveAppointmentTitle )]"
 										}
 
 										cooltip_paragraph = {
-											visible = "[Character.IsPlayerInteractionWithTargetTitleValid( 'increase_theocratic_heir_candidacy', Title.Self )]"
+											visible = "[Character.IsPlayerInteractionWithTargetTitleValid( 'increase_theocratic_heir_candidacy', Title.GetEffectiveAppointmentTitle )]"
 											text = "CLICK_TO_SUPPORT_THEOCRATIC_HEIR"
 											default_format = "#I"
 										}
@@ -1074,7 +1073,7 @@ types AdminVassalDetails
 										}
 
 										cooltip_paragraph = {
-											text = "[Character.GetPlayerInteractionTooltip( 'influence_meritorious_career_interaction')]"
+											text = "[Character.GetPlayerInteractionTooltip( 'influence_meritorious_career_interaction' )]"
 										}
 
 										cooltip_paragraph = {
@@ -1086,7 +1085,7 @@ types AdminVassalDetails
 
 									# influence hof, hide if disabled or it's a county, otherwise we get it in a lot of weird places
 									vbox = {
-										visible = "[And3( Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_head_of_faith_candidacy_interaction', Title.Self ), Character.IsPlayerInteractionWithTargetTitleValid( 'influence_head_of_faith_candidacy_interaction', Title.Self ), GreaterThan_int32( Title.GetTierFrame, '(int32)3') )]"
+										visible = "[And3( Character.IsPlayerInteractionShownAndCanPickTitle( 'influence_head_of_faith_candidacy_interaction', Title.GetEffectiveAppointmentTitle ), Character.IsPlayerInteractionWithTargetTitleValid( 'influence_head_of_faith_candidacy_interaction', Title.GetEffectiveAppointmentTitle ), GreaterThan_int32( Title.GetTierFrame, '(int32)3') )]"
 										layoutpolicy_horizontal = expanding
 										margin_bottom = 10
 										spacing = 10
@@ -1096,11 +1095,11 @@ types AdminVassalDetails
 										}
 
 										cooltip_paragraph = {
-											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'influence_head_of_faith_candidacy_interaction', Title.Self )]"
+											text = "[Character.GetPlayerInteractionWithTargetTitleTooltip( 'influence_head_of_faith_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 										}
 
 										cooltip_paragraph = {
-											visible = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_head_of_faith_candidacy_interaction', Title.Self )]"
+											visible = "[Character.IsPlayerInteractionWithTargetTitleValid( 'influence_head_of_faith_candidacy_interaction', Title.GetEffectiveAppointmentTitle )]"
 											text = "CLICK_TO_INFLUENCE_HOF"
 											default_format = "#I"
 										}
@@ -1124,12 +1123,12 @@ types AdminVassalDetails
 						}
 					}
 				}
-				
+
 				spacer = {
-					visible = "[Title.HasClericalRegion]"
+					visible = "[Title.GetHolder.HasClericalRegion]"
 					size = { 8 0 }
 				}
-				
+
 				expand = {}
 			}
 		}
@@ -1219,15 +1218,10 @@ types AdminVassalDetails
 
 	type hbox_admin_title_successor_candidates_list = hbox {
 		hbox = {
-			block "show_candidate" {
-				visible = "[AdminVassalSuccessorCandidateList.ShowBestPlayerCandidateIndependently( '(int32)3' )]"
-			}
-			spacing = 2
+			visible = "[AdminVassalSuccessorCandidateList.ShowBestPlayerCandidateIndependently( '(int32)3' )]"
 
 			hbox = {
-				block "candidates_datamodel_small" {
-					datamodel = "[DataModelFirst( AdminVassalSuccessorCandidateList.GetSuccessorCandidates, '(int32)3')]"
-				}
+				datamodel = "[DataModelFirst( AdminVassalSuccessorCandidateList.GetSuccessorCandidates, '(int32)3')]"
 
 				item = {
 					vbox_admin_vassal_successor_candidate = {
@@ -1237,19 +1231,14 @@ types AdminVassalDetails
 			}
 
 			vbox_admin_vassal_successor_candidate = {
-				block "candidate_datacontext" {
-					datacontext = "[AdminVassalSuccessorCandidateList.GetBestLocalPlayerCandidate( '(int32)3' )]"
-				}
+				datacontext = "[AdminVassalSuccessorCandidateList.GetBestLocalPlayerCandidate( '(int32)3' )]"
 				datacontext = "[AdminVassalSuccessorCandidate.GetCandidate]"
 			}
 		}
 
 		hbox = {
-			block "not_show_candidate" {
-				visible = "[Not( AdminVassalSuccessorCandidateList.ShowBestPlayerCandidateIndependently( '(int32)3' ) )]"
-				datamodel = "[DataModelFirst( AdminVassalSuccessorCandidateList.GetSuccessorCandidates, '(int32)4')]"
-			}
-			spacing = 2
+			visible = "[Not( AdminVassalSuccessorCandidateList.ShowBestPlayerCandidateIndependently( '(int32)3' ) )]"
+			datamodel = "[DataModelFirst( AdminVassalSuccessorCandidateList.GetSuccessorCandidates, '(int32)4')]"
 
 			item = {
 				vbox_admin_vassal_successor_candidate = {
@@ -1292,7 +1281,7 @@ types AdminVassalDetails
 
 			block "powerful_family_bonus_frame_properties"
 			{
-			
+
 			}
 		}
 
@@ -1331,7 +1320,6 @@ types AdminVassalDetails
 
 			highlight_icon = {
 				size = { 92% 92% }
-				position = { 0 -2}
 				parentanchor = center
 
 				texture = "[HouseAspiration.GetSmallIcon]"

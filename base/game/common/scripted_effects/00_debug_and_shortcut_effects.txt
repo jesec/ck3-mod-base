@@ -1,4 +1,56 @@
 ﻿##################################################
+# Debug 
+##################################################
+
+# Fires an activity or scheme event on root, setting up whichever scopes are available.
+## Usage: debug_fire_event_effect = { EVENT = my_event.001 }
+debug_fire_event_effect = {
+	# Activity events need the activity and its host.
+	involved_activity ?= {
+		save_scope_as = activity
+		activity_host ?= { save_scope_as = host }
+	}
+	# Scheme events need the scheme, its owner, and whatever it is targeting.
+	random_scheme = {
+		save_scope_as = scheme
+		scheme_owner = { save_scope_as = owner }
+		scheme_target_character ?= { save_scope_as = target }
+		scheme_target_title ?= { save_scope_as = target }
+		scheme_target_culture ?= { save_scope_as = target }
+		scheme_target_faith ?= { save_scope_as = target }
+	}
+	trigger_event = $EVENT$
+}
+
+# Usage: debug_add_breaches_all_active_schemes_effect = { AMOUNT = 5 }
+debug_add_breaches_all_active_schemes_effect = {
+	every_scheme = {
+		add_scheme_breach = $AMOUNT$
+	}
+}
+
+# Usage: debug_add_advantages_all_active_schemes_effect = { AMOUNT = 20 }
+debug_add_advantages_all_active_schemes_effect = {
+	every_scheme = {
+		change_opportunities = $AMOUNT$
+	}
+}
+
+log_debug_variable_for_persian_struggle_effect = {
+	if = {
+		limit = {
+			gather_debug_variables_for_persian_struggle_trigger = yes
+			is_struggle_type = persian_struggle
+		}
+		increment_global_variable_effect = {
+			VAR = sp_$VAR$
+			VAL = 1
+		}
+	}
+}
+
+
+##################################################
 # Shortcuts
 ##################################################
 
@@ -50,23 +102,6 @@ increment_global_variable_effect = {
 		change_global_variable = {
 			name = $VAR$
 			add = $VAL$
-		}
-	}
-}
-
-##################################################
-# Debug 
-##################################################
-
-log_debug_variable_for_persian_struggle_effect = {
-	if = {
-		limit = {
-			gather_debug_variables_for_persian_struggle_trigger = yes
-			is_struggle_type = persian_struggle
-		}
-		increment_global_variable_effect = {
-			VAR = sp_$VAR$
-			VAL = 1
 		}
 	}
 }

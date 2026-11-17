@@ -61,7 +61,11 @@ martial_chivalry.0001 = {
 	}
 
 	trigger = {
-		NOT = { has_character_flag = had_duel_gone_wrong_event }
+		NOR = { 
+			has_character_flag = had_duel_gone_wrong_event 
+			government_has_flag = government_is_merchant
+		}
+
 	}
 
 	weight_multiplier = {
@@ -326,7 +330,7 @@ martial_chivalry.0003 = {
 	}
 	left_portrait = {
 		character = root
-		animation = jockey_walk
+		animation = jockey_walk # always horse
 		camera = camera_event_horse_left
 	}
 
@@ -533,7 +537,30 @@ martial_chivalry.0010 = {
 	}
 	left_portrait = {
 		character = root
-		animation = personality_cynical
+		triggered_animation = {
+			trigger = { var:signature_weapon = flag:sword }
+			animation = marshal
+		}
+		triggered_animation = {
+			trigger = { var:signature_weapon = flag:mace }
+			animation = marshal_mace
+		}
+		triggered_animation = {
+			trigger = { var:signature_weapon = flag:axe }
+			animation = marshal_axe
+		}
+		triggered_animation = {
+			trigger = { var:signature_weapon = flag:hammer }
+			animation = throne_room_one_handed_passive_3
+		}
+		triggered_animation = {
+			trigger = { var:signature_weapon = flag:spear }
+			animation = throne_room_two_handed_passive_1
+		}
+		triggered_animation = {
+			trigger = { var:signature_weapon = flag:dagger }
+			animation = marshal_dagger
+		}
 	}
 
 	artifact = { # To display the artifact in the event-window
@@ -1016,7 +1043,10 @@ martial_chivalry.2010 = {
 	}
 
 	trigger = {
-		NOT = { has_character_flag = had_event_martial_chivalry_2010 }
+		NOR = { 
+			has_character_flag = had_event_martial_chivalry_2010 
+			government_has_flag = government_is_merchant
+		}
 		NOT = {
 			has_trait_rank = {
 				trait = wounded

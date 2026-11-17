@@ -11,7 +11,7 @@ namespace = councillor_spouse_stewardship
 	#1006 - They've handled your household well - courtier opinion boost
 	#1007 - They keep you healthy - gain health modifier
 	#1008 - They keep someone you care about healthy - they gain health modifier
-	#1009 - Increase development growth for a county in need
+	#1009 - Increase prosperity growth for a county in need
 	#1010 - Gain a favor hook on a courtier since your spouse helped them out
 
 
@@ -100,7 +100,7 @@ councillor_spouse_stewardship.1002 = {
 			has_character_flag = had_event_councillor_spouse_stewardship_1002
 		}
 		any_directly_owned_province = {
-			has_free_building_slot = yes
+			has_free_district_slot = yes
 			NOR = {
 				has_holding_type = nomad_holding
 				has_holding_type = herder_holding
@@ -133,7 +133,7 @@ councillor_spouse_stewardship.1002 = {
 		}
 		random_directly_owned_province = {
 			limit = {
-				has_free_building_slot = yes
+				has_free_district_slot = yes
 				NOR = {
 					has_holding_type = nomad_holding
 					has_holding_type = herder_holding
@@ -184,7 +184,7 @@ councillor_spouse_stewardship.1003 = {
 			has_character_flag = had_event_councillor_spouse_stewardship_1003
 		}
 		any_directly_owned_province = {
-			has_free_building_slot = yes
+			has_free_district_slot = yes
 			NOR = {
 				has_holding_type = nomad_holding
 				has_holding_type = herder_holding
@@ -217,7 +217,7 @@ councillor_spouse_stewardship.1003 = {
 		}
 		random_directly_owned_province = {
 			limit = {
-				has_free_building_slot = yes
+				has_free_district_slot = yes
 				NOR = {
 					has_holding_type = nomad_holding
 					has_holding_type = herder_holding
@@ -578,7 +578,7 @@ councillor_spouse_stewardship.1008 = {
 	}
 }
 
-#Increase development growth for a county in need
+#Increase prosperity growth for a county in need
 councillor_spouse_stewardship.1009 = {
 	hidden = yes
 	
@@ -589,7 +589,7 @@ councillor_spouse_stewardship.1009 = {
 			has_character_flag = had_event_councillor_spouse_stewardship_1009
 		}
 		any_directly_owned_province = {
-			county = { development_level < medium_development_level }
+			county = { prosperity_level < medium_prosperity_level }
 			NOR = {
 				has_holding_type = nomad_holding
 				has_holding_type = herder_holding
@@ -607,13 +607,13 @@ councillor_spouse_stewardship.1009 = {
 		modifier = {
 			add = 0.25
 			any_directly_owned_province = {
-				county = { development_level <= bad_development_level }
+				county = { prosperity_level <= bad_prosperity_level }
 			}
 		}
 		modifier = {
 			add = 0.5
 			any_directly_owned_province = {
-				county = { development_level <= terrible_development_level }
+				county = { prosperity_level <= terrible_prosperity_level }
 			}
 		}
 	}
@@ -629,7 +629,7 @@ councillor_spouse_stewardship.1009 = {
 		if = {
 			limit = {
 				capital_county = {
-					development_level < medium_development_level
+					prosperity_level < medium_prosperity_level
 					title_province = {
 						NOR = {
 							has_holding_type = nomad_holding
@@ -645,21 +645,21 @@ councillor_spouse_stewardship.1009 = {
 		else = {
 			random_directly_owned_province = {
 				limit = {
-					county = { development_level < terrible_development_level }
+					county = { prosperity_level < terrible_prosperity_level }
 					NOR = {
 						has_holding_type = nomad_holding
 						has_holding_type = herder_holding
 					}
 				}
 				alternative_limit = {
-					county = { development_level < bad_development_level }
+					county = { prosperity_level < bad_prosperity_level }
 					NOR = {
 						has_holding_type = nomad_holding
 						has_holding_type = herder_holding
 					}
 				}
 				alternative_limit = {
-					county = { development_level < medium_development_level }
+					county = { prosperity_level < medium_prosperity_level }
 					NOR = {
 						has_holding_type = nomad_holding
 						has_holding_type = herder_holding
@@ -1130,12 +1130,17 @@ councillor_spouse_stewardship.2002 = {
 			gold < tiny_gold_value
 		}
 		NOR = {
-			exists = var:loan_holder #You can't already have a loan
 			has_character_flag = had_event_vassal_2201
 			has_character_flag = had_event_councillor_spouse_stewardship_2002
 		}
 		any_courtier = {
 			councillor_spouse_stewardship_2002_courtier_trigger = yes
+			save_temporary_scope_as = lender_temp
+			NOT = {
+				root = {
+					has_existing_loan_from_trigger = { LENDER = scope:lender_temp }
+				}
+			}
 		}
 		is_available_adult = yes
 	}
@@ -1194,24 +1199,11 @@ councillor_spouse_stewardship.2002 = {
 				limit = { root = { is_ai = no }	}
 				assign_quirk_effect = yes
 			}
-			root = {
-				set_variable = {
-					name = amount_to_loan
-					value = 0
-				}
-				change_variable = {
-					name = amount_to_loan
-					add = medium_gold_value
-				}
-			}
 		}
 	}
 
 	option = { #Loan money
 		name = councillor_spouse_stewardship.2002.a
-		trigger = {
-			NOT = { exists = var:loan_holder } # cannot have multiple loans - keep it simple
-		}
 		hidden_effect = {
 			scope:courtier_lender = {
 				if = {
@@ -1220,19 +1212,15 @@ councillor_spouse_stewardship.2002 = {
 					}
 					add_gold = root.medium_gold_value
 				}
-				pay_short_term_gold = {
-					target = root
-					gold = root.medium_gold_value
-				}
 			}
 		}
-		set_up_loan_effect = {
+		set_up_new_loan_effect = {
 			LENDER = scope:courtier_lender
-			AMOUNT = var:amount_to_loan
+			AMOUNT = root.medium_gold_value
+			INSTRUMENT = flag:none
 		}
 		custom_tooltip = councillor_spouse_stewardship.2002.money_loan_tooltip
 		custom_tooltip = vassal.2201.a.repay_loan
-		remove_variable = amount_to_loan
 		every_courtier = {
 			limit = {
 				NOT = {
@@ -1744,29 +1732,29 @@ councillor_spouse_stewardship.2005 = {
 			has_character_flag = had_event_councillor_spouse_stewardship_2005
 		}
 		any_directly_owned_province = {
-			county = { development_level < good_development_level }
+			county = { prosperity_level < good_prosperity_level }
 		}
 		is_available_adult = yes
 	}
 
-	weight_multiplier = { #More likely the more development is needed
+	weight_multiplier = { #More likely the more prosperity is needed
 		base = 0.5
 		modifier = {
 			add = 0.25
 			any_directly_owned_province = {
-				county = { development_level < medium_development_level }
+				county = { prosperity_level < medium_prosperity_level }
 			}
 		}
 		modifier = {
 			add = 0.25
 			any_directly_owned_province = {
-				county = { development_level < bad_development_level }
+				county = { prosperity_level < bad_prosperity_level }
 			}
 		}
 		modifier = {
 			add = 0.25
 			any_directly_owned_province = {
-				county = { development_level < terrible_development_level }
+				county = { prosperity_level < terrible_prosperity_level }
 			}
 		}
 	}
@@ -1778,16 +1766,16 @@ councillor_spouse_stewardship.2005 = {
 		}
 		random_directly_owned_province = {
 			limit = {
-				county = { development_level < terrible_development_level }
+				county = { prosperity_level < terrible_prosperity_level }
 			}
 			alternative_limit = {
-				county = { development_level < bad_development_level }
+				county = { prosperity_level < bad_prosperity_level }
 			}
 			alternative_limit = {
-				county = { development_level < medium_development_level }
+				county = { prosperity_level < medium_prosperity_level }
 			}
 			alternative_limit = {
-				county = { development_level < good_development_level }
+				county = { prosperity_level < good_prosperity_level }
 			}
 			county = { save_scope_as = county_to_boost }
 		}
@@ -1860,7 +1848,7 @@ councillor_spouse_stewardship.2005 = {
 			modifier = { #Are things already going ok for the county?
 				add = 25
 				scope:county_to_boost = {
-					development_rate > 1
+					prosperity_rate > 1
 				}
 			}
 			modifier = { #Are things already going ok for the county?
@@ -1872,7 +1860,7 @@ councillor_spouse_stewardship.2005 = {
 			modifier = { #Are things already going great for the county?
 				add = 75
 				scope:county_to_boost = {
-					development_rate > 1
+					prosperity_rate > 1
 					county_control > full_county_control
 				}
 			}

@@ -1,0 +1,1524 @@
+﻿#############################################
+# ON ACTIONS FOR CREATING TRADE OPPORTUNITIES
+#############################################
+
+### The following on_actions are specifically for their respective government types
+# Merchant government
+spawn_trade_opportunity_contract_on_action = {
+	# Select a random eligible contract to create
+	random_on_action = {
+		100 = gdp_challenge_competitor
+		100 = gdp_promote_goods
+		100 = gdp_market_investment
+		100 = gdp_exploit_upheaval # also alleviate
+		100 = gdp_support_guilds
+		100 = gdp_seek_debtors
+		100 = gdp_sabotage_competition
+		100 = gdp_build_category_connections
+		100 = gdp_disrupt_charter
+		100 = gdp_entrepot_buy # also sell
+		100 = gdp_negotiate_tolls
+		100 = gdp_smuggle_goods
+		### SILK ROAD
+		100 = gdp_silk_road_network # also caravan
+	}
+}
+
+### GDP Trade Opportunities
+# Challenge Competitor
+gdp_challenge_competitor = {
+	trigger = {
+		can_create_task_contract = { type_name = challenge_competitor }
+	}
+	
+	effect = {
+		# Find destination
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				current_capacity < max_capacity
+				any_trade_market_on_route = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = root }
+					NOR = {
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_success_critical_modifier
+						}
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_success_modifier
+						}
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_failure_modifier
+						}
+					}
+				}
+			}
+			save_scope_as = route
+			trader ?= { save_scope_as = associate }
+			random_trade_market_on_route = {
+				limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					# prefer having contracts outside capital market
+					NOT = { this = root.domicile.domicile_location.barony.trade_market }
+					gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = root }
+					NOR = {
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_success_critical_modifier
+						}
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_success_modifier
+						}
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_failure_modifier
+						}
+					}
+				}
+				alternative_limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = root }
+					NOR = {
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_success_critical_modifier
+						}
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_success_modifier
+						}
+						has_competitiveness_modifier_for_character = {
+							character = root
+							modifier = gdp_challenge_competitor_trade_opportunity_failure_modifier
+						}
+					}
+				}
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+				random_character_in_market = {
+					limit = {
+						gdp_profit_potential_rival_trigger = {
+							ROUTE_OWNER = root
+							MARKET = scope:market
+						}
+					}
+					save_scope_as = challenge_competitor_target
+				}
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create
+		create_task_contract = {
+			task_contract_type = challenge_competitor
+			task_contract_tier = scope:contract_tier
+			target = scope:challenge_competitor_target
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+		
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Promote Goods
+gdp_promote_goods = {
+	trigger = {
+		can_create_task_contract = { type_name = promote_goods }
+	}
+	
+	effect = {
+		# Find destination
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				NOT = { has_variable = promote_goods_trade_opportunity_active }
+				save_temporary_scope_as = promote_goods_route_check
+				any_trade_market_on_route = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					save_temporary_scope_as = promote_goods_market_check
+					scope:promote_goods_route_check = {
+						trade_route_selling_any_good_in_market_trigger = { MARKET = scope:promote_goods_market_check }
+					}
+				}
+			}
+			save_scope_as = route
+			trader ?= { save_scope_as = associate }
+			random_trade_market_on_route = {
+				limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					this = root.domicile.domicile_location.barony.trade_market
+					save_temporary_scope_as = promote_goods_market_check
+					scope:route = {
+						trade_route_selling_any_good_in_market_trigger = { MARKET = scope:promote_goods_market_check }
+					}
+				}
+				alternative_limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					save_temporary_scope_as = promote_goods_market_check
+					scope:route = {
+						trade_route_selling_any_good_in_market_trigger = { MARKET = scope:promote_goods_market_check }
+					}
+				}
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create the contract
+		create_task_contract = {
+			task_contract_type = promote_goods
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+		
+		# Set a cooldown
+		add_character_flag = {
+			flag = trade_opportunity_cooldown_promote_goods
+			years = 10
+		}
+		
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+		promote_goods_task_contract_pick_trade_good_effect = yes
+	}
+}
+
+# Market Investment
+gdp_market_investment = {
+	trigger = {
+		can_create_task_contract = { type_name = market_investment }
+	}
+	
+	effect = {
+		# Find destination
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				NOT = { has_trade_route_modifier = gdp_market_investment_trade_opportunity_capacity_modifier }
+				any_trade_market_on_route = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					trade_market_owner.county.holder = { is_ai = yes }
+				}
+			}
+			save_scope_as = route
+			trader ?= { save_scope_as = associate }
+			random_trade_market_on_route = {
+				limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					NOT = { this = root.domicile.domicile_location.barony.trade_market }
+					trade_market_owner.county.holder = { is_ai = yes }
+				}
+				alternative_limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					trade_market_owner.county.holder = { is_ai = yes }
+				}
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+		
+		# Create the contract
+		create_task_contract = {
+			task_contract_type = market_investment
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+		
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Exploit/Alleviate Upheaval
+gdp_exploit_upheaval = {
+	trigger = {
+		can_create_task_contract = { type_name = exploit_upheaval }
+	}
+	
+	effect = {
+		# Find destination
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				any_trade_market_on_route = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					exploit_upheaval_market_modifier_trigger = yes
+				}
+			}
+			save_scope_as = route
+			trader ?= { save_scope_as = associate }
+			random_trade_market_on_route = {
+				limit = {
+					NOT = { this = root.domicile.domicile_location.barony.trade_market }
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					exploit_upheaval_market_modifier_trigger = yes
+				}
+				alternative_limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					exploit_upheaval_market_modifier_trigger = yes
+				}
+				weight = {
+					base = 50
+					modifier = { # prefer having contracts outside capital market
+						this = root.domicile.domicile_location.barony.trade_market
+						add = -100
+					}
+				}
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+		
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+		
+		# Create the contract
+		create_task_contract = {
+			task_contract_type = exploit_upheaval
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+		# Create the other contract
+		create_task_contract = {
+			task_contract_type = alleviate_upheaval
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = other_trade_opportunity
+		}
+		scope:trade_opportunity ?= {
+			set_variable = {
+				name = paired_contract
+				value = scope:other_trade_opportunity
+			}
+		}
+		scope:other_trade_opportunity ?= {
+			set_variable = {
+				name = paired_contract
+				value = scope:trade_opportunity
+			}
+		}
+
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Patronize Artisans
+gdp_support_guilds = {
+	trigger = {
+		can_create_task_contract = { type_name = support_guilds }
+	}
+	
+	effect = {
+		# Find destination
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				any_trade_market_on_route = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				}
+			}
+			save_scope_as = route
+			trader ?= { save_scope_as = associate }
+			random_trade_market_on_route = {
+				limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					NOT = { this = root.domicile.domicile_location.barony.trade_market }
+				}
+				alternative_limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				}
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+		
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+		
+		# Create the contract
+		create_task_contract = {
+			task_contract_type = support_guilds
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+		
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Extend Credit
+gdp_seek_debtors = {
+	trigger = {
+		can_create_task_contract = { type_name = seek_debtors }
+	}
+	
+	effect = {
+		# Find destination
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				any_trade_market_on_route = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				}
+			}
+			trader ?= { save_scope_as = associate }
+			save_scope_as = route
+			random_trade_market_on_route = {
+				limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					NOT = { this = root.domicile.domicile_location.barony.trade_market }
+				}
+				alternative_limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+				}
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+		
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+		
+		# Create the contract
+		create_task_contract = {
+			task_contract_type = seek_debtors
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+		
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Sabotage Competition
+gdp_sabotage_competition = {
+	trigger = {
+		can_create_task_contract = { type_name = sabotage_competition }
+	}
+
+	effect = {
+		# Find destination 
+		random_trade_route = {
+			limit = {
+				has_trader = yes 
+				current_capacity < max_capacity
+				any_trade_market_on_route = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = root }
+				}	
+			}
+			save_scope_as = route 
+			trader ?= { save_scope_as = associate }
+			random_trade_market_on_route = {
+				limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					# prefer having contracts outside capital market
+					NOT = { this = root.domicile.domicile_location.barony.trade_market }
+					gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = root }
+				}
+				alternative_limit = {
+					gdp_trade_opportunity_market_on_route_destination_available_trigger = { MERCHANT = root }
+					gdp_market_competitiveness_contested_trigger = { ROUTE_OWNER = root }
+				}
+				save_scope_as = market 
+				trade_market_owner.title_province = { save_scope_as = destination }
+				random_character_in_market = {
+					limit = {
+						gdp_profit_potential_rival_trigger = {
+							ROUTE_OWNER = root
+							MARKET = scope:market
+						}
+					}
+					save_scope_as = sabotage_competition_target
+				}
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create
+		create_task_contract = {
+			task_contract_type = sabotage_competition
+			task_contract_tier = scope:contract_tier
+			target = scope:sabotage_competition_target
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Build Category Connections
+gdp_build_category_connections = {
+	trigger = {
+		can_create_task_contract = { type_name = build_category_connections }
+	}
+
+	effect = {
+		save_scope_as = merchant
+		# Find destination
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				any_traded_good = {
+					any_trade_category = {
+						has_trade_good_category_xp_track = yes
+						save_temporary_scope_as = category_temp
+						"scope:merchant.primary_title.trade_good_category_level(scope:category_temp)" < 55
+					}
+				}
+			}
+			weight = {
+				base = 1
+				weight_up_trade_route_by_traded_good_with_category_xp_below_modifier = { MERCHANT = scope:merchant BELOW = 5 WEIGHT = 150 }
+				weight_up_trade_route_by_traded_good_with_category_xp_below_modifier = { MERCHANT = scope:merchant BELOW = 25 WEIGHT = 50 }
+				weight_up_trade_route_by_traded_good_with_category_xp_below_modifier = { MERCHANT = scope:merchant BELOW = 50 WEIGHT = 10 }
+			}
+			save_scope_as = route 
+			trader ?= { save_scope_as = associate }
+			random_traded_good = {
+				limit = {
+					any_trade_category = {
+						has_trade_good_category_xp_track = yes
+						save_temporary_scope_as = category_temp
+						"scope:merchant.primary_title.trade_good_category_level(scope:category_temp)" < 55
+					}
+				}
+				weight = {
+					base = 1
+					weight_up_trade_good_by_category_xp_below_modifier = { MERCHANT = scope:merchant BELOW = 5 WEIGHT = 150 }
+					weight_up_trade_good_by_category_xp_below_modifier = { MERCHANT = scope:merchant BELOW = 25 WEIGHT = 50 }
+					weight_up_trade_good_by_category_xp_below_modifier = { MERCHANT = scope:merchant BELOW = 50 WEIGHT = 10 }
+				}
+				save_scope_as = good
+			}
+			scope:good = {
+				ordered_trade_category = {
+					limit = {
+						has_trade_good_category_xp_track = yes
+						save_temporary_scope_as = category_temp
+						"scope:merchant.primary_title.trade_good_category_level(scope:category_temp)" < 55
+					}
+					order_by = {
+						value = 0
+						if = {
+							limit = {
+								save_temporary_scope_as = category_order_temp
+								always = yes
+							}
+							add = {
+								value = "scope:merchant.primary_title.trade_good_category_level(scope:category_order_temp)"
+								multiply = -1
+							}
+						}
+					}
+					save_scope_as = category
+				}
+			}
+			random_trade_market_on_route = {
+				limit = {
+					trade_market_production_of_trade_good_need_category = { target = scope:category value > 0 }
+				}
+				alternative_limit = { always = yes }
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create
+		create_task_contract = {
+			task_contract_type = build_category_connections
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+
+		scope:trade_opportunity ?= {
+			set_variable = {
+				name = task_contract_trade_good
+				value = scope:good
+			}
+			set_variable = {
+				name = task_contract_trade_category
+				value = scope:category
+			}
+		}
+	}
+}
+
+# Disrupt Charter
+gdp_disrupt_charter = {
+	trigger = {
+		can_create_task_contract = { type_name = disrupt_charter }
+	}
+
+	effect = {
+		save_scope_as = merchant
+		random_in_global_list = {
+			variable = merchants_tally
+			limit = {
+				holder = {
+					disrupt_charter_trade_opportunity_target_trigger = { SCHEME_OWNER = scope:merchant }
+				}
+			}
+			weight = {
+				base = 1
+				modifier = {
+					add = 10
+					holder = {
+						has_any_bad_relationship_with_character_trigger = { CHARACTER = root }
+					}
+				}
+				modifier = {
+					add = 10
+					holder.suzerain = scope:merchant.suzerain
+				}
+				modifier = {
+					add = 5
+					holder.suzerain.top_liege = scope:merchant.suzerain.top_liege
+				}
+			}
+			holder = { save_scope_as = contract_target }
+		}
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				any_trade_market_on_route = {
+					any_character_in_market = { this = scope:contract_target }
+				}
+			}
+			save_scope_as = route 
+			trader ?= { save_scope_as = associate }
+			random_trade_market_on_route = {
+				limit = {
+					any_character_in_market = { this = scope:contract_target }
+				}
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create
+		create_task_contract = {
+			task_contract_type = disrupt_charter
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			target = scope:contract_target
+			save_scope_as = trade_opportunity
+		}
+
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Extend Caravan/Consolidate Caravan
+gdp_silk_road_network = {
+	trigger = {
+		can_create_task_contract = { type_name = silk_road_network }
+	}
+
+	effect = {
+		save_scope_as = merchant
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				NOR = {
+					has_trade_route_modifier = gdp_silk_road_network_trade_opportunity_success_modifier
+					has_trade_route_modifier = gdp_silk_road_network_trade_opportunity_success_critical_modifier
+					has_trade_route_modifier = gdp_silk_road_network_trade_opportunity_failure_modifier
+					has_trade_route_modifier = gdp_silk_road_caravan_trade_opportunity_success_modifier
+					has_trade_route_modifier = gdp_silk_road_caravan_trade_opportunity_success_critical_modifier
+					has_trade_route_modifier = gdp_silk_road_caravan_trade_opportunity_failure_modifier
+				}
+				any_trade_market_on_route = {
+					is_target_in_global_variable_list = {
+						name = silk_road_markets
+						target = this
+					}
+				}
+			}
+			save_scope_as = route 
+			trader ?= { save_scope_as = associate }
+			random_trade_market_on_route = {
+				limit = {
+					is_target_in_global_variable_list = {
+						name = silk_road_markets
+						target = this
+					}
+				}
+				save_scope_as = market
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create
+		create_task_contract = {
+			task_contract_type = silk_road_network
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = trade_opportunity
+		}
+		# Create other
+		create_task_contract = {
+			task_contract_type = silk_road_caravan
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			save_scope_as = other_trade_opportunity
+		}
+		scope:trade_opportunity = {
+			set_variable = {
+				name = paired_contract
+				value = scope:other_trade_opportunity
+			}
+		}
+		scope:other_trade_opportunity = {
+			set_variable = {
+				name = paired_contract
+				value = scope:trade_opportunity
+			}
+		}
+
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Entrepot Buy/Sell
+gdp_entrepot_buy = {
+	trigger = {
+		OR = {
+			can_create_task_contract = { type_name = entrepot_buy }
+			can_create_task_contract = { type_name = entrepot_sell }
+		}
+	}
+
+	effect = {
+		save_scope_as = merchant
+		# Check both up front, as creating either contract invalidates valid_to_create for the other
+		if = {
+			limit = { can_create_task_contract = { type_name = entrepot_buy } }
+			save_scope_value_as = {
+				name = entrepot_buy_allowed
+				value = yes
+			}
+		}
+		if = {
+			limit = { can_create_task_contract = { type_name = entrepot_sell } }
+			save_scope_value_as = {
+				name = entrepot_sell_allowed
+				value = yes
+			}
+		}
+		# Find a trade route passing through an entrepot, where it is buying or selling goods
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				NOR = {
+					has_trade_route_modifier = gdp_entrepot_buy_trade_opportunity_success_modifier
+					has_trade_route_modifier = gdp_entrepot_buy_trade_opportunity_success_critical_modifier
+					has_trade_route_modifier = gdp_entrepot_buy_trade_opportunity_failure_modifier
+					has_trade_route_modifier = gdp_entrepot_sell_trade_opportunity_success_modifier
+					has_trade_route_modifier = gdp_entrepot_sell_trade_opportunity_success_critical_modifier
+					has_trade_route_modifier = gdp_entrepot_sell_trade_opportunity_failure_modifier
+				}
+				save_temporary_scope_as = entrepot_route_check
+				any_trade_market_on_route = {
+					gdp_entrepot_trade_opportunity_market_available_trigger = { MERCHANT = root }
+					save_temporary_scope_as = entrepot_market_check
+					scope:entrepot_route_check = {
+						OR = {
+							AND = {
+								exists = scope:entrepot_buy_allowed
+								trade_route_buying_any_good_in_market_trigger = { MARKET = scope:entrepot_market_check }
+							}
+							AND = {
+								exists = scope:entrepot_sell_allowed
+								trade_route_selling_any_good_in_market_trigger = { MARKET = scope:entrepot_market_check }
+							}
+						}
+					}
+				}
+			}
+			save_scope_as = route 
+			trader ?= { save_scope_as = associate }
+			# Save the market
+			random_trade_market_on_route = {
+				limit = {
+					gdp_entrepot_trade_opportunity_market_available_trigger = { MERCHANT = root }
+					save_temporary_scope_as = entrepot_market_check
+					scope:route = {
+						OR = {
+							AND = {
+								exists = scope:entrepot_buy_allowed
+								trade_route_buying_any_good_in_market_trigger = { MARKET = scope:entrepot_market_check }
+							}
+							AND = {
+								exists = scope:entrepot_sell_allowed
+								trade_route_selling_any_good_in_market_trigger = { MARKET = scope:entrepot_market_check }
+							}
+						}
+					}
+				}
+				save_scope_as = market
+				# Save the entrepot as the location
+				trade_market_owner.duchy = {
+					random_de_jure_county = {
+						limit = {
+							any_county_province = {
+								gdp_entrepot_trade_opportunity_location_available_trigger = { MERCHANT = root }
+							}
+						}
+						random_county_province = {
+							limit = {
+								gdp_entrepot_trade_opportunity_location_available_trigger = { MERCHANT = root }
+							}
+							save_scope_as = destination
+						}
+					}
+				}
+				# Find a good the route buys here for buy price, preferring one with a surplus
+				if = {
+					limit = { exists = scope:entrepot_buy_allowed }
+					scope:route = {
+						random_traded_good = {
+							limit = {
+								trade_good_bought_by_route_in_market_trigger = {
+									ROUTE = scope:route
+									MARKET = scope:market
+								}
+								save_temporary_scope_as = good_temp
+								scope:market = {
+									any_trade_good_with_surplus = { this = scope:good_temp }
+								}
+							}
+							alternative_limit = {
+								trade_good_bought_by_route_in_market_trigger = {
+									ROUTE = scope:route
+									MARKET = scope:market
+								}
+							}
+							save_scope_as = buy_good
+						}
+					}
+					scope:buy_good ?= {
+						random_trade_category = {
+							limit = { has_trade_good_category_xp_track = yes }
+							alternative_limit = { always = yes }
+							save_scope_as = buy_category
+						}
+					}
+				}
+				# Find a good the route sells here for sell price, preferring one with a need
+				if = {
+					limit = { exists = scope:entrepot_sell_allowed }
+					scope:route = {
+						random_traded_good = {
+							limit = {
+								trade_good_sold_by_route_in_market_trigger = {
+									ROUTE = scope:route
+									MARKET = scope:market
+								}
+								save_temporary_scope_as = good_temp
+								scope:market = {
+									any_trade_good_with_need = { this = scope:good_temp }
+								}
+							}
+							alternative_limit = {
+								trade_good_sold_by_route_in_market_trigger = {
+									ROUTE = scope:route
+									MARKET = scope:market
+								}
+							}
+							save_scope_as = sell_good
+						}
+					}
+					scope:sell_good ?= {
+						random_trade_category = {
+							limit = { has_trade_good_category_xp_track = yes }
+							alternative_limit = { always = yes }
+							save_scope_as = sell_category
+						}
+					}
+				}
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create
+		if = {
+			limit = { exists = scope:buy_good }
+			create_task_contract = {
+				task_contract_type = entrepot_buy
+				task_contract_tier = scope:contract_tier
+				location = scope:destination
+				task_contract_employer = scope:associate # for UI
+				save_scope_as = entrepot_buy_opportunity
+			}
+			scope:entrepot_buy_opportunity = {
+				save_scope_as = trade_opportunity
+				# Special tracking
+				set_variable = {
+					name = task_contract_trade_good
+					value = scope:buy_good
+				}
+				if = {
+					limit = { exists = scope:buy_category }
+					set_variable = {
+						name = task_contract_trade_category
+						value = scope:buy_category
+					}
+				}
+			}
+		}
+		if = {
+			limit = { exists = scope:sell_good }
+			create_task_contract = {
+				task_contract_type = entrepot_sell
+				task_contract_tier = scope:contract_tier
+				location = scope:destination
+				task_contract_employer = scope:associate # for UI
+				save_scope_as = entrepot_sell_opportunity
+			}
+			scope:entrepot_sell_opportunity = {
+				if = {
+					limit = { exists = scope:trade_opportunity }
+					save_scope_as = other_trade_opportunity
+				}
+				else = {
+					save_scope_as = trade_opportunity
+				}
+				# Special tracking
+				set_variable = {
+					name = task_contract_trade_good
+					value = scope:sell_good
+				}
+				if = {
+					limit = { exists = scope:sell_category }
+					set_variable = {
+						name = task_contract_trade_category
+						value = scope:sell_category
+					}
+				}
+			}
+		}
+		# Pair, if both were created
+		if = {
+			limit = {
+				exists = scope:entrepot_buy_opportunity
+				exists = scope:entrepot_sell_opportunity
+			}
+			scope:entrepot_buy_opportunity = {
+				set_variable = {
+					name = paired_contract
+					value = scope:entrepot_sell_opportunity
+				}
+			}
+			scope:entrepot_sell_opportunity = {
+				set_variable = {
+					name = paired_contract
+					value = scope:entrepot_buy_opportunity
+				}
+			}
+		}
+
+		# General post-creation set up
+		if = {
+			limit = { exists = scope:trade_opportunity }
+			manage_new_trade_opportunity_contract_effect = yes
+		}
+	}
+}
+
+# Negotiate Tolls
+gdp_negotiate_tolls = {
+	trigger = {
+		can_create_task_contract = { type_name = negotiate_tolls }
+	}
+
+	effect = {
+		save_scope_as = merchant
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				any_trade_market_on_route = {
+					save_temporary_scope_as = market_temp
+					pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = scope:merchant }
+					scope:merchant = {
+						NOT = {
+							any_character_task_contract = {
+								OR = {
+									has_task_contract_type = negotiate_tolls
+									has_task_contract_type = smuggle_goods
+								}
+								task_contract_location.barony.trade_market = scope:market_temp
+							}
+						}
+					}
+				}
+			}
+			save_scope_as = route 
+			trader ?= { save_scope_as = associate }
+			# Save the market
+			random_trade_market_on_route = {
+				limit = {
+					save_temporary_scope_as = market_temp
+					pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = scope:merchant }
+					scope:merchant = {
+						NOT = {
+							any_character_task_contract = {
+								OR = {
+									has_task_contract_type = negotiate_tolls
+									has_task_contract_type = smuggle_goods
+								}
+								task_contract_location.barony.trade_market = scope:market_temp
+							}
+						}
+					}
+				}
+				save_scope_as = market
+				# Save the entrepot as the location
+				trade_market_owner.title_province = { save_scope_as = destination }
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create
+		create_task_contract = {
+			task_contract_type = negotiate_tolls
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			target = scope:market.trade_market_owner.county.holder
+			save_scope_as = trade_opportunity
+		}
+
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Smuggle Goods
+gdp_smuggle_goods = {
+	trigger = {
+		can_create_task_contract = { type_name = smuggle_goods }
+	}
+
+	effect = {
+		save_scope_as = merchant
+		random_trade_route = {
+			limit = {
+				has_trader = yes
+				any_trade_market_on_route = {
+					save_temporary_scope_as = market_temp
+					pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = scope:merchant }
+					scope:merchant = {
+						NOT = {
+							any_character_task_contract = {
+								OR = {
+									has_task_contract_type = negotiate_tolls
+									has_task_contract_type = smuggle_goods
+								}
+								task_contract_location.barony.trade_market = scope:market_temp
+							}
+						}
+					}
+				}
+			}
+			save_scope_as = route 
+			trader ?= { save_scope_as = associate }
+			# Save the market
+			random_trade_market_on_route = {
+				limit = {
+					save_temporary_scope_as = market_temp
+					pays_any_tolls_in_market_without_exception_trigger = { CHARACTER = scope:merchant }
+					scope:merchant = {
+						NOT = {
+							any_character_task_contract = {
+								OR = {
+									has_task_contract_type = negotiate_tolls
+									has_task_contract_type = smuggle_goods
+								}
+								task_contract_location.barony.trade_market = scope:market_temp
+							}
+						}
+					}
+				}
+				weight = {
+					base = 1
+					modifier = { # Smuggling weight
+						add = {
+							value = 0
+							trade_market_owner.duchy ?= {
+								every_de_jure_county = {
+									if = {
+										limit = { has_county_modifier = county_corruption_smuggling_ring_modifier }
+										add = 1
+									}
+									else_if = {
+										limit = { has_county_modifier = county_corruption_smuggling_ring_modifier_2 }
+										add = 2
+									}
+									else_if = {
+										limit = { has_county_modifier = county_corruption_smuggling_ring_modifier_3 }
+										add = 3
+									}
+								}
+							}
+						}
+					}
+				}
+				save_scope_as = market
+				# Save the entrepot as the location
+				trade_market_owner.title_province = {
+					save_scope_as = destination
+					county.holder = { save_scope_as = target }
+				}
+			}
+		}
+
+		# Save useful scopes
+		trade_opportunity_task_contract_scopes_effect = yes
+
+		# Create
+		create_task_contract = {
+			task_contract_type = smuggle_goods
+			task_contract_tier = scope:contract_tier
+			location = scope:destination
+			task_contract_employer = scope:associate # for UI
+			target = scope:target
+			save_scope_as = trade_opportunity
+		}
+
+		# General post-creation set up
+		manage_new_trade_opportunity_contract_effect = yes
+	}
+}
+
+# Challenge Competitor
+merchant_challenge_competitor_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_challenge_competitor_trade_opportunity_scheme }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1021		# Third party family offers assistance - only when target is another merchant
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Promote Goods
+merchant_promote_goods_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_promote_goods_trade_opportunity_scheme }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1061		# Stretched Thin
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Market Investment
+merchant_market_investment_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_market_investment_trade_opportunity_scheme }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1061		# Stretched Thin
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Exploit Upheaval
+merchant_exploit_upheaval_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_exploit_upheaval_trade_opportunity_scheme }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1061		# Stretched Thin
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Alleviate Upheaval
+merchant_alleviate_upheaval_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_alleviate_upheaval_trade_opportunity_scheme }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1061		# Stretched Thin
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Support Guilds
+merchant_support_guilds_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_support_guilds_trade_opportunity_scheme }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1061		# Stretched Thin
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Seek Debtors
+merchant_seek_debtors_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_seek_debtors_trade_opportunity_scheme }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1061		# Stretched Thin
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Sabotage Competition 
+merchant_sabotage_competition_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_sabotage_competition_trade_opportunity_scheme }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1021		# Third party family offers assistance - only when target is another merchant
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Build Connections
+merchant_build_category_connections_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_build_category_connections_trade_opportunity_scheme }
+	}
+	effect = {
+		scope:scheme ?= { trade_opportunity_scheme_scopes_effect = yes }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Disrupt Charter
+merchant_disrupt_charter_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_disrupt_charter_trade_opportunity_scheme }
+	}
+	effect = {
+		scope:scheme ?= { trade_opportunity_scheme_scopes_effect = yes }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1021		# Third party family offers assistance - only when target is another merchant
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Extend Caravan
+merchant_silk_road_network_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_silk_road_network_trade_opportunity_scheme }
+	}
+	effect = {
+		scope:scheme ?= { trade_opportunity_scheme_scopes_effect = yes }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Share Caravan
+merchant_silk_road_caravan_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_silk_road_caravan_trade_opportunity_scheme }
+	}
+	effect = {
+		scope:scheme ?= { trade_opportunity_scheme_scopes_effect = yes }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Entrepot Buy
+merchant_entrepot_buy_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_entrepot_buy_trade_opportunity_scheme }
+	}
+	effect = {
+		scope:scheme ?= { trade_opportunity_scheme_scopes_effect = yes }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Entrepot Sell
+merchant_entrepot_sell_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_entrepot_sell_trade_opportunity_scheme }
+	}
+	effect = {
+		scope:scheme ?= { trade_opportunity_scheme_scopes_effect = yes }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Negotiate Tolls
+merchant_negotiate_tolls_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_negotiate_tolls_trade_opportunity_scheme }
+	}
+	effect = {
+		scope:scheme ?= { trade_opportunity_scheme_scopes_effect = yes }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+		100 = gdp_merchant_trade_opportunity.1101		# A wild investor appears
+	}
+}
+
+# Smuggle Goods
+merchant_smuggle_goods_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		scope:scheme ?= { scheme_type = merchant_smuggle_goods_trade_opportunity_scheme }
+	}
+	effect = {
+		scope:scheme ?= { trade_opportunity_scheme_scopes_effect = yes }
+	}
+	random_events = {
+		100 = gdp_merchant_trade_opportunity.1001		# Local ruler gets in the way
+		100 = gdp_merchant_trade_opportunity.1011		# Local ruler offers assistance
+		100 = gdp_merchant_trade_opportunity.1031		# Low unity, leverage house member for opportunity
+		100 = gdp_merchant_trade_opportunity.1041		# High unity, house member seizes opportunity
+		100 = gdp_merchant_trade_opportunity.1051		# Competitor boon offer
+		100 = gdp_merchant_trade_opportunity.1071		# Routes over capacity
+		100 = gdp_merchant_trade_opportunity.1081		# Incompetent associate
+		100 = gdp_merchant_trade_opportunity.1091		# Competent associate
+	}
+}
+
+# Event management tombola.
+merchant_base_trade_opportunity_scheme_on_going_events = {
+	trigger = {
+		exists = scope:scheme
+	}
+	random_on_action = {
+		chance_to_happen = 25
+		100 = merchant_challenge_competitor_trade_opportunity_scheme_on_going_events
+		100 = merchant_promote_goods_trade_opportunity_scheme_on_going_events
+		100 = merchant_market_investment_trade_opportunity_scheme_on_going_events
+		100 = merchant_exploit_upheaval_trade_opportunity_scheme_on_going_events
+		100 = merchant_support_guilds_trade_opportunity_scheme_on_going_events
+		100 = merchant_seek_debtors_trade_opportunity_scheme_on_going_events
+		100 = merchant_sabotage_competition_trade_opportunity_scheme_on_going_events
+		100 = merchant_build_category_connections_trade_opportunity_scheme_on_going_events
+		100 = merchant_disrupt_charter_trade_opportunity_scheme_on_going_events
+		##################################################
+		# Generic Agent events
+		100 = agent_events_on_action							#	General agent events.
+	}
+}
+
+trade_opportunity_arrival_events = {
+	trigger = { exists = scope:task_contract }
+	effect = {
+		current_travel_plan ?= { pause_travel_plan = yes }
+	}
+	events = {
+		gdp_merchant_trade_opportunity.0001 # challenge_competitor
+		gdp_merchant_trade_opportunity.0011 # promote_goods
+		gdp_merchant_trade_opportunity.0021 # market_investment
+		gdp_merchant_trade_opportunity.0031 # exploit_upheaval
+		gdp_merchant_trade_opportunity.0041 # support_guilds
+		gdp_merchant_trade_opportunity.0051 # seek_debtors
+		gdp_merchant_trade_opportunity.0061 # sabotage_competition
+		gdp_merchant_trade_opportunity.0071 # build_category_connections
+		gdp_merchant_trade_opportunity.0081 # disrupt_charter
+		gdp_merchant_trade_opportunity.0091 # alleviate_upheaval
+		gdp_merchant_trade_opportunity.0101 # silk_road_network
+		gdp_merchant_trade_opportunity.0111 # silk_road_caravan
+		gdp_merchant_trade_opportunity.0121 # entrepot_buy
+		gdp_merchant_trade_opportunity.0131 # entrepot_sell
+		gdp_merchant_trade_opportunity.0141 # negotiate_tolls
+		gdp_merchant_trade_opportunity.0151 # smuggle_goods
+	}
+}
+
+trade_opportunity_push_for_advantages_events = {
+	effect = {
+		set_variable = {
+			name = push_for_advantage_cooldown
+			months = 1
+		}
+	}
+	random_events = {
+		100 = gdp_merchant_scheme_advantage.1000
+		50 = gdp_merchant_scheme_advantage.1010
+		100 = gdp_merchant_scheme_advantage.1020
+	}
+}

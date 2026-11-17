@@ -1,0 +1,135 @@
+﻿mandala_capital_01_district = {
+	primary_building = mandala_capital_01
+	
+	#Fallback
+	background = {
+		reference = "gfx/interface/illustrations/decisions/tgp_projects_mandala_capital.dds"
+	}
+
+	type = great_district
+
+	rebuild_cost = {
+		gold = {
+			if = {
+				limit = { is_ai = yes }
+				value = ai_rebuild_value
+			}
+			else = { value = standard_rebuild_value }
+		}
+		piety = {
+			if = {
+				limit = { is_ai = yes }
+				value = ai_rebuild_value
+			}
+			else = { value = standard_rebuild_value }
+		}
+	}
+
+	can_rebuild = {
+		scope:county.holder = {
+			custom_tooltip = {
+				text = not_already_full_on_mandala_capitals
+				less_than_max_amount_of_mandala_capitals_trigger = yes
+			}
+		}
+	}
+}
+
+the_great_wall_01_district = {
+	primary_building = the_great_wall_01
+	
+	#Fallback
+	background = {
+		reference = "gfx/interface/illustrations/decisions/tgp_great_wall.dds"
+	}
+
+	type = great_district
+}
+
+the_great_wall_04_district = {
+	primary_building = the_great_wall_04
+	
+	#Fallback
+	background = {
+		reference = "gfx/interface/illustrations/decisions/tgp_great_wall.dds"
+	}
+
+	type = great_district
+}
+
+the_great_wall_shanhai_pass_district = {
+	primary_building = the_great_wall_shanhai_pass
+	
+	#Fallback
+	background = {
+		reference = "gfx/interface/illustrations/decisions/tgp_great_wall.dds"
+	}
+
+	type = great_district
+}
+
+the_great_wall_liaodong_district = {
+	primary_building = the_great_wall_liaodong
+	
+	#Fallback
+	background = {
+		reference = "gfx/interface/illustrations/decisions/tgp_great_wall.dds"
+	}
+
+	type = great_district
+}
+
+great_project_cathedral_01_district = {
+	primary_building = great_project_cathedral_01
+	
+	#Fallback
+	background = {
+		reference = "gfx/interface/illustrations/decisions/pam_grand_project_cathedral.dds"
+	}
+
+	type = great_district
+}
+
+republic_great_plaza_district = {
+	primary_building = pb_republic_city_hall_01
+	
+	background = {
+		reference = "gfx/interface/illustrations/decisions/gdp_decision_great_plaza.dds"
+	}
+
+	triggered_name = {
+		trigger = {
+			this = province:2575 # Rome
+			province_owner = {
+				OR = {
+					culture = culture:roman
+					has_title = title:h_roman_republic
+				}
+			}
+		}
+		reference = "republic_great_plaza_district_rome_name"
+	}
+
+	is_enabled = {
+		scope:holder = {
+			government_has_flag = government_is_republic
+		}
+	}
+
+	type = great_district
+	buildings = {
+		republic_basilica_01
+		republic_loggia_01
+		republic_statute_hall_01
+		republic_council_chamber_01
+		republic_debt_office_01
+		republic_civic_hospital_01
+		republic_weigh_house_01
+		republic_clock_tower_01
+		republic_civic_ward_01
+		republic_league_chapter_house_01
+		republic_podesta_residence_01
+		republic_fountain_01
+		patron_saint_sanctuary_1
+	}
+}

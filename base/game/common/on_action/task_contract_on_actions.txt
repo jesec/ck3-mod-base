@@ -31,14 +31,16 @@ ep3_contract_094_travel_fallback = {
 
 
 
-
 ##################################################
 # ON-GOING EVENT ON_ACTIONS
 
 # Regale court with stories
 laamp_base_0001_contract_scheme_on_going_events = {
 	trigger = {
-		scope:scheme ?= { scheme_type = laamp_base_0001_contract_scheme }
+		scope:scheme ?= {
+			scheme_type = laamp_base_0001_contract_scheme
+			exists = scheme_owner
+		}
 	}
 	random_events = {
 		100 = laamp_base_contract_schemes.0301		# Tell stories according to your prestige level.
@@ -51,7 +53,10 @@ laamp_base_0001_contract_scheme_on_going_events = {
 # Hobnob with local ruler
 laamp_base_0021_contract_scheme_on_going_events = {
 	trigger = {
-		scope:scheme = { scheme_type = laamp_base_0021_contract_scheme }
+		scope:scheme ?= {
+			scheme_type = laamp_base_0021_contract_scheme
+			exists = scheme_owner
+		}
 	}
 	random_events = {
 		100 = laamp_base_contract_schemes.0541		# Use personal skill to impress.
@@ -64,7 +69,10 @@ laamp_base_0021_contract_scheme_on_going_events = {
 # Confidence trickster
 laamp_base_0041_contract_scheme_on_going_events = {
 	trigger = {
-		scope:scheme = { scheme_type = laamp_base_0041_contract_scheme }
+		scope:scheme ?= {
+			scheme_type = laamp_base_0041_contract_scheme
+			exists = scheme_owner
+		}
 	}
 	random_events = {
 		100 = laamp_base_contract_schemes.0781		# Also rob the place.
@@ -88,6 +96,9 @@ laamp_base_0041_contract_scheme_on_going_events = {
 
 # Paid Mediator
 laamp_base_0031_contract_scheme_arrival_events = {
+	trigger = { # The challenges read their difficulty from the contract, which may have ended before arrival
+		any_character_active_contract = { task_contract_type = laamp_base_0031 }
+	}
 	random_events = {
 		100 = laamp_base_contract_schemes.0661		# Diplomacy + martial + stewardship challenge
 		100 = laamp_base_contract_schemes.0662		# Diplomacy + martial + intrigue challenge

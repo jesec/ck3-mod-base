@@ -12,23 +12,23 @@ tribal_elective = { #Loya Jirga
 	elector_vote_strength = {
 		base = 0
 		modifier = { #Each voter is the "representative" of all the free men living in his domain. The larger the domain, the more voting power he has.
-			desc = tooltip_tribal_elective_development
+			desc = tooltip_tribal_elective_prosperity
 			is_landed_or_landless_administrative_or_theocratic = yes
 			domain_size >= 1
 			any_held_title = {
 				title_tier = county
-				development_level > 0
+				prosperity_level > 0
 				target_is_de_jure_liege_or_above = scope:title
 			}
 			add = {
 				every_held_title = {
 					title_tier = county
 					limit = {
-						development_level > 0
+						prosperity_level > 0
 						target_is_de_jure_liege_or_above = scope:title
 					}
 					add = {
-						value = this.development_level
+						value = this.prosperity_level
 						if = {
 							limit = {
 								this.faith != root.faith
@@ -51,11 +51,11 @@ tribal_elective = { #Loya Jirga
 			is_landed_or_landless_administrative_or_theocratic = yes
 			exists = capital_county
 			OR = {
-				capital_county.county_opinion <= -5
-				capital_county.county_opinion >= 5
+				capital_county.popular_opinion <= -5
+				capital_county.popular_opinion >= 5
 			}
 			add = {
-				value = capital_county.county_opinion
+				value = capital_county.popular_opinion
 				multiply = 0.2
 			}
 		}

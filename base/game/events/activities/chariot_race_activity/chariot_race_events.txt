@@ -73,7 +73,7 @@ chariot_race.0001 = {
 				root = scope:host
 			}
 			capital_province.county = {
-				change_development_progress = minor_development_progress_gain
+				change_prosperity_progress = minor_prosperity_progress_gain
 			}
 			change_influence = minor_influence_gain
 		}
@@ -1226,7 +1226,6 @@ chariot_race.0200 = {
 							house != root.house
 							has_relation_potential_rival = root
 							has_relation_rival = root
-							has_relation_nemesis = root
 						}
 						#If a player, must be at races
 						OR = {
@@ -1259,7 +1258,6 @@ chariot_race.0200 = {
 							house != root.house
 							has_relation_potential_rival = root
 							has_relation_rival = root
-							has_relation_nemesis = root
 						}
 						#If a player, must be at races
 						OR = {
@@ -1283,10 +1281,7 @@ chariot_race.0200 = {
 			limit = {
 				primary_title = {
 					any_title_heir = {
-						OR = {
-							has_relation_rival = root
-							has_relation_nemesis = root
-						}
+						has_relation_rival = root
 						#If a player, must be at races
 						OR = {
 							is_ai = yes
@@ -1303,10 +1298,7 @@ chariot_race.0200 = {
 			primary_title = {
 				random_title_heir = {
 					limit = {
-						OR = {
-							has_relation_rival = root
-							has_relation_nemesis = root
-						}
+						has_relation_rival = root
 						#If a player, must be at races
 						OR = {
 							is_ai = yes
@@ -1349,7 +1341,6 @@ chariot_race.0200 = {
 						OR = {
 							house != root.house
 							has_relation_rival = root
-							has_relation_nemesis = root
 						}
 						#If a player, must be at races
 						OR = {
@@ -1376,7 +1367,6 @@ chariot_race.0200 = {
 						OR = {
 							house != root.house
 							has_relation_rival = root
-							has_relation_nemesis = root
 						}
 						#If a player, must be at races
 						OR = {
@@ -1426,9 +1416,8 @@ chariot_race.0200 = {
 						house ?= root.house
 						NOR = {
 							has_relation_rival = root
-							has_relation_nemesis = root
 							is_at_war_with = root
-							this = scope:claimant 
+							scope:claimant ?= this
 						}
 					}
 				}
@@ -1440,9 +1429,8 @@ chariot_race.0200 = {
 						house ?= root.house
 						NOR = {
 							has_relation_rival = root
-							has_relation_nemesis = root
 							is_at_war_with = root
-							this = scope:claimant 
+							scope:claimant ?= this
 						}
 					}
 					add_to_list = imperial_house_candidates
@@ -1925,7 +1913,7 @@ chariot_race.0200 = {
 			}
 			modifier = {
 				add = -100
-				capital_county.county_opinion > -20
+				capital_county.popular_opinion > -20
 			}
 			modifier = {
 				factor = 0
@@ -1934,7 +1922,7 @@ chariot_race.0200 = {
 					has_trait = stubborn
 					has_trait = just
 					has_trait = greedy
-					capital_county.county_opinion >= 0
+					capital_county.popular_opinion >= 0
 				}
 			}
 		}
@@ -1956,7 +1944,7 @@ chariot_race.0200 = {
 				modifier = {
 					add = 20
 					capital_county = {
-						county_opinion >= 10
+						popular_opinion >= 10
 					}
 				}
 				desc = chariot_race.0200.e.success
@@ -1992,7 +1980,7 @@ chariot_race.0200 = {
 				modifier = {
 					add = 20
 					capital_county = {
-						county_opinion < -10
+						popular_opinion < -10
 					}
 				}
 				desc = chariot_race.0200.e.failure
@@ -2094,7 +2082,7 @@ chariot_race.0200 = {
 				modifier = {
 					add = 25
 					capital_county = {
-						county_opinion >= 10
+						popular_opinion >= 10
 					}
 				}
 				modifier = {
@@ -2152,7 +2140,7 @@ chariot_race.0200 = {
 				modifier = {
 					add = 25
 					capital_county = {
-						county_opinion < -10
+						popular_opinion < -10
 					}
 				}
 				modifier = {
@@ -3168,7 +3156,7 @@ chariot_race.0201 = {
 						NOR = {
 							scope:activity.var:emperor_speech_topic = flag:appease_populace
 							scope:host.capital_county = {
-								county_opinion >= 25
+								popular_opinion >= 25
 							}
 							scope:host = {
 								legitimacy_level >= 5
@@ -3253,7 +3241,7 @@ chariot_race.0201 = {
 				OR = {
 					scope:activity.var:emperor_speech_topic = flag:appease_populace
 					scope:host.capital_county = {
-						county_opinion >= 25
+						popular_opinion >= 25
 					}
 					scope:host = {
 						legitimacy_level >= 5
@@ -3557,7 +3545,7 @@ chariot_race.0201 = {
 				OR = {
 					scope:activity.var:emperor_speech_topic = flag:appease_populace
 					scope:host.capital_county = {
-						county_opinion >= 25
+						popular_opinion >= 25
 					}
 					scope:host = {
 						legitimacy_level >= 5
@@ -3996,7 +3984,7 @@ chariot_race.0202 = {
 									OR = {
 										scope:activity.var:emperor_speech_topic = flag:appease_populace
 										scope:host.capital_county = {
-											county_opinion >= 25
+											popular_opinion >= 25
 										}
 										scope:host = {
 											legitimacy_level >= 5

@@ -1263,7 +1263,7 @@ ep3_adventurer_ai_contract_find_next_kingdom_effect = {
 			}
 		}
 	}
-	else_if = {
+	if = {
 		limit = {
 			NOT = { exists = scope:new_kingdom }
 		}
@@ -1416,7 +1416,13 @@ ep3_adventurer_ai_contract_find_next_kingdom_effect = {
 				}
 			}
 			else = {
-				title_capital_county.title_province = { save_scope_as = destination_province }
+				title_capital_county ?= { title_province = { save_scope_as = destination_province } }
+			}
+		}
+		if = { # A kingdom without a capital county, or whose picks above all failed
+			limit = { NOT = { exists = scope:destination_province } }
+			scope:new_kingdom = {
+				random_de_jure_county = { title_province = { save_scope_as = destination_province } }
 			}
 		}
 		# Travel
@@ -1427,12 +1433,15 @@ ep3_adventurer_ai_contract_find_next_kingdom_effect = {
 					change_provisions = max_provisions
 				}
 			}
-			start_travel_plan = {
-				destination = scope:destination_province
-				travel_with_domicile = yes
-				return_trip = no
-				on_arrival_on_action = on_adventurer_ai_new_kingdom_arrival
-				on_arrival_destinations = last
+			if = {
+				limit = { exists = scope:destination_province } # Even the county fallback can find nothing
+				start_travel_plan = {
+					destination = scope:destination_province
+					travel_with_domicile = yes
+					return_trip = no
+					on_arrival_on_action = on_adventurer_ai_new_kingdom_arrival
+					on_arrival_destinations = last
+				}
 			}
 		}
 	}
@@ -1529,27 +1538,30 @@ ep3_adventurer_ai_war_travel_effect = {
 			}
 		}
 	}
-	save_scope_value_as = { # Approx provisions for journey
-		name = lammp_travel_provisions
-		value = {
-			value = "scope:current_location.squared_distance(scope:war_stage.title_province)"
-			divide = 300
-		}
-	}
-	$ADVENTURER$ = {
-		domicile = { # the AI doesn't have to know how to use provisions efficiently, so just add a couple so that they don't suicide
-			if = {
-				limit = { provisions < scope:lammp_travel_provisions }
-				change_provisions = scope:lammp_travel_provisions
+	if = {
+		limit = { exists = scope:war_stage } # No county of the neighbour may border the war target
+		save_scope_value_as = { # Approx provisions for journey
+			name = lammp_travel_provisions
+			value = {
+				value = "scope:current_location.squared_distance(scope:war_stage.title_province)"
+				divide = 300
 			}
 		}
-		start_travel_plan = {
-			destination = scope:war_stage.title_province
-			travel_with_domicile = yes
-			players_use_planner = no
-			return_trip = no
-			on_arrival_destinations = all
-			on_arrival_on_action = on_adventurer_ai_war_target_arrival
+		$ADVENTURER$ = {
+			domicile = { # the AI doesn't have to know how to use provisions efficiently, so just add a couple so that they don't suicide
+				if = {
+					limit = { provisions < scope:lammp_travel_provisions }
+					change_provisions = scope:lammp_travel_provisions
+				}
+			}
+			start_travel_plan = {
+				destination = scope:war_stage.title_province
+				travel_with_domicile = yes
+				players_use_planner = no
+				return_trip = no
+				on_arrival_destinations = all
+				on_arrival_on_action = on_adventurer_ai_war_target_arrival
+			}
 		}
 	}
 }
@@ -1698,7 +1710,7 @@ ep3_adventurer_ai_war_find_target_effect = {
 			story_owner = {
 				has_realm_law = camp_purpose_legitimists
 				any_claim = {
-					holder = {
+					holder ?= {
 						ep3_adventurer_ai_valid_legitimist_target_trigger = { ADVENTURER = scope:story.story_owner }
 					}
 				}
@@ -1707,7 +1719,7 @@ ep3_adventurer_ai_war_find_target_effect = {
 		story_owner = {
 			ordered_claim = {
 				limit = {
-					holder = {
+					holder ?= {
 						ep3_adventurer_ai_valid_legitimist_target_trigger = { ADVENTURER = scope:story.story_owner }
 					}
 				}

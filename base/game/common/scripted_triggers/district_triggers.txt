@@ -1,0 +1,295 @@
+﻿### Triggers for districts
+bureaucratic_district_trigger = {
+	save_temporary_scope_as = root_scope
+	scope:holder = {
+		highest_held_title_tier >= tier_kingdom
+	}
+	custom_tooltip = {
+		text = civic_district_capital_trigger
+		this = scope:holder.capital_province
+	}
+}
+
+household_government_trigger = {
+	custom_tooltip = {
+		text = household_district_government_trigger
+		OR = {
+			government_has_flag = government_is_feudal
+			government_has_flag = government_is_clan
+			government_has_flag = government_is_administrative
+			government_has_flag = government_is_celestial
+			government_has_flag = government_is_meritocratic
+			government_has_flag = government_is_japan_administrative
+			government_has_flag = government_is_japan_feudal
+		}
+	}
+}
+
+household_district_trigger = {
+	save_temporary_scope_as = root_scope
+	scope:holder = {
+		highest_held_title_tier >= tier_kingdom
+		household_government_trigger = yes
+		trigger_if = {
+			limit = {
+				OR = {
+					government_has_flag = government_is_celestial
+					government_has_flag = government_is_meritocratic
+					government_has_flag = government_is_administrative
+				}
+			}
+			custom_tooltip = {
+				text = household_district_top_liege_trigger
+				is_independent_ruler = yes
+			}
+		}
+	}
+	custom_tooltip = {
+		text = civic_district_capital_trigger
+		this = scope:holder.capital_province
+	}
+}
+
+metropolitan_type_district_trigger = {
+	OR = {
+		is_county_capital = yes
+		custom_tooltip = {
+			text = metropolitan_district_city_trigger
+			holding_is_city = yes
+		}
+	}
+}
+
+port_district_trigger = {
+	custom_tooltip = {
+		text = port_district_water_trigger
+		OR = {
+			is_coastal = yes
+			is_riverside_province = yes
+		}
+	}
+	is_county_capital = yes
+}
+
+### Check for types of district
+has_rice_fields_district = {
+	OR = {
+		terrain = farmlands
+		terrain = terraced_hills 
+		province_has_district = rice_district
+	}
+}
+
+has_port_district = {
+	province_has_district = port_district
+}
+
+has_hunting_district_or_building = {
+	OR = {
+		has_building_or_higher = royal_forest_01
+		has_building_or_higher = hunting_lodges_1
+		has_building_or_higher = manor_hunting_grounds_1
+		has_building_or_higher = knights_stables_1
+	}
+}
+
+has_farming_district_or_building = {
+	OR = {
+		province_has_district = villages_district
+		has_building_or_higher = grain_resource_building_1
+		has_building_or_higher = rice_resource_building_1
+		has_building_or_higher = millet_resource_building_1
+		has_building_or_higher = fruit_resource_building_1
+	}
+}
+
+has_smithing_district_or_building = {
+	OR = {
+		has_building_or_higher = mine_tier_1
+		has_building_or_higher = weapon_armor_smith_1
+		has_building_or_higher = blacksmiths_guild_1
+	}
+}
+
+### Holding district level gates
+holding_district_level_2_trigger = {
+	custom_tooltip = {
+		text = holding_district_level_2_tt
+		OR = {
+			has_building_or_higher = castle_02
+			has_building_or_higher = city_02
+			has_building_or_higher = temple_02
+			has_building_or_higher = temple_citadel_02
+			has_building_or_higher = tribe_01
+		}
+	}
+}
+
+holding_district_level_3_trigger = {
+	trigger_if = {
+		limit = { has_building_or_higher = tribe_01 }
+		custom_tooltip = {
+			text = holding_district_level_2_tt
+			has_building_or_higher = tribe_02
+		}
+	}
+	trigger_else = {
+		custom_tooltip = {
+			text = holding_district_level_3_tt
+			OR = {
+				has_building_or_higher = castle_03
+				has_building_or_higher = city_03
+				has_building_or_higher = temple_03
+				has_building_or_higher = temple_citadel_03
+			}
+		}
+	}
+}
+
+holding_district_level_4_trigger = {
+	trigger_if = {
+		limit = { has_building_or_higher = tribe_01 }
+		custom_tooltip = {
+			text = holding_district_level_2_tt
+			has_building_or_higher = tribe_02
+		}
+	}
+	trigger_else = {
+		custom_tooltip = {
+			text = holding_district_level_4_tt
+			OR = {
+				has_building_or_higher = castle_04
+				has_building_or_higher = city_04
+				has_building_or_higher = temple_04
+				has_building_or_higher = temple_citadel_04
+			}
+		}
+	}
+}
+
+### AI province identity, root is the province
+# Settlement size costs county control and popular opinion, so the AI aims for one city per county
+
+ai_established_city_trigger = {
+	province_has_district = urban_housing_district
+	province_size_level > 3
+}
+
+ai_other_city_in_county_trigger = {
+	save_temporary_scope_as = ai_city_check_province
+	county = {
+		any_county_province = {
+			this != scope:ai_city_check_province
+			OR = {
+				province_has_district = urban_housing_district
+				province_size_level > 3
+			}
+		}
+	}
+}
+
+# Expects scope:holder, as provided in building ai_value
+ai_urban_identity_trigger = {
+	OR = {
+		ai_established_city_trigger = yes
+		AND = {
+			has_variable = ai_urban_capital
+			scope:holder.capital_province ?= this
+		}
+		AND = {
+			is_county_capital = yes
+			OR = {
+				province_has_district = urban_housing_district
+				province_size_level > 3
+			}
+			ai_other_city_in_county_trigger = no
+		}
+	}
+}
+
+ai_de_jure_kingdom_capital_trigger = {
+	kingdom.title_capital_county.title_province ?= this
+}
+
+ai_de_jure_duchy_capital_trigger = {
+	duchy.title_capital_county.title_province ?= this
+}
+
+ai_kingdom_or_above_capital_trigger = {
+	OR = {
+		ai_de_jure_kingdom_capital_trigger = yes
+		empire.title_capital_county.title_province ?= this
+		hegemony.title_capital_county.title_province ?= this
+		AND = {
+			scope:holder.capital_province ?= this
+			scope:holder.highest_held_title_tier >= tier_kingdom
+		}
+	}
+}
+
+ai_de_jure_duchy_capital_push_trigger = {
+	ai_de_jure_kingdom_capital_trigger = no
+	ai_de_jure_duchy_capital_trigger = yes
+	ai_other_city_in_county_trigger = no
+}
+
+ai_urban_push_trigger = {
+	OR = {
+		ai_urban_identity_trigger = yes
+		ai_de_jure_kingdom_capital_trigger = yes
+		ai_de_jure_duchy_capital_push_trigger = yes
+	}
+}
+
+### AI trade post scoring, root is the host province
+# Expects scope:holder, as provided in building ai_value
+
+# The trade post is in its owner's own holding, so its province and county effects benefit the builder
+ai_trade_post_in_builder_holding_trigger = {
+	trade_post_district ?= {
+		district_owning_title ?= {
+			holder ?= scope:holder
+		}
+	}
+}
+
+### AI military district placement, root is the province
+# Expects scope:holder, as provided in building ai_value
+
+ai_military_capital_duchy_trigger = {
+	save_temporary_scope_as = ai_military_check_province
+	scope:holder.capital_province ?= {
+		duchy = scope:ai_military_check_province.duchy
+		county != scope:ai_military_check_province.county
+	}
+}
+
+ai_military_capital_county_trigger = {
+	save_temporary_scope_as = ai_military_check_province
+	scope:holder.capital_province ?= {
+		county = scope:ai_military_check_province.county
+	}
+}
+
+# A rural economy (villages plus a complementary district) exists in this duchy
+ai_military_economy_secured_trigger = {
+	save_temporary_scope_as = ai_military_check_province
+	scope:holder = {
+		any_directly_owned_province = {
+			duchy = scope:ai_military_check_province.duchy
+			province_has_district = villages_district
+			OR = {
+				province_has_district = manor_houses_district
+				province_has_district = religious_community_district
+			}
+		}
+	}
+}
+
+# Every regiment can already be stationed in a county with a military district
+ai_military_regiments_covered_trigger = {
+	scope:holder = {
+		any_directly_owned_province = { province_has_district = military_district }
+	}
+	ai_military_station_slots_value >= ai_maa_regiment_count_value
+}

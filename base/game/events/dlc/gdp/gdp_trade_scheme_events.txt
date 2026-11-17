@@ -1,0 +1,280 @@
+﻿##################################################
+# Events for the Merchant and Republic trade schemes
+##################################################
+namespace = gdp_trade_scheme
+
+### Improve Trade Routes
+# One hidden roll event serves all three improve schemes, and every failure goes to .0003
+# It branches on the scheme type only to pick the success event
+
+# Resolution : rolled when the owner executes from the scheme preparation popup
+gdp_trade_scheme.0001 = {
+	hidden = yes
+
+	immediate = {
+		scope:scheme = {
+			scheme_owner = {
+				save_scope_as = owner
+
+				random = {
+					chance = scope:scheme.scheme_success_chance
+					save_scope_value_as = {
+						name = scheme_successful
+						value = yes
+					}
+				}
+
+				if = {
+					limit = { exists = scope:scheme_successful }
+					gdp_improve_trade_scheme_read_focus_effect = yes
+				}
+
+				# A success with no surviving route left to improve resolves as a failure.
+				if = {
+					limit = {
+						NOT = { exists = scope:improved_trade_route }
+					}
+					trigger_event = gdp_trade_scheme.0003
+				}
+				else_if = {
+					limit = {
+						scope:scheme = { scheme_type = gdp_improve_trade_capacity }
+					}
+					trigger_event = gdp_trade_scheme.0002
+				}
+				else_if = {
+					limit = {
+						scope:scheme = { scheme_type = gdp_improve_trade_competitiveness }
+					}
+					trigger_event = gdp_trade_scheme.0004
+				}
+				else_if = {
+					limit = {
+						scope:scheme = { scheme_type = gdp_improve_trade_expertise }
+					}
+					trigger_event = gdp_trade_scheme.0005
+				}
+				# An improve scheme with no branch here still ends, as a failure.
+				else = {
+					trigger_event = gdp_trade_scheme.0003
+				}
+			}
+		}
+	}
+}
+
+# Success : Capacity
+# We apply here, not in a show_as_tooltip option, so the modifier is not shown twice
+gdp_trade_scheme.0002 = {
+	type = character_event
+	title = gdp_trade_scheme.0002.t
+	desc = gdp_trade_scheme.0002.desc
+	theme = stewardship
+	left_portrait = {
+		character = root
+		animation = trade_deal
+	}
+
+	immediate = {
+		gdp_improve_trade_route_apply_effect = { MODIFIER = gdp_improve_trade_routes_capacity_modifier }
+	}
+
+	option = {
+		name = gdp_trade_scheme.0002.a
+		scope:scheme ?= { end_scheme = yes }
+	}
+}
+
+# Failure : shared by all three improve schemes
+gdp_trade_scheme.0003 = {
+	type = character_event
+	title = gdp_trade_scheme.0003.t
+	desc = gdp_trade_scheme.0003.desc
+	# Shared by all three improve schemes, so the theme cannot be skill-specific.
+	theme = trade
+	left_portrait = {
+		character = root
+		animation = disapproval
+	}
+
+	option = {
+		name = gdp_trade_scheme.0003.a
+		scope:scheme ?= { end_scheme = yes }
+	}
+}
+
+# Success : Competitiveness
+gdp_trade_scheme.0004 = {
+	type = character_event
+	title = gdp_trade_scheme.0004.t
+	desc = gdp_trade_scheme.0004.desc
+	theme = diplomacy
+	left_portrait = {
+		character = root
+		animation = trade_deal
+	}
+
+	immediate = {
+		gdp_improve_trade_route_apply_effect = { MODIFIER = gdp_improve_trade_routes_competitiveness_modifier }
+	}
+
+	option = {
+		name = gdp_trade_scheme.0004.a
+		scope:scheme ?= { end_scheme = yes }
+	}
+}
+
+# Success : Expertise
+gdp_trade_scheme.0005 = {
+	type = character_event
+	title = gdp_trade_scheme.0005.t
+	desc = gdp_trade_scheme.0005.desc
+	theme = learning
+	left_portrait = {
+		character = root
+		animation = trade_deal
+	}
+
+	immediate = {
+		gdp_improve_trade_route_apply_effect = { MODIFIER = gdp_improve_trade_routes_expertise_modifier }
+	}
+
+	option = {
+		name = gdp_trade_scheme.0005.a
+		scope:scheme ?= { end_scheme = yes }
+	}
+}
+
+### Disrupt Trade Routes
+
+# Resolution : rolled when the owner executes from the scheme preparation popup
+gdp_trade_scheme.0011 = {
+	hidden = yes
+
+	immediate = {
+		scope:scheme = {
+			scheme_target_character = { save_scope_as = target }
+			scheme_owner = {
+				save_scope_as = owner
+
+				# Secret schemes also roll for discovery at payoff
+				# We skip it when already exposed so the opinion is not charged twice
+				if = {
+					limit = { scope:scheme ?= { is_scheme_exposed = no } }
+					save_scope_value_as = {
+						name = discovery_chance
+						value = {
+							value = 100
+							subtract = scope:scheme.scheme_secrecy
+						}
+					}
+					random = {
+						chance = scope:discovery_chance
+						save_scope_value_as = {
+							name = scheme_discovered
+							value = yes
+						}
+					}
+				}
+
+				random = {
+					chance = scope:scheme.scheme_success_chance
+					save_scope_value_as = {
+						name = scheme_successful
+						value = yes
+					}
+				}
+
+				if = {
+					limit = { exists = scope:scheme_successful }
+					gdp_disrupt_trade_routes_roll_effect = yes
+				}
+
+				# A success with no surviving route left to hit resolves as a failure.
+				if = {
+					limit = { exists = scope:disrupted_trade_route }
+					trigger_event = gdp_trade_scheme.0012
+				}
+				else = {
+					trigger_event = gdp_trade_scheme.0013
+				}
+			}
+		}
+	}
+}
+
+# Success
+gdp_trade_scheme.0012 = {
+	type = character_event
+	title = gdp_trade_scheme.0012.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:disrupted_route_stat ?= flag:capacity }
+				desc = gdp_trade_scheme.0012.desc_capacity
+			}
+			desc = gdp_trade_scheme.0012.desc_competitiveness
+		}
+		triggered_desc = {
+			trigger = { exists = scope:scheme_discovered }
+			desc = gdp_trade_scheme.0012.desc_discovered
+		}
+	}
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = scheme
+	}
+	right_portrait = {
+		character = scope:target
+		animation = worry
+	}
+
+	immediate = {
+		gdp_disrupt_trade_routes_apply_effect = yes
+		gdp_disrupt_trade_routes_notify_target_effect = yes
+		gdp_disrupt_trade_routes_discovered_effect = yes
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { exists = scope:scheme_discovered }
+						desc = gdp_trade_scheme.0012.a_discovered
+					}
+					desc = gdp_trade_scheme.0012.a
+				}
+			}
+		}
+		scope:scheme ?= { end_scheme = yes }
+	}
+}
+
+# Failure
+gdp_trade_scheme.0013 = {
+	type = character_event
+	title = gdp_trade_scheme.0013.t
+	desc = {
+		desc = gdp_trade_scheme.0013.desc
+		triggered_desc = {
+			trigger = { exists = scope:scheme_discovered }
+			desc = gdp_trade_scheme.0013.desc_discovered
+		}
+	}
+	theme = intrigue
+	left_portrait = {
+		character = root
+		animation = disapproval
+	}
+
+	immediate = {
+		gdp_disrupt_trade_routes_discovered_effect = yes
+	}
+
+	option = {
+		name = gdp_trade_scheme.0013.a
+		scope:scheme ?= { end_scheme = yes }
+	}
+}

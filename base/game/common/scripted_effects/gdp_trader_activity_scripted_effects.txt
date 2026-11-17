@@ -1,0 +1,620 @@
+﻿##################################################
+# Trader Activity Scripted Effects
+
+# Check trade category from district type.
+gdp_trader_save_district_trade_category_effect = {
+	if = {
+		limit = { exists = $LOCATION$.resource_district }
+		switch = {
+			trigger = $LOCATION$.resource_district.district_type
+
+			district_type:forestry_district = {
+				trade_good_category:trade_category_carpentry_supplies = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:grain_district = {
+				trade_good_category:trade_category_cereals = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:wool_district = {
+				trade_good_category:trade_category_fabrics = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:cattle_district = {
+				trade_good_category:trade_category_beasts_of_burden = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:cotton_district = {
+				trade_good_category:trade_category_fabrics = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:stone_district = {
+				trade_good_category:trade_category_carpentry_supplies = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:fish_district = {
+				trade_good_category:trade_category_meat = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:wine_district = {
+				trade_good_category:trade_category_alcohol = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:oil_district = {
+				trade_good_category:trade_category_comforts = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:rice_district = {
+				trade_good_category:trade_category_cereals = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:millet_district = {
+				trade_good_category:trade_category_cereals = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:mine_district = {
+				if = {
+					limit = {
+						$LOCATION$.county = {
+							OR = {
+								has_potential_for_trade_good = trade_good_type:trade_good_gold
+								has_potential_for_trade_good = trade_good_type:trade_good_silver
+							}
+						}
+					}
+					trade_good_category:trade_category_precious_metals = { save_scope_as = gdp_district_trade_category }
+				}
+				else_if = {
+					limit = {
+						$LOCATION$.county = {
+							OR = {
+								has_potential_for_trade_good = trade_good_type:trade_good_gems
+								has_potential_for_trade_good = trade_good_type:trade_good_jade
+							}
+						}
+					}
+					trade_good_category:trade_category_jewelry_materials = { save_scope_as = gdp_district_trade_category }
+				}
+				else_if = {
+					limit = {
+						$LOCATION$.county = {
+							has_potential_for_trade_good = trade_good_type:trade_good_alum
+						}
+					}
+					trade_good_category:trade_category_alum = { save_scope_as = gdp_district_trade_category }
+				}
+				else = {
+					# Iron, copper, or salt mine - default to base metals
+					trade_good_category:trade_category_base_metals = { save_scope_as = gdp_district_trade_category }
+				}
+			}
+			district_type:salt_district = {
+				trade_good_category:trade_category_salt = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:amber_district = {
+				trade_good_category:trade_category_jewelry_materials = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:silk_district = {
+				trade_good_category:trade_category_luxury_items = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:furs_district = {
+				trade_good_category:trade_category_clothes = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:spices_district = {
+				trade_good_category:trade_category_luxury_consumption = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:tea_district = {
+				trade_good_category:trade_category_comforts = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:dyes_district = {
+				trade_good_category:trade_category_dyes = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:ivory_district = {
+				trade_good_category:trade_category_jewelry_materials = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:sugar_district = {
+				trade_good_category:trade_category_luxury_consumption = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:incense_district = {
+				trade_good_category:trade_category_incense = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:medicaments_district = {
+				trade_good_category:trade_category_medicaments = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:ceramics_district = {
+				trade_good_category:trade_category_luxury_items = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:hemp_district = {
+				trade_good_category:trade_category_carpentry_supplies = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:flax_district = {
+				trade_good_category:trade_category_fabrics = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:honey_district = {
+				trade_good_category:trade_category_comforts = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:fruit_district = {
+				trade_good_category:trade_category_comforts = { save_scope_as = gdp_district_trade_category }
+			}
+			district_type:horses_district = {
+				trade_good_category:trade_category_beasts_of_burden = { save_scope_as = gdp_district_trade_category }
+			}
+		}
+	}
+}
+
+# Drives the loop: pick market -> travel or start scheme -> repeat
+##################################################
+
+# If they own the plan we cancel it, and if they are traveling with their liege we take them off it
+gdp_trader_cancel_owned_travel_effect = {
+	if = {
+		limit = { exists = current_travel_plan }
+		if = {
+			limit = { this = current_travel_plan.travel_plan_owner }
+			current_travel_plan = { cancel_travel_plan = yes }
+		}
+		else = {
+			current_travel_plan = { remove_character = prev }
+		}
+	}
+}
+
+# Root is the trader.
+gdp_trader_start_round_effect = {
+	if = {
+		limit = {
+			# Only start a trader scheme when...
+			# They are on the job
+			exists = assigned_trade_route
+			# Employer isn't AI
+			assigned_trade_route.trade_route_owner = { is_ai = no }
+			# Employer has not recalled their trade envoys
+			gdp_trade_envoys_are_out_trigger = yes
+		}
+		save_scope_as = gdp_this_trader
+		# Find a market for the Trader to visit.
+		assigned_trade_route = {
+			random_trade_market_on_route = {
+				save_scope_as = gdp_next_market
+			}
+		}
+		# Already at the target market? Start the scheme directly.
+		if = {
+			limit = { location = scope:gdp_next_market.trade_market_owner.title_province }
+			gdp_trader_start_work_scheme_effect = yes
+		}
+		# Otherwise travel there; scheme starts on arrival via on_gdp_trader_arrived_at_market.
+		else = {
+			gdp_trader_cancel_owned_travel_effect = yes
+			start_travel_plan = {
+				destination = scope:gdp_next_market.trade_market_owner.title_province
+				on_arrival_on_action = on_gdp_trader_arrived_at_market
+				on_arrival_destinations = first
+			}
+		}
+	}
+}
+
+# Runs at the top of on_phase_completed in scheme scope
+# Sets scope:scheme, scope:trader, scope:route_owner, and rolls success into scope:gdp_trader_scheme_success
+gdp_trader_scheme_setup_effect = {
+	save_scope_as = scheme
+	scheme_owner = { save_scope_as = trader }
+	scheme_owner.assigned_trade_route.trade_route_owner = { save_scope_as = route_owner }
+	random = {
+		chance = scope:scheme.scheme_success_chance
+		save_scope_value_as = {
+			name = gdp_trader_scheme_success
+			value = yes
+		}
+	}
+	# On failure we add a little stress, plus the Merchant trait the first time and track experience after that
+	# Half of miniscule_stress_gain is 5, so about one failure a year reaches the return-home letter (80 stress) in about 16 years
+	if = {
+		limit = { NOT = { exists = scope:gdp_trader_scheme_success } }
+		scope:trader = {
+			add_stress = {
+				value = miniscule_stress_gain
+				multiply = 0.5
+			}
+			gdp_trader_request_return_home_effect = yes
+			random_list = {
+				33 = {
+					add_trait_xp = {
+						trait = lifestyle_merchant
+						track = caravaneer
+						value = { integer_range = { min = 1 max = 3 } }
+					}
+				}
+				33 = {
+					add_trait_xp = {
+						trait = lifestyle_merchant
+						track = artisan
+						value = { integer_range = { min = 1 max = 3 } }
+					}
+				}
+				33 = {
+					add_trait_xp = {
+						trait = lifestyle_merchant
+						track = creditor
+						value = { integer_range = { min = 1 max = 3 } }
+					}
+				}
+			}
+		}
+	}
+}
+
+# Character scope. Resume this character's travel if they own a paused plan.
+gdp_trader_resume_paused_travel_effect = {
+	if = {
+		limit = {
+			exists = current_travel_plan
+			this = current_travel_plan.travel_plan_owner
+			current_travel_plan = { is_paused = yes }
+		}
+		current_travel_plan = {
+			resume_travel_plan = yes
+		}
+	}
+}
+
+# Runs at the end of on_phase_completed in scheme scope
+# We end this scheme before starting the next round, because a personal scheme cannot start while this one still occupies the slot
+gdp_trader_scheme_complete_effect = {
+	scheme_owner ?= {
+		save_scope_as = trader
+		gdp_trader_resume_paused_travel_effect = yes
+	}
+	end_scheme = yes
+	scope:trader ?= {
+		gdp_trader_start_round_effect = yes
+	}
+}
+
+# Runs from on_invalidated in scheme scope
+# The scheme is still on the trader until invalidation finishes, so we queue the next round for later the same day
+gdp_trader_scheme_invalidated_effect = {
+	scheme_owner ?= {
+		if = {
+			limit = {
+				gdp_trade_envoys_are_out_trigger = yes
+			}
+			gdp_trader_resume_paused_travel_effect = yes
+			trigger_event = {
+			 	on_action = on_gdp_trader_continue_activity
+			 	days = 0
+			}
+		}
+	}
+}
+
+# Character scope. Starts $SCHEME$ and sets a one-year cooldown on that type
+# The bypass flag skips the cooldown when every fitting type was already on cooldown
+gdp_trader_start_picked_scheme_effect = {
+	start_scheme = {
+		type = $SCHEME$
+		targets_nothing = yes
+	}
+	if = {
+		limit = {
+			NOT = { has_character_flag = gdp_trader_ignore_scheme_cooldown }
+		}
+		add_character_flag = {
+			flag = $SCHEME$_cooldown
+			years = 1
+		}
+	}
+}
+
+# Character scope. Weighted pick of a market-work scheme for the current market.
+gdp_trader_pick_work_scheme_effect = {
+	# root is the scheme when this is called from scheme completion, so we keep the trader
+	save_scope_as = gdp_this_trader
+	# Off-route markets get exploration schemes, on-route markets get schemes that need a trade presence
+	if = {
+		limit = {
+			exists = scope:gdp_this_trader
+			gdp_trade_envoys_are_out_trigger = yes
+			NOT = {
+				assigned_trade_route ?= {
+					any_trade_market_on_route = {
+						scope:gdp_this_trader.location.barony.trade_market ?= this
+					}
+				}
+			}
+		}
+		# Off-route: scouting, discovery, and relationship-building
+		random_list = {
+			20 = {
+				modifier = { add = stewardship }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_exploring_new_markets_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_exploring_new_markets_scheme }
+			}
+			10 = {
+				modifier = { add = stewardship }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_finding_a_deal_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_finding_a_deal_scheme }
+			}
+			10 = {
+				modifier = { add = diplomacy }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_building_reputation_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_building_reputation_scheme }
+			}
+			10 = {
+				modifier = { add = diplomacy }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_negotiating_with_ruler_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_negotiating_with_ruler_scheme }
+			}
+			10 = {
+				modifier = { add = diplomacy }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_building_connections_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_building_connections_scheme }
+			}
+			10 = {
+				modifier = { add = diplomacy }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_hiring_local_talent_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_hiring_local_talent_scheme }
+			}
+			10 = {
+				modifier = { add = learning }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_learning_from_locals_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_learning_from_locals_scheme }
+			}
+			10 = {
+				modifier = { add = learning }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_studying_local_crafts_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_studying_local_crafts_scheme }
+			}
+			10 = {
+				modifier = { add = martial }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_securing_safe_passage_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_securing_safe_passage_scheme }
+			}
+			10 = {
+				modifier = { add = intrigue }
+				trigger = {
+					gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_recruiting_informants_scheme }
+				}
+				gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_recruiting_informants_scheme }
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				exists = root
+				gdp_trade_envoys_are_out_trigger = yes
+			}
+			# On-route: established market operations
+			random_list = {
+				10 = {
+					modifier = { add = stewardship }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_negotiate_deals_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_negotiate_deals_scheme }
+				}
+				10 = {
+					modifier = { add = stewardship }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_finding_a_deal_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_finding_a_deal_scheme }
+				}
+				10 = {
+					modifier = { add = stewardship }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_securing_surplus_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_securing_surplus_scheme }
+				}
+				10 = {
+					modifier = { add = stewardship }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_appraising_market_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_appraising_market_scheme }
+				}
+				10 = {
+					modifier = { add = stewardship }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_organizing_caravan_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_organizing_caravan_scheme }
+				}
+				5 = {
+					modifier = { add = stewardship }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_identifying_rare_goods_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_identifying_rare_goods_scheme }
+				}
+				10 = {
+					modifier = { add = diplomacy }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_lobbying_advantages_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_lobbying_advantages_scheme }
+				}
+				10 = {
+					modifier = { add = diplomacy }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_building_reputation_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_building_reputation_scheme }
+				}
+				10 = {
+					modifier = { add = diplomacy }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_championing_patron_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_championing_patron_scheme }
+				}
+				10 = {
+					modifier = { add = diplomacy }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_entertaining_merchants_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_entertaining_merchants_scheme }
+				}
+				10 = {
+					modifier = { add = learning }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_appraising_goods_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_appraising_goods_scheme }
+				}
+				10 = {
+					modifier = { add = intrigue }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_undermining_competitor_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_undermining_competitor_scheme }
+				}
+				10 = {
+					modifier = { add = intrigue }
+					trigger = {
+						gdp_trader_can_start_scheme_trigger = { SCHEME = gdp_trader_recruiting_informants_scheme }
+					}
+					gdp_trader_start_picked_scheme_effect = { SCHEME = gdp_trader_recruiting_informants_scheme }
+				}
+			}
+		}
+	}
+}
+
+# Runs on the trader once they are at the target market
+gdp_trader_start_work_scheme_effect = {
+	if = {
+		limit = {
+			exists = current_travel_plan
+			gdp_trade_envoys_are_out_trigger = yes
+		}
+		current_travel_plan = {
+			pause_travel_plan = yes
+		}
+	}
+	remove_character_flag = gdp_trader_ignore_scheme_cooldown
+	gdp_trader_pick_work_scheme_effect = yes
+	if = {
+		limit = {
+			NOT = {
+				any_scheme = {
+					gdp_trader_is_activity_scheme_trigger = yes
+				}
+			}
+		}
+		# Every fitting scheme type is on cooldown. Take one anyway.
+		add_character_flag = gdp_trader_ignore_scheme_cooldown
+		gdp_trader_pick_work_scheme_effect = yes
+		remove_character_flag = gdp_trader_ignore_scheme_cooldown
+	}
+	if = {
+		limit = {
+			NOT = {
+				any_scheme = {
+					gdp_trader_is_activity_scheme_trigger = yes
+				}
+			}
+		}
+		gdp_trader_resume_paused_travel_effect = yes
+		trigger_event = {
+			on_action = on_gdp_trader_continue_activity
+			days = 30
+		}
+	}
+}
+
+# Trader character scope
+# Root is the scheme, so the owner check uses scope:trader
+gdp_trader_request_return_home_effect = {
+	if = {
+		limit = {
+			stress >= gdp_trader_stress_letter_threshold_value
+			NOT = { has_character_flag = gdp_trader_stress_return_requested }
+			assigned_trade_route.trade_route_owner ?= {
+				is_ai = no
+				NOT = { this = scope:trader }
+				NOT = { has_variable = gdp_trader_return_request_cooldown }
+			}
+		}
+		add_character_flag = gdp_trader_stress_return_requested
+		save_scope_as = associate
+		assigned_trade_route.trade_route_owner = {
+			set_variable = {
+				name = gdp_trader_return_request_cooldown
+				years = 10
+			}
+			trigger_event = gdp_merchant.0060
+		}
+	}
+}
+
+# Character scope (trade route owner). Stop market schemes and send traders home.
+gdp_return_trade_envoys_effect = {
+	add_character_flag = gdp_trade_envoys_recalled
+	set_variable = {
+		name = gdp_send_trade_envoys_cooldown
+		years = 3
+	}
+	if = {
+		limit = { has_variable = gdp_trade_envoys_return_promise }
+		send_interface_toast = {
+			type = event_toast_text_good
+			title = gdp_trade_envoys_return_promise_kept_title
+			desc = gdp_trade_envoys_return_promise_kept_desc
+			remove_variable = gdp_trade_envoys_return_promise
+		}
+	}
+	every_trade_route = {
+		limit = { has_trader = yes }
+		trader = {
+			remove_character_flag = gdp_trader_stress_return_requested
+			every_scheme = {
+				limit = { gdp_trader_is_activity_scheme_trigger = yes }
+				end_scheme = yes
+			}
+			gdp_trader_cancel_owned_travel_effect = yes
+		}
+	}
+}
+
+# Character scope (trade route owner). Traders travel their routes and run market schemes.
+gdp_send_trade_envoys_effect = {
+	remove_character_flag = gdp_trade_envoys_recalled
+	every_trade_route = {
+		limit = { has_trader = yes }
+		trader = {
+			gdp_trader_start_round_effect = yes
+		}
+	}
+}
+
+# Character scope (trade route owner)
+# Traders already on a route when a player takes over the company never got an on_trader_assigned round
+gdp_trade_envoys_resume_idle_traders_effect = {
+	every_trade_route = {
+		limit = { has_trader = yes }
+		trader = {
+			if = {
+				limit = {
+					NOT = { exists = current_travel_plan }
+					NOT = {
+						any_scheme = { gdp_trader_is_activity_scheme_trigger = yes }
+					}
+				}
+				gdp_trader_start_round_effect = yes
+			}
+		}
+	}
+}
+

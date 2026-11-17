@@ -1,0 +1,215 @@
+﻿##################################################
+# Trade Scheme Effects
+# Shared plumbing for the Merchant and Republic trade schemes.
+##################################################
+
+### Improve Trade Routes
+# One prep, roll and apply path serves all three improve schemes
+# The chosen trade route is stored on the scheme as var:focused_trade_route, so concurrent improve schemes cannot collide
+
+# Run in the decision's scope, immediately after begin_scheme_with_agents_effect.
+gdp_improve_trade_scheme_set_focus_effect = {
+	if = {
+		limit = { exists = scope:selected_item }
+		scope:new_scheme ?= {
+			set_variable = {
+				name = focused_trade_route
+				value = scope:selected_item
+			}
+		}
+	}
+}
+
+# Fires the shared scheme preparation popup, which in turn fires our resolution event.
+gdp_improve_trade_scheme_prep_effect = {
+	save_scope_as = scheme
+	save_scope_value_as = {
+		name = follow_up_event
+		value = event_id:gdp_trade_scheme.0001
+	}
+	if = {
+		limit = {
+			NOT = { exists = scope:suppress_next_event }
+		}
+		scheme_owner = { trigger_event = scheme_critical_moments.0002 }
+	}
+}
+
+# A route that died mid-scheme leaves nothing to save, so the outcome falls through to the failure event
+gdp_improve_trade_scheme_read_focus_effect = {
+	scope:scheme ?= {
+		var:focused_trade_route ?= {
+			save_scope_as = improved_trade_route
+		}
+	}
+}
+
+# end_scheme runs no invalidation effects, so the toast is sent here.
+# Run in scheme scope.
+gdp_improve_trade_scheme_route_destroyed_effect = {
+	scheme_owner = { save_scope_as = owner }
+	if = {
+		limit = { scheme_type = gdp_improve_trade_capacity }
+		scope:owner = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = gdp_improve_trade_capacity_invalidated_title
+				left_icon = scope:owner
+				custom_tooltip = gdp_improve_trade_routes_focused_route_gone
+			}
+		}
+	}
+	else_if = {
+		limit = { scheme_type = gdp_improve_trade_competitiveness }
+		scope:owner = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = gdp_improve_trade_competitiveness_invalidated_title
+				left_icon = scope:owner
+				custom_tooltip = gdp_improve_trade_routes_focused_route_gone
+			}
+		}
+	}
+	else_if = {
+		limit = { scheme_type = gdp_improve_trade_expertise }
+		scope:owner = {
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = gdp_improve_trade_expertise_invalidated_title
+				left_icon = scope:owner
+				custom_tooltip = gdp_improve_trade_routes_focused_route_gone
+			}
+		}
+	}
+	end_scheme = yes
+}
+
+gdp_improve_trade_route_apply_effect = {
+	scope:improved_trade_route ?= {
+		add_trade_route_modifier = {
+			modifier = $MODIFIER$
+			years = 15
+		}
+	}
+}
+
+### Disrupt Trade Routes
+
+# Fires the shared scheme preparation popup, which in turn fires our resolution event.
+gdp_disrupt_trade_routes_scheme_prep_effect = {
+	save_scope_as = scheme
+	save_scope_value_as = {
+		name = follow_up_event
+		value = event_id:gdp_trade_scheme.0011
+	}
+	if = {
+		limit = {
+			NOT = { exists = scope:suppress_next_event }
+		}
+		scheme_owner = { trigger_event = scheme_critical_moments.0002 }
+	}
+}
+
+# A route sharing a market with the owner is always preferred, random only breaks the tie.
+gdp_disrupt_trade_routes_roll_effect = {
+	scope:target ?= {
+		random_trade_route = {
+			limit = {
+				gdp_trade_route_shares_market_with_trigger = { CHARACTER = scope:owner }
+			}
+			alternative_limit = {
+				always = yes
+			}
+			save_scope_as = disrupted_trade_route
+		}
+	}
+	if = {
+		limit = { exists = scope:disrupted_trade_route }
+		random_list = {
+			50 = {
+				save_scope_value_as = {
+					name = disrupted_route_stat
+					value = flag:capacity
+				}
+			}
+			50 = {
+				save_scope_value_as = {
+					name = disrupted_route_stat
+					value = flag:competitiveness
+				}
+			}
+		}
+	}
+}
+
+gdp_disrupt_trade_routes_apply_effect = {
+	scope:disrupted_trade_route ?= {
+		if = {
+			limit = { scope:disrupted_route_stat ?= flag:capacity }
+			add_trade_route_modifier = {
+				modifier = gdp_disrupt_trade_routes_capacity_modifier
+				years = 20
+			}
+		}
+		else = {
+			add_trade_route_modifier = {
+				modifier = gdp_disrupt_trade_routes_competitiveness_modifier
+				years = 20
+			}
+		}
+	}
+}
+
+# on_scheme_discovered only covers mid-scheme exposure, so resolution pays here.
+# Run in scheme owner scope.
+gdp_disrupt_trade_routes_discovered_effect = {
+	if = {
+		limit = { exists = scope:scheme_discovered }
+		scope:target ?= {
+			add_opinion = {
+				modifier = gdp_disrupt_trade_routes_discovered_opinion
+				target = scope:owner
+			}
+		}
+		# No route was touched, so the damage toast never runs to name the culprit.
+		if = {
+			limit = { NOT = { exists = scope:disrupted_trade_route } }
+			hidden_effect = {
+				scope:target ?= {
+					send_interface_toast = {
+						type = event_toast_effect_bad
+						title = gdp_disrupt_trade_routes_target_caught_notification
+						left_icon = scope:owner
+						custom_tooltip = gdp_disrupt_trade_routes_target_caught_tt
+					}
+				}
+			}
+		}
+	}
+}
+
+# Anonymous unless the scheme was discovered
+# Hidden, or it prints into the owner's own resolution event
+gdp_disrupt_trade_routes_notify_target_effect = {
+	hidden_effect = {
+		scope:target ?= {
+			if = {
+				limit = { exists = scope:scheme_discovered }
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = gdp_disrupt_trade_routes_target_notification
+					left_icon = scope:owner
+					custom_tooltip = gdp_disrupt_trade_routes_target_notification_discovered_tt
+				}
+			}
+			else = {
+				send_interface_toast = {
+					type = event_toast_effect_bad
+					title = gdp_disrupt_trade_routes_target_notification
+					left_icon = scope:target
+					custom_tooltip = gdp_disrupt_trade_routes_target_notification_tt
+				}
+			}
+		}
+	}
+}

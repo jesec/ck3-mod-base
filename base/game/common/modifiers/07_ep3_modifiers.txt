@@ -32,7 +32,7 @@ ep3_estate_governor_patrols_modifier = {
 	icon = martial_positive
 	
 	defender_holding_advantage = 10
-	monthly_county_control_growth_add = 0.5
+	monthly_control_change_when_below_baseline_add = 0.5
 }
 
 ep3_estate_granary_modifier = {
@@ -47,13 +47,19 @@ ep3_estate_granary_modifier = {
 	}
 }
 
+ep3_estate_household_clerks_house_modifier = {
+	icon = administrative_positive
+
+	governor_efficiency_add = estate_governor_efficiency_house_bonus_value
+}
+
 ###############################################
 # Eparch modifiers
 
-ep3_eparch_county_opinion_modifier = {
+ep3_eparch_popular_opinion_modifier = {
 	icon = county_modifier_opinion_positive
 	
-	county_opinion_add = 10
+	popular_opinion_add = 5
 	
 	scale = {
 		value = eparch_aptitude_modifier_scaling_value
@@ -79,7 +85,7 @@ ep3_eparch_troops_modifier = {
 ep3_eparch_control_modifier = {
 	icon = county_modifier_control_positive
 	
-	monthly_county_control_growth_add = 0.3
+	monthly_control_change_when_below_baseline_add = 0.3
 	
 	scale = {
 		value = eparch_aptitude_modifier_scaling_value
@@ -88,10 +94,10 @@ ep3_eparch_control_modifier = {
 	}
 }
 
-ep3_eparch_development_modifier = {
-	icon = county_modifier_development_positive
+ep3_eparch_prosperity_modifier = {
+	icon = county_modifier_prosperity_positive
 	
-	development_growth = 0.1
+	prosperity_growth = 0.1
 	
 	scale = {
 		value = eparch_aptitude_modifier_scaling_value
@@ -136,7 +142,7 @@ ep3_eparch_physician_at_work_modifier = {
 	icon = treatment_positive
 	
 	epidemic_resistance = 5
-	development_decline_factor = -0.15
+	prosperity_decline_factor = -0.15
 	
 	scale = {
 		value = {
@@ -167,16 +173,16 @@ ep3_eparch_university_influence_modifier = {
 ep3_governance_tax_relief = {
 	icon = stewardship_mixed
 	
-	tax_mult = -0.1
-	development_growth_factor = 0.25
-	county_opinion_add = 20
+	urban_tax_mult = -0.1
+	prosperity_growth_factor = 0.25
+	popular_opinion_add = 5
 }
 
 ep3_governance_stationed_troops = {
 	icon = martial_positive
 	
-	tax_mult = 0.1
-	monthly_county_control_growth_factor = 0.2
+	civic_tax_mult = 0.1
+	monthly_control_change_when_below_baseline_mult = 0.2
 	stationed_maa_damage_mult = 0.1
 	fort_level = 2
 }
@@ -184,9 +190,9 @@ ep3_governance_stationed_troops = {
 ep3_governance_festivities = {
 	icon = county_modifier_opinion_positive
 	
-	tax_mult = 0.05
-	monthly_county_control_growth_factor = 0.1
-	county_opinion_add = 25
+	urban_tax_mult = 0.05
+	monthly_control_change_when_below_baseline_mult = 0.1
+	popular_opinion_add = 5
 }
 
 ep3_governance_infrastructure = {
@@ -201,8 +207,8 @@ ep3_governance_infrastructure = {
 ep3_governance_harvest = {
 	icon = food_positive
 	
-	county_opinion_add = 10
-	development_growth_factor = 0.05
+	popular_opinion_add = 5
+	prosperity_growth_factor = 0.05
 	travel_danger = -4
 	epidemic_resistance = 2
 }
@@ -210,8 +216,8 @@ ep3_governance_harvest = {
 ep3_governance_great_harvest = {
 	icon = food_positive
 	
-	county_opinion_add = 20
-	development_growth_factor = 0.1
+	popular_opinion_add = 5
+	prosperity_growth_factor = 0.1
 	travel_danger = -8
 	epidemic_resistance = 6
 }
@@ -222,15 +228,15 @@ ep3_governance_mercenary_troops = {
 	men_at_arms_maintenance = -0.2
 	knight_effectiveness_mult = 0.2
 	maa_damage_mult = 0.1
-	county_opinion_add = -15
+	popular_opinion_add = -15
 	monthly_prestige_gain_mult = -0.2
 }
 
 ep3_governance_workforce = {
 	icon = economy_positive
 	
-	county_opinion_add = 10
-	development_growth_factor = 0.1
+	popular_opinion_add = 5
+	prosperity_growth_factor = 0.1
 	build_gold_cost = -0.1
 	build_speed = -0.1
 }
@@ -238,9 +244,9 @@ ep3_governance_workforce = {
 ep3_governance_rampant_bandits = {
 	icon = travel_safety_negative
 	
-	county_opinion_add = -10
+	popular_opinion_add = -10
 	travel_danger = 20
-	monthly_county_control_decline_add = -0.2
+	control_baseline_add = minor_control_baseline_loss
 }
 
 ep3_settled_troops_province_modifier = {
@@ -257,20 +263,20 @@ ep3_longer_breaks_province_modifier = {
 }
 
 ep3_better_paid_soldiers_modifier = {
-	icon = martial_mixed
+	icon = martial_positive
 	men_at_arms_maintenance = 0.1
 	maa_damage_mult = 0.15
 }
 
 ep3_mismanaged_administration_modifier = {
 	icon = economy_negative
-	tax_mult = -0.1
-	monthly_county_control_decline_add = -0.2
+	civic_tax_mult = -0.1
+	control_baseline_add = minor_control_baseline_loss
 }
 
 ep3_contract_infrastructure_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.2
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.2
 	travel_danger = -10
 }
 
@@ -282,32 +288,32 @@ ep3_invested_military_modifier = {
 
 ep3_food_distribution_modifier = {
 	icon = food_positive
-	county_opinion_add = 20
-	monthly_county_control_growth_add = 0.15
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_add = 0.15
 }
 
 ep3_peasant_border_raids_modifier = {
 	icon = goods_mixed
-	monthly_county_control_decline_add = -0.2
+	control_baseline_add = minor_control_baseline_loss
 	garrison_size = 0.2
 	hostile_raid_time = 0.4
 }
 
 ep3_peasant_workers_modifier = {
 	icon = food_mixed
-	tax_mult = 0.2
-	county_opinion_add = -20
-	development_growth_factor = 0.1
+	agricultural_tax_mult = 0.2
+	popular_opinion_add = -20
+	prosperity_growth_factor = 0.1
 }
 
 ep3_abundant_game_modifier = {
 	icon = hunt_positive
-	development_growth_factor = 0.15
+	prosperity_growth_factor = 0.15
 }
 
 ep3_wild_predators_modifier = {
 	icon = hunt_negative
-	development_growth_factor = -0.25
+	prosperity_growth_factor = -0.25
 }
 
 ep3_ferocious_pets_modifier = {
@@ -315,47 +321,47 @@ ep3_ferocious_pets_modifier = {
 	enemy_hostile_scheme_phase_duration_add = medium_scheme_phase_duration_malus_value
 	dread_gain_mult = 0.25
 	monthly_influence_mult = 0.1
-	tax_mult = -0.15
+	agricultural_tax_mult = -0.15
 }
 
 ep3_church_investigation_modifier = {
 	icon = flame_mixed
 	holding_build_piety_cost = -0.5
 	church_holding_build_speed = -0.3
-	county_opinion_add = -25
-	tax_mult = 0.2
+	popular_opinion_add = -25
+	religious_tax_mult = 0.2
 }
 
 ep3_rationalist_gov_modifier = {
 	icon = learning_mixed
 	learning = 2
-	county_opinion_add = -10
+	popular_opinion_add = -10
 	monthly_piety_gain_mult = -0.1
 }
 
 ep3_local_practices_modifier = {
 	icon = county_modifier_control_positive
-	county_opinion_add = 20
-	monthly_county_control_growth_factor = 0.2
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_mult = 0.2
 }
 
 ep3_treasure_invest_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.2
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.2
 	build_gold_cost = -0.1
 	travel_danger = -5
 }
 
 ep3_treasure_distributed_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.2
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.2
 }
 
 ep3_lands_reinstated_modifier = {
 	icon = administrative_positive
 	levy_size = 0.2
-	tax_mult = 0.1
-	county_opinion_add = 10
+	agricultural_tax_mult = 0.1
+	popular_opinion_add = 5
 }
 
 ep3_land_confiscate_modifier = {
@@ -366,7 +372,7 @@ ep3_land_confiscate_modifier = {
 
 ep3_religiously_pacified_modifier = {
 	icon = piety_positive
-	county_opinion_add = 20
+	popular_opinion_add = 5
 	supply_limit_mult = 0.25
  	levy_reinforcement_rate = 0.25
  	travel_danger = -10
@@ -374,8 +380,8 @@ ep3_religiously_pacified_modifier = {
 
 ep3_doom_repressed_modifier = {
 	icon = county_modifier_opinion_mixed
-	county_opinion_add = -20
-	monthly_county_control_growth_factor = 0.2
+	popular_opinion_add = -20
+	monthly_control_change_when_below_baseline_mult = 0.2
 }
 
 ep3_religious_debate_modifier = {
@@ -395,52 +401,52 @@ ep3_rebuild_effort_modifier = {
 	icon = rat_positive
 	epidemic_resistance = 5
 	supply_limit_mult = 0.15
-	development_growth_factor = 0.2
-	county_opinion_add = 10
+	prosperity_growth_factor = 0.2
+	popular_opinion_add = 5
 }
 
 ep3_tight_control_modifier = {
 	icon = county_modifier_opinion_mixed
-	county_opinion_add = -20
-	development_growth_factor = -0.2
-	monthly_county_control_growth_factor = 0.2
+	popular_opinion_add = -20
+	prosperity_growth_factor = -0.2
+	monthly_control_change_when_below_baseline_mult = 0.2
 	epidemic_resistance = 10
 	travel_danger = -10
 }
 
 ep3_war_support_modifier = {
 	icon = martial_mixed
-	tax_mult = -0.2
+	all_tax_mult = -0.2
 	fort_level = 1
 	garrison_size = 0.5
 }
 
 ep3_war_supplies_modifier = {
 	icon = goods_mixed
-	tax_mult = -0.1
+	all_tax_mult = -0.1
 	supply_limit_mult = 0.5
 	levy_reinforcement_rate_friendly_territory = 0.5
 }
 
 ep3_war_lodgings_modifier = {
 	icon = martial_mixed
-	tax_mult = -0.1
+	all_tax_mult = -0.1
 	supply_limit_mult = 0.25
 	defender_holding_advantage = 5
 }
 
 ep3_war_lookout_modifier = {
 	icon = martial_mixed
-	tax_mult = -0.1
+	all_tax_mult = -0.1
 	travel_danger = -10
 	defender_holding_advantage = 10
 }
 
 ep3_war_compensations_modifier = {
 	icon = stewardship_positive
-	tax_mult = 0.1
-	monthly_county_control_growth_at_war_factor = 0.25
-	development_growth_factor = 0.25
+	civic_tax_mult = 0.1
+	monthly_control_change_when_below_baseline_mult = 0.25
+	prosperity_growth_factor = 0.25
 }
 
 ###############################################
@@ -448,7 +454,7 @@ ep3_war_compensations_modifier = {
 
 ep3_restored_pentarchy_seat_county_modifier = {
 	icon = byzantine_eagle_positive
-	tax_mult = 0.2
+	religious_tax_mult = 0.2
 	levy_size = 0.3
 }
 
@@ -462,7 +468,7 @@ ep3_restored_pentarchy_seat_modifier = {
 
 ep3_maximum_border_county_modifier = {
 	icon = byzantine_eagle_positive
-	development_growth = 0.2
+	prosperity_growth = 0.2
 	levy_size = 0.1
 	castle_holding_build_gold_cost = -0.1
 }
@@ -476,7 +482,7 @@ ep3_maximum_border_modifier = {
 
 ep3_new_justinian_county_modifier = {
 	icon = byzantine_eagle_positive
-	tax_mult = 0.2
+	civic_tax_mult = 0.2
 	city_holding_build_gold_cost = -0.2
 }
 
@@ -488,7 +494,7 @@ ep3_new_justinian_modifier = {
 
 ep3_western_tetrarch_county_modifier = {
 	icon = byzantine_eagle_positive
-	monthly_county_control_growth_add = 1
+	monthly_control_change_when_below_baseline_add = 1
 	travel_danger = -10
 }
 
@@ -501,7 +507,7 @@ ep3_western_tetrarch_modifier = {
 
 ep3_long_lost_province_county_modifier = {
 	icon = byzantine_eagle_positive
-	development_growth_factor = 0.1
+	prosperity_growth_factor = 0.1
 	city_holding_build_gold_cost = -0.3
 }
 
@@ -529,7 +535,7 @@ ep3_long_contested_province_modifier = {
 ep3_medi_gem_county_modifier = {
 	icon = byzantine_eagle_positive
 	build_gold_cost = -0.2
-	development_growth_factor = medium_development_growth_gain
+	prosperity_growth_factor = medium_prosperity_growth_gain
 }
 
 ep3_medi_gem_modifier = {
@@ -613,7 +619,7 @@ ep3_triumph_traditional_punishments_modifier = {
 ep3_triumph_public_executioner_modifier = {
 	icon = dread_positive
 	monthly_dread = 0.25
-	monthly_county_control_growth_add = 0.3
+	monthly_control_change_when_below_baseline_add = 0.3
 	intimidated_vassal_tax_contribution_mult = 0.1
 	cowed_vassal_tax_contribution_mult = 0.2
 }
@@ -631,14 +637,14 @@ ep3_triumph_promised_stability_modifier = {
 	diplomacy = 1
 	courtly_opinion = 10
 	monthly_prestige_gain_per_happy_powerful_vassal_add = 0.2
-	monthly_county_control_growth_add = 0.2
+	monthly_control_change_when_below_baseline_add = 0.2
 }
 
 ep3_triumph_promised_prosperity_modifier = {
 	icon = stewardship_positive
 	stewardship = 1
 	parochial_opinion = 10
-	development_growth_factor = 0.2
+	prosperity_growth_factor = 0.2
 	monthly_income_mult = 0.1
 }
 
@@ -721,7 +727,7 @@ attentive_varangians_modifier = {
 
 ep3_exotic_giraffe_modifier = {
 	icon = horse_positive
-	monthly_county_control_growth_factor = 0.2
+	monthly_control_change_when_below_baseline_mult = 0.2
   	monthly_court_grandeur_change_mult = 0.2
   	court_grandeur_baseline_add = 2
 }
@@ -753,7 +759,7 @@ ep3_bought_the_purple_modifier = {
 ep3_leviathan_success_character_modifier = {
 	icon = beast_positive
 	general_opinion = 5
-	county_opinion_add = 20
+	popular_opinion_add = 5
 }
 
 ep3_leviathan_failure_character_modifier = {
@@ -763,19 +769,19 @@ ep3_leviathan_failure_character_modifier = {
 
 ep3_iconoclast_modifier = {
 	icon = piety_mixed
-	county_opinion_add = -20
+	popular_opinion_add = -20
 	same_faith_opinion = 15
 }
 
 ep3_grave_robber_modifier = {
 	icon = influence_mixed
-	county_opinion_add = -20
+	popular_opinion_add = -20
 	monthly_influence_mult = -0.05
 	dread_gain_mult = 0.05
 }
 
 ep3_construction_contract_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	monthly_income = 1	
 }
 
@@ -789,15 +795,15 @@ ep3_pilgrim_protector_same_modifier = {
 
 ep3_pilgrim_protector_other_modifier = {
 	icon = piety_positive
-	different_faith_county_opinion_mult = -0.3
+	different_faith_popular_opinion_mult = -0.3
 	different_faith_opinion = 15
 	faith_conversion_piety_cost_mult = -0.5
-	domain_tax_different_faith_mult = 0.1
+	religious_tax_mult = 0.1
 }
 
 ep3_friendly_host_modifier = {
 	icon = influence_positive
-	county_opinion_add = 15
+	popular_opinion_add = 5
 	zealot_opinion = 10
 }
 
@@ -813,7 +819,7 @@ ep3_law_and_order_modifier = {
 	icon = signet_ring_mixed
 	martial = 1
 	dread_gain_mult = 0.2
-	county_opinion_add = -15
+	popular_opinion_add = -15
 }
 
 ep3_crowd_bender_modifier = {
@@ -825,26 +831,27 @@ ep3_crowd_bender_modifier = {
 ep3_bolstered_governor_treasury_modifier = {
 	icon = administrative_positive
 	monthly_influence_mult = 0.1
-	development_growth_factor = 0.05
+	prosperity_growth_factor = 0.05
+	governor_efficiency_add = 0.05
 }
 
 ep3_governor_yearly_8080_tense_bureaucracy_modifier = {
 	icon = administrative_mixed
-	county_opinion_add = 10
+	popular_opinion_add = 5
 	dread_baseline_add = 5
-	tax_mult = -0.1
+	civic_tax_mult = -0.1
 }
 
 ep3_governor_yearly_8080_jumpy_bureaucracy_modifier = {
 	icon = administrative_mixed
-	county_opinion_add = 25
+	popular_opinion_add = 5
 	dread_baseline_add = 10
-	tax_mult = -0.15
+	civic_tax_mult = -0.15
 }
 
 ep3_governor_yearly_8080_corrupt_bureaucracy_modifier = {
 	icon = administrative_negative
-	county_opinion_add = -25
+	popular_opinion_add = -25
 	dread_baseline_add = -10
 }
 
@@ -852,6 +859,7 @@ ep3_governor_yearly_8050_imperial_recruiter_modifier = {
 	icon = administrative_positive
 	liege_opinion = 10
 	monthly_influence_mult = 0.1
+	governor_efficiency_add = 0.05
 }
 
 ep3_governor_yearly_8050_imperial_fortification_modifier = {
@@ -865,20 +873,27 @@ ep3_governor_yearly_8050_imperial_fortification_modifier = {
 ep3_governor_yearly_8050_imperial_resources_modifier = {
 	icon = administrative_negative
 	liege_opinion = -15
+	governor_efficiency_add = -0.05
 }
 
-ep3_governor_yearly_8040_province_development_modifier = {
+ep3_governor_yearly_8060_efficiency_drop_modifier = {
+	icon = administrative_negative
+	governor_efficiency_add = -0.05
+}
+
+ep3_governor_yearly_8040_province_prosperity_modifier = {
 	icon = administrative_mixed
 	build_gold_cost = -0.25
 	holding_build_gold_cost = -0.25
 	domicile_build_gold_cost = 0.25
 }
 
-ep3_governor_yearly_8040_domicile_development_modifier = {
+ep3_governor_yearly_8040_domicile_prosperity_modifier = {
 	icon = administrative_mixed
 	domicile_build_gold_cost = -0.25
 	build_gold_cost = 0.25
 	holding_build_gold_cost = 0.25
+	governor_efficiency_add = -0.1
 }
 
 ep3_governor_yearly_8040_across_things_modifier = {
@@ -919,38 +934,41 @@ laamp_familiar_lands = {
 
 ep3_governor_yearly_8120_relief_leader_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 25
+	popular_opinion_add = 5
 	monthly_influence_mult = 0.1
 }
 
 ep3_governor_yearly_8120_relief_botched_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -25
+	popular_opinion_add = -25
 	monthly_influence_mult = -0.1
 }
 
 ep3_governor_yearly_8120_relief_rejected_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -30
+	popular_opinion_add = -30
+	governor_efficiency_add = -0.05
 }
 
 ep3_governor_yearly_8130_raised_taxes_modifier = {
 	icon = byzantine_eagle_mixed
-	tax_mult = 0.2
-	county_opinion_add = -30
+	urban_tax_mult = 0.2
+	popular_opinion_add = -30
+	governor_efficiency_add = -0.05
 }
 
 ep3_governor_yearly_8130_special_levy_modifier = {
 	icon = byzantine_eagle_negative
-	county_opinion_add = -15
+	popular_opinion_add = -15
 }
 
 ep3_governor_yearly_8130_raised_almonage_modifier = {
 	icon = byzantine_eagle_mixed
-	development_growth_factor = 0.1
+	prosperity_growth_factor = 0.1
 	epidemic_resistance = 5
-	county_opinion_add = 10
+	popular_opinion_add = 5
 	vassal_opinion = -15
+	governor_efficiency_add = 0.05
 }
 
 ep3_sent_help_to_east_modifier = {
@@ -982,35 +1000,35 @@ ep3_integration_promoter_modifier = {
 # #County modifiers
 taxed_and_pressganged_tenants_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -25
-	development_growth = -0.25
+	popular_opinion_add = -25
+	prosperity_growth = -0.25
 }
 
 ep3_century_celebration_county_modifier = {
 	icon = byzantine_eagle_positive
-	development_growth_factor = medium_development_growth_gain
-	development_growth = 0.2
-	tax_mult = 0.3
-	county_opinion_add = 25
+	prosperity_growth_factor = medium_prosperity_growth_gain
+	urban_tax_mult = 0.3
+	popular_opinion_add = 5
 }
 
 ep3_foundation_celebration_county_modifier = {
 	icon = byzantine_eagle_positive
-	development_growth_factor = small_development_growth_gain
+	prosperity_growth_factor = small_prosperity_growth_gain
+	popular_opinion_add = 5
 }
 
-ep3_development_sacrifice_modifier = {
-	icon = county_modifier_development_negative
-	development_growth_factor = tiny_development_growth_loss
-	tax_mult = -0.1
-	county_opinion_add = -10
+ep3_prosperity_sacrifice_modifier = {
+	icon = county_modifier_prosperity_negative
+	prosperity_growth_factor = tiny_prosperity_growth_loss
+	religious_tax_mult = -0.1
+	popular_opinion_add = -10
 }
 
-ep3_development_waning_modifier = {
-	icon = county_modifier_development_negative
-	development_growth_factor = small_development_growth_loss
-	tax_mult = -0.15
-	county_opinion_add = -15
+ep3_prosperity_waning_modifier = {
+	icon = county_modifier_prosperity_negative
+	prosperity_growth_factor = small_prosperity_growth_loss
+	all_tax_mult = -0.15
+	popular_opinion_add = -15
 }
 
 ep3_school_building_county_modifier = {
@@ -1020,58 +1038,59 @@ ep3_school_building_county_modifier = {
 
 ep3_grammar_school_county_modifier = {
 	icon = learning_positive
-	county_opinion_add = 20
-	development_growth_factor = small_development_growth_gain
+	popular_opinion_add = 5
+	prosperity_growth_factor = small_prosperity_growth_gain
 }
 
 ep3_leviathan_loose_county_modifier = {
-	icon = county_modifier_development_negative
-	development_growth_factor = small_development_growth_loss
-	tax_mult = -0.2
-	county_opinion_add = -25
+	icon = county_modifier_prosperity_negative
+	prosperity_growth_factor = small_prosperity_growth_loss
+	all_tax_mult = -0.2
+	popular_opinion_add = -25
 }
 
 ep3_leviathan_mandate_county_modifier = {
-	icon = county_modifier_development_mixed
-	development_growth_factor = tiny_development_growth_loss
-	tax_mult = -0.1
-	county_opinion_add = 10
+	icon = county_modifier_prosperity_mixed
+	prosperity_growth_factor = tiny_prosperity_growth_loss
+	all_tax_mult = -0.1
+	popular_opinion_add = 5
 }
 
 ep3_raider_unchecked_modifier = {
-	icon = county_modifier_development_negative
-	development_growth_factor = small_development_growth_loss
-	tax_mult = -0.2
-	county_opinion_add = -25
+	icon = county_modifier_prosperity_negative
+	prosperity_growth_factor = small_prosperity_growth_loss
+	all_tax_mult = -0.2
+	popular_opinion_add = -25
 }
 
 land_of_holy_county_modifier = {
 	icon = signet_ring_positive
-	county_opinion_add = 20
-	monthly_county_control_growth_factor = 0.2
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_mult = 0.2
 	levy_reinforcement_rate = 0.1
 }
 
 no_crooks_county_modifier = {
 	icon = signet_ring_positive
-	development_growth_factor = small_development_growth_gain
-	tax_mult = 0.15
+	prosperity_growth_factor = small_prosperity_growth_gain
+	artisan_tax_mult = 0.15
 }
 
 ep3_persecuting_saints_county_modifier = {
 	icon = signet_ring_negative
-	development_growth_factor = small_development_growth_loss
+	prosperity_growth_factor = small_prosperity_growth_loss
+	popular_opinion_add = -10
 }
 
 ep3_conmen_among_us_county_modifier = {
 	icon = signet_ring_negative
-	tax_mult = -0.1
+	artisan_tax_mult = -0.1
 }
 
 ep3_settling_nomads_county_modifier = {
 	icon = horse_mixed
-	development_growth_factor = small_development_growth_gain
-	monthly_county_control_growth_factor = -0.1
+	prosperity_growth_factor = small_prosperity_growth_gain
+	monthly_control_change_when_below_baseline_mult = -0.1
 	epidemic_resistance = -5
 }
 
@@ -1081,52 +1100,82 @@ ep3_tunnels_encouraged_county_modifier = {
 	defender_holding_advantage = 10
 	fort_level = 1
 	travel_danger = 10
-	tax_mult = -0.3
+	agricultural_tax_mult = -0.3
 }
 
 ep3_population_control_county_modifier = {
 	icon = county_modifier_control_mixed
-	county_opinion_add = -30
+	popular_opinion_add = -30
 	hostile_raid_time = -0.25
-	monthly_county_control_growth_factor = 0.2
-	tax_mult = 0.1
+	monthly_control_change_when_below_baseline_mult = 0.2
+	urban_tax_mult = 0.1
+}
+
+ep3_emperor_yearly_2150_found_truth_modifier = {
+	icon = administrative_positive
+	governor_efficiency_add = 0.1
+}
+
+ep3_emperor_yearly_2160_frontier_success_modifier = {
+	icon = administrative_positive
+	governor_efficiency_add = 0.05
+}
+
+ep3_emperor_yearly_2160_frontier_failure_modifier = {
+	icon = administrative_negative
+	governor_efficiency_add = -0.05
+}
+
+ep3_emperor_yearly_2170_tunnels_closed_modifier = {
+	icon = administrative_positive
+	governor_efficiency_add = 0.05
+}
+
+ep3_emperor_yearly_2190_honest_modifier = {
+	icon = administrative_positive
+	governor_efficiency_add = 0.1
+}
+
+ep3_emperor_yearly_2200_embezzling_modifier = {
+	icon = administrative_negative
+	governor_efficiency_add = -0.05
 }
 
 ep3_open_granary_county_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = small_development_growth_gain
-	county_opinion_add = 10
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = small_prosperity_growth_gain
+	popular_opinion_add = 5
 }
 
 ep3_roaming_shepherds_county_modifier = {
 	icon = horse_mixed
-	development_growth_factor = small_development_growth_gain
+	prosperity_growth_factor = small_prosperity_growth_gain
 	travel_danger = -10
-	monthly_county_control_growth_add = -0.15
+	monthly_control_change_when_below_baseline_add = -0.15
 }
 
 ep3_monastic_quiet_county_modifier = {
 	icon = learning_mixed
-	development_growth_factor = small_development_growth_loss
+	prosperity_growth_factor = small_prosperity_growth_loss
 	epidemic_resistance = 10
-	tax_mult = 0.1
+	religious_tax_mult = 0.1
 }
 
 ep3_rampaging_disorders_county_modifier = {
 	icon = blood_negative
-	development_growth_factor = medium_development_growth_loss
+	prosperity_growth_factor = medium_prosperity_growth_loss
 }
 
 ep3_governor_yearly_8030_stifled_modifier = {
-	icon = county_modifier_development_negative
-	development_growth_factor = small_development_growth_loss
-	county_opinion_add = -25
+	icon = county_modifier_prosperity_negative
+	prosperity_growth_factor = small_prosperity_growth_loss
+	popular_opinion_add = -25
 }
 
 ep3_governor_yearly_8030_benign_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = small_development_growth_gain
-	county_opinion_add = 15
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = small_prosperity_growth_gain
+	popular_opinion_add = 5
 }
 
 ep3_governor_yearly_8030_benign_char_modifier = {
@@ -1137,81 +1186,81 @@ ep3_governor_yearly_8030_benign_char_modifier = {
 ep3_governor_yearly_8170_warning_system_modifier = {
 	icon = byzantine_eagle_positive
 	hostile_raid_time = 0.25
-	development_growth_factor = 0.05
-	county_opinion_add = 15
+	prosperity_growth_factor = 0.05
+	popular_opinion_add = 5
 }
 
 ep3_governor_yearly_8170_success_modifier = {
 	icon = byzantine_eagle_positive
 	hostile_raid_time = 0.5
 	additional_fort_level = 1
-	county_opinion_add = 25
+	popular_opinion_add = 5
 }
 
 ep3_governor_yearly_8170_failure_modifier = {
 	icon = byzantine_eagle_negative
 	hostile_raid_time = -0.5
-	development_growth_factor = -0.1
-	county_opinion_add = -25
+	prosperity_growth_factor = -0.1
+	popular_opinion_add = -25
 }
 
 ep3_governor_yearly_8160_promoted_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 25
+	popular_opinion_add = 5
 }
 
 ep3_governor_yearly_8160_suppressed_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -25
+	popular_opinion_add = -25
 }
 
 ep3_governor_yearly_8140_negotiated_modifier = {
 	icon = byzantine_eagle_positive
-	development_growth_factor = 0.1
-	county_opinion_add = 25
+	prosperity_growth_factor = 0.1
+	popular_opinion_add = 5
 }
 
 ep3_governor_yearly_8140_defended_modifier = {
 	icon = byzantine_eagle_negative
-	development_decline = -0.2
-	county_opinion_add = -40
+	prosperity_decline = -0.2
+	popular_opinion_add = -10
 }
 
 ep3_governor_yearly_8140_ignored_modifier = {
 	icon = byzantine_eagle_negative
-	development_decline = -0.1
-	county_opinion_add = -20
+	prosperity_decline = -0.1
+	popular_opinion_add = -20
 }
 
 ep3_governor_yearly_8120_relief_aid_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 50
-	monthly_county_control_growth_add = 0.1
-	development_growth = 0.5
+	popular_opinion_add = 15
+	monthly_control_change_when_below_baseline_add = 0.1
+	prosperity_growth = 0.5
 }
 
 ep3_governor_yearly_8150_placated_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 25
+	popular_opinion_add = 5
 }
 
 ep3_governor_yearly_8150_insulted_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -50
-	tax_mult = -0.1
+	popular_opinion_add = -10
+	civic_tax_mult = -0.1
 }
 
 ep3_governor_yearly_8150_concession_modifier = {
 	icon = county_modifier_opinion_mixed
-	county_opinion_add = 25
-	tax_mult = -0.1
+	popular_opinion_add = 5
+	agricultural_tax_mult = -0.1
 	levy_size = -0.1
 }
 
 ep3_governor_yearly_8150_crackdown_modifier = {
 	icon = county_modifier_opinion_mixed
-	county_opinion_add = 25
-	development_growth_factor = -0.2
+	popular_opinion_add = 5
+	prosperity_growth_factor = -0.2
 }
 
 ep3_governor_yearly_8150_minority_crackdown_modifier = {
@@ -1230,18 +1279,20 @@ ep3_governor_yearly_8150_peasant_crackdown_modifier = {
 
 pandidakterion_university_modifier = {
 	icon = byzantine_eagle_positive
-	development_growth_factor = 0.15
+	prosperity_growth_factor = 0.05
+	monthly_control_change_when_below_baseline_mult = 0.1
 }
 
 grain_providers_county_modifier = {
 	icon = economy_positive
-	tax_mult = 0.2
+	agricultural_tax_mult = 0.2
 }
 
 panem_et_circenses_county_modifier = {
 	icon = treat_positive
-	county_opinion_add = 10
-	development_growth_factor = 0.05
+	popular_opinion_add = 5
+	prosperity_growth_factor = 0.05
+	monthly_control_change_when_below_baseline_mult = 0.1
 	epidemic_resistance = 3
 
 	scale = {
@@ -1253,10 +1304,12 @@ panem_et_circenses_county_modifier = {
 
 improve_de_jure_integration_modifier = {
 	icon = diplomacy_positive
+	monthly_control_change_when_below_baseline_mult = 0.1
 }
 
 improve_promote_culture_modifier = {
 	icon = stewardship_positive
+	monthly_control_change_when_below_baseline_mult = 0.1
 }
 
 # Province modifiers
@@ -1278,7 +1331,7 @@ ep3_governor_yearly_8070_ignore_modifier = {
 
 ep3_imperial_tombs_violated_province_modifier = {
 	icon = byzantine_crown_mixed
-	monthly_income = 0.1
+	monthly_civic_tax = 0.1
 	build_speed = 0.2
 }
 
@@ -1299,6 +1352,7 @@ ep3_lay_of_the_land_modifier = {
 
 scheme_slandered_modifier = {
 	icon = influence_negative
+	governor_efficiency_add = -0.05
 }
 
 scheme_promoted_modifier = {
@@ -1386,9 +1440,9 @@ estate_supporting_buildings_modifier = {
 # CHARIOT RACE
 emperor_chariot_race_speech_appeasing_populace_modifier = {
 	icon = county_modifier_opinion_mixed
-	county_opinion_add = 30
-	tax_mult = -0.2
-	monthly_county_control_growth_factor = 0.25
+	popular_opinion_add = 5
+	urban_tax_mult = -0.2
+	monthly_control_change_when_below_baseline_mult = 0.25
 }
 
 emperor_chariot_race_war_speech_modifier = {
@@ -1406,7 +1460,7 @@ emperor_chariot_race_legend_speech_modifier = {
 
 emperor_chariot_race_speech_neutral_county_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 20
+	popular_opinion_add = 5
 }
 
 soused_at_the_races_modifier = {
@@ -1417,58 +1471,62 @@ soused_at_the_races_modifier = {
 }
 
 mercantile_contacts_modifier = {
-	icon = county_modifier_development_positive
-	tax_mult = 0.2
+	icon = county_modifier_prosperity_positive
+	artisan_tax_mult = 0.2
+	prosperity_growth_factor = 0.1
 	build_gold_cost = -0.1
 	build_speed = -0.1
 }
 
 powerful_loyal_deme_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 15
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_mult = 0.1
 }
 
 sizable_loyal_deme_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 10
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_mult = 0.05
 }
 
 flourishing_local_deme_modifier = {
-	icon = county_modifier_development_mixed
-	county_opinion_add = 10
-	development_growth_factor = medium_development_growth_gain
-	monthly_county_control_growth_factor = -0.2
+	icon = county_modifier_prosperity_mixed
+	popular_opinion_add = 5
+	prosperity_growth_factor = medium_prosperity_growth_gain
+	monthly_control_change_when_below_baseline_mult = -0.2
 }
 
 chariot_race_blues_statue_county_modifier = {
-	icon = county_modifier_development_positive
-	county_opinion_add = 10
-	monthly_county_control_growth_add = 0.15
+	icon = county_modifier_prosperity_positive
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_add = 0.15
 }
 chariot_race_greens_statue_county_modifier = {
-	icon = county_modifier_development_positive
-	county_opinion_add = 10
-	monthly_county_control_growth_add = 0.15
+	icon = county_modifier_prosperity_positive
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_add = 0.15
 }
 chariot_race_whites_statue_county_modifier = {
-	icon = county_modifier_development_positive
-	county_opinion_add = 10
-	monthly_county_control_growth_add = 0.15
+	icon = county_modifier_prosperity_positive
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_add = 0.15
 }
 chariot_race_reds_statue_county_modifier = {
-	icon = county_modifier_development_positive
-	county_opinion_add = 10
-	monthly_county_control_growth_add = 0.15
+	icon = county_modifier_prosperity_positive
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_add = 0.15
 }
 calmed_after_charioteer_died_spectator = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -20
+	popular_opinion_add = -20
 }
 
 restored_greek_theme_modifier = {
 	icon = signet_ring_positive
 	stewardship = 1
-	county_opinion_add = 15
+	popular_opinion_add = 5
+	governor_efficiency_add = 0.1
 }
 
 brutal_castration_modifier = {
@@ -1488,14 +1546,15 @@ defenders_immolated_modifier = {
 	icon = flame_negative
 	fort_level = -3
 	garrison_size = -0.5
-	county_opinion_add = -20
+	popular_opinion_add = -20
+	monthly_control_change_when_above_baseline_mult = 0.1
 }
 
 defensive_fire_dromons_modifier = {
 	icon = flame_mixed
 	fort_level = 1
-	county_opinion_add = 5
-	tax_mult = -0.05
+	popular_opinion_add = 5
+	urban_tax_mult = -0.05
 }
 
 assaulted_by_greek_fire_modifier = {
@@ -1508,6 +1567,7 @@ assaulted_by_greek_fire_modifier = {
 noble_administrators_modifier = {
 	icon = byzantine_eagle_positive
 	monthly_influence_mult = 0.1
+	governor_efficiency_add = 0.05
 }
 
 #Dynasty - House
@@ -1525,21 +1585,21 @@ ep3_unlocked_silk = {
 admin_eunuch_liege_1_modifier = {
 	icon = social_negative
 	stewardship = -3
-	tax_mult = -0.15
+	all_tax_mult = -0.15
 	enemy_hostile_scheme_success_chance_add = 15
 }
 
 admin_eunuch_liege_2_modifier = {
 	icon = social_negative
 	stewardship = -2
-	tax_mult = -0.10
+	all_tax_mult = -0.10
 	enemy_hostile_scheme_success_chance_add = 10
 }
 
 admin_eunuch_liege_3_modifier = {
 	icon = social_negative
 	stewardship = -1
-	tax_mult = -0.05
+	all_tax_mult = -0.05
 	enemy_hostile_scheme_success_chance_add = 5
 }
 
@@ -1657,8 +1717,8 @@ admin_eunuch_eunuch_8_modifier = {
 
 admin_eunuch_raise_taxes_modifier = {
 	icon = economy_mixed
-	tax_mult = 0.15
-	county_opinion_add = -50
+	urban_tax_mult = 0.15
+	popular_opinion_add = -10
 }
 
 admin_eunuch_puppet_modifier = {
@@ -1711,7 +1771,7 @@ ep3_grand_ambitions_cheaper_maa_modifier = {
 	icon = martial_mixed
 	men_at_arms_recruitment_cost = -0.3
 	maa_damage_mult = 0.05
-	monthly_county_control_growth_factor = -0.20
+	monthly_control_change_when_below_baseline_mult = -0.20
 }
 
 ep3_grand_ambitions_local_labor_modifier = {
@@ -1722,14 +1782,14 @@ ep3_grand_ambitions_local_labor_modifier = {
 
 ep3_grand_ambitions_rioting_county_modifier = {
 	icon = byzantine_eagle_negative
-	county_opinion_add = -25
-	monthly_county_control_decline_add = -5
+	popular_opinion_add = -25
+	control_baseline_add = minor_control_baseline_loss
 }
 
 ep3_grand_ambitions_hushed_rumors = {
 	icon = byzantine_eagle_mixed
-	county_opinion_add = -10
-	monthly_county_control_decline_add = 1
+	popular_opinion_add = -10
+	monthly_control_change_when_above_baseline_add = 1
 }
 
 ### END GRAND AMBITIONS MODIFIERS
@@ -1749,18 +1809,18 @@ eager_for_empire_modifier = {
 }
 
 crippled_by_imperial_debt_modifier = {
-	icon = county_modifier_development_negative
-	development_decline = -1
+	icon = county_modifier_prosperity_negative
+	prosperity_decline = -1
 	garrison_size = -0.5
 	levy_size = -0.5
-	tax_mult = -0.33
+	all_tax_mult = -0.33
 }
 
 bent_before_crusaders_modifier = {
 	icon = byzantine_eagle_negative
 	glory_hound_opinion = -20
 	parochial_opinion = -20
-	county_opinion_add = -25
+	popular_opinion_add = -25
 	monthly_prestige_gain_mult = -0.25
 	levy_size = -0.2
 }
@@ -1773,18 +1833,18 @@ grand_crusader_fleet_modifier = {
 
 ep3_agitated_populace = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -25
+	popular_opinion_add = -25
 }
 
 ep3_religious_doubts = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -25
+	popular_opinion_add = -25
 }
 
 ep3_gave_out_provisions = {
 	icon = county_modifier_opinion_negative
 	stacking = yes
-	county_opinion_add = -15
+	popular_opinion_add = -15
 	supply_limit_mult = -0.2
 }
 
@@ -1895,10 +1955,10 @@ laamp_decision_church_blessing_stress_gain_modifier = {
 
 ep3_exploited_weak_master_modifier = {
 	icon = economy_mixed
-	domain_tax_mult = 0.05
+	civic_tax_mult = 0.05
 	domicile_build_speed = -0.33
-	county_opinion_add = -10
-	monthly_county_control_growth_factor = -0.2
+	popular_opinion_add = -10
+	monthly_control_change_when_below_baseline_mult = -0.2
 }
 
 emperor_repented_for_flaws_modifier = {
@@ -1939,9 +1999,9 @@ ep3_loyal_troops_5_raid_modifier = {
 
 ep3_peaceful_administrator_modifier = {
 	icon = signet_ring_mixed
-	county_opinion_add = 10
-	development_growth_factor = 0.25
-	domain_tax_mult = 0.25
+	popular_opinion_add = 5
+	prosperity_growth_factor = 0.25
+	civic_tax_mult = 0.25
 	levy_size = -0.25
 	men_at_arms_maintenance = 0.25
 }
@@ -1964,19 +2024,19 @@ ep3_neglecting_house_head_duties_modifier = {
 
 ### RESTORE ROME MODIFIERS
 
-restore_rome_devastated_county_opinion_modifier = {
+restore_rome_devastated_popular_opinion_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -75
+	popular_opinion_add = -15
 }
 
-restore_rome_lowered_county_opinion_modifier = {
+restore_rome_lowered_popular_opinion_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -40
+	popular_opinion_add = -10
 }
 
-restore_rome_recuperated_county_opinion_modifier = {
+restore_rome_recuperated_popular_opinion_modifier = {
 	icon = county_modifier_opinion_positive
-	county_opinion_add = 10
+	popular_opinion_add = 5
 }
 
 ### END RESTORE ROME
@@ -2045,9 +2105,8 @@ ep3_power_couple_modifier = {
 
 ep3_poets_salon_modifier = {
 	icon = camp_positive
-	tax_mult = 0.25
-	development_growth_factor = 0.5
-	county_opinion_add = 35
+	prosperity_growth_factor = 0.1
+	popular_opinion_add = 10
 }
 
 ep3_founded_salon_modifier = {
@@ -2066,8 +2125,8 @@ ep3_friend_to_orphans = {
 
 ep3_healthy_orphanages_modifier = {
 	icon = county_modifier_opinion_positive
-	development_growth_factor = 0.1
-	county_opinion_add = 25
+	prosperity_growth_factor = 0.1
+	popular_opinion_add = 5
 }
 
 ep3_tutoring_noblewoman_modifier = {
@@ -2108,6 +2167,11 @@ renounced_governorship_japan = {
 }
 
 ep3_renounced_estate = {
+	icon = stress_positive
+	stress_loss_mult = 0.25
+}
+
+tgp_western_renounced_estate = {
 	icon = stress_positive
 	stress_loss_mult = 0.25
 }
@@ -2159,11 +2223,13 @@ ep3_no_secrets_modifier = {
 ep3_boost_efficiency_modifier = {
 	icon = administrative_positive
 	stacking = yes
+	governor_efficiency_add = 0.04
 }
 
 ep3_damage_efficiency_modifier = {
 	icon = administrative_negative
 	stacking = yes
+	governor_efficiency_add = -0.04
 }
 
 ep3_well_rested_modifier = {
@@ -2379,6 +2445,7 @@ ep3_head_of_opposition_modifier = {
 contented_governing_countrymen_modifier = {
 	icon = social_positive
 	same_culture_opinion = 10
+	governor_efficiency_add = 0.1
 }
 
 ep3_face_of_empire_modifier = {
@@ -2389,12 +2456,13 @@ ep3_face_of_empire_modifier = {
 
 ep3_anxious_for_new_assignment_modifier = {
 	icon = administrative_mixed
-	monthly_county_control_growth_factor = -0.25
+	monthly_control_change_when_below_baseline_mult = -0.25
 	monthly_influence_mult = 0.5
 	intrigue_per_influence_level = 1
 	diplomacy_per_influence_level = 1
-	development_growth_factor = -0.25
-	county_opinion_add = -10
+	prosperity_growth_factor = -0.25
+	popular_opinion_add = -10
+	governor_efficiency_add = -0.05
 }
 
 ep3_invested_in_power_center_modifier = {
@@ -2413,6 +2481,32 @@ ep3_ignoring_realm_decline_modifier = {
 	stress_loss_mult = 0.25
 	parochial_opinion = -20
 	courtly_opinion = 20
+	governor_efficiency_add = -0.05
+}
+
+ep3_governor_yearly_3002_landlord_fight_modifier = {
+	icon = administrative_negative
+	governor_efficiency_add = -0.05
+}
+
+ep3_governor_yearly_3002_landlord_wins_modifier = {
+	icon = administrative_negative
+	governor_efficiency_add = -0.1
+}
+
+ep3_governor_yearly_3002_landlord_dominates_modifier = {
+	icon = administrative_negative
+	governor_efficiency_add = -0.15
+}
+
+ep3_governor_yearly_3050_neglect_duties_modifier = {
+	icon = administrative_negative
+	governor_efficiency_add = -0.05
+}
+
+ep3_governor_yearly_3080_ignored_isolation_modifier = {
+	icon = administrative_negative
+	governor_efficiency_add = -0.05
 }
 
 ep3_supply_issues_modifier = {
@@ -2497,13 +2591,13 @@ ep3_knight_of_the_swan_house_modifier = {
 
 ep3_courteous_knight_modifier = {
 	icon = fertility_positive
-	attraction_opinion = 20
+	attraction_opinion = 10
 	courting_scheme_phase_duration_add = major_scheme_phase_duration_bonus_value
 }
 
 ep3_valiant_knight_modifier = {
 	icon = county_modifier_opinion_positive
-	barons_and_minor_landholders_opinion = 20
+	barons_and_minor_landholders_opinion = 10
 	parochial_opinion = 5
 	barons_and_minor_landholders_tax_contribution_mult = 0.1
 	parochial_tax_contribution_mult = 0.05
@@ -2584,30 +2678,35 @@ ep3_master_todor_modifier = {
 strong_sow_discord_modifier = {
 	icon = county_modifier_opinion_negative
 	stacking = yes
-	county_opinion_add = -5
+	popular_opinion_add = -5
+	monthly_control_change_when_above_baseline_mult = 0.05
 }
 normal_sow_discord_modifier = {
 	icon = county_modifier_opinion_negative
 	stacking = yes
-	county_opinion_add = -2
+	popular_opinion_add = -2
+	monthly_control_change_when_above_baseline_mult = 0.025
 }
 weak_sow_discord_modifier = {
 	icon = county_modifier_opinion_negative
 	stacking = yes
-	county_opinion_add = -1
+	popular_opinion_add = -2
+	monthly_control_change_when_above_baseline_mult = 0.01
 }
 ep3_chariot_race_strong_appeasement_modifier = {
 	icon = county_modifier_opinion_positive
 	stacking = yes
-	county_opinion_add = 10
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_mult = 0.1
 }
 ep3_chariot_race_weak_appeasement_modifier = {
 	icon = county_modifier_opinion_positive
 	stacking = yes
-	county_opinion_add = 5
+	popular_opinion_add = 5
+	monthly_control_change_when_below_baseline_mult = 0.05
 }
 united_political_agents_modifier = {
-	icon = intrigue_mixed
+	icon = intrigue_positive
 	hostile_scheme_phase_duration_add = -5
 	liege_opinion = -10
 }
@@ -2660,71 +2759,72 @@ ep3_the_restful_modifier = {
 }
 
 ep3_harried_modifier = {
-	icon = county_modifier_development_negative
-	development_decline = -0.25
+	icon = county_modifier_prosperity_negative
+	prosperity_decline = -0.25
 }
 
 ep3_the_conqueror_modifier = {
 	icon = signet_ring_mixed
 	anglo_saxon_opinion = -45
-	county_opinion_add = -15
+	popular_opinion_add = -15
 	minority_different_culture_opinion = -30
-	monthly_county_control_growth_add = 0.5
+	monthly_control_change_when_below_baseline_add = 0.5
 	monthly_dread = 0.2
 }
 
 ep3_dangerous_fenland_modifier = {
-	icon = county_modifier_development_negative
+	icon = county_modifier_prosperity_negative
 	travel_danger = 25
-	monthly_county_control_decline_add = -0.5
-	county_opinion_add = -5
+	control_baseline_add = medium_control_baseline_loss
+	popular_opinion_add = -5
 }
 
 ep3_plundered_modifier = {
-	icon = county_modifier_development_negative
-	tax_mult = -0.05
+	icon = county_modifier_prosperity_negative
+	agricultural_tax_mult = -0.05
+	civic_tax_mult = -0.05
+	urban_tax_mult = -0.05
 }
 
 ep3_hereward_caution_modifier = {
-	icon = county_modifier_development_mixed
+	icon = county_modifier_prosperity_mixed
 	domicile_build_speed = 0.15
 	domicile_build_gold_cost = -0.1
 }
 
 all_crops_burned = {
-	icon = county_modifier_development_negative
-	development_decline_factor = 0.2
-	development_decline = -0.05
+	icon = county_modifier_prosperity_negative
+	prosperity_decline_factor = 0.2
 }
 
 crops_burned = {
-	icon = county_modifier_development_negative
-	development_decline_factor = 0.1
+	icon = county_modifier_prosperity_negative
+	prosperity_decline_factor = 0.1
 }
 
 crop_levy = {
-	icon = county_modifier_development_mixed
-	tax_mult = 0.1
-	county_opinion_add = -10
+	icon = county_modifier_prosperity_mixed
+	agricultural_tax_mult = 0.1
+	popular_opinion_add = -10
 }
 
 ep3_gnr_guards_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	travel_danger = -15
-	development_growth_factor = 0.1
-	county_opinion_add = 5
+	prosperity_growth_factor = 0.1
+	popular_opinion_add = 5
 	levy_reinforcement_rate = 0.2
 }
 
 ep3_gnr_modifier = {
-	icon = county_modifier_development_positive
+	icon = county_modifier_prosperity_positive
 	travel_danger = -10
-	development_growth_factor = 0.05
+	prosperity_growth_factor = 0.05
 	levy_reinforcement_rate = 0.1
 }
 
 ep3_gnr_negative_modifier = {
-	icon = county_modifier_development_negative
+	icon = county_modifier_prosperity_negative
 	travel_danger = 15
 	levy_reinforcement_rate = -0.15
 }
@@ -2737,33 +2837,33 @@ ep3_honourable_jailor_modifier = {
 }
 
 ep3_resettled_village = {
-	icon = county_modifier_development_negative
-	development_decline = -1
+	icon = county_modifier_prosperity_negative
+	prosperity_decline = -1
 	levy_size = -0.75
 	supply_limit_mult = -0.75
-	tax_mult = -0.1
+	urban_tax_mult = -0.1
 }
 
 ep3_population_boost = {
-	icon = county_modifier_development_mixed
-	development_growth = 0.1
+	icon = county_modifier_prosperity_mixed
+	prosperity_growth = 0.1
 	levy_size = 0.15
 	supply_limit_mult = 0.15
-	county_opinion_add = -5
+	popular_opinion_add = -5
 }
 
 ep3_smouldering_village = {
 	icon = flame_negative
-	development_growth = -0.1
-	county_opinion_add = -10
+	prosperity_growth = -0.1
+	popular_opinion_add = -10
 	holding_build_speed = 0.25	
 }
 
 ep3_church_bereft = {
 	icon = piety_negative
 	build_piety_cost = 0.25
-	monthly_county_control_growth_add = -0.25
-	tax_mult = -0.1
+	monthly_control_change_when_below_baseline_add = -0.25
+	religious_tax_mult = -0.1
 }
 
 ep3_man_of_god = {
@@ -2793,7 +2893,7 @@ ep3_stolen_equipment = {
 }
 
 ep3_sabotaged_roads = {
-	icon = county_modifier_development_negative
+	icon = county_modifier_prosperity_negative
 	travel_danger = 10
 }
 
@@ -2812,28 +2912,28 @@ ep3_defender_of_families = {
 }
 
 ep3_paid_grains = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.1
-	county_opinion_add = 20
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.1
+	popular_opinion_add = 5
 	epidemic_resistance = 2
 }
 
 ep3_innovative_farming_techniques = {
-	icon = county_modifier_development_positive
-	tax_mult = 0.05
-	development_growth_factor = 0.1
+	icon = county_modifier_prosperity_positive
+	agricultural_tax_mult = 0.05
+	prosperity_growth_factor = 0.1
 }
 
 ep3_surplus_manpower = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.15
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.15
 	levy_size = 0.3
 }
 
 ep3_counties_restless_modifier = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -20
-	monthly_county_control_growth_add = -0.5
+	popular_opinion_add = -20
+	monthly_control_change_when_below_baseline_add = -0.5
 }
 ep3_requested_faith_support_modifier = {
 	icon = influence_positive
@@ -2850,7 +2950,7 @@ ep3_requested_faith_support_modifier_small = {
 
 ep3_murderers_loose = {
 	icon = county_modifier_opinion_negative
-	county_opinion_add = -25
+	popular_opinion_add = -25
 	supply_limit_mult = -0.2
 }
 
@@ -2882,9 +2982,9 @@ ep3_life_threatened_modifier = {
 
 ep3_impassioned_populace_modifier = {
 	icon = stewardship_negative
-	tax_mult = -0.1
-	development_growth_factor = -0.1
-	county_opinion_add = -40
+	urban_tax_mult = -0.1
+	prosperity_growth_factor = -0.1
+	popular_opinion_add = -40
 }
 
 ep3_expanded_power_base_minor_modifier = {
@@ -2898,15 +2998,15 @@ ep3_expanded_power_base_major_modifier = {
 }
 
 egregious_trading_rights_modifier = {
-	icon = county_modifier_development_negative
-	development_growth_factor = -0.25
-	tax_mult = -0.1
+	icon = county_modifier_prosperity_negative
+	prosperity_growth_factor = -0.25
+	artisan_tax_mult = -0.1
 }
 
 greek_spoils_imports_modifier = {
-	icon = county_modifier_development_positive
-	development_growth_factor = 0.75
-	tax_mult = 0.25
+	icon = county_modifier_prosperity_positive
+	prosperity_growth_factor = 0.25
+	artisan_tax_mult = 0.25
 }
 
 ep3_harassed_at_sea_modifier = {
@@ -2922,7 +3022,7 @@ ascendant_byz_reclaimant_ortho_modifier = {
 	same_faith_opinion = 5
 	monthly_influence_mult = 0.05
 	hostage_prestige_mult = 0.1
-	development_growth_factor = 0.05
+	prosperity_growth_factor = 0.05
 	court_grandeur_baseline_add = 5
 }
 
@@ -2932,7 +3032,7 @@ ascendant_byz_reclaimant_modifier = {
 	legitimacy_gain_mult = 0.05
 	monthly_influence_mult = 0.05
 	hostage_prestige_mult = 0.05
-	development_growth_factor = 0.05
+	prosperity_growth_factor = 0.05
 	court_grandeur_baseline_add = 5
 }
 

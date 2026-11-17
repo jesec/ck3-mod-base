@@ -93,7 +93,7 @@ abandon_hook_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_gain
@@ -173,24 +173,28 @@ dismiss_strong_hook_interaction = {
 	cost = { 
 		influence = {
 			value = 0
-			if = {
-				limit = {
-					exists = var:movement_power
-					government_has_flag = government_is_celestial
+			scope:actor = {
+				if = {
+					limit = {
+						exists = var:movement_power
+						government_has_flag = government_is_celestial
+					}
+					add = monumental_influence_value
 				}
-				add = monumental_influence_value
 			}
 		}
 		prestige = {
 			value = 0
-			if = {
-				limit = {
-					NAND = {
-						exists = var:movement_power
-						government_has_flag = government_is_celestial
+			scope:actor = {
+				if = {
+					limit = {
+						NAND = {
+							exists = var:movement_power
+							government_has_flag = government_is_celestial
+						}
 					}
+					add = monumental_prestige_value
 				}
-				add = monumental_prestige_value
 			}
 		}
 	}
@@ -274,7 +278,7 @@ dismiss_strong_hook_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_gain
@@ -327,24 +331,28 @@ dismiss_weak_hook_interaction = {
 	cost = {
 		influence = {
 			value = 0
-			if = {
-				limit = {
-					exists = var:movement_power
-					government_has_flag = government_is_celestial
+			scope:actor = {
+				if = {
+					limit = {
+						exists = var:movement_power
+						government_has_flag = government_is_celestial
+					}
+					add = major_influence_value
 				}
-				add = major_influence_value
 			}
 		}
 		prestige = {
 			value = 0
-			if = {
-				limit = {
-					NAND = {
-						exists = var:movement_power
-						government_has_flag = government_is_celestial
+			scope:actor = {
+				if = {
+					limit = {
+						NAND = {
+							exists = var:movement_power
+							government_has_flag = government_is_celestial
+						}
 					}
+					add = major_prestige_value
 				}
-				add = major_prestige_value
 			}
 		}
 	} 
@@ -433,7 +441,7 @@ dismiss_weak_hook_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = minor_unity_gain
@@ -805,7 +813,7 @@ force_duel_anyone_interaction = {
 		}
 
 		# If we're a clan this interaction affects unity
-		add_clan_unity_interaction_effect = {
+		add_house_unity_interaction_effect = {
 			CHARACTER = scope:actor
 			TARGET = scope:recipient
 			VALUE = medium_unity_loss

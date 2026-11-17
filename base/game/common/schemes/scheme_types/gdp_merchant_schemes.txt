@@ -1,0 +1,822 @@
+﻿############################
+# Attempt Hostile Takeover
+# For Merchants absorbing another Merchant's company
+############################
+
+hostile_takeover = {
+	# Basic Setup
+	skill = intrigue
+	desc = "hostile_takeover_desc_general"
+	success_desc = "HOSTILE_TAKEOVER_SUCCESS_DESC"
+	discovery_desc = "HOSTILE_TAKEOVER_DISCOVERY_DESC"
+	icon = icon_hostile_takeover_scheme
+	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
+	category = hostile
+	target_type = character
+	cooldown = { years = 50 }
+
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	speed_per_target_skill_point = t2_spsp_target_value
+	spymaster_speed_per_skill_point = t2_spsp_owner_spy_value
+	target_spymaster_speed_per_skill_point = 0
+	tier_speed = 1
+	base_progress_goal = t1_base_phase_length_value
+	base_maximum_success = t1_base_max_success_value
+	phases_per_agent_charge = 1
+	success_chance_growth_per_skill_point = t3_scgpsp_value
+	maximum_secrecy = 95
+
+	is_secret = yes
+	maximum_breaches = 5
+
+	# Core Triggers
+	allow = {
+		gdp_hostile_takeover_scheme_owner_valid_trigger = yes
+		scope:target ?= {
+			gdp_hostile_takeover_scheme_target_valid_trigger = { SCHEME_OWNER = root }
+		}
+	}
+
+	valid = {
+		scope:owner = { gdp_hostile_takeover_scheme_owner_valid_trigger = yes }
+		scope:target ?= {
+			gdp_hostile_takeover_scheme_target_valid_trigger = { SCHEME_OWNER = scope:owner }
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_basic_suite_modifier = yes
+		# House
+		modifier = {
+			add = -50
+			house ?= scope:target.house
+			scope:owner.house != scope:target.house
+			desc = TARGET_IS_MY_HOUSE_MEMBER
+		}
+	}
+	valid_agent = { 
+		is_valid_agent_standard_trigger = yes
+		title_scheme_valid_agent_trigger = yes
+	}
+	agent_groups_owner_perspective = { courtiers guests scripted_relations }
+	agent_groups_target_character_perspective = { courtiers guests scripted_relations }
+
+	odds_prediction = {
+		add = hostile_scheme_base_odds_prediction_target_is_char_value
+		add = agent_groups_owner_perspective_value
+		add = agent_groups_target_character_perspective_value
+		add = odds_hostile_takeover_scheme_misc_value
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		# Skill
+		modifier = {
+			desc = SCHEME_YOUR_INTRIGUE
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:owner }
+					add = {
+						value = scope:owner.intrigue
+						multiply = 0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_TARGET_INTRIGUE
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:target }
+					add = {
+						value = scope:target.intrigue
+						multiply = -0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_YOUR_STEWARDSHIP
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:owner }
+					add = {
+						value = scope:owner.stewardship
+						multiply = 0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_TARGET_STEWARDSHIP
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:target }
+					add = {
+						value = scope:target.stewardship
+						multiply = -0.5
+					}
+				}
+			}
+		}
+		# Countermeasures
+		apply_calculated_scheme_success_chance_adjustments_modifier = yes
+		# Family Feud
+		house_feud_title_hostile_scheme_success_modifier = yes
+		# Acumen
+		modifier = {
+			desc = OWNER_ACUMEN_DESC
+			add = {
+				value = scope:owner.domicile.acumen
+				multiply = 0.005 # 25 at max
+				min = 1
+				max = 25
+			}
+		}
+		modifier = {
+			desc = TARGET_ACUMEN_DESC
+			exists = scope:target.domicile
+			add = {
+				value = scope:target.domicile.acumen
+				multiply = -0.005 # 25 at max
+				min = -25
+				max = -1
+			}
+		}
+		modifier = {
+			desc = RELATIVE_COMPANY_SIZE_DESC
+			exists = scope:target
+			add = {
+				value = {
+					value = scope:owner.company_size_value
+					multiply = 10
+				}
+				add = {
+					value = {
+						value = scope:target.company_size_value
+						multiply = -10
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = HOOKED_PATRON_DESC
+			exists = scope:target.suzerain
+			scope:owner = { has_hook = scope:target.suzerain }
+			add = 10
+		}
+		modifier = {
+			desc = HOOKED_ASSOCIATES_DESC
+			exists = scope:target
+			add = {
+				value = 0 
+				scope:target = {
+					every_courtier = {
+						limit = {
+							scope:owner = { has_hook = prev }
+						}
+						add = 5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = TARGET_INCAPABLE_DESC
+			scope:target ?= {
+				is_available_quick = { incapable = yes }
+			}
+			add = 10
+		}
+	}
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
+	}
+
+	# On Actions
+	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:calculating
+		}
+		# Fallback agents — a balanced config if you start the scheme from script.
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
+				}
+			}
+			add_agent_slot = agent_bailiff
+			add_agent_slot = agent_shill
+			add_agent_slot = agent_infiltrator
+			add_agent_slot = agent_overseer
+			add_agent_slot = agent_justiciar
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		hostile_takeover_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click  = { hostile_takeover_scheme_prep_effect = yes }
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			hostile_takeover_scheme_prep_effect = yes
+			purge_ai_scheme_slots_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_contract_scheme_on_going_events_effect = yes }
+
+	## Invalidation
+	on_invalidated = {
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = {
+			save_scope_as = owner
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = hostile_takeover_invalidated_title
+				left_icon = scope:target
+				if = { # Not merchant
+					limit = {
+						NOT = {
+							scope:target.holder = {
+								government_has_flag = government_is_merchant
+								is_house_head = yes
+								exists = domicile
+							}
+						}
+					}
+					custom_tooltip = scheme_target_not_merchant
+				}
+				else_if = { # Not merchant
+					limit = {
+						NOT = {
+							scope:owner = {
+								government_has_flag = government_is_merchant
+								is_house_head = yes
+								exists = domicile
+							}
+						}
+					}
+					custom_tooltip = scheme_owner_not_merchant
+				}
+				else_if = { # Company too small
+					limit = { company_size_value < scope:target.company_size_value }
+					custom_tooltip = scheme_target_company_too_small
+				}
+			}
+		}
+	}
+}
+
+############################
+# Steal Goods Expertise
+# For rulers with company-title expertise access
+############################
+
+steal_market_insights = {
+	# Basic Setup
+	skill = intrigue
+	desc = "steal_market_insights_desc_general"
+	success_desc = "STEAL_MARKET_INSIGHTS_SUCCESS_DESC"
+	discovery_desc = "STEAL_MARKET_INSIGHTS_DISCOVERY_DESC"
+	icon = steal_market_insights
+	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
+	category = hostile
+	target_type = character
+	cooldown = { years = 5 }
+
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	speed_per_target_skill_point = t2_spsp_target_value
+	spymaster_speed_per_skill_point = t2_spsp_owner_spy_value
+	target_spymaster_speed_per_skill_point = 0
+	tier_speed = 1
+	base_progress_goal = t2_base_phase_length_value
+	base_maximum_success = t2_base_max_success_value
+	phases_per_agent_charge = 1
+	success_chance_growth_per_skill_point = t2_scgpsp_value
+	maximum_secrecy = 95
+
+	is_secret = yes
+	maximum_breaches = 5
+
+	# Core Triggers
+	allow = {
+		gdp_steal_market_insights_scheme_owner_valid_trigger = yes
+		scope:target ?= {
+			gdp_steal_market_insights_scheme_target_valid_trigger = { SCHEME_OWNER = root }
+		}
+	}
+
+	valid = {
+		scope:owner = { gdp_steal_market_insights_scheme_owner_valid_trigger = yes }
+		scope:target ?= {
+			gdp_steal_market_insights_scheme_target_valid_trigger = { SCHEME_OWNER = scope:owner }
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_basic_suite_modifier = yes
+		# House
+		modifier = {
+			add = -50
+			scope:recipient.house ?= scope:target.house
+			scope:owner.house != scope:target.house
+			desc = TARGET_IS_MY_HOUSE_MEMBER
+		}
+	}
+	valid_agent = { 
+		is_valid_agent_standard_trigger = yes
+		title_scheme_valid_agent_trigger = yes
+	}
+	agent_groups_owner_perspective = { courtiers guests scripted_relations }
+	agent_groups_target_character_perspective = { courtiers guests scripted_relations }
+
+	odds_prediction = {
+		add = hostile_scheme_base_odds_prediction_target_is_char_value
+		add = agent_groups_owner_perspective_value
+		add = agent_groups_target_character_perspective_value
+		add = odds_steal_market_insights_scheme_misc_value
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		# Skill
+		modifier = {
+			desc = SCHEME_YOUR_INTRIGUE
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:owner }
+					add = {
+						value = scope:owner.intrigue
+						multiply = 0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_TARGET_INTRIGUE
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:target }
+					add = {
+						value = scope:target.intrigue
+						multiply = -0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_YOUR_STEWARDSHIP
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:owner }
+					add = {
+						value = scope:owner.stewardship
+						multiply = 0.5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = SCHEME_TARGET_STEWARDSHIP
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:target }
+					add = {
+						value = scope:target.stewardship
+						multiply = -0.5
+					}
+				}
+			}
+		}
+		# Countermeasures
+		apply_calculated_scheme_success_chance_adjustments_modifier = yes
+		# Family Feud
+		house_feud_title_hostile_scheme_success_modifier = yes
+		# Acumen
+		modifier = {
+			desc = OWNER_ACUMEN_DESC
+			add = {
+				value = scope:owner.domicile.acumen
+				multiply = 0.005 # 25 at max
+				min = 1
+				max = 25
+			}
+		}
+		modifier = {
+			desc = TARGET_ACUMEN_DESC
+			exists = scope:target.domicile
+			add = {
+				value = scope:target.domicile.acumen
+				multiply = -0.005 # 25 at max
+				min = -25
+				max = -1
+			}
+		}
+		modifier = {
+			desc = RELATIVE_COMPANY_SIZE_DESC
+			exists = scope:target
+			add = {
+				value = {
+					value = scope:owner.company_size_value
+					multiply = 10
+				}
+				add = {
+					value = {
+						value = scope:target.company_size_value
+						multiply = -10
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = HOOKED_PATRON_DESC
+			exists = scope:target.suzerain
+			scope:owner = { has_hook = scope:target.suzerain }
+			add = 10
+		}
+		modifier = {
+			desc = HOOKED_ASSOCIATES_DESC
+			exists = scope:target
+			add = {
+				value = 0 
+				scope:target = {
+					every_courtier = {
+						limit = {
+							scope:owner = { has_hook = prev }
+						}
+						add = 5
+					}
+				}
+			}
+		}
+		modifier = {
+			desc = TARGET_INCAPABLE_DESC
+			scope:target ?= {
+				is_available_quick = { incapable = yes }
+			}
+			add = 10
+		}
+	}
+	base_secrecy = {
+		add = secrecy_base_value
+		add = countermeasure_apply_secrecy_maluses_value
+	}
+
+	# On Actions
+	on_start = {
+		set_variable = {
+			name = apply_countermeasures
+			value = flag:calculating
+		}
+		# Fallback agents — a balanced config if you start the scheme from script.
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
+				}
+			}
+			add_agent_slot = agent_thief
+			add_agent_slot = agent_bookkeeper
+			add_agent_slot = agent_infiltrator
+			add_agent_slot = agent_messenger
+			add_agent_slot = agent_lookout
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		steal_market_insights_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click  = { steal_market_insights_scheme_prep_effect = yes }
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			steal_market_insights_scheme_prep_effect = yes
+			purge_ai_scheme_slots_effect = yes
+		}
+	}
+	on_monthly = { fire_generic_contract_scheme_on_going_events_effect = yes }
+
+	## Invalidation
+	on_invalidated = {
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = {
+			save_scope_as = owner
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = steal_market_insights_invalidated_title
+				left_icon = scope:target
+				if = { # Target lost expertise access
+					limit = {
+						NOT = {
+							scope:target = { shared_steal_market_insights_participant_valid_trigger = yes }
+						}
+					}
+					custom_tooltip = scheme_target_not_merchant
+				}
+				else_if = { # Owner lost expertise access
+					limit = {
+						NOT = {
+							scope:owner = { shared_steal_market_insights_participant_valid_trigger = yes }
+						}
+					}
+					custom_tooltip = scheme_owner_not_merchant
+				}
+				else_if = { # Target no longer ahead
+					limit = {
+						NOT = {
+							scope:target = {
+								gdp_company_has_higher_category_expertise_than_trigger = { OTHER = scope:owner }
+							}
+						}
+					}
+					custom_tooltip = scheme_target_no_expertise
+				}
+			}
+		}
+	}
+}
+
+############################
+# Craft Artifact
+# For Merchants making new artifacts
+############################
+
+craft_artifact = {
+	# Basic Setup
+	skill = stewardship
+	desc = craft_artifact_desc_general
+	success_desc = "CRAFT_ARTIFACT_SUCCESS_DESC"
+	icon = merchant
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_carpentry_workshop.dds"
+	target_type = character
+	category = personal
+	is_secret = no
+	uses_resistance = no
+	hide_target_name = yes
+
+	# Parameters
+	speed_per_skill_point = t2_spsp_owner_value
+	base_progress_goal = t3_base_phase_length_value # One phase resolves the whole scheme, so keep it snappy
+	base_maximum_success = t2_base_max_success_value
+	minimum_success = 5
+	phases_per_agent_charge = 1
+
+	# Core Triggers
+	allow = {
+		is_adult = yes
+		is_landless_merchant = yes
+		has_realm_law = company_purpose_artisan
+	}
+
+	valid = {
+		scope:owner = {
+			is_adult = yes
+			is_landless_merchant = yes
+			has_realm_law = company_purpose_artisan
+		}
+	}
+
+	# Agents
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_basic_suite_modifier = yes
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers guests }
+
+	odds_prediction = {
+		add = odds_skill_contribution_stewardship_value
+		add = odds_craft_artifact_scheme_misc_value
+		min = 0
+	}
+
+	# Base Chances
+	base_success_chance = {
+		base = 0
+		# Skill
+		modifier = {
+			desc = SCHEME_YOUR_STEWARDSHIP
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:owner }
+					add = {
+						value = scope:owner.stewardship
+						multiply = 1
+					}
+				}
+			}
+		}
+		# Lifestyle
+		modifier = {
+			desc = OWNER_ARTISAN_LIFESTYLE_DESC
+			add = {
+				value = 0
+				scope:owner = { # max 20
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 10 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 20 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 30 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 40 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 50 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 60 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 70 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 80 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value > 90 }
+						}
+						add = 2
+					}
+					if = {
+						limit = {
+							has_trait_xp = { trait = lifestyle_merchant track = artisan value = 100 }
+						}
+						add = 2
+					}
+				}
+				min = 0
+			}
+		}
+
+		# Traits
+		modifier = {
+			scope:owner = { has_trait = stubborn }
+			desc = "SCHEME_TRAIT_STUBBORN"
+			add = 5
+		}
+		modifier = {
+			scope:owner = { has_trait = diligent }
+			desc = "SCHEME_TRAIT_DILIGENT"
+			add = 5
+		}
+		modifier = {
+			scope:owner = { has_trait = ambitious }
+			desc = "SCHEME_TRAIT_AMBITIOUS"
+			add = 5
+		}
+		
+		# Court Position
+		modifier = {
+			add = {
+				value = 0
+				if = {
+					limit = { exists = scope:owner.court_position:antiquarian_court_position }
+					add = scope:owner.court_position:antiquarian_court_position.aptitude:antiquarian_court_position
+					multiply = 3 # max 15
+				}
+			}
+			desc = SCHEME_ANTIQUARIAN_APTITUDE_MODIFIER
+		}
+
+		# Acumen
+		modifier = {
+			desc = OWNER_ACUMEN_DESC
+			add = {
+				value = scope:owner.domicile.acumen
+				multiply = 0.005 # 25 at max
+				min = 1
+				max = 25
+			}
+		}
+
+		# Luxury XP
+		modifier = {
+			desc = OWNER_LUXURY_ITEMS_XP_DESC
+			add = {
+				value = 0
+				add = {
+					value = "scope:owner.primary_title.trade_good_category_level(trade_good_category:trade_category_luxury_items)" # max 20 after divide
+					divide = 5
+					floor = yes
+				}
+				min = 0
+			}
+		}
+
+		# Domicile
+		modifier = {
+			scope:owner.domicile ?= { has_domicile_parameter = company_better_artifact_schemes }
+			add = 10
+			desc = OWNER_COMPANY_WORKSHOP_DESC
+		}
+	}
+
+	# On Actions
+	on_start = {
+		# Fallback agents, a balanced config if the scheme is started from script.
+		if = {
+			limit = {
+				scheme_owner = {
+					NOT = { has_variable = agents_added }
+				}
+			}
+			add_agent_slot = agent_smith
+			add_agent_slot = agent_appraiser
+			add_agent_slot = agent_bookkeeper
+			add_agent_slot = agent_overseer
+			add_agent_slot = agent_supplier
+		}
+	}
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		craft_artifact_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { craft_artifact_scheme_prep_effect = yes }
+	on_semiyearly = {
+		if = {
+			limit = {
+				scheme_owner = { is_ai = yes }
+			}
+			craft_artifact_scheme_prep_effect = yes
+			purge_ai_scheme_slots_effect = yes
+		}
+	}
+	on_invalidated = {
+		scheme_owner = {
+			if = {
+				limit = { is_alive = yes }
+				save_scope_as = owner
+				send_interface_toast = {
+					type = event_toast_effect_neutral
+					title = craft_artifact_invalidated_title
+					custom_tooltip = scheme_owner_not_merchant
+					scope:owner = {
+						save_temporary_scope_as = inspiration_sponsor
+						add_gold = basic_fund_inspiration_cost
+						remove_decision_cooldown = craft_artifact_decision
+					}
+				}
+			}
+		}
+	}
+}

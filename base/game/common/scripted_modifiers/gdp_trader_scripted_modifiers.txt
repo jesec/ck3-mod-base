@@ -1,0 +1,71 @@
+﻿#############
+# GDP Trader Scheme Scripted Modifiers
+#############
+
+# Shared base success chance for all trader activity schemes
+# Parameterized by $SKILL$ in uppercase, such as STEWARDSHIP or DIPLOMACY
+gdp_trader_scheme_success_chance_modifier = {
+	# Skill contribution (2% per point)
+	modifier = {
+		add = {
+			value = scope:owner.$SKILL$
+			multiply = 2
+		}
+		desc = SCHEME_YOUR_$SKILL$
+	}
+	# +2.5% per track at journeyman tier (30+ XP)
+	modifier = {
+		add = {
+			value = 0
+			scope:owner = {
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = caravaneer    value >= 30 } } add = 2.5 }
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = artisan        value >= 30 } } add = 2.5 }
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = creditor       value >= 30 } } add = 2.5 }
+			}
+		}
+		desc = gdp_trader_merchant_trait_journeyman_bonus
+		scope:owner = { has_trait = lifestyle_merchant }
+	}
+	# +2.5% per track at expert tier (65+ XP)
+	modifier = {
+		add = {
+			value = 0
+			scope:owner = {
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = caravaneer    value >= 65 } } add = 2.5 }
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = artisan        value >= 65 } } add = 2.5 }
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = creditor       value >= 65 } } add = 2.5 }
+			}
+		}
+		desc = gdp_trader_merchant_trait_expert_bonus
+		scope:owner = { has_trait = lifestyle_merchant }
+	}
+	# +2.5% per track at master tier (100+ XP)
+	modifier = {
+		add = {
+			value = 0
+			scope:owner = {
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = caravaneer    value >= 100 } } add = 2.5 }
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = artisan        value >= 100 } } add = 2.5 }
+				if = { limit = { has_trait_xp = { trait = lifestyle_merchant track = creditor       value >= 100 } } add = 2.5 }
+			}
+		}
+		desc = gdp_trader_merchant_trait_master_bonus
+		scope:owner = { has_trait = lifestyle_merchant }
+	}
+	# House members of the route owner are more likely to succeed.
+	modifier = {
+		add = 10
+		desc = gdp_trader_house_member_success_bonus
+		scope:owner = {
+			exists = house
+			assigned_trade_route ?= {
+				trade_route_owner = { house ?= scope:owner.house }
+			}
+		}
+	}
+	modifier = {
+		add = 15
+		desc = gdp_trader_undivided_focus_modifier
+		scope:owner = { has_character_modifier = gdp_trader_undivided_focus_modifier }
+	}
+}

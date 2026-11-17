@@ -72,6 +72,18 @@ antiquarian_improve_artifact_effect = {
 		}
 		journal_improvement_effect = yes
 	}
+	else_if = {
+		limit = {
+			artifact_slot_type = library
+		}
+		book_improvement_effect = yes
+	}
+	else_if = {
+		limit = {
+			artifact_slot_type = curio
+		}
+		miscellaneous_improvement_effect = yes
+	}
 }
 
 antiquarian_apply_modifier_to_artifact_effect = {
@@ -104,12 +116,33 @@ antiquarian_apply_modifier_to_artifact_effect = {
 primary_armament_improvement_effect = {
 	random_list = {
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_martial_1_modifier }
+		}
+		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_intrigue_1_modifier }
+		}
+		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_scheme_resistance_add_1_modifier }
+		}
+		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_prowess_1_modifier }
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_knight_effectiveness_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_glory_hound_levy_contribution_mult_1_modifier }
 		}
 		10 = {
@@ -415,21 +448,54 @@ primary_armament_improvement_effect = {
 armor_improvement_effect = {
 	random_list = {
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_martial_1_modifier }
+		}
+		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_intrigue_1_modifier }
+		}
+		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_scheme_resistance_add_1_modifier }
+		}
+		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_negate_prowess_penalty_add_1_modifier }
+		}
+		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_prowess_1_modifier }
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_knight_effectiveness_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_controlled_province_advantage_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_glory_hound_levy_contribution_mult_1_modifier }
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_hard_casualty_modifier_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_levy_contribution_mult_1_modifier }
 		}
 	}
@@ -437,6 +503,12 @@ armor_improvement_effect = {
 
 regalia_improvement_effect = {
 	random_list = {
+		10 = {
+			trigger = {
+				artifact_owner ?= { gdp_is_trade_ruler_trigger = yes }
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_trade_competitiveness_add_1_modifier }
+		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_minor_prestige_1_modifier }
 		}
@@ -447,61 +519,97 @@ regalia_improvement_effect = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_add_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+				artifact_owner ?= { exists = primary_title }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_short_reign_duration_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_tyranny_1_modifier }
 		}
 		10 = {
 			trigger = { 
-				artifact_owner.top_overlord ?= {
+				artifact_owner ?= {
 					NOT = { government_has_flag = no_powerful_vassals }
+					vassal_count > 0
 				}
 			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_happy_powerful_vassal_tax_contribution_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_vassal_opinion_1_modifier }
 		}
 		2 = {
 			trigger = { 
-				artifact_owner.top_overlord ?= {
+				artifact_owner ?= {
 					NOT = { government_has_flag = no_powerful_vassals }
+					vassal_count > 0
 				}
 			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_powerful_vassal_opinion_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_tax_contribution_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_vassal_opinion_1_modifier }
 		}
 		2 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtier_and_guest_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_men_at_arms_maintenance_1_modifier }
 		}
 		10 = {
+			trigger = {
+				landed_ruler_artifact_modifier_trigger = yes
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_build_gold_cost_1_modifier }
 		}
-		10 = {
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_domain_tax_mult_1_modifier }
-		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_tax_contribution_mult_1_modifier }
 		}
 	}
@@ -519,61 +627,97 @@ helmet_improvement_effect = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_add_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+				artifact_owner ?= { exists = primary_title }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_short_reign_duration_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_tyranny_1_modifier }
 		}
 		10 = {
 			trigger = { 
-				artifact_owner.top_overlord ?= {
+				artifact_owner ?= {
 					NOT = { government_has_flag = no_powerful_vassals }
+					vassal_count > 0
 				}
 			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_happy_powerful_vassal_tax_contribution_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_vassal_opinion_1_modifier }
 		}
 		2 = {
 			trigger = { 
-				artifact_owner.top_overlord ?= {
+				artifact_owner ?= {
 					NOT = { government_has_flag = no_powerful_vassals }
+					vassal_count > 0
 				}
 			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_powerful_vassal_opinion_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_tax_contribution_mult_1_modifier }
 		}
 		2 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtier_and_guest_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_men_at_arms_maintenance_1_modifier }
 		}
 		10 = {
+			trigger = {
+				landed_ruler_artifact_modifier_trigger = yes
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_build_gold_cost_1_modifier }
 		}
-		10 = {
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_domain_tax_mult_1_modifier }
-		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_tax_contribution_mult_1_modifier }
 		}
 		10 = {
@@ -593,6 +737,9 @@ throne_improvement_effect = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { has_royal_court = yes }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_court_grandeur_baseline_add_1_modifier }
 		}
 		10 = {
@@ -602,70 +749,115 @@ throne_improvement_effect = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_add_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+				artifact_owner ?= { exists = primary_title }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_short_reign_duration_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_tyranny_1_modifier }
 		}
 		10 = {
 			trigger = { 
-				artifact_owner.top_overlord ?= {
+				artifact_owner ?= {
 					NOT = { government_has_flag = no_powerful_vassals }
+					vassal_count > 0
 				}
 			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_happy_powerful_vassal_tax_contribution_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_glory_hound_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_glory_hound_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				landed_ruler_artifact_modifier_trigger = yes
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_mercenary_hire_cost_mult_1_modifier }
 		}
 		2 = {
 			trigger = { 
-				artifact_owner.top_overlord ?= {
+				artifact_owner ?= {
 					NOT = { government_has_flag = no_powerful_vassals }
+					vassal_count > 0
 				}
 			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_powerful_vassal_opinion_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_tax_contribution_mult_1_modifier }
 		}
 		2 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtier_and_guest_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_men_at_arms_maintenance_1_modifier }
 		}
 		10 = {
+			trigger = {
+				landed_ruler_artifact_modifier_trigger = yes
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_build_gold_cost_1_modifier }
 		}
-		10 = {
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_domain_tax_mult_1_modifier }
-		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_tax_contribution_mult_1_modifier }
 		}
 		10 = {
@@ -682,68 +874,99 @@ throne_improvement_effect = {
 wall_big_improvement_effect = {
 	random_list = {
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_domicile_build_gold_cost_1_modifier }
+		}
+		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_knight_effectiveness_1_modifier }
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { has_royal_court = yes }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_court_grandeur_baseline_add_1_modifier }
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_add_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+				artifact_owner ?= { exists = primary_title }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_short_reign_duration_mult_1_modifier }
 		}
 		10 = {
 			trigger = { 
-				artifact_owner.top_overlord ?= {
+				artifact_owner ?= {
 					NOT = { government_has_flag = no_powerful_vassals }
+					vassal_count > 0
 				}
 			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_happy_powerful_vassal_tax_contribution_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_tax_contribution_mult_1_modifier }
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_mercenary_hire_cost_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_tax_contribution_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_men_at_arms_maintenance_1_modifier }
 		}
 		10 = {
+			trigger = {
+				landed_ruler_artifact_modifier_trigger = yes
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_build_gold_cost_1_modifier }
 		}
-		10 = {
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_domain_tax_mult_1_modifier }
-		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_vassal_opinion_1_modifier }
 		}
 		10 = {
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_tax_contribution_mult_1_modifier }
-		}
-		10 = {
 			trigger = {
-				scope:liege ?= { NOT = { government_has_flag = government_is_nomadic } } 
+				artifact_owner ?= { vassal_count > 0 }
 			}
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_development_growth_1_modifier }
-		}
-		10 = {
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_tax_contribution_mult_1_modifier }
+		}		10 = {
 			trigger = {
 				scope:liege ?= { government_has_flag = government_is_nomadic } 
 			}
@@ -755,27 +978,51 @@ wall_big_improvement_effect = {
 wall_small_improvement_effect = {
 	random_list = {
 		10 = {
+			trigger = {
+				artifact_owner ?= { gdp_is_trade_ruler_trigger = yes }
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_trade_competitiveness_add_1_modifier }
+		}
+		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_minor_prestige_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { has_royal_court = yes }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_court_grandeur_baseline_add_1_modifier }
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_add_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_glory_hound_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_glory_hound_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = no
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_men_at_arms_maintenance_1_modifier }
 		}
 		10 = {
@@ -792,9 +1039,18 @@ wall_small_improvement_effect = {
 sculpture_improvement_effect = {
 	random_list = {
 		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_domicile_build_gold_cost_1_modifier }
+		}
+		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { has_royal_court = yes }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_court_grandeur_baseline_add_1_modifier }
 		}
 		10 = {
@@ -805,25 +1061,25 @@ sculpture_improvement_effect = {
 		}
 		10 = {
 			trigger = { 
-				artifact_owner.top_overlord ?= {
+				artifact_owner ?= {
 					NOT = { government_has_flag = no_powerful_vassals }
+					vassal_count > 0
 				}
 			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_happy_powerful_vassal_tax_contribution_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_tax_contribution_mult_1_modifier }
 		}
 		2 = {
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_vassal_opinion_1_modifier }
-		}
-		10 = {
 			trigger = {
-				scope:liege = { NOT = { government_has_flag = government_is_nomadic } } 
+				artifact_owner ?= { vassal_count > 0 }
 			}
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_development_growth_1_modifier }
-		}
-		10 = {
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_vassal_opinion_1_modifier }
+		}		10 = {
 			trigger = {
 				scope:liege = { government_has_flag = government_is_nomadic } 
 			}
@@ -835,21 +1091,42 @@ sculpture_improvement_effect = {
 book_improvement_effect = {
 	random_list = {
 		10 = {
+			trigger = {
+				artifact_owner ?= { gdp_is_trade_ruler_trigger = yes }
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_trade_category_all_xp_gain_mult_1_modifier }
+		}
+		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_minor_prestige_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_vassal_limit_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_tax_contribution_mult_1_modifier }
 		}
 		10 = {
@@ -860,14 +1137,7 @@ book_improvement_effect = {
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_personal_scheme_phase_duration_add_1_modifier }
-		}
-		10 = {
-			trigger = {
-				scope:liege = { NOT = { government_has_flag = government_is_nomadic } } 
-			}
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_development_growth_1_modifier }
-		}
-		10 = {
+		}		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_learn_language_scheme_phase_duration_add_1_modifier }
 		}
 		10 = {
@@ -888,37 +1158,55 @@ pedestal_improvement_effect = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { has_royal_court = yes }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_court_grandeur_baseline_add_1_modifier }
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_prestige_add_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_tax_contribution_mult_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_courtly_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				landed_ruler_artifact_modifier_trigger = yes
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_build_gold_cost_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_zealot_tax_contribution_mult_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_tax_contribution_mult_1_modifier }
 		}
 		2 = {
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_vassal_opinion_1_modifier }
-		}
-		10 = {
 			trigger = {
-				scope:liege = { NOT = { government_has_flag = government_is_nomadic } } 
+				artifact_owner ?= { vassal_count > 0 }
 			}
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_development_growth_1_modifier }
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_belligerent_vassal_opinion_1_modifier }
 		}
 		10 = {
 			trigger = {
@@ -932,9 +1220,30 @@ pedestal_improvement_effect = {
 miscellaneous_improvement_effect = {
 	random_list = {
 		10 = {
+			trigger = {
+				artifact_owner ?= { gdp_is_trade_ruler_trigger = yes }
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_trade_competitiveness_add_1_modifier }
+		}
+		10 = {
+			trigger = {
+				artifact_owner ?= { gdp_is_trade_ruler_trigger = yes }
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_trade_category_all_xp_gain_mult_1_modifier }
+		}
+		10 = {
+			trigger = {
+				merchant_artifact_modifier_trigger = yes
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_domicile_build_gold_cost_1_modifier }
+		}
+		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_minor_prestige_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_vassal_limit_1_modifier }
 		}
 		10 = {
@@ -958,15 +1267,30 @@ miscellaneous_improvement_effect = {
 journal_improvement_effect = {
 	random_list = {
 		10 = {
+			trigger = {
+				artifact_owner ?= { gdp_is_trade_ruler_trigger = yes }
+			}
+			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_trade_category_all_xp_gain_mult_1_modifier }
+		}
+		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_monthly_minor_prestige_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_vassal_limit_1_modifier }
 		}
 		2 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_vassal_opinion_1_modifier }
 		}
 		10 = {
+			trigger = {
+				artifact_owner ?= { vassal_count > 0 }
+			}
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_parochial_tax_contribution_mult_1_modifier }
 		}
 		10 = {
@@ -977,14 +1301,7 @@ journal_improvement_effect = {
 		}
 		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_personal_scheme_phase_duration_add_1_modifier }
-		}
-		10 = {
-			trigger = {
-				scope:liege = { NOT = { government_has_flag = government_is_nomadic } } 
-			}
-			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_development_growth_1_modifier }
-		}
-		10 = {
+		}		10 = {
 			antiquarian_apply_modifier_to_artifact_effect = { MODIFIER = artifact_learn_language_scheme_phase_duration_add_1_modifier }
 		}
 		10 = {

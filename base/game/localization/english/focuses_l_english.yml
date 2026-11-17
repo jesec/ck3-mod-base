@@ -27,6 +27,10 @@
  diplomacy_majesty_focus_desc:0 "Regality flows from ritual, tradition and glory."
  diplomacy_majesty_focus_effect_desc:0 "Focusing on Majesty grants:"
  majesty_name:1 "August"
+ diplomacy_merchant_focus: "Silver Tongue"
+ diplomacy_merchant_focus_modifier: "[GetFocus('diplomacy_merchant_focus').GetName]"
+ diplomacy_merchant_focus_desc: "Build influence through contracts, courtesy, and a reputation for profitable friendship."
+ diplomacy_merchant_focus_effect_desc: "Focusing on $diplomacy_merchant_focus$ grants:"
 
  #Martial
  martial_lifestyle_name:0 "Martial"
@@ -50,6 +54,10 @@
  martial_chivalry_focus_desc:0 "Victory comes not through blood or gold, but honor."
  martial_chivalry_focus_effect_desc:0 "Focusing on Chivalry grants:"
  chivalry_name:1 "Gallant"
+ martial_merchant_focus: "Competitive"
+ martial_merchant_focus_modifier: "[GetFocus('martial_merchant_focus').GetName]"
+ martial_merchant_focus_desc: "Every market has rivals and every contract is a field of battle."
+ martial_merchant_focus_effect_desc: "Focusing on $martial_merchant_focus$ grants:"
  
  #Intrigue
  intrigue_lifestyle_name:0 "Intrigue"
@@ -70,6 +78,10 @@
  intrigue_intimidation_focus_effect_desc:0 "Focusing on Intimidation grants:"
  intrigue_intimidation_focus_desc:0 "Threats, both overt and subtle, guide the path to true power."
  intimidation_name:0 "Torturer"
+ intrigue_merchant_focus: "Cutthroat"
+ intrigue_merchant_focus_modifier: "[GetFocus('intrigue_merchant_focus').GetName]"
+ intrigue_merchant_focus_desc: "Gold moves most freely when no one asks where it came from."
+ intrigue_merchant_focus_effect_desc: "Focusing on $intrigue_merchant_focus$ grants:"
 
  #Stewardship
  stewardship_lifestyle_name:0 "Stewardship"
@@ -91,6 +103,10 @@
  stewardship_wealth_focus_desc:0 "War, honor, and loyalty are all means to an end: gold!"
  stewardship_wealth_focus_effect_desc:0 "Focusing on Wealth grants:"
  wealth_name:1 "Avaricious"
+ stewardship_merchant_focus: "Master of Coin"
+ stewardship_merchant_focus_modifier: "[GetFocus('stewardship_merchant_focus').GetName]"
+ stewardship_merchant_focus_desc: "Count every coin, weigh every cargo, and let no opportunity pass unexploited."
+ stewardship_merchant_focus_effect_desc: "Focusing on $stewardship_merchant_focus$ grants:"
  
  #Learning
  learning_lifestyle_name:0 "Learning"
@@ -111,14 +127,16 @@
  learning_scholarship_focus_desc:0 "The knowledge of those who have come before, the knowledge of those still living, and the knowledge of perpetual truths."
  learning_scholarship_focus_effect_desc:0 "Focusing on Scholarship grants:"
  scholarship_name:1 "Scholar"
+ learning_merchant_focus: "Cosmopolitan"
+ learning_merchant_focus_modifier: "[GetFocus('learning_merchant_focus').GetName]"
+ learning_merchant_focus_desc: "Many ports, many tongues, many gods; all are lessons for those willing to listen."
+ learning_merchant_focus_effect_desc: "Focusing on $learning_merchant_focus$ grants:"
 
  #Wanderer
  wanderer_lifestyle_name: "Wandering"
  wanderer_lifestyle_desc: "Focus on traveling to the corners of the world, seeing great sights that others can only dream of, and surviving to tell the tale."
  wanderer_lifestyle_highlight_desc: "[GetPlayer.Custom('GetWandererLifestyleXPHighlight')]"
  wanderer_lifestyle_highlight: "Because of your [GetTrait('lifestyle_traveler').GetName( GetPlayer )] [trait|E], you gain #P [GetPlayer.Custom('GetLifestyleBoostWanderer')]#! more [experience|E] in this Lifestyle."
- wanderer_lifestyle_adventurer_no_highlight: "Unlocks new [activities|E]\n[hike_i] [monument_expedition_i]"
- wanderer_lifestyle_no_highlight: "Unlocks new [activities|E]\n[inspection_i] [hike_i] [monument_expedition_i]"
  wanderer_journey_focus: "Journey Focus"
  wanderer_journey_focus_modifier: "[GetFocus('wanderer_journey_focus').GetName]"
  wanderer_journey_focus_desc: "Every step is a journey in itself."
@@ -128,7 +146,7 @@
  wanderer_destination_focus_modifier: "[GetFocus('wanderer_destination_focus').GetName]"
  wanderer_destination_focus_desc: "There is a world out there waiting to be seen."
  wanderer_destination_focus_effect_desc: "Focusing on the Destination grants:\n$wanderer_destination_focus_effect$"
- wanderer_destination_focus_effect: "[point_of_interest|E] [prestige|E]: $game_concept_prestige_i$#P +50#!"
+ wanderer_destination_focus_effect: "[point_of_interest|E] [prestige|E]: $game_concept_prestige_i$#P +[GetPlayer.MakeScope.ScriptValue('wanderer_destination_prestige_value')|0]#!"
  wanderer_internal_affairs_focus: "Internal Affairs Focus"
  wanderer_internal_affairs_focus_desc: "Guiding progress and prosperity through a personal touch."
  wanderer_internal_affairs_focus_effect_desc: "Focusing on Internal Affairs grants:\n$wanderer_internal_affairs_focus_effect$"

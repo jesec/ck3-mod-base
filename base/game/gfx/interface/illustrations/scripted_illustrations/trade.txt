@@ -1,0 +1,183 @@
+﻿### Trade market background, mirrors the 'market' event background. Scoped from the market's location barony.
+trade_market_bg = {
+
+	texture = { # Nomads
+		reference = "event_scenes/mpo_hunt_steppe.dds"
+
+		trigger = {
+			title_province ?= {
+				county.holder ?= {
+					government_has_flag = government_is_in_steppe
+				}
+			}
+		}
+	}
+
+	texture = { # Japan
+		reference = "event_scenes/tgp_japanese_city.dds"
+
+		trigger = {
+			title_province ?= {
+				OR = {
+					culture ?= {
+						has_graphical_japanese_culture_group_trigger = yes
+					}
+					geographical_region = world_asia_japan
+					geographical_region = world_asia_sakhalin_hokkaido
+				}
+			}
+		}
+	}
+
+	texture = { # Asia
+		reference = "event_scenes/tgp_market_asia.dds"
+
+		trigger = {
+			title_province ?= {
+				OR = {
+					culture ?= {
+						has_graphical_east_asia_culture_group_trigger = yes
+					}
+					steppe_building_gfx_use_east_asian_trigger = yes
+					steppe_building_gfx_use_southeast_asian_trigger = yes
+					culture ?= {
+						has_building_gfx = southeast_asian_building_gfx
+					}
+				}
+				county ?= {
+					NOR = {
+						title_province ?= {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
+						prosperity_level < 5
+					}
+				}
+			}
+		}
+	}
+
+	texture = { # Tribal island village
+		reference = "event_scenes/tgp_village_sea.dds"
+
+		trigger = {
+			title_province ?= {
+				OR = {
+					steppe_building_gfx_use_southeast_asian_trigger = yes
+					culture ?= {
+						has_building_gfx = southeast_asian_building_gfx
+					}
+				}
+				is_coastal = yes
+				county ?= {
+					OR = {
+						title_province ?= {
+							OR = {
+								has_holding_type = tribal_holding
+								has_holding_type = nomad_holding
+								has_holding_type = herder_holding
+							}
+						}
+						prosperity_level < 5
+					}
+				}
+			}
+		}
+	}
+
+	texture = { # Rural Asia
+		reference = "event_scenes/mpo_rural_village_asian.dds"
+
+		trigger = {
+			title_province ?= {
+				OR = {
+					culture ?= {
+						has_graphical_east_asia_culture_group_trigger = yes
+					}
+					steppe_building_gfx_use_east_asian_trigger = yes
+					steppe_building_gfx_use_southeast_asian_trigger = yes
+					culture ?= {
+						has_building_gfx = southeast_asian_building_gfx
+					}
+				}
+			}
+		}
+	}
+
+	texture = { # Italian
+		reference = "event_scenes/gdp_italian_market.dds"
+		trigger = {
+			title_province ?= {
+				geographical_region = world_europe_south_italy
+			}
+		}
+	}
+
+	texture = { # Byzantine/Greek
+		reference = "event_scenes/ep3_medi_market.dds"
+
+		trigger = {
+			title_province ?= {
+				OR = {
+					geographical_region = mediteranean_coast
+					geographical_region = world_asia_minor
+					culture ?= { has_graphical_mediterranean_culture_group_trigger = yes }
+					steppe_building_gfx_use_mediterranean_trigger = yes
+				}
+			}
+		}
+	}
+
+	texture = { # Eastern
+		reference = "event_scenes/market_east.dds"
+
+		trigger = {
+			title_province ?= {
+				OR = {
+					geographical_region = graphical_mena
+					geographical_region = graphical_india
+					culture ?= { has_building_gfx = iranian_building_gfx }
+					culture ?= { has_building_gfx = indian_building_gfx }
+					culture ?= { has_building_gfx = tibetan_building_gfx }
+					AND = {
+						geographical_region = world_europe_west_iberia
+						faith ?= { religion = religion:islam_religion }
+					}
+					steppe_building_gfx_use_indian_trigger = yes
+					AND = {
+						steppe_building_gfx_use_mena_trigger = yes
+						NOT = {
+							AND = {
+								county.holder ?= { government_has_flag = government_is_tribal }
+								geographical_region = world_steppe
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	texture = { # Tribal
+		reference = "event_scenes/market_tribal.dds"
+
+		trigger = {
+			title_province ?= {
+				county.holder ?= {
+					OR = {
+						government_has_flag = government_is_clan
+						government_has_flag = government_is_tribal
+					}
+				}
+				NOT = {
+					geographical_region = graphical_mena
+				}
+			}
+		}
+	}
+
+	texture = "event_scenes/market_west.dds" # Western (standard/fallback)
+}

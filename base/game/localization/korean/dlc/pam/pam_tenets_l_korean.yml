@@ -1187,6 +1187,7 @@
  doctrine_parameter_tenet_dulia_extra_relic_modifier: "[GetDecisionWithKey('pam_extract_relic_decision').GetName] [decision|E]으로 얻은 [artifacts|E]이 무작위 축복 #P 1#!개를 추가로 지님"
  doctrine_parameter_tenet_dulia_dynasty_prestige_from_relics: "[dynasty|E] 구성원을 대상으로 한 [GetDecisionWithKey('pam_extract_relic_decision').GetName] [decision|E]이 #P [EmptyScope.ScriptValue('medium_dynasty_prestige_gain')|0]#! [dynasty_prestige|E] 부여"
  doctrine_parameter_tenet_dulia_canonization_faith_bonus: "성자 시성 시 해당 [faith|E]의 모든 [ruler|E]에게 #EMP 5#!년 동안 $pam_dulia_new_saint_modifier$를 부여함"
+ doctrine_parameter_dulia_shrine_lamps: "[GetBuildingType('processions_1').GetName] 계열 [building|E]에 [GetTradeGoodType('trade_good_oil').GetNameWithIcon]에 대한 [building_need|E]가 추가되며, 해당 수요가 충족되면 @piety_icon![piety|E]를 부여함"
  # Transubstantiation tenet
  tenet_transubstantiation_latin_name: "Transubstantiatio" # DO NOT TRANSLATE
  tenet_transubstantiation_greek_name: "Metousíōsis" # DO NOT TRANSLATE
@@ -1227,6 +1228,8 @@
  tenet_hyperdulia_historical_desc: "기독교 초기부터 예수의 어머니 마리아는 특별한 공경과 존숭의 대상이었습니다. 431년 에페소 공의회는 그녀의 칭호인 테오토코스, 곧 #weak 하느님을 낳은 자#!를 공인했으며, 동시에 크리스토토코스, #weak 그리스도를 낳은 자#! 를 선호한 네스토리우스파를 단죄했습니다. 성 요한 다마스쿠스는 8세기에 마리아가 구원 역사에서 맡은 독보적인 역할로 인해 모든 성인들 위에 드높여졌다고 기록했습니다. 세월이 흐르며 원죄 없는 잉태와 성모 승천 같은 여러 마리아 교리가 발전했고, 기독교 교회들에 의해 공식 교리로 규정되었습니다."
  doctrine_parameter_tenet_hyperdulia_female_claims_are_strong: "[gender_laws|E]으로 인해 여성의 [claims|E]이 더 이상 약화되지 않음"
  doctrine_parameter_tenet_hyperdulia_female_preference_law: "다음 [laws|E] 활성화: [GetLaw('female_preference_law').GetName] 승계법"
+ doctrine_parameter_tenet_hyperdulia_daughter_vows_bonus: "딸에게 #high $take_vows_interaction$#! [character_interaction|E] 사용 시 @legitimacy_icon![legitimacy|E] 부여"
+ doctrine_parameter_tenet_hyperdulia_women_can_be_councillors: "여성을 세속 [council|E] 직위에 임명할 수 있음"
  # Simony tenet
  tenet_simony_latin_name: "Simonia" # DO NOT TRANSLATE
  tenet_simony_greek_name: "Simōnía" # DO NOT TRANSLATE
@@ -1246,7 +1249,11 @@
  doctrine_parameter_tenet_simony_gold_donations: "[clergy|E]에게 탄원할 때 @gold_icon![gold|E] 기부의 설득력이 #P 5배#!가 됨"
  doctrine_parameter_tenet_simony_wealth_fulfillment: "매년 #P 25%#!~#P 75%#! 확률로 #P +[EmptyScope.ScriptValue('minor_spiritual_fulfillment_value')|0]#! @spiritual_fulfillment_icon![spiritual_fulfillment|E]을 획득하며, 부유할수록 확률이 높아짐"
  doctrine_parameter_tenet_simony_venal_head_of_faith: "[head_of_faith|E]는 [excommunication|E] 해제를 위해 제시된 @gold_icon![gold|E]를 항상 수락함"
- doctrine_parameter_tenet_simony_personal_gifts: "선물이 [stress|E]를 감소시키고 약간의 @spiritual_fulfillment_icon![spiritual_fulfillment|E]을 부여하며, 획득하는 [opinion|E]이 두 배가 됨"
+ doctrine_parameter_simony_gold: "[GetBuildingType('church_treasury_1').GetName] 계열 [building|E]에 [GetTradeGoodType('trade_good_gold').GetNameWithIcon]에 대한 [building_need|E]가 추가되며, 해당 수요가 충족되면 @religious_tax_icon![religious_tax|E]을 부여함"
+ doctrine_parameter_tenet_simony_personal_gifts: "선물이 [stress|E]를 감소시키고 약간의 @spiritual_fulfillment_icon![spiritual_fulfillment|E]을 부여하며, 획득하는 [opinion|E]이 #P +25%#! 증가함"
+ doctrine_parameter_tenet_simony_fulfillment_per_gold: "#D [ROOT.Char.MakeScope.ScriptValue('simony_yearly_gold_value')] [gold_i] [gold|e]를 보유할 때마다 매년 영적 충만을 X만큼 획득할 확률이 있습니다. 보유한 [gold|E]가 많을수록 확률이 증가합니다#!" #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
+ doctrine_parameter_tenet_simony_fulfillment_in_debt: "#D 채무를 지고 있으면 영적 충만이 감소합니다#!" #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
+ doctrine_parameter_tenet_simony_relic_artifacts_bonus: "#D 성물 유물을 [gold|E]로 판매하는 [interaction|E]#!" #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
  pam_simony_tenet_msg_title: "$tenet_simony_default_name$"
  pam_personal_syncretism_county_modifier: "융화주의 수용"
  pam_personal_syncretism_county_modifier_desc: "지역 주민들은 영주 개인의 융화주의적 전통을 존중하고 그 통치 아래 번영합니다."
@@ -1329,6 +1336,7 @@
  tenet_be_fruitful_and_multiply_fruitful_upbringing_devoted_desc: "$tenet_be_fruitful_and_multiply_fruitful_upbringing_desc$"
  tenet_be_fruitful_and_multiply_fruitful_upbringing_desc: "서로 사랑하는 두 사람 사이에서 태어난 아이는 부모의 따뜻한 애정을 느끼며, 다정한 보살핌 속에서 건강하게 자라납니다."
  doctrine_parameter_tenet_be_fruitful_and_multiply_health_boost_after_child: "출생 및 성년 도달 시:\n$BULLET_WITH_TAB$#V 자녀#!가 2년 동안 [GetModifier('tenet_be_fruitful_and_multiply_child_modifier').GetNameWithTooltip] 획득.\n$BULLET_WITH_TAB$#V 부모#!가 2년 동안 [GetModifier('tenet_be_fruitful_and_multiply_parent_modifier').GetNameWithTooltip] 획득."
+ doctrine_parameter_tenet_be_fruitful_and_multiply_temple_growth: "[GetDistrictType('temple_district').GetName]의 [GetBuildingType('pb_temple_01').GetName](은)는 [settlement_size_baseline|E]를 추가로 부여하며, 해당 기준치보다 낮을 때 [settlement_size_growth|E]이 빨라짐"
  tenet_be_fruitful_and_multiply_child_modifier: "애지중지 보살핌받음"
  tenet_be_fruitful_and_multiply_child_modifier_desc: "다산에 대한 열렬한 경외는 모든 신자가 아이와 그 부모에게 더욱 많은 관심과 보살핌을 기울이게 만듭니다."
  tenet_be_fruitful_and_multiply_parent_modifier: "자녀를 낳아 칭송받음"
@@ -1436,9 +1444,11 @@
  tenet_philanthropia_historical_desc: "비잔틴 기독교에서 philanthrōpia는 보편적 사랑이라는 덕목인 동시에, 황제와 주교, 신자들의 지원 아래 운영되던 병원, 쉼터, 고아원, 구제 활동 같은 실제 자선 제도를 뜻하기도 했습니다. 카이사레아의 바실레이오스와 요한 크리소스토모, 그리고 유스티니아누스 같은 후대 황제들은 빈자들을 돌보는 일을 제국 통치의 정당성과 연결지었습니다. 교회는 거룩함에 이르는 길로서 전쟁을 찬양하지 않았습니다. 대신 빈자를 어떻게 섬기느냐에 따라 부와 권력이 부분적으로 정당화될 수 있다고 가르쳤습니다."
  doctrine_parameter_tenet_philanthropia_high_almoner_court_position: "[county|E] 등급부터 [GetCourtPositionType('high_almoner_court_position').GetName](을)를 임명할 수 있음"
  doctrine_parameter_tenet_philanthropia_ransom_captives: "다른 [character|E]의 몸값을 지불하면 지불한 @gold_icon![gold|E]에 비례하여 @piety_icon![piety|E]와 @spiritual_fulfillment_icon![spiritual_fulfillment|E] 부여"
- doctrine_parameter_tenet_philanthropia_generous_bonus: "[GetTrait('generous').GetName( GetNullCharacter )] [characters|E]: 같은 신앙을 믿는 인물의 [opinion|E] #P +10#!, [development_growth|E] #P +20%#!"
+ doctrine_parameter_tenet_philanthropia_generous_bonus: "[GetTrait('generous').GetName( GetNullCharacter )] [characters|E]: 같은 신앙을 믿는 인물의 [opinion|E] #P +10#!, [prosperity_growth|E] #P +20%#!"
  doctrine_parameter_tenet_philanthropia_greedy_penalty: "[GetTrait('greedy').GetName( GetNullCharacter )] [characters|E]: 같은 신앙을 믿는 인물의 [opinion|E] #N -10#!, @piety_icon![piety|E] 획득량 #N -25%#!"
  doctrine_parameter_tenet_philanthropia_alms_to_the_destitute: "[debt|E] 상태인 [character|E]에게 [gift|E]을 보내면 @prestige_icon![prestige|E]와 @piety_icon![piety|E] 부여"
+ doctrine_parameter_tenet_philanthropia_doubled_charity: "[GetBuildingType('charities_1').GetName] 및 [GetBuildingType('hostelry_1').GetName] 계열 [building|E]의 [building_needs|E]에 필요한 상품량이 두 배로 증가하며, 해당 수요를 충족했을 때 얻는 효과도 두 배로 증가함"
+ doctrine_parameter_tenet_philanthropia_district_piety: "[GetBuildingType('pb_temple_01').GetName] 및 [GetBuildingType('pb_religious_community_01').GetName](이)가 @piety_icon![piety|E]를 추가로 부여"
  pam_philanthropia_ransom_toast: "당신의 [GetTenetType('tenet_philanthropia').GetName( GetPlayer.GetRite )] 개인 원리에서"
  # Scholasticism tenet
  tenet_scholasticism_latin_name: "Sacra Doctrina" # DO NOT TRANSLATE
@@ -1458,6 +1468,7 @@
  doctrine_parameter_tenet_scholasticism_university_chance: "공부하지 않아도 매년 [GetModifier('tenet_scholasticism_modifier').GetNameWithTooltip](을)를 획득할 확률이 있으며, 이 확률은 [learning|E], [piety_level|E], 알고 있는 언어의 수에 따라 증가함"
  doctrine_parameter_tenet_scholasticism_cheaper_adult_education: "[GetActivityType('activity_adult_education').GetName] 참석 @gold_icon![gold|E] 비용이 #P [EmptyScope.ScriptValue('pam_scholasticism_adult_education_discount_loc')]%#! 감소함"
  doctrine_parameter_tenet_scholasticism_court_scholar: "[SelectLocalization( HasDlcFeature( 'legacy_of_persia' ), 'tenet_scholasticism_court_scholar_effect', 'blank_line' )]"
+ doctrine_parameter_tenet_scholasticism_scriptorium_bonus: "[GetBuildingType('scriptorium_1').GetName]: [GetTradeGoodType('trade_good_books_paper').GetNameWithIcon] [production|E]: #P +[EmptyScope.ScriptValue('minor_paper_output_1')|0]#!, [building|E] 단계당 @piety_icon![piety|E]: #P +0.01#!"
  tenet_scholasticism_court_scholar_name: "$tenet_scholasticism_name$"
  tenet_scholasticism_court_scholar_effect: "$tradition_fp3_beacon_of_learning_name$ [culture_tradition|E] 없이도 [GetCourtPositionType('court_scholar_court_position').GetName](을)를 #P 봉급 없이#! 임명할 수 있음"
  tenet_scholasticism_modifier: "$tenet_scholasticism_default_name$"
@@ -1478,7 +1489,7 @@
  tenet_love_thy_neighbour_default_desc: "이웃 사랑은 주님 사랑과 떼어놓을 수 없으며, 자비와 구제의 행위를 통해 우리는 주님의 율법을 이루게 된다.\n\n$pam_matthew_22_39_default$"
  tenet_love_thy_neighbour_default_historical_glossary: "[Glossary('네 이웃을 사랑하라','tenet_love_thy_neighbour_historical_desc')]"
  tenet_love_thy_neighbour_historical_desc: "이웃 사랑의 계명은 기독교 윤리의 핵심으로, 레위기 19장 18절에서 비롯되어 그리스도에 의해 하느님의 사랑과 함께 모든 율법을 요약하는 계명으로 높여졌습니다. 알렉산드리아의 클레멘스와 요한 크리소스토모 같은 초기 교부들은 참된 사랑의 대상이 가족과 친구를 넘어 낯선 이들과 원수까지 포함한 모든 인간에게 확장되어야 한다고 강조했습니다. 이러한 가르침은 중세 전반에 걸쳐 기독교 자선 기관과 병원, 그리고 구제 활동의 발전에 큰 영향을 주었습니다."
- doctrine_parameter_tenet_love_thy_neighbour_county_bonus: "이 [faith|E]의 [Concept( 'counties', '영지' )|E]가 #P 60+#! [county_opinion|E]을 보유할 경우 [GetModifier('tenet_love_thy_neighbour_modifier').GetNameWithTooltip] [modifier|E] 획득 가능"
+ doctrine_parameter_tenet_love_thy_neighbour_county_bonus: "이 [faith|E]의 [Concept( 'counties', '영지' )|E]가 #P 60+#! [popular_opinion|E]을 보유할 경우 [GetModifier('tenet_love_thy_neighbour_modifier').GetNameWithTooltip] [modifier|E] 획득 가능"
  doctrine_parameter_tenet_love_thy_neighbour_hospital_shelter: "$building_type_hospices_01$ [buildings|E]은 [Concept( 'county', '영지' )|E]의 [travel_danger|E]을 #P 3#!~#P 10#!만큼 감소시키며, 단계가 오를수록 감소량이 커짐"
  doctrine_parameter_tenet_love_thy_neighbour_hospital_care: "$building_type_hospices_01$ [buildings|E]은 [province|E]에 #P +2#!~#P +10#! [epidemic_resistance|E]을 부여하며, 단계가 오를수록 증가량이 커짐"
  doctrine_parameter_tenet_love_thy_neighbour_foreign_sway: "당신의 [realm|E] 밖에 있는 [characters|E]을 상대로 한 [GetScheme('sway').GetTypeName] [scheme_success_chance|E]: [success_chance_i]#P +20%#!"
@@ -1646,6 +1657,10 @@
  doctrine_parameter_tenet_miaphysitism_deceitful_penalty: "[GetTrait('deceitful').GetName( GetNullCharacter )] [characters|E]: @piety_icon![piety|E] 획득량 #N -10%#!, [clergy|E] [opinion|E] #N -10#!"
  doctrine_parameter_tenet_miaphysitism_open_confession: "당신의 [liege|E]이 당신과 같은 [faith|E]을 믿지 않는 동안 매년 [piety_i]#P [EmptyScope.ScriptValue('minor_piety_gain')|0]#! [piety|E]"
  pam_miaphysitism_open_confession_toast_title: "$tenet_miaphysitism_default_name$"
+ doctrine_parameter_tenet_miaphysitism_loyal_trait_more_common: "[GetTrait('loyal').GetName( GetNullCharacter )] [trait|E]이 비교적 흔하게 나타남" #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
+ doctrine_parameter_tenet_miaphysitism_loyal_trait_bonus: "#D [GetTrait('loyal').GetName( GetNullCharacter )] [trait|E]을 지닌 인물이 추가 보너스를 얻음#!" #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
+ doctrine_parameter_tenet_miaphysitism_ecumenical_debates_bonus: "#D 보편 공의회 논쟁이 추가 보너스를 제공함#!" #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
+ doctrine_parameter_tenet_miaphysitism_ecumenical_debates_personal_bonus: "#D 보편 공의회 논쟁이 추가 개인 보너스를 제공함#!" #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
  # Hesychasm tenet
  tenet_hesychasm_latin_name: "Hesychasmus" # DO NOT TRANSLATE
  tenet_hesychasm_greek_name: "Hēsykhasmós" # DO NOT TRANSLATE
@@ -1680,13 +1695,15 @@
  tenet_anachoresis_default_historical_glossary: "[Glossary('아나코레시스','tenet_anachoresis_historical_desc')]"
  tenet_anachoresis_historical_desc: "아나코레시스는 그리스어로 물러남을 뜻하는 #weak anakhorēsis#!에서 유래한 말로, 사회를 떠나 광야에 은거한 은수자들이 기도와 단식에 전념하고 악마의 세력에 맞서 영적 투쟁을 벌이며 살아가는 수행 방식입니다. 이러한 은수 생활은 3세기 이집트에서 시작되었습니다. 전통적으로 최초의 그리스도교 은수자로 여겨지는 테베의 성 바오로는 250년경 데키우스 황제의 박해를 피해 테베의 광야로 들어갔습니다.\n\n독수자들은 중세에도 흔히 볼 수 있었으며, 수도원에 딸린 외딴 독방에서 생활하면서 작은 창을 통해 성체를 받아 모셨습니다. 13세기 잉글랜드의 은둔자 지침서(Ancrene Wisse)와 같은 저술에는 남녀 독수자들이 지켜야 할 규율이 정리되어 있었습니다."
  doctrine_parameter_tenet_anachoresis_mystic_trait: "[GetTrait('lifestyle_mystic').GetName( GetNullCharacter )] [trait|E] 획득"
+ doctrine_parameter_tenet_anachoresis_seclusion: "#D 식구가 관상 기도를 위해 장기간 은둔할 수 있는 결단을 잠금 해제#!" #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
  doctrine_parameter_tenet_anachoresis_meditation_bonus: "당신의 [capital|E] 밖에서 [GetDecisionWithKey('meditate_in_seclusion_decision').GetName] [decision|E]을 내리면 @piety_icon![piety|E]와 @spiritual_fulfillment_icon![spiritual_fulfillment|E]이 #P 증가함#!"
  religious_decision.0211_anachoresis_tt: "#EMP 당신의 [GetTenetType('tenet_anachoresis').GetName( GetPlayer.GetRite )] [personal_tenet|E]로 인하여:#!"
  doctrine_parameter_tenet_anachoresis_always_cave_hermit: "[GetCourtPositionType('cave_hermit_court_position').GetName()] [court_position|E] 잠금 해제"
  tenet_anachoresis_always_cave_hermit_name: "[GetCourtPositionType('cave_hermit_court_position').GetName()] [court_position|E]"
  pam_anachoresis_meditation_toast: "당신의 [GetTenetType('tenet_anachoresis').GetName( GetPlayer.GetRite )]에서: 은둔 중 명상에서 보너스"
+ doctrine_parameter_tenet_anachoresis_solitude_stress_reduction: "#D 인물이 혼자 여행하면 스트레스가 감소하고 개인의 영적 충만을 획득함#!"
  pam_anachoresis_tenet_title: "$tenet_anachoresis_default_name$ [core_tenet|E]"
- # Mortification of the Flesh tenet
+ # Mortification of the Flesh tenet #TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL#TODO_PAM #TODO_PAM_TENETS #TODO_PAM_CD_KL
  tenet_mortification_of_the_flesh_latin_name: "Mortificatio Carnis" # DO NOT TRANSLATE
  tenet_mortification_of_the_flesh_greek_name: "Nékrōsis tẽs Sarkós" # DO NOT TRANSLATE
  tenet_mortification_of_the_flesh_default_name: "육신의 고행"
@@ -1728,6 +1745,8 @@
  doctrine_parameter_tenet_holy_myron_artifact_interaction_unlock: "다른 영주에게 자신의 #V 미론 성유#! [artifact|E] 사용 횟수를 나눠줄 수 있으며, @piety_icon![piety|E]와 [opinion|E] 획득"
  doctrine_parameter_tenet_holy_myron_chrismation_bonus: "당신의 갓 태어난 자녀는 #V 16#!년 동안 [GetModifier('pam_chrismated_child_modifier').GetNameWithTooltip] [modifier|E]를 얻으며, #V 미론 성유#! [artifact|E]의 사용 횟수 하나는 [GetModifier('pam_myron_chrismated_child_modifier').GetNameWithTooltip] [modifier|E]를 영구적으로 부여"
  doctrine_parameter_tenet_holy_myron_unction_bonus: "[ill|E]에 걸릴 때: @spiritual_fulfillment_icon![spiritual_fulfillment|E] 획득, [stress|E] 감소, #V 2#!년 동안 [GetModifier('pam_anointed_with_holy_oil_modifier').GetNameWithTooltip] [modifier|E] 획득"
+ doctrine_parameter_chrismation_oil: "[GetBuildingType('sacristy_1').GetName] 계열 [building|E]에 [GetTradeGoodType('trade_good_oil').GetNameWithIcon]에 대한 [building_need|E]가 추가되며, 해당 수요가 충족되면 @piety_icon![piety|E]를 부여함"
+ doctrine_parameter_ritual_incense: "[GetBuildingType('sacristy_1').GetName] 계열 [building|E]에 [GetTradeGoodType('trade_good_incense').GetNameWithIcon]에 대한 [building_need|E]가 추가되며, 해당 수요가 충족되면 @piety_icon![piety|E]를 부여함"
  # Khachkar tenet
  tenet_khachkar_armenian_name: "Khachkar" # DO NOT TRANSLATE
  tenet_khachkar_latin_name: "Crux Lapidea" # DO NOT TRANSLATE
@@ -1746,6 +1765,7 @@
  doctrine_parameter_tenet_khachkar_decision_unlock: "가까운 [dynasty|E] 친척에게 상속받은 후 #V 5#!년 동안 [GetDecisionWithKey('pam_raise_khachkar_decision').GetName] [decision|E]을 사용할 수 있음"
  doctrine_parameter_tenet_khachkar_kin_death_stress_loss: "가까운 [family|E] 구성원이 사망하면 [stress|E]가 #P 20#! 감소함"
  doctrine_parameter_tenet_khachkar_building_bonuses: "[church_holding|E] 또는 [temple_citadel_holding|E] 건설 시 [piety_i]#P [EmptyScope.ScriptValue('minor_piety_gain')|0]#! [piety|E] 및 #P [EmptyScope.ScriptValue('medium_spiritual_fulfillment_value')|0]#! @spiritual_fulfillment_icon![spiritual_fulfillment|E]"
+ doctrine_parameter_khachkar_stone: "[GetBuildingType('spiritual_endowment_1').GetName] 계열 [building|E]에 [GetTradeGoodType('trade_good_stone').GetNameWithIcon]에 대한 [building_need|E]가 추가되며, 해당 수요가 충족되면 @travel_danger_icon![travel_danger|E]이 감소함"
  pam_khachkar_grief_toast: "당신의 [GetTenetType('tenet_khachkar').GetName( GetPlayer.GetRite )]에서: 돌에 새긴 슬픔"
  pam_khachkar_building_toast: "[GetTenetType('tenet_khachkar').GetName( GetPlayer.GetRite )] [personal_tenet|E]"
  doctrine_parameter_tenet_dulia_can_select_patron_saint: "당신의 [rite|E]가 $tenet_dulia_default_name$을 금지하지 않는 한 [GetDecisionWithKey('pam_determine_patron_saint_decision').GetName] [decision|E]을 사용할 수 있음"
@@ -1754,7 +1774,8 @@
  doctrine_parameter_tenet_peace_of_god_personal_truce: "지주 [rulers|E]는 #high $purchase_truce_interaction$#! [interaction|E] 비용이 #N 100%#! 증가하며, @gold_icon![gold|E] 대신 @piety_icon![piety|E]로 지불함"
  doctrine_parameter_tenet_pastoral_isolation_endogamy: "신자들이 다른 [faith|E]을 믿는 이들과 혼인을 주선할 확률이 줄어듦"
  doctrine_parameter_tenet_ora_et_labora_gardener_trait: "[GetTrait('lifestyle_gardener').GetName( GetNullCharacter )] [trait|E] 획득"
- doctrine_parameter_tenet_ora_et_labora_diligent_work_decision: "[GetDecisionWithKey('diligent_development_focus_decision').GetName] [decision|E]을 사용할 수 있게 됨"
+ doctrine_parameter_tenet_ora_et_labora_diligent_work_decision: "[GetDecisionWithKey('diligent_prosperity_focus_decision').GetName] [decision|E]을 사용할 수 있게 됨"
+ doctrine_parameter_tenet_ora_et_labora_religious_community_building_slot: "종교 공동체: [district|E] [building|E] 공간: #P +1#!"
  doctrine_parameter_tenet_unrelenting_faith_blademaster_trait: "[GetTrait('lifestyle_blademaster').GetName( GetNullCharacter )] [trait|E] 획득"
  doctrine_parameter_tenet_unrelenting_faith_sparring: "$spar_with_knight_interaction$ [interaction|E]을 사용할 수 있게 됨"
  doctrine_parameter_tenet_mountain_worship_rough_terrain_expert_trait: "[GetTrait('rough_terrain_expert').GetName( GetNullCharacter )] [commander_trait|E] 획득"
@@ -1777,11 +1798,13 @@
  conversion_tenet_mendicant_preachers_effect_sp_tt: "당신의 [GetTenetType('tenet_mendicant_preachers').GetName( GetPlayer.GetRite )] 개인 원리에서"
  conversion_tenet_mendicant_preachers_effect_sp_tt_puppeteer: "[puppet_or_actor.GetShortUIName](이)가 [puppet_or_actor.GetHerHis] [GetTenetType('tenet_mendicant_preachers').GetName( puppet_or_actor.GetRite )] 개인 원리에서 영적 충만을 획득했음"
  pam_pursuit_of_power_war_victory_toast: "당신의 [GetTenetType('tenet_pursuit_of_power').GetName( GetPlayer.GetRite )] 개인 원리에서"
- doctrine_parameter_tenet_pentarchy_development_growth_in_holy_sites: "[holy_sites|E]에 건설 시 [development_growth|E] 증가"
+ doctrine_parameter_tenet_pentarchy_development_growth_in_holy_sites: "[holy_sites|E]에 건설 시 [prosperity_growth|E] 증가"
  tenet_pentarchy_development_growth_in_holy_sites_toast: "당신의 [GetTenetType('tenet_pentarchy').GetName( GetPlayer.GetRite )] 개인 원리에서"
+ doctrine_parameter_tenet_pentarchy_prosperity_growth_in_holy_sites: "[holy_sites|E]에 건설 시 [prosperity_growth|E] 증가"
+ tenet_pentarchy_prosperity_growth_in_holy_sites_toast: "당신의 [GetTenetType('tenet_pentarchy').GetName( GetPlayer.GetRite )] 개인 원리에서"
  doctrine_parameter_tenet_pentarchy_pilgrim_circuit: "당신이 당신의 신앙의 각 [holy_sites|E]로 떠나는 첫 [pilgrimage|E]이 @piety_icon![piety|E]와 @spiritual_fulfillment_icon![spiritual_fulfillment|E] 부여"
  doctrine_parameter_tenet_pentarchy_pilgrim_circuit_companions: "당신이 당신의 신앙의 각 [holy_sites|E]로 처음 [pilgrimage|E]을 떠날 때, 당신과 함께 여행하는 모든 인물이 [skill|E] #V 1#!점을 얻음"
- doctrine_parameter_tenet_pentarchy_holy_site_prosperity: "[faith|E]의 [holy_site|E]가 있는 직접 보유 [Concept( 'counties', '영지' )|E]가 [development_growth|E] #P +10%#!, [taxes|E] #P +5%#! 획득"
+ doctrine_parameter_tenet_pentarchy_holy_site_prosperity: "[faith|E]의 [holy_site|E]가 있는 직접 보유 [Concept( 'counties', '영지' )|E]가 [prosperity_growth|E] #P +10%#!, [taxes|E] #P +5%#! 획득"
  doctrine_parameter_tenet_transubstantiation_feast_bonding: "[GetActivityType('activity_feast').GetName](을)를 주최하면 같은 [faith|E]을 믿는 문객 한 명당 [opinion|E] #P +5#!, @piety_icon![piety|E] #P +5#! 부여"
  feast_transubstantiation_reward_tt_title: "$final_reward_tt$"
  feast_transubstantiation_reward_tt: "당신이 [GetTenetType('tenet_transubstantiation').GetName( GetPlayer.GetRite )] 원리를 따르는 모습에 문객들이 감명을 받았음"
@@ -1789,8 +1812,6 @@
  feast_communion_reward_tt: "당신이 [GetTenetType('tenet_communion').GetName( GetPlayer.GetRite )] 원리를 따르는 모습에 문객들이 감명을 받았음"
  doctrine_parameter_tenet_transubstantiation_feast_discount: "[GetActivityType('activity_feast').GetName] 비용: #p -20%#!"
  doctrine_parameter_tenet_hyperdulia_fulfillment_per_female_child: "딸이 태어나면 당신이 @spiritual_fulfillment_icon![spiritual_fulfillment|E] 획득"
- doctrine_parameter_tenet_hyperdulia_daughter_vows_bonus: "딸에게 #high $take_vows_interaction$#! [character_interaction|E] 사용 시 @legitimacy_icon![legitimacy|E] 부여"
- doctrine_parameter_tenet_hyperdulia_women_can_be_councillors: "여성을 세속 [council|E] 직위에 임명할 수 있음"
  hyperdulia_female_child_born_sp_toast: "당신의 [GetTenetType('tenet_hyperdulia').GetName( GetPlayer.GetRite )]에서"
  doctrine_parameter_tenet_be_fruitful_and_multiply_health_on_child: "당신의 자녀가 태어나면 @spiritual_fulfillment_icon![spiritual_fulfillment|E]을 획득하고 일시적으로 [health|E]이 증가함"
  pam_be_fruitful_child_born_toast: "당신의 [GetTenetType('tenet_be_fruitful_and_multiply').GetName( GetPlayer.GetRite )] [personal_tenet|E]에서"
@@ -1815,6 +1836,8 @@
  doctrine_parameter_tenet_pacifism_no_offensive_war: "공격 [wars|E]을 선포할 수 없음"
  doctrine_parameter_tenet_vows_of_poverty_humble_host: "가장 낮은 단계의 [activity|E] 선택지만 고를 수 있으며, [anointment|E]에 필요한 최소 의식 수준은 예외임. 활동을 성공적으로 주최할 때마다 #P +[EmptyScope.ScriptValue('pam_vows_of_poverty_host_piety_value')|0]#! @piety_icon![piety|E] 획득"
  pam_personal_pacifism_offensive_war_ban_tt: "해당 [personal_tenet|E]가 공격 [wars|E] 선포를 금지함"
+ pam_personal_tenet_pacifism_offensive_war_ban_tt: "당신의 [GetTenetType('tenet_pacifism').GetBaseName] [personal_tenet|E]가 공격 [wars|E] 선포를 금지함"
+ pam_personal_tenet_dharmic_pacifism_offensive_war_ban_tt: "당신의 [GetTenetType('tenet_dharmic_pacifism').GetBaseName] [personal_tenet|E]가 공격 [wars|E] 선포를 금지함"
  pam_vows_of_poverty_premium_activity_option_blocked_tt: "당신의 [personal_tenet|E]가 가장 낮은 단계의 [activity|E] 선택지만 고를 수 있도록 제한함"
  doctrine_parameter_gnosticism_learning_piety_trait_gain: "[learning|E] 또는 @piety_icon![piety|E] 관련 [traits|E] 획득은 [GetTrait('lifestyle_scholar').GetName( GetNullCharacter )] 및 [GetTrait('lifestyle_mystic').GetName( GetNullCharacter )] [traits|E]을 부여하며, 이미 보유한 특성에는 대신 [trait_level_track_xp|E] 부여"
  doctrine_parameter_gnosticism_other_tenets: "높은 [GetTrait('lifestyle_scholar').GetName( GetNullCharacter )] [trait_level_track_xp|E]는 주기적으로 @spiritual_fulfillment_icon![spiritual_fulfillment|E]과 [GetTenetType('tenet_astrology').GetBaseName], [GetTenetType('tenet_esotericism').GetBaseName] 등의 영지주의 관련 [core_tenets|E]에 대한 지식을 제공함"
@@ -1822,7 +1845,7 @@
  doctrine_parameter_gnosticism_cleric_interactions: "[learning|E]이 높은 세속 [rulers|E]는 [spiritual_counsel_interaction|E] 및 [request_clerical_chastity_interaction|E] [clergy|E] [interactions|E]을 사용할 수 있음"
  pam_gnostic_learning_piety.t: "영지주의의 가르침"
  gnostic_tenet_learning.t: "영지주의의 신비를 연구한 결과, 당신은 [gnostic_tenet.GetName( GetPlayer.GetRite )]에 관한 지식을 얻었습니다."
- doctrine_parameter_gruesome_festivals_personal_sacrifice: "@gold_icon![gold|E]를 희생하여 [development_growth|E]와 @spiritual_fulfillment_icon![spiritual_fulfillment|E]을 얻는 [GetDecisionWithKey('pam_personal_sacrifice_of_wealth_decision').GetName] [decision|E]을 사용할 수 있음"
+ doctrine_parameter_gruesome_festivals_personal_sacrifice: "@gold_icon![gold|E]를 희생하여 [prosperity_growth|E]와 @spiritual_fulfillment_icon![spiritual_fulfillment|E]을 얻는 [GetDecisionWithKey('pam_personal_sacrifice_of_wealth_decision').GetName] [decision|E]을 사용할 수 있음"
  doctrine_parameter_adaptive_study_rite_cultural_acceptance: "서로 다른 문화 간의 [GetScheme('study_faith').GetTypeName] [scheme|E]에서 단계가 성공할 때마다 [cultural_acceptance|E]이 증가함"
  doctrine_parameter_cthonic_redoubts_mountain_travel_fulfillment: "여행 중 산악 지형에 진입하면 여행 계획마다 한 번 @piety_icon![piety|E]와 @spiritual_fulfillment_icon![spiritual_fulfillment|E] 획득"
  doctrine_parameter_cthonic_redoubts_hike: "[GetPerk('roaming_perk').GetName( GetNullCharacter )] [perk|E] 없이도 [GetActivityType('activity_roaming').GetName] [activity|E]을 주최할 수 있음. [GetTerrain( 'mountains' ).GetName] 또는 [GetTerrain( 'desert_mountains' ).GetName] [terrain|E]에서 해당 활동을 완료하면 @piety_icon![piety|E]와 @spiritual_fulfillment_icon![spiritual_fulfillment|E] 획득"

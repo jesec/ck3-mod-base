@@ -1,0 +1,421 @@
+﻿# Republic Popular Opinion: Annual City Climate Check
+# Runs from yearly_playable_pulse
+# Each tier on_action can be called directly from the console to test it
+
+gdp_republic_popular_opinion_pulse = {
+	trigger = {
+		landed_republican_trigger = yes
+	}
+
+	effect = {
+		# Negative branch
+		if = {
+			limit = {
+				capital_county = { popular_opinion < 0 }
+			}
+			random = {
+				chance = {
+					value = 20
+					if = {
+						limit = { capital_county = { county_control < county_control_baseline } }
+						add = 10
+					}
+					if = {
+						limit = { capital_county = { county_control < county_control_relative_20 } }
+						add = 10
+					}
+				}
+
+				if = {
+					limit = { capital_county = { popular_opinion < -50 } }
+					trigger_event = { on_action = gdp_republic_popular_opinion_severe_neg }
+				}
+				else = {
+					trigger_event = { on_action = gdp_republic_popular_opinion_mild_neg }
+				}
+			}
+		}
+
+		# Positive branch
+		if = {
+			limit = {
+				capital_county = { popular_opinion >= 25 }
+			}
+			random = {
+				chance = {
+					value = 15
+					if = {
+						limit = { capital_county = { county_control >= county_control_relative_60 } }
+						add = 10
+					}
+					if = {
+						limit = { capital_county = { county_control >= county_control_relative_75 } }
+						add = 10
+					}
+				}
+
+				if = {
+					limit = { capital_county = { popular_opinion >= 50 } }
+					trigger_event = { on_action = gdp_republic_popular_opinion_strong_pos }
+				}
+				else = {
+					trigger_event = { on_action = gdp_republic_popular_opinion_mild_pos }
+				}
+			}
+		}
+	}
+}
+
+# Tier: mild negative
+# popular_opinion -50 to -1 -- 40 county | 30 market | 30 direct
+
+gdp_republic_popular_opinion_mild_neg = {
+	effect = {
+		gdp_republic_popular_opinion_setup_effect = yes
+
+		random_list = {
+			40 = {
+				random_list = {
+					25 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							MODIFIER = gdp_popular_opinion_mild_neg_prosperity
+						}
+					}
+					25 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							MODIFIER = gdp_popular_opinion_mild_neg_taxes
+						}
+					}
+					25 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							MODIFIER = gdp_popular_opinion_mild_neg_construction
+						}
+					}
+					25 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							MODIFIER = gdp_popular_opinion_mild_neg_defense
+						}
+					}
+				}
+			}
+			30 = {
+				random_list = {
+					50 = {
+						gdp_republic_popular_opinion_market_modifier_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							MODIFIER = gdp_popular_opinion_mild_neg_sell_price
+						}
+					}
+					50 = {
+						gdp_republic_popular_opinion_market_modifier_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							MODIFIER = gdp_popular_opinion_mild_neg_capacity
+						}
+					}
+				}
+			}
+			30 = {
+				random_list = {
+					33 = {
+						gdp_republic_popular_opinion_prosperity_progress_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							VALUE = medium_prosperity_progress_loss
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_county_control_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							VALUE = -5
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_province_size_effect = {
+							STATE = bad
+							SEVERITY = mild_negative
+							VALUE = -10
+						}
+					}
+				}
+			}
+		}
+	}
+
+	random_events = {
+		chance_to_happen = 5
+		200 = republic_popular_opinion_event.1002
+	}
+}
+
+# Tier: severe negative
+# popular_opinion -51 and below -- 25 county | 25 market | 50 direct
+
+gdp_republic_popular_opinion_severe_neg = {
+	effect = {
+		gdp_republic_popular_opinion_setup_effect = yes
+
+		random_list = {
+			25 = {
+				random_list = {
+					25 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							MODIFIER = gdp_popular_opinion_severe_neg_prosperity
+						}
+					}
+					25 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							MODIFIER = gdp_popular_opinion_severe_neg_taxes
+						}
+					}
+					25 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							MODIFIER = gdp_popular_opinion_severe_neg_construction
+						}
+					}
+					25 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							MODIFIER = gdp_popular_opinion_severe_neg_defense
+						}
+					}
+				}
+			}
+			25 = {
+				random_list = {
+					50 = {
+						gdp_republic_popular_opinion_market_modifier_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							MODIFIER = gdp_popular_opinion_severe_neg_sell_price
+						}
+					}
+					50 = {
+						gdp_republic_popular_opinion_market_modifier_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							MODIFIER = gdp_popular_opinion_severe_neg_capacity
+						}
+					}
+				}
+			}
+			50 = {
+				random_list = {
+					33 = {
+						gdp_republic_popular_opinion_prosperity_level_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							VALUE = -1
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_county_control_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							VALUE = -10
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_province_size_effect = {
+							STATE = bad
+							SEVERITY = severe_negative
+							VALUE = -20
+						}
+					}
+				}
+			}
+		}
+	}
+
+	random_events = {
+		chance_to_happen = 5
+		200 = republic_popular_opinion_event.1001
+	}
+}
+
+# Tier: mild positive
+# popular_opinion 25 to 49 -- 40 county | 30 market | 30 direct
+
+gdp_republic_popular_opinion_mild_pos = {
+	effect = {
+		gdp_republic_popular_opinion_setup_effect = yes
+
+		random_list = {
+			40 = {
+				random_list = {
+					33 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = good
+							SEVERITY = mild_positive
+							MODIFIER = gdp_popular_opinion_mild_pos_prosperity
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = good
+							SEVERITY = mild_positive
+							MODIFIER = gdp_popular_opinion_mild_pos_taxes
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = good
+							SEVERITY = mild_positive
+							MODIFIER = gdp_popular_opinion_mild_pos_construction
+						}
+					}
+				}
+			}
+			30 = {
+				random_list = {
+					50 = {
+						gdp_republic_popular_opinion_market_modifier_effect = {
+							STATE = good
+							SEVERITY = mild_positive
+							MODIFIER = gdp_popular_opinion_mild_pos_sell_price
+						}
+					}
+					50 = {
+						gdp_republic_popular_opinion_market_modifier_effect = {
+							STATE = good
+							SEVERITY = mild_positive
+							MODIFIER = gdp_popular_opinion_mild_pos_capacity
+						}
+					}
+				}
+			}
+			30 = {
+				random_list = {
+					33 = {
+						gdp_republic_popular_opinion_prosperity_progress_effect = {
+							STATE = good
+							SEVERITY = mild_positive
+							VALUE = minor_prosperity_progress_gain
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_county_control_effect = {
+							STATE = good
+							SEVERITY = mild_positive
+							VALUE = 5
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_province_size_effect = {
+							STATE = good
+							SEVERITY = mild_positive
+							VALUE = 10
+						}
+					}
+				}
+			}
+		}
+	}
+
+	random_events = {
+		chance_to_happen = 5
+		200 = republic_popular_opinion_event.1004
+	}
+}
+
+# Tier: strong positive
+# popular_opinion 50 and above -- 25 county | 25 market | 50 direct
+
+gdp_republic_popular_opinion_strong_pos = {
+	effect = {
+		gdp_republic_popular_opinion_setup_effect = yes
+
+		random_list = {
+			25 = {
+				random_list = {
+					33 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = good
+							SEVERITY = strong_positive
+							MODIFIER = gdp_popular_opinion_strong_pos_prosperity
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = good
+							SEVERITY = strong_positive
+							MODIFIER = gdp_popular_opinion_strong_pos_taxes
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_county_modifier_effect = {
+							STATE = good
+							SEVERITY = strong_positive
+							MODIFIER = gdp_popular_opinion_strong_pos_construction
+						}
+					}
+				}
+			}
+			25 = {
+				random_list = {
+					50 = {
+						gdp_republic_popular_opinion_market_modifier_effect = {
+							STATE = good
+							SEVERITY = strong_positive
+							MODIFIER = gdp_popular_opinion_strong_pos_sell_price
+						}
+					}
+					50 = {
+						gdp_republic_popular_opinion_market_modifier_effect = {
+							STATE = good
+							SEVERITY = strong_positive
+							MODIFIER = gdp_popular_opinion_strong_pos_capacity
+						}
+					}
+				}
+			}
+			50 = {
+				random_list = {
+					33 = {
+						gdp_republic_popular_opinion_prosperity_progress_effect = {
+							STATE = good
+							SEVERITY = strong_positive
+							VALUE = medium_prosperity_progress_gain
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_county_control_effect = {
+							STATE = good
+							SEVERITY = strong_positive
+							VALUE = 10
+						}
+					}
+					33 = {
+						gdp_republic_popular_opinion_province_size_effect = {
+							STATE = good
+							SEVERITY = strong_positive
+							VALUE = 20
+						}
+					}
+				}
+			}
+		}
+	}
+
+	random_events = {
+		chance_to_happen = 5
+		200 = republic_popular_opinion_event.1003
+	}
+}

@@ -567,25 +567,25 @@ diarch_legal_meddling_interaction_apply_fail_effect = {
 	}
 }
 
-diarch_syphon_treasury_interaction_syphon_development_growth_effect = {
-	# First, configure the development growth loss to be divided.
+diarch_syphon_treasury_interaction_syphon_prosperity_growth_effect = {
+	# First, configure the prosperity growth loss to be divided.
 	save_scope_value_as = {
 		name = county_attribute_loss
 		value = $LOSS$
 	}
 	if = {
-		limit = { scope:county_attribute_loss = massive_development_progress_loss }
-		custom_tooltip = diarch_syphon_treasury_interaction_syphon_development_growth_massive_tt
+		limit = { scope:county_attribute_loss = massive_prosperity_progress_loss }
+		custom_tooltip = diarch_syphon_treasury_interaction_syphon_prosperity_growth_massive_tt
 	}
 	else_if = {
-		limit = { scope:county_attribute_loss = major_development_progress_loss }
-		custom_tooltip = diarch_syphon_treasury_interaction_syphon_development_growth_major_tt
+		limit = { scope:county_attribute_loss = major_prosperity_progress_loss }
+		custom_tooltip = diarch_syphon_treasury_interaction_syphon_prosperity_growth_major_tt
 	}
 	else_if = {
-		limit = { scope:county_attribute_loss = medium_development_progress_loss }
-		custom_tooltip = diarch_syphon_treasury_interaction_syphon_development_growth_medium_tt
+		limit = { scope:county_attribute_loss = medium_prosperity_progress_loss }
+		custom_tooltip = diarch_syphon_treasury_interaction_syphon_prosperity_growth_medium_tt
 	}
-	else = { custom_tooltip = diarch_syphon_treasury_interaction_syphon_development_growth_minor_tt }
+	else = { custom_tooltip = diarch_syphon_treasury_interaction_syphon_prosperity_growth_minor_tt }
 	# Now, execute our general effects.
 	hidden_effect = {
 		while = {
@@ -600,7 +600,7 @@ diarch_syphon_treasury_interaction_syphon_development_growth_effect = {
 						}
 					}
 				}
-				change_development_progress = syphon_treasury_county_attribute_loss_fraction
+				change_prosperity_progress = syphon_treasury_county_attribute_loss_fraction
 				add_to_list = syphon_treasury_affected_counties
 			}
 		}
@@ -648,9 +648,9 @@ diarch_syphon_treasury_interaction_caught_embezzling_effect = {
 						has_trait = greedy
 						can_set_relation_nemesis_trigger = { CHARACTER = scope:actor }
 					}
-					set_relation_nemesis = {
-						target = scope:actor
-						reason = rival_tried_to_embezzle
+					set_relation_nemesis_effect = {
+						TARGET = scope:actor
+						REASON = rival_tried_to_embezzle
 					}
 				}
 				# Forgiving characters lose a little less.
@@ -685,9 +685,9 @@ diarch_syphon_treasury_interaction_caught_embezzling_effect = {
 						has_trait = greedy
 						can_set_relation_rival_trigger = { CHARACTER = scope:actor }
 					}
-					set_relation_rival = {
-						target = scope:actor
-						reason = rival_tried_to_embezzle
+					set_relation_rival_effect = {
+						TARGET = scope:actor
+						REASON = rival_tried_to_embezzle
 					}
 				}
 				# Forgiving characters lose a little less.
@@ -777,7 +777,7 @@ diarch_shift_privileges_interaction_success_apply_modifiers_actual_effect = {
 					diarch_shift_privileges_valid_target_title_trigger = yes
 				}
 				order_by = {
-					value = title_province.monthly_income
+					value = title_province.total_monthly_tax_income
 					# Weight down the capital to be the last selected, if we can.
 					if = {
 						limit = { this = scope:recipient.capital_county }
@@ -813,7 +813,7 @@ diarch_shift_privileges_interaction_success_apply_modifiers_actual_effect = {
 				change_county_control = medium_county_control_loss
 			}
 		}
-		# Target development growth.
+		# Target prosperity growth.
 		100 = {
 			ordered_held_title = {
 				title_tier = county
@@ -821,7 +821,7 @@ diarch_shift_privileges_interaction_success_apply_modifiers_actual_effect = {
 					diarch_shift_privileges_valid_target_title_trigger = yes
 				}
 				order_by = {
-					value = development_rate
+					value = prosperity_rate
 					# Weight down the capital to be the last selected, if we can.
 					if = {
 						limit = { this = scope:recipient.capital_county }
@@ -1741,7 +1741,7 @@ diarch_demand_despotate_interaction_accepted_effect = {
 							any_liege_or_above = { this = scope:recipient }
 						}
 					}
-					order_by = development_level
+					order_by = prosperity_level
 					change_title_holder = {
 						holder = scope:actor
 						change = scope:change

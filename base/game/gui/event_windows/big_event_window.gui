@@ -107,7 +107,7 @@ types BigWindowTypes {
 			name = "characters"
 			parentanchor = top|hcenter
 			position = { 0 34 }
-			size = { 100% 100% }
+			size = { 95% 100% }
 
 			## LEFT CHARACTER ###
 			widget = {
@@ -254,7 +254,7 @@ types BigWindowTypes {
 			### RIGHT CHARACTER ###
 			widget = {
 				name = "right_portrait_root_widget" # Used by code to do flexible portrait stacking
-				size = { 300 650 }
+				size = { 450 650 }
 				parentanchor = bottom|hcenter
 				# Fixed position layout instead of hbox because then we can do different depth order portrait stacking
 				position = "[Select_CVector2f( EventWindowData.HasPortraitCharacter('center_portrait'), '(CVector2f)425,-50', Select_CVector2f( EventWindowData.HasPortraitCharacter('left_portrait'), '(CVector2f)300,-50', '(CVector2f)0,-50' ) )]"
@@ -278,16 +278,16 @@ types BigWindowTypes {
 					datacontext = "[EventWindowData.GetPortraitCharacter('right_portrait')]"
 					visible = "[EventWindowData.HasPortraitCharacter('right_portrait')]"
 					parentanchor = bottom|right
-					size = { 500 650 }
+					size = { 500 950 }
 
 					blockoverride "portrait_button"
 					{
-						size = { 700 140% }
+						size = { 1100 140% }
 						portrait_texture = "[EventWindowData.GetAnimatedEventPortraitTexture('right_portrait', 'camera_event_scheme_right', PdxGetWidgetScreenSize(PdxGuiWidget.Self))]"
 						alwaystransparent = "[Not(EventWindowData.ShouldShowPortraitInfo('right_portrait'))]"
 
 						tooltip_visible = "[EventWindowData.ShouldShowPortraitInfo('right_portrait')]"
-						tooltip_offset = { -210 0 }
+						tooltip_offset = { -910 0 }
 					}
 
 					blockoverride "highlight_visible"
@@ -345,21 +345,17 @@ types BigWindowTypes {
 			position = { 50 85 }
 			layer = top
 
-			hbox = {
-				layoutpolicy_horizontal = expanding
+			text_multi = {
+				name = "description"
+				max_width = 480
+				autoresize = yes
+				resizeparent = yes
+				margin = { 16 16 }
+				text = "[TaskContract.GetCompletedContractRewardDesc]"
+				fontsize = 16
 
-				widget = {
-					text_multi = {
-						name = "description"
-						maximumsize = { 480 -1 }
-						autoresize = yes
-						margin = { 16 16 }
-						text = "[TaskContract.GetCompletedContractRewardDesc]"
-						fontsize = 16
-						background = {
-							using = Background_Area_Dark
-						}
-					}
+				background = {
+					using = Background_Area_Dark
 				}
 			}
 		}
@@ -1161,6 +1157,35 @@ types BigWindowTypes {
 						position = { -39 6 }
 						size = { 115 38 }
 						texture = "gfx/interface/window_scheme/scheme_header_theme_political.dds"
+						mirror = horizontal
+
+						modify_texture = {
+							texture = "gfx/interface/window_scheme/scheme_opportunity_header_mask.dds"
+							blend_mode = alphaMultiply
+						}
+					}
+
+					# Trade scheme decoration
+					icon = {
+						visible = "[SchemeType.IsTrade]"
+						parentanchor = left|vcenter
+						position = { 38 7 }
+						size = { 115 38 }
+						# TODO - ART TIT-78821 - ADD TRADE SCHEME HEADER
+						texture = "gfx/interface/window_scheme/scheme_header_theme_personal.dds"
+
+						modify_texture = {
+							texture = "gfx/interface/window_scheme/scheme_opportunity_header_mask.dds"
+							blend_mode = alphaMultiply
+						}
+					}
+
+					icon = {
+						visible = "[SchemeType.IsTrade]"
+						parentanchor = right|vcenter
+						position = { -39 6 }
+						size = { 115 38 }
+						texture = "gfx/interface/window_scheme/scheme_header_theme_personal.dds"
 						mirror = horizontal
 
 						modify_texture = {

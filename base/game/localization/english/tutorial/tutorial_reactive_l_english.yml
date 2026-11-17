@@ -43,7 +43,7 @@
  action_reactive_advice_protect_against_factions_click:0 "$click_to_open_lesson$"
  reactive_advice_protect_against_factions_step_1:0 "Protecting Against Factions"
  reactive_advice_protect_against_factions_desc:1 "You have had a [faction|E] form against you, but do not panic — you still have time to set things right!\n\n[vassals|E] and [counties|E] join factions when they are dissatisfied with your rule. To counteract this you can increase their [opinion|E] of you, or try to become [dreaded|E].\n\n#TUT To avoid Factions, we recommend that you increase your Vassals' [opinion|E] of you, pace your conquests, and try to [GetScheme('murder').GetTypeName] any [claimants|E] more popular than you.\n\nYou will often have time to appease your Vassals before the Faction presses its demands — use this time wisely.#!"
- reactive_advice_protect_against_factions_2_desc:0 "Counties with a low [county_opinion|E] tend to join the [peasant_faction|E]. Unlike other factions, this Faction will rise up no matter if they have a chance of winning or not!\n\nSometimes, you simply have to put the peasants in their place...\n\n#TUT You should always keep an eye on Peasant Factions. If they strike while you're at war they can do significant damage to your [control|E].#!"
+ reactive_advice_protect_against_factions_2_desc:0 "Counties with a low [popular_opinion|E] tend to join the [peasant_faction|E]. Unlike other factions, this Faction will rise up no matter if they have a chance of winning or not!\n\nSometimes, you simply have to put the peasants in their place...\n\n#TUT You should always keep an eye on Peasant Factions. If they strike while you're at war they can do significant damage to your [control|E].#!"
  reactive_advice_protect_against_factions_step_2:0 "$reactive_advice_protect_against_factions_step_1$"
  reactive_advice_imprisoned:0 "$reactive_advice_imprisoned_step_1$"
  action_reactive_advice_imprisoned:0 "$open_tutorial_lesson$$reactive_advice_imprisoned_step_1$"
@@ -172,10 +172,10 @@
  ra_maa_stationing_click_station_button_desc:0 "You can station one [regiment|E] of [men_at_arms|E] per [holding|E] in your [domain|E]\n\nAll Holdings are valid for every Regiment type, but some give greater bonuses than others.\n\nLet's select a Holding to station this Regiment in."
  ra_maa_stationing_click_station_button_tt:0 "Click the 'Change Stationed Holding' button (highlighted)"
  ra_maa_stationing_select_station:0 "$ra_maa_stationing_open_card_step$"
- ra_maa_stationing_select_station_desc:0 "Different [holdings|E] give differing amounts of bonuses depending on which [buildings|E] you choose to construct.\n\nIn this view you can see exactly how much better your [men_at_arms|E] [regiment|E] would become if stationed in a Holding.\n\nClick on a #P Green#! Holding on the map which you think gives your Regiment the best bonus."
+ ra_maa_stationing_select_station_desc:0 "Stationing [men_at_arms|E] does two things. First it increases [control|E] and second different [holdings|E] give differing amounts of bonuses depending on which [buildings|E] you choose to construct.\n\nIn this view you can see exactly how much better your [men_at_arms|E] [regiment|E] would become if stationed in a Holding.\n\nClick on a #P Green#! Holding on the map which you think gives your Regiment the best bonus."
  ra_maa_stationing_select_station_tt:0 "Click on any #P Green#! Holding on the map"
  ra_maa_stationing_finished:0 "$ra_maa_stationing_open_card_step$"
- ra_maa_stationing_finished_desc:0 "The [men_at_arms|E] [regiment|E] is now [stationed|E], you can see how much better it became underneath its portrait (the highlighted part).\n\nRemember to check in every now and then, so that your Regiments are stationed in the optimal [holdings|E].\n\nThis is especially important if you conquer or inherit new territories, or if you decide to specialize a Holding with [buildings|E] such as [GetBuilding('smiths_01').GetName] or [GetBuilding('stables_01').GetName]."
+ ra_maa_stationing_finished_desc:0 "The [men_at_arms|E] [regiment|E] is now [stationed|E], you can see how much better it became underneath its portrait (the highlighted part).\n\nRemember to check in every now and then, so that your Regiments are stationed in the optimal [holdings|E].\n\nThis is especially important if you conquer or inherit new territories, or if you decide to specialize a Holding with [districts|E] such as [GetDistrictType('military_district').GetName] or [GetDistrictType('walls_district').GetName]."
  reactive_advice_station_maa: "$ra_maa_stationing_open_card_step$"
 
 
@@ -195,7 +195,7 @@
  ra_tours_picking_vassals_add_prompt:0 "Add at least one Vassal to visit by clicking on the map"
 
  ra_tours_picking_vassals_stops:0 "$REACTIVE_ADVICE_TOURS$"
- ra_tours_picking_vassals_stops_desc:0 "On each [stop|E] of the Tour, you can either:\n$BULLET_WITH_TAB$[tour_the_grounds|E], increasing [county_control|E]\n$BULLET_WITH_TAB$Request a [hosted_dinner|E], forming [hooks|E] and [relations|E]\n$BULLET_WITH_TAB$Ask your [vassal|E] to organize [cultural_festival|E], increasing [county_opinion|E] and [cultural_acceptance|E]"
+ ra_tours_picking_vassals_stops_desc:0 "On each [stop|E] of the Tour, you can either:\n$BULLET_WITH_TAB$[tour_the_grounds|E], increasing [county_control|E]\n$BULLET_WITH_TAB$Request a [hosted_dinner|E], forming [hooks|E] and [relations|E]\n$BULLET_WITH_TAB$Ask your [vassal|E] to organize [cultural_festival|E], increasing [popular_opinion|E] and [cultural_acceptance|E]"
 
  ra_tours_picking_vassals_conclusion:0 "$REACTIVE_ADVICE_TOURS$"
  ra_tours_picking_vassals_conclusion_desc:0 "Once you are happy with the [stops|E] and which order they are in, you can move on to the next step of planning."
@@ -358,11 +358,11 @@
  reactive_advice_house_unity: "House Unity"
 
  action_reactive_advice_house_unity: "Advice: $reactive_advice_house_unity$"
- action_reactive_advice_house_unity_desc: "Learn about [house_unity|E] for [clans|E], and how you can affect it to get boons and access different [succession_laws|E]."
+ action_reactive_advice_house_unity_desc: "Learn about [house_unity|E] and how you can affect it."
  action_reactive_advice_house_unity_click: "$click_to_open_lesson$"
 
  ra_house_unity_1: "$reactive_advice_house_unity$"
- ra_house_unity_1_desc: "As a [clan|E], you have access to [house_unity|E]!\n\nHouse Unity represents the state of internal relationships in your [house|E], which range from Antagonistic to Harmonious. Each [house_unity_level|E] brings an array of effects for all House members, and will determine the active [succession_law|E].\n\nKnowing how to affect House Unity will prove useful for achieving your goals."
+ ra_house_unity_1_desc: "As a [GetPlayer.GetGovernment.GetName] [government|E], you have access to [house_unity|E]!\n\nHouse Unity represents the state of internal relationships in your [house|E], which range from Antagonistic to Harmonious. Each [house_unity_level|E] brings an array of effects for all House members, and will determine the active [succession_law|E].\n\nKnowing how to affect House Unity will prove useful for achieving your goals."
 
  ra_house_unity_2: "$reactive_advice_house_unity$"
  ra_house_unity_2_desc: "First, you need to know how to visualize [house_unity|E]. To do so, open your [house|E] view."
@@ -376,7 +376,7 @@
  ra_house_unity_4_desc: "As previously mentioned, each [house_unity_level|E] has its own effects. In this section you can see the list of active effects.\n\nRemember, these effects are for all [house|E] members. Among the effects you will find your House's active [succession_law|E]."
 
  ra_house_unity_5: "$reactive_advice_house_unity$"
- ra_house_unity_5_desc: "Finally, each Clan House has access to House Unity Decisions. These [decisions|E] will grant different boons for all House members. However, for the most part, only the [house_head|E] can enact them.\n\n#weak You can attempt to become House Head by using the "Challenge House Head" interaction on your current House Head.#!"
+ ra_house_unity_5_desc: "Finally, your [house|E] has access to House Unity Decisions. These [decisions|E] will grant different boons for all House members. However, for the most part, only the [house_head|E] can enact them.\n\n#weak You can attempt to become House Head by using the "Challenge House Head" interaction on your current House Head.#!"
 
  ra_house_unity_6: "$reactive_advice_house_unity$"
  ra_house_unity_6_desc: "Now you know everything you need to know about House Unity!\n\nUse this knowledge to make sure your House leaves a lasting mark in history."
@@ -786,15 +786,15 @@
  action_reactive_advice_tributaries_click: "$click_to_open_lesson$"
 
  ra_tributaries_1: "$reactive_advice_tributaries$"
- ra_tributaries_1_desc: "[tributaries|E] are a type of [subject|E], a type of relationship between two [rulers|e] where an agreement of a [truce|E] is put in place in exchange for a periodic payment. When the deal is in place the tributary then provides either [herd|E], [taxes|E] or [prestige|E] to the other, their [suzerain|E]."
+ ra_tributaries_1_desc: "[tributaries|E] are a type of [subject|E], a type of relationship between two [characters|e] where an agreement of a [truce|E] is put in place in exchange for a periodic payment. When the deal is in place the tributary then provides either [herd|E], [taxes|E] or [prestige|E] to the other. Merchant Tributaries get a Patron, while other tributary types get a [suzerain|E]."
  ra_tributaries_1_prompt: "Click on the Realms panel to continue (highlighted)"
 
  ra_tributaries_2: "$reactive_advice_tributaries$"
- ra_tributaries_2_desc: "In comparison to the usual [subject|E] type, [vassals|E], the [tributaries|E] have a bit more freedom from their [suzerain|E]. They can break free if their own requirements of a leader is not met, and find their luck elsewhere."
+ ra_tributaries_2_desc: "In comparison to the usual [subject|E] type, [vassals|E], the [tributaries|E] have a bit more freedom from their [suzerain|E] or [merchant_patron|E]. They can break free if their own requirements of a leader is not met, and find their luck elsewhere."
  ra_tributaries_2_prompt: "Click on the Subjects tab to continue (highlighted)"
 
  ra_tributaries_3: "$reactive_advice_tributaries$"
- ra_tributaries_3_desc: "All types of [subjects|E] will be displayed in the realms panel. In the list of Subjects you will see your [tributaries|E] chance of wanting to break free and a special [tributary_contract|E] where you as a [suzerain|E] can for example increase or decrease their payments, or the war support either of you will have in upcoming quarrels."
+ ra_tributaries_3_desc: "All types of [subjects|E] will be displayed in the realms panel. In the list of Subjects you will see your [tributaries|E] chance of wanting to break free and a special [tributary_contract|E] where you as a [suzerain|E] or [merchant_patron|E] can for example increase or decrease their payments, or the war support either of you will have in upcoming quarrels."
 
  ra_tributaries_4: "$reactive_advice_tributaries$"
  ra_tributaries_4_desc: "As [migration|E] is a common action for [nomads|E], moving away from your [tributaries|E] lands has a big impact on their willingness to stay as your tribute. If they can't witness your greatness they will soon look for protection and truces with other [rulers|e] closer by."
@@ -917,7 +917,7 @@
  ra_gp_1_desc: "You can start or contribute to a [great_project|e]! Let's take a moment to talk about them."
  ra_gp_1_prompt: "Open the Projects tab in the Decisions panel (highlighted)"
  ra_gp_2: "$ra_gp_1$"
- ra_gp_2_desc: "[great_projects|e] are large-scale undertakings that can be completed through the help of several [characters|e].\n\nThey are used to build [great_buildings|e], and to recover from [natural_disasters|e], among other things.\n\nLet's take a look at a $game_concept_great_project$."
+ ra_gp_2_desc: "[great_projects|e] are large-scale undertakings that can be completed through the help of several [characters|e].\n\nThey are used to build [great_districts|e], and to recover from [natural_disasters|e], among other things.\n\nLet's take a look at a $game_concept_great_project$."
  ra_gp_2_prompt: "Open a Great Project (highlighted)"
  ra_gp_3: "$ra_gp_1$"
  ra_gp_3_desc: "[great_projects|e] have a location, and a Cost that must be paid before they can be started.\n\nOnce started, the Founder and their [subjects|e] will be able to provide [great_project_contributions|e] to help complete it, meaning the Founder will not usually have to pay for all the $game_concept_great_project_contributions$ themself.\n\n$game_concept_great_projects$ typically take a great deal of time and effort to complete."
@@ -977,6 +977,7 @@
  ra_christian_situation_college_of_cardinals_desc: "You can take a peek at the [college_of_cardinals|e] by clicking the highlighted button. The future Pope will be one of three [cardinals|e], with each one filling a different niche.\n\nYou can directly influence who will be the next Pope either by increasing a $game_concept_cardinal$'s [papabile_score|e], or by convincing other $game_concept_cardinals$ to vote for them."
  ra_christian_situation_6_desc: "[GetSituation('the_christian_church').GetName] will wax and wane in power and influence between different [the_christian_church_chapters_short|e] as time progresses. Both [secular_rulers|e] and [clergy|e] have the ability to push [GetReligionByKey('christianity_religion').GetName] in the direction they desire.\n\nYou might build great cathedrals during a [the_christian_church_stability|e], look to spread the [faith|e] during a [the_christian_church_zeal|e], or try to guide the Church away from sin during a [the_christian_church_crisis|e].\n\nPerhaps you can mend the schism? Or even prevent it from happening altogether? Maybe the Church will deem your [rite|e] heretical? In any case, good luck!"
 
+ # PAM - Puppets
  reactive_advice_puppets: "Advice: $game_concept_puppets$"
  action_reactive_advice_puppets: "$open_tutorial_lesson$$reactive_advice_puppets_1$"
  action_reactive_advice_puppets_desc: "You have access to one or more [puppets|e]! This lets you take certain action you would otherwise not be able to. Let's take a moment to get familiar with them."

@@ -496,13 +496,15 @@ types ActivityPlannerTypes
 					button_round = {
 						size = { 50 50 }
 
+						onclick = "[ActivityPlanner.StartEditingPhase( PlannedActivityPhase.AccessSelf, 'phase' )]"
+						tooltip = contest_planner_add_contest_tooltip
+
 						button_plus = {
+							alwaystransparent = yes
 							name = "select_contest"
 							parentanchor = center
-							onclick = "[ActivityPlanner.StartEditingPhase( PlannedActivityPhase.AccessSelf, 'phase' )]"
 							size = { 40 40 }
 
-							tooltip = contest_planner_add_contest_tooltip
 						}
 					}
 
@@ -649,8 +651,12 @@ types ActivityPlannerTypes
 							button_contest_spectate = {
 								size = { 100 30 }
 
-								alwaystransparent = "[ActivityPlanner.IsCharacterInPlanningSubset( PlannedActivityPhase.Self, GetPlayer, 'spectator')]"
-								down = "[ActivityPlanner.IsCharacterInPlanningSubset( PlannedActivityPhase.Self, GetPlayer, 'spectator')]"
+								blockoverride "segment_selected"
+								{
+									down = "[ActivityPlanner.IsCharacterInPlanningSubset( PlannedActivityPhase.Self, GetPlayer, 'spectator')]"
+									alwaystransparent = "[ActivityPlanner.IsCharacterInPlanningSubset( PlannedActivityPhase.Self, GetPlayer, 'spectator')]"
+								}
+
 								onclick = "[ActivityPlanner.AddGuestToPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'spectator')]"
 								onclick = "[ActivityPlanner.RemoveGuestFromPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'contestant')]"
 
@@ -660,8 +666,12 @@ types ActivityPlannerTypes
 							button_contest_participate = {
 								size = { 100 30 }
 
-								alwaystransparent = "[Not(ActivityPlanner.IsCharacterInPlanningSubset( PlannedActivityPhase.Self, GetPlayer, 'spectator'))]"
-								down = "[Not(ActivityPlanner.IsCharacterInPlanningSubset( PlannedActivityPhase.Self, GetPlayer, 'spectator'))]"
+								blockoverride "segment_selected"
+								{
+									down = "[Not(ActivityPlanner.IsCharacterInPlanningSubset( PlannedActivityPhase.Self, GetPlayer, 'spectator'))]"
+									alwaystransparent = "[Not(ActivityPlanner.IsCharacterInPlanningSubset( PlannedActivityPhase.Self, GetPlayer, 'spectator'))]"
+								}
+
 								onclick = "[ActivityPlanner.RemoveGuestFromPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'spectator')]"
 								onclick = "[ActivityPlanner.AddGuestToPlanningGuestSubset(PlannedActivityPhase.AccessSelf, GetPlayer, 'contestant')]"
 

@@ -1,0 +1,564 @@
+﻿##########################################
+### Guelph & Ghibelline Situation Memories
+##########################################
+
+#Gained leadership of a side (via the Seize Leadership decision or the claim leadership scheme)
+became_guelph_leader_memory = {
+	categories = { positive title }
+	icon = "title.dds"
+
+	description = {
+		random_valid = { desc = became_guelph_leader_memory_desc }
+	}
+	second_perspective_description = {
+		random_valid = { desc = became_guelph_leader_memory_desc_second_perspective }
+	}
+	third_perspective_description = {
+		random_valid = { desc = became_guelph_leader_memory_desc_third_perspective }
+	}
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+became_ghibelline_leader_memory = {
+	categories = { positive title }
+	icon = "title.dds"
+
+	description = {
+		random_valid = { desc = became_ghibelline_leader_memory_desc }
+	}
+	second_perspective_description = {
+		random_valid = { desc = became_ghibelline_leader_memory_desc_second_perspective }
+	}
+	third_perspective_description = {
+		random_valid = { desc = became_ghibelline_leader_memory_desc_third_perspective }
+	}
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+#Lost leadership of a side to someone who seized it
+lost_guelph_leadership_memory = {
+	categories = { negative title }
+	icon = "title.dds"
+
+	description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = var:via_scheme }
+				desc = lost_guelph_leadership_memory_desc_scheme
+			}
+			desc = lost_guelph_leadership_memory_desc
+		}
+	}
+	second_perspective_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = var:via_scheme }
+				desc = lost_guelph_leadership_memory_desc_scheme_second_perspective
+			}
+			desc = lost_guelph_leadership_memory_desc_second_perspective
+		}
+	}
+	third_perspective_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = var:via_scheme }
+				desc = lost_guelph_leadership_memory_desc_scheme_third_perspective
+			}
+			desc = lost_guelph_leadership_memory_desc_third_perspective
+		}
+	}
+
+	participants = { usurper }
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+lost_ghibelline_leadership_memory = {
+	categories = { negative title }
+	icon = "title.dds"
+
+	description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = var:via_scheme }
+				desc = lost_ghibelline_leadership_memory_desc_scheme
+			}
+			desc = lost_ghibelline_leadership_memory_desc
+		}
+	}
+	second_perspective_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = var:via_scheme }
+				desc = lost_ghibelline_leadership_memory_desc_scheme_second_perspective
+			}
+			desc = lost_ghibelline_leadership_memory_desc_second_perspective
+		}
+	}
+	third_perspective_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = var:via_scheme }
+				desc = lost_ghibelline_leadership_memory_desc_scheme_third_perspective
+			}
+			desc = lost_ghibelline_leadership_memory_desc_third_perspective
+		}
+	}
+
+	participants = { usurper }
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+#Ended the Situation in one's own favor via an Ending Situation decision
+guelph_won_gg_memory = {
+	categories = { positive title }
+	icon = "title.dds"
+
+	description = {
+		random_valid = { desc = guelph_won_gg_memory_desc }
+	}
+	second_perspective_description = {
+		random_valid = { desc = guelph_won_gg_memory_desc_second_perspective }
+	}
+	third_perspective_description = {
+		random_valid = { desc = guelph_won_gg_memory_desc_third_perspective }
+	}
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+ghibelline_won_gg_memory = {
+	categories = { positive title }
+	icon = "title.dds"
+
+	description = {
+		random_valid = { desc = ghibelline_won_gg_memory_desc }
+	}
+	second_perspective_description = {
+		random_valid = { desc = ghibelline_won_gg_memory_desc_second_perspective }
+	}
+	third_perspective_description = {
+		random_valid = { desc = ghibelline_won_gg_memory_desc_third_perspective }
+	}
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+##########################################
+### Overthrow Government Memories
+##########################################
+
+#Overthrew a realm's ruler via the Overthrow Government (coup) scheme
+overthrew_government_memory = {
+	categories = { positive title }
+	icon = "title.dds"
+
+	description = {
+		random_valid = { desc = overthrew_government_memory_desc }
+	}
+	second_perspective_description = {
+		random_valid = { desc = overthrew_government_memory_desc_second_perspective }
+	}
+	third_perspective_description = {
+		random_valid = { desc = overthrew_government_memory_desc_third_perspective }
+	}
+
+	participants = { overthrown }
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+#Had one's own government toppled by a usurper via the Overthrow Government (coup) scheme
+was_overthrown_memory = {
+	categories = { negative title }
+	icon = "title.dds"
+
+	description = {
+		random_valid = { desc = was_overthrown_memory_desc }
+	}
+	second_perspective_description = {
+		random_valid = { desc = was_overthrown_memory_desc_second_perspective }
+	}
+	third_perspective_description = {
+		random_valid = { desc = was_overthrown_memory_desc_third_perspective }
+	}
+
+	participants = { usurper }
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+became_merchant_memory = {
+	categories = { positive title }
+	icon = merchant.dds
+	description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:merchant_creation_reason ?= flag:voluntary
+					memory_participant:flavor_character ?= { this != scope:owner }
+				}
+				desc = became_merchant_memory_desc_voluntary
+			}
+			desc = became_merchant_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:merchant_creation_reason ?= flag:voluntary
+					memory_participant:flavor_character ?= { this != scope:owner }
+				}
+				desc = became_merchant_memory_desc_voluntary_second_perspective
+			}
+			desc = became_merchant_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					var:merchant_creation_reason ?= flag:voluntary
+					memory_participant:flavor_character ?= { this != scope:owner }
+				}
+				desc = became_merchant_memory_desc_voluntary_third_perspective
+			}
+			desc = became_merchant_memory_desc_third_perspective
+		}
+	}
+
+	participants = { flavor_character }
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+##################################
+### Carnival Activity Memories ###
+##################################
+
+#Stopped a duel ##	
+carnival_stopped_duel_memory = {
+	categories = { positive martial activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_stopped_duel_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_stopped_duel_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_stopped_duel_memory_desc_third_perspective
+		}
+	}
+
+	participants = { duelist_01 duelist_02 }
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+## The entertainer ##
+carnival_recruited_entertainer_memory = {
+	categories = { positive entertainment recruit activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_recruited_entertainer_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_recruited_entertainer_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_recruited_entertainer_memory_desc_third_perspective
+		}
+	}
+
+	participants = { entertainer }
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+carnival_dance_memory = {
+	categories = { positive entertainment romance activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_dance_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_dance_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_dance_memory_desc_third_perspective
+		}
+	}
+
+	participants = { dancer }
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+## Learning to juggle ##	
+carnival_juggle_knives_memory = {
+	categories = { positive entertainment activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_juggle_knives_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_juggle_knives_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_juggle_knives_memory_desc_third_perspective
+		}
+	}
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+## Holy Fools ##					
+carnival_Holy_fools_memory = {
+	categories = { positive entertainment activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_Holy_fools_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_Holy_fools_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_Holy_fools_memory_desc_third_perspective
+		}
+	}
+
+	duration = {
+		years = memory_default_duration
+	}
+}
+## A mask in the crowd ##
+carnival_survived_assassins_memory = {
+	categories = { positive assassination activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_survived_assassins_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_survived_assassins_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_survived_assassins_memory_desc_third_perspective
+		}
+	}
+	duration = {
+		years = memory_default_duration
+	}
+}
+## Thundering hooves ##
+carnival_horse_assassinated_target_memory = {
+	categories = { positive private assassination activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_horse_assassinated_target_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_horse_assassinated_target_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_horse_assassinated_target_memory_desc_third_perspective
+		}
+	}
+	participants = { assassination_target }
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+carnival_horse_thugs_assassinated_target_memory = {
+	categories = { positive private assassination activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_horse_thugs_assassinated_target_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_horse_thugs_assassinated_target_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_horse_thugs_assassinated_target_memory_desc_third_perspective
+		}
+	}
+	participants = { assassination_target }
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+carnival_cut_in_two_memory = {
+	categories = { positive private assassination activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_cut_in_two_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_cut_in_two_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_cut_in_two_memory_desc_third_perspective
+		}
+	}
+	participants = { assassination_target bystander }
+	duration = {
+		years = memory_default_duration
+	}
+}
+
+carnival_warhorse_memory = {
+	categories = { positive assassination activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_warhorse_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_warhorse_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_warhorse_memory_desc_third_perspective
+		}
+	}
+	participants = { assassination_target }
+	duration = {
+		years = memory_default_duration
+	}
+}
+## The Arrow
+carnival_arrow_assassinated_memory = {
+	categories = { positive private assassination activity carnival }
+	icon = "carnival_memories.dds"
+
+	description = {
+		random_valid = {
+			desc = carnival_arrow_assassinated_memory_desc
+		}
+	}
+
+	second_perspective_description = {
+		random_valid = {
+			desc = carnival_arrow_assassinated_memory_desc_second_perspective
+		}
+	}
+
+	third_perspective_description = {
+		random_valid = {
+			desc = carnival_arrow_assassinated_memory_desc_third_perspective
+		}
+	}
+	participants = { arrow_target }
+	duration = {
+		years = memory_default_duration
+	}
+}
+

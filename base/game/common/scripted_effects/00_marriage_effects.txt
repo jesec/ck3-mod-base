@@ -80,6 +80,67 @@ marry_spouse_1_dominant = {
 	}
 }
 
+
+betroth_on_realm_law = {
+	if = {
+		limit = {
+			$SPOUSE_1$ = { is_ruler = yes }
+			$SPOUSE_1$ = {
+				OR = {
+					has_realm_law = male_only_law
+					has_realm_law = male_preference_law
+				}
+			}
+		}
+		$SPOUSE_1$ = { create_betrothal = $SPOUSE_2$ }
+	}
+	else_if = {
+		limit = {
+			$SPOUSE_1$ = { is_ruler = no }
+			$SPOUSE_1$.liege ?= {
+				OR = {
+					has_realm_law = male_only_law
+					has_realm_law = male_preference_law
+				}
+			}
+		}
+		$SPOUSE_1$ = { create_betrothal = $SPOUSE_2$ }
+	}
+	else_if = {
+		limit = {
+			$SPOUSE_1$ = { is_ruler = yes }
+			$SPOUSE_1$ = {
+				OR = {
+					has_realm_law = female_only_law
+					has_realm_law = female_preference_law
+				}
+			}
+		}
+		$SPOUSE_1$ = { create_betrothal_matrilineal = $SPOUSE_2$ }
+	}
+	else_if = {
+		limit = {
+			$SPOUSE_1$ = { is_ruler = no }
+			$SPOUSE_1$.liege ?= {
+				OR = {
+					has_realm_law = female_only_law
+					has_realm_law = female_preference_law
+				}
+			}
+		}
+		$SPOUSE_1$ = { create_betrothal_matrilineal = $SPOUSE_2$ }
+	}
+	else = {
+		if = {
+			limit = { $SPOUSE_1$ = { is_male = yes } }
+			$SPOUSE_1$ = { create_betrothal = $SPOUSE_2$ }
+		}
+		else = {
+			$SPOUSE_1$ = { create_betrothal_matrilineal = $SPOUSE_2$ }
+		}
+	}
+}
+
 vassals_dislike_marry_lowborn_effect = {
 	$RULER$ = {
 		if = {

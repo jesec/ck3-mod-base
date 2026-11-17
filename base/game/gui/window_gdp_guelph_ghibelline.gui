@@ -1,0 +1,2711 @@
+######################################################
+##################### SITUATION ######################
+######################################################
+window = {
+	name = "window_gdp_guelph_ghibelline"
+	widgetid = "window_gdp_guelph_ghibelline"
+	datacontext = "[SituationWindow.GetSituation]"
+	datacontext = "[GetVariableSystem]"
+	datacontext = "[GetPlayer]"
+	parentanchor = top|right
+	layer = windows_layer
+	movable = no
+	allow_outside = yes
+
+	using = Window_Size_MainTab
+
+	state = {
+		name = on_create
+		trigger_on_create = yes
+		on_start = "[GetVariableSystem.Set( 'potential_phases', 'true'  )]"
+		on_start = "[GetVariableSystem.Clear( 'situation_endings' )]"
+		on_start = "[GetVariableSystem.Clear( 'gg_catalyst_window' )]"
+	}
+
+	state = {
+		name = _show
+		using = Animation_FadeIn_Quick
+		using = Sound_WindowShow_Standard
+		using = Window_Position_MainTab
+		on_start = "[SetMapMode( 'situation' )]"
+	}
+
+	state = {
+		name = _hide
+		using = Animation_FadeOut_Quick
+		using = Sound_WindowHide_Standard
+		using = Window_Position_MainTab_Hide
+		on_start = "[SetMapMode( 'realms' )]"
+	}
+
+	margin_widget = {
+		size = { 100% 100% }
+		margin = { 0 26 }
+		margin_right = 13
+
+		widget = {
+			size = { 100% 100% }
+
+			vbox = {
+				using = Window_Margins
+
+				datacontext = "[SituationWindow.GetSelectedSubRegion]"
+				datacontext = "[SituationSubRegion.GetCurrentPhase]"
+
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = expanding
+
+				vbox = { # Header
+					layoutpolicy_horizontal = expanding
+					spacing = 6
+
+					header_pattern = {
+						layoutpolicy_horizontal = expanding
+
+						blockoverride "header_text"
+						{
+							text = "SITUATION_GUELPH_GHIBELLINE_DEFINITE"
+						}
+
+						blockoverride "button_back"
+						{
+							onclick = "[OpenGameView( 'situations' )]"
+						}
+
+						blockoverride "button_close"
+						{
+							onclick = "[SituationWindow.Close]"
+						}
+					}
+				}
+
+				vbox  = {
+					layoutpolicy_horizontal = expanding
+					margin_bottom = 42
+
+					# Reserved space for current
+					widget = {
+						name = "current_phase_area"
+						size = { 560 88 }
+					}
+
+					# Leaders
+					widget = {
+						size = { 560 225 }
+
+						### Ghibellines Pattern
+						background = {
+							texture = "gfx/interface/colors/white.dds"
+							color = { 0.32 0.25 0.1 1 }
+							margin = { 0 12 }
+
+							alpha = 0.5
+
+							modify_texture = {
+								texture = "gfx/interface/component_overlay/overlay_texture.dds"
+
+								texture_density = 2
+								spriteType = Corneredtiled
+
+								alpha = 0.7
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_overlay/seamless_noise.dds"
+
+								texture_density = 2
+								spriteType = Corneredtiled
+
+								alpha = 0.7
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+								blend_mode = alphaMultiply
+							}
+
+							using = Mask_Rough_Edges
+						}
+
+						background = {
+							texture = "gfx/interface/window_guelph_ghibelline/ghibelline_pattern.dds"
+							margin = { 0 12 }
+
+							texture_density = 5
+							spriteType = Corneredtiled
+
+							alpha = 0.5
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+								blend_mode = alphaMultiply
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+								blend_mode = alphaMultiply
+								alpha = 0.6
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_scratches.dds"
+								blend_mode = alphaMultiply
+							}
+
+							using = Mask_Rough_Edges
+						}
+
+						### Guelph Pattern
+						background = {
+							texture = "gfx/interface/colors/white.dds"
+							color = { 0.1 0.16 0.25 1 }
+							alpha = 0.5
+							margin = { 0 12 }
+
+							modify_texture = {
+								texture = "gfx/interface/component_overlay/overlay_texture.dds"
+
+								texture_density = 2
+								spriteType = Corneredtiled
+
+								alpha = 0.7
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_overlay/seamless_noise.dds"
+
+								texture_density = 2
+								spriteType = Corneredtiled
+
+								alpha = 0.7
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+								blend_mode = alphaMultiply
+								mirror = horizontal
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_scratches.dds"
+								blend_mode = alphaMultiply
+								alpha = 0.5
+							}
+
+							using = Mask_Rough_Edges
+						}
+
+						background = {
+							texture = "gfx/interface/window_guelph_ghibelline/guelph_pattern.dds"
+							margin = { 0 12 }
+							texture_density = 5
+							spriteType = Corneredtiled
+
+							alpha = 0.16
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+								blend_mode = alphaMultiply
+								mirror = horizontal
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_fade_horizontal.dds"
+								blend_mode = alphaMultiply
+								mirror = horizontal
+							}
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_scratches.dds"
+								blend_mode = alphaMultiply
+								alpha = 1
+							}
+
+							using = Mask_Rough_Edges
+						}
+
+						background = {
+							texture = "gfx/interface/colors/black.dds"
+							margin = { 0 12 }
+
+							modify_texture = {
+								texture = "gfx/interface/component_masks/mask_vignette.dds"
+								blend_mode = alphaMultiply
+								alpha = 0.8
+							}
+
+							using = Mask_Rough_Edges
+						}
+
+						group_banner = {
+							parentanchor = left
+							position = { 12 -16 }
+
+							blockoverride "group_text" {
+								datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage')]"
+								datacontext = "[GetDecisionWithKey('guelph_victory_decision')]"
+								text = "guelphs_concept"
+							}
+							blockoverride "group_icon" {
+								texture = "gfx/interface/icons/situations/guelph_ghibelline/guelph_icon.dds"
+							}
+							blockoverride "group_banner_texture" {
+								texture = "gfx/interface/window_guelph_ghibelline/group_banner.dds"
+								color = { 0.4 0.5 0.6 1}
+							}
+						}
+
+						group_banner = {
+							parentanchor = right
+							position = { -12 -16 }
+
+							blockoverride "group_text" {
+								datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage')]"
+								datacontext = "[GetDecisionWithKey('ghibelline_victory_decision')]"
+								text = "ghibellines_concept"
+							}
+							blockoverride "group_icon" {
+								texture = "gfx/interface/icons/situations/guelph_ghibelline/ghibelline_icon.dds"
+							}
+							blockoverride "group_banner_texture" {
+								texture = "gfx/interface/window_guelph_ghibelline/group_banner.dds"
+								color = { 0.65 0.55 0.4 1}
+							}
+						}
+
+
+						widget = {
+							size = { 50% 100% }
+							datamodel = "[SituationParticipantGroup.GetCharacters]"
+							datacontext = "[GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('guelph_leader')]"
+
+							item = {
+								widget = {
+									size = { 100% 100% }
+
+									portrait_button = {
+										size = { 180 280 }
+										parentanchor = center
+										position = { 60 0 }
+										using = portrait_base
+
+										blockoverride "portrait_transformation"
+										{
+											portrait_scale = {  1.0 1.0 }
+											portrait_offset = { 0 0 }
+										}
+
+										portrait_texture = "[Character.GetAnimatedPortrait( 'environment_body', 'camera_body_right_gg', 'war_defender', PdxGetWidgetScreenSize( PdxGuiWidget.Self ) )]"
+										background_texture = "gfx/portraits/portrait_transparent.dds"
+										effectname = "NoHighlight"
+										texture = "gfx/portraits/portrait_transparent.dds"
+										mask = "gfx/portraits/portrait_mask_body.dds"
+									}
+
+									widget = {
+										size = { 100% 50 }
+										parentanchor = bottom|hcenter
+
+										allow_outside = yes
+
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											spacing = 12
+
+											expand = {}
+
+											widget = {
+												allow_outside = yes
+												size = { 50 0 }
+
+												widget = {
+													size = { 50 70 }
+													position = { 0 -46 }
+													allow_outside = yes
+
+													vbox = {
+														spacing = 8
+														layoutpolicy_vertical = expanding
+														portrait_opinion = {
+															blockoverride "opinion_bg_alpha" {
+																alpha = 0.6
+															}
+														}
+
+														button_round = {
+															visible = "[Not( ObjectsEqual( Character.Self, GetPlayer.Self ) )]"
+															onclick = "[ToggleFilteredCharacterInteractionMenu(Character.Self, 'interaction_category_situation')]"
+															tooltip = "SITUATION_INTERACTION_BUTTON"
+
+															button_icon = {
+																alwaystransparent = yes
+																parentanchor = center
+																size = { 30 30 }
+																texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+															}
+
+															text_single = {
+																position = { 0 -8 }
+																parentanchor = top|hcenter
+																text = "[GetNumberOfValidInteractionsWithFilter(Character.Self, 'interaction_category_situation')]"
+																default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+
+																background = {
+																	margin = { 6 0 }
+																	using = Background_Area_Dark
+																}
+															}
+														}
+													}
+												}
+											}
+
+											widget = {
+												allow_outside = yes
+												size = { 34 20 }
+
+												coa_realm_tiny_crown = {
+													position = { 0 -24 }
+													visible = "[Character.HasLandedTitles]"
+												}
+											}
+
+											text_single = {
+												text = "[Character.GetShortUINameNoTooltip]"
+												default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+												align = nobaseline
+
+												background = {
+													margin = { 12 4 }
+													using = Mask_Rough_Edges
+													using = Background_Area_Dark
+												}
+											}
+											expand = {}
+										}
+									}
+								}
+							}
+						}
+
+						widget = {
+							size = { 50% 100% }
+							datamodel = "[SituationParticipantGroup.GetCharacters]"
+							datacontext = "[GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('ghibelline_leader')]"
+							parentanchor = right
+							position = { 0 0}
+
+							item = {
+
+								widget = {
+									size = { 100% 100% }
+
+									portrait_button = {
+										size = { 180 280 }
+										parentanchor = center
+										position = { -50 0 }
+										using = portrait_base
+
+										blockoverride "portrait_transformation"
+										{
+											portrait_scale = {  1.0 1.0 }
+											portrait_offset = { 0 0 }
+										}
+
+										portrait_texture = "[Character.GetAnimatedPortrait( 'environment_body', 'camera_body_left_gg', 'war_defender', PdxGetWidgetScreenSize( PdxGuiWidget.Self ) )]"
+										background_texture = "gfx/portraits/portrait_transparent.dds"
+										effectname = "NoHighlight"
+										texture = "gfx/portraits/portrait_transparent.dds"
+										mask = "gfx/portraits/portrait_mask_body.dds"
+									}
+
+									widget = {
+										size = { 100% 50 }
+										parentanchor = bottom|hcenter
+
+										allow_outside = yes
+
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											spacing = 12
+
+											expand = {}
+
+											text_single = {
+												text = "[Character.GetShortUINameNoTooltip]"
+												default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+												align = nobaseline
+
+												background = {
+													margin = { 12 4 }
+													using = Mask_Rough_Edges
+													using = Background_Area_Dark
+												}
+											}
+
+
+											widget = {
+												allow_outside = yes
+												size = { 34 20 }
+
+												coa_realm_tiny_crown = {
+													position = { 0 -24 }
+													visible = "[Character.HasLandedTitles]"
+												}
+											}
+
+											widget = {
+												allow_outside = yes
+												size = { 50 0 }
+
+												widget = {
+													size = { 50 70 }
+													position = { 0 -46 }
+													allow_outside = yes
+
+													vbox = {
+														spacing = 8
+														layoutpolicy_vertical = expanding
+														portrait_opinion = {
+															blockoverride "opinion_bg_alpha" {
+																alpha = 0.6
+															}
+														}
+
+														button_round = {
+															visible = "[Not( ObjectsEqual( Character.Self, GetPlayer.Self ) )]"
+															onclick = "[ToggleFilteredCharacterInteractionMenu(Character.Self, 'interaction_category_situation')]"
+															tooltip = "SITUATION_INTERACTION_BUTTON"
+
+															button_icon = {
+																alwaystransparent = yes
+																parentanchor = center
+																size = { 30 30 }
+																texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+															}
+
+															text_single = {
+																position = { 0 -8 }
+																parentanchor = top|hcenter
+																text = "[GetNumberOfValidInteractionsWithFilter(Character.Self, 'interaction_category_situation')]"
+																default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+
+																background = {
+																	margin = { 6 0 }
+																	using = Background_Area_Dark
+																}
+															}
+														}
+													}
+												}
+											}
+											expand = {}
+										}
+									}
+								}
+							}
+						}
+					}
+
+					widget = {
+						allow_outside = yes
+						widget = { # Current Phase area
+							name = "current_phase_area"
+							size = { 560 105 }
+							position = { 0 -330}
+
+							visible = "[Not( SituationWindow.GetSelectedFuturePhaseType.IsValid )]"
+
+							background = {
+								texture = "gfx/interface/window_guelph_ghibelline/phase_banner.dds"
+							}
+
+							vbox = {
+								name = "current_phase_widget"
+								datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase]"
+								datacontext = "[GetPlayer]"
+								allow_outside = yes
+								layoutpolicy_horizontal = expanding
+
+								expand = {}
+
+								hbox = {
+									layoutpolicy_horizontal = expanding
+
+									hbox = {
+										name = "current_phase_header"
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+										maximumsize = { 250 114 }
+										margin_left = 25
+
+										container = {
+											name = "icon"
+
+											icon = {
+												size = { 74 74 }
+												texture = "gfx/interface/icons/struggle_banners/icon_background_01.dds"
+											}
+
+											icon = {
+												size = { 74 74 }
+												texture = "[SituationSubRegion.GetCurrentPhase.GetType.GetIcon]"
+											}
+										}
+
+										spacer = {
+											size = { 5 10 }
+										}
+
+										vbox = {
+											name = "text"
+											layoutpolicy_horizontal = expanding
+											minimumsize = { 170 1 }
+
+											text_single = {
+												layoutpolicy_horizontal = expanding
+												text = "CURRENT_PHASE"
+												max_width = 170
+												margin_bottom = -8
+												align = center
+											}
+
+											text_multi = {
+												layoutpolicy_horizontal = expanding
+												text = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType.GetName]"
+												max_width = 140
+												using = Font_Size_Medium
+												default_format = "#high"
+												autoresize = yes
+												align = center
+												margin = { 0 6  }
+											}
+										}
+									}
+
+									spacer = {
+										size = { 45 10 }
+									}
+
+									vbox = {
+										name = "current_phase_effects"
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+										maximumsize = { 125 1 }
+										margin_left = 35
+
+										text_label_center = {
+											text = "PHASE_EFFECTS_HEADER"
+											default_format = "#high"
+										}
+
+										hbox = {
+											name = "phase icons"
+											layoutpolicy_vertical = expanding
+											spacing = 6
+
+											hbox = {
+												layoutpolicy_horizontal = expanding
+
+												fixedgridbox = {
+													name = "named_effect_sets"
+													layoutpolicy_horizontal = expanding
+
+													addcolumn = 48
+													addrow = 48
+													setitemsizefromcell = yes
+													datamodel_wrap = 6
+													maxhorizontalslots = 6
+													maxverticalslots = 2
+													flipdirection = yes
+													layoutanchor = topleft
+
+													datamodel = "[SituationSubRegion.GetCurrentPhase.GetType.GetModifierNamedSets]"
+													item = {
+														button_phase_guelph_ghibelline_named_set_item = {}
+													}
+												}
+											}
+										}
+									}
+									expand = {}
+								}
+
+								expand = {}
+							}
+						}
+					}
+
+					widget = { # Current Progress Bar
+						allow_outside = yes
+						layoutpolicy_horizontal = expanding
+						size = { 515 40 }
+
+						progressbar_standard = {
+							parentanchor = center
+							position = { 0 2 }
+							size = { 80% 26 }
+							#visible = no
+
+							blockoverride "progress_textures"
+							{
+								progresstexture = "gfx/interface/progressbars/progress_standard.dds"
+								noprogresstexture = "gfx/interface/progressbars/progress_domicile_banner.dds"
+							}
+
+							value = "[EmptyScope.ScriptValue('situation_guelph_group_score')]"
+							max = "[EmptyScope.ScriptValue('situation_guelph_ghibelline_score_total')]"
+
+							tooltipwidget = {
+								widget_value_breakdown_tooltip = {
+									datacontext = "[EmptyScope.GetScriptValueBreakdown('situation_guelph_ghibelline_score_total')]"
+								}
+								blockoverride "header_text" {
+									text = situation_gg_total_score_header
+								}
+							}
+						}
+
+						group_score = {
+							blockoverride "text" {
+								raw_text = "#E [EmptyScope.ScriptValue('situation_guelph_score_percentage')]%#!"
+							}
+
+							tooltipwidget = {
+								widget_value_breakdown_tooltip = {
+									datacontext = "[EmptyScope.GetScriptValueBreakdown('situation_guelph_group_score')]"
+								}
+								blockoverride "header_text" {
+									text = situation_gg_guelph_score_header
+								}
+							}
+						}
+
+						icon = {
+							size = { 132 25 }
+							position = { 58 15 }
+							texture = "gfx/interface/window_guelph_ghibelline/guelph_wall.dds"
+						}
+
+						group_score = {
+							parentanchor = right
+							blockoverride "text" {
+								raw_text = "#Clickable [EmptyScope.ScriptValue('situation_ghibelline_score_percentage')]%#!"
+							}
+
+							tooltipwidget = {
+								widget_value_breakdown_tooltip = {
+									datacontext = "[EmptyScope.GetScriptValueBreakdown('situation_ghibelline_group_score')]"
+								}
+								blockoverride "header_text" {
+									text = situation_gg_ghibelline_score_header
+								}
+							}
+						}
+
+						icon = {
+							size = { 132 25 }
+							position = { -58 15 }
+							parentanchor = right
+							texture = "gfx/interface/window_guelph_ghibelline/ghibelline_wall.dds"
+						}
+
+						icon = {
+							size = { 38 38 }
+							position = { -175 40 }
+							parentanchor = right
+							datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage')]"
+							texture = "[SituationPhaseType.GetIcon]"
+							tooltipwidget = {
+								using = situation_phase_type_tooltip
+							}
+
+							visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('agitation') )]"
+
+							background = {
+								texture = "gfx/interface/window_regency/regency_level_bg.dds"
+								margin = { 5 5 }
+							}
+						}
+
+						icon = {
+							size = { 38 38 }
+							position = { 175 40 }
+							parentanchor = left
+							datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage')]"
+							texture = "[SituationPhaseType.GetIcon]"
+							tooltipwidget = {
+								using = situation_phase_type_tooltip
+							}
+
+							visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('agitation') )]"
+
+							background = {
+								texture = "gfx/interface/window_regency/regency_level_bg.dds"
+								margin = { 5 5 }
+							}
+						}
+
+						icon = {
+							size = { 38 38 }
+							position = { -175 40 }
+							parentanchor = right
+							datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage')]"
+							texture = "[SituationPhaseType.GetIcon]"
+							tooltip = "guelph_ghibelline_need_agitation_tt"
+
+							visible = "[Not( Or( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('agitation') ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage') ) ) )]"
+							enabled = no
+
+							background = {
+								texture = "gfx/interface/window_regency/regency_level_bg.dds"
+								margin = { 5 5 }
+							}
+						}
+
+						icon = {
+							size = { 38 38 }
+							position = { 175 40 }
+							parentanchor = left
+							datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage')]"
+							texture = "[SituationPhaseType.GetIcon]"
+							tooltip = "guelph_ghibelline_need_agitation_tt"
+
+							visible = "[Not( Or( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('agitation') ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage') ) ) )]"
+							enabled = no
+
+							background = {
+								texture = "gfx/interface/window_regency/regency_level_bg.dds"
+								margin = { 5 5 }
+							}
+						}
+
+						icon = {
+							size = { 38 38 }
+							position = { -218 40 }
+							parentanchor = right
+							datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('agitation')]"
+							texture = "[SituationPhaseType.GetIcon]"
+							tooltip = "guelph_ghibelline_return_agitation_tt"
+
+							visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage') ) ]"
+
+							background = {
+								texture = "gfx/interface/window_regency/regency_level_bg.dds"
+								margin = { 5 5 }
+							}
+						}
+
+						icon = {
+							size = { 38 38 }
+							position = { 218 40 }
+							parentanchor = left
+							datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('agitation')]"
+							texture = "[SituationPhaseType.GetIcon]"
+							tooltip = "guelph_ghibelline_return_agitation_tt"
+
+							visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage') ) ]"
+
+							background = {
+								texture = "gfx/interface/window_regency/regency_level_bg.dds"
+								margin = { 5 5 }
+							}
+						}
+					}
+
+					widget = {
+						size = { 1 1}
+
+						divider = {
+							parentanchor = bottom
+							size = { 4 320 }
+							position = { 0 46 }
+						}
+
+						divider = {
+							parentanchor = bottom
+							size = { 4 26 }
+							position = { -92 -6 }
+
+							visible = "[Not(ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage') )) ]"
+						}
+
+						divider = {
+							parentanchor = bottom
+							size = { 4 26 }
+							position = { 88 -6 }
+
+							visible = "[Not(ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage') )) ]"
+						}
+
+						divider = {
+							parentanchor = bottom
+							size = { 4 26 }
+							position = { -46 -6 }
+
+							visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage') ) ]"
+						}
+
+						divider = {
+							parentanchor = bottom
+							size = { 4 26 }
+							position = { 42 -6 }
+
+							visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage') ) ]"
+						}
+					}
+	
+				}
+				vbox = { #PERSONAL SCORE
+					visible = "[Situation.IsParticipant(GetPlayer)]"
+					layoutpolicy_horizontal = expanding
+					margin = { 2 2 }
+					margin_bottom = 5
+					
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 2 2 }
+						margin_bottom = 3
+	
+						divider_light = {
+							layoutpolicy_horizontal = expanding
+						}
+					}
+
+					hbox = { 
+						layoutpolicy_horizontal = expanding
+						margin = { 10 2 }
+						margin_bottom = 3
+
+						background = {
+							using = Background_Area_Solid
+							alpha = 0.4
+						}
+
+						text_multi = {
+							layoutpolicy_horizontal = expanding
+							text = "GG_INVOLVEMENT"
+							using = Font_Size_Medium
+							align = left
+						}
+
+						text_multi = {
+							layoutpolicy_horizontal = expanding
+							visible = "[GreaterThanOrEqualTo_CFixedPoint( GetPlayer.MakeScope.Var('gg_involvement').GetValue, '(CFixedPoint)1' )]"
+							text = "GG_RANK"
+							using = Font_Size_Medium
+							align = right
+						}
+						
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						margin = { 2 2 }
+						margin_top = 5
+	
+						divider_light = {
+							layoutpolicy_horizontal = expanding
+						}
+					}	
+				}
+				
+				vbox = { # Participant Groups
+					layoutpolicy_horizontal = expanding
+
+					min_height = 75
+
+					margin = { 15 15 }
+
+					datacontext = "[SituationSubRegion.GetCharacterParticipantGroup( GetPlayer )]"
+
+					background = {
+						using = Background_Area_Solid
+						alpha = 0.4
+					}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+
+						text_multi = {
+							visible = "[Not( SituationParticipantGroup.IsValid )]"
+							layoutpolicy_horizontal = expanding
+
+							text = "SITUATION_WINDOW_NO_REGION_PARTICIPANT_GROUP"
+							default_format = "#low"
+							align = nobaseline
+						}
+
+						widget = {
+							size = { 46 46 }
+
+							icon = {
+								framesize = { 100 100 }
+								parentanchor = center
+								texture = "gfx/interface/buttons/button_tab_round.dds"
+								size = { 100% 100% }
+								color = { 0.6 0.75 0.9 1 }
+							}
+
+							icon = {
+								visible = "[SituationParticipantGroup.IsValid]"
+								parentanchor = center
+								size = { 80% 80% }
+								texture = "[SituationParticipantGroup.GetType.GetIcon]"
+
+								modify_texture = {
+									texture = "gfx/interface/colors/colors_textured.dds"
+									framesize = { 96 96 }
+									frame = 7
+								}
+							}
+						}
+
+						vbox = {
+							visible = "[SituationParticipantGroup.IsValid]"
+
+							margin_left = 10
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								text = "[SituationParticipantGroup.GetName]"
+								align = nobaseline
+							}
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+
+								text = "[SelectLocalization( Situation.HasMultipleSubRegions, 'SITUATION_WINDOW_YOUR_PARTICIPANT_GROUP_MULTI_SUBREGION', 'SITUATION_WINDOW_YOUR_PARTICIPANT_GROUP' ) ]"
+
+								align = nobaseline
+								default_format = "#Weak"
+							}
+						}
+
+						expand = {}
+
+						vbox = {
+							spacing = 4
+
+							button_standard_small = {
+								onclick = "[SituationWindow.AccessParticipantCharacterList.Toggle]"
+								text = "SITUATION_WINDOW_VIEW_PARTICIPANT_GROUPS"
+							}
+
+							button_standard_small = {
+								name = "catalyst_history_toggle"
+
+								text = "gg_history_button"
+								down = "[GetVariableSystem.Exists( 'situation_gg_history_window', )]"
+								onclick = "[GetVariableSystem.Toggle( 'situation_gg_history_window' )]"
+							}
+						}
+					}
+				}
+
+				hbox = { #Situation Endings
+					layoutpolicy_horizontal = expanding
+					margin = { 12 8 }
+
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+
+					spacer = {
+						size = { 12 1 }
+					}
+
+					button_primary = {
+						margin = { 12 4 }
+						text = "gg_see_endings_button"
+						onclick = "[GetVariableSystem.Set( 'situation_endings', 'true' )]"
+						onclick = "[GetVariableSystem.Clear( 'potential_phases' )]"
+						visible = "[GetVariableSystem.Exists( 'potential_phases' )]"
+					}
+
+					button_primary = {
+						margin = { 12 4 }
+						text = "gg_see_phases_button"
+						onclick = "[GetVariableSystem.Set( 'potential_phases', 'true' )]"
+						onclick = "[GetVariableSystem.Clear( 'situation_endings' )]"
+						visible = "[GetVariableSystem.Exists( 'situation_endings' )]"
+					}
+
+					spacer = {
+						size = { 12 1 }
+					}
+
+					divider_light = {
+						layoutpolicy_horizontal = expanding
+					}
+				}
+
+				vbox = { # Current Sub Region
+					name = "current_sub_region"
+					margin_right = 3
+					margin_top = -10
+					layoutpolicy_horizontal = expanding
+
+					datacontext = "[SituationWindow.GetSelectedSubRegion]"
+					datacontext = "[SituationSubRegion.GetCurrentPhase]"
+
+					visible = no
+
+					background = {
+						visible = "[Not( SituationWindow.GetSelectedFuturePhaseType.IsValid )]"
+						texture = "[SituationSubRegion.GetCurrentPhase.GetType.GetIllustration]"
+						alpha = 0.2
+						fittype = centercrop
+						using = Mask_Rough_Edges
+					}
+
+					background = {
+						visible = "[SituationWindow.GetSelectedFuturePhaseType.IsValid]"
+						texture = "[SituationWindow.GetSelectedFuturePhaseType.GetIllustration]"
+						alpha = 0.2
+						fittype = centercrop
+						using = Mask_Rough_Edges
+					}
+				}
+
+				scrollbox = {
+					#size = { 560 400 }
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					blockoverride "scrollbox_margins" {}
+					blockoverride "scrollbox_content"
+					{
+						vbox = {
+							layoutpolicy_vertical = expanding
+							layoutpolicy_horizontal = expanding
+							visible = "[Not(GetVariableSystem.Exists( 'situation_endings' ))]"
+
+							vbox = { # Potential Phases
+								datacontext = "[SituationSubRegion.GetCurrentPhase]"
+								datacontext = "[GetPlayer]"
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								margin = { 0 8 }
+
+								background = {
+									using = Background_Area_Solid
+									alpha = 0.4
+								}
+
+								text_label_center = {
+									layoutpolicy_horizontal = expanding
+									text = "POTENTIAL_PHASES_HEADER"
+								}
+
+								vbox = { #Agitation Catalyst info
+									datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase]"
+									visible = "[Not(Or( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('in_nomine_domini') ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('dictatus_papae') ) ))]"
+
+									widget = {
+										size = { 560 40 }
+										datamodel = "[SituationWindow.GetCatalystsForSelectedPhase]"
+
+										progressbar_standard = {
+											size = { 420 24 }
+											parentanchor = center
+
+											value = "[SituationSubRegion.GetCurrentPhase.GetPhaseRelativeProgressPercent]"
+											visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('repose') )]"
+											blockoverride "progress_textures"
+											{
+												progresstexture = "gfx/interface/progressbars/progress_grandeur_decrease.dds"
+												noprogresstexture = "gfx/interface/progressbars/progress_gray_bg.dds"
+											}
+
+											text_single = {
+												datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetFuturePhaseByType( GetSituationType('guelph_ghibelline').GetPhaseType('agitation') )]"
+												visible = "[FutureSituationPhase.HasPointsTakeoverType]"
+												text = "gg_progressbar_catalyst_count"
+												parentanchor = center
+												align = nobaseline
+											}
+										}
+
+										progressbar_standard = {
+											size = { 420 24 }
+											parentanchor = center
+
+											value = 100
+											visible = "[Not(ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('repose') ))]"
+											enabled = no
+
+											tooltip = "gg_tt_agitation_progressbar_disabled"
+											blockoverride "progress_textures"
+											{
+												progresstexture = "gfx/interface/progressbars/progress_grandeur_increase.dds"
+												noprogresstexture = "gfx/interface/progressbars/progress_grandeur_decrease.dds"
+											}
+										}
+
+										widget = {
+											size = { 42 42 }
+											position = { 36 0 }
+											datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('repose')]"
+											tooltipwidget = {
+												using = situation_phase_type_tooltip
+											}
+
+											background = {
+												texture = "gfx/interface/window_regency/regency_level_bg.dds"
+												margin = { 5 5 }
+											}
+
+											icon = {
+												size = { 30 30 }
+												parentanchor = center
+												texture = "gfx/interface/icons/situations/guelph_ghibelline/guelph_ghibelline_repose.dds"
+											}
+										}
+
+										widget = {
+											size = { 42 42 }
+											parentanchor = right
+											position = { -36 0 }
+											datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('agitation')]"
+											tooltipwidget = {
+												using = situation_phase_type_tooltip
+											}
+
+											background = {
+												texture = "gfx/interface/window_regency/regency_level_bg.dds"
+												margin = { 5 5 }
+											}
+
+											icon = {
+												size = { 38 38 }
+												parentanchor = center
+												texture = "gfx/interface/icons/situations/guelph_ghibelline/guelph_ghibelline_agitation.dds"
+											}
+										}
+
+									}
+
+									hbox = {
+										margin_top = 8
+										spacing = -5
+
+										icon = {
+											texture = "gfx/interface/icons/flat_icons/arrow.dds"
+											size = { 26 36 }
+											mirror = horizontal
+											visible = "[Not(ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('repose') ))]"
+										}
+
+										button_decision_entry = {
+											datacontext = "[GetDecisionWithKey('change_guelph_ghibelline_phase_decision')]"
+											#Visible if you are the Guelph Leader AND the phase is Guelph Advantage OR you are the Ghibelline Leader AND the phase is Agitation OR Repose
+											visible = "[Or( And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCharacterParticipantGroup( GetPlayer ).Self, GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('guelph_leader').Self ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage') ) ), And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCharacterParticipantGroup( GetPlayer ).Self, GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('ghibelline_leader').Self ), Or( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage') ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('agitation') ) ) ) )]"
+											onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+
+											size = { 180 30 }
+											using = tooltip_se
+
+											blockoverride "size_illustration" {}
+
+											blockoverride "text" {
+												text = "[Decision.GetTitleForPlayer]"
+											}
+										}
+
+										button_standard = {
+											datacontext = "[GetDecisionWithKey('change_guelph_ghibelline_phase_decision')]"
+											#Visible if you are NOT the Guelph Leader AND the phase is Guelph Advantage OR you are the Ghibelline Leader AND the phase is Agitation OR Repose
+											visible = "[Not(Or( And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCharacterParticipantGroup( GetPlayer ).Self, GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('guelph_leader').Self ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage') ) ), And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCharacterParticipantGroup( GetPlayer ).Self, GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('ghibelline_leader').Self ), Or( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage') ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('agitation') ) ) ) ))]"
+											onclick = "[OpenGameViewData( 'decision_detail', Decision.Self)]"
+
+											enabled = no
+											size = { 180 30 }
+											text = "guelph_ghibelline_peace_decision"
+											default_format = disabled
+
+											tooltip = "gg_tt_peace_privilege_disabled"
+											using = tooltip_se
+										}
+
+										icon = {
+											texture = "gfx/interface/icons/flat_icons/arrow.dds"
+											size = { 26 36 }
+											visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'repose' ) )]"
+										}
+
+										spacer = {
+											size = { 28 1 }
+										}
+
+										button_standard = {
+											size = { 180 30 }
+											text = "guelph_ghibelline_agitation_catalysts_button"
+											visible = "[And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'repose' ) ), Not( GetVariableSystem.Exists( 'gg_catalyst_window' ) ) )]"
+											onclick = "[GetVariableSystem.Set( 'gg_catalyst_window', 'true' )]"
+										}
+
+										button_standard = {
+											size = { 180 30 }
+											text = "guelph_ghibelline_agitation_catalysts_button"
+											visible = "[And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'repose' ) ), GetVariableSystem.Exists( 'gg_catalyst_window' ) )]"
+											onclick = "[GetVariableSystem.Clear( 'gg_catalyst_window' )]"
+										}
+
+										button_standard = {
+											size = { 180 30 }
+											text = "guelph_ghibelline_agitation_catalysts_button"
+											visible = "[Or4( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'agitation' ) ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'ghibelline_advantage' ) ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'guelph_advantage' ) ), ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'ad_interim' ) ) )]"
+											enabled = no
+											tooltip = "gg_tt_catalysts_disabled"
+											default_format = disabled
+										}
+
+										icon = {
+											texture = "gfx/interface/icons/flat_icons/arrow.dds"
+											size = { 26 36 }
+										}
+									}
+
+									hbox = {
+										spacing = 32
+										margin_top = 12
+
+										text_multi = {
+											text = "gg_dominance_transition"
+											autoresize = yes
+											max_width = 320
+											align = right
+										}
+
+										vbox = {
+											spacing = 8
+
+											widget = {
+												size = { 42 42 }
+												datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('guelph_advantage')]"
+												tooltipwidget = {
+													using = situation_phase_type_tooltip
+												}
+
+												background = {
+													texture = "gfx/interface/window_regency/regency_level_bg.dds"
+													margin = { 5 5 }
+												}
+
+												icon = {
+													size = { 38 38 }
+													parentanchor = center
+
+													texture = "[SituationPhaseType.GetIcon]"
+												}
+											}
+
+											widget = {
+												size = { 42 42 }
+												datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('ghibelline_advantage')]"
+												tooltipwidget = {
+													using = situation_phase_type_tooltip
+												}
+
+												background = {
+													texture = "gfx/interface/window_regency/regency_level_bg.dds"
+													margin = { 5 5 }
+												}
+
+												icon = {
+													size = { 38 38 }
+													parentanchor = center
+													texture = "[SituationPhaseType.GetIcon]"
+												}
+											}
+										}
+									}
+								}
+
+								vbox = { #Papal Resurgence Catalyst info
+									visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('in_nomine_domini') )]"
+									layoutpolicy_vertical = expanding
+
+									datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase]"
+
+									widget = {
+										size = { 560 40 }
+										datamodel = "[SituationWindow.GetCatalystsForSelectedPhase]"
+
+										progressbar_standard = {
+											size = { 420 24 }
+											parentanchor = center
+
+											value = "[SituationSubRegion.GetCurrentPhase.GetPhaseRelativeProgressPercent]"
+											blockoverride "progress_textures"
+											{
+												progresstexture = "gfx/interface/progressbars/progress_grandeur_decrease.dds"
+												noprogresstexture = "gfx/interface/progressbars/progress_gray_bg.dds"
+											}
+
+											text_single = {
+												datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetFuturePhaseByType( GetSituationType('guelph_ghibelline').GetPhaseType('dictatus_papae') )]"
+												visible = "[FutureSituationPhase.HasPointsTakeoverType]"
+												text = "gg_progressbar_catalyst_count"
+												parentanchor = center
+												align = nobaseline
+											}
+										}
+
+										widget = {
+											size = { 42 42 }
+											position = { 36 0 }
+											datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('in_nomine_domini')]"
+											tooltipwidget = {
+												using = situation_phase_type_tooltip
+											}
+
+											background = {
+												texture = "gfx/interface/window_regency/regency_level_bg.dds"
+												margin = { 5 5 }
+											}
+
+											icon = {
+												size = { 30 30 }
+												parentanchor = center
+												texture = "gfx/interface/icons/situations/guelph_ghibelline/guelph_ghibelline_in_nomine_domini.dds"
+											}
+										}
+
+										widget = {
+											size = { 42 42 }
+											parentanchor = right
+											position = { -36 0 }
+											datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('dictatus_papae')]"
+											tooltipwidget = {
+												using = situation_phase_type_tooltip
+											}
+
+											background = {
+												texture = "gfx/interface/window_regency/regency_level_bg.dds"
+												margin = { 5 5 }
+											}
+
+											icon = {
+												size = { 38 38 }
+												parentanchor = center
+												texture = "gfx/interface/icons/situations/guelph_ghibelline/guelph_ghibelline_dictatus_papae.dds"
+											}
+										}
+									}
+
+									hbox = {
+										button_primary = {
+											size = { 200 30 }
+											margin = { 12 4 }
+											text = "guelph_ghibelline_catalysts_button"
+											visible = "[And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'in_nomine_domini' ) ), Not( GetVariableSystem.Exists( 'gg_catalyst_window' ) ) )]"
+											onclick = "[GetVariableSystem.Set( 'gg_catalyst_window', 'true' )]"
+										}
+
+										button_primary = {
+											size = { 200 30 }
+											margin = { 12 4 }
+											text = "guelph_ghibelline_catalysts_button"
+											visible = "[And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'in_nomine_domini' ) ), GetVariableSystem.Exists( 'gg_catalyst_window' ) )]"
+											onclick = "[GetVariableSystem.Clear( 'gg_catalyst_window' )]"
+										}
+
+									}
+
+									vbox = {
+										spacing = 24
+
+										hbox = {
+											spacing = 30
+
+											text_multi = {
+												text = "gg_nomine_domini_transition"
+												max_width = 350
+												autoresize = yes
+												align = right
+											}
+
+											icon = {
+												size = { 38 38 }
+												datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('dictatus_papae')]"
+												texture = "[SituationPhaseType.GetIcon]"
+												tooltipwidget = {
+													using = situation_phase_type_tooltip
+												}
+
+												background = {
+													texture = "gfx/interface/window_regency/regency_level_bg.dds"
+													margin = { 5 5 }
+												}
+											}
+										}
+									}
+								}
+
+								vbox = { #Dictatus Papae Catalyst info
+									visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType('guelph_ghibelline').GetPhaseType('dictatus_papae') )]"
+									margin = { 0 5 }
+									layoutpolicy_vertical = expanding
+
+									datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase]"
+
+									widget = {
+										size = { 560 40 }
+										datamodel = "[SituationWindow.GetCatalystsForSelectedPhase]"
+
+										progressbar_standard = {
+											size = { 420 24 }
+											parentanchor = center
+
+											value = "[SituationSubRegion.GetCurrentPhase.GetPhaseRelativeProgressPercent]"
+											blockoverride "progress_textures"
+											{
+												progresstexture = "gfx/interface/progressbars/progress_grandeur_decrease.dds"
+												noprogresstexture = "gfx/interface/progressbars/progress_gray_bg.dds"
+											}
+
+											text_single = {
+												datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetFuturePhaseByType( GetSituationType('guelph_ghibelline').GetPhaseType('ad_interim') )]"
+												visible = "[FutureSituationPhase.HasPointsTakeoverType]"
+												text = "gg_progressbar_catalyst_count"
+												parentanchor = center
+												align = nobaseline
+											}
+										}
+
+										widget = {
+											size = { 42 42 }
+											position = { 36 0 }
+											datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('dictatus_papae')]"
+											tooltipwidget = {
+												using = situation_phase_type_tooltip
+											}
+
+											background = {
+												texture = "gfx/interface/window_regency/regency_level_bg.dds"
+												margin = { 5 5 }
+											}
+
+											icon = {
+												size = { 30 30 }
+												parentanchor = center
+												texture = "gfx/interface/icons/situations/guelph_ghibelline/guelph_ghibelline_dictatus_papae.dds"
+											}
+										}
+
+										widget = {
+											size = { 42 42 }
+											parentanchor = right
+											position = { -36 0 }
+											datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('ad_interim')]"
+											tooltipwidget = {
+												using = situation_phase_type_tooltip
+											}
+
+											background = {
+												texture = "gfx/interface/window_regency/regency_level_bg.dds"
+												margin = { 5 5 }
+											}
+
+											icon = {
+												size = { 38 38 }
+												parentanchor = center
+												texture = "gfx/interface/icons/situation_types/guelph_ghibelline.dds"
+											}
+										}
+									}
+
+									hbox = {
+										margin_top = 8
+
+										button_primary = {
+											size = { 200 30 }
+											margin = { 12 4 }
+											text = "guelph_ghibelline_catalysts_button"
+											visible = "[And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'dictatus_papae' ) ), Not( GetVariableSystem.Exists( 'gg_catalyst_window' ) ) )]"
+											onclick = "[GetVariableSystem.Set( 'gg_catalyst_window', 'true' )]"
+										}
+
+										button_primary = {
+											size = { 200 30 }
+											margin = { 12 4 }
+											text = "guelph_ghibelline_catalysts_button"
+											visible = "[And( ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCurrentPhase.GetType, GetSituationType( 'guelph_ghibelline' ).GetPhaseType( 'dictatus_papae' ) ), GetVariableSystem.Exists( 'gg_catalyst_window' ) )]"
+											onclick = "[GetVariableSystem.Clear( 'gg_catalyst_window' )]"
+										}
+									}
+
+									vbox = {
+										spacer = {
+											size = { 28 1 }
+										}
+
+										hbox = { #Going from Dictatus Papae to either Repose or Agitation
+											spacing = 30
+
+											text_multi = {
+												text = "gg_dictatus_papae_transition"
+												max_width = 320
+												autoresize = yes
+												align = right
+											}
+
+											vbox = {
+												spacing = 12
+
+												icon = {
+													size = { 38 38 }
+													datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('repose')]"
+													texture = "[SituationPhaseType.GetIcon]"
+													tooltipwidget = {
+														using = situation_phase_type_tooltip
+													}
+
+													background = {
+														texture = "gfx/interface/window_regency/regency_level_bg.dds"
+														margin = { 5 5 }
+													}
+												}
+
+												icon = {
+													size = { 38 38 }
+													datacontext = "[GetSituationType('guelph_ghibelline').GetPhaseType('agitation')]"
+													texture = "[SituationPhaseType.GetIcon]"
+													tooltipwidget = {
+														using = situation_phase_type_tooltip
+													}
+
+													background = {
+														texture = "gfx/interface/window_regency/regency_level_bg.dds"
+														margin = { 5 5 }
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+
+							vbox = { # Actions
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+
+								name = "actions_area"
+								widgetid = "guelph_ghibelline_groups_tab_contents"
+								datacontext = "[SituationWindow.GetSelectedOrLeadingFuturePhaseType]"
+
+								text_label_center = {
+									layoutpolicy_horizontal = expanding
+									using = Background_Area_Dark
+									text = "RELATED_ACTIONS_SITUATION"
+									using = Font_Size_Medium
+								}
+
+								### GG ACTIONS
+								vbox_guelph_ghibelline_actions_area = {
+									datacontext = "[SituationWindow.AccessParticipantCharacterList]"
+									datacontext = "[SituationParticipantCharacterList.GetSelectedParticipantGroup]"
+									datacontext = "[Character]"
+								}
+							}
+						}
+
+						expand = {}
+					}
+
+					hbox = {
+						visible = "[GetVariableSystem.Exists( 'situation_endings' )]"
+						margin = { 0 12 }
+
+						fixedgridbox = {
+							name = "situation_ending_decisions"
+							datamodel = "[SituationWindow.GetEndingDecisions]"
+							addcolumn = 190
+							addrow = 300
+							maxhorizontalslots = 3
+							flipdirection = yes
+
+							item = {
+								guelph_ghibelline_ending_picture = {}
+							}
+						}
+
+						#Compromise from Guelph perspective
+						vbox = {
+							visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCharacterParticipantGroup( GetPlayer ).Self, GetSituation( 'guelph_ghibelline' ).GetTopParticipantGroupByKey( 'guelph_leader' ).Self )]"
+
+							vbox = {
+								datacontext = "[GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('ghibelline_leader')]"
+								visible = "[SituationParticipantGroup.IsValid]"
+	
+								button_standard_clean = {
+									size = { 180 300 }
+									
+									datacontext_from_model = {
+										datamodel = "[SituationParticipantGroup.GetCharacters]"
+										index = 0
+									}
+		
+									enabled = "[Character.IsPlayerInteractionValid( 'gg_compromise_interaction' )]"
+									onclick = "[Character.OpenPlayerInteraction( 'gg_compromise_interaction' )]"
+		
+									tooltip = "[Character.GetPlayerInteractionTooltip( 'gg_compromise_interaction' )]"
+									tooltip_when_disabled = "[Character.GetPlayerInteractionValidBlockers( 'gg_compromise_interaction' )]"
+		
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+		
+										background = {
+											name = "decision_background"
+											texture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_ghibelline_compromise.dds"
+											using = Mask_Rough_Edges
+											fittype = centercrop
+											mirror = horizontal
+		
+											margin = { -1 -1 }
+		
+											modify_texture = {
+												texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+												blend_mode = alphamultiply
+												translate_uv = { 0 -0.1 }
+											}
+										}
+		
+										expand = {}
+		
+										hbox = {
+											layoutpolicy_horizontal = growing
+		
+											background =  {
+												using = Background_Area_Dark
+		
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+													blend_mode = alphamultiply
+													mirror = vertical
+												}
+											}
+		
+											background = {
+												texture ="gfx/interface/skinned/mask_pattern.dds"
+												texture_density = 3
+												spriteType = Corneredtiled
+												color = { 0.6 0.7 0.65 0.2 }
+												alpha = 0.7
+		
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+													blend_mode = alphamultiply
+												}
+											}
+		
+											text_single = {
+		
+												max_width = 170
+												margin = { 0 15 }
+		
+												text = "gg_compromise_interaction"
+												default_format = "#clickable"
+												align = center
+											}
+										}
+									}
+								}
+							}
+						}
+
+						#Compromise from Ghibelline perspective
+						vbox = {
+							visible = "[ObjectsEqual( SituationWindow.GetSelectedSubRegion.GetCharacterParticipantGroup( GetPlayer ).Self, GetSituation( 'guelph_ghibelline' ).GetTopParticipantGroupByKey( 'ghibelline_leader' ).Self )]"
+
+							vbox = {
+								datacontext = "[GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('guelph_leader')]"
+								visible = "[SituationParticipantGroup.IsValid]"
+	
+								button_standard_clean = {
+									size = { 180 300 }
+									
+									datacontext_from_model = {
+										datamodel = "[SituationParticipantGroup.GetCharacters]"
+										index = 0
+									}
+		
+									enabled = "[Character.IsPlayerInteractionValid( 'gg_compromise_interaction' )]"
+									onclick = "[Character.OpenPlayerInteraction( 'gg_compromise_interaction' )]"
+		
+									tooltip = "[Character.GetPlayerInteractionTooltip( 'gg_compromise_interaction' )]"
+									tooltip_when_disabled = "[Character.GetPlayerInteractionValidBlockers( 'gg_compromise_interaction' )]"
+		
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+		
+										background = {
+											name = "decision_background"
+											texture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_ghibelline_compromise.dds"
+											using = Mask_Rough_Edges
+											fittype = centercrop
+											mirror = horizontal
+		
+											margin = { -1 -1 }
+		
+											modify_texture = {
+												texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+												blend_mode = alphamultiply
+												translate_uv = { 0 -0.1 }
+											}
+										}
+		
+										expand = {}
+		
+										hbox = {
+											layoutpolicy_horizontal = growing
+		
+											background =  {
+												using = Background_Area_Dark
+		
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+													blend_mode = alphamultiply
+													mirror = vertical
+												}
+											}
+		
+											background = {
+												texture ="gfx/interface/skinned/mask_pattern.dds"
+												texture_density = 3
+												spriteType = Corneredtiled
+												color = { 0.6 0.7 0.65 0.2 }
+												alpha = 0.7
+		
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+													blend_mode = alphamultiply
+												}
+											}
+		
+											text_single = {
+		
+												max_width = 170
+												margin = { 0 15 }
+		
+												text = "gg_compromise_interaction"
+												default_format = "#clickable"
+												align = center
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	window_guelph_ghibelline_participant_groups = {
+		datacontext = "[SituationWindow.AccessParticipantCharacterList]"
+		datacontext = "[SituationParticipantCharacterList.AccessCharacterList]"
+		visible = "[SituationParticipantCharacterList.IsVisible]"
+
+		datacontext = "[SituationWindow.GetSelectedSubRegion]"
+		blockoverride "header_text"
+		{
+			text = "[SituationWindow.GetParticipationWindowHeader]"
+		}
+	}
+
+	guelph_ghibelline_catalysts_window = {}
+
+	situation_gg_history_window = {
+		visible = "[VariableSystem.Exists( 'situation_gg_history_window' )]"
+		blockoverride "header_text"
+		{
+			text = "GG_WINDOW_HISTORY_LIST"
+		}
+	}
+}
+
+types GuelphGhibellineTypes
+{
+	type button_phase_guelph_ghibelline_named_set_item = button {
+		datacontext = "[GetPlayer]"
+
+		icon = {
+			framesize = { 100 100 }
+			parentanchor = center
+			texture = "gfx/interface/buttons/button_tab_round.dds"
+			size = { 90% 90% }
+			color = { 0.6 0.75 0.9 1 }
+		}
+
+		icon = {
+			size = { 70% 70% }
+			parentanchor = center
+			alwaystransparent = yes
+
+			texture = "[SituationModifierNamedSet.GetIcon]"
+		}
+
+		tooltipwidget = {
+			using = situation_modifier_named_set_tooltip
+		}
+	}
+
+	type vbox_guelph_ghibelline_actions_area = vbox {
+		name = "guelph_ghibelline_actions_tutorial_uses_this"
+		layoutpolicy_horizontal = expanding
+		layoutpolicy_vertical = expanding
+
+		margin = { 8 8 }
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			spacing = 5
+			margin_left = 5
+			margin_right = 5
+
+			#INTERACTIONS
+			##Invite exiles?
+			button_standard = {
+				visible = "[Character.IsPlayerInteractionShown( 'gg_invite_guelph_exiles_interaction' )]"
+				layoutpolicy_horizontal = expanding
+				minimumsize = { 0 33 }
+
+				enabled = "[Character.IsPlayerInteractionValid( 'gg_invite_guelph_exiles_interaction' )]"
+				onclick = "[Character.OpenPlayerInteraction( 'gg_invite_guelph_exiles_interaction' )]"
+
+				tooltip = "[Character.GetPlayerInteractionTooltip( 'gg_invite_guelph_exiles_interaction' )]"
+				tooltip_when_disabled = "[Character.GetPlayerInteractionValidBlockers( 'gg_invite_guelph_exiles_interaction' )]"
+
+				text = "gg_invite_guelph_exiles_interaction"
+
+				button_icon = {
+					alwaystransparent = yes
+					parentanchor = right
+					margin_top = 5
+					size = { 24 24 }
+					texture = "gfx/interface/icons/flat_icons/add_character.dds"
+				}
+			}
+
+			button_standard = {
+				visible = "[Character.IsPlayerInteractionShown( 'gg_invite_ghibelline_exiles_interaction' )]"
+				layoutpolicy_horizontal = expanding
+				minimumsize = { 0 33 }
+
+				enabled = "[Character.IsPlayerInteractionValid( 'gg_invite_ghibelline_exiles_interaction' )]"
+				onclick = "[Character.OpenPlayerInteraction( 'gg_invite_ghibelline_exiles_interaction' )]"
+
+				tooltip = "[Character.GetPlayerInteractionTooltip( 'gg_invite_ghibelline_exiles_interaction' )]"
+				tooltip_when_disabled = "[Character.GetPlayerInteractionValidBlockers( 'gg_invite_ghibelline_exiles_interaction' )]"
+
+				text = "gg_invite_ghibelline_exiles_interaction"
+
+				button_icon = {
+					alwaystransparent = yes
+					parentanchor = right
+					margin_top = 5
+					size = { 24 24 }
+					texture = "gfx/interface/icons/flat_icons/add_character.dds"
+				}
+			}
+
+			spacer = {
+				size = { 5 10 }
+				visible = "[Or( Character.IsPlayerInteractionShown( 'gg_invite_ghibelline_exiles_interaction' ), Character.IsPlayerInteractionShown( 'gg_invite_guelph_exiles_interaction' ) )]"
+			}
+
+			vbox = {
+				name = "situation_decisions_container"
+				spacing = 2
+
+				layoutpolicy_horizontal = expanding
+
+				datamodel = "[SituationWindow.GetSituationDecisions]"
+				item = {
+					button_decision_entry = {
+						visible = "[Decision.IsShownForPlayer]"
+						onclick = "[SituationWindow.OnDecisionClick( Decision.Self )]"
+						blockoverride "button_size" {
+							layoutpolicy_horizontal = expanding
+						}
+					}
+				}
+			}	
+		}
+	}
+
+	type button_guelph_ghibelline_decision = button_decision_entry {
+		visible = "[Decision.IsShownForPlayer]"
+		layoutpolicy_horizontal = expanding
+		onclick = "[OpenGameViewData( 'decision_detail', Decision.Self ) ]"
+		using = tooltip_ws
+	}
+
+	type window_guelph_ghibelline_participant_groups = window  {
+		name = "window_guelph_ghibelline_participant_groups"
+		widgetanchor = right
+		position = { 30 100 }
+		size = { 740 82% }
+
+		layer = middle
+		movable = yes
+
+		using = Window_Background
+		using = Window_Decoration_Spike
+		using = Window_Size_CharacterList
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+		}
+
+		vbox = {
+			using = Window_Margins
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "button_close"
+				{
+					onclick = "[SituationParticipantCharacterList.Close]"
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				margin = { 8 0 }
+				margin_bottom = 4
+
+				background = {
+					using = Background_Area
+					margin = { 0 4 }
+				}
+
+				flowcontainer = {
+					layoutstretchfactor_horizontal = 50
+
+					datamodel = "[SituationSubRegion.GetParticipantGroups]"
+					spacing = 10
+					margin = { 10 10 }
+
+					item = {
+						button = {
+							size = { 46 46 }
+							visible = "[SituationParticipantGroup.IsValid]"
+							onclick = "[SituationParticipantCharacterList.SetSelectedParticipantGroup( SituationParticipantGroup.Self )]"
+							tooltip = "[SituationParticipantGroup.GetName]"
+
+							icon = {
+								visible = "[SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self )]"
+								parentanchor = center
+
+								texture = "gfx/interface/buttons/button_round_frame.dds"
+								size = { 58 58 }
+								color = { 0.75 0.75 0.65 1 }
+
+								modify_texture = {
+									texture = "gfx/interface/colors/gold.dds"
+								}
+							}
+
+							icon_round_button_base = {
+								parentanchor = center
+								size = { 100% 100% }
+								enabled = "[Not( SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self ) )]"
+							}
+
+							icon = {
+								parentanchor = center
+								size = { 36 36 }
+
+								visible = "[SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self )]"
+								texture = "[SituationParticipantGroup.GetType.GetIcon]"
+								modify_texture = {
+									texture = "gfx/interface/colors/colors_textured.dds"
+									framesize = { 96 96 }
+									frame = 1
+								}
+							}
+
+							icon = {
+								parentanchor = center
+								size = { 36 36 }
+
+								visible = "[Not( SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self ) )]"
+								texture = "[SituationParticipantGroup.GetType.GetIcon]"
+								alpha = "[Select_float(SituationParticipantCharacterList.IsParticipantGroupSelected( SituationParticipantGroup.Self ),'(float)1.0','(float)0.6')]"
+								modify_texture = {
+									texture = "gfx/interface/colors/colors_textured.dds"
+									framesize = { 96 96 }
+									frame = 1
+								}
+							}
+						}
+					}
+				}
+				expand = {}
+
+				divider_light = {
+					layoutpolicy_vertical = expanding
+				}
+
+				expand = {}
+
+				vbox_participant_group_summary = {
+					datacontext = "[SituationParticipantCharacterList.GetSelectedParticipantGroup]"
+
+					layoutpolicy_vertical = expanding
+					layoutstretchfactor_horizontal = 50
+				}
+
+				expand = {}
+			}
+
+			vbox_character_list = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				blockoverride "sort_buttons"
+				{
+					blockoverride "filters_visible" {
+						visible = no
+					}
+
+					hbox_list_sort_buttons = {
+						layoutpolicy_horizontal = expanding
+
+						blockoverride "skill_sort_buttons" {}
+					}
+				}
+
+				blockoverride "skill_sort_buttons" {}
+
+				blockoverride "scrollbox_empty_visibility"
+				{
+					layoutpolicy_vertical = expanding
+					visible = "[Not( CharacterSelectionList.HasItems )]"
+					text = "SITUATION_PARTICIPANT_WINDOW_PARTICIPANT_EMPTY"
+				}
+
+				blockoverride "container_implementation"
+				{
+					fixedgridbox = {
+						addcolumn = 630
+						addrow = 92
+
+						name = "characters_grid"
+						datamodel_reuse_widgets = yes
+						datamodel = "[CharacterSelectionList.GetList]"
+						visible = "[Not(CharacterSelectionList.IsBuildingList)]"
+
+						item = {
+							widget_character_list_item_finder = {
+								size = { 630 94 }
+								blockoverride "character_relation" {}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type widget_guelph_leader = widget {
+		size = { 220 225 }
+		datacontext = "[GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('guelph_leader')]"
+
+
+
+		widget = {
+			size = { 200 50 }
+			parentanchor = bottom|hcenter
+			allow_outside = yes
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 12
+
+				widget = {
+					allow_outside = yes
+					size = { 50 0 }
+
+					widget = {
+						size = { 50 70 }
+						position = { 0 -46 }
+						allow_outside = yes
+
+						vbox = {
+							spacing = 8
+							layoutpolicy_vertical = expanding
+							portrait_opinion = {
+								blockoverride "opinion_bg_alpha" {
+									alpha = 0.6
+								}
+							}
+
+							button_round = {
+								visible = "[Not( ObjectsEqual( Character.Self, GetPlayer.Self ) )]"
+								onclick = "[ToggleFilteredCharacterInteractionMenu(Character.Self, 'interaction_category_diplomacy')]"
+								tooltip = "SITUATION_INTERACTION_BUTTON"
+
+								button_icon = {
+									alwaystransparent = yes
+									parentanchor = center
+									size = { 30 30 }
+									texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+								}
+
+								text_single = {
+									position = { 0 -8 }
+									parentanchor = top|hcenter
+									text = "[GetNumberOfValidInteractionsWithFilter(Character.Self, 'interaction_category_diplomacy')]"
+									default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+
+									background = {
+										margin = { 6 0 }
+										using = Background_Area_Dark
+									}
+								}
+							}
+						}
+					}
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					spacing = 22
+					widget = {
+						allow_outside = yes
+						size = { 20 20 }
+
+						coa_realm_tiny_crown = {
+							position = { 0 -24 }
+							visible = "[Character.HasLandedTitles]"
+						}
+					}
+
+					text_single = {
+						text = "[Character.GetShortUIName]"
+						default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+						align = nobaseline
+
+						background = {
+							margin = { 12 4 }
+							using = Mask_Rough_Edges
+							using = Background_Area_Dark
+						}
+					}
+					expand = {}
+				}
+			}
+		}
+	}
+
+	type widget_ghibelline_leader = widget {
+		size = { 220 225 }
+		datacontext = "[GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('ghibelline_leader')]"
+
+		portrait_button = {
+			size = { 180 225 }
+			position = { -10 20 }
+
+			using = portrait_base
+
+			portrait_texture = "[Character.GetAnimatedPortrait( 'environment_hud', 'camera_torso_right', 'war_over_win', PdxGetWidgetScreenSize( PdxGuiWidget.Self ) )]"
+			background_texture = "gfx/portraits/portrait_transparent.dds"
+			effectname = "NoHighlight"
+			texture = "gfx/portraits/portrait_transparent.dds"
+			mask = "gfx/portraits/portrait_mask_body.dds"
+		}
+
+		widget = {
+			size = { 200 50 }
+			parentanchor = bottom|hcenter
+			allow_outside = yes
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 12
+
+				expand = {}
+
+				text_single = {
+					text = "[Character.GetShortUIName]"
+					default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+					align = nobaseline
+
+					background = {
+						margin = { 12 4 }
+						using = Mask_Rough_Edges
+						using = Background_Area_Dark
+					}
+				}
+
+				widget = {
+					allow_outside = yes
+					size = { 20 20 }
+
+					coa_realm_tiny_crown = {
+						position = { 0 -24 }
+						visible = "[Character.HasLandedTitles]"
+					}
+				}
+
+				widget = {
+					allow_outside = yes
+					size = { 50 0 }
+
+					widget = {
+						size = { 50 70 }
+						position = { 0 -46 }
+						allow_outside = yes
+
+						vbox = {
+							spacing = 8
+							layoutpolicy_vertical = expanding
+							portrait_opinion = {
+								blockoverride "opinion_bg_alpha" {
+									alpha = 0.6
+								}
+							}
+
+							button_round = {
+								visible = "[Not( ObjectsEqual( Character.Self, GetPlayer.Self ) )]"
+								onclick = "[ToggleFilteredCharacterInteractionMenu(Character.Self, 'interaction_category_diplomacy')]"
+								tooltip = "SITUATION_INTERACTION_BUTTON"
+
+								button_icon = {
+									alwaystransparent = yes
+									parentanchor = center
+									size = { 30 30 }
+									texture = "gfx/interface/icons/flat_icons/character_interactions.dds"
+								}
+
+								text_single = {
+									position = { 0 -8 }
+									parentanchor = top|hcenter
+									text = "[GetNumberOfValidInteractionsWithFilter(Character.Self, 'interaction_category_diplomacy')]"
+									default_format = "#glow_color:{0.1,0.1,0.1,1.0}"
+
+									background = {
+										margin = { 6 0 }
+										using = Background_Area_Dark
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type group_banner = widget {
+		size = { 108 124 }
+
+		icon = {
+			size = { 100% 100% }
+
+			block "group_banner_texture" {}
+		}
+
+		vbox = {
+			margin_top = 8
+
+			text_single = {
+				block "group_text" {}
+				using = Font_Type_Flavor
+				using = Font_Size_Medium
+				max_width = 72
+			}
+
+			icon = {
+				size = { 64 64 }
+				block "group_icon" {}
+			}
+			expand = {}
+		}
+	}
+
+	type group_score = widget {
+		size = { 60 40 }
+
+		background = {
+			using = Background_Area_Light
+		}
+
+		background = {
+			using = Background_Area
+		}
+
+		background = {
+			using = Background_Frame
+		}
+
+		text_single = {
+			parentanchor = center
+			align = nobaseline
+
+			block "text" {}
+		}
+	}
+
+	type guelph_ghibelline_catalysts_window = window {
+		name = "guelph_ghibelline_catalysts_window"
+		widgetanchor = right
+		position = { 30 100 }
+		size = { 740 90% }
+
+		layer = middle
+		movable = yes
+
+		using = Window_Background
+		using = Window_Decoration_Spike
+		using = Window_Size_CharacterList
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+		}
+
+		datacontext = "[SituationWindow.GetSituation]"
+		datacontext = "[GetVariableSystem]"
+		datacontext = "[GetPlayer]"
+
+		visible = "[GetVariableSystem.Exists( 'gg_catalyst_window' )]"
+
+		vbox = {
+			using = Window_Margins
+			datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase]"
+
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "button_close"
+				{
+					onclick = "[GetVariableSystem.Clear( 'gg_catalyst_window' )]"
+				}
+
+				blockoverride "header_text" {
+					text = "guelph_ghibelline_catalysts_button"
+				}
+			}
+
+			scrollbox = {
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = expanding
+
+				blockoverride "scrollbox_background" {}
+				blockoverride "scrollbox_background_fade" {}
+				blockoverride "scrollbox_margins" {}
+
+				blockoverride "scrollbox_content"
+				{
+					vbox = {
+						name = "catalyst_entries"
+
+						layoutpolicy_vertical = expanding
+						layoutpolicy_horizontal = expanding
+
+						maximumsize = { 1000 50 }
+
+						datamodel = "[SituationWindow.GetCatalystsForSelectedPhase]"
+
+						item = {
+							hbox = {
+								layoutpolicy_vertical = expanding
+								layoutpolicy_horizontal = expanding
+								datacontext = "[SituationWindow.GetSelectedSubRegion.GetCurrentPhase]"
+
+								hbox = {
+									layoutpolicy_vertical = expanding
+									min_width = 60
+
+									background = {
+										using = Background_Area_Dark
+										using = Color_Green
+										alpha = 0.1
+										margin_left = 4
+										margin_right = 6
+									}
+
+									background = {
+										using = Background_Frame
+										using = Color_Green
+										alpha = 0.3
+										margin_left = 4
+										margin_right = 6
+									}
+
+									hbox = {
+										layoutpolicy_horizontal = expanding
+										text_single = {
+											text = "[SituationCatalystEntry.GetPoints|+=]"
+											align = nobaseline
+										}
+									}
+								}
+
+								text_multi = {
+									layoutpolicy_horizontal = expanding
+									layoutpolicy_vertical = expanding
+									text = "[SituationCatalystEntry.GetCatalystDescription]"
+									autoresize = no
+									align = left|nobaseline
+									max_width = 450
+									margin = { 10 5 }
+								}
+
+								background = {
+									using = Background_Area_Dark
+								}
+
+								hbox = {
+									layoutpolicy_vertical = expanding
+									min_width = 70
+
+									background = {
+										using = Background_Frame
+										color = { 0.4 0.603 0.298 1 }
+										alpha = 0.6
+									}
+
+									background = {
+										using = Background_Area
+										color = { 0.4 0.603 0.298 1 }
+										alpha = 0.1
+									}
+
+									background = {
+										using = Background_Frame
+										using = Color_Grey
+										alpha = 0.4
+									}
+
+									background = {
+										using = Background_Area
+										using = Color_Grey
+										alpha = 0.1
+									}
+
+									text_single = {
+										align = nobaseline|center
+										min_width = 70
+										raw_text = "[Select_CString(GreaterThan_int32( SituationPhase.GetNumCompletionsOfCatalystForPhase( SituationWindow.GetSelectedOrLeadingFuturePhaseType, SituationCatalystEntry.GetCatalyst ), '(int32)0'), '#COLOR_GREEN ', '#COLOR_GRAY ')]x[SituationPhase.GetNumCompletionsOfCatalystForPhase(SituationWindow.GetSelectedOrLeadingFuturePhaseType, SituationCatalystEntry.GetCatalyst)]#!"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	type situation_gg_history_window = window  {
+		name = "situation_gg_history_window"
+		widgetanchor = right
+		position = { 30 100 }
+		size = { 740 82% }
+		layer = middle
+		movable = yes
+		using = Window_Background
+		using = Window_Decoration_Spike
+		using = Window_Size_CharacterList
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+		}
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+		}
+		datacontext = "[SituationWindow.GetSituation]"
+		vbox = {
+			using = Window_Margins
+			header_pattern = {
+				layoutpolicy_horizontal = expanding
+				blockoverride "button_close"
+				{
+					onclick = "[VariableSystem.Toggle( 'situation_gg_history_window' )]"
+				}
+			}
+			vbox = {
+				name = "catalyst_information_area"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				scrollbox = {
+					layoutpolicy_vertical = expanding
+					layoutpolicy_horizontal = expanding
+					blockoverride "scrollbox_background" {}
+					blockoverride "scrollbox_background_fade" {}
+					blockoverride "scrollbox_margins" {}
+					blockoverride "scrollbox_content"
+					{
+						vbox = {
+							name = "history_entries"
+							margin_right = 16
+							block "history_data" {
+								datamodel = "[SituationWindow.GetCurrentHistoryPage]"
+							}
+							layoutpolicy_horizontal = expanding
+							item = {
+								vbox = {
+									layoutpolicy_horizontal = expanding
+									standard_history_entry_hbox = {}
+									special_history_entry_hbox = {}
+								}
+							}
+						}
+					}
+					blockoverride "scrollbox_expand"
+					{
+						expand = { }
+					}
+				}
+				hbox = {
+					layoutpolicy_horizontal = expanding
+					margin_top = 8
+					margin_bottom = 10
+					expand = {}
+					button_select_arrow = {
+						enabled = "[GreaterThan_int32( SituationWindow.GetHistoryPageUIIndex, '(int32)1' )]"
+						size = { 25 25 }
+						mirror = horizontal
+						block "onclick_prev"
+						{
+							onclick = "[SituationWindow.PreviousHistoryPage]"
+							clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_decrement"
+						}
+					}
+					text_single = {
+						margin = { 5 5 }
+						align = nobaseline
+						raw_text = "[SituationWindow.GetHistoryPageUIIndex] / [SituationWindow.GetHistoryPageCount]"
+					}
+					button_select_arrow = {
+						enabled = "[SituationWindow.HasNextHistoryPage]"
+						size = { 25 25 }
+						block "onclick_next"
+						{
+							onclick = "[SituationWindow.NextHistoryPage]"
+							clicksound = "event:/SFX/UI/Generic/sfx_ui_generic_increment"
+						}
+					}
+					expand = {}
+				}
+			}
+		}
+	}
+	type guelph_ghibelline_ending_picture = button_standard_clean {
+		visible = "[Decision.IsShownForPlayer]"
+		size = { 180 300 }
+		onclick = "[SituationWindow.OnDecisionClick( Decision.Self )]"
+
+		tooltipwidget = {
+			decision_tooltip = {}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			background = {
+				name = "decision_background"
+				texture = "[Decision.GetExtraPicture]"
+				using = Mask_Rough_Edges
+				fittype = centercrop
+				alpha = "[Select_float(Decision.IsPossibleForPlayer, '(float)1', '(float)0.4')]"
+
+				margin = { -1 -1 }
+
+				modify_texture = {
+					texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+					blend_mode = alphamultiply
+					translate_uv = { 0 -0.1 }
+				}
+			}
+
+			hbox = {
+				visible = "[Not(Decision.IsPossibleForPlayer)]"
+				layoutpolicy_horizontal = expanding
+
+				margin = { 0 5 }
+
+				warning_icon = {
+					size = { 30 30 }
+					name = "not_possible"
+				}
+
+				background = {
+					using = Background_Area_Dark
+				}
+			}
+
+			expand = {}
+
+			hbox = {
+				layoutpolicy_horizontal = growing
+
+				background =  {
+					using = Background_Area_Dark
+
+					modify_texture = {
+						texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+						blend_mode = alphamultiply
+						mirror = vertical
+					}
+				}
+
+				background = {
+					texture ="gfx/interface/skinned/mask_pattern.dds"
+					texture_density = 3
+					spriteType = Corneredtiled
+					color = { 0.6 0.7 0.65 0.2 }
+					alpha = 0.7
+
+					modify_texture = {
+						texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+						blend_mode = alphamultiply
+					}
+				}
+
+				text_single = {
+					visible = "[Decision.IsPossibleForPlayer]"
+					max_width = 170
+					margin = { 0 15 }
+
+					text = "[Decision.GetTitleForPlayer]"
+					default_format = "#clickable"
+					align = center
+				}
+
+				text_single = {
+					visible = "[Not(Decision.IsPossibleForPlayer)]"
+					max_width = 170
+					margin = { 0 15 }
+
+					text = "[Decision.GetTitleForPlayer]"
+					default_format = "#low"
+					align = center
+				}
+			}
+		}
+	}
+}

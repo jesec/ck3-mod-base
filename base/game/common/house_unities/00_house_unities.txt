@@ -2,6 +2,8 @@
 	default_value = 100
 	min_value = 0
 	
+	icon = "gfx/interface/icons/flat_icons/house_unity.dds"
+
 	antagonistic = {
 		points = 40
 		
@@ -20,10 +22,16 @@
 			unity_unlimited_invasions = yes
 			unity_lower_prestige_requirements = yes
 			unity_war_opinion = yes
-			unity_can_challenge_house_head = yes
 			unity_significantly_more_likely_claimant_factions = yes
 			unity_antagonistic_cb_cost = yes
 			unity_enable_border_wars = yes
+			unity_much_more_likely_to_challenge_house_head = yes
+
+			# DECISIONS
+			unity_reinforce_army_decision = yes
+			unity_organize_house_for_war_decision = yes
+			unity_improve_logistics_decision = yes
+			unity_establish_futuwaa_lodges_decision = yes
 		}
 		
 		modifiers = {
@@ -59,10 +67,15 @@
 			unity_succession_clan_competitive_partition_succession = yes
 			unity_multiple_invasions = yes
 			unity_unlock_fabricate_hooks = yes
-			unity_can_challenge_house_head = yes
 			unity_more_likely_claimant_factions = yes
-			
 			unity_competitive_cb_cost = yes
+			unity_more_likely_to_challenge_house_head = yes
+
+			# DECISIONS
+			unity_establish_network_decision = yes
+			unity_organize_house_for_war_decision = yes
+			unity_improve_logistics_decision = yes
+			unity_establish_futuwaa_lodges_decision = yes
 		}
 		
 		modifiers = {
@@ -98,6 +111,10 @@
 		parameters = {
 			unity_succession_clan_impassive_partition_succession = yes
 			unity_can_challenge_house_head = yes
+
+			# DECISIONS
+			unity_improve_taxation_decision = yes
+			unity_consult_house_decision = yes
 		}
 		
 		modifiers = {
@@ -134,6 +151,12 @@
 			unity_less_likely_factions = yes
 			
 			unity_friendly_cb_cost = yes
+
+			# DECISIONS
+			unity_send_bailiffs_decision = yes
+			unity_encourage_house_economy_decision = yes
+			unity_promote_prosperity_decision = yes
+			unity_educate_youth_in_madrasas_decision = yes
 		}
 		
 		modifiers = {
@@ -144,7 +167,7 @@
 		decisions =  {
 			unity_send_bailiffs_decision
 			unity_encourage_house_economy_decision
-			unity_promote_development_decision
+			unity_promote_prosperity_decision
 			unity_educate_youth_in_madrasas_decision
 		}
 		
@@ -174,6 +197,12 @@
 			unity_unlock_befriend_scheme = yes
 			
 			unity_harmonious_cb_cost = yes
+
+			# DECISIONS
+			unity_placate_vassals_decision = yes
+			unity_encourage_house_economy_decision = yes
+			unity_promote_prosperity_decision = yes
+			unity_educate_youth_in_madrasas_decision = yes
 		}
 		
 		modifiers = {
@@ -183,10 +212,230 @@
 		decisions =  {
 			unity_placate_vassals_decision
 			unity_encourage_house_economy_decision
-			unity_promote_development_decision
+			unity_promote_prosperity_decision
 			unity_educate_youth_in_madrasas_decision
 		}
 		
 		succession_law_flag = house_unity_stage_harmonious
 	}
 }
+
+merchant_house_unity = {
+	default_value = 0
+	min_value = -100
+	
+	icon = "gfx/interface/icons/flat_icons/company_sentiment.dds"
+
+	rapacious_cs = {
+		icon = divided
+		points = 40
+
+		on_start = {
+			every_house_member = {
+				gdp_update_merchant_legacy_3_company_direction_effect = yes
+			}
+			every_house_member = {
+				limit = {
+					government_has_flag = government_is_merchant
+					has_perk = toe_the_line_perk
+				}
+				add_character_modifier = {
+					modifier = merchant_steady_hand_low_unity_modifier
+				}
+			}
+			every_house_member = {
+				limit = {
+					government_has_flag = government_is_merchant
+					has_perk = malice_implicit_perk
+				}
+				add_character_modifier = {
+					modifier = merchant_house_of_knives_divided_modifier
+				}
+			}
+		}
+
+		on_end = {
+			every_house_member = {
+				remove_character_modifier = gdp_merchant_legacy_3_rapacious_modifier
+				remove_character_modifier = merchant_steady_hand_low_unity_modifier
+				remove_character_modifier = merchant_house_of_knives_fractious_modifier
+				remove_character_modifier = merchant_house_of_knives_divided_modifier
+			}
+		}
+
+		parameters = {
+			### PARAMETERS
+			# GDP
+			unity_very_high_risk_of_leaving = yes
+			unity_merchant_can_request_complete_exploitative_monopolies = yes
+
+			### DECISIONS
+			unity_regional_networks_decision = yes
+		}
+		
+		modifiers = {
+			### GDP
+			dynasty_house_opinion = -20
+			suzerain_opinion = 20
+			# Trade Modifiers
+			trade_competitiveness_mult = 0.25
+		}
+		
+		decisions = {
+			unity_regional_networks_decision
+		}
+	}
+
+	opportunistic_cs = {
+		icon = fractious
+		points = 40
+
+		on_start = {
+			every_house_member = {
+				limit = {
+					government_has_flag = government_is_merchant
+					has_perk = toe_the_line_perk
+				}
+				add_character_modifier = {
+					modifier = merchant_steady_hand_low_unity_modifier
+				}
+			}
+			every_house_member = {
+				limit = {
+					government_has_flag = government_is_merchant
+					has_perk = malice_implicit_perk
+				}
+				add_character_modifier = {
+					modifier = merchant_house_of_knives_fractious_modifier
+				}
+			}
+		}
+
+		on_end = {
+			every_house_member = {
+				remove_character_modifier = merchant_steady_hand_low_unity_modifier
+				remove_character_modifier = merchant_house_of_knives_fractious_modifier
+				remove_character_modifier = merchant_house_of_knives_divided_modifier
+			}
+		}
+		
+		parameters = {
+			### PARAMETERS
+			# GDP
+			unity_risk_of_leaving = yes
+
+			### DECISIONS
+			# FP3
+			unity_establish_network_decision = yes
+		}
+		
+		modifiers = {
+			# GDP
+			dynasty_house_opinion = -10
+			# Trade modifiers
+			trade_competitiveness_mult = 0.1
+		}
+		
+		decisions = {
+			# FP3
+			unity_establish_network_decision
+		}
+	}
+
+	balanced_cs = {
+		icon = independent
+		points = 40
+		
+		parameters = {
+			### DECISIONS
+			# FP3
+			unity_consult_house_decision = yes
+		}
+		
+		modifiers = {
+		}
+		
+		decisions =  {
+			# FP3
+			unity_consult_house_decision
+		}
+	}
+
+	grasping_cs = {
+		icon = cooperative
+		points = 40
+		
+		parameters = {
+			### PARAMETERS
+			# GDP
+			unity_more_likely_to_spawn_opportunity_contracts = yes
+			unity_deputy_positions_cost_less = yes
+
+			### DECISIONS
+			# GDP
+			unity_merchant_prosperity_decision = yes
+			unity_merchant_bailiffs_decision = yes
+		}
+		
+		modifiers = {
+			# GDP
+			dynasty_house_opinion = 10
+			monthly_lifestyle_xp_gain_mult = 0.05
+			monthly_prestige_gain_mult = 0.1
+			monthly_dynasty_prestige = 0.05
+		}
+		
+		decisions =  {
+			# GDP
+			unity_merchant_prosperity_decision
+			unity_merchant_bailiffs_decision
+		}
+	}
+
+	ennobled_cs = {
+		icon = concerted
+		points = 41 # We set it to 41 to make it look nice in the interface
+
+		on_start = {
+			every_house_member = {
+				gdp_update_merchant_legacy_3_company_direction_effect = yes
+			}
+		}
+
+		on_end = {
+			every_house_member = {
+				remove_character_modifier = gdp_merchant_legacy_3_ennobled_modifier
+			}
+		}
+		
+		parameters = {
+			### PARAMETERS
+			# FP3
+			unity_unlock_befriend_scheme = yes
+			# GDP
+			unity_more_likely_to_spawn_opportunity_contracts = yes
+			unity_deputy_positions_cost_significantly_less = yes
+			unity_merchant_can_petition_for_noble_standing = yes
+
+			### DECISIONS
+			unity_family_business_decision = yes
+			unity_merchant_prosperity_decision = yes
+			unity_merchant_bailiffs_decision = yes
+		}
+		
+		modifiers = {
+			# GDP
+			dynasty_house_opinion = 20
+			monthly_prestige_gain_mult = 0.25
+			monthly_dynasty_prestige = 0.1
+		}
+		
+		decisions =  {
+			# GDP
+			unity_family_business_decision
+			unity_merchant_prosperity_decision
+			unity_merchant_bailiffs_decision
+		}
+	}
+}
+

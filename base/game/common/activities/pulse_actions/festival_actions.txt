@@ -231,9 +231,9 @@ festival_rivalry = {
 			target = scope:second
 			# Effects
 			scope:second = {
-				set_relation_rival = {
-					target = scope:first
-					reason = rival_courtiers_friction_on_festival
+				set_relation_rival_effect = {
+					TARGET = scope:first
+					REASON = rival_courtiers_friction_on_festival
 				}
 			}
 		}
@@ -437,6 +437,7 @@ festival_join_bloc = {
 		}
 		any_attending_character = {
 			is_confederation_member = no
+			exists = house
 		}
 	}
 
@@ -469,6 +470,7 @@ festival_join_bloc = {
 		random_attending_character = {
 			limit = {
 				is_confederation_member = no
+				exists = house
 			}
 			save_scope_as = second
 		}
@@ -499,6 +501,14 @@ festival_remove_from_bloc = {
 		}
 		any_attending_character = {
 			is_confederation_member = yes
+			is_ai = yes
+			is_house_head = yes
+			NOT = { house.house_confederation.leading_house.house_head ?= this }
+			house = {
+				NOT = {
+					any_house_member = { has_activity_intent = remove_from_bloc_intent }
+				}
+			}
 		}
 	}
 
@@ -526,6 +536,14 @@ festival_remove_from_bloc = {
 		random_attending_character = {
 			limit = {
 				is_confederation_member = yes
+				is_ai = yes
+				is_house_head = yes
+				NOT = { house.house_confederation.leading_house.house_head ?= this }
+				house = {
+					NOT = {
+						any_house_member = { has_activity_intent = remove_from_bloc_intent }
+					}
+				}
 			}
 			save_scope_as = second
 			# for loc
@@ -540,8 +558,11 @@ festival_remove_from_bloc = {
 				score = 5
 				character = scope:first
 				target = scope:second
-				scope:second.house_confederation = {
-					remove_confederation_member = scope:second
+				scope:second.house = {
+					tgp_leave_house_bloc_effect = {
+						OPINION = flag:yes
+						TRUCE = flag:no
+					}
 				}	
 			}
 		}

@@ -1,0 +1,324 @@
+﻿namespace = influence_house_ambition_outcome
+
+##########################################
+# Influence House Ambtion Outcome Events #
+##########################################
+# Bjorn Sundstrom (2026) #
+
+
+#Standard success
+influence_house_ambition_outcome.1001 = {
+	hidden = yes
+	
+	trigger = {
+		scope:target = {
+			is_ai = yes
+		}
+	}
+	
+	immediate = {
+		scope:owner = {
+			if = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_commerce }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_commerce
+				} 
+			}
+			else_if = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_aggrandizement }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_aggrandizement
+				} 
+			}
+			else_if = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_communal }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_communal
+				} 
+			}
+			else_if = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_signorial }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_signorial
+				} 
+			}
+			else = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_agitation }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_agitation
+				 } 
+			}
+		}
+		send_interface_message = {
+			type = influence_house_ambition_good_message
+			title = influence_house_ambition_success_message
+			left_icon = scope:target
+			scope:target = {
+				if = {
+					limit = {
+						is_alive = yes
+						scope:owner = { is_alive = yes }
+					}
+					if = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_commerce
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_commerce
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_aggrandizement
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_aggrandizement
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_communal
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_communal
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_signorial
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_signorial
+							}
+						}
+					}
+					else = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_agitation
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_agitation
+							}
+						}
+					}
+				}
+			}
+			influence_house_ambition_end_effect = yes
+		}
+	}
+}
+
+#Standard failure
+influence_house_ambition_outcome.1002 = {
+	hidden = yes
+
+	immediate = {
+		send_interface_message = {
+			type = influence_house_ambition_bad_message
+			title = influence_house_ambition_failed_message
+			left_icon = scope:target
+			scope:target = {
+				add_opinion = {
+					modifier = refusal_opinion
+					opinion = -10
+					target = scope:owner
+				}
+			}
+			stress_and_fulfillment_impact = {
+				ambitious = minor_stress_impact_gain
+			}
+			influence_house_ambition_end_effect = yes
+		}
+	}
+}
+
+influence_house_ambition_outcome.1003 = {
+	type = letter_event
+	opening = influence_house_ambition_outcome.1003.t
+	desc = influence_house_ambition_outcome.1003.desc
+	sender = scope:owner
+
+	trigger = {
+		scope:target = {
+			is_ai = no
+		}
+	}
+
+	immediate = {
+		scope:owner = {
+			if = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_commerce }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_commerce
+				} 
+			}
+			else_if = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_aggrandizement }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_aggrandizement
+				} 
+			}
+			else_if = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_communal }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_communal
+				} 
+			}
+			else_if = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_signorial }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_signorial
+				} 
+			}
+			else = {
+				limit = { 
+					house = { has_house_aspiration_parameter = republic_agitation }
+				}
+				save_scope_value_as = {
+				 	name = owner_house_ambition
+				 	value = flag:republic_agitation
+				 } 
+			}
+		}
+	}
+
+	option = {
+		name = influence_house_ambition_outcome.1003.a
+
+		send_interface_message = {
+			type = influence_house_ambition_good_message
+			title = influence_house_ambition
+			left_icon = scope:owner
+			scope:target = {
+				if = {
+					limit = {
+						is_alive = yes
+						scope:owner = { is_alive = yes }
+					}
+					if = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_commerce
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_commerce
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_aggrandizement
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_aggrandizement
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_communal
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_communal
+							}
+						}
+					}
+					else_if = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_signorial
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_signorial
+							}
+						}
+					}
+					else = {
+						limit = {
+							scope:owner_house_ambition = flag:republic_agitation
+						}
+						house = {
+							set_house_aspiration = {
+								type = republic_agitation
+							}
+						}
+					}
+				}
+			}
+			
+			influence_house_ambition_end_effect = yes
+			
+			house = {
+				change_house_relation_effect = {
+					HOUSE = scope:owner.house
+					VALUE = house_relation_improve_major_value
+					REASON = aligned_house_ambitions
+					CHAR = root
+					TARGET_CHAR = scope:owner
+					TITLE = scope:dummy_gender
+				}
+			}
+			scope:owner = {
+				add_opinion = {
+					modifier = good_house_diplomacy_opinion
+					target = root
+				}
+			}
+		}
+	}
+
+	option = {
+		name = influence_house_ambition_outcome.1003.b
+		add_prestige = minor_prestige_gain
+		scope:owner = {
+			
+			add_opinion = {
+				modifier = bad_house_diplomacy_opinion
+				target = root
+			}
+		}
+	}
+
+	after = {
+		scope:scheme = {
+			end_scheme = yes
+		}
+	}
+}

@@ -1,43 +1,200 @@
 ﻿#Scripted Modifiers used for buildings
 
-ai_general_building_modifier = {
+# Scales positive in-tier context adds so they reorder buildings within a priority tier
+@ai_building_in_tier_adjustment_scale = 0.1
+
+ai_rural_building_modifier = {
+	modifier = { # Rural identity, keep building the rural districts
+		add = ai_building_priority_medium
+		ai_urban_identity_trigger = no
+	}
 	modifier = {
-		add = -2
-		scope:holder.capital_province != this
+		factor = ai_building_identity_mismatch_factor
+		ai_urban_identity_trigger = yes
 	}
-	modifier = { # No time, must conquer!
-		add = -1000
-		scope:holder = {
-			gold <= conqueror_safe_spending_gold
-			has_variable = conqueror
+}
+
+ai_rural_synergy_modifier = {
+	modifier = { # Manor houses and religious community build on the villages a rural province already has
+		add = {
+			value = ai_building_priority_strong
+			if = {
+				limit = {
+					NOR = {
+						province_has_district = manor_houses_district
+						province_has_district = religious_community_district
+					}
+				}
+				add = ai_building_priority_soft
+			}
 		}
+		ai_urban_identity_trigger = no
 	}
 }
 
-ai_tier_1_building_modifier = {
-	modifier = { # Try to build rank 1 buildings in your capital before anything else
-		add = 20
-		scope:holder.capital_province = this
-	}
-}
-
-ai_tier_1_economical_building_preference_modifier = {
-	modifier = { # Economy boom AI's like economy buildings
-		add = 5
-		scope:holder = {
-			OR = {
-				ai_has_economical_boom_personality = yes
-				has_character_flag = ai_desire_economy_buildings
+ai_urban_building_modifier = {
+	modifier = { #Prioritize this where the size is higher - it is an urban place 
+		add = {
+			if = {
+				limit = {
+					province_size > 200
+				}
+				add = {
+					value = province_size
+					divide = 10
+					multiply = @ai_building_in_tier_adjustment_scale
+				}
+			}
+			else = {
+				subtract = 50
 			}
 		}
 	}
 }
 
-ai_tier_1_pious_building_preference_modifier = {
-	modifier = { # This building gives me piety!
-		add = 5
+ai_urban_identity_building_modifier = {
+	modifier = {
+		add = $WEIGHT$
+		ai_urban_identity_trigger = yes
+	}
+	modifier = {
+		add = ai_building_priority_strong
+		ai_de_jure_kingdom_capital_trigger = yes
+	}
+	modifier = {
+		add = ai_building_priority_medium
+		ai_de_jure_duchy_capital_push_trigger = yes
+	}
+	modifier = {
+		factor = ai_building_identity_mismatch_factor
+		ai_urban_push_trigger = no
+	}
+}
+
+ai_cultural_unlock_building_modifier = {
+	modifier = {
+		add = ai_building_priority_medium
+		culture ?= { has_cultural_parameter = $PARAMETER$ }
+	}
+}
+
+ai_urban_district_building_modifier = {
+	modifier = {
+		add = ai_building_priority_soft
+		ai_urban_push_trigger = yes
+	}
+	modifier = {
+		factor = ai_building_identity_mismatch_factor
+		ai_urban_push_trigger = no
+	}
+}
+
+ai_opinion_baseline_building_modifier = {
+	modifier = { # Prioritize places with low popular opinion
+
+		add = {
+			value = 0
+			if = {
+				limit = {
+					county.base_popular_opinion < 25
+				}
+				add = 20
+			}
+			else_if = {
+				limit = {
+					county.base_popular_opinion < 50
+				}
+				add = 10
+			}
+			else_if = {
+				limit = {
+					county.base_popular_opinion < 75
+				}
+				add = 5
+			}
+			multiply = {
+				value = $VALUE$
+				divide = ai_building_urgency_reference_grant
+				min = 0.4
+				max = 2
+			}
+			multiply = @ai_building_in_tier_adjustment_scale
+		}
+	}
+}
+
+ai_control_baseline_building_modifier = {
+	modifier = { # Try to build rank 1 buildings in your capital before anything else
+
+	#For now we prioritize places with low control
+	#This needs to be more thorough, so that we determine _where_ it makes sense to boost control more
+		add = {
+			value = 0
+			if = {
+				limit = {
+					county.county_control_baseline < 50
+				}
+				add = 30
+			}
+			else_if = {
+				limit = {
+					county.county_control_baseline < 60
+				}
+				add = 20
+			}
+			else_if = {
+				limit = {
+					county.county_control_baseline < 70
+				}
+				add = 10
+			}
+			multiply = {
+				value = $VALUE$
+				divide = ai_building_urgency_reference_grant
+				min = 0.4
+				max = 2
+			}
+			multiply = @ai_building_in_tier_adjustment_scale
+		}
+	}
+}
+
+ai_walls_building_modifier = {
+	modifier = { # Established cities need walls to hold their county control
+		add = ai_building_priority_strong
+		ai_established_city_trigger = yes
+	}
+	modifier = {
+		add = ai_building_priority_medium
+		ai_established_city_trigger = no
+		ai_urban_identity_trigger = yes
+	}
+	modifier = {
+		add = ai_building_priority_strong
+		ai_de_jure_kingdom_capital_trigger = yes
+	}
+	modifier = {
+		add = ai_building_priority_medium
+		ai_de_jure_kingdom_capital_trigger = no
+		ai_de_jure_duchy_capital_trigger = yes
+	}
+}
+
+ai_urban_housing_modifier = {
+	modifier = {
+		ai_urban_push_trigger = yes
+		#Are food needs fulfilled?
+		#TODO: TIT-72426
+		add = ai_building_priority_strong
+	}
+}
+
+ai_general_building_modifier = {
+	modifier = { # No time, must conquer!
+		add = -1000
 		scope:holder = {
-			ai_has_pious_builder_personality = yes
+			has_variable = conqueror
+			gold <= conqueror_safe_spending_gold
 		}
 	}
 }
@@ -48,9 +205,12 @@ ai_economical_building_preference_modifier = {
 		scope:holder = {
 			OR = {
 				ai_rationality >= 25
-				has_focus_or_focus_trait_trigger = { FOCUS = stewardship_wealth_focus }
-				has_focus_or_focus_trait_trigger = { FOCUS = stewardship_domain_focus }
 				monthly_character_income < monthly_character_expenses_times_three
+				# Same focus and trait pairs as has_focus_or_focus_trait_trigger
+				has_focus = stewardship_wealth_focus
+				has_trait = avaricious
+				has_focus = stewardship_domain_focus
+				has_trait = architect
 			}
 		}
 	}
@@ -62,8 +222,8 @@ ai_pious_building_preference_modifier = {
 		scope:holder = {
 			OR = {
 				ai_zeal >= 25
-				ai_has_pious_builder_personality = yes
 				monthly_character_income < monthly_character_expenses_times_three
+				ai_has_pious_builder_personality = yes
 			}
 		}
 	}
@@ -215,46 +375,6 @@ ai_heavy_infantry_modifier = {
 	}
 }
 
-ai_pikemen_modifier = {
-	modifier = {
-		add = stationed_maa_bonus
-		has_stationed_regiment_of_base_type = pikemen
-	}
-	modifier = { # If the holder has a preference for the MaA
-		add = likes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			culture = {
-				OR = {
-					has_cultural_pillar = heritage_central_germanic
-					has_cultural_pillar = heritage_latin
-					culture_has_pikemen_maa = yes
-				}
-			}
-		}
-	}
-	modifier = { # If the holder really likes the MaA type and is suited for it
-		add = really_likes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			max_number_maa_soldiers_of_base_type = {
-				type = pikemen
-				value >= 400
-			}
-		}
-	}
-	modifier = { # If the holder doesn't care for the MaA type
-		add = dislikes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			number_maa_regiments_of_base_type = {
-				type = pikemen
-				value <= 0
-			}
-		}
-	}
-}
-
 ai_light_cavalry_modifier = {
 	modifier = {
 		add = stationed_maa_bonus
@@ -381,68 +501,6 @@ ai_heavy_cavalry_modifier = {
 	}
 }
 
-ai_compensate_heavy_cavalry_modifier = {
-	modifier = {
-		add = compensate_conflict_maa_bonus
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			culture = {
-				OR = { # Likes Heavy Cavalry
-					has_cultural_pillar = heritage_central_germanic
-					has_cultural_pillar = heritage_frankish
-					has_cultural_pillar = heritage_indo_aryan
-					has_cultural_pillar = heritage_iranian
-					has_cultural_pillar = heritage_turkic
-					has_cultural_pillar = heritage_mongolic
-					culture_has_heavy_cavalry_maa = yes
-				}
-				
-				OR = { # Dislikes Light Cavalry
-					has_cultural_pillar = heritage_central_germanic
-					has_cultural_pillar = heritage_tibetan
-					has_cultural_pillar = heritage_baltic
-					has_cultural_pillar = heritage_burman
-					has_cultural_pillar = heritage_somalian
-				}
-			}
-		}
-	}
-}
-
-ai_compensate_light_cavalry_modifier = {
-	modifier = {
-		add = compensate_conflict_maa_bonus
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			culture = {
-				OR = { # Likes Light Cavalry
-					has_cultural_pillar = heritage_arabic
-					has_cultural_pillar = heritage_berber
-					has_cultural_pillar = heritage_iberian
-					has_cultural_pillar = heritage_indo_aryan
-					has_cultural_pillar = heritage_iranian
-					has_cultural_pillar = heritage_turkic
-					has_cultural_pillar = heritage_mongolic
-					culture_has_light_cavalry_maa = yes
-				}
-				
-				OR = { # Dislikes Heavy Cavalry
-					has_cultural_pillar = heritage_tibetan
-					has_cultural_pillar = heritage_baltic
-					has_cultural_pillar = heritage_south_slavic
-					has_cultural_pillar = heritage_sahelian
-					has_cultural_pillar = heritage_senegambian
-					has_cultural_pillar = heritage_west_african
-					has_cultural_pillar = heritage_yoruba
-					has_cultural_pillar = heritage_somalian
-					has_cultural_pillar = heritage_east_african
-					has_cultural_pillar = heritage_burman
-				}
-			}
-		}
-	}
-}
-
 ai_archer_cavalry_modifier = {
 	modifier = {
 		add = stationed_maa_bonus
@@ -486,297 +544,12 @@ ai_archer_cavalry_modifier = {
 	}
 }
 
-ai_camels_modifier = {
-	modifier = {
-		add = stationed_maa_bonus
-		has_stationed_regiment_of_base_type = camel_cavalry
-	}
-	modifier = { # If the holder has a preference for the MaA
-		add = likes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			OR = {
-				culture = { has_cultural_pillar = heritage_arabic }
-				culture = { has_cultural_pillar = heritage_berber }
-			}
-		}
-	}
-	modifier = { # If the holder really likes the MaA type and is suited for it
-		add = really_likes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = camel_cavalry
-					value >= 400
-				}
-				culture = { has_cultural_pillar = heritage_arabic }
-				culture = { has_cultural_pillar = heritage_berber }
-			}
-		}
-	}
-	modifier = { # If the holder doesn't care for the MaA type
-		add = dislikes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			number_maa_regiments_of_base_type = {
-				type = camel_cavalry
-				value <= 0
-			}
-		}
-	}
-}
-
-ai_elephants_modifier = {
-	modifier = {
-		add = stationed_maa_bonus
-		has_stationed_regiment_of_base_type = elephant_cavalry
-	}
-	modifier = { # If the holder has a preference for the MaA
-		add = likes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			culture = {
-				OR = {
-					has_cultural_pillar = heritage_dravidian
-					has_cultural_pillar = heritage_indo_aryan
-					has_cultural_pillar = heritage_burman
-				}
-			}
-		}
-	}
-	modifier = { # If the holder really likes the MaA type and is suited for it
-		add = really_likes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = elephant_cavalry
-					value >= 100
-				}
-				culture = { has_cultural_pillar = heritage_dravidian }
-				culture = { has_cultural_pillar = heritage_indo_aryan }
-				culture = { has_cultural_pillar = heritage_burman }
-			}
-		}
-	}
-	modifier = { # If the holder doesn't care for the MaA type
-		add = dislikes_maa_value
-		scope:holder = {
-			highest_held_title_tier >= tier_county
-			number_maa_regiments_of_base_type = {
-				type = elephant_cavalry
-				value <= 0
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_military_camps_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = military_camps_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = skirmishers
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = archers
-					value >= 200
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_smiths_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = smiths_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = heavy_infantry
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = pikemen
-					value >= 200
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_stables_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = stables_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = heavy_cavalry
-					value >= 50
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = light_cavalry
-					value >= 200
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_horse_pastures_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = horse_pastures_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = archer_cavalry
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = light_cavalry
-					value >= 200
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_hillside_grazing_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = hillside_grazing_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = archer_cavalry
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = light_cavalry
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = heavy_cavalry
-					value >= 50
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_warrior_lodges_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = warrior_lodges_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = skirmishers
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = heavy_infantry
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = pikemen
-					value >= 200
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_wind_furnaces_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = wind_furnace_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = pikemen
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = heavy_infantry
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = heavy_cavalry
-					value >= 200
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_outposts_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = outposts_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = skirmishers
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = archers
-					value >= 200
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_camel_farms_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = camel_farms_01
-		scope:holder = {
-			OR = {
-				max_number_maa_soldiers_of_base_type = {
-					type = light_cavalry
-					value >= 200
-				}
-				max_number_maa_soldiers_of_base_type = {
-					type = camel_cavalry
-					value >= 200
-				}
-			}
-		}
-	}
-}
-
-ai_stacking_bonus_elephant_pens_modifier = {
-	modifier = {
-		add = stacking_bonus_value
-		has_building_or_higher = elephant_pens_01
-		scope:holder = {
-			max_number_maa_soldiers_of_base_type = {
-				type = elephant_cavalry
-				value >= 50
-			}
-		}
-	}
-}
-
 ai_anti_synergy_cavalry_modifier = {
 	modifier = {
 		add = anti_synergy_penalty_value
 		OR = {
-			#has_building_or_higher = camel_farms_01 # Economy building technically
-			has_building_or_higher = horse_pastures_01
-			has_building_or_higher = hillside_grazing_01
-			has_building_or_higher = stables_01
-			has_building_or_higher = jousting_lists_01
+			has_building_or_higher = cavalry_stables_1
+			has_building_or_higher = horse_studfarm_1
 		}
 	}
 }
@@ -785,9 +558,8 @@ ai_anti_synergy_armored_infantry_modifier = {
 	modifier = {
 		add = anti_synergy_penalty_value
 		OR = {
-			has_building_or_higher = smiths_01
-			has_building_or_higher = blacksmiths_01
-			has_building_or_higher = warrior_lodges_01
+			has_building_or_higher = weapon_armor_smith_1
+			has_building_or_higher = armorer_1
 		}
 	}
 }
@@ -796,9 +568,8 @@ ai_anti_synergy_light_infantry_modifier = {
 	modifier = {
 		add = anti_synergy_penalty_value
 		OR = {
-			has_building_or_higher = military_camps_01
-			has_building_or_higher = outposts_01
-			has_building_or_higher = archery_ranges_01
+			has_building_or_higher = militia_camps_1
+			has_building_or_higher = watchtowers_1
 		}
 	}
 }
@@ -811,279 +582,10 @@ culture_likely_to_fortify_modifier = {
 	}
 }
 
-ai_tradeport_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = trade_ports_give_levies }
-				}
-				add = 2
-			}
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = trade_ports_give_control_growth }
-				}
-				add = 2
-			}
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = next_level_trade_ports }
-				}
-				add = 1
-			}
-		}
-	}
-}
-
-ai_pasture_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = pastures_building_bonuses }
-				}
-				add = 2
-			}
-			if = {
-				limit = {
-					is_coastal = yes
-					scope:holder.culture = { has_cultural_parameter = coastal_agriculture_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_hunting_grounds_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = hunting_archery_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_orchard_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = coastal_agriculture_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_farm_estate_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = coastal_agriculture_building_bonuses }
-				}
-				add = 2
-			}
-			if = {
-				limit = {
-					OR = { # more productive building than the alternatives for this terrain type
-						terrain = jungle
-						terrain = hills
-					}
-					scope:holder.culture = { # holder's culture, not province's
-						has_cultural_parameter = rice_cultivators_can_construct_paddy_fields_in_hills_and_jungle
-					}
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-
-ai_paddy_fields_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					OR = {
-						terrain = terraced_hills
-						terrain = wetlands
-					}
-					culture = { # province's culture, not holder's
-						has_cultural_parameter = champa_rice_building_bonuses
-					}
-				}
-				add = 4
-			}
-			if = {
-				limit = {
-					OR = { # more productive building than the alternatives for this terrain type
-						terrain = jungle
-						terrain = hills
-					}
-					scope:holder.culture = { # holder's culture, not province's
-						has_cultural_parameter = rice_cultivators_can_construct_paddy_fields_in_hills_and_jungle
-					}
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_cereal_fields_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = {
-						has_cultural_parameter = coastal_agriculture_building_bonuses
-					}
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_outposts_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = outposts_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_barracks_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = building_barracks_piety_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-
-
-ai_logging_camp_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = logging_camps_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_peat_quarries_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = logging_camps_building_bonuses }
-				}
-				add = 2
-			}
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = peat_quarries_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_hill_farms_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = hill_farms_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_elephant_pens_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = elephant_pens_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_plantations_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = plantations_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
-
-ai_quarries_improvement_from_culture_modifier = {
-	modifier = {
-		add = {
-			value = 0
-			if = {
-				limit = {
-					scope:holder.culture = { has_cultural_parameter = quarries_building_bonuses }
-				}
-				add = 2
-			}
-		}
-	}
-}
 
 directive_to_fortify_modifier = {
 	modifier = {
-		add = 10
+		add = @[10 * ai_building_in_tier_adjustment_scale]
 		scope:holder = {
 			has_character_flag = vassal_directive_building_focus_fortification
 			vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
@@ -1093,7 +595,7 @@ directive_to_fortify_modifier = {
 
 directive_to_build_military_modifier = {
 	modifier = {
-		add = 10
+		add = @[10 * ai_building_in_tier_adjustment_scale]
 		scope:holder = {
 			has_character_flag = vassal_directive_building_focus_military
 			vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
@@ -1103,10 +605,1172 @@ directive_to_build_military_modifier = {
 
 directive_to_build_economy_modifier = {
 	modifier = {
-		add = 10
+		add = @[10 * ai_building_in_tier_adjustment_scale]
 		scope:holder = {
 			has_character_flag = vassal_directive_building_focus_economy
 			vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
+		}
+	}
+}
+
+ai_upgrade_holding_modifier = {
+	modifier = {
+		add = @[35 * ai_building_in_tier_adjustment_scale]
+		combined_building_level >= 15
+	}
+	modifier = {
+		add = @[15 * ai_building_in_tier_adjustment_scale]
+		combined_building_level >= 8
+		combined_building_level < 15
+	}
+	modifier = {
+		add = @[10 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { days_of_continuous_peace >= 1825 }
+	}
+	modifier = {
+		add = @[10 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { ai_has_economical_boom_personality = yes }
+	}
+	modifier = {
+		factor = 0.2
+		scope:holder = {
+			is_at_war = yes
+			NOT = { ai_has_economical_boom_personality = yes }
+		}
+	}
+	modifier = {
+		factor = 0.1
+		combined_building_level <= 2
+		years_from_game_start >= 1
+	}
+}
+
+ai_defensive_need_modifier = {
+	modifier = {
+		add = @[25 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { is_at_war = yes }
+	}
+	modifier = {
+		add = @[15 * ai_building_in_tier_adjustment_scale]
+		scope:holder = {
+			days_of_continuous_peace < 730
+			NOT = { is_at_war = yes }
+		}
+	}
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = { scope:holder = { ai_has_warlike_personality = yes } }
+				add = @[12 * ai_building_in_tier_adjustment_scale]
+				if = {
+					limit = { scope:holder = { ai_has_cautious_personality = yes } }
+					add = @[12 * ai_building_in_tier_adjustment_scale]
+				}
+			}
+			else_if = {
+				limit = { scope:holder = { ai_has_cautious_personality = yes } }
+				add = @[12 * ai_building_in_tier_adjustment_scale]
+			}
+			else_if = {
+				limit = {
+					scope:holder = { days_of_continuous_peace >= 1825 }
+					county.county_control_baseline >= 70
+				}
+				add = -15
+			}
+		}
+	}
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = { county.county_control_baseline < 50 }
+				add = @[20 * ai_building_in_tier_adjustment_scale]
+			}
+			else_if = {
+				limit = { county.county_control_baseline < 60 }
+				add = @[10 * ai_building_in_tier_adjustment_scale]
+			}
+		}
+	}
+	modifier = {
+		factor = 2
+		scope:holder.culture = { has_cultural_parameter = ai_more_likely_to_fortify }
+	}
+}
+
+ai_military_context_modifier = {
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = { scope:holder = { ai_has_warlike_personality = yes } }
+				add = @[18 * ai_building_in_tier_adjustment_scale]
+			}
+			else_if = {
+				limit = { scope:holder = { days_of_continuous_peace < 1095 } }
+				add = @[8 * ai_building_in_tier_adjustment_scale]
+			}
+		}
+	}
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = {
+					scope:holder = {
+						any_maa_regiment = {
+							count >= 1
+						}
+					}
+				}
+				add = @[15 * ai_building_in_tier_adjustment_scale]
+				if = {
+					limit = {
+						scope:holder = {
+							any_maa_regiment = {
+								count >= 3
+							}
+						}
+					}
+					add = @[12 * ai_building_in_tier_adjustment_scale]
+				}
+			}
+		}
+	}
+	modifier = {
+		add = @[10 * ai_building_in_tier_adjustment_scale]
+		scope:holder = {
+			has_character_flag = vassal_directive_building_focus_military
+			vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
+		}
+	}
+	modifier = {
+		factor = 0.2
+		scope:holder = {
+			NOT = {
+				any_maa_regiment = {
+					count >= 1
+				}
+			}
+			NOT = { ai_has_warlike_personality = yes }
+		}
+	}
+}
+
+ai_military_district_modifier = {
+	modifier = { # Capital duchy, outside the capital county
+		add = ai_building_priority_strong
+		ai_military_capital_duchy_trigger = yes
+	}
+	modifier = { # The county modifier covers every domain barony in the county
+		add = ai_building_priority_soft
+		county = {
+			any_county_province = {
+				count >= 2
+				province_owner ?= scope:holder
+			}
+		}
+	}
+	modifier = { # The capital county keeps its slots for the economy
+		factor = ai_building_identity_mismatch_factor
+		ai_military_capital_county_trigger = yes
+	}
+	modifier = {
+		factor = ai_military_unsecured_economy_factor
+		ai_military_economy_secured_trigger = no
+	}
+	modifier = {
+		factor = ai_building_local_defer_factor
+		ai_military_regiments_covered_trigger = yes
+	}
+}
+
+ai_military_district_upgrade_modifier = {
+	modifier = {
+		add = ai_building_priority_strong
+		county = {
+			any_county_province = { has_stationed_regiment = yes }
+		}
+	}
+	modifier = {
+		add = ai_building_priority_soft
+		county = {
+			any_county_province = {
+				count >= 2
+				has_stationed_regiment = yes
+			}
+		}
+	}
+	modifier = { # An upgrade helps no one without stationed regiments
+		factor = ai_building_identity_mismatch_factor
+		county = {
+			NOT = {
+				any_county_province = { has_stationed_regiment = yes }
+			}
+		}
+	}
+}
+
+ai_knights_context_modifier = {
+	modifier = {
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { any_knight = { count >= 5 } }
+	}
+	modifier = {
+		add = @[15 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { martial >= 12 }
+	}
+	modifier = {
+		add = @[12 * ai_building_in_tier_adjustment_scale]
+		scope:holder = {
+			culture = {
+				OR = {
+					has_cultural_pillar = heritage_frankish
+					has_cultural_pillar = heritage_central_germanic
+					has_cultural_pillar = heritage_iberian
+					has_cultural_pillar = heritage_latin
+				}
+			}
+		}
+	}
+	modifier = {
+		factor = 0.3
+		scope:holder = { NOT = { any_knight = { count >= 3 } } }
+	}
+}
+
+ai_civic_context_modifier = {
+	modifier = {
+		add = @[18 * ai_building_in_tier_adjustment_scale]
+		scope:holder = {
+			any_vassal = {
+				count >= 1
+			}
+		}
+	}
+	modifier = {
+		add = @[12 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { highest_held_title_tier >= tier_kingdom }
+	}
+	modifier = {
+		add = @[8 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { days_of_continuous_peace >= 365 }
+	}
+	modifier = {
+		add = @[8 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { ai_has_economical_boom_personality = yes }
+	}
+}
+
+ai_tribal_context_modifier = {
+	modifier = {
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		scope:holder = { government_has_flag = government_is_tribal }
+	}
+}
+
+ai_economic_terrain_modifier = {
+	modifier = {
+		add = @[15 * ai_building_in_tier_adjustment_scale]
+		terrain = farmlands
+	}
+	modifier = {
+		add = @[15 * ai_building_in_tier_adjustment_scale]
+		terrain = floodplains
+	}
+	modifier = {
+		add = @[12 * ai_building_in_tier_adjustment_scale]
+		terrain = terraced_hills
+	}
+	modifier = {
+		add = @[8 * ai_building_in_tier_adjustment_scale]
+		terrain = oasis
+	}
+	modifier = {
+		factor = 0.2
+		is_desert_trigger = yes
+	}
+	modifier = {
+		factor = 0.4
+		is_mountainous_trigger = yes
+	}
+	modifier = {
+		factor = 0.4
+		terrain = taiga
+	}
+	modifier = {
+		factor = 0.45
+		terrain = steppe
+	}
+}
+
+ai_resource_building_need_modifier = {
+	modifier = {
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		barony.trade_market ?= { trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 } }
+	}
+	modifier = {
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		scope:holder = {
+			war_chest_gold >= halved_ai_war_chest_gold_maximum
+			NOT = { has_variable = conqueror }
+		}
+	}
+	modifier = {
+		add = -1000
+		scope:holder = {
+			has_variable = conqueror
+			gold <= conqueror_safe_spending_gold
+		}
+	}
+}
+
+ai_resource_building_staple_need_modifier = {
+	modifier = {
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		barony.trade_market ?= { trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 } }
+	}
+	modifier = {
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		scope:holder = {
+			war_chest_gold >= halved_ai_war_chest_gold_maximum
+			NOT = { has_variable = conqueror }
+		}
+	}
+	modifier = {
+		add = -1000
+		scope:holder = {
+			has_variable = conqueror
+			gold <= conqueror_safe_spending_gold
+		}
+	}
+}
+
+ai_resource_building_need_category_modifier = {
+	modifier = {
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		barony.trade_market ?= { trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 } }
+	}
+	modifier = { # our market needs this whole category (used for foodstuffs)
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		barony.trade_market ?= {
+			OR = {
+				any_trade_good_with_need = { has_category = trade_good_category:$CATEGORY$ }
+				AND = { # category needs stay listed after local goods fill them, so a surplus rules them out
+					any_trade_category_with_need = { this = trade_good_category:$CATEGORY$ }
+					NOT = { any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ } }
+				}
+			}
+		}
+	}
+	modifier = {
+		add = @[20 * ai_building_in_tier_adjustment_scale]
+		scope:holder = {
+			war_chest_gold >= halved_ai_war_chest_gold_maximum
+			NOT = { has_variable = conqueror }
+		}
+	}
+	modifier = {
+		add = -1000
+		scope:holder = {
+			has_variable = conqueror
+			gold <= conqueror_safe_spending_gold
+		}
+	}
+}
+
+ai_resource_building_consumer_modifier = {
+	modifier = {
+		add = @[25 * ai_building_in_tier_adjustment_scale]
+		barony.trade_market ?= { trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 } }
+	}
+	modifier = {
+		add = -10
+		barony.trade_market ?= {
+			trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+			trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value <= 0 }
+		}
+	}
+}
+
+ai_resource_building_consumer_category_modifier = {
+	modifier = {
+		add = @[25 * ai_building_in_tier_adjustment_scale]
+		barony.trade_market ?= { trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 } }
+	}
+	modifier = {
+		add = -10
+		barony.trade_market ?= {
+			trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+			trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value <= 0 }
+		}
+	}
+	modifier = {
+		add = @[15 * ai_building_in_tier_adjustment_scale]
+		barony.trade_market ?= { any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ } }
+	}
+	modifier = { # input's whole need-category is short on our market (foodstuffs)
+		add = -10
+		barony.trade_market ?= {
+			OR = {
+				any_trade_good_with_need = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_need = { this = trade_good_category:$CATEGORY$ }
+			}
+			NOT = { any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ } }
+		}
+	}
+}
+
+# For trade_good_need blocks that name only a trade_good_category
+ai_resource_building_consumer_need_category_modifier = {
+	modifier = {
+		add = @[15 * ai_building_in_tier_adjustment_scale]
+		barony.trade_market ?= {
+			OR = {
+				any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_surplus = { this = trade_good_category:$CATEGORY$ }
+			}
+		}
+	}
+	modifier = {
+		add = -10
+		barony.trade_market ?= {
+			OR = {
+				any_trade_good_with_need = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_need = { this = trade_good_category:$CATEGORY$ }
+			}
+			NOR = {
+				any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_surplus = { this = trade_good_category:$CATEGORY$ }
+			}
+		}
+	}
+}
+
+## In-tier money makers, from the building's own unconditional tax and production
+
+ai_income_production_building_modifier = {
+	modifier = {
+		add = ai_building_priority_strong
+	}
+}
+
+ai_income_building_modifier = {
+	modifier = {
+		add = ai_building_priority_medium
+	}
+}
+
+## In-tier goods awareness for urban buildings, not decisive since merchants can bring goods
+
+ai_urban_input_modifier = {
+	modifier = {
+		add = ai_building_priority_medium
+		production_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+	}
+	modifier = {
+		add = ai_building_priority_soft
+		barony.trade_market ?= { trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 } }
+	}
+	modifier = {
+		add = {
+			value = 0
+			subtract = ai_building_priority_soft
+		}
+		barony.trade_market ?= {
+			trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+			trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value <= 0 }
+		}
+	}
+}
+
+ai_urban_input_category_modifier = {
+	modifier = {
+		add = ai_building_priority_medium
+		production_of_trade_good_category_type = { target = trade_good_category:$CATEGORY$ value > 0 }
+	}
+	modifier = {
+		add = ai_building_priority_soft
+		barony.trade_market ?= {
+			OR = {
+				any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_surplus = { this = trade_good_category:$CATEGORY$ }
+			}
+		}
+	}
+	modifier = {
+		add = {
+			value = 0
+			subtract = ai_building_priority_soft
+		}
+		barony.trade_market ?= {
+			OR = {
+				any_trade_good_with_need = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_need = { this = trade_good_category:$CATEGORY$ }
+			}
+			NOR = {
+				any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_surplus = { this = trade_good_category:$CATEGORY$ }
+			}
+		}
+	}
+}
+
+ai_urban_output_modifier = {
+	modifier = {
+		add = ai_building_priority_soft
+		barony.trade_market ?= { trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 } }
+	}
+}
+
+# Higher sell prices only pay off when they draw merchants carrying a good this market lacks
+ai_merchant_attraction_modifier = {
+	modifier = {
+		add = ai_building_priority_medium
+		barony.trade_market ?= {
+			trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+			trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value <= 0 }
+		}
+	}
+}
+
+ai_merchant_attraction_category_modifier = {
+	modifier = {
+		add = ai_building_priority_medium
+		barony.trade_market ?= {
+			OR = {
+				any_trade_good_with_need = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_need = { this = trade_good_category:$CATEGORY$ }
+			}
+			NOR = {
+				any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_surplus = { this = trade_good_category:$CATEGORY$ }
+			}
+		}
+	}
+}
+
+## Cured meat nudge for rural and resource producers, while the market has none to spare
+
+ai_cured_meat_producer_modifier = {
+	modifier = {
+		add = $VALUE$
+		NOT = { barony.trade_market ?= { trade_market_surplus_of_trade_good_type = { target = trade_good_type:trade_good_meat value > 0 } } }
+	}
+}
+
+ai_cured_meat_from_input_modifier = {
+	modifier = {
+		add = $VALUE$
+		NOT = { barony.trade_market ?= { trade_market_surplus_of_trade_good_type = { target = trade_good_type:trade_good_meat value > 0 } } }
+		OR = {
+			production_of_trade_good_type = { target = trade_good_type:$INPUT$ value > 0 }
+			barony.trade_market ?= { trade_market_surplus_of_trade_good_type = { target = trade_good_type:$INPUT$ value > 0 } }
+		}
+	}
+}
+
+## Build priority tiers
+# Appended last in a building's ai_value so they scale every add above them.
+# The defer modifiers scale a tier down while this holding still has higher-tier work.
+# Tiers with several levels take LEVEL, the building's position in its next_building chain.
+
+ai_resource_new_building_modifier = {
+	modifier = {
+		factor = ai_building_tier_1_factor
+	}
+}
+
+ai_regular_new_building_modifier = {
+	modifier = {
+		factor = ai_building_tier_2_factor
+	}
+	modifier = {
+		factor = ai_building_tier_2_defer_1_factor
+		resource_district ?= { free_building_slots > 0 }
+	}
+}
+
+ai_regular_new_district_modifier = {
+	modifier = {
+		factor = ai_building_tier_3_factor
+	}
+	modifier = {
+		factor = ai_building_tier_3_defer_1_factor
+		OR = {
+			resource_district ?= { free_building_slots > 0 }
+			free_building_slots > 0
+		}
+	}
+	modifier = {
+		factor = ai_building_tier_3_defer_2_factor
+		resource_district ?= { free_building_slots > 0 }
+		free_building_slots > 0
+	}
+}
+
+ai_resource_building_upgrade_modifier = {
+	modifier = {
+		factor = ai_building_tier_4_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_4_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_4_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_4_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_regular_building_upgrade_modifier = {
+	modifier = {
+		factor = ai_building_tier_5_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_5_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_5_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_5_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_resource_district_upgrade_modifier = {
+	modifier = {
+		factor = ai_building_tier_6_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_6_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_6_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_6_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_regular_district_upgrade_modifier = {
+	modifier = {
+		factor = ai_building_tier_7_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_7_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_7_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_7_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_holding_district_building_modifier = {
+	modifier = {
+		factor = ai_building_tier_8_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_8_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_8_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_8_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_holding_district_upgrade_modifier = {
+	modifier = {
+		factor = ai_building_tier_9_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_9_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_9_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_9_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_duchy_new_district_modifier = {
+	modifier = {
+		factor = ai_building_tier_10_factor
+	}
+	modifier = {
+		factor = ai_building_tier_10_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_10_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_10_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_duchy_district_building_modifier = {
+	modifier = {
+		factor = ai_building_tier_11_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_11_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_11_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_11_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_duchy_district_upgrade_modifier = {
+	modifier = {
+		factor = ai_building_tier_12_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_12_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_12_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_12_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+ai_special_district_modifier = {
+	modifier = {
+		factor = ai_building_tier_13_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_13_defer_1_factor
+		ai_building_local_defer_count >= 1
+	}
+	modifier = {
+		factor = ai_building_tier_13_defer_2_factor
+		ai_building_local_defer_count >= 2
+	}
+	modifier = {
+		factor = ai_building_tier_13_defer_3_factor
+		ai_building_local_defer_count >= 3
+	}
+}
+
+## Trade post priority tiers
+# Same tiers as the regular district modifiers, but defers only read the trade post's own slots, since the builder cannot build in the host holding
+
+ai_trade_post_new_district_modifier = {
+	modifier = {
+		factor = ai_building_tier_3_factor
+	}
+}
+
+ai_trade_post_new_building_modifier = {
+	modifier = {
+		factor = ai_building_tier_2_factor
+	}
+}
+
+ai_trade_post_building_upgrade_modifier = {
+	modifier = {
+		factor = ai_building_tier_5_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_5_defer_1_factor
+		trade_post_district ?= { free_building_slots > 0 }
+	}
+}
+
+ai_trade_post_district_upgrade_modifier = {
+	modifier = {
+		factor = ai_building_tier_7_factor
+	}
+	modifier = {
+		factor = ai_building_level_$LEVEL$_factor
+	}
+	modifier = {
+		factor = ai_building_tier_7_defer_1_factor
+		trade_post_district ?= { free_building_slots > 0 }
+	}
+}
+
+## Trade post helpers
+# scope:holder is the host holding's holder, not the builder
+# Character effects are scored on the trade post's owner
+# Province and county effects are scored only when the trade post is in the owner's own holding, where scope:holder is the builder
+
+ai_trade_post_general_building_modifier = {
+	modifier = { # No time, must conquer!
+		add = -1000
+		trade_post_district ?= {
+			district_owning_title ?= {
+				holder ?= {
+					has_variable = conqueror
+					gold <= conqueror_safe_spending_gold
+				}
+			}
+		}
+	}
+}
+
+ai_trade_post_economical_building_preference_modifier = {
+	modifier = {
+		add = ai_building_priority_soft
+		trade_post_district ?= {
+			district_owning_title ?= {
+				holder ?= {
+					OR = {
+						ai_rationality >= 25
+						monthly_character_income < monthly_character_expenses_times_three
+						# Same focus and trait pairs as has_focus_or_focus_trait_trigger
+						has_focus = stewardship_wealth_focus
+						has_trait = avaricious
+						has_focus = stewardship_domain_focus
+						has_trait = architect
+					}
+				}
+			}
+		}
+	}
+}
+
+ai_trade_post_directive_to_build_economy_modifier = {
+	modifier = {
+		add = @[10 * ai_building_in_tier_adjustment_scale]
+		trade_post_district ?= {
+			district_owning_title ?= {
+				holder ?= {
+					has_character_flag = vassal_directive_building_focus_economy
+					vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
+				}
+			}
+		}
+	}
+}
+
+ai_trade_post_directive_to_build_military_modifier = {
+	modifier = {
+		add = @[10 * ai_building_in_tier_adjustment_scale]
+		trade_post_district ?= {
+			district_owning_title ?= {
+				holder ?= {
+					has_character_flag = vassal_directive_building_focus_military
+					vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
+				}
+			}
+		}
+	}
+}
+
+ai_trade_post_income_building_modifier = {
+	modifier = {
+		add = ai_building_priority_medium
+		ai_trade_post_in_builder_holding_trigger = yes
+	}
+}
+
+ai_trade_post_control_baseline_building_modifier = {
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = {
+					county.county_control_baseline < 50
+				}
+				add = 30
+			}
+			else_if = {
+				limit = {
+					county.county_control_baseline < 60
+				}
+				add = 20
+			}
+			else_if = {
+				limit = {
+					county.county_control_baseline < 70
+				}
+				add = 10
+			}
+			multiply = {
+				value = $VALUE$
+				divide = ai_building_urgency_reference_grant
+				min = 0.4
+				max = 2
+			}
+			multiply = @ai_building_in_tier_adjustment_scale
+		}
+		ai_trade_post_in_builder_holding_trigger = yes
+	}
+}
+
+ai_trade_post_control_need_modifier = {
+	modifier = {
+		factor = ai_building_tier_step
+		county.county_control_baseline < 50
+		ai_trade_post_in_builder_holding_trigger = yes
+	}
+	modifier = {
+		factor = ai_building_tier_step
+		county.county_control_baseline < 30
+		ai_trade_post_in_builder_holding_trigger = yes
+	}
+}
+
+ai_trade_post_opinion_baseline_building_modifier = {
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = {
+					county.base_popular_opinion < 25
+				}
+				add = 20
+			}
+			else_if = {
+				limit = {
+					county.base_popular_opinion < 50
+				}
+				add = 10
+			}
+			else_if = {
+				limit = {
+					county.base_popular_opinion < 75
+				}
+				add = 5
+			}
+			multiply = {
+				value = $VALUE$
+				divide = ai_building_urgency_reference_grant
+				min = 0.4
+				max = 2
+			}
+			multiply = @ai_building_in_tier_adjustment_scale
+		}
+		ai_trade_post_in_builder_holding_trigger = yes
+	}
+}
+
+ai_trade_post_popular_opinion_need_modifier = {
+	modifier = {
+		factor = ai_building_tier_step
+		county.base_popular_opinion < 0
+		ai_trade_post_in_builder_holding_trigger = yes
+	}
+}
+
+ai_trade_post_merchant_attraction_modifier = {
+	modifier = {
+		add = ai_building_priority_medium
+		ai_trade_post_in_builder_holding_trigger = yes
+		barony.trade_market ?= {
+			trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+			trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value <= 0 }
+		}
+	}
+}
+
+ai_trade_post_defensive_need_modifier = {
+	modifier = {
+		add = @[25 * ai_building_in_tier_adjustment_scale]
+		ai_trade_post_in_builder_holding_trigger = yes
+		scope:holder = { is_at_war = yes }
+	}
+	modifier = {
+		add = @[15 * ai_building_in_tier_adjustment_scale]
+		ai_trade_post_in_builder_holding_trigger = yes
+		scope:holder = {
+			days_of_continuous_peace < 730
+			NOT = { is_at_war = yes }
+		}
+	}
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = { scope:holder = { ai_has_warlike_personality = yes } }
+				add = @[12 * ai_building_in_tier_adjustment_scale]
+				if = {
+					limit = { scope:holder = { ai_has_cautious_personality = yes } }
+					add = @[12 * ai_building_in_tier_adjustment_scale]
+				}
+			}
+			else_if = {
+				limit = { scope:holder = { ai_has_cautious_personality = yes } }
+				add = @[12 * ai_building_in_tier_adjustment_scale]
+			}
+			else_if = {
+				limit = {
+					scope:holder = { days_of_continuous_peace >= 1825 }
+					county.county_control_baseline >= 70
+				}
+				add = -15
+			}
+		}
+		ai_trade_post_in_builder_holding_trigger = yes
+	}
+	modifier = {
+		add = {
+			value = 0
+			if = {
+				limit = { county.county_control_baseline < 50 }
+				add = @[20 * ai_building_in_tier_adjustment_scale]
+			}
+			else_if = {
+				limit = { county.county_control_baseline < 60 }
+				add = @[10 * ai_building_in_tier_adjustment_scale]
+			}
+		}
+		ai_trade_post_in_builder_holding_trigger = yes
+	}
+	modifier = {
+		factor = 2
+		ai_trade_post_in_builder_holding_trigger = yes
+		scope:holder.culture = { has_cultural_parameter = ai_more_likely_to_fortify }
+	}
+}
+
+ai_trade_post_directive_to_fortify_modifier = {
+	modifier = {
+		add = @[10 * ai_building_in_tier_adjustment_scale]
+		ai_trade_post_in_builder_holding_trigger = yes
+		scope:holder = {
+			has_character_flag = vassal_directive_building_focus_fortification
+			vassal_is_valid_and_follows_directive_trigger = { VASSAL = this LIEGE = liege }
+		}
+	}
+}
+
+ai_capital_preference_modifier = {
+	modifier = {
+		factor = ai_building_capital_factor
+		scope:holder.capital_province = this
+	}
+}
+
+## Needs that may lift a building across tiers, one tier step each
+
+ai_control_need_modifier = {
+	modifier = {
+		factor = ai_building_tier_step
+		county.county_control_baseline < 50
+	}
+	modifier = {
+		factor = ai_building_tier_step
+		county.county_control_baseline < 30
+	}
+}
+
+ai_popular_opinion_need_modifier = {
+	modifier = {
+		factor = ai_building_tier_step
+		county.base_popular_opinion < 0
+	}
+}
+
+ai_market_shortage_modifier = {
+	modifier = {
+		factor = ai_building_tier_step
+		barony.trade_market ?= {
+			trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+			trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value <= 0 }
+		}
+	}
+}
+
+ai_market_staple_shortage_modifier = {
+	modifier = {
+		factor = {
+			value = ai_building_tier_step
+			multiply = ai_building_tier_step
+		}
+		barony.trade_market ?= {
+			trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+			trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value <= 0 }
+		}
+	}
+}
+
+ai_market_category_shortage_modifier = {
+	modifier = {
+		factor = ai_building_tier_step
+		barony.trade_market ?= {
+			trade_market_need_of_trade_good_type = { target = trade_good_type:$GOOD$ value > 0 }
+			trade_market_surplus_of_trade_good_type = { target = trade_good_type:$GOOD$ value <= 0 }
+		}
+	}
+	modifier = {
+		factor = ai_building_tier_step
+		barony.trade_market ?= {
+			OR = {
+				any_trade_good_with_need = { has_category = trade_good_category:$CATEGORY$ }
+				any_trade_category_with_need = { this = trade_good_category:$CATEGORY$ }
+			}
+			NOT = { any_trade_good_with_surplus = { has_category = trade_good_category:$CATEGORY$ } }
 		}
 	}
 }

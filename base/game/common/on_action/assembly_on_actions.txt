@@ -1,0 +1,106 @@
+﻿# on_assembly_vote_started
+# Fired from code whenever a new voting session starts
+# root = the realm ruler
+# scope:proposer = the character that proposed the topic to be voted on
+# scope:title = the realm in which the voting session is taking place
+# scope:new_law = the law that is being voted on
+# scope:current_law = the currently active law in the realm for the relevant law group, if there is no law in that group then the scope will not exist
+#
+on_assembly_vote_started = {
+	effect = {
+		scope:title ?= {
+			every_full_assembly_member = {
+				limit = {
+					is_ai = no
+				}
+				trigger_event = republic_event.0052
+			}
+		}
+	}
+}
+
+# on_assembly_vote_ended
+# Fired from code when a voting session ends, specifically after the law change in case the vote passed (it also fires if the vote did not pass).
+# Not fired in case the realm in which the vote is occurring is destroyed during the session or if the realm stops using assemblies
+# root = the realm ruler
+# scope:proposer = the character that proposed the topic to be voted on
+# scope:title = the realm in which the voting session is taking place
+# scope:new_law = the law that is being voted on
+# scope:current_law = the currently active law in the realm for the relevant law group, if there is no law in that group then the scope will not existed. If the vote passed
+# then this is the same as new_law
+#
+on_assembly_vote_ended = {
+	effect = {
+		if = {
+			limit = {
+				exists = scope:current_law
+				scope:current_law = scope:new_law
+			}
+			play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_law_accepted"
+			if = {
+				limit = {
+					exists = scope:proposer
+					NOT = { scope:proposer = root }
+				}
+				scope:proposer = { play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_law_accepted" }
+			}
+
+			if = {
+				limit = {
+					exists = scope:proposer
+					scope:proposer = {
+						government_has_flag = government_is_republic
+					}
+				}
+				scope:proposer = {
+					add_character_modifier = {
+						modifier = gdp_republic_law_maker_modifier
+						years = 5
+					}
+				}
+			}
+		}
+		else = {
+			play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_law_rejected"
+			if = {
+				limit = {
+					exists = scope:proposer
+					NOT = { scope:proposer = root }
+				}
+				scope:proposer = { play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_law_rejected" }
+			}
+		}
+
+		scope:title ?= {
+			every_full_assembly_member = {
+				limit = {
+					exists = scope:proposer
+					scope:proposer = { is_alive = yes }
+					this != scope:proposer
+				}
+				if = {
+					limit = { is_voting_for = yes }
+					reverse_add_opinion = {
+						target = scope:proposer
+						modifier = approved_law_opinion
+						opinion = 10
+					}
+				}
+				else_if = {
+					limit = { is_voting_against = yes }
+					reverse_add_opinion = {
+						target = scope:proposer
+						modifier = rejected_law_opinion
+						opinion = -10
+					}
+				}
+			}
+			every_full_assembly_member = { 
+				if = {
+					limit = { is_ai = no}
+					trigger_event = republic_event.0053
+				}
+			}
+		}
+	}
+}

@@ -65,9 +65,7 @@ progress_towards_friend_effect = {
 			}
 		}
 		else_if = {
-			limit = {
-				exists = scope:relationship_reason_province
-			}
+			limit = { exists = scope:relationship_reason_province }
 			set_relation_friend = { 
 				reason = $REASON$ 
 				target = scope:target_char 
@@ -75,9 +73,7 @@ progress_towards_friend_effect = {
 			}
 			if = {
 				limit = {
-					this.involved_activity ?= {
-						has_activity_type = activity_playdate
-					}
+					this.involved_activity ?= { has_activity_type = activity_playdate }
 				}
 				this.involved_activity ?= {
 					add_activity_log_entry = {
@@ -91,9 +87,7 @@ progress_towards_friend_effect = {
 			}
 		}
 		else_if = {
-			limit = {
-				exists = scope:relationship_reason_involved_character
-			}
+			limit = { exists = scope:relationship_reason_involved_character }
 			set_relation_friend = { 
 				reason = $REASON$ 
 				target = scope:target_char 
@@ -101,9 +95,7 @@ progress_towards_friend_effect = {
 			}
 			if = {
 				limit = {
-					this.involved_activity ?= {
-						has_activity_type = activity_playdate
-					}
+					this.involved_activity ?= { has_activity_type = activity_playdate }
 				}
 				this.involved_activity ?= {
 					add_activity_log_entry = {
@@ -194,10 +186,13 @@ progress_towards_friend_effect = {
 					opinion = scope:friend_opinion
 				}
 			}
-			add_opinion = {
-				target = scope:target_char
-				modifier = friendliness_opinion
-				opinion = scope:friend_opinion
+			if = {
+				limit = { is_ai = yes }
+				add_opinion = {
+					target = scope:target_char
+					modifier = friendliness_opinion
+					opinion = scope:friend_opinion
+				}
 			}
 		}
 	}
@@ -205,6 +200,7 @@ progress_towards_friend_effect = {
 
 #Sets potential rival + opinion or upgrades potential rival to full rival
 progress_towards_rival_effect = {
+	save_scope_as = ptre_root_scope
 	$CHARACTER$ = { save_scope_as = target_char }
 	# Do we merit an actual rivalry?
 	if = {
@@ -252,9 +248,7 @@ progress_towards_rival_effect = {
 				}
 			}
 			else_if = {
-				limit = {
-					exists = scope:relationship_reason_province
-				}
+				limit = { exists = scope:relationship_reason_province }
 				set_relation_grudge = {
 					reason = $REASON$
 					target = scope:target_char
@@ -262,9 +256,7 @@ progress_towards_rival_effect = {
 				}
 			}
 			else_if = {
-				limit = {
-					exists = scope:relationship_reason_involved_character
-				}
+				limit = { exists = scope:relationship_reason_involved_character }
 				set_relation_grudge = {
 					reason = $REASON$
 					target = scope:target_char
@@ -279,7 +271,8 @@ progress_towards_rival_effect = {
 			}
 		}
 		# Otherwise, increment raw opinion.
-		else = {
+		else_if = {
+			limit = { is_ai = yes }
 			add_opinion = {
 				target = scope:target_char
 				modifier = grudge_opinion
@@ -306,9 +299,7 @@ progress_towards_rival_effect = {
 			}
 			if = {
 				limit = {
-					this.involved_activity ?= {
-						has_activity_type = activity_playdate
-					}
+					this.involved_activity ?= { has_activity_type = activity_playdate }
 				}
 				this.involved_activity ?= {
 					add_activity_log_entry = {
@@ -322,9 +313,7 @@ progress_towards_rival_effect = {
 			}
 		}
 		else_if = {
-			limit = {
-				exists = scope:relationship_reason_province
-			}
+			limit = { exists = scope:relationship_reason_province }
 			set_relation_rival = { 
 				reason = $REASON$ 
 				target = scope:target_char 
@@ -348,9 +337,7 @@ progress_towards_rival_effect = {
 			}
 		}
 		else_if = {
-			limit = {
-				exists = scope:relationship_reason_involved_character
-			}
+			limit = { exists = scope:relationship_reason_involved_character }
 			set_relation_rival = { 
 				reason = $REASON$ 
 				target = scope:target_char 
@@ -358,9 +345,7 @@ progress_towards_rival_effect = {
 			}
 			if = {
 				limit = {
-					this.involved_activity ?= {
-						has_activity_type = activity_playdate
-					}
+					this.involved_activity ?= { has_activity_type = activity_playdate }
 				}
 				this.involved_activity ?= {
 					add_activity_log_entry = {
@@ -380,9 +365,7 @@ progress_towards_rival_effect = {
 			}
 			if = {
 				limit = {
-					this.involved_activity ?= {
-						has_activity_type = activity_playdate
-					}
+					this.involved_activity ?= { has_activity_type = activity_playdate }
 				}
 				this.involved_activity ?= {
 					add_activity_log_entry = {
@@ -395,6 +378,10 @@ progress_towards_rival_effect = {
 				}
 			}
 		}
+		#Is the GG situation applicable?
+		show_as_tooltip = {
+			gg_relation_catalyst_effect = { ACTOR = scope:ptre_root_scope RECIPIENT = scope:target_char CATALYST = catalyst_rival_hre_pope }
+		}
 	}
 	# If not...
 	else = {
@@ -402,15 +389,16 @@ progress_towards_rival_effect = {
 		if = {
 			limit = { can_set_relation_potential_rival_trigger = { CHARACTER = scope:target_char } }
 			set_relation_potential_rival = scope:target_char
-		}
-		
+		}	
 		# ... add opinion if we should!
 		save_temporary_scope_value_as = {
 			name = rival_opinion
 			value = $OPINION$
 		}
 		if = {
-			limit = { NOT = { scope:rival_opinion = 0 } }
+			limit = { 
+				NOT = { scope:rival_opinion = 0 }
+			}
 			if = {
 				limit = {
 					scope:target_char = { is_ai = yes }
@@ -421,20 +409,26 @@ progress_towards_rival_effect = {
 					opinion = scope:rival_opinion
 				}
 			}
-			add_opinion = {
-				target = scope:target_char
-				modifier = hate_opinion
-				opinion = scope:rival_opinion
+			if = {
+				limit = { is_ai = yes }
+				add_opinion = {
+					target = scope:target_char
+					modifier = hate_opinion
+					opinion = scope:rival_opinion
+				}
 			}
 		}
 	}
 }
+
 # Please use this one with care: players should never auto-upgrade to nemesis if we can help it, this is mostly for the AI.
 progress_towards_nemesis_effect = {
+	save_scope_as = ptne_root_scope
+	$CHARACTER$ = { save_scope_as = target_char }
 	if = {
 		limit = {
-			has_relation_rival = $CHARACTER$
-			can_set_relation_nemesis_trigger = { CHARACTER = $CHARACTER$ }
+			has_relation_rival = scope:target_char
+			can_set_relation_nemesis_trigger = { CHARACTER = scope:target_char }
 		}
 		if = {
 			limit = {
@@ -443,7 +437,8 @@ progress_towards_nemesis_effect = {
 			}
 			set_relation_nemesis = {
 				reason = $REASON$ 
-				target = $CHARACTER$ 
+				copy_reason = rival
+				target = scope:target_char
 				involved_character = scope:relationship_reason_involved_character 
 				province = scope:relationship_reason_province 
 			}
@@ -454,7 +449,8 @@ progress_towards_nemesis_effect = {
 			}
 			set_relation_nemesis = {
 				reason = $REASON$ 
-				target = $CHARACTER$ 
+				copy_reason = rival
+				target = scope:target_char
 				province = scope:relationship_reason_province 
 			}
 		}
@@ -464,20 +460,26 @@ progress_towards_nemesis_effect = {
 			}
 			set_relation_nemesis = {
 				reason = $REASON$ 
-				target = $CHARACTER$ 
+				copy_reason = rival
+				target = scope:target_char
 				involved_character = scope:relationship_reason_involved_character 
 			}
 		}
 		else = {
 			set_relation_nemesis = {
-				reason = $REASON$ 
-				target = $CHARACTER$ 
+				reason = $REASON$
+				copy_reason = rival
+				target = scope:target_char 
 			}
+		}
+		#Is the GG situation applicable?
+		show_as_tooltip = {
+			gg_relation_catalyst_effect = { ACTOR = scope:ptne_root_scope RECIPIENT = scope:target_char CATALYST = catalyst_nemesis_hre_pope }
 		}
 	}
 	else = {
 		progress_towards_rival_effect = {
-			CHARACTER = $CHARACTER$
+			CHARACTER = scope:target_char
 			REASON = $REASON$
 			OPINION = $OPINION$
 		}
@@ -1346,6 +1348,199 @@ clear_grudges_effect = {
 		if = {
 			limit = { has_relation_grudge = $CHAR_1$ }
 			remove_relation_grudge = $CHAR_1$
+		}
+	}
+}
+
+# Save these scopes separately before running the effect if you need them for the grudge reason:
+# scope:relationship_reason_involved_character
+# scope:relationship_reason_province 
+set_relation_grudge_effect = {
+	save_scope_as = srge_root_scope
+	$TARGET$ = { save_scope_as = target_char }
+	if = {
+		limit = {
+			NOT = {
+				has_relation_grudge = scope:target_char
+			}
+		}
+		if = {
+			limit = {
+				exists = scope:relationship_reason_involved_character
+				exists = scope:relationship_reason_province
+			}
+			set_relation_grudge = {
+				reason = $REASON$
+				target = scope:target_char
+				involved_character = scope:relationship_reason_involved_character
+				province = scope:relationship_reason_province
+			}
+		}
+		else_if = {
+			limit = { exists = scope:relationship_reason_province }
+			set_relation_grudge = {
+				reason = $REASON$
+				target = scope:target_char
+				province = scope:relationship_reason_province
+			}
+		}
+		else_if = {
+			limit = { exists = scope:relationship_reason_involved_character }
+			set_relation_grudge = {
+				reason = $REASON$
+				target = scope:target_char
+				involved_character = scope:relationship_reason_involved_character
+			}
+		}
+		else = {
+			set_relation_grudge = {
+				reason = $REASON$
+				target = scope:target_char
+			}
+		}
+	}
+	#Is the GG situation applicable?
+	show_as_tooltip = {
+		gg_relation_catalyst_effect = { ACTOR = scope:srge_root_scope RECIPIENT = scope:target_char CATALYST = catalyst_grudge_hre_pope }
+	}
+}
+
+# Save these scopes separately before running the effect if you need them for the rival reason:
+# scope:relationship_reason_involved_character
+# scope:relationship_reason_province 
+set_relation_rival_effect = {
+	save_scope_as = srre_root_scope
+	$TARGET$ = { save_scope_as = target_char }
+	if = {
+		limit = {
+			exists = scope:relationship_reason_involved_character
+			exists = scope:relationship_reason_province
+		}
+		set_relation_rival = {
+			reason = $REASON$
+			target = scope:target_char
+			involved_character = scope:relationship_reason_involved_character
+			province = scope:relationship_reason_province
+		}
+	}
+	else_if = {
+		limit = { exists = scope:relationship_reason_province }
+		set_relation_rival = {
+			reason = $REASON$
+			target = scope:target_char
+			province = scope:relationship_reason_province
+		}
+	}
+	else_if = {
+		limit = { exists = scope:relationship_reason_involved_character }
+		set_relation_rival = {
+			reason = $REASON$
+			target = scope:target_char
+			involved_character = scope:relationship_reason_involved_character
+		}
+	}
+	else = {
+		set_relation_rival = {
+			reason = $REASON$
+			target = scope:target_char
+		}
+	}
+	#Is the GG situation applicable?
+	show_as_tooltip = {
+		gg_relation_catalyst_effect = { ACTOR = scope:srre_root_scope RECIPIENT = scope:target_char CATALYST = catalyst_rival_hre_pope }
+	}
+}
+
+# Save these scopes separately before running the effect if you need them for the nemesis reason:
+# scope:relationship_reason_involved_character
+# scope:relationship_reason_province 
+set_relation_nemesis_effect = {
+	save_scope_as = srne_root_scope
+	$TARGET$ = { save_scope_as = target_char }
+	if = {
+		limit = {
+			can_set_relation_nemesis_trigger = { CHARACTER = scope:target_char }
+		}
+		if = {
+			limit = { has_relation_rival = scope:target_char }
+			if = {
+				limit = {
+					exists = scope:relationship_reason_involved_character
+					exists = scope:relationship_reason_province
+				}
+				set_relation_nemesis = {
+					reason = $REASON$
+					copy_reason = rival
+					target = scope:target_char
+					involved_character = scope:relationship_reason_involved_character
+					province = scope:relationship_reason_province
+				}
+			}
+			else_if = {
+				limit = { exists = scope:relationship_reason_province }
+				set_relation_nemesis = {
+					reason = $REASON$
+					copy_reason = rival
+					target = scope:target_char
+					province = scope:relationship_reason_province
+				}
+			}
+			else_if = {
+				limit = { exists = scope:relationship_reason_involved_character }
+				set_relation_nemesis = {
+					reason = $REASON$
+					copy_reason = rival
+					target = scope:target_char
+					involved_character = scope:relationship_reason_involved_character
+				}
+			}
+			else = {
+				set_relation_nemesis = {
+					reason = $REASON$
+					copy_reason = rival
+					target = scope:target_char
+				}
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					exists = scope:relationship_reason_involved_character
+					exists = scope:relationship_reason_province
+				}
+				set_relation_nemesis = {
+					reason = $REASON$
+					target = scope:target_char
+					involved_character = scope:relationship_reason_involved_character
+					province = scope:relationship_reason_province
+				}
+			}
+			else_if = {
+				limit = { exists = scope:relationship_reason_province }
+				set_relation_nemesis = {
+					reason = $REASON$
+					target = scope:target_char
+					province = scope:relationship_reason_province
+				}
+			}
+			else_if = {
+				limit = { exists = scope:relationship_reason_involved_character }
+				set_relation_nemesis = {
+					reason = $REASON$
+					target = scope:target_char
+					involved_character = scope:relationship_reason_involved_character
+				}
+			}
+			else = {
+				set_relation_nemesis = {
+					reason = $REASON$
+					target = scope:target_char
+				}
+			}
+		}
+		#Is the GG situation applicable?
+		show_as_tooltip = {
+			gg_relation_catalyst_effect = { ACTOR = scope:srne_root_scope RECIPIENT = scope:target_char CATALYST = catalyst_nemesis_hre_pope }
 		}
 	}
 }

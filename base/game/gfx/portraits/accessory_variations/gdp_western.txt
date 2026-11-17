@@ -1,0 +1,1469 @@
+﻿##################
+#	KHMER		 #
+##################
+
+###################
+#	Texture sets  #
+###################
+
+pattern_textures = {
+	name = "western_linen_plain_01"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/western/western_linen_plain_01_properties.dds"
+}
+
+pattern_textures = {
+	name = "gdp_chinese_big_trim_01"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/gdp/gdp_chinese_big_trim_01_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/gdp/gdp_chinese_big_trim_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/gdp/gdp_chinese_big_trim_01_properties.dds"
+}
+
+pattern_textures = {
+	name = "gdp_fur_01"
+	colormask	= "gfx/portraits/accessory_variations/textures/patterns/gdp/gdp_fur_01_masks.dds"
+	normal		= "gfx/portraits/accessory_variations/textures/patterns/gdp/gdp_fur_01_normal.dds"
+	properties	= "gfx/portraits/accessory_variations/textures/patterns/gdp/gdp_fur_01_properties.dds"
+}
+
+##################
+#	Layouts		 #
+##################
+
+pattern_layout = {
+	name = "plain_fabric_layout"	
+	scale 		= { min = 0.25	max = 0.25 }
+	rotation 	= { min = 0	max = 0 }	
+	offset 		= { x = { min = 0	max = 0 }    y = { min = 0	max = 0 } } 
+}
+
+###################
+#	Variations	  #
+###################
+
+variation = {
+	name = "m_clothes_sec_gdp_western_era1_republic_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "ep3_byzantine_era1_brocade_02"	layout = "plain_fabric_layout_01" }
+		g = { textures = "western_linen_plain_01" 		layout = "plain_fabric_layout_01" }
+		b = { textures = "ep3_byzantine_era1_medium_trim_01" 	layout = "ep3_medium_trim_layout_01" }
+		a = { textures = "ep3_byzantine_era1_small_trim_01"	layout = "ep3_small_trim_layout_01" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01"	layout = "plain_fabric_layout_01" }
+		g = { textures = "western_linen_plain_01" 		layout = "plain_fabric_layout_01" }
+		b = { textures = "ep3_byzantine_era1_medium_trim_01" 	layout = "ep3_medium_trim_layout_01_b" }
+		a = { textures = "ep3_byzantine_era1_small_trim_01"	layout = "ep3_small_trim_layout_02" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01"	layout = "plain_fabric_layout_01" }
+		g = { textures = "western_linen_plain_01" 		layout = "plain_fabric_layout_01" }
+		b = { textures = "ep3_byzantine_era1_medium_trim_02" 	layout = "ep3_medium_trim_layout_01" }
+		a = { textures = "ep3_byzantine_era1_small_trim_01"	layout = "ep3_small_trim_layout_03" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01"	layout = "plain_fabric_layout_01" }
+		g = { textures = "western_linen_plain_01" 		layout = "plain_fabric_layout_01" }
+		b = { textures = "ep3_byzantine_era1_medium_trim_02" 	layout = "ep3_medium_trim_layout_01_b" }
+		a = { textures = "ep3_byzantine_era1_small_trim_01"	layout = "ep3_small_trim_layout_04" }
+	}
+
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_ep3_byzantine_era1_nobility_low_01.dds" }	
+}
+
+variation = {
+	name = "f_clothes_sec_gdp_chinese_nob_01"
+
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_korean_brocade_01" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "tgp_korean_brocade_02" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_korean_medium_trim_01" 	layout = "chinese_medium_trim_layout_01" }
+		a = { textures = "tgp_korean_medium_trim_01"	layout = "chinese_medium_trim_layout_03" }
+	}
+
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_korean_brocade_02" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "tgp_korean_brocade_03" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_korean_medium_trim_01" 	layout = "chinese_medium_trim_layout_03" }
+		a = { textures = "tgp_korean_medium_trim_01"	layout = "chinese_medium_trim_layout_04" }
+	}
+
+		pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_korean_brocade_03" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "tgp_korean_brocade_04" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_korean_medium_trim_01" 	layout = "chinese_medium_trim_layout_04" }
+		a = { textures = "tgp_korean_medium_trim_01"	layout = "chinese_medium_trim_layout_01" }
+	}
+
+			pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_korean_brocade_04" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "tgp_korean_brocade_04" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_korean_medium_trim_01" 	layout = "chinese_medium_trim_layout_04" }
+		a = { textures = "tgp_hemp_01"	layout = "chinese_medium_trim_layout_03" }
+	}
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_tgp_chinese_nobility_01.dds" }
+
+}
+
+variation = {
+	name = "m_clothes_sec_gdp_chinese_nob_01_hi"
+
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_chinese_brocade_06" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "western_silk_plain_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_hemp_01" 		layout = "chinese_medium_trim_layout_01" }
+		a = { textures = "western_silk_plain_01"		layout = "chinese_medium_trim_layout_03" }
+	}
+
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_chinese_brocade_02" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "western_silk_plain_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_hemp_01" 		layout = "chinese_medium_trim_layout_01" }
+		a = { textures = "western_silk_plain_01"		layout = "chinese_medium_trim_layout_03" }
+	}
+
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_chinese_brocade_03" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "western_silk_plain_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_hemp_01" 		layout = "chinese_medium_trim_layout_01" }
+		a = { textures = "western_silk_plain_01"		layout = "chinese_medium_trim_layout_03" }
+	}
+
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_chinese_brocade_07" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "western_silk_plain_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_hemp_01" 		layout = "chinese_medium_trim_layout_01" }
+		a = { textures = "western_silk_plain_01"		layout = "chinese_medium_trim_layout_03" }
+	}
+
+	pattern = {
+		weight = 7
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" 		layout = "western_silk_brocade_01_layout" }
+		g = { textures = "western_silk_plain_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "tgp_hemp_01" 		layout = "chinese_medium_trim_layout_01" }
+		a = { textures = "western_silk_plain_01"		layout = "chinese_medium_trim_layout_03" }
+	}
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_gdp_chinese_male_nob_01.dds" }
+
+}
+
+variation = {
+	name = "m_headgear_sec_gdp_chinese_nob_02"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "gdp_chinese_big_trim_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_plain_01"			layout = "plain_fabric_layout" }
+	}	
+
+		pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask western_silk_brocade_03_layout in the entity
+		r = { textures = "gdp_chinese_big_trim_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_gdp_chinese_era1_nob_02.dds" }	
+}
+
+variation = {
+	name = "m_cloaks_sec_gdp_western_era1_com_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_01" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_02" 		layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_belt_01" 	layout = "small_trim_layout" }
+		a = { textures = "northern_wool_02"		layout = "small_trim_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_02" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_03" 		layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_belt_01" 	layout = "small_trim_layout" }
+		a = { textures = "northern_wool_03"		layout = "small_trim_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_03" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_04" 		layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_belt_01" 	layout = "small_trim_layout" }
+		a = { textures = "northern_wool_04"		layout = "small_trim_layout" }
+	}
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palettedp_western_era1_commoner_02.dds" }	
+}
+
+variation = {
+	name = "m_cloak_sec_gdp_western_era1_com_02"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_02" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}	
+
+		pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask western_silk_brocade_03_layout in the entity
+		r = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_02" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palettedp_western_era1_commoner_02.dds" }	
+}
+
+variation = {
+	name = "gdp_western_era1_common_02"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_trim_03" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}		
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_trim_04" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_trim_03" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_trim_04" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}		
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_western_common_01.dds" }	
+}
+
+variation = {
+	name = "f_headgear_gdp_western_era1_com_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		a = { textures = "western_linen_plain_01"	layout = "plain_fabric_layout" }
+	}		
+	
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_headgear_gdp_western_era1_com.dds" }	
+}
+
+variation = {
+	name = "m_clothes_sec_gdp_western_era1_com_01_lo"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_02" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}	
+
+		pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask western_silk_brocade_03_layout in the entity
+		r = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_02" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}
+
+		pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_linen_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_02" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_02" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_gdp_western_commoner_01.dds" }	
+}
+
+variation = {
+	name = "m_clothes_sec_gdp_western_era1_nob_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_trim_01" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}	
+
+		pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask western_silk_brocade_03_layout in the entity
+		r = { textures = "fp4_western_02" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_trim_01" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}
+
+		pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_trim_01" 		layout = "fp4_medium_trim_layout_01" }
+		b = { textures = "western_wool_plain_02" 	layout = "small_trim_layout" }
+		a = { textures = "western_silk_plain_02"			layout = "plain_fabric_layout" }
+	}
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_gdp_western_commoner_01.dds" }	
+}
+
+variation = {
+	name = "m_clothes_sec_gdp_mena_nob_02"
+
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" 					layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 					layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_plain_01" 					layout = "medium_trim_layout" }
+		a = { textures = "western_wool_plain_01"					layout = "medium_trim_layout" }
+		properties_r = { textures = "western_wool_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "western_wool_plain_01"				    layout = "plain_fabric_layout" }
+	}
+
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" 					layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_plain_01" 					layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_plain_01" 					layout = "medium_trim_layout" }
+		a = { textures = "western_silk_plain_01"					layout = "medium_trim_layout" }
+		properties_r = { textures = "western_silk_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "western_silk_plain_01"				    layout = "plain_fabric_layout" }
+	}
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_gdp_mena_nob_02.dds" }
+}
+
+variation = {
+	name = "m_headgear_sec_gdp_mena_nob_03"
+
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_plain_01" 	layout = "plain_fabric_layout" }
+		a = { textures = "western_wool_plain_01"	layout = "plain_fabric_layout" }
+	}
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_gdp_mena_nob_03.dds" }	
+
+}
+
+variation = {
+	name = "m_headgear_sec_gdp_western_era4_roy_03"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "edge_trim_layout" }
+		b = { textures = "western_wool_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "edge_trim_layout" }
+		b = { textures = "western_wool_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "edge_trim_layout" }
+		b = { textures = "western_wool_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}	
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_gdp_western_era4_roy_01.dds" }	
+}
+
+variation = {
+	name = "m_headgear_sec_gdp_western_era4_roy_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_trim_01" 	layout = "edge_trim_layout" }
+		b = { textures = "western_wool_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_trim_02" 	layout = "edge_trim_layout" }
+		b = { textures = "western_wool_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_trim_04" 	layout = "edge_trim_layout" }
+		b = { textures = "western_wool_plain_01" 	layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}	
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_gdp_western_era4_roy_01.dds" }	
+}
+
+variation = {
+	name = "m_headgear_sec_gdp_western_era4_roy_02"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 				layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "edge_trim_layout" }
+		b = { textures = "velvet_01" 				layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}	
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_01" 	layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "edge_trim_layout" }
+		b = { textures = "velvet_01" 				layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 				layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 	layout = "edge_trim_layout" }
+		b = { textures = "velvet_01" 				layout = "small_trim_layout" }
+		a = { textures = "western_wool_belt_01"		layout = "small_trim_layout" }
+	}	
+		
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_gdp_western_era4_roy_02.dds" }	
+}
+
+variation = {
+	name = "m_clothes_sec_gdp_western_era4_nob_01_lo"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+	}		
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_m_clothes_sec_gdp_western_era4_nob_01_lo.dds" }	
+}
+
+variation = {
+	name = "m_clothes_sec_gdp_western_era4_nob_01_hi"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } 
+		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" } 
+		b = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+	}		
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_m_clothes_sec_gdp_western_era4_nob_01_hi.dds" }	
+}
+
+variation = {
+	name = "m_clothes_sec_gdp_western_era4_republic_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 3
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } 
+		g = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } 
+		b = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "gdp_fur_01"	layout = "plain_fabric_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" layout = "plain_fabric_layout_01" }
+		g = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "gdp_fur_01"	layout = "plain_fabric_layout" }
+	}		
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_m_clothes_sec_gdp_western_era4_republic_01.dds" }	
+}
+
+variation = {
+	name = "f_clothes_sec_gdp_western_era4_nob_01_lo"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}		
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_clothes_sec_gdp_western_era4_nob_01_lo.dds" }	
+}
+
+variation = {
+	name = "m_clothes_sec_gdp_western_era4_nob_03_lo"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_linen_plain_01"	layout = "plain_fabric_layout" }
+	}		
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_m_clothes_sec_gdp_western_era4_nob_03_lo.dds" }	
+}
+
+variation = {
+	name = "f_clothes_sec_gdp_western_era4_nob_01_hi_a"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_02" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_02" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_03" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_03" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_04" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_04" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_silk_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_clothes_sec_gdp_western_era4_nob_01_hi_a.dds" }	
+}
+
+
+variation = {
+	name = "f_clothes_sec_gdp_western_era4_nob_01_hi_b"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_02" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_02" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_02" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_linen_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_03" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_04" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_silk_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_brocade_03" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_silk_plain_01"		layout = "plain_fabric_layout" }
+		normal_b = { textures = "velvet_01"			layout = "plain_fabric_layout" }
+	}
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_clothes_sec_gdp_western_era4_nob_01_hi_b.dds" }	
+}
+
+ variation = {
+	name = "f_clothes_sec_gdp_western_era4_lo_nob_02"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_01"  layout = "plain_fabric_layout" } 
+		g = { textures = "western_silk_plain_01"    layout = "plain_fabric_layout" } 
+		b = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_plain_01"	layout = "western_silk_brocade_01_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_02"  layout = "plain_fabric_layout" } 
+		g = { textures = "western_silk_plain_01"    layout = "plain_fabric_layout" } 
+		b = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_plain_01"	layout = "western_silk_brocade_01_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_03"  layout = "plain_fabric_layout" } 
+		g = { textures = "western_silk_plain_01"    layout = "plain_fabric_layout" } 
+		b = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_02"	layout = "western_silk_brocade_01_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01"    layout = "plain_fabric_layout" } 
+		g = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" } 
+		b = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_03"	layout = "western_silk_brocade_01_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01"    layout = "plain_fabric_layout" } 
+		g = { textures = "western_silk_brocade_04"  layout = "plain_fabric_layout" } 
+		b = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01"    layout = "plain_fabric_layout" } 
+		g = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" } 
+		b = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" }
+		a = { textures = "western_wool_plain_01"	layout = "western_silk_brocade_01_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01"    layout = "plain_fabric_layout" } 
+		g = { textures = "western_wool_plain_01"   layout = "plain_fabric_layout" } 
+		b = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" }
+		a = { textures = "western_wool_plain_01"	layout = "western_silk_brocade_01_layout" }
+	}
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_clothes_sec_gdp_western_era4_lo_nob_02.dds" }
+
+}
+
+
+variation = {
+	name = "f_clothes_sec_gdp_western_era4_roy_01_var"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_02" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_03" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_brocade_04" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_brocade_01"	layout = "western_silk_brocade_01_layout" }
+	}	
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_clothes_sec_gdp_western_era4_roy_01.dds" }	
+}
+
+variation = {
+	name = "gdp_western_era1_commoners_headgear_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_wool_plain_01"	layout = "western_silk_brocade_01_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_02" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_wool_plain_02" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "western_wool_plain_02" layout = "plain_fabric_layout" }
+		a = { textures = "western_wool_plain_02"	layout = "western_silk_brocade_01_layout" }
+	}	
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_clothes_sec_gdp_western_era4_roy_01.dds" }	
+}
+
+variation = {
+	name = "m_headgear_sec_gdp_western_era1_com_03"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "fp1_fur_01" layout = "plain_fabric_layout" }
+		a = { textures = "fp1_fur_01"	layout = "western_silk_brocade_01_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_02" layout = "plain_fabric_layout" } # Parti-colored color 1
+		g = { textures = "western_wool_plain_02" layout = "plain_fabric_layout" } # Parti-colored color 2
+		b = { textures = "fp1_fur_01" layout = "plain_fabric_layout" }
+		a = { textures = "fp1_fur_01"	layout = "western_silk_brocade_01_layout" }
+	}	
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_m_headgear_sec_gdp_western_era1_com_03.dds" }	
+}
+
+variation = {
+	name = "gdp_western_era4_commoners_headgear"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_01" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_02" 		layout = "plain_fabric_layout" }
+		b = { textures = "northern_wool_01" 	layout = "small_trim_layout" }
+		a = { textures = "northern_wool_02"		layout = "small_trim_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_02" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_03" 		layout = "plain_fabric_layout" }
+		b = { textures = "northern_wool_02" 	layout = "small_trim_layout" }
+		a = { textures = "northern_wool_03"		layout = "small_trim_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_03" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_04" 		layout = "plain_fabric_layout" }
+		b = { textures = "northern_wool_03" 	layout = "collar_trim_layout" }
+		a = { textures = "northern_wool_04"		layout = "small_trim_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_04" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "northern_wool_04" 	layout = "small_trim_layout" }
+		a = { textures = "northern_wool_01"		layout = "small_trim_layout" }
+	}	
+		
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_03" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_02" 		layout = "plain_fabric_layout" }
+		b = { textures = "northern_wool_03" 	layout = "small_trim_layout" }
+		a = { textures = "northern_wool_02"		layout = "small_trim_layout" }
+	}		
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "northern_wool_02" 		layout = "plain_fabric_layout" }
+		g = { textures = "northern_wool_04" 		layout = "plain_fabric_layout" }
+		b = { textures = "northern_wool_02" 	layout = "small_trim_layout" }
+		a = { textures = "northern_wool_04"		layout = "small_trim_layout" }
+	}
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_northern_common_01.dds" }	
+}
+
+variation = {
+	name = "f_clothes_sec_gdp_western_era1_com_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01"    layout = "plain_fabric_layout" } 
+		g = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" } 
+		b = { textures = "western_wool_belt_01"   layout = "small_trim_layout" }
+		a = { textures = "western_wool_trim_04"	layout = "western_silk_brocade_01_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01"    layout = "plain_fabric_layout" } 
+		g = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" } 
+		b = { textures = "western_wool_belt_01"   layout = "small_trim_layout" }
+		a = { textures = "western_wool_trim_01"	layout = "western_silk_brocade_01_layout" }
+	}
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_clothes_sec_gdp_western_era1_com_02.dds" }
+
+}
+
+variation = {
+	name = "f_clothes_sec_gdp_western_era1_com_02"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01"    layout = "plain_fabric_layout" } 
+		g = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" } 
+		b = { textures = "western_wool_trim_03"   layout = "small_trim_layout" }
+		a = { textures = "western_wool_trim_04"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_wool_belt_01"					layout = "small_trim_layout" }
+		normal_b = { textures = "western_wool_trim_02"					layout = "medium_trim_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01"    layout = "plain_fabric_layout" } 
+		g = { textures = "western_linen_plain_01"   layout = "plain_fabric_layout" } 
+		b = { textures = "western_wool_trim_03"   layout = "small_trim_layout" }
+		a = { textures = "western_wool_trim_01"	layout = "western_silk_brocade_01_layout" }
+		properties_r = { textures = "western_wool_belt_01"					layout = "small_trim_layout" }
+		normal_b = { textures = "western_wool_trim_02"					layout = "medium_trim_layout" }
+	}
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_clothes_sec_gdp_western_era1_com_02.dds" }
+
+}
+
+
+variation = {
+	name = "gdp_western_era4_nobles_chapperon"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 			layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_brocade_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_trim_01" 	layout = "medium_trim_layout" }
+		a = { textures = "western_wool_plain_01"		layout = "plain_fabric_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 			layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_brocade_02" 		layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_trim_02" 	layout = "medium_trim_layout" }
+		a = { textures = "western_wool_plain_01"		layout = "small_trim_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 			layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_brocade_02" 		layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_trim_03" 	layout = "medium_trim_layout" }
+		a = { textures = "western_silk_plain_01"		layout = "small_trim_layout" }
+	}	
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_gdp_western_nob_chapperon_01.dds" }	
+}
+
+variation = {
+	name = "gdp_western_era4_venetian_hat"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 			layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_brocade_02" 		layout = "medium_trim_layout" }
+		b = { textures = "western_silk_trim_01" 	layout = "medium_trim_layout" }
+		a = { textures = "western_wool_plain_01"		layout = "plain_fabric_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 			layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_brocade_02" 		layout = "medium_trim_layout" }
+		b = { textures = "western_silk_trim_02" 	layout = "medium_trim_layout" }
+		a = { textures = "western_wool_plain_01"		layout = "small_trim_layout" }
+	}
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "velvet_01" 			layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_brocade_02" 		layout = "medium_trim_layout" }
+		b = { textures = "western_silk_trim_03" 	layout = "medium_trim_layout" }
+		a = { textures = "western_silk_plain_01"		layout = "small_trim_layout" }
+	}	
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_gdp_western_nob_chapperon_01.dds" }	
+}
+
+variation = {
+	name = "gdp_western_era4_nobles_black_chapperon"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" 			layout = "plain_fabric_layout" }
+		g = { textures = "western_wool_plain_01" 		layout = "plain_fabric_layout" }
+		b = { textures = "western_wool_plain_01" 	layout = "medium_trim_layout" }
+		a = { textures = "western_wool_plain_01"		layout = "plain_fabric_layout" }
+	}
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/color_palette_gdp_western_nob_black_chapperon_01.dds" }	
+}
+
+variation = {
+	name = "f_headgear_sec_gdp_chinese_nob_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "tgp_chinese_brocade_09" layout = "plain_fabric_layout" }
+		g = { textures = "tgp_chinese_brocade_09" layout = "plain_fabric_layout" }
+		b = { textures = "tgp_chinese_brocade_09" layout = "plain_fabric_layout" }
+		a = { textures = "tgp_chinese_brocade_09" layout = "plain_fabric_layout" }
+	}	
+
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_plain_01" layout = "plain_fabric_layout" }
+	}	
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_headgear_gdp_chinese_nob_01.dds" }	
+}
+
+variation = {
+	name = "m_headgear_sec_gdp_chinese_nob_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_silk_plain_02" layout = "plain_fabric_layout" }
+		g = { textures = "western_silk_plain_02" layout = "plain_fabric_layout" }
+		b = { textures = "western_silk_plain_02" layout = "plain_fabric_layout" }
+		a = { textures = "western_silk_plain_02" layout = "plain_fabric_layout" }
+	}	
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_headgear_gdp_chinese_nob_01.dds" }	
+}
+
+variation = {
+	name = "f_headgear_sec_gdp_western_era2_com"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+	}	
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_gdp_mena_nob.dds" }	
+}
+
+variation = {
+	name = "f_headgear_sec_gdp_western_era4_nob_01"
+	
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = { 
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+	}	
+
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_f_headgear_sec_gdp_western_era4_nob_01.dds" }	
+}
+
+variation = {
+	name = "f_clothes_sec_gdp_western_com_01"
+
+	# patterns are sampled using UV-set 2
+	# uv-coordinates will be modified with scale, rotation, and offset before the texture is sampled
+	# If more than one pattern_layout is provided one will be chosen at random (uniformly, no weights)
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+	}
+
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_01" layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+	}
+
+	pattern = {
+		weight = 1
+		#r,g,b,a here refers to the channels in the pattern_mask scripted in the entity
+		r = { textures = "western_wool_plain_02" layout = "plain_fabric_layout" }
+		g = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		b = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+		a = { textures = "western_linen_plain_01" layout = "plain_fabric_layout" }
+	}
+	# Color palette textures are 16-wide and N-high.
+	# Shaders will chose a row in the texture at random, and each column will be sampled once.
+	# First column will be masked by the red channel in the masks, second by the green, etc.
+	# If more than one color palette texture is provided one will be chosen at random (uniformly, no weights)
+	color_palette = { weight = 1		texture = "gfx/portraits/accessory_variations/textures/gdp/color_palette_headgear_gdp_western_com_01.dds" }
+}

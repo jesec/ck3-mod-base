@@ -1,0 +1,179 @@
+﻿patrician_promote = {
+	skill = diplomacy
+	desc = "patrician_promote_desc_general"
+	success_desc = "PATRICIAN_PROMOTE_SUCCESS_DESC"
+	icon = icon_ingratiate_family
+	illustration = "gfx/interface/illustrations/event_scenes/corridor.dds"
+	target_type = character
+	category = political
+	is_secret = no
+	cooldown = { years = 10 }
+
+	speed_per_skill_point = t2_spsp_owner_value
+	spymaster_speed_per_skill_point = t2_spsp_owner_spy_value
+	base_progress_goal = t2_base_phase_length_value
+	uses_resistance = no
+	base_maximum_success = t2_base_max_success_value
+	phases_per_agent_charge = 1
+	success_chance_growth_per_skill_point = t2_scgpsp_value
+
+	allow = {
+		has_gdp_dlc_trigger = yes
+		gdp_is_patrician_trigger = yes
+		is_available_quick = {
+			adult = yes
+			imprisoned = no
+			incapable = no
+		}
+		scope:target ?= {
+			gdp_is_patrician_trigger = yes
+			OR = {
+				this = root
+				gdp_is_in_same_republic_as_trigger = { CHARACTER = root }
+			}
+		}
+	}
+
+	valid = {
+		scope:owner = {
+			gdp_is_patrician_trigger = yes
+			is_available_quick = {
+				adult = yes
+				imprisoned = no
+				incapable = no
+			}
+		}
+		scope:target = {
+			gdp_is_patrician_trigger = yes
+			is_alive = yes
+			in_diplomatic_range = scope:owner
+			OR = {
+				this = scope:owner
+				gdp_is_in_same_republic_as_trigger = { CHARACTER = scope:owner }
+			}
+		}
+	}
+
+	agent_leave_threshold = -25
+	agent_join_chance = {
+		base = 0
+		ai_agent_join_chance_basic_suite_modifier = yes
+		ai_agent_join_chance_personal_general_suite_modifier = yes
+	}
+	valid_agent = { is_valid_agent_standard_trigger = yes }
+	agent_groups_owner_perspective = { courtiers guests scripted_relations peer_vassals vassals family puppets }
+	agent_groups_target_character_perspective = { courtiers peer_vassals vassals scripted_relations family }
+
+	odds_prediction = {
+		add = base_odds_prediction_target_is_char_value
+		add = odds_skill_contribution_diplomacy_value
+		add = agent_groups_owner_perspective_value
+		add = agent_groups_target_character_perspective_value
+		add = odds_promote_scheme_misc_value
+		min = 0
+	}
+
+	base_success_chance = {
+		base = 0
+		scheme_type_skill_success_chance_modifier = { SKILL = DIPLOMACY }
+		diplomacy_scheme_base_chance_modifier = yes
+		diarch_scheming_within_realm_bonus_modifier = yes
+
+		modifier = {
+			add = kin_legacy_4_success_chance
+			desc = KIN_LEGACY_DESC
+			exists = scope:owner.dynasty
+			scope:owner.dynasty = { has_dynasty_perk = kin_legacy_4 }
+			scope:target.dynasty = scope:owner.dynasty
+		}
+
+		modifier = {
+			add = cultural_house_personal_scheme_success_chance
+			desc = KIN_PARAMETER_DESC
+			exists = scope:owner.house
+			exists = scope:target.house
+			scope:owner.culture = { has_cultural_parameter = cultural_house_personal_scheme_success_chance }
+			scope:target.house = scope:owner.house
+		}
+
+		political_scheme_title_base_chance_modifier = yes
+	}
+
+	on_start = {
+		if = {
+			limit = {
+				scheme_owner = { NOT = { has_variable = agents_added } }
+			}
+			add_agent_slot = agent_proponent
+			add_agent_slot = agent_intermediary
+			add_agent_slot = agent_sycophant
+			add_agent_slot = agent_political_socialite
+			add_agent_slot = agent_bureaucrat
+		}
+	}
+
+	on_phase_completed = {
+		suppress_scheme_follow_up_event_till_input_given_effect = yes
+		promote_scheme_prep_effect = yes
+		cap_schemes_and_fire_reminders_effect = yes
+	}
+	on_hud_click = { promote_scheme_prep_effect = yes }
+	on_semiyearly = {
+		if = {
+			limit = { scheme_owner = { is_ai = yes } }
+			promote_scheme_prep_effect = yes
+			purge_ai_scheme_slots_effect = yes
+		}
+	}
+
+	on_invalidated = {
+		scheme_target_character = { save_scope_as = target }
+		scheme_owner = {
+			save_scope_as = owner
+			send_interface_toast = {
+				type = event_toast_effect_neutral
+				title = patrician_promote_invalidated_title
+				left_icon = scope:target
+				if = {
+					limit = {
+						scope:target = { is_alive = no }
+						NOT = { block_death_event_trigger = { DEAD = scope:target } }
+						scope:owner = { is_alive = yes }
+					}
+					custom_tooltip = scheme_target_died
+				}
+				else_if = {
+					limit = { scope:target = { NOT = { in_diplomatic_range = scope:owner } } }
+					custom_tooltip = scheme_target_not_in_diplomatic_range
+				}
+				else_if = {
+					limit = { scope:target = { NOT = { gdp_is_patrician_trigger = yes } } }
+					custom_tooltip = scheme_target_not_patrician
+				}
+				else_if = {
+					limit = { scope:owner = { NOT = { gdp_is_patrician_trigger = yes } } }
+					custom_tooltip = scheme_owner_not_patrician
+				}
+				else_if = {
+					limit = {
+						scope:owner = {
+							NOT = {
+								is_available_quick = {
+									adult = yes
+									imprisoned = no
+									incapable = no
+								}
+							}
+						}
+					}
+					custom_tooltip = scheme_owner_unavailable
+				}
+				else = {
+					custom_tooltip = patrician_promote_target_left_republic
+				}
+			}
+		}
+	}
+
+	on_monthly = { fire_generic_contract_scheme_on_going_events_effect = yes }
+}

@@ -48,6 +48,71 @@ monumental_merit_gain = monumental_merit_value
 
 stratified_society_merit_gain_value = 500
 
+military_province_war_victory_enemy_tier_value = {
+	value = scope:loser.highest_held_title_tier
+	if = {
+		limit = {
+			scope:loser = scope:defender
+			scope:war ?= { has_variable = military_province_war_defender_tier }
+		}
+		min = scope:war.var:military_province_war_defender_tier
+	}
+	else_if = {
+		limit = {
+			scope:loser = scope:attacker
+			scope:war ?= { has_variable = military_province_war_attacker_tier }
+		}
+		min = scope:war.var:military_province_war_attacker_tier
+	}
+}
+
+military_province_war_victory_merit_value = {
+	value = medium_merit_gain
+	if = {
+		limit = { military_province_war_victory_enemy_tier_value >= tier_empire }
+		value = monumental_merit_gain
+	}
+	else_if = {
+		limit = { military_province_war_victory_enemy_tier_value >= tier_kingdom }
+		value = massive_merit_gain
+	}
+	else_if = {
+		limit = { military_province_war_victory_enemy_tier_value >= tier_duchy }
+		value = major_merit_gain
+	}
+	if = {
+		limit = {
+			scope:loser = { has_trait = peasant_leader }
+		}
+		multiply = military_merit_peasant_leader_multiplier_value
+		round = yes
+	}
+}
+
+military_merit_peasant_leader_multiplier_value = 1.25
+
+military_career_battle_commander_merit_value = {
+	value = medium_merit_gain
+	if = {
+		limit = {
+			root.enemy_side.side_primary_participant = { has_trait = peasant_leader }
+		}
+		multiply = military_merit_peasant_leader_multiplier_value
+		round = yes
+	}
+}
+
+military_career_battle_knight_merit_value = {
+	value = minor_merit_gain
+	if = {
+		limit = {
+			root.enemy_side.side_primary_participant = { has_trait = peasant_leader }
+		}
+		multiply = military_merit_peasant_leader_multiplier_value
+		round = yes
+	}
+}
+
 maximum_merit_level = {
 	value = 0
 	if = {
@@ -889,6 +954,8 @@ debate_outcome_value = {
     	limit = {
 	    	exists = var:challenged_movement_leader
 	    	exists = var:debate_contender
+	    	exists = var:challenged_movement_leader.var:tgp_debate_success_score # The score can be missing, for example when the leader has died
+	    	exists = var:debate_contender.var:tgp_debate_success_score
     	}
 	    if = {
 	        limit = {
@@ -932,7 +999,7 @@ debate_outcome_value = {
 building_construction_merit_gain_base_value = medium_merit_value
 building_construction_merit_gain_value = {
 	value = building_construction_merit_gain_base_value
-	add = root.county.development_level # root being the province in which a building is constructed
+	add = root.county.prosperity_level # root being the province in which a building is constructed
 	
 	# Domicile buildings
 	if = {

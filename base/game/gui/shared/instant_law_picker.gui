@@ -1,0 +1,352 @@
+﻿types InstantLawPicker
+{
+	type flowcontainer_instant_law_item = flowcontainer {
+		datacontext = "[GuiLaw.GetLaw]"
+		ignoreinvisible = yes
+
+		#spacing to make 5 items look nice
+		widget = {
+			block "instant_law_item_extra_space_size"
+			{
+				size = { 80 0 }
+			}
+			block "instant_law_item_extra_space"
+			{
+				visible = no
+			}
+		}
+
+		button_standard_clean = {
+			block "law_icon_button_size"
+			{
+				size = { 160 160 }
+			}
+
+			block "instant_law_item_button"
+			{
+
+			}
+
+			background = {
+				texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+				spriteType = Corneredtiled
+				spriteborder = { 5 5 }
+				margin = { -2 -2 }
+			}
+
+			icon = {
+				block "law_icon_size"
+				{
+					size = { 160 160 }
+				}
+				texture = "[Law.GetIcon]"
+				enabled = "[Or( GuiLaw.CanEnact, GuiLaw.IsEnacted )]"
+			}
+
+			widget = {
+				parentanchor = bottom
+				size = { 100% 30 }
+
+				background = {
+					using = Background_Area_Dark
+				}
+
+				text_single = {
+					visible = "[Not( GuiLaw.IsEnacted )]"
+					parentanchor = center
+					position = { 3 -2 }
+
+					text = "PASS_LAW_TOOLTIP_TITLE"
+					default_format = "#weak"
+					max_width = 150
+
+					margin = { 5 0 }
+				}
+
+				text_single = {
+					visible = "[GuiLaw.IsEnacted]"
+					parentanchor = center
+					position = { 3 -2 }
+
+					text = "PASS_LAW_TOOLTIP_TITLE"
+					default_format = "#high;EMP"
+					max_width = 150
+
+					margin = { 5 0 }
+				}
+			}
+		}
+	}
+
+	type button_instant_law = button_standard {
+		datacontext = "[Law.GetLawGroup]"
+		size = { 510 100 }
+
+		tooltipwidget = {
+			general_law_tooltip = {}
+		}
+
+		using = tooltip_ws
+
+		background = {
+			texture = "gfx/interface/component_tiles/tile_vignette_3px.dds"
+			spriteType = Corneredtiled
+			spriteborder = { 5 5 }
+			margin = { -2 -2 }
+		}
+
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			margin = { 8 8 }
+			margin_right = 16
+			spacing = 16
+
+			icon = {
+				size = { 90 90 }
+				texture = "[Law.GetIcon]"
+			}
+
+			vbox = {
+				layoutpolicy_vertical = expanding
+				layoutpolicy_horizontal = expanding
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "MY_REALM_WINDOW_LAW_GROUP_NAME"
+					autoresize = no
+				}
+
+				text_single = {
+					layoutpolicy_horizontal = expanding
+					text = "[Law.GetNameNoTooltip]"
+					autoresize = no
+					using = Font_Size_Medium
+					default_format = "#clickable"
+				}
+
+				expand = {}
+			}
+
+			button_change = {
+				size = { 30 30 }
+				alwaystransparent = yes
+			}
+		}
+	}
+
+	type window_instant_law_picker = window {
+
+		block "instant_law_visible"
+		{
+
+		}
+
+		visible_at_creation = no
+		position = { 620 100 }
+		widgetanchor = right
+
+		using = Window_Size_CharacterList_Small
+		using = Window_Background
+		using = Window_Decoration
+		using = Animation_ShowHide_Standard
+
+		state = {
+			name = _show
+			using = Animation_FadeIn_Quick
+			using = Sound_WindowShow_Standard
+			position_x = 0
+		}
+
+		state = {
+			name = _hide
+			using = Animation_FadeOut_Quick
+			using = Sound_WindowHide_Standard
+			position_x = -20
+
+			block "instant_law_on_hide"
+			{
+
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			set_parent_size_to_minimum = yes
+
+			vbox = {
+				using = Window_Margins
+
+				header_standard = {
+					layoutpolicy_horizontal = expanding
+				}
+
+				text_multi = {
+					margin = { 16 16 }
+					autoresize = yes
+					max_width = 600
+					default_format = "#F"
+
+					block "instant_law_common_desc"
+					{
+						visible = no
+					}
+				}
+
+				spacer = {
+					size = { 0 8 }
+				}
+
+				vbox = {
+					# Override instant_law_laws_datamodel with a GuiLawGroup datamodel, for example [MyRealmWindow.GetRealmLaws]
+					# Each item has a GuiLawGroup datacontext, so filter rows with instant_law_item_visible (GuiLawGroup.GetLawGroup and so on)
+					block "instant_law_laws_datamodel"
+					{}
+
+					item = {
+						vbox = {
+							# show only one of the items in the datamodel
+							block "instant_law_item_visible"
+							{
+
+							}
+
+							spacing = 4
+
+							# Grid of options
+
+							vbox = {
+								layoutpolicy_horizontal = expanding
+								min_width = 500
+								block "instant_law_picker_margin"
+								{
+									margin = { 16 16 }
+								}
+								block "law_icons_background_area"
+								{
+									background = { using = Background_Area }
+								}
+
+								# expanders keep a short row centred in the frame instead of flush left
+								hbox = {
+									layoutpolicy_horizontal = expanding
+
+									expand = {}
+
+									flowcontainer = {
+										block "instant_law_picker_spacing"
+										{
+											spacing = 10
+										}
+										block "instant_law_wrap_count"
+										{
+											wrap_count = 3
+										}
+
+										datamodel = "[GuiLawGroup.GetLaws]"
+
+										item = {
+											flowcontainer_instant_law_item = {}
+										}
+									}
+
+									expand = {}
+								}
+							}
+
+							# Description
+
+							vbox = {
+								# GuiLaw datamodel from parent GuiLawGroup; filter panel rows with instant_law_selected_law_check
+								datamodel = "[GuiLawGroup.GetLaws]"
+								layoutpolicy_horizontal = expanding
+
+								item = {
+									vbox = {
+										layoutpolicy_horizontal = expanding
+
+										# show only one of the items in the datamodel
+										block "instant_law_selected_law_check"
+										{
+											# show selected law, otherwise show enacted law
+										}
+
+										text_label_left = {
+											layoutpolicy_horizontal = expanding
+											block "instant_law_picker_label_width"
+											{
+												max_width = 510
+											}
+											text = "[GuiLaw.GetLaw.GetNameNoTooltip]"
+										}
+
+										scrollbox = {
+											layoutpolicy_horizontal = expanding
+											size = { 510 260 }
+											blockoverride "scrollbox_content" {
+												text_multi = {
+													layoutpolicy_horizontal = expanding
+													autoresize = yes
+													max_width = 490
+													text = "[GuiLaw.GetLaw.GetEffectDescription]"
+												}
+												text_multi = {
+													layoutpolicy_horizontal = expanding
+													autoresize = yes
+													max_width = 490
+													text = "[GuiLaw.GetEnactEffectDescription]"
+												}
+											}
+										}
+
+										hbox = {
+											layoutpolicy_horizontal = expanding
+											min_height = 36
+
+											text_multi = {
+												visible = "[And( GuiLaw.HasCost, Not( GuiLaw.IsEnacted ) )]"
+												autoresize = yes
+												max_width = 510
+												margin = { 0 4 }
+												margin_top = 8
+
+												text = "LAW_COST_NO_TOOLTIP"
+												tooltip = "[GuiLaw.GetCostDescription]"
+											}
+										}
+
+										hbox = {
+											spacing = 8
+											margin = { 0 8 }
+
+											button_standard = {
+												block "instant_law_cancel_button"
+												{
+
+												}
+
+												text = "CANCEL"
+											}
+
+											button_primary = {
+												enabled = "[GuiLaw.CanEnact]"
+												onclick = "[GuiLaw.EnactNoConfirmation]"
+												using = tooltip_above
+												tooltip = "[GuiLaw.GetCanEnactDescription]"
+												block "instant_law_confirm_button"
+												{
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -301,8 +301,15 @@
 				court_position_task_icon_tooltip_widget = {}
 			}
 
+			onclick = "[PostCommand( CourtPosition.ToggleTaskCmd( CourtPositionTaskType.Self ) )]"
+
+			block "on_click"
+			{
+			}
+
 			### TASK INNER ICON ###
 			button_normal = {
+				alwaystransparent = yes
 				size = { 84% 84% }
 				parentanchor = center
 
@@ -311,11 +318,6 @@
 				effectname = "NoHighlight"
 				gfxtype = togglepushbuttongfx
 				shaderfile = "gfx/FX/pdxgui_pushbutton.shader"
-
-				block "on_click"
-				{
-				}
-				onclick = "[PostCommand( CourtPosition.ToggleTaskCmd( CourtPositionTaskType.Self ) )]"
 			}
 		}
 	}
@@ -471,13 +473,15 @@
 							size = { 30 30 }
 							position = { 58 28 }
 
+							onclick = "[CourtPosition.OpenRevokeConfirmation]"
+							tooltip = "COURT_POSITION_REVOKE"
+							using = tooltip_ne
+
 							button_cancel = {
+								alwaystransparent = yes
 								size = { 24 24 }
 								parentanchor = center
 
-								onclick = "[CourtPosition.OpenRevokeConfirmation]"
-								tooltip = "COURT_POSITION_REVOKE"
-								using = tooltip_ne
 							}
 						}
 
@@ -486,13 +490,15 @@
 							size = { 30 30 }
 							position = { 58 62 }
 
+							onclick = "[CourtPosition.OpenReplaceWindow]"
+							tooltip = "COURT_POSITION_REPLACE"
+							using = tooltip_ne
+
 							button_change = {
+								alwaystransparent = yes
 								size = { 24 24 }
 								parentanchor = center
 
-								onclick = "[CourtPosition.OpenReplaceWindow]"
-								tooltip = "COURT_POSITION_REPLACE"
-								using = tooltip_ne
 							}
 						}
 
@@ -501,15 +507,17 @@
 							size = { 30 30 }
 							position = { 58 96 }
 
+							enabled = "[IsValidCommand( CourtPositionType.ToggleAutomationCmd )]"
+							onclick = "[PostCommand( CourtPositionType.ToggleAutomationCmd )]"
+							tooltip = "COURT_POSITION_TOGGLE_AUTOMATION"
+							using = tooltip_se
+
 							button_edit_automation = {
+								alwaystransparent = yes
 								size = { 24 24 }
 								parentanchor = center
 
-								enabled = "[IsValidCommand( CourtPositionType.ToggleAutomationCmd )]"
-								onclick = "[PostCommand( CourtPositionType.ToggleAutomationCmd )]"
 
-								tooltip = "COURT_POSITION_TOGGLE_AUTOMATION"
-								using = tooltip_se
 							}
 						}
 					}
@@ -841,19 +849,18 @@
 
 								expand = {}
 
-								fixedgridbox = {
+								dynamicgridbox = {
 									name = "task_items"
 
-									addcolumn = 38
-									addrow = 38
-									setitemsizefromcell = yes
 									datamodel_wrap = 4
 									flipdirection = yes
+									ignoreinvisible = yes
 									layoutanchor = bottomleft
 
 									datamodel = "[CourtPositionItem.GetTasks]"
 									item = {
 										widget_court_position_task = {
+											size = { 38 38 }
 											visible = "[CourtPositionTaskItem.IsShown]"
 											datacontext = "[CourtPositionTaskItem.GetTask]"
 											datacontext = "[CourtPositionTaskItem.GetCourtPosition]"
@@ -863,6 +870,193 @@
 							}
 						}
 					}
+				}
+			}
+		}
+
+		### CARD FRAME ###
+		widget = {
+			size = { 100% 97% }
+
+			background = {
+				using = Background_Frame
+				margin_top = 2
+				margin_bottom = 2
+				margin_right = -3
+			}
+		}
+	}
+
+	# Requires CouncilWindow, GuiCouncilPosition, ActiveCouncilTask and the councillor Character data contexts
+	type widget_court_position_spouse_item = widget {
+		scissor = yes
+
+		proportional_icon = {
+			size = { 99% 99% }
+			parentanchor = center
+			using = Mask_Rough_Edges
+			texture = "gfx/interface/skinned/illustrations/council/bg_council_spouse.dds"
+			alpha = "[CourtPositionsWindow.GetCardBackgroundAlpha]"
+		}
+
+		### SPOUSE PORTRAIT ###
+		widget = {
+			visible = "[Not( GuiCouncilPosition.ArePotentialTasksVisible )]"
+			size = { 100% 100% }
+
+			widget = {
+				visible = "[Character.IsValid]"
+				position = { -49 46 }
+				size = { 190 155 }
+
+				using = Portrait_Background_Glows
+			}
+
+			portrait_button = {
+				visible = "[Character.IsValid]"
+				position = { -37 28 }
+				size = { 180 195 }
+
+				allow_outside = yes
+				using = portrait_base
+
+				portrait_texture = "[Character.GetAnimatedPortrait( 'environment_council', 'camera_council', 'idle', PdxGetWidgetScreenSize( PdxGuiWidget.Self ) )]"
+				mask = "gfx/portraits/portrait_mask_council.dds"
+				effectname = "NoHighlight"
+			}
+
+			### NO SPOUSE ###
+			text_label_center = {
+				visible = "[And( CouncilWindow.IsPlayerCouncilShown, Not( Character.IsValid ) )]"
+				parentanchor = center
+				max_width = 160
+
+				text = "COUNCILLOR_MISSING_SPOUSE"
+				default_format = "#low;italic"
+			}
+
+			text_label_center = {
+				visible = "[And( CouncilWindow.IsLiegeCouncilShown, Not( Character.IsValid ) )]"
+				parentanchor = center
+				max_width = 160
+
+				text = "COUNCILLOR_LIEGE_MISSING_SPOUSE"
+				default_format = "#low;italic"
+			}
+		}
+
+		### ITEM CONTENTS ###
+		vbox = {
+			size = { 100% 100% }
+			margin = { 3 0 }
+			margin_top = 1
+			margin_bottom = 4
+
+			### HEADER | POSITION & SPOUSE NAME ###
+			hbox = {
+				# Spouses have so many tasks the header would clip over them
+				visible = "[Not( GuiCouncilPosition.ArePotentialTasksVisible )]"
+				layoutpolicy_horizontal = expanding
+				margin = { 8 4 }
+				minimumsize = { -1 50 }
+
+				background = {
+					using = Background_Area_Characterlist
+				}
+				background = {
+					using = GenericObjectCardHeaderBackground
+
+					# Matches court positions without a primary skill
+					modify_texture = {
+						using = Color_Courtier_Blue
+						blend_mode = normal
+					}
+				}
+
+				tooltip = "[ActiveCouncilTask.GetPositionTooltip]"
+				using = tooltip_ws
+
+				vbox = {
+					### POSITION NAME ###
+					text_single = {
+						layoutpolicy_horizontal = expanding
+						max_width = 160
+
+						text = "[ActiveCouncilTask.GetPositionName|E]"
+						default_format = "#high"
+						align = nobaseline
+					}
+
+					### SPOUSE NAME ###
+					text_single = {
+						visible = "[Character.IsValid]"
+						layoutpolicy_horizontal = expanding
+						max_width = 160
+
+						text = "[Character.GetShortUINameNoTooltipNoFormat]"
+						default_format = "#medium"
+						align = nobaseline
+					}
+				}
+				expand = {}
+			}
+
+			expand = {}
+
+			### TASK BUTTON ###
+			hbox = {
+				visible = "[Character.IsValid]"
+				layoutpolicy_horizontal = expanding
+				margin = { 5 5 }
+
+				background = {
+					using = Background_Area_Dark
+					alpha = 0.7
+				}
+
+				button_standard = {
+					size = { 164 25 }
+					onclick = "[GuiCouncilPosition.ShowHideTasks]"
+					tooltip = "[GuiCouncilPosition.GetShowHideTooltip]"
+					down = "[GuiCouncilPosition.ArePotentialTasksVisible]"
+
+					text_single = {
+						datacontext = "[ActiveCouncilTask.GetTaskTypeOrDefault]"
+						parentanchor = vcenter
+						position = { 10 0 }
+						max_width = 125
+
+						text = "[CouncilTaskType.GetName]"
+						align = nobaseline
+					}
+
+					button_change = {
+						name = "show_tasks"
+						parentanchor = right|vcenter
+						position = { -5 0 }
+						alwaystransparent = yes
+						size = { 25 25 }
+					}
+				}
+			}
+		}
+
+		### SPOUSE TASK LIST ###
+		widget = {
+			visible = "[GuiCouncilPosition.ArePotentialTasksVisible]"
+			size = { 100% 100% }
+
+			state = {
+				name = _show
+				using = Animation_FadeIn_Quick
+			}
+
+			flowcontainer_council_position_tasks = {
+				margin_bottom = 40
+
+				blockoverride "task_button_size"
+				{
+					size = { 164 25 }
 				}
 			}
 		}
@@ -1025,7 +1219,8 @@
 				layoutpolicy_horizontal = expanding
 				layoutpolicy_vertical = expanding
 
-				### Available Court Positions ###
+				### Available Court Positions ### 
+				### Can also include council positions when there is no separate council window ###
 				fixedgridbox = {
 					name = "court_position_items"
 					layoutpolicy_horizontal = expanding
@@ -1036,9 +1231,28 @@
 					datamodel_wrap = 3
 					flipdirection = yes
 
-					datamodel = "[CourtPositionsWindow.GetCourtPositions]"
+					datamodel = "[CourtPositionsWindow.GetCourtOrCouncilPositionItems]"
 					item = {
-						widget_court_position_item = {}
+						widget = {
+							widget = {
+								visible = "[Not( CourtOrCouncilPositionItem.IsCouncilPosition )]"
+								datacontext = "[CourtOrCouncilPositionItem.GetCourtPositionItem]"
+								size = { 100% 100% }
+
+								widget_court_position_item = {
+									size = { 100% 100% }
+								}
+							}
+
+							widget_court_position_spouse_item = {
+								visible = "[CourtOrCouncilPositionItem.IsCouncilPosition]"
+								datacontext = "[AccessCouncilWindow]"
+								datacontext = "[CouncilWindow.GetCouncillor('councillor_spouse')]"
+								datacontext = "[GuiCouncilPosition.GetActiveCouncilTask]"
+								datacontext = "[ActiveCouncilTask.GetCouncillor]"
+								size = { 100% 100% }
+							}
+						}
 					}
 				}
 

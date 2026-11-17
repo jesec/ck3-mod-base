@@ -143,6 +143,75 @@ template Animation_Glow_Pulse
     }
 }
 
+template Animation_Glow_Pulse_Fast
+{
+    state = {
+        trigger_on_create = yes
+
+        name = max_glow
+        next = min_glow
+        duration = 0.5
+        using = Animation_Curve_Default
+
+        glow_alpha = 0.8
+    }
+
+    state = {
+        name = min_glow
+        next = max_glow
+        duration = 0.8
+        using = Animation_Curve_Default
+
+        glow_alpha = 0.1
+    }
+}
+
+template Animation_Pulse_Alpha
+{
+    state = {
+        trigger_on_create = yes
+
+        name = max
+        next = min
+        duration = 0.8
+        using = Animation_Curve_Default
+
+        alpha = 1
+    }
+
+    state = {
+        name = min
+        next = max
+        duration = 1.4
+        using = Animation_Curve_Default
+
+        alpha = 0.6
+    }
+}
+
+template Animation_Pulse_Alpha_Fast
+{
+    state = {
+        trigger_on_create = yes
+
+        name = max
+        next = min
+        duration = 0.5
+        using = Animation_Curve_Default
+
+        alpha = 0.8
+    }
+
+    state = {
+        name = min
+        next = max
+        duration = 1.0
+        using = Animation_Curve_Default
+
+        alpha = 0.4
+    }
+}
+
 ### MAP ICONS
 
 template Animation_MapIcon_Fade

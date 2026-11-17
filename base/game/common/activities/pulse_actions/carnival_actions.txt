@@ -1,0 +1,893 @@
+﻿carnival_friendship = {
+	icon = friend
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			num_of_relation_friend < 2
+			is_physically_able_ai_adult = yes
+			save_temporary_scope_as = friend_1
+		}
+		any_attending_character = {
+			this != scope:friend_1
+			num_of_relation_friend < 2
+			is_physically_able_ai_adult = yes
+			NOT = { has_relation_friend = scope:friend_1 }
+		}
+	}
+
+	weight = 1
+
+	effect = {
+		random_attending_character = {
+			limit = {
+				num_of_relation_friend < 2
+				is_physically_able_ai_adult = yes
+				save_temporary_scope_as = friend_1
+				scope:activity = {
+					any_attending_character = {
+						num_of_relation_friend < 2
+						is_physically_able_ai_adult = yes
+						this != scope:friend_1
+						NOT = {
+							has_relation_friend = scope:friend_1
+						}
+					}
+				}
+			}
+			save_scope_as = first
+		}
+		random_attending_character = {
+			limit = {
+				num_of_relation_friend < 2
+				is_physically_able_ai_adult = yes
+				this != scope:first
+				NOT = {
+					has_relation_friend = scope:first
+				}
+			}
+			weight = {
+				base = 1
+				modifier = {
+					factor = 2
+					trait_compatibility = {
+						target = scope:first
+						value >= low_positive_trait_compatibility
+					}
+				}
+				modifier = {
+					factor = 10
+					trait_compatibility = {
+						target = scope:first
+						value >= medium_positive_trait_compatibility
+					}
+				}
+			}
+			save_scope_as = second
+		}
+		add_activity_log_entry = {
+			key = carnival_friendship
+			tags = { good }
+			score = 5
+			character = scope:first
+			target = scope:second
+			# Effects
+			scope:second = {
+				set_relation_friend = {
+					target = scope:first
+					reason = friend_courtiers_bonded_on_carnival
+				}
+			}
+		}
+	}
+}
+
+carnival_romance = {
+	icon = lover
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			might_cheat_on_every_partner_trigger = yes
+			num_of_relation_lover < 2
+			is_physically_able_ai_adult = yes
+			save_temporary_scope_as = first_lover_temp
+		}
+		any_attending_character = {
+			this != scope:first_lover_temp
+			might_cheat_on_every_partner_trigger = yes
+			NOT = { has_relation_lover = scope:first_lover_temp }
+			num_of_relation_lover < 2
+			is_physically_able_ai_adult = yes
+			save_temporary_scope_as = second_lover_temp
+			matching_gender_and_sexuality_trigger = {
+				CHARACTER_1 = scope:second_lover_temp
+				CHARACTER_2 = scope:first_lover_temp
+			}
+		}
+	}
+
+	weight = 1
+
+	effect = {
+		random_attending_character = {
+			limit = {
+				might_cheat_on_every_partner_trigger = yes
+				num_of_relation_lover < 2
+				is_physically_able_ai_adult = yes
+				save_temporary_scope_as = first_lover_temp
+				scope:activity = {
+					any_attending_character = {
+						this != scope:first_lover_temp
+						might_cheat_on_every_partner_trigger = yes
+						NOT = { has_relation_lover = scope:first_lover_temp }
+						num_of_relation_lover < 2
+						is_physically_able_ai_adult = yes
+						save_temporary_scope_as = second_lover_temp
+						matching_gender_and_sexuality_trigger = {
+							CHARACTER_1 = scope:second_lover_temp
+							CHARACTER_2 = scope:first_lover_temp
+						}
+					}
+				}
+			}
+			save_scope_as = first
+		}
+		random_attending_character = {
+			limit = {
+				this != scope:first
+				might_cheat_on_every_partner_trigger = yes
+				NOT = { has_relation_lover = scope:first }
+				num_of_relation_lover < 2
+				is_physically_able_ai_adult = yes
+				save_temporary_scope_as = second_lover_temp
+				matching_gender_and_sexuality_trigger = {
+					CHARACTER_1 = scope:second_lover_temp
+					CHARACTER_2 = scope:first
+				}
+			}
+			weight = {
+				base = 1
+				modifier = {
+					factor = 2
+					trait_compatibility = {
+						target = scope:first
+						value >= low_positive_trait_compatibility
+					}
+				}
+				modifier = {
+					factor = 10
+					trait_compatibility = {
+						target = scope:first
+						value >= medium_positive_trait_compatibility
+					}
+				}
+			}
+			save_scope_as = second
+		}
+		add_activity_log_entry = {
+			key = carnival_romance
+			tags = { good }
+			score = 5
+			character = scope:first
+			target = scope:second
+			# Effects
+			scope:second = {
+				set_relation_lover = {
+					target = scope:first
+					reason = lover_courtiers_bonded_on_carnival
+				}
+			}
+		}
+	}
+}
+
+carnival_rivalry = {
+	icon = negative
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			num_of_relation_rival < 2
+			is_physically_able_ai_adult = yes
+			save_temporary_scope_as = first_rival
+		}
+		any_attending_character = {
+			this != scope:first_rival
+			num_of_relation_rival < 2
+			is_physically_able_ai_adult = yes
+			NOT = { has_relation_rival = scope:first_rival }
+		}
+	}
+
+	weight = 1
+
+	effect = {
+		random_attending_character = {
+			limit = {
+				num_of_relation_rival < 2
+				is_physically_able_ai_adult = yes
+				save_temporary_scope_as = first_rival
+				scope:activity = {
+					any_attending_character = {
+						num_of_relation_rival < 2
+						is_physically_able_ai_adult = yes
+						NOT = { has_relation_rival = scope:first_rival }
+					}
+				}
+			}
+			save_scope_as = first
+		}
+		random_attending_character = {
+			limit = {
+				num_of_relation_rival < 2
+				is_physically_able_ai_adult = yes
+				this != scope:first
+				NOT = {
+					has_relation_rival = scope:first
+				}
+			}
+			weight = {
+				base = 1
+				modifier = {
+					factor = 2
+					trait_compatibility = {
+						target = scope:first
+						value <= low_negative_trait_compatibility
+					}
+				}
+				modifier = {
+					factor = 10
+					trait_compatibility = {
+						target = scope:first
+						value <= medium_negative_trait_compatibility
+					}
+				}
+			}
+			save_scope_as = second
+		}
+		add_activity_log_entry = {
+			key = carnival_rivalry
+			tags = { bad }
+			score = -5
+			character = scope:first
+			target = scope:second
+			# Effects
+			scope:second = {
+				set_relation_rival_effect = {
+					TARGET = scope:first
+					REASON = rival_courtiers_friction_on_carnival
+				}
+			}
+		}
+	}
+}
+
+beautiful_carnival = {
+	icon = public
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			has_activity_intent = reduce_stress_intent
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {			
+		random_attending_character = {
+			limit = {
+				has_activity_intent = reduce_stress_intent
+			}
+			save_scope_as = first
+		}
+		
+		add_activity_log_entry = {
+			key = beautiful_carnival
+			tags = { pulse_action }
+			character = scope:first
+			
+			scope:first = {
+				add_stress = minor_stress_loss
+			}
+		}
+	}
+}
+
+carnival_learning = {
+	icon = learning
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			count > 2
+		}
+	}
+
+	weight = {
+		value = 1
+		if = {
+			limit = {
+				has_variable = carnival_learning
+			}
+			multiply = 0.1
+		}
+	}
+
+	effect = {
+		set_variable = {
+			name = carnival_learning
+			value = yes
+		}
+
+		random_attending_character = {
+			save_scope_as = first
+		}
+		random_attending_character = {
+			limit = {
+				this != scope:first
+			}
+			save_scope_as = second
+		}
+
+		add_activity_log_entry = {
+			key = carnival_learning
+			tags = { pulse_action }
+			character = scope:first
+			target = scope:second
+
+			scope:first = {
+				add_stress = miniscule_stress_loss
+				bp2_lifestyle_xp_gain_per_type_effect = { VALUE = minor }
+			}
+
+			scope:second = {
+				bp2_lifestyle_xp_gain_per_type_effect = { VALUE = medium }
+			}
+		}
+	}
+}
+
+liege_carnival_presence = {
+	icon = positive
+	is_valid = {
+		is_current_phase_active = yes
+		NOT = { 
+			scope:host.location.county = {
+				has_county_modifier = ep2_popular_liege
+			} 
+		}
+		scope:host.location = {
+			has_holding = yes
+		}
+	}
+
+	weight = 2
+
+	effect = {
+		scope:host = {
+			save_scope_as = first
+		}
+		scope:host.location.county = {
+			save_scope_as = second
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = liege_carnival_presence
+				tags = { good }
+				score = 5
+				character = scope:first
+				
+				scope:host.location.county = {
+					add_county_modifier = {
+						modifier = ep2_popular_liege
+						years = 10
+					}
+				}
+			}
+		}
+	}
+}
+
+liege_carnival_prosperity = {
+	icon = positive
+	is_valid = {
+		is_current_phase_active = yes
+		NOT = { 
+			scope:host.location.county = {
+				has_county_modifier = gdp_carnival_prosperity_modifier
+			} 
+		}
+		scope:host.location = {
+			has_holding = yes
+		}
+	}
+
+	weight = 2
+
+	effect = {
+		scope:host = {
+			save_scope_as = first
+		}
+		scope:host.location.county = {
+			save_scope_as = second
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = liege_carnival_prosperity
+				tags = { good }
+				score = 5
+				character = scope:first
+				
+				scope:host.location.county = {
+					add_county_modifier = {
+						modifier = gdp_carnival_prosperity_modifier
+						years = 10
+					}
+				}
+			}
+		}
+	}
+}
+
+carnival_decorations = {
+	icon = positive
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			has_activity_intent = reduce_stress_intent
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {			
+		random_attending_character = {
+			limit = {
+				has_activity_intent = reduce_stress_intent
+			}
+			save_scope_as = first
+		}
+		
+		add_activity_log_entry = {
+			key = carnival_decorations
+			tags = { pulse_action }
+			character = scope:first
+			
+			scope:first = {
+				if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = carnival_option_decoration
+								option = carnival_decoration_extravagant
+							}
+						}
+					}
+					add_stress = medium_stress_loss				
+				}
+				else_if = {
+					limit = {
+						scope:activity = {
+							has_activity_option = {
+								category = carnival_option_decoration
+								option = carnival_decoration_basic
+							}
+						}
+					}
+					add_stress = miniscule_stress_loss					
+				}
+				else = {
+					add_stress = minor_stress_loss
+				}
+			}
+		}
+	}
+}
+
+carnival_drunk = {
+	icon = public
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			is_adult = yes
+			has_trait = drunkard
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {			
+		random_attending_character = {
+			limit = {
+				is_adult = yes
+				has_trait = drunkard
+			}
+			save_scope_as = first
+		}
+		add_activity_log_entry = {
+			key = carnival_drunk
+			tags = { pulse_action }
+			character = scope:first
+			scope:first = {
+				add_prestige = minor_prestige_loss
+			}
+		}
+	}
+}
+
+carnival_flaunt_wealth_rivals = {
+	icon = public
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			is_ai = yes
+			is_adult = yes
+			has_activity_intent = flaunt_wealth_intent
+			save_temporary_scope_as = first_temp
+		}
+		any_attending_character = {
+			is_ai = yes
+			is_adult = yes
+			has_activity_intent = flaunt_wealth_intent
+			this != scope:first_temp
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {			
+		random_attending_character = {
+			limit = {
+			is_ai = yes
+			is_adult = yes
+			has_activity_intent = flaunt_wealth_intent
+			}
+			save_scope_as = first
+		}
+		random_attending_character = {
+			limit = {
+			is_ai = yes
+			is_adult = yes
+			has_activity_intent = flaunt_wealth_intent
+			this != scope:first
+			}
+			save_scope_as = second
+		}
+		add_activity_log_entry = {
+			key = carnival_flaunt_wealth_rivals
+			tags = { pulse_action }
+			character = scope:first
+			target = scope:second
+			scope:first = {
+				progress_towards_rival_effect = {
+					REASON = rival_fight_at_carnival
+					CHARACTER = scope:second
+					OPINION = 0
+				}
+			}
+		}
+	}
+}
+
+carnival_flaunt_wealth_prestige = {
+	icon = public
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			is_adult = yes
+			has_activity_intent = flaunt_wealth_intent
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {			
+		random_attending_character = {
+			limit = {
+				is_adult = yes
+				has_activity_intent = flaunt_wealth_intent
+			}
+			save_scope_as = first
+		}
+		add_activity_log_entry = {
+			key = carnival_flaunt_wealth_prestige
+			tags = { pulse_action }
+			character = scope:first
+			scope:first = {
+				add_prestige = minor_prestige_gain
+			}
+		}
+	}
+}
+
+carnival_house_relation_good = {
+	icon = public
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			house ?= { any_house_member = { count >= 5 } }
+			is_ruler = yes
+			is_ai = yes
+			is_adult = yes
+			is_powerful_vassal = yes
+			house = { save_temporary_scope_as = first_house }
+		}
+		any_attending_character = {
+			house ?= { 
+				this != scope:first_house
+				any_house_member = { count >= 5 } 
+			}
+			is_ruler = yes
+			is_ai = yes
+			is_adult = yes
+			is_powerful_vassal = yes	
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {			
+		random_attending_character = {
+			limit = {
+				house ?= { any_house_member = { count >= 5 } }
+				is_ruler = yes
+				is_ai = yes
+				is_adult = yes
+				is_powerful_vassal = yes
+				house = { save_temporary_scope_as = first_house }
+			}
+			save_scope_as = first
+		}
+		random_attending_character = {
+			limit = {
+				house ?= { 
+					this != scope:first_house
+					any_house_member = { count >= 5 }
+				}
+				is_ruler = yes
+				is_ai = yes
+				is_adult = yes
+				is_powerful_vassal = yes
+			}
+			save_scope_as = second
+		}
+		add_activity_log_entry = {
+			key = carnival_house_relation_good
+			tags = { pulse_action }
+			character = scope:first
+			target = scope:second
+			scope:first = {
+				house = {
+					change_house_relation_effect = {
+						HOUSE = scope:second.house
+						VALUE = house_relation_improve_minor_value 
+						REASON = carnival_good
+						CHAR = scope:first
+						TARGET_CHAR = scope:second
+						TITLE = scope:dummy_gender
+					}
+				}
+				add_opinion = {
+					modifier = good_house_diplomacy_opinion
+					target = scope:second
+				}
+			}
+			scope:second = {
+				add_opinion = {
+				modifier = good_house_diplomacy_opinion
+				target = scope:first
+				}
+			}
+		}
+	}
+}
+
+carnival_house_relation_bad = {
+	icon = public
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			house ?= { any_house_member = { count >= 5 } }
+			is_ruler = yes
+			is_ai = yes
+			is_adult = yes
+			is_powerful_vassal = yes
+			save_temporary_scope_as = first_house_member
+			house = { save_temporary_scope_as = first_house }
+		}
+		any_attending_character = {
+			house ?= { 
+				this != scope:first_house
+				any_house_member = { count >= 5 } 
+			}
+			is_ruler = yes
+			is_ai = yes
+			is_adult = yes
+			is_powerful_vassal = yes
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {
+		random_attending_character = {
+			limit = {
+				house ?= { any_house_member = { count >= 5 } }
+				is_ruler = yes
+				is_ai = yes
+				is_adult = yes
+				is_powerful_vassal = yes
+				house = { save_temporary_scope_as = first_house }
+				
+			}
+			save_scope_as = first
+		}
+		random_attending_character = {
+			limit = {
+				house ?= { 
+					this != scope:first_house
+					any_house_member = { count >= 5 } 
+				}
+				is_ruler = yes
+				is_ai = yes
+				is_adult = yes
+				is_powerful_vassal = yes
+				
+				
+			}
+			save_scope_as = second
+		}
+		add_activity_log_entry = {
+			key = carnival_house_relation_bad
+			tags = { pulse_action }
+			character = scope:first
+			target = scope:second
+			scope:first = {
+				house = {
+					change_house_relation_effect = {
+						HOUSE = scope:second.house
+						VALUE = house_relation_damage_minor_value
+						REASON = carnival_bad
+						CHAR = scope:first
+						TARGET_CHAR = scope:second
+						TITLE = scope:dummy_gender
+					}
+				}
+				add_opinion = {
+					modifier = bad_house_diplomacy_opinion
+					target = scope:second
+				}
+				reverse_add_opinion = {
+					modifier = bad_house_diplomacy_opinion
+					target = scope:first
+				}
+			}
+		}
+	}
+}
+
+carnival_brawl = {
+	icon = public
+	is_valid = {
+		is_current_phase_active = yes
+		any_attending_character = {
+			is_ruler = yes
+			is_ai = yes
+			is_male = yes
+			is_adult = yes
+			NOT = { has_trait = wounded }
+			save_temporary_scope_as = combatant_01
+			any_courtier_or_guest = {
+				location = scope:activity.activity_location
+				is_ai = yes
+				is_male = yes
+				is_adult = yes
+				NOT = { has_trait = wounded }
+			}
+		}
+		any_attending_character = {
+			is_ai = yes
+			is_male = yes
+			is_adult = yes
+			NOT = { has_trait = wounded }
+			this != scope:combatant_01
+		}
+	}
+
+	weight = {
+		value = 1
+	}
+
+	effect = {			
+		random_attending_character = {
+			limit = {
+				is_ruler = yes
+				is_ai = yes
+				is_male = yes
+				is_adult = yes
+				NOT = { has_trait = wounded }
+			}
+			save_scope_as = ruler_01
+			random_courtier_or_guest = {
+				limit = {
+					location = scope:activity.activity_location
+					is_ai = yes
+					is_male = yes
+					is_adult = yes
+					NOT = { has_trait = wounded }
+				}
+				save_scope_as = first
+			}
+		}
+		random_attending_character = {
+			limit = {
+				is_ai = yes
+				is_male = yes
+				is_adult = yes
+				NOT = { has_trait = wounded }
+				this != scope:first
+			}
+			save_scope_as = second
+		}
+		add_activity_log_entry = {
+			key = carnival_brawl
+			tags = { pulse_action }
+			character = scope:first
+			target = scope:second
+			scope:first = {
+				random_list = {
+					70 = {
+						add_opinion = {
+							modifier = angry_opinion
+							target = scope:second
+							opinion = -5
+						}
+					}
+					30 = {
+						increase_wounds_no_death_effect = { REASON = fight }
+						add_opinion = {
+							modifier = angry_opinion
+							target = scope:second
+							opinion = -15
+						}
+					}
+				}
+				progress_towards_rival_effect = {
+					REASON = rival_fight_at_carnival
+					CHARACTER = scope:second
+					OPINION = 0
+				}
+			}
+			scope:second = {
+				random_list = {
+					70 = {
+						add_opinion = {
+							modifier = angry_opinion
+							target = scope:first
+							opinion = -5
+						}
+					}
+					30 = {
+						increase_wounds_no_death_effect = { REASON = fight }
+						add_opinion = {
+							modifier = angry_opinion
+							target = scope:first
+							opinion = -15
+						}
+					}
+				}
+			}
+		}
+	}
+}

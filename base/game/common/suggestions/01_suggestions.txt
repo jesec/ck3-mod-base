@@ -309,7 +309,7 @@ suggestion_declare_war = {
 				}
 				
 
-				#Higher development, higher chance
+				#Higher prosperity, higher chance
 				scope:actor = {
 					add = {
 						every_claim = {
@@ -317,10 +317,10 @@ suggestion_declare_war = {
 								exists = title_capital_county
 								holder.top_liege = scope:recipient
 								title_capital_county = {
-									development_level > medium_development_level
+									prosperity_level > medium_prosperity_level
 								}
 							}
-							add = title_capital_county.development_level
+							add = prosperity_level
 						}
 					}
 				}
@@ -363,7 +363,7 @@ suggestion_construct_building = {
 		modifier = { #Is the suggestion available at all?
 			add = 0.5
 			any_directly_owned_province = {
-				has_free_building_slot = yes
+				has_free_district_slot = yes
 			}
 		}
 
@@ -394,7 +394,7 @@ suggestion_construct_building = {
 	check_create_suggestion = {
 		every_directly_owned_province = {
 			limit = {
-				has_free_building_slot = yes
+				has_free_district_slot = yes
 			}
 
 			try_create_suggestion = {
@@ -415,8 +415,8 @@ suggestion_construct_building = {
 		base = 100
 		modifier = {
 			add = {
-				# Scaling score based on development level.
-				add = scope:landed_title.county.development_level
+				# Scaling score based on prosperity level.
+				add = scope:landed_title.county.prosperity_level
 
 				# Multiplier for provinces of a different culture
 				if = {
@@ -488,8 +488,8 @@ suggestion_construct_building = {
 
 	is_valid = {
 		scope:landed_title.title_province = {
-			has_ongoing_construction = no
-			has_free_building_slot = yes
+			has_ongoing_holding_construction = no
+			has_free_district_slot = yes
 		}
 	}	
 }
@@ -609,7 +609,7 @@ suggestion_fabricate_claim = {
 		modifier = {
 			add = {
 				scope:landed_title = {
-					add = development_level # Adds between 0 and 100 points, based on development level.
+					add = prosperity_level # Adds between 0 and 100 points, based on prosperity level.
 				}
 
 				if = {
@@ -639,8 +639,8 @@ suggestion_fabricate_claim = {
 						}
 					}
 					add = -100
-					add = scope:landed_title.development_level
-					multiply = 0.1 # Up to a -10 penalty for 'undeveloped' provinces of this type, due to the difficulty of increasing development there.
+					add = scope:landed_title.prosperity_level
+					multiply = 0.1 # Up to a -10 penalty for 'undeveloped' provinces of this type, due to the difficulty of increasing prosperity there.
 				}
 				else_if = {
 					limit = {
@@ -655,8 +655,8 @@ suggestion_fabricate_claim = {
 						}
 					}
 					add = -100
-					add = scope:landed_title.development_level
-					multiply = 0.25 # Up to a -25 penalty for 'undeveloped' provinces of this type, due to the difficulty of increasing development there.
+					add = scope:landed_title.prosperity_level
+					multiply = 0.25 # Up to a -25 penalty for 'undeveloped' provinces of this type, due to the difficulty of increasing prosperity there.
 				}
 				else_if = {
 					limit = {
@@ -671,8 +671,8 @@ suggestion_fabricate_claim = {
 						}
 					}
 					add = -100
-					add = scope:landed_title.development_level
-					multiply = 0.5 # Up to a -50 penalty for 'undeveloped' provinces of this type, due to the great difficulty of increasing development there.
+					add = scope:landed_title.prosperity_level
+					multiply = 0.5 # Up to a -50 penalty for 'undeveloped' provinces of this type, due to the great difficulty of increasing prosperity there.
 				}
 
 				# Multiplier for provinces of a different culture
@@ -723,7 +723,7 @@ suggestion_fabricate_claim = {
 				#Any special buildings?
 				if = {
 					limit = {
-						scope:landed_title.title_province = { has_special_building = yes }
+						scope:landed_title.title_province = { has_special_district = yes }
 					}
 					add = 25
 				}
@@ -1008,9 +1008,9 @@ suggestion_convert_county = {
 		base = 100
 		modifier = {
 			add = {
-				# Scaling score based on development level.
+				# Scaling score based on prosperity level.
 				scope:landed_title = {
-					add = development_level
+					add = prosperity_level
 				}
 
 				# Extra score for the player's Capital Province.
@@ -1072,7 +1072,7 @@ suggestion_increase_control = {
 				tier = tier_county
 				OR = {
 					has_county_corruption_trigger = yes
-					county_control < full_county_control
+					county_control < county_control_baseline
 				}
 				trigger_if = { #marshal is not already converting the county
 					limit = {
@@ -1098,7 +1098,7 @@ suggestion_increase_control = {
 				tier = tier_county
 				OR = {
 					has_county_corruption_trigger = yes
-					county_control < full_county_control
+					county_control < county_control_baseline
 				}
 				trigger_if = { #marshal is not already converting the county
 					limit = {
@@ -1133,9 +1133,9 @@ suggestion_increase_control = {
 		base = 100
 		modifier = {
 			add = {
-				# Scaling score based on development level.
+				# Scaling score based on prosperity level.
 				scope:landed_title = {
-					add = development_level
+					add = prosperity_level
 				}
 
 				# Extra score for the player's Capital Province.
@@ -1170,7 +1170,7 @@ suggestion_increase_control = {
 		scope:landed_title = {
 			OR = {
 				has_county_corruption_trigger = yes
-				county_control < full_county_control
+				county_control < county_control_baseline
 			}
 		}
 		trigger_if = {

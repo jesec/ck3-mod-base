@@ -1,0 +1,135 @@
+﻿
+republican_elective = {
+	elector_vote_strength = {
+		base = 1 # One patrician, one vote
+
+		# The doge gets twice the voting power with the Signorial House Ambition at level III or higher
+		modifier = {
+			add = 1
+			house ?= { has_house_aspiration_parameter = ambition_republican_elective_voting_strength }
+			OR = {
+				this = top_liege
+				liege ?= {
+					NOT = { government_has_flag = government_is_republic }
+				}
+			}
+			desc = has_signorial_ambition_value_desc
+		}
+		modifier = {
+			add = 1
+			has_character_modifier = gdp_popular_mandate_modifier
+			OR = {
+				this = top_liege
+				liege ?= {
+					NOT = { government_has_flag = government_is_republic }
+				}
+			}
+			desc = gdp_popular_mandate_value_desc
+		}
+		modifier = {
+			add = 1
+			has_character_modifier = gdp_glorification_modifier
+			OR = {
+				this = top_liege
+				liege ?= {
+					NOT = { government_has_flag = government_is_republic }
+				}
+			}
+			desc = gdp_glorification_value_desc
+		}
+		modifier = {
+			add = 1
+			has_character_modifier = gdp_patrician_promoted_voter_modifier
+			desc = gdp_patrician_promoted_voter_value_desc
+		}
+	}
+
+	electors = {
+		character_sets = {
+			republican_electors_holder = {
+				type = holder
+			}
+			republican_electors_assembly_members = {
+				type = holder_direct_vassals
+				limit = {
+					OR = {
+						is_assembly_member = yes
+						AND = {
+							government_has_flag = government_is_republic
+							is_landed = yes
+							OR = {
+								gdp_is_patrician_trigger = yes
+								highest_held_title_tier > tier_county
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	candidates = {
+		character_sets = {
+			republican_candidates_holder = { # Re-election at term end
+				type = holder
+			}
+			republican_candidates_holder_close_family = {
+				type = holder_close_family
+			}
+			republican_candidates_direct_vassals = {
+				type = holder_direct_vassals
+			}
+		}
+
+		# Limits for all of the above candidate sets
+		limit = {
+			government_has_flag = government_is_republic
+			is_adult = yes
+			is_imprisoned = no
+			is_incapable = no
+			trigger_if = {
+				limit = {
+					highest_liege_matching_rule:uses_assembly ?= {
+						OR = {
+							has_realm_law = male_only_law
+							has_realm_law = male_preference_law
+						}
+					}
+				}
+				is_female = no
+			}
+			trigger_if = {
+				limit = {
+					highest_liege_matching_rule:uses_assembly ?= {
+						OR = {
+							has_realm_law = female_only_law
+							has_realm_law = female_preference_law
+						}
+					}
+				}
+				is_female = yes
+			}
+			trigger_if = { # Ruler can vote own Heir
+				limit = {
+					is_ruler = no
+				}
+				scope:title.holder.house.house_head.player_heir ?= this
+			}
+			NOR = {
+				has_character_modifier = gdp_republic_renounced_election_personal
+				house ?= { has_house_modifier = gdp_republic_renounced_election_house }
+			}
+		}
+	}
+
+	candidate_score = {
+		base = 0
+		
+		##########################	Republic Holder voting patterns	##########################
+		elector_voting_pattern_republican_elective_modifier = yes
+		##########################	Republic Elector voting patterns (circumstances)	##########################
+		elector_voting_pattern_circumstances_republican_elective_modifier = yes
+		##########################	Elector voting patterns (misc)	##########################
+		elector_voting_pattern_circumstances_misc_elective_modifier = yes
+	}
+}

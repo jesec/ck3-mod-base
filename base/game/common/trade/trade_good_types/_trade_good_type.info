@@ -1,0 +1,68 @@
+﻿#######################################################################
+# Structure 
+#######################################################################
+
+### brief: any_database_key
+# Name for the trade good type
+#
+# Localization keys should be: 
+#	trade_good_key
+#	trade_good_key_desc
+#
+trade_good_key = {
+
+	### brief: base_price ( integer )
+	# What is the base price of this trade good type?
+	# Use for calculating buy/sell prices for the good type which
+	# are subseuquently affected by modifiers
+	#
+	# Valid values: 
+	#	integer (not script value)
+	#
+	base_price = integer
+
+	### brief: origin ( position )
+	# Where does this trade good conceptually come from?
+	#
+	# Entrepot needs (buildings using skip_internal_fulfillment) can only be supplied by an
+	# entrepot no further from this map-pixel than they are, so the origin sets which way an entrepot
+	# chain relays the good. Ordinary needs and non-entrepot markets are unaffected, and a market
+	# that is not an entrepot can supply an entrepot from any direction.
+	#
+	# Optional. A good with no origin can move between entrepots in any direction.
+	#
+	# Valid values:
+	#	{ x y } (integers, not script values)
+	#
+	origin = { x y }
+
+	### brief: category ( integer flag )
+	# To which category does this trade good type belong?s
+	#
+	# Valid values:
+	#	flag key
+	#
+	category = flag_key
+
+	### brief: is_basic (bool)
+	# This describes if this trade good is a "basic" good.
+	# Distribution routes auto-carry every basic good available on the route and can
+	# carry nothing else; profit routes ignore the flag entirely.
+	# no by default
+	#
+	# Valid values:
+	#	yes
+	#	no
+	#
+	is_basic = yes
+}
+
+
+#######################################################################
+# Example 
+#######################################################################
+pizza = {
+	base_price = 10
+	origin = { 2000 2100 }
+	category = food
+}

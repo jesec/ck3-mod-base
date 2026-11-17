@@ -501,16 +501,16 @@ appointment_score_base = {
 	# Traits
 	if = {
 		limit = {
-			NOT = {
-				scope:title.holder ?= {
-					has_realm_law = acclamation_succession_law
-				}
-			}
 			OR = {
 				has_trait = inbred
 				has_trait = blind
 				is_incapable = yes
 				has_trait_with_flag = age_related_ailment
+			}
+			NOT = {
+				scope:title.holder ?= {
+					has_realm_law = acclamation_succession_law
+				}
 			}
 		}
 		subtract = {
@@ -547,17 +547,34 @@ appointment_score_base = {
 		}
 	}
 	# RITE BASED
+	# Only the criminal checks below use scope:target_rite, and they all need one of these traits
 	if = {
 		limit = {
-			exists = top_liege.primary_title.state_rite
+			OR = {
+				has_trait = deviant
+				has_trait = incestuous
+				has_trait = sodomite
+				has_trait = cannibal
+				has_trait = kinslayer_1
+				has_trait = kinslayer_2
+				has_trait = kinslayer_3
+				has_trait = witch
+				has_trait = adulterer
+				has_trait = fornicator
+			}
 		}
-		top_liege.primary_title.state_rite = {
-			save_temporary_scope_as = target_rite
+		if = {
+			limit = {
+				exists = top_liege.primary_title.state_rite
+			}
+			top_liege.primary_title.state_rite = {
+				save_temporary_scope_as = target_rite
+			}
 		}
-	}
-	else = {
-		top_liege.rite = {
-			save_temporary_scope_as = target_rite
+		else = {
+			top_liege.rite = {
+				save_temporary_scope_as = target_rite
+			}
 		}
 	}
 	# CRIMINAL
@@ -900,8 +917,8 @@ appointment_score_base = {
 	# ADJUST BASED ON GENDER LAW - MUST GO AT THE END
 	if = {
 		limit = {
-			scope:title.holder.top_liege ?= { has_realm_law = male_preference_law }
 			is_female = yes
+			scope:title.holder.top_liege ?= { has_realm_law = male_preference_law }
 		}
 		# use subtract instead, otherwise giving bonus when negative score!
 		subtract = {
@@ -911,8 +928,8 @@ appointment_score_base = {
 	}
 	else_if = {
 		limit = {
-			scope:title.holder.top_liege ?= { has_realm_law = male_only_law }
 			is_female = yes
+			scope:title.holder.top_liege ?= { has_realm_law = male_only_law }
 		}
 		# use subtract instead, otherwise giving bonus when negative score!
 		subtract = {
@@ -922,8 +939,8 @@ appointment_score_base = {
 	}
 	else_if = {
 		limit = {
-			scope:title.holder.top_liege ?= { has_realm_law = female_preference_law }
 			is_female = no
+			scope:title.holder.top_liege ?= { has_realm_law = female_preference_law }
 		}
 		subtract = {
 			value = appointment_non_preferred_gender_penalty_value
@@ -932,8 +949,8 @@ appointment_score_base = {
 	}
 	else_if = {
 		limit = {
-			scope:title.holder.top_liege ?= { has_realm_law = female_only_law }
 			is_female = no
+			scope:title.holder.top_liege ?= { has_realm_law = female_only_law }
 		}
 		subtract = {
 			value = appointment_opposite_gender_penalty_value
@@ -1256,7 +1273,7 @@ appointment_score_non_military = {
 		limit = { is_landed = yes }
 		add = {
 			value = {
-				value = capital_county.county_holder_opinion
+				value = capital_county.popular_opinion
 				multiply = 0.25
 				round = yes
 				if = {
@@ -1264,7 +1281,7 @@ appointment_score_non_military = {
 					multiply = 2
 				}
 			}
-			desc = county_holder_opinion_desc
+			desc = popular_opinion_desc
 		}
 	}
 	# COUNCIL POSITIONS
@@ -1395,7 +1412,13 @@ appointment_score_non_merit = {
 	}
 	# EXISTING GOVERNORSHIPS
 	if = {
-		limit = { is_governor = yes }
+		limit = {
+			is_governor = yes
+			trigger_if = {
+				limit = { exists = scope:title }
+				NOT = { top_liege.primary_title ?= scope:title }
+			}
+		}
 		add = {
 			value = -1000
 			desc = already_a_governor_tt
@@ -1505,7 +1528,7 @@ appointment_score_final_factors = {
 		if = {
 			limit = {
 				exists = var:petition_liege_regent_support
-				top_liege.primary_title.var:administrative_ui_special_title.holder ?= var:petition_liege_regent_support
+				ceremonial_liege ?= var:petition_liege_regent_support
 				scope:title ?= top_liege.primary_title # Only top liege title
 			}
 			multiply = {
@@ -1517,7 +1540,7 @@ appointment_score_final_factors = {
 		else_if = {
 			limit = {
 				exists = house.var:petition_liege_appointment_support
-				top_liege.primary_title.var:administrative_ui_special_title.holder ?= house.var:petition_liege_appointment_support
+				ceremonial_liege ?= house.var:petition_liege_appointment_support
 				exists = scope:title
 				scope:title ?= top_liege.primary_title # Only governorships
 			}
@@ -1537,7 +1560,7 @@ appointment_score_regent = {
 			exists = scope:title
 			NOR = {
 				culture = scope:title.holder.capital_county.culture
-				top_liege.primary_title.var:administrative_ui_special_title.holder.culture = culture
+				ceremonial_liege.culture = culture
 			}
 		}
 		add = {
@@ -1548,11 +1571,11 @@ appointment_score_regent = {
 	# Emperor's opinion
 	if = {
 		limit = {
-			exists = top_liege.primary_title.var:administrative_ui_special_title.holder
-			this != top_liege.primary_title.var:administrative_ui_special_title.holder
+			exists = ceremonial_liege
+			this != ceremonial_liege
 		}
 		add = {
-			value = "top_liege.primary_title.var:administrative_ui_special_title.holder.opinion(root)"
+			value = "ceremonial_liege.opinion(root)"
 			divide = 2
 			desc = ceremonial_liege_opinion_desc
 		}
@@ -1564,14 +1587,14 @@ appointment_score_regent = {
 			tgp_is_in_ceremonial_house_trigger = yes
 		}
 		if = { # Emperor
-			limit = { this = top_liege.primary_title.var:administrative_ui_special_title.holder }
+			limit = { this = ceremonial_liege }
 			add = {
 				value = 100
 				desc = ceremonial_liege_desc
 			}
 		}
 		else_if = {
-			limit = { this = top_liege.primary_title.var:administrative_ui_special_title.holder.player_heir }
+			limit = { this = ceremonial_liege.player_heir }
 			add = {
 				value = 50
 				desc = ceremonial_house_heir_desc
@@ -1656,14 +1679,20 @@ appointment_score_regent = {
 				}
 			}
 		}
-		add = 25
+		add = {
+			value = 25
+			desc = japanese_kampaku_domicile_capital_desc
+		}
 	}
 	# Block non-admin
 	if = {
 		limit = {
 			NOT = { government_has_mechanic = administrative }
 		}
-		add = -2500
+		add = {
+			value = -2500
+			desc = japanese_kampaku_not_administrative_desc
+		}
 	}
 }
 

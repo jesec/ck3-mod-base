@@ -1,0 +1,306 @@
+﻿ai_market_owner_no_tolls_desire = {
+	value = 45
+
+	add = {
+		value = ai_greed
+		multiply = -0.9
+	}
+	if = {
+		limit = {
+			ai_has_economical_boom_personality = yes
+		}
+		add = 20
+	}
+	if = {
+		limit = {
+			gold >= ai_war_chest_desired_gold_value
+		}
+		add = 15
+	}
+}
+
+ai_market_owner_minimal_tolls_desire = {
+	value = 75
+
+	add = {
+		value = ai_greed
+		multiply = -0.6
+	}
+
+	if = {
+		limit = {
+			ai_has_economical_boom_personality = yes
+		}
+		add = 10
+	}
+	if = {
+		limit = {
+			gold >= ai_war_chest_desired_gold_value
+		}
+		add = 8
+	}
+}
+
+
+ai_market_owner_low_tolls_desire = {
+	value = 87
+
+	add = {
+		value = ai_greed
+		multiply = -0.4
+	}
+}
+
+
+ai_market_owner_medium_tolls_desire = {
+	value = 100
+
+	if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_republic
+				government_has_flag = government_is_merchant
+			}
+		}
+		add = 12
+	}
+}
+
+ai_market_owner_high_tolls_desire = {
+	value = 87
+
+	add = {
+		value = ai_greed
+		multiply = 0.4
+	}
+	# Debt levels count the years of income owed, whichever purse is the deeper in the red.
+	if = {
+		limit = {
+			OR = {
+				debt_level >= 3
+				treasury_debt_level >= 3
+			}
+		}
+		add = 24
+	}
+	else_if = {
+		limit = {
+			OR = {
+				debt_level >= 2
+				treasury_debt_level >= 2
+			}
+		}
+		add = 18
+	}
+	else_if = {
+		limit = {
+			OR = {
+				debt_level >= 1
+				treasury_debt_level >= 1
+			}
+		}
+		add = 12
+	}
+	else_if = {
+		limit = {
+			OR = {
+				debt_level >= 0
+				treasury_debt_level >= 0
+			}
+		}
+		add = 6
+	}
+	if = {
+		limit = {
+			is_at_war = yes
+		}
+		add = 12
+	}
+
+	if = {
+		limit = {
+			ai_has_warlike_personality = yes
+		}
+		add = 12
+	}
+	if = {
+		limit = {
+			war_chest_gold >= war_chest_gold_maximum
+		}
+		add = -12
+	}
+}
+
+ai_market_owner_very_high_tolls_desire = {
+	value = 74
+
+	add = {
+		value = ai_greed
+		multiply = 0.6
+	}
+
+	if = {
+		limit = {
+			OR = {
+				debt_level >= 3
+				treasury_debt_level >= 3
+			}
+		}
+		add = 36
+	}
+	else_if = {
+		limit = {
+			OR = {
+				debt_level >= 2
+				treasury_debt_level >= 2
+			}
+		}
+		add = 27
+	}
+	else_if = {
+		limit = {
+			OR = {
+				debt_level >= 1
+				treasury_debt_level >= 1
+			}
+		}
+		add = 18
+	}
+	else_if = {
+		limit = {
+			OR = {
+				debt_level >= 0
+				treasury_debt_level >= 0
+			}
+		}
+		add = 9
+	}
+
+	if = {
+		limit = {
+			ai_has_warlike_personality = yes
+		}
+		add = 18
+	}
+}
+
+request_toll_exception_tier_cut_value = {
+	value = 0
+
+	if = {
+		limit = {
+			exists = scope:trade_market
+			exists = scope:target
+		}
+		scope:trade_market = {
+			add = "toll_tier_in_market(scope:actor)"
+		}
+		scope:target = {
+			subtract = toll_tier
+		}
+	}
+
+	min = 0
+}
+
+grant_toll_exception_tier_cut_value = {
+	value = 0
+
+	if = {
+		limit = {
+			exists = scope:trade_market
+			exists = scope:target
+		}
+		scope:trade_market = {
+			add = "toll_tier_in_market(scope:recipient)"
+		}
+		scope:target = {
+			subtract = toll_tier
+		}
+	}
+
+	min = 0
+}
+
+request_toll_exception_opinion_value = {
+	value = request_toll_exception_tier_cut_value
+	multiply = 5
+}
+
+grant_toll_exception_opinion_value = {
+	value = grant_toll_exception_tier_cut_value
+	multiply = 5
+}
+
+# Toll income the market owner would lose from scope:actor. Toll rates scale linearly with tier.
+request_toll_exception_lost_tolls_value = {
+	value = 0
+
+	scope:trade_market ?= {
+		add = "tolls_paid_in_market(scope:actor)"
+		multiply = request_toll_exception_tier_cut_value
+		divide = {
+			value = "toll_tier_in_market(scope:actor)"
+			min = 1
+		}
+	}
+
+	min = 0
+}
+
+request_toll_exception_lost_income_acceptance_value = {
+	value = request_toll_exception_lost_tolls_value
+	divide = {
+		value = scope:recipient.monthly_character_income
+		min = 1
+	}
+	multiply = -1000
+
+	min = -50
+}
+
+request_toll_exception_recipient_debt_acceptance_value = {
+	value = 0
+
+	scope:recipient = {
+		if = {
+			limit = {
+				OR = {
+					debt_level >= 2
+					treasury_debt_level >= 2
+				}
+			}
+			add = -30
+		}
+		else_if = {
+			limit = {
+				OR = {
+					debt_level >= 1
+					treasury_debt_level >= 1
+				}
+			}
+			add = -20
+		}
+		else_if = {
+			limit = {
+				OR = {
+					debt_level >= 0
+					treasury_debt_level >= 0
+				}
+			}
+			add = -10
+		}
+	}
+}
+
+market_toll_level_minus_1_value = {
+	value = toll_level.toll_tier
+	subtract = 1
+	min = 0
+}
+
+market_toll_level_minus_2_value = {
+	value = toll_level.toll_tier
+	subtract = 2
+	min = 0
+}

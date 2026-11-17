@@ -20,8 +20,8 @@ tgp_silk_road_events.0010 = {
 				desc = tgp_silk_road_events.0010.t.khrom
 			}
 			triggered_desc = {
-				trigger = { scope:market_temp = title:c_dvin } # Dvin
-				desc = tgp_silk_road_events.0010.t.shuka
+				trigger = { scope:market_temp = title:c_tabriz } # Tabriz
+				desc = tgp_silk_road_events.0010.t.bazaar
 			}
 			desc = tgp_silk_road_events.0010.t
 		}
@@ -38,6 +38,20 @@ tgp_silk_road_events.0010 = {
 	immediate = {
 		culture = { save_scope_as = culture_temp }
 		save_scope_as = new_trinket # Purely for error suppression
+
+		location.barony.trade_market ?= { save_scope_as = silk_road_trade_market }
+
+		if = {
+			limit = {
+				culture = { has_cultural_parameter = silk_road_market_expertise }
+			}
+			send_interface_message = {
+				type = event_generic_good
+				title = silk_road_market_visited_message
+				left_icon = root
+				add_prestige = medium_prestige_gain
+			}
+		}
 	}
 
 	option = {
@@ -51,36 +65,77 @@ tgp_silk_road_events.0010 = {
 					multiplier = 3.5
 					min = -49
 				}
-				culture = {
-					add_to_variable_list = {
-						name = silk_road_unlocked_innovations
-						target = scope:innovation_temp
+				min = 5
+				modifier = {
+					add = 15
+					culture = { has_cultural_parameter = silk_road_market_expertise }
+				}
+				if = {
+					limit = { government_has_flag = government_is_merchant }
+					send_interface_toast = {
+						title = tgp_silk_road_events.0010.a_success
+						type = event_toast_effect_good
+						left_icon = root
+						add_character_modifier = {
+							modifier = tgp_silk_road_interesting_innovations_modifier
+							years = 5
+						}
 					}
 				}
-				every_player = {
-					limit = { culture = root.culture }
-					send_interface_toast = {
-						type = msg_silk_road_innovation_spread
-						title = msg_silk_road_innovation_spread_title
-						desc = msg_silk_road_innovation_visit_desc
-						left_icon = root
-						right_icon = scope:market_temp
-						custom_tooltip = msg_silk_road_innovation_spread_tt
+				else = {
+					culture = {
+						add_to_variable_list = {
+							name = silk_road_unlocked_innovations
+							target = scope:innovation_temp
+						}
+					}
+					every_player = {
+						limit = { culture = root.culture }
+						send_interface_toast = {
+							type = msg_silk_road_innovation_spread
+							title = msg_silk_road_innovation_spread_title
+							desc = msg_silk_road_innovation_visit_desc
+							left_icon = root
+							right_icon = scope:market_temp
+							custom_tooltip = msg_silk_road_innovation_spread_tt
+						}
 					}
 				}
 			}
 			# 
 			50 = {
+				trigger = { NOT = { government_has_flag = government_is_merchant } }
 				compare_modifier = {
 					value = scope:duel_value
 					multiplier = -3.5
 					min = -49
 				}
+				min = 5
 				desc = SILK_ROAD_MARKET_EMPTY_HANDED
 				send_interface_toast = {
 					title = tgp_silk_road_events.0010.a_nada
 					type = event_toast_effect_bad
 					left_icon = root
+				}
+			}
+			50 = {
+				trigger = { government_has_flag = government_is_merchant }
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				min = 5
+				desc = tgp_silk_road_events.0010.experience
+				send_interface_toast = {
+					title = tgp_silk_road_events.0010.experience
+					type = event_toast_effect_neutral
+					left_icon = root
+					add_trait_xp = {
+						trait = lifestyle_merchant
+						track = caravaneer
+						value = lifestyle_merchant_xp_gain_medium_value
+					}
 				}
 			}
 		}
@@ -124,17 +179,36 @@ tgp_silk_road_events.0010 = {
 					scope:new_trinket = {
 						set_owner = root
 					}
+					if = {
+						limit = { government_has_flag = government_is_merchant }
+						add_trait_xp = {
+							trait = lifestyle_merchant
+							track = artisan
+							value = lifestyle_merchant_xp_gain_medium_value
+						}
+					}
 				}
 				custom_tooltip = purchase_artifact_famed_tt
 			}
 			# make a profit
 			25 = {
 				desc = tgp_silk_road_events.0010.b_big_gold
+				modifier = {
+					add = 10
+					culture = { has_cultural_parameter = silk_road_market_expertise }
+				}
 				send_interface_toast = {
 					title = tgp_silk_road_events.0010.b_big_gold
 					type = event_toast_effect_good
 					left_icon = root
 					add_short_term_gold = massive_gold_value
+					if = {
+						limit = { government_has_flag = government_is_merchant }
+						add_character_modifier = {
+							modifier = gdp_silk_road_bargain_modifier
+							years = 5
+						}
+					}
 				}
 			}
 			# break even
@@ -149,11 +223,37 @@ tgp_silk_road_events.0010 = {
 			}
 			# get nothing, and if you're greedy, get stressed because you got nothing
 			25 = {
+				trigger = { NOT = { government_has_flag = government_is_merchant } }
 				desc = tgp_silk_road_events.0010.a_nada
+				modifier = {
+					add = -10
+					culture = { has_cultural_parameter = silk_road_market_expertise }
+				}
 				send_interface_toast = {
 					title = tgp_silk_road_events.0010.a_nada
 					type = event_toast_effect_bad
 					left_icon = root
+				}
+				stress_and_fulfillment_impact = {
+					greedy = minor_stress_impact_gain
+				}
+			}
+			25 = {
+				trigger = { government_has_flag = government_is_merchant }
+				desc = tgp_silk_road_events.0010.experience
+				modifier = {
+					add = -10
+					culture = { has_cultural_parameter = silk_road_market_expertise }
+				}
+				send_interface_toast = {
+					title = tgp_silk_road_events.0010.experience
+					type = event_toast_effect_neutral
+					left_icon = root
+					add_trait_xp = {
+						trait = lifestyle_merchant
+						track = caravaneer
+						value = lifestyle_merchant_xp_gain_medium_value
+					}
 				}
 				stress_and_fulfillment_impact = {
 					greedy = minor_stress_impact_gain
@@ -166,6 +266,39 @@ tgp_silk_road_events.0010 = {
 
 			ai_value_modifier = {
 				ai_boldness = 1
+				ai_greed = 1
+			}
+		}
+	}
+
+	option = {
+		name = tgp_silk_road_events.0010.c
+		trigger = {
+			government_has_flag = government_is_merchant
+			short_term_gold >= major_gold_value
+			scope:silk_road_trade_market ?= {
+				any_trade_route_in_market = { trade_route_owner = root }
+			}
+		}
+		show_as_unavailable = {
+			government_has_flag = government_is_merchant
+			scope:silk_road_trade_market ?= {
+				any_trade_route_in_market = { trade_route_owner = root }
+			}
+		}
+		remove_short_term_gold = major_gold_value
+		scope:silk_road_trade_market = {
+			add_competitiveness_modifier_for_character = {
+				character = root
+				modifier = gdp_silk_road_market_investment_modifier
+				years = 10
+			}
+		}
+
+		ai_chance = {
+			base = 20
+
+			ai_value_modifier = {
 				ai_greed = 1
 			}
 		}
@@ -223,18 +356,29 @@ scripted_effect silk_road_market_spread_innovation_effect = {
 	}
 }
 
+tgp_silk_road_events.0011 = {
+	hidden = yes
+	type = character_event
+
+	immediate = {
+		add_short_term_gold = major_gold_value
+		remove_decision_cooldown = visit_silk_road_market_decision
+	}
+}
+
 tgp_silk_road_events.0100 = {
 	hidden = yes
 	type = character_event
 
 	trigger = {
+		is_landed = yes # this is fired for every character in the game, ruler or no
 		OR = {
 			has_title = title:c_jingzhao # Chang'an
 			has_title = title:c_lhasa # Lhasa
 			has_title = title:c_lahur # Lahur
 			has_title = title:c_shazhou # Dunhuang
-			has_title = title:c_khiva # Khiva
-			has_title = title:c_dvin # Dvin
+			has_title = title:c_gurganj # Gurganj
+			has_title = title:c_tabriz # Tabriz
 		}
 	}
 
@@ -247,8 +391,8 @@ tgp_silk_road_events.0100 = {
 			title:c_lhasa = { add_to_list = potential_markets } # Lhasa
 			title:c_lahur = { add_to_list = potential_markets } # Lahur
 			title:c_shazhou = { add_to_list = potential_markets } # Dunhuang
-			title:c_khiva = { add_to_list = potential_markets } # Khiva
-			title:c_dvin = { add_to_list = potential_markets } # Dvin
+			title:c_gurganj = { add_to_list = potential_markets } # Gurganj
+			title:c_tabriz = { add_to_list = potential_markets } # Tabriz
 			every_in_list = {
 				list = potential_markets
 				limit = {

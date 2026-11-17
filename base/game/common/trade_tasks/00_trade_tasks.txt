@@ -1,0 +1,59 @@
+﻿# Trader tasks. scaling_modifiers holds the per-aptitude-tier modifier applied
+# to the trade route, keyed by aptitude level (terrible/poor/average/good/excellent).
+# animation is the portrait animation key from gfx/portraits/portrait_animations.
+
+manage_competition = {
+	aptitude = {
+		value = martial
+		add = intrigue
+		divide = 2
+		add = gdp_merchant_legacy_3_trader_aptitude_bonus_value
+	}
+	aptitude_level_breakpoints = { 5 8 13 21 }
+	icon = "gfx/interface/icons/trade/icon_trade_competitiveness.dds"
+	animation = trade_deal
+	scaling_modifiers = {
+		terrible = { trade_competitiveness_mult = 0.05 }
+		poor = { trade_competitiveness_mult = 0.1 }
+		average = { trade_competitiveness_mult = 0.15 }
+		good = { trade_competitiveness_mult = 0.2 }
+		excellent = { trade_competitiveness_mult = 0.25 }
+	}
+}
+
+negotiate_deals = {
+	default = yes
+	aptitude = {
+		value = diplomacy
+		add = learning
+		divide = 2
+		add = gdp_merchant_legacy_3_trader_aptitude_bonus_value
+	}
+	aptitude_level_breakpoints = { 5 8 13 21 }
+	icon = "gfx/interface/icons/trade/acumen.dds"
+	animation = reading
+	scaling_modifiers = {
+		terrible = { trade_expertise_growth_mult = 0.05 }
+		poor = { trade_expertise_growth_mult = 0.1 }
+		average = { trade_expertise_growth_mult = 0.15 }
+		good = { trade_expertise_growth_mult = 0.2 }
+		excellent = { trade_expertise_growth_mult = 0.25 }
+	}
+}
+
+oversee_caravans = {
+	aptitude = {
+		value = stewardship
+		add = gdp_merchant_legacy_3_trader_aptitude_bonus_value
+	}
+	aptitude_level_breakpoints = { 5 8 13 21 }
+	icon = "gfx/interface/icons/trade/icon_trade_capacity.dds"
+	animation = holding_scales
+	scaling_modifiers = {
+		terrible = { trade_capacity_mult = 0.02 }
+		poor = { trade_capacity_mult = 0.04 }
+		average = { trade_capacity_mult = 0.06 }
+		good = { trade_capacity_mult = 0.08 }
+		excellent = { trade_capacity_mult = 0.1 }
+	}
+}

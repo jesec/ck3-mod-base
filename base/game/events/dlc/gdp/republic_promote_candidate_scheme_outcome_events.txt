@@ -1,0 +1,102 @@
+﻿##################################################
+# Events for the Republic Promote Candidate scheme
+##################################################
+namespace = republic_promote_candidate_scheme_event
+
+### Outcome events
+# Standard success
+republic_promote_candidate_scheme_event.0001 = {
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				scope:target = { is_alive = yes }
+				scope:owner = { is_alive = yes }
+			}
+			# We save and change the actual score before sending a message to make sure tooltip evaluates correctly
+			save_scope_value_as = {
+				name = promoted_candidate_score_value
+				value = {
+					value = 10 # Base increase
+					add = { # Additional increase based on rating
+						value = scope:owner.house.house_power_score
+						multiply = 0.2
+					}
+					if = { # If the relevant bonus is unlocked, increase the total
+						limit = {
+							scope:owner.house ?= {
+								has_house_aspiration_parameter = ambition_promote_candidate_scheme_bonus
+							}
+						}
+						multiply = 1.25
+					}
+					round = yes
+				}
+			}
+			scope:scheme.var:target_candidate_title = {
+				change_appointment_investment = {
+					target = scope:target
+					investor = scope:owner
+					value = scope:promoted_candidate_score_value
+				}
+			}
+			send_interface_message = {
+				type = republic_promote_candidate_scheme_good_message
+				title = republic_promote_candidate_scheme_success_t
+				left_icon = scope:target
+				right_icon = scope:scheme.var:target_candidate_title
+				
+				show_as_tooltip = {
+					scope:scheme.var:target_candidate_title = {
+						change_appointment_investment = {
+							target = scope:target
+							investor = scope:owner
+							value = scope:promoted_candidate_score_value
+						}
+					}
+				}
+				republic_promote_candidate_scheme_end_effect = yes
+			}
+			scope:target = {
+				if = {
+					limit = {
+						this != scope:owner
+					}
+					send_interface_message = {
+						type = republic_promote_candidate_scheme_good_message
+						title = republic_promote_candidate_scheme_success_t
+						left_icon = scope:target
+						right_icon = scope:scheme.var:target_candidate_title
+						
+						show_as_tooltip = {
+							scope:scheme.var:target_candidate_title = {
+								change_appointment_investment = {
+									target = scope:target
+									investor = scope:owner
+									value = scope:promoted_candidate_score_value
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+#Standard failure
+republic_promote_candidate_scheme_event.0002 = {
+	hidden = yes
+
+	immediate = {
+		send_interface_message = {
+			type = republic_promote_candidate_scheme_bad_message
+			title = republic_promote_candidate_scheme_failure_t
+			left_icon = scope:target
+			right_icon = scope:scheme.var:target_candidate_title
+			
+			republic_promote_candidate_scheme_end_effect = yes
+		}
+	}
+}

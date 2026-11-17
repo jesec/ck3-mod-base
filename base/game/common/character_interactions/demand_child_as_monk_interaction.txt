@@ -533,9 +533,9 @@
 		modifier = {
 			add = 100
 			scope:actor.rite = { rite_has_preferred_gender_for_clergy = scope:secondary_recipient }
+			pam_demand_child_is_recipient_heir_trigger = no
 			scope:secondary_recipient = {
 				is_close_family_of = scope:recipient
-				NOT = { is_primary_heir_of = scope:recipient }
 				any_sibling = {
 					count >= 2
 					age > prev.age
@@ -546,8 +546,8 @@
 			add = 50
 			scope:actor.ai_zeal >= medium_positive_ai_value
 			scope:actor.rite = { rite_has_preferred_gender_for_clergy = scope:secondary_recipient }
+			pam_demand_child_is_recipient_heir_trigger = no
 			scope:secondary_recipient = {
-				NOT = { is_primary_heir_of = scope:recipient }
 				OR = {
 					learning >= 12
 					has_trait = humble
@@ -580,10 +580,7 @@
 		modifier = {
 			factor = 0
 			scope:recipient = {
-				OR = {
-					has_relation_friend = scope:actor
-					has_relation_best_friend = scope:actor
-				}
+				has_relation_friend = scope:actor
 			}
 		}
 		modifier = {
@@ -602,7 +599,7 @@
 		}
 		modifier = {
 			factor = 0
-			scope:secondary_recipient = { is_primary_heir_of = scope:recipient }
+			pam_demand_child_is_recipient_heir_trigger = yes
 			NAND = {
 				scope:actor.ai_greed >= medium_positive_ai_value
 				scope:recipient = { has_character_modifier = clerical_chastity_vow_modifier }
@@ -686,6 +683,14 @@
 			add = -100
 			scope:secondary_recipient = { is_primary_heir_of = scope:recipient }
 			desc = demand_child_as_monk_ai_primary_heir
+		}
+		modifier = {
+			add = -100
+			scope:secondary_recipient = {
+				NOT = { is_primary_heir_of = scope:recipient }
+			}
+			pam_demand_child_is_recipient_heir_trigger = yes
+			desc = demand_child_as_monk_ai_eldest_child_too_young_for_appointment
 		}
 
 		opinion_modifier = {
@@ -947,10 +952,7 @@
 		modifier = {
 			add = 25
 			scope:recipient = {
-				OR = {
-					has_relation_friend = scope:actor
-					has_relation_best_friend = scope:actor
-				}
+				has_relation_friend = scope:actor
 			}
 			desc = demand_child_as_monk_ai_friend
 		}

@@ -531,9 +531,9 @@ lover.0002 = {
 		}
 
 		show_as_tooltip = {
-			set_relation_rival = {
-				target = scope:first_lover #Is set in the follow-up
-				reason = rival_lover_scorned
+			set_relation_rival_effect = {
+			    TARGET = scope:first_lover #Is set in the follow-up
+			    REASON = rival_lover_scorned
 			}
 		}
 
@@ -571,19 +571,18 @@ lover.0005 = {
 			limit = {		
 				can_set_relation_rival_trigger = { CHARACTER = scope:lover }
 			}
-			set_relation_rival = {
-				target = scope:lover
-				reason = rival_bad_breakup
+			set_relation_rival_effect = {
+			    TARGET = scope:lover
+			    REASON = rival_bad_breakup
 			}
 		}
 		else_if = {
 			limit = {
 				can_set_relation_nemesis_trigger = { CHARACTER = scope:lover }
 			}
-			set_relation_nemesis = {
-				target = scope:lover
-				copy_reason = rival
-				reason = nemesis_broke_up_with_lover
+			set_relation_nemesis_effect = {
+			    TARGET = scope:lover
+			    REASON = nemesis_broke_up_with_lover
 			}
 		}
 		else = {
@@ -1222,9 +1221,9 @@ lover.0201 = {
 				exists = scope:other_lover
 			}
 			show_as_tooltip = {
-				set_relation_rival = {
-					target = scope:other_lover
-					reason = rival_lover_scorned
+				set_relation_rival_effect = {
+				    TARGET = scope:other_lover
+				    REASON = rival_lover_scorned
 				}
 			}
 			hidden_effect = {
@@ -1292,9 +1291,9 @@ lover.0202 = {
 				exists = scope:other_lover
 			}
 			show_as_tooltip = {
-				set_relation_rival = {
-					target = scope:other_lover
-					reason = rival_bad_breakup
+				set_relation_rival_effect = {
+				    TARGET = scope:other_lover
+				    REASON = rival_bad_breakup
 				}
 			}
 			hidden_effect = {
@@ -1358,9 +1357,9 @@ lover.0204 = {
 	option = {
 		name = lover.0204.a
 		scope:lover = {
-			set_relation_rival = {
-				target = root
-				reason = rival_lover_scorned
+			set_relation_rival_effect = {
+			    TARGET = root
+			    REASON = rival_lover_scorned
 			}
 		}
 	}
@@ -1451,10 +1450,7 @@ lover.0205 = {
 		 					root = {
 			 					exists = scope:new_spouse_secondary_actor 
 			 					scope:new_spouse_secondary_actor != root
-			 					OR = {
-			 						has_relation_lover = scope:new_spouse_secondary_actor
-			 						has_relation_soulmate = scope:new_spouse_secondary_actor
-			 					}
+		 						has_relation_lover = scope:new_spouse_secondary_actor
 		 					}
 		 				}
 		 				modifier = {
@@ -1462,10 +1458,7 @@ lover.0205 = {
 		 					root = {
 			 					exists = scope:new_spouse_secondary_recipient 
 			 					scope:new_spouse_secondary_recipient != root
-			 					OR = {
-			 						has_relation_lover = scope:new_spouse_secondary_recipient
-			 						has_relation_soulmate = scope:new_spouse_secondary_recipient
-			 					}
+		 						has_relation_lover = scope:new_spouse_secondary_recipient
 		 					}
 		 				}
 		 				modifier = {
@@ -1513,10 +1506,7 @@ lover.0205 = {
 		 					root = {
 			 					exists = scope:new_spouse_secondary_actor 
 			 					scope:new_spouse_secondary_actor != root
-			 					OR = {
-			 						has_relation_rival = scope:new_spouse_secondary_actor
-			 						has_relation_nemesis = scope:new_spouse_secondary_actor
-			 					}
+		 						has_relation_rival = scope:new_spouse_secondary_actor
 		 					}
 		 				}
 		 				modifier = {
@@ -1524,10 +1514,7 @@ lover.0205 = {
 		 					root = {
 			 					exists = scope:new_spouse_secondary_recipient 
 			 					scope:new_spouse_secondary_recipient != root
-			 					OR = {
-			 						has_relation_rival = scope:new_spouse_secondary_recipient
-			 						has_relation_nemesis = scope:new_spouse_secondary_recipient
-			 					}
+		 						has_relation_rival = scope:new_spouse_secondary_recipient
 		 					}
 		 				}
 		 				modifier = {
@@ -3622,7 +3609,7 @@ lover.1008 = {
 			modifier = {
 				add = 100
 				scope:capital = {
-					development_level <= medium_development_level
+					prosperity_level <= medium_prosperity_level
 				}
 			}
 			ai_value_modifier = {

@@ -203,8 +203,9 @@ decrease_house_relation_level_effect = {
 	}
 }
 
-# Effect for incrementing towards a level change - used actual gameplay effects, e.g. war declarations
+# Effect for incrementing towards a level change, used for actual gameplay effects such as war declarations
 # Required parameters: HOUSE, CHAR, TARGET_CHAR, TITLE, VALUE, REASON
+# Requires house_relation_is_valid_to_start_trigger to have already passed
 change_house_relation_effect = {
 	# Save scopes to use in localization of description.
 	$HOUSE$ ?= { save_scope_as = other_house }
@@ -216,14 +217,34 @@ change_house_relation_effect = {
 		name = steps
 		value = $VALUE$
 	}
+	
 	if = {
-		limit = {
-			exists = scope:other_house
+		limit = { exists = scope:other_house }
+		if = {
+			limit = {
+				scope:steps > 0
+				house_head.culture ?= { has_cultural_parameter = increased_house_relation_gain_with_diasporic }
+				scope:other_house.house_head.culture ?= { has_cultural_parameter = increased_house_relation_gain_with_diasporic }
+			}
+			save_scope_value_as = {
+				name = doubled_steps
+				value = {
+					value = scope:steps
+					multiply = 2
+				}
+			}
+			impact_house_relation = {
+				target = scope:other_house
+				steps = scope:doubled_steps
+				description = house_relation_reason_$REASON$_desc
+			}
 		}
-		impact_house_relation = {
-			target = scope:other_house
-			steps = scope:steps
-			description = house_relation_reason_$REASON$_desc
+		else = {
+			impact_house_relation = {
+				target = scope:other_house
+				steps = scope:steps
+				description = house_relation_reason_$REASON$_desc
+			}
 		}
 	}
 }
@@ -235,6 +256,7 @@ change_house_relation_feud_score_effect = {
 		limit = {
 			has_bp1_dlc_trigger = yes
 			has_house_relation_level = feud
+			scope:other_house ?= { NOT = { this = scope:house } }
 			any_relation_house = { scope:other_house ?= this }
 		}
 		save_scope_as = relation

@@ -555,6 +555,10 @@ pam_decision_events.0001 = {
 						}
 						set_variable = { # To check what they asked you to do
 							name = pam_confession_penalty_var
+							value = flag:conversion
+						}
+						set_variable = {
+							name = pam_confession_penalty_target
 							value = scope:target
 						}
 					}
@@ -779,9 +783,9 @@ pam_decision_events.0003 = {
 				NOT = { has_relation_grudge = scope:target_child }
 			}
 			scope:target_child = {
-				set_relation_grudge = {
-					target = root
-					reason = grudge_pressured_me_sp
+				set_relation_grudge_effect = { 
+				    TARGET = root
+				    REASON = grudge_pressured_me_sp
 				}
 			}
 		}
@@ -1084,7 +1088,7 @@ pam_decision_events.0005 = {
 			cp:councillor_court_chaplain ?= { save_scope_as = confessor }
 		}
 		#Find a different clergy member in the area
-		else_if = {
+		if = {
 			limit = {
 				NOT = {
 					exists = scope:confessor
@@ -1100,8 +1104,13 @@ pam_decision_events.0005 = {
 				save_scope_as = confessor
 			}
 		}
-		else = {
-			#make a priest
+		#make a priest
+		if = {
+			limit = {
+				NOT = {
+					exists = scope:confessor
+				}
+			}
 			create_character = {
 				template = virtuous_priest_character_template
 				dynasty = none
@@ -1111,9 +1120,11 @@ pam_decision_events.0005 = {
 				rite = root.rite
 				save_scope_as = confessor
 			}
-			add_character_flag = {
-				flag = fake_confessor
-				days = 10
+			scope:confessor = {
+				add_character_flag = {
+					flag = fake_confessor
+					days = 10
+				}
 			}
 		}
 		#Find Player Heir
@@ -1483,7 +1494,7 @@ pam_decision_events.0007 = {
 		#Find holding to give to Monastic order
 		ordered_held_title = {
 			order_by = {
-				value = county.development_level
+				value = county.prosperity_level
 				if = {
 					limit = {
 						title_province = {
@@ -1502,7 +1513,7 @@ pam_decision_events.0007 = {
 		}
 		ordered_held_title = {
 			order_by = {
-				value = county.development_level
+				value = county.prosperity_level
 				if = {
 					limit = {
 						title_province = {
@@ -1871,7 +1882,7 @@ pam_decision_events.0009 = {
 					}
 				}
 				order_by = {
-					value = county.development_level
+					value = county.prosperity_level
 					if = {
 						limit = {
 							title_province = {

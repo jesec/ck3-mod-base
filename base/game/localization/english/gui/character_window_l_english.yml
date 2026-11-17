@@ -33,11 +33,13 @@
  CHARACTER_LEARNING: "[Character.GetSkill( 'learning' )]"
  CHARACTER_PROWESS: "[Character.GetProwess|0]"
  CHARACTER_PROWESS_TOOLTIP: "[Character.GetProwessBreakdown]"
- TITLE_NAME_NO_TOOLTIP: "[Title.GetNameNoTooltip]"
+ TITLE_NAME_NO_TOOLTIP: "[Title.GetNameNoTooltip|U]"
 
  #HEIR:0 "" delete this
  IMPRISONED_BY:0 "[Concept( 'jailor', 'Jailor @crime_icon!' )|E]"
  WARDEN_OF: "[Concept( 'warden', 'Warden @hostage_icon!' )|E]"
+ SUZERAIN_OR_PATRON: "[GetSuzerainRelationship(Character)]"
+ PATRON: "[merchant_patron|E]"
  SKILLS:0 "[skills|E]"
  TRAITS:0 "[traits|E]"
  CLAIMS:0 "[claims|E]"
@@ -172,7 +174,10 @@
  THEOCRACY_LESSEE_APPROVAL_ENDORSE: "#T Your [realm_priest|E] endorses you#!\nBecause $REASON$."
  THEOCRACY_LESSEE_APPROVAL_NO_ENDORSE: "#T Your [realm_priest|E] does #emphasis not#! endorse you#!\nBecause $REASON$."
  THEOCRACY_LESSEE_INCOME_SECTION: "#bold [church_obligations|E]#!\n[taxes|E]: [gold_i][TARGET_CHARACTER.GetIncomeFromTheocraticLease|1+=]/month (out of possible [gold_i][TARGET_CHARACTER.GetMaxIncomeFromTheocraticLease|1+=]/month )\n[levies|E]: [soldier_i][TARGET_CHARACTER.GetLeviesFromTheocraticLease|V] (out of possible [soldier_i][TARGET_CHARACTER.GetMaxLeviesFromTheocraticLease|V] )\n\nTax Obligation breakdown (max #V [TARGET_CHARACTER.GetTheocraticRulerMaxTaxSplit|%0]#!):\n[TARGET_CHARACTER.GetTheocraticRulerIncomeRules]"
- CV_THEOCRACY_LESSEE_TOOLTIP: "#T [church_property|E]#!\n[Character.GetNumTitlesFromTheocraticLease] Temples under [Character.GetFaith.GetTheocracyLeaseContractType.GetName] [lease_contract|E]\n\n[taxes|E]: [gold_i][Character.GetBalanceFromTheocraticLease|1+=]/month\n\n#T [income|E]: [gold_i][Character.GetIncomeFromTheocraticLease|1+=]/month#!\n[Character.GetIncomeBreakdownFromTheocraticLease]\n\n#T $EXPENSES_FROM_THEOCRACY_LEASE$: [gold_i][Character.GetExpensesFromTheocraticLease|1+=]/month#!\n[Character.GetExpensesBreakdownFromTheocraticLease]\n\n[levies|E]: [soldier_i][Character.GetLeviesFromTheocraticLease|V]\n[Character.GetLeviesBreakdownFromTheocraticLease]"
+ CV_THEOCRACY_LESSEE_TOOLTIP_HEADER: "#T [church_property|E]#!"
+ CV_THEOCRACY_LEASED_HOLDINGS: "[Character.GetNumTitlesFromTheocraticLease] Temples under [Character.GetFaith.GetTheocracyLeaseContractType.GetName] [lease_contract|E]"
+ CV_THEOCRACY_BALANCE_ENTRY: "[lessee|E] [taxes|E] Balance"
+ BREAKDOWN_INCOME_ENTRY: "[income|E]"
  CV_THEOCRACY_RELIGIOUS_HEAD_TOOLTIP: "#T $RELIGIOUS_HEAD$#!\n\n[taxes|E]: [gold_i]$VALUE|1+=$/month"
  THEOCRATIC_LEASE_BREAKDOWN_TO_RULER: "To [CHARACTER.GetShortUIName]"
  THEOCRATIC_LEASE_BREAKDOWN_TO_LEASE_LIEGE: "To [CHARACTER.GetShortUIName]"
@@ -198,9 +203,11 @@
  THIRD_IS:0 "[CHARACTER.GetUIName] is"
 
  CV_COURTIER_SPONSOR_INSPIRATION:0 ", or if you [sponsor|E] [Character.GetHerHis] [Character.GetCurrentInspiration.GetName]"
- CV_COURTIER_STAY_REASON:0 "such as employment as a $knight_culture_player$ or a [councillor|E][SelectLocalization( CHARACTER.HasInspiration, 'CV_COURTIER_SPONSOR_INSPIRATION', '' )]"
+ CV_COURTIER_STAY_REASON:0 "such as employment as $knight_culture_player_consonant$ $knight_culture_player$ or a [CHARACTER.Custom('GetCourtPositionOrAssociate')][SelectLocalization( CHARACTER.HasInspiration, 'CV_COURTIER_SPONSOR_INSPIRATION', '' )]"
  CV_COURTIER_WANTS_TO_LEAVE_COURT:2 "[CHARACTER.GetShortUINameNoTooltip] might leave [TARGET_CHARACTER.GetShortUINamePossessive] [CHARACTER.Custom('GetCourtConcept')]. [CHARACTER.GetSheHe|U] will stay if given a reason, $CV_COURTIER_STAY_REASON$."
  CV_COURTIER_WILL_LEAVE_COURT:2 "[CHARACTER.GetShortUINameNoTooltip] will leave [TARGET_CHARACTER.GetShortUINamePossessive] [CHARACTER.Custom('GetCourtConcept')] soon. [CHARACTER.GetSheHe|U] will only stay if given a reason, $CV_COURTIER_STAY_REASON$."
+ COURTIER_COUNCILLOR: "[councillor|E]"
+ ASSOCIATE_DEPUTY: "[deputy|E]"
  CHARACTER_WINDOW_CLAIM_TOOLTIP:1 "[Claim.GetTooltip|U]\n$COA_TOOLTIP_CLICK_INFO_GUI$"
  CHARACTER_WINDOW_FULL_DESCRIPTION:1 "$RELATION$ • #TOOLTIP:AI_PERSONALITY_TOOLTIP $PERSONALITY$ #!"
  CHARACTER_WINDOW_PERSONALITY_DESCRIPTION:0 "#TOOLTIP:AI_PERSONALITY_TOOLTIP $PERSONALITY$ #!"
@@ -241,7 +248,20 @@
  DIARCH_ICON_TOOLTIP: "#T Active [power_sharing|E]\n#![Character.GetShortUIName|U] [CharAreIs(Character)] [Character.GetLiege.GetShortUINamePossessive] [Character.GetLiege.GetDiarchTitle]"
 
  RADIANCE_TOOLTIP_HEADER: "[mandala_radiance|E]: $RADIANCE$/#V [GetDefine( 'NMandala', 'MAX_RADIANCE' )]#!"
- RADIANCE_TOOLTIP_DISABLED: "@warning_icon! #WARNING Character must have the #HIGH $building_mandala_capital_01$#! [great_building|E] or higher in order to have [mandala_radiance|E]#!"
+ RADIANCE_TOOLTIP_DISABLED: "@warning_icon! #WARNING Character must have the #HIGH $mandala_capital_01$#! [great_district|E] or higher in order to have [mandala_radiance|E]#!"
+
+ # Trade Post(s)
+ CHARACTER_VIEW_TRADE_POSTS: "[Character.GetNumTradePosts]/[Character.GetMaxTradePosts]"
+ CHARACTER_VIEW_TRADE_POSTS_TT: "[trade_post_districts|E]: #V [Character.GetNumTradePosts]/[Character.GetMaxTradePosts]#!"
+ CHARACTER_VIEW_TRADE_POST_DISTRICT: "@trade_post_icon! [District.GetHolding.GetName] #weak ([TradeMarket.GetName])#!"
+ CHARACTER_VIEW_TRADE_POST_LIMIT: "[trade_post_limit|E]: [Character.GetMaxTradePosts|V]"
+ CHARACTER_VIEW_TRADE_POST_BASE_LIMIT: "Base: #P $VALUE$#!"
+ CHARACTER_VIEW_TRADE_POST_OVER_LIMIT_HEADER: "@warning_icon! #WARNING #EMP Above [trade_post_limit|E]. Consider dismantling some [trade_posts|E] to avoid penalties.#!#!\nEffects per [trade_post|E] above the limit:"
+
+ CHARACTER_VIEW_PROFIT_ROUTES: "[Character.GetCurrentProfitRouteCount]"
+ CHARACTER_VIEW_PROFIT_ROUTES_TT: "[profit_routes|E]: [Character.GetCurrentProfitRouteCount|V]"
+ CHARACTER_VIEW_PROFIT_ROUTE_NAME: "[TradeRoute.GetName]"
+
  MANDALA_ASPECT_DESC: "[mandala_aspect|E]"
  ROSE_FROM_THE_ASHES: "[GetModifier('mandala_rise_from_the_ashes_modifier').GetNameWithTooltip]"
  I_AM_A_TRIBUTARY_OF_A_MANDALA: "[tributary|E] of a God King"

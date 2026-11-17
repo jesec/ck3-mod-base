@@ -1,0 +1,851 @@
+﻿##########################################
+# House Ambitions
+# Republic Government
+##########################################
+
+@republic_ambition_level_1_cost = 0
+@republic_ambition_level_2_cost = 0
+@republic_ambition_level_3_cost = 0
+@republic_ambition_level_4_cost = 0
+
+@republic_ambition_cooldown_duration = 0 # Cooldown (in months)
+
+##########################################
+
+republic_no_ambition = {
+	show_in_main_hud = yes
+	is_default = yes
+	is_shown = {
+		house_head ?= {
+			government_has_flag = government_is_republic
+			highest_held_title_tier >= tier_county
+		}
+		# Only show this if we don't have an ambition set
+		NOR = {
+			has_house_aspiration_parameter = republic_commerce
+			has_house_aspiration_parameter = republic_aggrandizement
+			has_house_aspiration_parameter = republic_communal
+			has_house_aspiration_parameter = republic_signorial
+			has_house_aspiration_parameter = republic_agitation
+		}
+	}
+
+	cooldown = { months = 0 }
+
+	level = {
+		parameters = {
+			republic_no_ambition = yes
+		}
+		ai_score = {
+			value = 0
+		}
+	}
+
+	illustration = "gfx/interface/icons/culture_pillars/ethos_communal.dds"
+}
+
+# Commerce
+republic_commerce = {
+	show_in_main_hud = yes
+	is_shown = {
+		house_head ?= {
+			government_has_flag = government_is_republic
+			highest_held_title_tier >= tier_county
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_1_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 1 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			trade_capacity_mult = 0.04
+		}
+
+		parameters = {
+			republic_ambition = yes # Used for republic government window to display ambition bar - only needs to be present on one level
+			republic_commerce = yes # Note: Not visible — used as a trigger
+			ambition_improved_task_logistics_and_market_1 = yes
+		}
+
+		ai_score = {
+			value = republic_commerce_ai_score_value
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_2_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 2 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			trade_capacity_mult = 0.06
+			trade_post_limit_add = 1
+		}
+
+		parameters = {
+			republic_commerce = yes # Note: Not visible — used as a trigger
+			ambition_improved_task_logistics_and_market_2 = yes
+			ambition_improved_republic_monopoly_acceptance_1 = yes
+		}
+
+		ai_score = {
+			value = republic_commerce_ai_score_value
+			add = 10 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_3_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 3 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			trade_capacity_mult = 0.08
+			trade_post_limit_add = 1
+		}
+
+		parameters = {
+			republic_commerce = yes # Note: Not visible — used as a trigger
+			ambition_improved_task_logistics_and_market_3 = yes
+			ambition_improved_republic_monopoly_acceptance_2 = yes
+		}
+
+		ai_score = {
+			value = republic_commerce_ai_score_value
+			add = 20 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_4_cost
+		}
+
+		can_upgrade = {
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			trade_capacity_mult = 0.10
+			trade_post_limit_add = 2
+		}
+
+		parameters = {
+			republic_commerce = yes # Note: Not visible — used as a trigger
+			ambition_improved_task_logistics_and_market_4 = yes
+			ambition_improved_republic_monopoly_acceptance_3 = yes
+		}
+
+		ai_score = {
+			value = republic_commerce_ai_score_value
+			add = 30 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	cooldown = { months = @republic_ambition_cooldown_duration }
+	automatic_levels = yes
+
+	on_upgraded = {
+		# Notify the player when the ambition is upgraded
+		send_interface_toast = {
+			type = msg_house_aspiration_level_up
+			title = house_ambition_upgraded
+			left_icon = root.house
+			house ?= { save_scope_as = ruler_house }
+			desc = house_ambition_upgraded_desc
+		}
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_upgraded"
+	}
+
+	on_changed = {
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_changed"
+	}
+
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_italian_market.dds"
+}
+
+# Aggrandizement
+republic_aggrandizement = {
+	show_in_main_hud = yes
+	is_shown = {
+		house_head ?= {
+			government_has_flag = government_is_republic
+			highest_held_title_tier >= tier_county
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_1_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 1 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			monthly_prestige_gain_mult = 0.04
+		}
+
+		parameters = {
+			republic_ambition = yes
+			republic_aggrandizement = yes # Note: Not visible — used as a trigger
+			ambition_councillor_bonus_1 = yes
+			ambition_candidate_score_from_renown_bonus_1 = yes
+		}
+
+		ai_score = {
+			value = republic_aggrandizement_ai_score_value
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_2_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 2 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			monthly_prestige_gain_mult = 0.08
+		}
+
+		parameters = {
+			republic_aggrandizement = yes # Note: Not visible — used as a trigger
+			ambition_councillor_bonus_2 = yes
+			ambition_candidate_score_from_renown_bonus_2 = yes
+		}
+
+		ai_score = {
+			value = republic_aggrandizement_ai_score_value
+			add = 10 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_3_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 3 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			monthly_prestige_gain_mult = 0.12
+			prestige_level_impact_mult = 0.1
+		}
+
+		parameters = {
+			republic_aggrandizement = yes # Note: Not visible — used as a trigger
+			ambition_councillor_bonus_3 = yes
+			ambition_candidate_score_from_renown_bonus_3 = yes
+		}
+
+		ai_score = {
+			value = republic_aggrandizement_ai_score_value
+			add = 20 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_4_cost
+		}
+
+		can_upgrade = {
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			monthly_prestige_gain_mult = 0.16
+			prestige_level_impact_mult = 0.2
+			dynasty_house_opinion = 5
+		}
+
+		parameters = {
+			republic_aggrandizement = yes # Note: Not visible — used as a trigger
+			ambition_councillor_bonus_4 = yes
+			ambition_candidate_score_from_renown_bonus_4 = yes
+		}
+
+		ai_score = {
+			value = republic_aggrandizement_ai_score_value
+			add = 30 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	cooldown = { months = @republic_ambition_cooldown_duration }
+	automatic_levels = yes
+
+	on_upgraded = {
+		# Notify the player when the ambition is upgraded
+		send_interface_toast = {
+			type = msg_house_aspiration_level_up
+			title = house_ambition_upgraded
+			left_icon = root.house
+			house ?= { save_scope_as = ruler_house }
+			desc = house_ambition_upgraded_desc
+		}
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_upgraded"
+	}
+
+	on_changed = {
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_changed"
+	}
+
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_merchant_domicile.dds"
+}
+
+# Communal
+republic_communal = {
+	show_in_main_hud = yes
+	is_shown = {
+		house_head ?= {
+			government_has_flag = government_is_republic
+			# No tier requirement — barons will default to this ambition
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_1_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 1 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			popular_opinion_add = 3
+			monthly_treasury_from_salary_budget_mult = 0.05
+		}
+
+		parameters = {
+			republic_ambition = yes
+			republic_communal = yes # Note: Not visible — used as a trigger
+			ambition_promote_scheme_bonus = yes
+		}
+
+		ai_score = {
+			value = republic_communal_ai_score_value
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_2_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 2 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			popular_opinion_add = 6
+			monthly_treasury_from_salary_budget_mult = 0.1
+		}
+
+		parameters = {
+			republic_communal = yes # Note: Not visible — used as a trigger
+			ambition_promote_scheme_bonus = yes
+			ambition_promote_candidate_scheme_bonus = yes
+		}
+
+		ai_score = {
+			value = republic_communal_ai_score_value
+			add = 10 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_3_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 3 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			popular_opinion_add = 9
+			monthly_treasury_from_salary_budget_mult = 0.15
+		}
+
+		parameters = {
+			republic_communal = yes # Note: Not visible — used as a trigger
+			ambition_promote_scheme_bonus = yes
+			ambition_promote_candidate_scheme_bonus = yes
+			ambition_unlock_trade_post_charity_decision = yes
+		}
+
+		ai_score = {
+			value = republic_communal_ai_score_value
+			add = 20 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_4_cost
+		}
+
+		can_upgrade = {
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			popular_opinion_add = 12
+			monthly_treasury_from_salary_budget_mult = 0.25
+		}
+
+		parameters = {
+			republic_communal = yes # Note: Not visible — used as a trigger
+			ambition_promote_scheme_bonus = yes
+			ambition_promote_candidate_scheme_bonus = yes
+			ambition_unlock_trade_post_charity_decision = yes
+		}
+
+		ai_score = {
+			value = republic_communal_ai_score_value
+			add = 30 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	cooldown = { months = @republic_ambition_cooldown_duration }
+	automatic_levels = yes
+
+	on_upgraded = {
+		# Notify the player when the ambition is upgraded
+		send_interface_toast = {
+			type = msg_house_aspiration_level_up
+			title = house_ambition_upgraded
+			left_icon = root.house
+			house ?= { save_scope_as = ruler_house }
+			desc = house_ambition_upgraded_desc
+		}
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_upgraded"
+	}
+
+	on_changed = {
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_changed"
+	}
+
+	illustration = "gfx/interface/illustrations/event_scenes/gdp_carnival_background.dds"
+}
+
+# Signorial
+republic_signorial = {
+	show_in_main_hud = yes
+	is_shown = {
+		house_head ?= {
+			government_has_flag = government_is_republic
+			highest_held_title_tier >= tier_county
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_1_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 1 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			domicile_monthly_gold_mult = 0.03
+			dread_baseline_add = 5
+		}
+
+		parameters = {
+			republic_ambition = yes
+			republic_signorial = yes # Note: Not visible — used as a trigger
+		}
+
+		ai_score = {
+			value = republic_signorial_ai_score_value
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_2_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 2 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			dread_gain_mult = 0.1
+			domicile_monthly_gold_mult = 0.06
+			dread_baseline_add = 10
+		}
+
+		parameters = {
+			republic_signorial = yes # Note: Not visible — used as a trigger
+			ambition_execute_and_banish_provide_bonuses = yes
+		}
+
+		ai_score = {
+			value = republic_signorial_ai_score_value
+			add = 10 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_3_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 3 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			dread_gain_mult = 0.2
+			domicile_monthly_gold_mult = 0.09
+			dread_baseline_add = 15
+		}
+
+		parameters = {
+			republic_signorial = yes # Note: Not visible — used as a trigger
+			ambition_execute_and_banish_provide_bonuses = yes
+			ambition_republican_elective_voting_strength = yes
+		}
+
+		ai_score = {
+			value = republic_signorial_ai_score_value
+			add = 20 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_4_cost
+		}
+
+		can_upgrade = {
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			dread_gain_mult = 0.3
+			domicile_monthly_gold_mult = 0.12
+			dread_baseline_add = 20
+		}
+
+		parameters = {
+			republic_signorial = yes # Note: Not visible — used as a trigger
+			ambition_execute_and_banish_provide_bonuses = yes
+			ambition_republican_elective_voting_strength = yes
+		}
+
+		ai_score = {
+			value = republic_signorial_ai_score_value
+			add = 30 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	cooldown = { months = @republic_ambition_cooldown_duration }
+	automatic_levels = yes
+
+	on_upgraded = {
+		# Notify the player when the ambition is upgraded
+		send_interface_toast = {
+			type = msg_house_aspiration_level_up
+			title = house_ambition_upgraded
+			left_icon = root.house
+			house ?= { save_scope_as = ruler_house }
+			desc = house_ambition_upgraded_desc
+		}
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_upgraded"
+	}
+
+	on_changed = {
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_changed"
+	}
+
+	illustration = "gfx/interface/illustrations/event_scenes/throneroom_mediterranean.dds"
+}
+
+# Agitation
+republic_agitation = {
+	show_in_main_hud = yes
+	is_shown = {
+		house_head ?= {
+			government_has_flag = government_is_republic
+			highest_held_title_tier >= tier_county
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_1_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 1 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			owned_hostile_scheme_success_chance_max_add = 4
+		}
+
+		parameters = {
+			republic_ambition = yes
+			republic_agitation = yes # Note: Not visible — used as a trigger
+			ambition_improved_task_support_schemes_1 = yes
+		}
+
+		ai_score = {
+			value = republic_agitation_ai_score_value
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_2_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 2 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			owned_hostile_scheme_success_chance_max_add = 8
+			owned_scheme_secrecy_add = 5
+			gdp_civic_agitation_scheme_scheme_phase_duration_add = -10
+		}
+
+		parameters = {
+			republic_agitation = yes # Note: Not visible — used as a trigger
+			ambition_improved_task_support_schemes_2 = yes
+		}
+
+		ai_score = {
+			value = republic_agitation_ai_score_value
+			add = 10 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_3_cost
+		}
+
+		can_upgrade = {
+			trigger_if = {
+				limit = {
+					exists = root
+				}
+				gdp_can_upgrade_republican_house_ambition_trigger = { VALUE = 3 }
+			}
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			owned_hostile_scheme_success_chance_max_add = 12
+			owned_scheme_secrecy_add = 10
+			gdp_civic_agitation_scheme_scheme_phase_duration_add = -20
+		}
+
+		parameters = {
+			republic_agitation = yes # Note: Not visible — used as a trigger
+			ambition_improved_task_support_schemes_3 = yes
+		}
+
+		ai_score = {
+			value = republic_agitation_ai_score_value
+			add = 20 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	level = {
+		cost = {
+			prestige = @republic_ambition_level_4_cost
+		}
+
+		can_upgrade = {
+		}
+
+		powerful_family_member_modifier = {
+		}
+
+		any_house_member_modifier = {
+			owned_hostile_scheme_success_chance_max_add = 16
+			owned_scheme_secrecy_add = 15
+			gdp_civic_agitation_scheme_scheme_phase_duration_add = -30
+		}
+
+		parameters = {
+			republic_agitation = yes # Note: Not visible — used as a trigger
+			ambition_improved_task_support_schemes_4 = yes
+		}
+
+		ai_score = {
+			value = republic_agitation_ai_score_value
+			add = 30 # To make sure the AI wants to upgrade it from the previous level
+		}
+	}
+
+	cooldown = { months = @republic_ambition_cooldown_duration }
+	automatic_levels = yes
+
+	on_upgraded = {
+		# Notify the player when the ambition is upgraded
+		send_interface_toast = {
+			type = msg_house_aspiration_level_up
+			title = house_ambition_upgraded
+			left_icon = root.house
+			house ?= { save_scope_as = ruler_house }
+			desc = house_ambition_upgraded_desc
+		}
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_upgraded"
+	}
+
+	on_changed = {
+		play_sound_effect = "event:/DLC/EP5/SFX/UIX/ep5_uix_house_ambition_changed"
+	}
+
+	illustration = "gfx/interface/illustrations/event_scenes/raid_burning.dds"
+}
