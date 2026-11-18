@@ -181,6 +181,7 @@ gdp_trader_start_round_effect = {
 				on_arrival_on_action = on_gdp_trader_arrived_at_market
 				on_arrival_destinations = first
 			}
+			current_travel_plan ?= { set_variable = gdp_trader_travel_plan }
 		}
 	}
 }
@@ -239,9 +240,11 @@ gdp_trader_scheme_setup_effect = {
 gdp_trader_resume_paused_travel_effect = {
 	if = {
 		limit = {
-			exists = current_travel_plan
-			this = current_travel_plan.travel_plan_owner
-			current_travel_plan = { is_paused = yes }
+			current_travel_plan ?= {
+				travel_plan_owner = prev
+				is_paused = yes
+				has_variable = gdp_trader_travel_plan
+			}
 		}
 		current_travel_plan = {
 			resume_travel_plan = yes
@@ -275,6 +278,16 @@ gdp_trader_scheme_invalidated_effect = {
 			 	on_action = on_gdp_trader_continue_activity
 			 	days = 0
 			}
+		}
+		else_if = {
+			limit = {
+				current_travel_plan ?= {
+					travel_plan_owner = prev
+					is_paused = yes
+					has_variable = gdp_trader_travel_plan
+				}
+			}
+			gdp_trader_cancel_owned_travel_effect = yes
 		}
 	}
 }
@@ -496,7 +509,7 @@ gdp_trader_pick_work_scheme_effect = {
 gdp_trader_start_work_scheme_effect = {
 	if = {
 		limit = {
-			exists = current_travel_plan
+			current_travel_plan ?= { has_variable = gdp_trader_travel_plan }
 			gdp_trade_envoys_are_out_trigger = yes
 		}
 		current_travel_plan = {

@@ -70,6 +70,11 @@ scripted_effect merchant_scheme_advantage_save_scopes_effect = {
 				scope:trader = { save_scope_as = portrait }
 			}
 		}
+		# Save rival scope
+		random_in_list = {
+			list = potential_rivals
+			save_scope_as = rival
+		}
 		# Save malus
 		random_list = {
 			10 = {
@@ -105,7 +110,10 @@ scripted_effect merchant_scheme_advantage_save_scopes_effect = {
 				save_scope_value_as = { name = malus value = flag:competitiveness }
 			}
 			10 = {
-				trigger = { exists = scope:rival }
+				trigger = {
+					exists = scope:rival.house
+					NOT = { scope:merchant.house ?= scope:rival.house }
+				}
 				save_scope_value_as = { name = malus value = flag:relation }
 			}
 		}
@@ -304,10 +312,6 @@ gdp_merchant_scheme_advantage.1000 = {
 
 	immediate = {
 		merchant_scheme_advantage_save_scopes_effect = yes
-		random_in_list = {
-			list = potential_rivals
-			save_scope_as = rival
-		}
 	}
 
 	option = { # Crack whip
@@ -513,7 +517,7 @@ scripted_effect gdp_merchant_scheme_advantage_recruit_outcome_effect = {
 					VALUE = house_relation_damage_minor_value 
 					REASON = scheme_push_for_advantage
 					CHAR = scope:merchant
-					TARGET_CHAR = scope:recruit
+					TARGET_CHAR = scope:recruit_liege
 					TITLE = dummy_female
 				}
 			}

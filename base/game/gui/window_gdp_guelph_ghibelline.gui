@@ -1640,19 +1640,19 @@ window = {
 								datacontext = "[GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('ghibelline_leader')]"
 								visible = "[SituationParticipantGroup.IsValid]"
 	
+								#Enabled
 								button_standard_clean = {
 									size = { 180 300 }
+									visible = "[Character.IsPlayerInteractionValid( 'gg_compromise_interaction' )]"
 									
 									datacontext_from_model = {
 										datamodel = "[SituationParticipantGroup.GetCharacters]"
 										index = 0
 									}
 		
-									enabled = "[Character.IsPlayerInteractionValid( 'gg_compromise_interaction' )]"
 									onclick = "[Character.OpenPlayerInteraction( 'gg_compromise_interaction' )]"
 		
 									tooltip = "[Character.GetPlayerInteractionTooltip( 'gg_compromise_interaction' )]"
-									tooltip_when_disabled = "[Character.GetPlayerInteractionValidBlockers( 'gg_compromise_interaction' )]"
 		
 									vbox = {
 										layoutpolicy_horizontal = expanding
@@ -1660,9 +1660,10 @@ window = {
 		
 										background = {
 											name = "decision_background"
-											texture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_ghibelline_compromise.dds"
+											texture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_ghibelline_compromise.dds"	
 											using = Mask_Rough_Edges
 											fittype = centercrop
+											alpha = 1
 											mirror = horizontal
 		
 											margin = { -1 -1 }
@@ -1703,12 +1704,99 @@ window = {
 											}
 		
 											text_single = {
-		
 												max_width = 170
 												margin = { 0 15 }
 		
 												text = "gg_compromise_interaction"
 												default_format = "#clickable"
+												align = center
+											}
+										}
+									}
+								}
+
+								#Disabled
+								button_standard_clean = {
+									size = { 180 300 }
+									visible = "[Not( Character.IsPlayerInteractionValid( 'gg_compromise_interaction' ) )]"
+									
+									datacontext_from_model = {
+										datamodel = "[SituationParticipantGroup.GetCharacters]"
+										index = 0
+									}
+		
+									tooltip = "[Character.GetPlayerInteractionTooltip( 'gg_compromise_interaction' )]"
+		
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+		
+										background = {
+											name = "decision_background"
+											texture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_ghibelline_compromise.dds"	
+											using = Mask_Rough_Edges
+											fittype = centercrop
+											alpha = 0.4
+											mirror = horizontal
+		
+											margin = { -1 -1 }
+		
+											modify_texture = {
+												texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+												blend_mode = alphamultiply
+												translate_uv = { 0 -0.1 }
+											}
+										}
+
+										hbox = {
+											layoutpolicy_horizontal = expanding
+
+											margin = { 0 5 }
+
+											warning_icon = {
+												size = { 30 30 }
+												name = "not_possible"
+											}
+
+											background = {
+												using = Background_Area_Dark
+											}
+										}
+		
+										expand = {}
+		
+										hbox = {
+											layoutpolicy_horizontal = growing
+		
+											background =  {
+												using = Background_Area_Dark
+		
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+													blend_mode = alphamultiply
+													mirror = vertical
+												}
+											}
+		
+											background = {
+												texture ="gfx/interface/skinned/mask_pattern.dds"
+												texture_density = 3
+												spriteType = Corneredtiled
+												color = { 0.6 0.7 0.65 0.2 }
+												alpha = 0.7
+		
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+													blend_mode = alphamultiply
+												}
+											}
+
+											text_single = {
+												max_width = 170
+												margin = { 0 15 }
+
+												text = "gg_compromise_interaction"
+												default_format = "#low"
 												align = center
 											}
 										}
@@ -1725,19 +1813,19 @@ window = {
 								datacontext = "[GetSituation('guelph_ghibelline').GetTopParticipantGroupByKey('guelph_leader')]"
 								visible = "[SituationParticipantGroup.IsValid]"
 	
+								#Enabled
 								button_standard_clean = {
 									size = { 180 300 }
+									visible = "[Character.IsPlayerInteractionValid( 'gg_compromise_interaction' )]"
 									
 									datacontext_from_model = {
 										datamodel = "[SituationParticipantGroup.GetCharacters]"
 										index = 0
 									}
 		
-									enabled = "[Character.IsPlayerInteractionValid( 'gg_compromise_interaction' )]"
 									onclick = "[Character.OpenPlayerInteraction( 'gg_compromise_interaction' )]"
 		
 									tooltip = "[Character.GetPlayerInteractionTooltip( 'gg_compromise_interaction' )]"
-									tooltip_when_disabled = "[Character.GetPlayerInteractionValidBlockers( 'gg_compromise_interaction' )]"
 		
 									vbox = {
 										layoutpolicy_horizontal = expanding
@@ -1745,9 +1833,10 @@ window = {
 		
 										background = {
 											name = "decision_background"
-											texture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_ghibelline_compromise.dds"
+											texture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_ghibelline_compromise.dds"	
 											using = Mask_Rough_Edges
 											fittype = centercrop
+											alpha = 1
 											mirror = horizontal
 		
 											margin = { -1 -1 }
@@ -1788,12 +1877,99 @@ window = {
 											}
 		
 											text_single = {
-		
 												max_width = 170
 												margin = { 0 15 }
 		
 												text = "gg_compromise_interaction"
 												default_format = "#clickable"
+												align = center
+											}
+										}
+									}
+								}
+
+								#Disabled
+								button_standard_clean = {
+									size = { 180 300 }
+									visible = "[Not( Character.IsPlayerInteractionValid( 'gg_compromise_interaction' ) )]"
+									
+									datacontext_from_model = {
+										datamodel = "[SituationParticipantGroup.GetCharacters]"
+										index = 0
+									}
+		
+									tooltip = "[Character.GetPlayerInteractionTooltip( 'gg_compromise_interaction' )]"
+		
+									vbox = {
+										layoutpolicy_horizontal = expanding
+										layoutpolicy_vertical = expanding
+		
+										background = {
+											name = "decision_background"
+											texture = "gfx/interface/illustrations/struggle_decision_buttons/gdp_guelph_ghibelline_compromise.dds"	
+											using = Mask_Rough_Edges
+											fittype = centercrop
+											alpha = 0.4
+											mirror = horizontal
+		
+											margin = { -1 -1 }
+		
+											modify_texture = {
+												texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+												blend_mode = alphamultiply
+												translate_uv = { 0 -0.1 }
+											}
+										}
+
+										hbox = {
+											layoutpolicy_horizontal = expanding
+
+											margin = { 0 5 }
+
+											warning_icon = {
+												size = { 30 30 }
+												name = "not_possible"
+											}
+
+											background = {
+												using = Background_Area_Dark
+											}
+										}
+		
+										expand = {}
+		
+										hbox = {
+											layoutpolicy_horizontal = growing
+		
+											background =  {
+												using = Background_Area_Dark
+		
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_vertical.dds"
+													blend_mode = alphamultiply
+													mirror = vertical
+												}
+											}
+		
+											background = {
+												texture ="gfx/interface/skinned/mask_pattern.dds"
+												texture_density = 3
+												spriteType = Corneredtiled
+												color = { 0.6 0.7 0.65 0.2 }
+												alpha = 0.7
+		
+												modify_texture = {
+													texture = "gfx/interface/component_masks/mask_fade_vertical_up.dds"
+													blend_mode = alphamultiply
+												}
+											}
+
+											text_single = {
+												max_width = 170
+												margin = { 0 15 }
+
+												text = "gg_compromise_interaction"
+												default_format = "#low"
 												align = center
 											}
 										}

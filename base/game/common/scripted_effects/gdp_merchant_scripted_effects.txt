@@ -1566,6 +1566,14 @@ create_merchant_title_effect = {
 				value = scope:merchant_flavor_char
 			}
 		}
+		every_held_title = {
+			limit = {
+				is_noble_family_title = yes
+				gdp_merchant_company_title_trigger = no
+			}
+			save_temporary_scope_as = old_noble_family_title
+			scope:new_merchant = { destroy_title = scope:old_noble_family_title }
+		}
 		# Only create a new title if this character doesn't have one already (from this effect or from being a Patrician)
 		if = {
 			limit = {
@@ -1637,6 +1645,14 @@ create_merchant_title_effect = {
 		}
 		remove_variable = pending_merchant_creation_reason
 		remove_variable = pending_merchant_flavor_char
+		every_in_list = {
+			list = courtiers_list
+			limit = {
+				is_alive = yes
+				NOT = { liege_or_court_owner = scope:new_merchant }
+			}
+			scope:new_merchant = { add_courtier = prev }
+		}
 		# Destroy laamp title
 		if = {
 			limit = {
@@ -2363,37 +2379,38 @@ merchant_trade_opportunity_travel_cancelled_effect = {
 }
 
 merchant_trade_opportunity_travel_complete_or_invalidated_effect = {
+	save_temporary_scope_as = resume_travel_contract
 	task_contract_taker.current_travel_plan ?= {
 		if = {
 			limit = {
 				is_paused = yes
 				NOR = {
-					exists = root.var:contract_partner
-					exists = root.var:accepted_while_traveling_elsewhere
+					exists = scope:resume_travel_contract.var:contract_partner
+					exists = scope:resume_travel_contract.var:accepted_while_traveling_elsewhere
 				}
-				root.task_contract_taker = {
-					any_character_active_contract = { this = root }
+				scope:resume_travel_contract.task_contract_taker = {
+					any_character_active_contract = { this = scope:resume_travel_contract }
 				}
 			}
 			if = {
 				limit = {
-					root = {
+					scope:resume_travel_contract = {
 						OR = {
 							has_task_contract_group = merchant_trade_opportunity_group
 							has_task_contract_group = merchant_silk_road_contract_group
 						}
 					}
-					root.task_contract_taker = {
+					scope:resume_travel_contract.task_contract_taker = {
 						is_ai = no
 						any_available_task_contract = {
 							has_task_contract_group = merchant_trade_opportunity_group
 							task_contract_location = prev.location
-							NOT = { this = root }
+							NOT = { this = scope:resume_travel_contract }
 						}
 					}
 				}
-				root = { save_scope_as = task_contract }
-				root.task_contract_taker = {
+				scope:resume_travel_contract = { save_scope_as = task_contract }
+				scope:resume_travel_contract.task_contract_taker = {
 					trigger_event = { id = gdp_merchant_trade_opportunity.9000 delayed = yes }
 				}
 			}
@@ -2402,7 +2419,7 @@ merchant_trade_opportunity_travel_complete_or_invalidated_effect = {
 	}
 	var:contract_partner ?= {
 		if = {
-			limit = { var:partner_contract ?= root }
+			limit = { var:partner_contract ?= scope:resume_travel_contract }
 			remove_variable = partner_contract
 		}
 	}

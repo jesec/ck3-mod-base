@@ -1635,11 +1635,13 @@ raiktor_claim_cb = {
 	valid_to_start = { always = no }
 
 	should_invalidate = {
-		title:k_epirus ?= {
-			any_in_de_jure_hierarchy = {
-				tier >= tier_county
-				holder ?= {
-					target_is_same_character_or_above = scope:defender
+		NOT = {
+			title:k_epirus ?= {
+				any_in_de_jure_hierarchy = {
+					tier >= tier_county
+					holder ?= {
+						target_is_same_character_or_above = scope:defender
+					}
 				}
 			}
 		}
